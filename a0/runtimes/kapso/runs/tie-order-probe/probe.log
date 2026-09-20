@@ -1,0 +1,96 @@
+INFO:kapso.execution.coding_agents.adapters.claude_code_agent:MCP config written to: /home/ebt/rsi-dev/a0/runtimes/kapso/runs/tie-order-probe/reversed_tie/workspace/sessions/generic_exp_0/.claude_mcp/mcp_config.json
+INFO:kapso.execution.coding_agents.adapters.claude_code_agent:MCP config written to: /home/ebt/rsi-dev/a0/runtimes/kapso/runs/tie-order-probe/reversed_tie/workspace/sessions/generic_exp_1/.claude_mcp/mcp_config.json
+INFO:kapso.execution.coding_agents.adapters.claude_code_agent:MCP config written to: /home/ebt/rsi-dev/a0/runtimes/kapso/runs/tie-order-probe/reversed_tie/workspace/sessions/generic_exp_2/.claude_mcp/mcp_config.json
+  Copied eval_dir to kapso_evaluation/
+[GenericSearch] Initialized:
+  - idea_generation_model: claude-opus-5
+  - implementation_model: claude-opus-5
+  - auth: {}
+  - ideation_gates: []
+  - implementation_gates: []
+  - gate_failure_policy: warn
+  - parent_policy: best
+  - experiment_history_path: /home/ebt/rsi-dev/a0/runtimes/kapso/runs/tie-order-probe/reversed_tie/workspace/.kapso/experiment_history.json
+  - feedback_generator: configured
+
+[GenericSearch] Iteration 1, budget: 0.0%
+[GenericSearch] Generated solution (29 chars)
+[GenericSearch] Implementing on branch: generic_exp_0 (from main)
+Creating experiment session for branch generic_exp_0 with parent main
+[GenericSearch] Extracted agent result from XML tags: ['code_changes_summary', 'evaluation_script_path', 'evaluation_output', 'score', 'technical_difficulties']
+[GenericSearch] Extracted result from agent JSON
+[GenericSearch] Generating feedback for node 0...
+[GenericSearch] Feedback generated: stop=False, score=2.4519205208433132
+[GenericSearch] ✓ Node 0 completed: score=2.4519205208433132, should_stop=False
+
+[GenericSearch] Iteration 2, budget: 0.0%
+[GenericSearch] Generated solution (31 chars)
+[GenericSearch] Implementing on branch: generic_exp_1 (from generic_exp_0)
+Creating experiment session for branch generic_exp_1 with parent generic_exp_0
+[GenericSearch] Extracted agent result from XML tags: ['code_changes_summary', 'evaluation_script_path', 'evaluation_output', 'score', 'technical_difficulties']
+[GenericSearch] Extracted result from agent JSON
+[GenericSearch] Generating feedback for node 1...
+[GenericSearch] Feedback generated: stop=False, score=2.4519205208433132
+[GenericSearch] ✓ Node 1 completed: score=2.4519205208433132, should_stop=False
+
+[GenericSearch] Iteration 3, budget: 0.0%
+[GenericSearch] Generated solution (32 chars)
+[GenericSearch] Implementing on branch: generic_exp_2 (from generic_exp_0)
+Creating experiment session for branch generic_exp_2 with parent generic_exp_0
+[GenericSearch] Extracted agent result from XML tags: ['code_changes_summary', 'evaluation_script_path', 'evaluation_output', 'score', 'technical_difficulties']
+[GenericSearch] Extracted result from agent JSON
+[GenericSearch] Generating feedback for node 2...
+[GenericSearch] Feedback generated: stop=False, score=2.6e-05
+[GenericSearch] ✓ Node 2 completed: score=2.6e-05, should_stop=False
+{
+ "best_candidate_id": "c03_mirror",
+ "best_node_id": 0,
+ "byte_wise_smallest_candidate_id": "c01_good_hex",
+ "deliverable_candidate_id": "c03_mirror",
+ "deliverable_node_id": 0,
+ "diverges_from_frozen_tie_break": true,
+ "next_round_parent_candidate_id": "c03_mirror",
+ "next_round_parent_node_id": 0,
+ "node_history": [
+  {
+   "attempts": 1,
+   "branch_name": "generic_exp_0",
+   "eval_fidelity": "full",
+   "evaluation_valid": true,
+   "had_error": false,
+   "node_id": 0,
+   "score": 2.4519205208433132,
+   "tier": 2
+  },
+  {
+   "attempts": 1,
+   "branch_name": "generic_exp_1",
+   "eval_fidelity": "full",
+   "evaluation_valid": true,
+   "had_error": false,
+   "node_id": 1,
+   "score": 2.4519205208433132,
+   "tier": 2
+  },
+  {
+   "attempts": 1,
+   "branch_name": "generic_exp_2",
+   "eval_fidelity": "full",
+   "evaluation_valid": true,
+   "had_error": false,
+   "node_id": 2,
+   "score": 2.6e-05,
+   "tier": 2
+  }
+ ],
+ "plan_order": [
+  "c03_mirror",
+  "c01_good_hex",
+  "c14_near_zero"
+ ],
+ "rule": "KAPSO: max() over node_history -> the FIRST maximal element; frozen A0-wide rule: smallest candidate_id by UTF-8 bytes",
+ "tie_pair": {
+  "c01_good_hex": 2.4519205208433132,
+  "c03_mirror": 2.4519205208433132
+ }
+}

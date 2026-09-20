@@ -1,0 +1,52 @@
+{
+  "best_candidate_id": "c03_mirror",
+  "best_node_id": 0,
+  "byte_wise_smallest_candidate_id": "c01_good_hex",
+  "deliverable_candidate_id": "c03_mirror",
+  "deliverable_node_id": 0,
+  "diverges_from_frozen_tie_break": true,
+  "next_round_parent_candidate_id": "c03_mirror",
+  "next_round_parent_node_id": 0,
+  "node_history": [
+    {
+      "attempts": 1,
+      "branch_name": "generic_exp_0",
+      "eval_fidelity": "full",
+      "evaluation_valid": true,
+      "had_error": false,
+      "node_id": 0,
+      "score": 2.4519205208433132,
+      "tier": 2
+    },
+    {
+      "attempts": 1,
+      "branch_name": "generic_exp_1",
+      "eval_fidelity": "full",
+      "evaluation_valid": true,
+      "had_error": false,
+      "node_id": 1,
+      "score": 2.4519205208433132,
+      "tier": 2
+    },
+    {
+      "attempts": 1,
+      "branch_name": "generic_exp_2",
+      "eval_fidelity": "full",
+      "evaluation_valid": true,
+      "had_error": false,
+      "node_id": 2,
+      "score": 2.6e-05,
+      "tier": 2
+    }
+  ],
+  "plan_order": [
+    "c03_mirror",
+    "c01_good_hex",
+    "c14_near_zero"
+  ],
+  "rule": "KAPSO: max() over node_history -> the FIRST maximal element; frozen A0-wide rule: smallest candidate_id by UTF-8 bytes",
+  "tie_pair": {
+    "c01_good_hex": 2.4519205208433132,
+    "c03_mirror": 2.4519205208433132
+  }
+}

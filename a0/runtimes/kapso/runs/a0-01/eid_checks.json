@@ -1,0 +1,14 @@
+{
+  "recompute": {
+    "cmd": "/home/ebt/rsi-dev/a0/contract/evalcontract.py recompute --eid-file /home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "[ok ] EvaluatorSource    recorded=a3d6534b4e3bc78f recomputed=a3d6534b4e3bc78f\n  [ok ] DependencyLock     recorded=7b02f1a71288335f recomputed=7b02f1a71288335f\n  [ok ] DataManifest       recorded=b21c975a51ef24cd recomputed=b21c975a51ef24cd\n  [ok ] Config             recorded=550ca3cdd8af04ec recomputed=550ca3cdd8af04ec\n  [ok ] MetricDefinition   recorded=420ab0acf24e1c73 recomputed=420ab0acf24e1c73\n  [ok ] EID*               recorded=664115e0d63ad2e1 recomputed=664115e0d63ad2e1"
+  },
+  "verify": {
+    "cmd": "/home/ebt/rsi-dev/a0/contract/evalcontract.py verify --eid-file /home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json --spec /home/ebt/rsi-dev/a0/contract/plumbing.contract.json --base /home/ebt/rsi-dev/a0",
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "clean: all recorded inputs match; EID* = 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328"
+  }
+}

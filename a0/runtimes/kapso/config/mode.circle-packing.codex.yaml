@@ -1,0 +1,76 @@
+# KAPSO mode config for the A0 end-to-end check (circle-packing).
+#
+# Identical in every A0-relevant setting to mode.circle-packing.yaml —
+# parent_policy best, fidelity.mode off, max_change_requests 0, front doors
+# closed — but the lanes are the codex CLI instead of the claude CLI, because
+# the codex lane is the one that can complete a model call on this host as of
+# 2026-09-20 17:35.
+#
+# `sandbox: danger-full-access` is KAPSO's own codex default
+# (codex_agent.py:117).  It is *not* a closure setting: it is the default the
+# protocol describes (§4.3), and the end-to-end run exists to observe what a
+# real session does, not to claim closure.  `web_search: false` closes the
+# codex --search tool (codex_agent.py:118,187-188).
+
+default_mode: CIRCLE_PACKING_CODEX
+
+modes:
+  CIRCLE_PACKING_CODEX:
+    search_strategy:
+      type: "generic"
+      params:
+        parent_policy: "best"
+        web_search: false
+        implementation_web: false
+        ideation_gates: []
+        implementation_gates: []
+        design_axes: [
+          "geometry / parametrisation — the circle layout representation and coordinate parameterisation",
+          "optimisation procedure — local refinement, seeding, perturbation and constraint-repair strategy",
+          "numerical robustness — determinism, p50 runtime under the 250 ms gate, overlap and bounds margins",
+        ]
+        idea_generation_model: "gpt-5.6-terra"
+        implementation_model: "gpt-5.6-terra"
+        implementation_cli: "codex"
+        gate_failure_policy: "warn"
+        repo_memory_failure_policy: "warn"
+        node_expansion_value: 1
+        implementation_timeout: 900
+        ideation_timeout: 900
+
+    coding_agent:
+      type: "codex"
+      model: "gpt-5.6-terra"
+      agent_specific:
+        sandbox: "danger-full-access"
+        web_search: false
+        timeout: 900
+        effort: "low"
+
+    feedback_generator:
+      type: "codex"
+      model: "gpt-5.6-terra"
+      agent_specific:
+        sandbox: "read-only"
+        web_search: false
+        timeout: 600
+        effort: "low"
+
+    evaluation_maintainer:
+      type: "codex"
+      model: "gpt-5.6-terra"
+      agent_specific:
+        sandbox: "read-only"
+        web_search: false
+        timeout: 600
+      subsample_seed: 1337
+      calibration_fraction: 0.03
+      calibration_timeout_seconds: 120
+      fast_variant_threshold_minutes: 20
+      overhead_factor: 1.25
+      max_change_requests: 0
+      transition_freeze_fraction: 0.85
+
+    budget:
+      fidelity:
+        mode: "off"

@@ -1,0 +1,9 @@
+{
+  "schema": "a0.kapso.adapter_entrypoint/v1",
+  "cmd": ["/home/ebt/rsi-dev/a0/runtimes/kapso/.venv/bin/python", "-m", "a0_adapter"],
+  "pythonpath": "/home/ebt/rsi-dev/a0/runtimes/kapso",
+  "runtime": "kapso",
+  "subcommands": ["run", "conformance", "closure-probe"],
+  "note": "Entry point declared for a0/conformance/conformance.py (its discovery order is adapters.json, then this file, then heuristics). The adapter imports the pinned KAPSO checkout from PYTHONPATH (config/adapter.json: kapso_src); it never installs into it.",
+  "paths_config": "config/adapter.json"
+}

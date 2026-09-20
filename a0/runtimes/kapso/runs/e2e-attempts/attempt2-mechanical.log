@@ -1,0 +1,2430 @@
+INFO:kapso.execution.search_strategies.generic.implementation:[GenericSearch] Implementation tools: ['Read', 'Write', 'Edit', 'Bash']
+  Copied eval_dir to kapso_evaluation/
+[GenericSearch] Initialized:
+  - idea_generation_model: gpt-5.6-terra
+  - implementation_model: gpt-5.6-terra
+  - auth: {}
+  - ideation_gates: []
+  - implementation_gates: []
+  - gate_failure_policy: warn
+  - parent_policy: best
+  - experiment_history_path: /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/.kapso/experiment_history.json
+  - feedback_generator: configured
+
+[GenericSearch] Iteration 1, budget: 0.0%
+[GenericSearch] Generated solution (3258 chars)
+[GenericSearch] Implementing on branch: generic_exp_0 (from main)
+Creating experiment session for branch generic_exp_0 with parent main
+[GenericSearch] Running codex implementation...
+[codex] Reading prompt from stdin...
+[codex] OpenAI Codex v0.154.0
+[codex] --------
+[codex] workdir: /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex] model: gpt-5.6-terra
+[codex] provider: custom
+[codex] approval: never
+[codex] sandbox: danger-full-access
+[codex] reasoning effort: high
+[codex] reasoning summaries: none
+[codex] session id: 01a0be36-9a86-7b51-8e3a-12a395cdbec3
+[codex] --------
+[codex] user
+[codex] You are a world class developer and programmer. Your task is to implement the provided <solution> for <problem>, build evaluation, and run it.
+[codex] 
+[codex] ## Your Responsibilities
+[codex] 
+[codex] 1. **Characterize the Measurement**: profile the evaluation mechanics and input distribution before building (see below).
+[codex] 2. **Implement the Solution**: Modify the repo to implement the <solution> exactly as provided.
+[codex] 3. **Build Evaluation**: Create evaluation code in `kapso_evaluation/` directory.
+[codex] 4. **Run Evaluation**: Execute the evaluation and report results.
+[codex] 5. **Handle Errors**: If evaluation crashes, retry up to 3 times with fixes.
+[codex] 
+[codex] 
+[codex] 
+[codex] ## Available Tools
+[codex] 
+[codex] ### Code Editing
+[codex] - **Read**: Read any file in the repository
+[codex] - **Write**: Create or overwrite files
+[codex] - **Edit**: Make targeted edits to existing files
+[codex] - **Bash**: Run shell commands
+[codex] 
+[codex] ### RepoMemory Access (MCP Tools)
+[codex] - **get_repo_memory_section**: Get detailed content for a specific section
+[codex]   - Example: `get_repo_memory_section(section_id="core.architecture")`
+[codex]   - Available sections: core.architecture, core.entrypoints, core.where_to_edit, core.invariants, core.testing, core.gotchas, core.dependencies
+[codex] 
+[codex] - **get_repo_memory_summary**: Get the summary and table of contents
+[codex]   - Example: `get_repo_memory_summary()`
+[codex] 
+[codex] - **list_repo_memory_sections**: List all available section IDs
+[codex]   - Example: `list_repo_memory_sections()`
+[codex] 
+[codex] ### Knowledge Search (MCP Tools)
+[codex] - **wiki_code_search**: Search curated ML/AI knowledge base for implementation patterns
+[codex]   - Use for: code examples, implementation details, library usage
+[codex]   - Example: "early-stopping implementation", "efficient data-loading code"
+[codex] 
+[codex] - **research_implementation**: Research implementations from the web
+[codex]   - Use for: finding open-source implementations, library documentation
+[codex] 
+[codex] - **research_study**: Deep research on a topic
+[codex]   - Use for: understanding complex implementation details
+[codex] 
+[codex] ## Knowledge bank (when served)
+[codex] If the problem context carries a "Knowledge bank" section and the
+[codex] `bank_index` / `bank_get_card` / `bank_get_card_with_evidence` tools are
+[codex] available: consult the bank at decision points, not continuously —
+[codex] (a) before committing to a reformulation, an architecture family, or any
+[codex] bet worth >30 min of budget, call `bank_index()` and scan the
+[codex] applies-when lines against your plan; (b) when a gate fails in a way
+[codex] that surprises you — the failure mode may be carded; (c) before adopting
+[codex] a card's advice wholesale, `bank_get_card_with_evidence` it and weigh
+[codex] its evidence. Cards are measured practice, not constraints — follow the
+[codex] evidence your own measurements produce. When a card's guidance is
+[codex] load-bearing in what you build, cite it inline as `[card:<name>]` where
+[codex] used — in code comments at the implementing site and in
+[codex] `features_history.md` entries it shaped; cite only real use, never
+[codex] decorate. Following a card is never mandatory; departing from one you
+[codex] read is worth one line of why.
+[codex] 
+[codex] ## Before You Build: Characterize the Measurement (recon — minutes, not hours)
+[codex] 
+[codex] Optimizing an unexamined metric wastes the whole iteration. Before
+[codex] implementing anything:
+[codex] 
+[codex] 1. **Read the evaluation mechanics as ground truth** — the scoring code
+[codex]    (provided by the task, or the one you will build), how scores aggregate,
+[codex]    any judge/rubric wording, and every knob the harness does or does NOT
+[codex]    control at inference time. What the metric actually rewards is a fact to
+[codex]    read, not to assume.
+[codex] 2. **Profile the evaluation inputs** at the level the task's rules permit:
+[codex]    distributional statistics only — counts, formats, length distributions,
+[codex]    categories, domains, difficulty markers. Never copy, memorize, or derive
+[codex]    training content from anything the rules forbid; when unsure, restrict
+[codex]    yourself to metadata-level statistics.
+[codex] 3. **Write down the coverage axes**: the observable dimensions along which
+[codex]    the eval inputs vary and which your data/method must therefore cover.
+[codex]    Check the <solution>'s Coverage claims (especially ones marked ASSUMED)
+[codex]    against the measured profile — where the solution assumed a distribution
+[codex]    the profile contradicts, adjust within the solution's intent and record
+[codex]    the discrepancy.
+[codex] 4. **Persist the profile**: write/update `kapso_evaluation/eval_profile.md`
+[codex]    and commit it. Future iterations inherit this file — verify and extend
+[codex]    it, do not re-measure what is already measured.
+[codex] 5. **Report scores per stratum**: wherever the eval output allows, record
+[codex]    slice aggregates (count and score per coverage-axis stratum) alongside
+[codex]    the headline number — a single number cannot tell the next iteration
+[codex]    WHERE the losses live.
+[codex] 6. **Identify the critical path, then pre-commit your time.** Name the
+[codex]    artifact that BOUNDS the final score — the thing that, at freeze time,
+[codex]    limits the score no matter how good everything else is — and MEASURE its
+[codex]    achievable growth rate on this hardware. Schedule to maximize that rate
+[codex]    FIRST; build its consumers second. Then write a 3-line TIME ALLOCATION at
+[codex]    the top of PLAN.md: (a) critical-path artifact + target rate, (b) planned
+[codex]    confirmation points, (c) freeze time. The campaign's feedback grades
+[codex]    adherence to this plan — revising it deliberately (with a stated reason)
+[codex]    is fine; drifting from it is not.
+[codex] 
+[codex] ## Implementation Requirements
+[codex] 
+[codex] - Write clean and functional code.
+[codex] - Implement the <solution> exactly as provided.
+[codex]   - Read Sections and Steps of <solution> carefully and implement them exactly.
+[codex] - Output code and format must be as mentioned in the problem statement.
+[codex] - Do not write any comments in the code. Just the start of each section.
+[codex] - Choose the names of the variables and functions according to the solution.
+[codex] - The code must be highly structured and well organized.
+[codex] - Use the knowledge search tools to find implementation patterns if needed.
+[codex] - CRITICAL: Never print or allow interactive or multiline outputs like tqdm, progress bar, etc.
+[codex] 
+[codex] <previous_errors>
+[codex] (No previous errors)
+[codex] </previous_errors>
+[codex] 
+[codex] ## Evaluation Requirements
+[codex] 
+[codex] The evaluation is maintained by the system and is read-and-execute only.
+[codex] 
+[codex] 1. **Run the registered evaluation**: `python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337`
+[codex]    and capture its full output, including the KAPSO_EVAL_MANIFEST line.
+[codex] 2. **Run it in the FOREGROUND and stay alive until it finishes.** Your
+[codex]    session exists only while you are actively working: the moment you stop
+[codex]    responding, the session ends and every process it started is killed. No
+[codex]    background job survives you, and no completion notification can ever
+[codex]    reach you — there is no later. Never launch the registered evaluation
+[codex]    with `&`, `nohup`, or a background task. Full-fidelity builds taking
+[codex]    many minutes is normal and expected: run the command blocking with a
+[codex]    generous tool timeout, and if a single call hits its cap, keep
+[codex]    re-issuing blocking foreground waits until KAPSO_EVAL_MANIFEST is in
+[codex]    your transcript. Only then write your final response. An evaluation you
+[codex]    background and abandon scores nothing — the entire iteration is wasted.
+[codex] 3. **Never alter evaluation behavior — at rest or at runtime.** Editing
+[codex]    anything under `kapso_evaluation/`, rewriting protected data inputs,
+[codex]    monkey-patching or hooking evaluation modules from your own code
+[codex]    (e.g. via imports, `sys.modules`, or wrappers), or otherwise
+[codex]    circumventing any evaluation check all count as tampering: the score
+[codex]    is voided and the experiment loses. There is no sanctioned bypass.
+[codex] 4. **If you believe the evaluation itself is defective — broken OR
+[codex]    mismeasuring — do not fix it, patch it, or route around it.** Broken
+[codex]    means crashes or wrong wiring. MISMEASURING means the score ranks
+[codex]    candidates in an order that will not hold, and you can detect it with
+[codex]    two cheap checks that never touch test data:
+[codex]    (a) Resolution — bootstrap the validation metric on your best candidate
+[codex]    (resample rows with replacement, ~100 draws) to get its standard error,
+[codex]    and measure how much your candidates' PREDICTIONS actually differ (mean
+[codex]    pairwise rank correlation over validation rows). If materially different
+[codex]    candidates score within about two standard errors of each other,
+[codex]    validation is not separating them and its argmax is close to a coin
+[codex]    flip.
+[codex]    (b) Representativeness — when validation is a single time slice, compare
+[codex]    its event volume and label rate against surrounding history and the
+[codex]    prediction period. An irregular slice (calendar shock, outage) can rank
+[codex]    candidates in the WRONG ORDER, not merely with less precision, and no
+[codex]    amount of tuning fixes an inverted ordering.
+[codex]    In either case file a request by including this tag in your final
+[codex]    response:
+[codex]    <evaluation_change_request>the defect, with measured evidence — numbers,
+[codex]    not suspicion — and a concrete remedy, e.g. additional validation
+[codex]    windows generated by the task's own label-generating code over
+[codex]    training-era timestamps, each window closing before the prediction
+[codex]    period, aggregated so no single slice decides the
+[codex]    ranking</evaluation_change_request>
+[codex]    Then still report your results from the run you attempted. Requests are
+[codex]    triaged adversarially against your evidence and the budget is small (a
+[codex]    few per campaign): file once, with your best case.
+[codex]    TIMING — file at the FIRST confirmation, never the last iteration. Run
+[codex]    both diagnostics during your first iteration, before optimizing against
+[codex]    the score, and the moment they confirm a defect put the request in that
+[codex]    same final response. Do not wait to build a stronger case: a later
+[codex]    transition voids every measurement made under the old evaluation
+[codex]    (scores never cross evaluator versions), so each candidate measured
+[codex]    before you file adds to what the change throws away — filed in the
+[codex]    first iteration it voids almost nothing; filed at the end it voids the
+[codex]    campaign's rankings with no budget left to re-measure them.
+[codex]    REMEDY SHAPE — propose the least-breaking remedy that fixes the defect,
+[codex]    and say which kind yours is: (1) rescore stored outputs — a better
+[codex]    metric, weighting, or aggregation over predictions every run already
+[codex]    archives, so all prior candidates re-rank for free; (2) same-contract
+[codex]    re-measurement — new windows, slices, or seeds prepared by the
+[codex]    evaluator in the standard input layout and fed through the UNCHANGED
+[codex]    candidate entrypoint, so prior candidates stay measurable at compute
+[codex]    cost; (3) contract-breaking — candidates must produce outputs they
+[codex]    never produced, orphaning all prior work; propose it only when nothing
+[codex]    less fixes the defect.
+[codex]    A confirmed defect is fixed, your work is re-measured first under the
+[codex]    corrected evaluation, and every score is re-ranked under it — prior
+[codex]    champions losing rank afterwards is the system working, not a
+[codex]    regression. If a transition already happened, earlier designs whose
+[codex]    scores now show as unmeasured were measured under the superseded
+[codex]    evaluation: porting the strongest of them to the current evaluation
+[codex]    contract and archiving the port is often the highest-value experiment
+[codex]    available.
+[codex] 5. **Retry on transient crashes** of your own code (max 3 attempts).
+[codex] 
+[codex] ## Directories
+[codex] 
+[codex] - **Code**: Implement in the current directory (git root).
+[codex] - **Output Data**: Use `./output_data_generic_exp_0` for checkpoints, data files, outputs.
+[codex] - **Evaluation**: Use `kapso_evaluation/` for all evaluation code.
+[codex] - **Datasets**: If provided, datasets are in `kapso_datasets/`.
+[codex] - Use relative paths, not absolute paths.
+[codex] 
+[codex] ## Shared Campaign Cache
+[codex] 
+[codex] `$KAPSO_SHARED_CACHE_DIR` is a persistent cache that survives across
+[codex] experiments and campaign resumes. Store expensive reusable artifacts there —
+[codex] precomputed tables, embeddings, feature matrices, per-model predictions —
+[codex] keyed by a content/version string. **Check-before-compute**: extend what
+[codex] exists rather than rebuilding it. Large binaries belong there, never in the
+[codex] git workspace.
+[codex] 
+[codex] When you store a reusable artifact, register it: append an entry to
+[codex] `$KAPSO_SHARED_CACHE_DIR/artifacts.json` (a JSON list) like
+[codex] `{"name": "...", "path": "<relative to cache>", "description": "...",
+[codex] "content_key": "...", "rebuild_hint": "..."}` so later experiments and
+[codex] campaigns can find it.
+[codex] 
+[codex] ### Available artifacts (optional)
+[codex] 
+[codex] No shared-cache artifacts registered yet.
+[codex] 
+[codex] ## Repository Memory
+[codex] 
+[codex] # Repo Memory (book)
+[codex] Schema: v2
+[codex] GeneratedAt: 2026-09-20T09:47:24.554825+00:00
+[codex] 
+[codex] ## Summary
+[codex] (missing)
+[codex] 
+[codex] ## Table of Contents (section IDs)
+[codex] - [core.architecture] Architecture: System design and module structure
+[codex] - [core.entrypoints] Entrypoints: How to run the application
+[codex] - [core.where_to_edit] Where to edit: Key files for modifications
+[codex] - [core.invariants] Invariants: Contracts, constraints, and assumptions
+[codex] - [core.testing] Testing: How to run tests and validate changes
+[codex] - [core.gotchas] Gotchas: Common pitfalls and sharp edges
+[codex] - [core.dependencies] Dependencies: Key dependencies and environment notes
+[codex] 
+[codex] ## How to read details
+[codex] - Open `.kapso/repo_memory.json`
+[codex] - Find `book.sections[section_id]` from the TOC above
+[codex] 
+[codex] 
+[codex] For detailed section content (architecture, gotchas, invariants, etc.),
+[codex] use the MCP tool: `get_repo_memory_section(section_id="core.architecture")`
+[codex] Available sections: core.architecture, core.entrypoints, core.where_to_edit, core.invariants, core.testing, core.gotchas, core.dependencies
+[codex] Fallback: open `.kapso/repo_memory.json` and read `book.sections[section_id]`.
+[codex] 
+[codex] OBSERVABILITY REQUIREMENT (do not skip):
+[codex] - If you consulted repo memory sections, record which ones in `changes.log`.
+[codex] - Add a line exactly like:
+[codex]   RepoMemory sections consulted: core.architecture, core.where_to_edit
+[codex] - If you did not consult repo memory, write:
+[codex]   RepoMemory sections consulted: none
+[codex] 
+[codex] ## Session Runtime Discipline
+[codex] 
+[codex] Your session is a bounded process: a hard deadline is enforced by a
+[codex] process-group kill that takes down EVERY process you started (including
+[codex] training/evaluation jobs). Only files on disk survive. These rules exist
+[codex] because each has destroyed a real session before:
+[codex] 
+[codex] - Never run a command expected to exceed ~10 minutes in the foreground.
+[codex]   Launch it detached (plain `nohup ... > <log> 2>&1 &` — never `setsid`),
+[codex]   record its PID to a file, then poll in BOUNDED waits (each ≤5 minutes),
+[codex]   doing useful work between polls. Note: a blocking foreground call is
+[codex]   auto-backgrounded by the CLI after ~2 minutes and you get its output-file
+[codex]   path — poll that file; but prefer explicit nohup so the pattern is under
+[codex]   your control.
+[codex] - WATCHER DISCIPLINE: at most ONE watcher/timer per awaited artifact.
+[codex]   Before spawning a replacement, kill the superseded watcher by its
+[codex]   recorded PID. Prefer a single until-condition wait over chains of
+[codex]   sleep-watchers.
+[codex] - TIMERS: the ScheduleWakeup tool is disabled here — its wakeups never
+[codex]   fire in this session mode. For a timed check-back, launch a background
+[codex]   task as your alarm clock: `sleep <seconds> && echo ALARM` — its
+[codex]   completion notification wakes you.
+[codex] - DEAD-MAN'S ALARM: never end a turn whose only pending wake sources are
+[codex]   condition-watchers (a watcher with a buggy condition can hang forever,
+[codex]   and silence looks identical to "still waiting"). Keep one bounded
+[codex]   background alarm task (e.g. `sleep 600 && echo fallback-tick`) alive
+[codex]   whenever you are purely waiting, so no wedged watcher can strand you for
+[codex]   more than ~10 minutes.
+[codex] - A completion notification is EVIDENCE, not noise: before dismissing one
+[codex]   as stale, read the file or task output it names. Your belief that you
+[codex]   killed a process does not outrank a result file on disk.
+[codex] - KILL DISCIPLINE: terminate processes by specific PID only. NEVER use
+[codex]   pattern kills (`pkill -f python`, `pkill -f <server>`) or group kills
+[codex]   (`kill 0`, `kill -- -PID`): this machine also runs YOUR OWN session and
+[codex]   its orchestrator, and a pattern/group kill will terminate you mid-work.
+[codex] - NO ORPHANED VALUE: every background job you start must end in one of two
+[codex]   recorded states — CONSUMED (its output read and used/logged) or
+[codex]   ABANDONED (a written note saying why). Before your session ends, sweep
+[codex]   for finished or still-running background work whose results you have
+[codex]   not consumed (a grown artifact, an unread eval) and consume or promote
+[codex]   it; work products with nobody left alive to use them are lost value.
+[codex] - Persist partial progress incrementally (append/save every few minutes
+[codex]   of work) so a kill never loses more than one interval.
+[codex] 
+[codex] ## Budget
+[codex] 
+[codex] Iteration 1 — no budget information available.
+[codex] Advisory context: size your work to fit — the system enforces deadlines
+[codex] mechanically.
+[codex] 
+[codex] ## Problem
+[codex] 
+[codex] <problem>
+[codex] circle-packing: pack 26 non-overlapping circles in the unit square and maximize the sum of their radii (sum_radii).  The evaluation is maintained by the system and is read-and-execute only.
+[codex] </problem>
+[codex] 
+[codex] ## Solution to Implement
+[codex] 
+[codex] <solution>
+[codex] Replace the contents of solution.py with EXACTLY the following code, byte for byte, then run the registered evaluation command `python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337` in the foreground, keep its full output, and report it in your <evaluation_output> tag together with the score from its KAPSO_EVAL_MANIFEST line. Do not modify anything under kapso_evaluation/ and do not create extra files.
+[codex] 
+[codex] ```python
+[codex] """Near-tie variant of c01_good_hex: one radius shrunk by 1e-4.
+[codex] 
+[codex] Shrinking a radius can neither break the square bounds nor create an
+[codex] overlap, so the configuration stays valid and only the objective moves."""
+[codex] 
+[codex] from __future__ import annotations
+[codex] 
+[codex] from typing import Iterable, List, Tuple
+[codex] 
+[codex] # 26 equal circles of radius 0.0943046354170505, centres frozen by
+[codex] # tools/make_good_packing.py (see tools/good_packing_26.json).
+[codex] TABLE_26: List[Tuple[float, float, float]] = [
+[codex]     (0.09430473541705074, 0.36625249268324267, 0.0942046354170505),
+[codex]     (0.09430473541705074, 0.09430473541705074, 0.0943046354170505),
+[codex]     (0.5943049859758841, 0.23747737851250464, 0.0943046354170505),
+[codex]     (0.2629791171396117, 0.2818576738918528, 0.0943046354170505),
+[codex]     (0.9056952645829492, 0.9056952645829492, 0.0943046354170505),
+[codex]     (0.7170857937488478, 0.09430473541705074, 0.0943046354170505),
+[codex]     (0.09430473541705074, 0.5784001868369796, 0.0943046354170505),
+[codex]     (0.9056952645829492, 0.282914206251152, 0.0943046354170505),
+[codex]     (0.5749129173611398, 0.42508729339751467, 0.0943046354170505),
+[codex]     (0.9056952645829492, 0.5284763229147464, 0.0943046354170505),
+[codex]     (0.762522836360042, 0.405695264582949, 0.0943046354170505),
+[codex]     (0.28291470736881874, 0.09430473541705074, 0.0943046354170505),
+[codex]     (0.9056952645829492, 0.09430473541705074, 0.0943046354170505),
+[codex]     (0.6185745717251597, 0.7448566136817452, 0.0943046354170505),
+[codex]     (0.7277775348526201, 0.5910767537113892, 0.0943046354170505),
+[codex]     (0.30709344623441576, 0.5957318478116742, 0.0943046354170505),
+[codex]     (0.28291420625115193, 0.9056952645829492, 0.0943046354170505),
+[codex]     (0.9056952645829492, 0.7170857937488477, 0.0943046354170505),
+[codex]     (0.4014887779763118, 0.7590201016257718, 0.0943046354170505),
+[codex]     (0.520063349701472, 0.9056952645829492, 0.0943046354170505),
+[codex]     (0.09430473541705074, 0.9056952645829492, 0.0943046354170505),
+[codex]     (0.3863041786366744, 0.4245617792815206, 0.0943046354170505),
+[codex]     (0.4999999999999992, 0.5981814507245677, 0.0943046354170505),
+[codex]     (0.7170857937488477, 0.9056952645829492, 0.0943046354170505),
+[codex]     (0.18807581576240387, 0.7420477257099645, 0.0943046354170505),
+[codex]     (0.4715241782029202, 0.09430473541705074, 0.0943046354170505),
+[codex] ]
+[codex] 
+[codex] 
+[codex] def _fallback(n: int) -> List[Tuple[float, float, float]]:
+[codex]     """Upstream's baseline construction, valid for any n (solution.py@b91c090)."""
+[codex]     if n <= 0:
+[codex]         raise ValueError("n must be a positive integer.")
+[codex]     if n == 1:
+[codex]         return [(0.5, 0.5, 0.5)]
+[codex]     r = 1.0 / (4.0 * n)
+[codex]     step = 1.0 - 2.0 * r
+[codex]     return [(r + (i / (n - 1)) * step, r + (i / (n - 1)) * step, r) for i in range(n)]
+[codex] 
+[codex] 
+[codex] def pack_circles(n: int = 26) -> Iterable[Tuple[float, float, float]]:
+[codex]     """Return (x, y, r) triples for n circles in the unit square."""
+[codex]     if n != 26:
+[codex]         return _fallback(n)
+[codex]     return list(TABLE_26)
+[codex] 
+[codex] ```
+[codex] 
+[codex] </solution>
+[codex] 
+[codex] ## CRITICAL: Final Output Format
+[codex] 
+[codex] When you have completed the implementation and evaluation, you MUST return your results using these XML tags as the LAST thing in your response:
+[codex] 
+[codex] <code_changes_summary>
+[codex] Brief description of what you implemented/changed (2-5 sentences)
+[codex] </code_changes_summary>
+[codex] 
+[codex] <evaluation_script_path>
+[codex] kapso_evaluation/evaluate.py
+[codex] </evaluation_script_path>
+[codex] 
+[codex] <evaluation_output>
+[codex] Full stdout/stderr output from running the evaluation script
+[codex] </evaluation_output>
+[codex] 
+[codex] <score>
+[codex] 0.95
+[codex] </score>
+[codex] 
+[codex] <technical_difficulties>
+[codex] The difficulties you actually hit while building: each failed attempt,
+[codex] crash, error, or wrong assumption — with its root cause and what fixed it
+[codex] (or "unresolved"). Write "none" only if the build was genuinely uneventful.
+[codex] </technical_difficulties>
+[codex] 
+[codex] **Requirements:**
+[codex] - `<code_changes_summary>`: 2-5 sentences describing what you implemented
+[codex] - `<evaluation_script_path>`: Relative path to the evaluation script you created
+[codex] - `<evaluation_output>`: Complete stdout/stderr from running the evaluation
+[codex] - `<score>`: Numeric score from evaluation (use 0 if no score available, or "null" if evaluation failed)
+[codex] - `<technical_difficulties>`: every difficulty worth warning the next
+[codex]   implementor about — failed attempts, crashes, OOMs, silent wrong results,
+[codex]   misleading errors. For each: what happened (with the concrete error
+[codex]   signature or number), the root cause, and the fix that worked. Do not
+[codex]   sanitize or omit recovered-from problems — a difficulty you solved is the
+[codex]   most valuable kind. "none" only if genuinely none.
+[codex] 
+[codex] **These tags are MANDATORY. The system extracts results from these tags.**
+[codex] 
+[codex] ## Final Checklist
+[codex] 
+[codex] Before completing this iteration:
+[codex] 1. Solution implemented as specified
+[codex] 2. Evaluation code created in `kapso_evaluation/`
+[codex] 3. Evaluation executed and results captured
+[codex] 4. **XML result tags returned as the LAST thing in your response**
+[codex] 5. `changes.log` updated with summary and repo memory sections consulted
+[codex] 6. `technical_difficulties` recorded — including problems you already fixed
+[codex] 
+[codex] CRITICAL: You are an AI code editor. Your ONLY job is to edit code files and run evaluation. Do NOT write any conversational text, explanations, or descriptions outside of the final XML tags.
+[codex] 
+[codex] Do not ask any questions. Implement everything as specified and run the evaluation.
+[codex] 
+[codex] ERROR: Reconnecting... 1/5
+[codex] codex
+[codex] I’m first checking the repository instructions, existing evaluation wiring, and the required communication/planning guidance. Then I’ll profile the evaluator, apply the exact `solution.py` replacement, create only the required evaluation artifact, run the registered command in the foreground, and record the measured result.
+[codex] exec
+[codex] /bin/bash -lc "sed -n '1,260p' /home/ebt/.codex/skills/planning-with-files/SKILL.md" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex] exec
+[codex] /bin/bash -lc "sed -n '1,240p' /home/ebt/.codex/skills/expression-skill/SKILL.md" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] ---
+[codex] name: planning-with-files
+[codex] description: Use this by default for non-trivial multi-step work that needs persistent planning, progress tracking, or durable notes on disk. Trigger when a task will likely span multiple tool calls, research steps, verification loops, or enough context that the plan should not live only in transient chat memory.
+[codex] version: 0.1.0
+[codex] ---
+[codex] 
+[codex] # Planning with Files
+[codex] 
+[codex] Work like Manus: use persistent markdown files as your working memory on disk.
+[codex] 
+[codex] This is not just an optional planning style. It should be the default persistence layer for complex Codex work.
+[codex] 
+[codex] Use it proactively when:
+[codex] 
+[codex] - the task will likely take more than a few tool calls
+[codex] - progress needs to be tracked across phases
+[codex] - findings or evidence must be preserved while working
+[codex] - the task may branch, pause, or resume later
+[codex] - relying on chat context alone would be fragile
+[codex] 
+[codex] ## Quick Start
+[codex] 
+[codex] Before ANY complex task:
+[codex] 
+[codex] 1. **Create `task_plan.md`** in the working directory
+[codex] 2. **Define phases** with checkboxes
+[codex] 3. **Update after each phase** - mark [x] and change status
+[codex] 4. **Read before deciding** - refresh goals in attention window
+[codex] 
+[codex] ## The 3-File Pattern
+[codex] 
+[codex] For every non-trivial task, create THREE files:
+[codex] 
+[codex] | File | Purpose | When to Update |
+[codex] |------|---------|----------------|
+[codex] | `task_plan.md` | Track phases and progress | After each phase |
+[codex] | `notes.md` | Store findings and research | During research |
+[codex] | `[deliverable].md` | Final output | At completion |
+[codex] 
+[codex] ## Core Workflow
+[codex] 
+[codex] ```
+[codex] Loop 1: Create task_plan.md with goal and phases
+[codex] Loop 2: Research → save to notes.md → update task_plan.md
+[codex] Loop 3: Read notes.md → create deliverable → update task_plan.md
+[codex] Loop 4: Deliver final output
+[codex] ```
+[codex] 
+[codex] ### The Loop in Detail
+[codex] 
+[codex] **Before each major action:**
+[codex] ```bash
+[codex] Read task_plan.md  # Refresh goals in attention window
+[codex] ```
+[codex] 
+[codex] **After each phase:**
+[codex] ```bash
+[codex] Edit task_plan.md  # Mark [x], update status
+[codex] ```
+[codex] 
+[codex] **When storing information:**
+[codex] ```bash
+[codex] Write notes.md     # Don't stuff context, store in file
+[codex] ```
+[codex] 
+[codex] ## task_plan.md Template
+[codex] 
+[codex] Create this file FIRST for any complex task:
+[codex] 
+[codex] ```markdown
+[codex] # Task Plan: [Brief Description]
+[codex] 
+[codex] ## Goal
+[codex] [One sentence describing the end state]
+[codex] 
+[codex] ## Phases
+[codex] - [ ] Phase 1: Plan and setup
+[codex] - [ ] Phase 2: Research/gather information
+[codex] - [ ] Phase 3: Execute/build
+[codex] - [ ] Phase 4: Review and deliver
+[codex] 
+[codex] ## Key Questions
+[codex] 1. [Question to answer]
+[codex] 2. [Question to answer]
+[codex] 
+[codex] ## Decisions Made
+[codex] - [Decision]: [Rationale]
+[codex] 
+[codex] ## Errors Encountered
+[codex] - [Error]: [Resolution]
+[codex] 
+[codex] ## Status
+[codex] **Currently in Phase X** - [What I'm doing now]
+[codex] ```
+[codex] 
+[codex] ## notes.md Template
+[codex] 
+[codex] For research and findings:
+[codex] 
+[codex] ```markdown
+[codex] # Notes: [Topic]
+[codex] 
+[codex] ## Sources
+[codex] 
+[codex] ### Source 1: [Name]
+[codex] - URL: [link]
+[codex] - Key points:
+[codex]   - [Finding]
+[codex]   - [Finding]
+[codex] 
+[codex] ## Synthesized Findings
+[codex] 
+[codex] ### [Category]
+[codex] - [Finding]
+[codex] - [Finding]
+[codex] ```
+[codex] 
+[codex] ## Critical Rules
+[codex] 
+[codex] ### 1. ALWAYS Create Plan First
+[codex] Never start a complex task without `task_plan.md`. This is non-negotiable.
+[codex] 
+[codex] ### 2. Read Before Decide
+[codex] Before any major decision, read the plan file. This keeps goals in your attention window.
+[codex] 
+[codex] ### 3. Update After Act
+[codex] After completing any phase, immediately update the plan file:
+[codex] - Mark completed phases with [x]
+[codex] - Update the Status section
+[codex] - Log any errors encountered
+[codex] 
+[codex] ### 4. Store, Don't Stuff
+[codex] Large outputs go to files, not context. Keep only paths in working memory.
+[codex] 
+[codex] ### 5. Log All Errors
+[codex] Every error goes in the "Errors Encountered" section. This builds knowledge for future tasks.
+[codex] 
+[codex] ## When to Use This Pattern
+[codex] 
+[codex] **Use 3-file pattern for:**
+[codex] - Multi-step tasks (3+ steps)
+[codex] - Research tasks
+[codex] - Building/creating something
+[codex] - Tasks spanning multiple tool calls
+[codex] - Anything requiring organization
+[codex] 
+[codex] **Skip for:**
+[codex] - Simple questions
+[codex] - Single-file edits
+[codex] - Quick lookups
+[codex] 
+[codex] ## Anti-Patterns to Avoid
+[codex] 
+[codex] | Don't | Do Instead |
+[codex] |-------|------------|
+[codex] | Use TodoWrite for persistence | Create `task_plan.md` file |
+[codex] | State goals once and forget | Re-read plan before each decision |
+[codex] | Hide errors and retry | Log errors to plan file |
+[codex] | Stuff everything in context | Store large content in files |
+[codex] | Start executing immediately | Create plan file FIRST |
+[codex] 
+[codex] ## Advanced Patterns
+[codex] 
+[codex] See [reference.md](reference.md) for:
+[codex] - Attention manipulation techniques
+[codex] - Error recovery patterns
+[codex] - Context optimization from Manus
+[codex] 
+[codex] See [examples.md](examples.md) for:
+[codex] - Real task examples
+[codex] - Complex workflow patterns
+[codex] 
+[codex]  succeeded in 0ms:
+[codex] ---
+[codex] name: expression-skill
+[codex] description: This skill should be used when the user asks for efficient communication, task reports, file-operation summaries, research discussion, study-note synthesis, planning, writing feedback, or responses that need conclusion-first structure, concrete evidence, risk disclosure, and useful next steps.
+[codex] ---
+[codex] 
+[codex] # Expression Skill
+[codex] 
+[codex] Use this skill to communicate with high signal, low noise, and visible judgment. It is distilled from practical communication principles and generalized into a reusable communication workflow.
+[codex] 
+[codex] ## Goal
+[codex] 
+[codex] Put the user's current problem at the center. Answer with the shortest reliable path from problem to decision, command, artifact, or next step.
+[codex] 
+[codex] Default priorities:
+[codex] 
+[codex] 1. conclusion
+[codex] 2. evidence or reason
+[codex] 3. risk, uncertainty, or boundary
+[codex] 4. concrete action
+[codex] 5. reusable next step
+[codex] 
+[codex] Do not optimize for sounding complete. Optimize for being useful, checkable, and actionable.
+[codex] 
+[codex] ## Default Workflow
+[codex] 
+[codex] Before answering a non-trivial request:
+[codex] 
+[codex] 1. Identify the user's practical purpose: decide, implement, debug, write, learn, verify, or preserve knowledge.
+[codex] 2. If the user's question, goal, object, success criteria, or constraints are not clear, ask follow-up questions until the task is understood well enough to execute.
+[codex] 3. Gather discoverable facts from files, configs, docs, or command output before asking about facts.
+[codex] 4. Form one core sentence that answers the real problem.
+[codex] 5. Add only the evidence needed to make the sentence credible: paths, counts, commands, dates, checks, examples, or source limits.
+[codex] 6. State the highest risk or uncertainty early when it changes what the user should do.
+[codex] 7. End with the smallest useful next action.
+[codex] 
+[codex] For substantial responses, prefer:
+[codex] 
+[codex] ```text
+[codex] 结论：
+[codex] 我做了：
+[codex] 我检查了：
+[codex] 风险/限制：
+[codex] 下一步建议：
+[codex] ```
+[codex] 
+[codex] For quick answers, use:
+[codex] 
+[codex] ```text
+[codex] 结论：...
+[codex] 原因：...
+[codex] 建议：...
+[codex] ```
+[codex] 
+[codex] For decisions, use:
+[codex] 
+[codex] ```text
+[codex] 我建议：
+[codex] 理由：
+[codex] 代价：
+[codex] 不建议：
+[codex] ```
+[codex] 
+[codex] ## Clarification And Question Policy
+[codex] 
+[codex] Ask questions only when the answer changes the outcome.
+[codex] 
+[codex] Before executing a non-trivial task, make sure these are clear:
+[codex] 
+[codex] 1. goal: what result the user wants
+[codex] 2. target object: which file, repo, note, text, system, or decision is involved
+[codex] 3. success criteria: what "done" means
+[codex] 4. constraints: what must not change, what is risky, what style or audience matters
+[codex] 5. current state: what is already true or discoverable from the environment
+[codex] 
+[codex] Rules:
+[codex] 
+[codex] - Do not ask for facts that can be discovered from files, configs, docs, or command output.
+[codex] - Ask in rounds when needed. Prefer 1-3 focused questions per round.
+[codex] - Ask until the task is understood well enough to execute safely.
+[codex] - If a safe assumption is enough to move, state it briefly and proceed.
+[codex] - If the task is still unclear after exploration, stop and say what is missing.
+[codex] 
+[codex] Useful tradeoff questions often choose between:
+[codex] 
+[codex] - speed vs. completeness
+[codex] - draft vs. final
+[codex] - local-only vs. public-facing
+[codex] - preserve source style vs. rewrite aggressively
+[codex] - exploratory discussion vs. implementation-ready output
+[codex] 
+[codex] ## Communication Defaults
+[codex] 
+[codex] - Infer the response language from the user's explicit request or surrounding context. Keep standard technical terms in English when that is clearer.
+[codex] - Use medium density: give enough reason to support the conclusion, but do not teach the whole background unless the user is learning the topic.
+[codex] - Point out weak assumptions, contradictions, and likely failure modes directly and respectfully.
+[codex] - Use direct answers for simple tasks. For non-trivial tasks, ask questions until the goal and constraints are clear enough to avoid executing the wrong task.
+[codex] - If a safe assumption is enough to move, state it and proceed.
+[codex] - If an operation is destructive or hard to reverse, name exact paths before acting and ask first.
+[codex] 
+[codex] ## Core Rules
+[codex] 
+[codex] ### 1. Start With The Core Sentence
+[codex] 
+[codex] Give the main judgment first. Do not begin with long background.
+[codex] 
+[codex] Bad:
+[codex] 
+[codex] ```text
+[codex] 我先看了一下这些文件，然后发现里面有一些内容可以合并……
+[codex] ```
+[codex] 
+[codex] Better:
+[codex] 
+[codex] ```text
+[codex] 结论：这批文件可以合并成一个主文件，原文件不需要改动。
+[codex] ```
+[codex] 
+[codex] ### 2. Serve The User's Purpose
+[codex] 
+[codex] Before writing, ask what problem the answer solves:
+[codex] 
+[codex] - know current state
+[codex] - decide whether to continue
+[codex] - find the output path
+[codex] - confirm what changed and what did not
+[codex] - reduce risk
+[codex] - turn material into durable knowledge
+[codex] - get a concrete next action
+[codex] 
+[codex] Do not merely explain the topic. Connect the answer to the user's current work.
+[codex] 
+[codex] ### 3. Prefer Executable Value
+[codex] 
+[codex] Avoid vague phrases such as:
+[codex] 
+[codex] - 系统推进
+[codex] - 持续优化
+[codex] - 后续完善
+[codex] - 建立闭环
+[codex] - 进一步提升
+[codex] 
+[codex] Replace them with a path, command, checklist, decision, verification step, or concrete next action.
+[codex] 
+[codex] ### 4. Sort And Subtract
+[codex] 
+[codex] Rank information when priority matters:
+[codex] 
+[codex] ```text
+[codex] P0：必须现在处理
+[codex] P1：建议本轮处理
+[codex] P2：可以之后处理
+[codex] ```
+[codex] 
+[codex] Use subtraction. Say what is not worth doing now when it prevents scope creep.
+[codex] 
+[codex] The user's attention is expensive. Do not make the user extract the point.
+[codex] 
+[codex] Use subtraction actively:
+[codex] 
+[codex] - delete background that does not affect the decision
+[codex] - merge repeated reasons
+[codex] - demote low-priority branches
+[codex] - say what is not worth doing now
+[codex] - stop once the next useful action is clear
+[codex] 
+[codex] ### 5. Make Abstract Claims Concrete
+[codex] 
+[codex] Prefer numbers, paths, commands, timestamps, counts, tests, and examples.
+[codex] 
+[codex] Bad:
+[codex] 
+[codex] ```text
+[codex] 结构比较清晰。
+[codex] ```
+[codex] 
+[codex] Better:
+[codex] 
+[codex] ```text
+[codex] 这个输出文件有 36 个二级章节、5358 行，开头有索引区，后面按输入顺序整理。
+[codex] ```
+[codex] 
+[codex] Replace big words with observable detail.
+[codex] 
+[codex] Bad:
+[codex] 
+[codex] ```text
+[codex] 这个方案需要继续优化。
+[codex] ```
+[codex] 
+[codex] Better:
+[codex] 
+[codex] ```text
+[codex] 这个方案还缺两个验证点：运行 `pytest -q`，并回读生成的 CSV 行数。
+[codex] ```
+[codex] 
+[codex] When a sentence feels vague, ask:
+[codex] 
+[codex] - 具体指什么？
+[codex] - 不用这个词怎么说？
+[codex] - 你是怎么看出来的？
+[codex] - 这句话能指导下一步行动吗？
+[codex] 
+[codex] ### 6. Ask Fewer, Better Questions
+[codex] 
+[codex] Ask when the answer changes the spec, risk, audience, implementation path, or acceptance criteria.
+[codex] 
+[codex] Do not ask what can be discovered by reading files, configs, docs, or command output.
+[codex] 
+[codex] For planning or ambiguous tasks, ask 1-3 focused questions at a time. Continue asking in rounds until the user's intent is understood. Recommend a default option when possible.
+[codex] 
+[codex] Do not execute a non-trivial task while the core request is still ambiguous. First restate the current understanding and ask what is missing.
+[codex] 
+[codex] ### 7. Provide Roadmarks For Long Work
+[codex] 
+[codex] For long jobs, report:
+[codex] 
+[codex] - current step and total steps
+[codex] - processed amount
+[codex] - output path so far
+[codex] - next visible checkpoint
+[codex] - visible risk or delay
+[codex] - visible blocker if one appears
+[codex] 
+[codex] ### 8. Produce Reusable Artifacts
+[codex] 
+[codex] When useful, convert answers into:
+[codex] 
+[codex] - SOP
+[codex] - checklist
+[codex] - template
+[codex] - command
+[codex] - structured note
+[codex] - review questions
+[codex] - examples
+[codex] 
+[codex] ## Scenario Rules
+[codex] 
+[codex] ### Coding
+[codex] 
+[codex] Lead with what changed or what should change. Include files, commands, and verification. Do not narrate every exploration step.
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc "sed -n '1,220p' /home/ebt/.codex/skills/daily-coding/SKILL.md" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] ---
+[codex] name: daily-coding
+[codex] description: Use for everyday coding tasks that involve writing or modifying source code.
+[codex] version: 1.0.0
+[codex] tags: [Coding, Daily, Checklist]
+[codex] ---
+[codex] 
+[codex] # Daily Coding Checklist
+[codex] 
+[codex] A minimal coding quality assurance checklist ensuring every code modification follows best practices.
+[codex] 
+[codex] ## When to Use
+[codex] 
+[codex] Use this skill for:
+[codex] - Implementing new features
+[codex] - Adding code or modifying existing code
+[codex] - User requests like "write a...", "implement...", "add...", or "modify..."
+[codex] - Any coding task that involves Edit or Write tools
+[codex] 
+[codex] ## When Not to Use
+[codex] 
+[codex] Do not use this skill for:
+[codex] - Pure reading or understanding tasks with no modification intent
+[codex] - Work already covered by specialized skills such as `bug-detective`, `architecture-design`, or `tdd-guide`
+[codex] - Configuration-only changes
+[codex] - Documentation-only writing
+[codex] 
+[codex] ## Core Checklist
+[codex] 
+[codex] ### Before Starting
+[codex] 
+[codex] - [ ] **Read before modify** - Must read target file with Read tool before making changes
+[codex] - [ ] **Understand context** - Confirm understanding of existing code logic and design intent
+[codex] 
+[codex] ### During Coding
+[codex] 
+[codex] - [ ] **Minimal changes** - Only change what's necessary, no over-engineering, no unrelated features
+[codex] - [ ] **Type safety** - Add type hints for Python, avoid `any` in TypeScript
+[codex] - [ ] **Security check** - Avoid command injection, XSS, SQL injection vulnerabilities
+[codex] 
+[codex] ### After Completion
+[codex] 
+[codex] - [ ] **Verify execution** - Ensure code runs correctly with no syntax errors
+[codex] - [ ] **Clean up** - Remove print/console.log debug statements and temporary files
+[codex] - [ ] **Brief summary** - Inform user what was changed and the scope of impact
+[codex] 
+[codex] ## Quick Reference
+[codex] 
+[codex] ### Common Mistakes to Avoid
+[codex] 
+[codex] ```python
+[codex] # ❌ Don't
+[codex] def process(data=[]):  # Mutable default argument
+[codex]     pass
+[codex] 
+[codex] # ✅ Should
+[codex] def process(data: list | None = None):
+[codex]     data = data or []
+[codex] ```
+[codex] 
+[codex] ```python
+[codex] # ❌ Don't
+[codex] except:  # Bare except
+[codex]     pass
+[codex] 
+[codex] # ✅ Should
+[codex] except ValueError as e:
+[codex]     logger.error(f"Processing failed: {e}")
+[codex]     raise
+[codex] ```
+[codex] 
+[codex] ### Security Check Points
+[codex] 
+[codex] - User input must be validated/escaped
+[codex] - Use pathlib for file paths, avoid path traversal
+[codex] - Never hardcode sensitive info (API keys, passwords)
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc "sed -n '1,260p' /home/ebt/.codex/skills/verification-loop/SKILL.md" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] ---
+[codex] name: verification-loop
+[codex] description: This skill should be used when the user asks to "verify code", "run verification", "check quality", "validate changes", or before creating a PR. Provides comprehensive verification including build, type check, lint, tests, security scan, and diff review.
+[codex] version: 1.0.0
+[codex] ---
+[codex] 
+[codex] # Verification Loop Skill
+[codex] 
+[codex] A comprehensive verification system for Claude Code sessions.
+[codex] 
+[codex] ## When to Use
+[codex] 
+[codex] Invoke this skill:
+[codex] - After completing a feature or significant code change
+[codex] - Before creating a PR
+[codex] - When you want to ensure quality gates pass
+[codex] - After refactoring
+[codex] 
+[codex] ## Verification Phases
+[codex] 
+[codex] Choose the commands adaptively for the current project instead of running every example blindly. Use the stack-appropriate command from `references/STACK-DETECTION.md` when the repo does not match the default examples below.
+[codex] 
+[codex] 
+[codex] ### Phase 1: Build Verification
+[codex] ```bash
+[codex] # Python projects (uv)
+[codex] uv build 2>&1 | tail -20
+[codex] # OR
+[codex] python -m build 2>&1 | tail -20
+[codex] 
+[codex] # Node.js projects
+[codex] npm run build 2>&1 | tail -20
+[codex] # OR
+[codex] pnpm build 2>&1 | tail -20
+[codex] ```
+[codex] 
+[codex] If build fails, STOP and fix before continuing.
+[codex] 
+[codex] ### Phase 2: Type Check
+[codex] ```bash
+[codex] # TypeScript projects
+[codex] npx tsc --noEmit 2>&1 | head -30
+[codex] 
+[codex] # Python projects
+[codex] pyright . 2>&1 | head -30
+[codex] ```
+[codex] 
+[codex] Report all type errors. Fix critical ones before continuing.
+[codex] 
+[codex] ### Phase 3: Lint Check
+[codex] ```bash
+[codex] # JavaScript/TypeScript
+[codex] npm run lint 2>&1 | head -30
+[codex] 
+[codex] # Python
+[codex] ruff check . 2>&1 | head -30
+[codex] ```
+[codex] 
+[codex] ### Phase 4: Test Suite
+[codex] ```bash
+[codex] # Python projects
+[codex] pytest --cov=src --cov-report=term-missing 2>&1 | tail -50
+[codex] 
+[codex] # Node.js projects
+[codex] npm run test -- --coverage 2>&1 | tail -50
+[codex] ```
+[codex] 
+[codex] Report:
+[codex] - Total tests: X
+[codex] - Passed: X
+[codex] - Failed: X
+[codex] - Coverage: X%
+[codex] 
+[codex] ### Phase 5: Security Scan
+[codex] ```bash
+[codex] # Python: Check for secrets
+[codex] grep -rn "sk-" --include="*.py" . 2>/dev/null | head -10
+[codex] grep -rn "api_key" --include="*.py" . 2>/dev/null | head -10
+[codex] pip-audit
+[codex] 
+[codex] # Node.js: Check for secrets
+[codex] grep -rn "sk-" --include="*.ts" --include="*.js" . 2>/dev/null | head -10
+[codex] grep -rn "api_key" --include="*.ts" --include="*.js" . 2>/dev/null | head -10
+[codex] 
+[codex] # Check for debug statements
+[codex] grep -rn "print(" --include="*.py" src/ 2>/dev/null | head -10
+[codex] grep -rn "console.log" --include="*.ts" --include="*.tsx" src/ 2>/dev/null | head -10
+[codex] ```
+[codex] 
+[codex] ### Phase 6: Diff Review
+[codex] ```bash
+[codex] # Show what changed
+[codex] git diff --stat
+[codex] git diff HEAD~1 --name-only
+[codex] ```
+[codex] 
+[codex] Review each changed file for:
+[codex] - Unintended changes
+[codex] - Missing error handling
+[codex] - Potential edge cases
+[codex] 
+[codex] ## Output Format
+[codex] 
+[codex] After running all phases, produce a verification report:
+[codex] 
+[codex] ```
+[codex] VERIFICATION REPORT
+[codex] ==================
+[codex] 
+[codex] Build:     [PASS/FAIL]
+[codex] Types:     [PASS/FAIL] (X errors)
+[codex] Lint:      [PASS/FAIL] (X warnings)
+[codex] Tests:     [PASS/FAIL] (X/Y passed, Z% coverage)
+[codex] Security:  [PASS/FAIL] (X issues)
+[codex] Diff:      [X files changed]
+[codex] 
+[codex] Overall:   [READY/NOT READY] for PR
+[codex] 
+[codex] Issues to Fix:
+[codex] 1. ...
+[codex] 2. ...
+[codex] ```
+[codex] 
+[codex] ## Continuous Mode
+[codex] 
+[codex] For long sessions, run verification every 15 minutes or after major changes:
+[codex] 
+[codex] ```markdown
+[codex] Set a mental checkpoint:
+[codex] - After completing each function
+[codex] - After finishing a component
+[codex] - Before moving to next task
+[codex] 
+[codex] Run: /verify
+[codex] ```
+[codex] 
+[codex] ## Integration with Hooks
+[codex] 
+[codex] This skill complements PostToolUse hooks but provides deeper verification.
+[codex] Hooks catch issues immediately; this skill provides comprehensive review.
+[codex] 
+[codex] 
+[codex] ## Reference Files
+[codex] 
+[codex] Load only what is needed:
+[codex] - `references/STACK-DETECTION.md` - how to choose the right verification command set for the current repo
+[codex] - `references/REPORT-TEMPLATE.md` - report structure for final verification output
+[codex] - `examples/example-verification-report.md` - example final report
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc "pwd; rg --files -g '"'!kapso_evaluation/**'"' -g '"'!kapso_datasets/**'"' | head -200; printf '\\n--- status ---\\n'; git status --short" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex] solution.py
+[codex] 
+[codex] --- status ---
+[codex] 
+[codex] codex
+[codex] The task is small in code size but has mandatory profiling, evaluation, and audit artifacts, so I’m persisting a short plan and evidence notes before editing. I’ll also inspect the evaluator and input metadata without reading protected test content beyond permitted distribution-level statistics.
+[codex] exec
+[codex] /bin/bash -lc "sed -n '1,260p' solution.py" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] from __future__ import annotations
+[codex] 
+[codex] from typing import Iterable, List, Tuple
+[codex] 
+[codex] 
+[codex] def pack_circles(n: int = 26) -> Iterable[Tuple[float, float, float]]:
+[codex]     """
+[codex]     Construct a very simple packing of n disjoint circles in the unit square.
+[codex] 
+[codex]     - For n == 1 this returns a single circle of radius 0.5 centred at (0.5, 0.5).
+[codex]     - For n >= 2 this returns n equal-radius circles placed along the main diagonal
+[codex]       of the square, from the bottom-left corner towards the top-right corner.
+[codex] 
+[codex]     The construction is deliberately simple and only aims to produce a valid
+[codex]     configuration; it is not intended to be close to optimal for the objective that
+[codex]     maximises the sum of all radii.
+[codex]     """
+[codex]     if n <= 0:
+[codex]         raise ValueError("n must be a positive integer.")
+[codex] 
+[codex]     if n == 1:
+[codex]         # One circle touching all four sides of the square.
+[codex]         return [(0.5, 0.5, 0.5)]
+[codex] 
+[codex]     # For n >= 2, choose a small radius that guarantees non-overlap and that all circles
+[codex]     # remain inside the unit square. The factor 4 * n keeps centres well separated along
+[codex]     # the diagonal.
+[codex]     r = 1.0 / (4.0 * n)
+[codex] 
+[codex]     # Place n centres evenly along the main diagonal segment from (r, r) to (1 - r, 1 - r).
+[codex]     positions = [i / (n - 1) for i in range(n)]
+[codex] 
+[codex]     step = 1.0 - 2.0 * r
+[codex]     circles: List[Tuple[float, float, float]] = []
+[codex]     for t in positions:
+[codex]         x = r + t * step
+[codex]         y = r + t * step
+[codex]         circles.append((x, y, r))
+[codex] 
+[codex]     return circles
+[codex] 
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc 'ls -la; find . -maxdepth 3 -type f -print | sort | head -300' in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] total 36
+[codex] drwxr-xr-x 7 ebt ebt 4096 Sep 20 17:47 .
+[codex] drwxr-xr-x 3 ebt ebt 4096 Sep 20 17:47 ..
+[codex] drwxr-xr-x 7 ebt ebt 4096 Sep 20 17:48 .git
+[codex] -rw-r--r-- 1 ebt ebt  186 Sep 20 17:47 .gitignore
+[codex] drwxr-xr-x 2 ebt ebt 4096 Sep 20 17:47 .kapso
+[codex] drwxr-xr-x 2 ebt ebt 4096 Sep 20 17:47 kapso_datasets
+[codex] drwxr-xr-x 2 ebt ebt 4096 Sep 20 17:47 kapso_evaluation
+[codex] drwxr-xr-x 2 ebt ebt 4096 Sep 20 17:47 output_data_generic_exp_0
+[codex] -rw-r--r-- 1 ebt ebt 1441 Sep 20 17:47 solution.py
+[codex] ./.git/HEAD
+[codex] ./.git/config
+[codex] ./.git/description
+[codex] ./.git/hooks/applypatch-msg.sample
+[codex] ./.git/hooks/commit-msg.sample
+[codex] ./.git/hooks/fsmonitor-watchman.sample
+[codex] ./.git/hooks/post-update.sample
+[codex] ./.git/hooks/pre-applypatch.sample
+[codex] ./.git/hooks/pre-commit.sample
+[codex] ./.git/hooks/pre-merge-commit.sample
+[codex] ./.git/hooks/pre-push.sample
+[codex] ./.git/hooks/pre-rebase.sample
+[codex] ./.git/hooks/pre-receive.sample
+[codex] ./.git/hooks/prepare-commit-msg.sample
+[codex] ./.git/hooks/push-to-checkout.sample
+[codex] ./.git/hooks/sendemail-validate.sample
+[codex] ./.git/hooks/update.sample
+[codex] ./.git/index
+[codex] ./.git/info/exclude
+[codex] ./.git/logs/HEAD
+[codex] ./.git/packed-refs
+[codex] ./.gitignore
+[codex] ./.kapso/repo_memory.json
+[codex] ./kapso_datasets/.gitkeep
+[codex] ./kapso_evaluation/a0_locator.json
+[codex] ./kapso_evaluation/kapso_eval.py
+[codex] ./solution.py
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc 'find kapso_evaluation kapso_datasets -maxdepth 3 -type f -print 2>/dev/null | sort | head -300' in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] kapso_datasets/.gitkeep
+[codex] kapso_evaluation/a0_locator.json
+[codex] kapso_evaluation/kapso_eval.py
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc "python - <<'PY'
+[codex] import json
+[codex] from pathlib import Path
+[codex] p=Path('.kapso/repo_memory.json')
+[codex] print(p.exists())
+[codex] if p.exists():
+[codex]  d=json.loads(p.read_text())
+[codex]  for k in ['core.architecture','core.entrypoints','core.where_to_edit','core.invariants','core.testing','core.gotchas','core.dependencies']:
+[codex]   print('\\n##',k)
+[codex]   print(d.get('book',{}).get('sections',{}).get(k,''))
+[codex] PY" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] True
+[codex] 
+[codex] ## core.architecture
+[codex] {'title': 'Architecture', 'one_liner': 'System design and module structure', 'claims': [], 'content': []}
+[codex] 
+[codex] ## core.entrypoints
+[codex] {'title': 'Entrypoints', 'one_liner': 'How to run the application', 'claims': [], 'content': []}
+[codex] 
+[codex] ## core.where_to_edit
+[codex] {'title': 'Where to edit', 'one_liner': 'Key files for modifications', 'claims': [], 'content': []}
+[codex] 
+[codex] ## core.invariants
+[codex] {'title': 'Invariants', 'one_liner': 'Contracts, constraints, and assumptions', 'claims': [], 'content': []}
+[codex] 
+[codex] ## core.testing
+[codex] {'title': 'Testing', 'one_liner': 'How to run tests and validate changes', 'claims': [], 'content': []}
+[codex] 
+[codex] ## core.gotchas
+[codex] {'title': 'Gotchas', 'one_liner': 'Common pitfalls and sharp edges', 'claims': [], 'content': []}
+[codex] 
+[codex] ## core.dependencies
+[codex] {'title': 'Dependencies', 'one_liner': 'Key dependencies and environment notes', 'claims': [], 'content': []}
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc "cat kapso_evaluation/a0_locator.json; printf '\\n--- gitignore ---\\n'; cat .gitignore; printf '\\n--- log files ---\\n'; find . -maxdepth 2 -name 'changes.log' -o -name 'task_plan.md' -o -name 'notes.md' -print" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] {
+[codex]   "candidate_set": {
+[codex]     "candidate_count": 14,
+[codex]     "manifest": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+[codex]     "members": {
+[codex]       "c01_good_hex": {
+[codex]         "path": "c01_good_hex",
+[codex]         "solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+[codex]       },
+[codex]       "c02_baseline_upstream": {
+[codex]         "path": "c02_baseline_upstream",
+[codex]         "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+[codex]       },
+[codex]       "c03_mirror": {
+[codex]         "path": "c03_mirror",
+[codex]         "solution_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf"
+[codex]       },
+[codex]       "c04_near_tie": {
+[codex]         "path": "c04_near_tie",
+[codex]         "solution_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418"
+[codex]       },
+[codex]       "c05_overlapping": {
+[codex]         "path": "c05_overlapping",
+[codex]         "solution_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c"
+[codex]       },
+[codex]       "c06_empty": {
+[codex]         "path": "c06_empty",
+[codex]         "solution_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41"
+[codex]       },
+[codex]       "c07_single": {
+[codex]         "path": "c07_single",
+[codex]         "solution_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90"
+[codex]       },
+[codex]       "c08_out_of_bounds": {
+[codex]         "path": "c08_out_of_bounds",
+[codex]         "solution_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143"
+[codex]       },
+[codex]       "c09_malformed_import": {
+[codex]         "path": "c09_malformed_import",
+[codex]         "solution_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17"
+[codex]       },
+[codex]       "c10_raises": {
+[codex]         "path": "c10_raises",
+[codex]         "solution_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206"
+[codex]       },
+[codex]       "c11_non_deterministic": {
+[codex]         "path": "c11_non_deterministic",
+[codex]         "solution_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044"
+[codex]       },
+[codex]       "c12_exit_without_artifacts": {
+[codex]         "path": "c12_exit_without_artifacts",
+[codex]         "solution_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d"
+[codex]       },
+[codex]       "c13_slow": {
+[codex]         "path": "c13_slow",
+[codex]         "solution_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14"
+[codex]       },
+[codex]       "c14_near_zero": {
+[codex]         "path": "c14_near_zero",
+[codex]         "solution_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113"
+[codex]       }
+[codex]     }
+[codex]   },
+[codex]   "e_star": {
+[codex]     "dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing",
+[codex]     "entry": "e_star.py",
+[codex]     "helper": "e_star_child.py",
+[codex]     "python": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+[codex]     "source_records": [
+[codex]       {
+[codex]         "path": "e_star.py",
+[codex]         "sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+[codex]         "size": 34860
+[codex]       },
+[codex]       {
+[codex]         "path": "e_star_child.py",
+[codex]         "sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca",
+[codex]         "size": 4704
+[codex]       }
+[codex]     ]
+[codex]   },
+[codex]   "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+[codex]   "eid_star_components": {
+[codex]     "Config": "550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac",
+[codex]     "DataManifest": "b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21",
+[codex]     "DependencyLock": "7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75",
+[codex]     "EvaluatorSource": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+[codex]     "MetricDefinition": "420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0"
+[codex]   },
+[codex]   "metric": {
+[codex]     "direction": "maximize",
+[codex]     "epsilon": 1e-09,
+[codex]     "failure_semantics": "when status != ok the objective is null, never 0.0; the adapter must not coerce a missing objective into a score",
+[codex]     "name": "sum_radii",
+[codex]     "outcome_fields": [
+[codex]       "sum_radii",
+[codex]       "packing_density",
+[codex]       "num_circles",
+[codex]       "overlap_count",
+[codex]       "min_gap",
+[codex]       "min_boundary_margin"
+[codex]     ]
+[codex]   },
+[codex]   "produced_by": "a0/runtimes/kapso/a0_adapter/registered_tree.py",
+[codex]   "runtime": "kapso",
+[codex]   "schema": "a0.kapso.registered_locator/v1",
+[codex]   "state_root_default": "/home/ebt/rsi-dev/a0/runtimes/kapso/state/registered-eval",
+[codex]   "theta_e_canonical": {
+[codex]     "fidelity": "full",
+[codex]     "fraction": 1.0,
+[codex]     "n": 26,
+[codex]     "runs": 5,
+[codex]     "runtime_budget_ms": 250.0,
+[codex]     "seed": 1337,
+[codex]     "timeout_s": 120.0
+[codex]   }
+[codex] }
+[codex] 
+[codex] --- gitignore ---
+[codex] 
+[codex] # Kapso experimentation engine
+[codex] sessions/*
+[codex] *.log
+[codex] !changes.log
+[codex] .kapso/run_state.json
+[codex] .kapso/.run_state.*.tmp
+[codex] .kapso/inbox.jsonl
+[codex] .kapso/launch.json
+[codex] .kapso/shared_cache/
+[codex] __pycache__/
+[codex] *.pyc
+[codex] 
+[codex] --- log files ---
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc "sed -n '1,320p' kapso_evaluation/kapso_eval.py" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] #!/usr/bin/env python
+[codex] """KAPSO registered-evaluation entrypoint (the KAPSO-side execution of E*).
+[codex] 
+[codex] Installed by the A0 KAPSO adapter into a KAPSO workspace as
+[codex] ``kapso_evaluation/kapso_eval.py`` and registered by KAPSO's own
+[codex] ``EvaluationMaintainer`` (``execution/evaluation_maintainer/maintainer.py``).
+[codex] KAPSO invokes it exactly as ``evaluation_command()`` composes it
+[codex] (``maintainer.py:56-61``):
+[codex] 
+[codex]     python kapso_evaluation/kapso_eval.py --fidelity F --fraction X --seed S
+[codex] 
+[codex] with ``cwd`` set to the tree whose candidate is being measured (the session
+[codex] folder for a session run, the branch worktree for a frame run, the workspace
+[codex] root for the registration calibration).  This file is the *only* place where a
+[codex] KAPSO score comes from; it never invents one.
+[codex] 
+[codex] Contract implemented here
+[codex] -------------------------
+[codex] 1. Evaluator identity.  The E* source files are re-hashed and compared with the
+[codex]    digests the frozen ``EID*`` document recorded (``a0_locator.json``).  A
+[codex]    mismatch aborts with exit 3 and no score, so the registered evaluator cannot
+[codex]    silently run as a different E* than the one EID* names.  (This is the
+[codex]    out-of-band evaluator-identity leg that KAPSO's own manifest triple does not
+[codex]    carry: ``maintainer.py:64-83`` has no evaluator field.)
+[codex] 2. Candidate identity.  The candidate's ``solution.py`` must hash to a digest in
+[codex]    ``EID*``'s DataManifest (the frozen ``C*``).  A candidate outside the frozen
+[codex]    set aborts with exit 3 unless the adapter explicitly declares that it is
+[codex]    running an out-of-set injection (A0.2 seam rounds record this).
+[codex] 3. One machine-readable line per run: ``KAPSO_EVAL_MANIFEST {...}`` carrying
+[codex]    ``fidelity, fraction, seed, items, total_items`` (the keys KAPSO's
+[codex]    ``parse_manifest_line`` requires) plus ``score`` **only when E* returned a
+[codex]    measurement**.  For ``status=invalid`` / ``status=error`` the line omits
+[codex]    ``score`` and the process exits non-zero, so KAPSO records *no* mechanical
+[codex]    score of record instead of a numeric zero
+[codex]    (``registered_evaluation.py:100-102`` returns None exactly for this shape).
+[codex] 4. No writes anywhere but below the locator's ``state_root`` (E* writes below
+[codex]    its own ``--state-dir``); nothing is written into the candidate tree.
+[codex] """
+[codex] 
+[codex] from __future__ import annotations
+[codex] 
+[codex] import argparse
+[codex] import hashlib
+[codex] import json
+[codex] import os
+[codex] import subprocess
+[codex] import sys
+[codex] from pathlib import Path
+[codex] 
+[codex] HERE = Path(__file__).resolve().parent
+[codex] LOCATOR_NAME = "a0_locator.json"
+[codex] MANIFEST_MARKER = "KAPSO_EVAL_MANIFEST"
+[codex] EXIT_CODES = {"ok": 0, "invalid": 2, "error": 3}
+[codex] 
+[codex] 
+[codex] def fail(message: str, code: int = 3) -> int:
+[codex]     """Abort without printing a manifest line: no measurement was taken."""
+[codex]     print(f"kapso_eval: {message}", file=sys.stderr)
+[codex]     return code
+[codex] 
+[codex] 
+[codex] def sha256_file(path: Path) -> str:
+[codex]     return hashlib.sha256(path.read_bytes()).hexdigest()
+[codex] 
+[codex] 
+[codex] def load_locator() -> dict:
+[codex]     locator_path = HERE / LOCATOR_NAME
+[codex]     if not locator_path.is_file():
+[codex]         raise SystemExit(
+[codex]             f"kapso_eval: missing locator {locator_path}; the registered "
+[codex]             "evaluation tree is not the one the adapter installed"
+[codex]         )
+[codex]     return json.loads(locator_path.read_text(encoding="utf-8"))
+[codex] 
+[codex] 
+[codex] def check_evaluator_identity(locator: dict) -> str:
+[codex]     """Re-hash E*'s own source against the EID* EvaluatorSource records."""
+[codex]     e_star = locator["e_star"]
+[codex]     root = Path(e_star["dir"])
+[codex]     for record in e_star["source_records"]:
+[codex]         path = root / record["path"]
+[codex]         if not path.is_file():
+[codex]             raise AssertionError(f"E* source file missing: {path}")
+[codex]         digest = sha256_file(path)
+[codex]         if digest != record["sha256"]:
+[codex]             raise AssertionError(
+[codex]                 f"E* source drifted: {record['path']} sha256 {digest} != "
+[codex]                 f"{record['sha256']} recorded in EID* "
+[codex]                 f"({locator['eid_star']})"
+[codex]             )
+[codex]     return locator["eid_star_components"]["EvaluatorSource"]
+[codex] 
+[codex] 
+[codex] def resolve_candidate(arg: str | None) -> Path:
+[codex]     root = Path(arg).resolve() if arg else Path.cwd()
+[codex]     if root.is_file():
+[codex]         root = root.parent
+[codex]     solution = root / "solution.py"
+[codex]     if not solution.is_file():
+[codex]         raise AssertionError(f"no solution.py below {root}")
+[codex]     return root
+[codex] 
+[codex] 
+[codex] def check_candidate_identity(locator: dict, candidate_root: Path) -> dict:
+[codex]     solution = candidate_root / "solution.py"
+[codex]     digest = sha256_file(solution)
+[codex]     members = locator["candidate_set"]["members"]
+[codex]     for candidate_id, entry in members.items():
+[codex]         if entry["solution_sha256"] == digest:
+[codex]             return {"candidate_id": candidate_id, "in_frozen_set": True,
+[codex]                     "solution_sha256": digest}
+[codex]     if os.environ.get("A0_KAPSO_ALLOW_UNFROZEN_CANDIDATE") == "1":
+[codex]         return {"candidate_id": None, "in_frozen_set": False,
+[codex]                 "solution_sha256": digest}
+[codex]     raise AssertionError(
+[codex]         f"solution.py sha256 {digest} is not a member of the frozen "
+[codex]         f"candidate set C* recorded in EID* ({locator['eid_star']})"
+[codex]     )
+[codex] 
+[codex] 
+[codex] def main(argv: list[str] | None = None) -> int:
+[codex]     parser = argparse.ArgumentParser(
+[codex]         description="KAPSO registered evaluation over the frozen E*"
+[codex]     )
+[codex]     parser.add_argument("--fidelity", required=True, choices=("fast", "full"))
+[codex]     parser.add_argument("--fraction", required=True, type=float)
+[codex]     parser.add_argument("--seed", required=True, type=int)
+[codex]     parser.add_argument(
+[codex]         "--candidate",
+[codex]         default=None,
+[codex]         help="candidate root (default: the current working directory)",
+[codex]     )
+[codex]     args = parser.parse_args(argv)
+[codex] 
+[codex]     if not 0 < args.fraction <= 1:
+[codex]         return fail(f"--fraction must be in (0, 1], got {args.fraction}", 1)
+[codex] 
+[codex]     locator = load_locator()
+[codex]     e_star = locator["e_star"]
+[codex]     theta = locator["theta_e_canonical"]
+[codex]     metric = locator["metric"]
+[codex]     # The E* state root is a property of the run, not of the evaluator: it is
+[codex]     # overridden per run through the environment so that this tree's fingerprint
+[codex]     # (KAPSO's EID_r) stays a function of the frozen EID* alone.
+[codex]     state_root = Path(
+[codex]         os.environ.get("A0_KAPSO_EVAL_STATE_ROOT")
+[codex]         or locator["state_root_default"]
+[codex]     )
+[codex]     state_root.mkdir(parents=True, exist_ok=True)
+[codex] 
+[codex]     manifest: dict = {
+[codex]         "fidelity": args.fidelity,
+[codex]         "fraction": args.fraction,
+[codex]         "seed": args.seed,
+[codex]     }
+[codex]     try:
+[codex]         source_component = check_evaluator_identity(locator)
+[codex]         candidate_root = resolve_candidate(args.candidate)
+[codex]         candidate = check_candidate_identity(locator, candidate_root)
+[codex]     except AssertionError as exc:
+[codex]         return fail(str(exc), 3)
+[codex] 
+[codex]     manifest["eid_star"] = locator["eid_star"]
+[codex]     manifest["eid_star_evaluator_source"] = source_component
+[codex]     manifest["metric_name"] = metric["name"]
+[codex]     manifest["candidate_identity"] = candidate
+[codex]     manifest["theta_e_canonical_match"] = (
+[codex]         args.fidelity == theta["fidelity"]
+[codex]         and abs(args.fraction - float(theta["fraction"])) <= 1e-9
+[codex]         and args.seed == int(theta["seed"])
+[codex]     )
+[codex] 
+[codex]     outcome_name = (
+[codex]         f"{candidate['solution_sha256'][:16]}.{args.fidelity}."
+[codex]         f"{args.fraction:g}.{args.seed}.json"
+[codex]     )
+[codex]     outcome_path = state_root / "outcomes" / outcome_name
+[codex]     outcome_path.parent.mkdir(parents=True, exist_ok=True)
+[codex] 
+[codex]     command = [
+[codex]         e_star["python"],
+[codex]         str(Path(e_star["dir"]) / e_star["entry"]),
+[codex]         "evaluate",
+[codex]         "--candidate",
+[codex]         str(candidate_root),
+[codex]         "--seed",
+[codex]         str(args.seed),
+[codex]         "--fidelity",
+[codex]         args.fidelity,
+[codex]         "--fraction",
+[codex]         repr(float(args.fraction)),
+[codex]         "--out",
+[codex]         str(outcome_path),
+[codex]         "--state-dir",
+[codex]         str(state_root / "e_star_state"),
+[codex]     ]
+[codex]     env = dict(os.environ)
+[codex]     env["PYTHONDONTWRITEBYTECODE"] = "1"
+[codex]     completed = subprocess.run(
+[codex]         command, capture_output=True, text=True, env=env, cwd=str(state_root)
+[codex]     )
+[codex]     (state_root / "logs").mkdir(parents=True, exist_ok=True)
+[codex]     (state_root / "logs" / f"{outcome_name}.stdout").write_text(
+[codex]         completed.stdout, encoding="utf-8"
+[codex]     )
+[codex]     (state_root / "logs" / f"{outcome_name}.stderr").write_text(
+[codex]         completed.stderr, encoding="utf-8"
+[codex]     )
+[codex] 
+[codex]     e_star_manifest = None
+[codex]     for line in completed.stdout.splitlines():
+[codex]         if line.startswith("E_STAR_MANIFEST "):
+[codex]             e_star_manifest = json.loads(line[len("E_STAR_MANIFEST "):])
+[codex]     if e_star_manifest is None:
+[codex]         return fail(
+[codex]             "E* printed no E_STAR_MANIFEST line (exit "
+[codex]             f"{completed.returncode}); stderr: {completed.stderr.strip()[:400]}",
+[codex]             3,
+[codex]         )
+[codex] 
+[codex]     status = e_star_manifest["status"]
+[codex]     manifest["items"] = max(1, int(e_star_manifest["items"]))
+[codex]     manifest["total_items"] = max(1, int(e_star_manifest["total_items"]))
+[codex]     manifest["e_star_status"] = status
+[codex]     manifest["e_star_exit_code"] = completed.returncode
+[codex]     manifest["e_star_items_audited"] = int(e_star_manifest["items"])
+[codex]     manifest["e_star_evaluator_source_sha256"] = e_star_manifest[
+[codex]         "evaluator_source_sha256"
+[codex]     ]
+[codex]     manifest["e_star_canonical_digest"] = e_star_manifest["canonical_digest"]
+[codex]     manifest["e_star_outcome"] = str(
+[codex]         outcome_path.relative_to(state_root)
+[codex]     )
+[codex]     if status == "ok":
+[codex]         objective = e_star_manifest["objective"]["value"]
+[codex]         manifest["score"] = float(objective)
+[codex]         manifest["e_star_objective_value"] = float(objective)
+[codex] 
+[codex]     print(f"{MANIFEST_MARKER} " + json.dumps(manifest, sort_keys=True))
+[codex]     if status != "ok":
+[codex]         print(
+[codex]             f"kapso_eval: E* verdict {status} — no score of record "
+[codex]             f"(exit {EXIT_CODES[status]})",
+[codex]             file=sys.stderr,
+[codex]         )
+[codex]     return EXIT_CODES[status]
+[codex] 
+[codex] 
+[codex] if __name__ == "__main__":
+[codex]     sys.exit(main())
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc "find output_data_generic_exp_0 -maxdepth 2 -type f -printf '%p %s bytes\\n' 2>/dev/null; find kapso_evaluation -maxdepth 2 -type f -printf '%p %s bytes\\n'" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] kapso_evaluation/kapso_eval.py 9646 bytes
+[codex] kapso_evaluation/a0_locator.json 4362 bytes
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc 'rg -n "def evaluate|sum_radii|fraction|fidelity|n=|26|candidate|pack_circles|objective|items|seed|json" /home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py | head -240' in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] 9:    sum_radii = sum of the radii of the circles returned by pack_circles(n)
+[codex] 11:`sum_radii` is the primary metric named by the upstream task itself
+[codex] 12:(`circle-packing/loreley.program.md:8-10`; objective in
+[codex] 15:the sum runs over every returned circle in the order the candidate returned
+[codex] 16:them.  E* does not collapse it to a scalar -- the Outcome carries the objective
+[codex] 24:   HOME/TMPDIR/cwd under E*'s state root) on a private copy of the candidate
+[codex] 28:   temp directory) -- never into the caller's tree, never into a candidate
+[codex] 29:   worktree -- so `git checkout` / `git clean` in a candidate cannot revert E*'s
+[codex] 30:   records, and E* cannot pollute a candidate's tree.
+[codex] 31:3. Multi-field output.  The Outcome reports `status`, the objective, structural
+[codex] 35:Randomness: there is none beyond the explicit `--seed`, which draws the audit
+[codex] 36:subsample (decimation) for `--fidelity fast`.  `--fidelity full` audits every
+[codex] 37:item, so the seed is inert there by construction; for candidates whose only
+[codex] 38:defect sits in a decimated-away pair the seed flips the verdict, which is the
+[codex] 39:point: the seed is an evaluator input, not a label.
+[codex] 43:    e_star.py evaluate --candidate <path> --seed <S> [--fidelity full|fast]
+[codex] 44:                       [--fraction F] --out <json> [--state-dir DIR]
+[codex] 55:import json
+[codex] 74:DEFAULT_NUM_CIRCLES = 26  # evaluate.py:26
+[codex] 81:DEFAULT_SEED = 1337  # kapso: evaluation_maintainer.subsample_seed
+[codex] 82:DEFAULT_FAST_FRACTION = 0.15  # kapso: FidelitySpec.eval_fast_fraction (fidelity.py:247)
+[codex] 90:OBJECTIVE_NAME = "sum_radii"
+[codex] 109:def canonical_json(payload: object) -> str:
+[codex] 111:    return json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+[codex] 128:    return sha256_text(canonical_json(entries))
+[codex] 143:def audit_sample(n: int, size: int, seed: int) -> list[int]:
+[codex] 144:    """Deterministic decimation of the item set, driven only by `seed`.
+[codex] 146:    Items are ordered by sha256(f"e_star/v1|seed=<seed>|n=<n>|index=<i>") with
+[codex] 159:            sha256_text(f"e_star/v1|seed={int(seed)}|n={int(n)}|index={index}"),
+[codex] 167:    fidelity = args.fidelity
+[codex] 168:    if args.fraction is None:
+[codex] 169:        fraction = 1.0 if fidelity == "full" else DEFAULT_FAST_FRACTION
+[codex] 171:        fraction = float(args.fraction)
+[codex] 172:    if not 0.0 < fraction <= 1.0:
+[codex] 173:        raise ValueError(f"--fraction must be in (0, 1], got {fraction!r}")
+[codex] 174:    if fidelity == "full" and fraction != 1.0:
+[codex] 176:            "--fidelity full evaluates every item; pass --fraction 1.0 "
+[codex] 177:            f"(or use --fidelity fast) instead of {fraction!r}"
+[codex] 184:        "seed": int(args.seed),
+[codex] 185:        "fidelity": fidelity,
+[codex] 186:        "fraction": float(fraction),
+[codex] 196:    if theta["fidelity"] == "full":
+[codex] 198:    return max(1, min(n, int(round(float(theta["fraction"]) * n))))
+[codex] 202:    return sha256_text(canonical_json(dict(theta)))[:16]
+[codex] 206:# candidate resolution and state root
+[codex] 209:def resolve_candidate(path_str: str) -> tuple[Path, bytes]:
+[codex] 210:    """Return the candidate source file and its exact bytes.
+[codex] 219:            f"candidate not found: {path} (expected a solution.py file or a "
+[codex] 229:def state_dir_for(root: Path, candidate_sha256: str, theta: Mapping[str, Any]) -> Path:
+[codex] 230:    """State is keyed by candidate *content* and theta_E, never by path."""
+[codex] 231:    return root / f"{candidate_sha256[:16]}-{theta_digest(theta)}"
+[codex] 263:    """Execute the candidate in a child process; return the raw artifacts.
+[codex] 265:    This process never imports candidate code.  The child writes one artifact
+[codex] 266:    file per call plus a done marker; a missing marker means the candidate
+[codex] 311:    done_path = run_dir / "child_done.json"
+[codex] 314:            info["done"] = json.loads(done_path.read_text(encoding="utf-8"))
+[codex] 315:        except json.JSONDecodeError as exc:
+[codex] 318:        run_path = run_dir / f"run_{index:02d}.json"
+[codex] 321:                info["runs"].append(json.loads(run_path.read_text(encoding="utf-8")))
+[codex] 322:            except json.JSONDecodeError as exc:
+[codex] 358:    fraction = rank - lower
+[codex] 359:    return ordered[lower] + (ordered[upper] - ordered[lower]) * fraction
+[codex] 383:    `sum_radii` and `packing_density` follow upstream `_compute_metrics`
+[codex] 395:    sum_radii = sum(r for _, _, r in circles)
+[codex] 418:        "sum_radii": sum_radii,
+[codex] 430:    candidate_sha256: str,
+[codex] 431:    candidate_bytes: int,
+[codex] 436:    sample = audit_sample(n, audited_item_count(theta), int(theta["seed"]))
+[codex] 447:    objective: dict[str, Any] | None = None
+[codex] 468:                f"candidate exceeded the {theta['timeout_s']} s wall-clock budget"
+[codex] 474:        check("candidate_module_imports", False, done["import_error"])
+[codex] 475:        failure = {"kind": "candidate_import_failed", "message": str(done["import_error"])}
+[codex] 477:        check("candidate_module_imports", True, None)
+[codex] 478:        check("candidate_defines_entrypoint", False, done["entry_error"])
+[codex] 479:        failure = {"kind": "candidate_entrypoint_missing", "message": str(done["entry_error"])}
+[codex] 481:        check("candidate_module_imports", True, None)
+[codex] 482:        check("candidate_defines_entrypoint", True, done.get("entry_type"))
+[codex] 491:            call_ok = check("candidate_call_succeeds", not call_errors, call_errors[0] if call_errors else None)
+[codex] 493:                failure = {"kind": "candidate_call_raised", "message": str(call_errors[0])}
+[codex] 517:                        {"items_audited": len(sampled_radii), "min_radius": min(sampled_radii) if sampled_radii else None},
+[codex] 522:                        {"items_audited": len(sampled_radii), "min_boundary_margin": structure["min_boundary_margin"]},
+[codex] 547:                            # therefore lives in the state root (resources.json),
+[codex] 549:                            "measurement": "resources.json",
+[codex] 569:                                "(measurement in resources.json)"
+[codex] 574:                        objective = {
+[codex] 576:                            "value": structure["sum_radii"],
+[codex] 582:    # F_r(E*) = scalar(E*) declaration (a0/contract/fr/scalar.json reads
+[codex] 583:    # `outcome.fields.sum_radii`).  This is the score-facing surface, so every
+[codex] 598:            "seed": int(theta["seed"]),
+[codex] 599:            "fidelity": theta["fidelity"],
+[codex] 600:            "fraction": float(theta["fraction"]),
+[codex] 606:        "candidate": {
+[codex] 607:            "entry": "pack_circles",
+[codex] 608:            "source_sha256": candidate_sha256,
+[codex] 609:            "source_bytes": int(candidate_bytes),
+[codex] 614:        "objective": objective,
+[codex] 617:            "sum_radii": structure["sum_radii"] if fields_ok else None,
+[codex] 623:            "items_audited": len(sample),
+[codex] 633:                "items_total": n,
+[codex] 634:                "items_audited": len(sample),
+[codex] 639:                "sample_sha256": sha256_text(canonical_json(sample)),
+[codex] 640:                "seed": int(theta["seed"]),
+[codex] 641:                "fidelity": theta["fidelity"],
+[codex] 646:        # measurements live in the state directory (resources.json) and in the
+[codex] 655:    payload = {key: value for key, value in outcome.items() if key != "canonical_digest"}
+[codex] 656:    return sha256_text(canonical_json(payload))
+[codex] 680:        _, candidate_raw = resolve_candidate(args.candidate)
+[codex] 685:    candidate_sha256 = sha256_bytes(candidate_raw)
+[codex] 687:    state_dir = state_dir_for(state_root, candidate_sha256, theta)
+[codex] 693:    solution_dir = state_dir / "candidate"
+[codex] 696:    if not solution_copy.is_file() or solution_copy.read_bytes() != candidate_raw:
+[codex] 697:        solution_copy.write_bytes(candidate_raw)
+[codex] 706:        candidate_sha256=candidate_sha256,
+[codex] 707:        candidate_bytes=len(candidate_raw),
+[codex] 712:    canonical = canonical_json(outcome)
+[codex] 718:        "candidate_source_sha256": candidate_sha256,
+[codex] 727:    resources_text = canonical_json(resources)
+[codex] 728:    (state_dir / "resources.json").write_bytes(resources_text.encode("utf-8"))
+[codex] 738:        "candidate_source_sha256": candidate_sha256,
+[codex] 739:        "seed": outcome["theta_e"]["seed"],
+[codex] 740:        "fidelity": outcome["theta_e"]["fidelity"],
+[codex] 741:        "fraction": outcome["theta_e"]["fraction"],
+[codex] 742:        "items": outcome["validity"]["audit"]["items_audited"],
+[codex] 743:        "total_items": outcome["theta_e"]["n"],
+[codex] 745:        "objective": outcome["objective"],
+[codex] 748:    print(f"E_STAR_MANIFEST {json.dumps(manifest, ensure_ascii=False, sort_keys=True)}")
+[codex] 768:            "seed": DEFAULT_SEED,
+[codex] 769:            "fidelity": "full",
+[codex] 770:            "fraction": 1.0,
+[codex] 771:            "fast_fraction": DEFAULT_FAST_FRACTION,
+[codex] 777:        "objective": {
+[codex] 789:    print(canonical_json(payload), end="")
+[codex] 796:        description="E*: frozen reference evaluator for the circle-packing plumbing task.",
+[codex] 800:    evaluate = sub.add_parser("evaluate", help="evaluate one candidate")
+[codex] 801:    evaluate.add_argument("--candidate", required=True, help="solution.py or a directory containing it")
+[codex] 802:    evaluate.add_argument("--seed", type=int, default=DEFAULT_SEED, help="evaluator seed (theta_E)")
+[codex] 803:    evaluate.add_argument("--fidelity", choices=("full", "fast"), default="full")
+[codex] 804:    evaluate.add_argument("--fraction", type=float, default=None, help="fast-tier audit fraction in (0, 1]")
+[codex] 805:    evaluate.add_argument("--n", type=int, default=DEFAULT_NUM_CIRCLES, help="circles requested from the candidate")
+[codex] 825:        help="state root for run records (default: <tmp>/e-star-state); never written inside a candidate tree",
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc "sed -n '1,260p' /home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex] """E* -- the frozen reference evaluator for the circle-packing plumbing task.
+[codex] 
+[codex] E* is `Candidate -> Outcome` for the study's A0.1 evaluator-integration
+[codex] conformance check.  It is frozen *outside* the runtimes under test: no runtime's
+[codex] own provenance schema, cache, or log directory is part of this file's contract.
+[codex] 
+[codex] Objective (upstream definition, unchanged):
+[codex] 
+[codex]     sum_radii = sum of the radii of the circles returned by pack_circles(n)
+[codex] 
+[codex] `sum_radii` is the primary metric named by the upstream task itself
+[codex] (`circle-packing/loreley.program.md:8-10`; objective in
+[codex] `circle-packing/README.md:19-27`) and computed by Loreley's evaluator plugin
+[codex] (`circle_packing_env/evaluate.py:133-145`).  E* keeps the formula bit-for-bit:
+[codex] the sum runs over every returned circle in the order the candidate returned
+[codex] them.  E* does not collapse it to a scalar -- the Outcome carries the objective
+[codex] plus validity and structural fields; turning that into a search signal is the
+[codex] adapter's job (`F_r`).
+[codex] 
+[codex] Three hard constraints from the study protocol (§4.2.2) and how they are met:
+[codex] 
+[codex] 1. No dependence on cwd or PATH.  Candidate code runs in a child process whose
+[codex]    environment is fully specified by E* (`PATH` empty, no `PYTHONPATH`, private
+[codex]    HOME/TMPDIR/cwd under E*'s state root) on a private copy of the candidate
+[codex]    bytes.  E* itself never reads the environment into the Outcome.
+[codex] 2. No counting or logging into a directory that can be reverted.  Every byte E*
+[codex]    writes goes below its own state root (`--state-dir`, default under the system
+[codex]    temp directory) -- never into the caller's tree, never into a candidate
+[codex]    worktree -- so `git checkout` / `git clean` in a candidate cannot revert E*'s
+[codex]    records, and E* cannot pollute a candidate's tree.
+[codex] 3. Multi-field output.  The Outcome reports `status`, the objective, structural
+[codex]    fields (overlap count, min gap, boundary margin, packing density) and the
+[codex]    audit accounting instead of a single score.
+[codex] 
+[codex] Randomness: there is none beyond the explicit `--seed`, which draws the audit
+[codex] subsample (decimation) for `--fidelity fast`.  `--fidelity full` audits every
+[codex] item, so the seed is inert there by construction; for candidates whose only
+[codex] defect sits in a decimated-away pair the seed flips the verdict, which is the
+[codex] point: the seed is an evaluator input, not a label.
+[codex] 
+[codex] CLI:
+[codex] 
+[codex]     e_star.py evaluate --candidate <path> --seed <S> [--fidelity full|fast]
+[codex]                        [--fraction F] --out <json> [--state-dir DIR]
+[codex] 
+[codex] Exit codes: 0 = ok, 2 = invalid (measured and rejected), 3 = error (no
+[codex] measurement could be taken).  E* never emits 0.0 or any other number in place of
+[codex] a failure, so an adapter cannot silently turn "could not evaluate" into a score.
+[codex] """
+[codex] 
+[codex] from __future__ import annotations
+[codex] 
+[codex] import argparse
+[codex] import hashlib
+[codex] import json
+[codex] import math
+[codex] import os
+[codex] import shutil
+[codex] import subprocess
+[codex] import sys
+[codex] import tempfile
+[codex] from pathlib import Path
+[codex] from typing import Any, Mapping, Sequence
+[codex] 
+[codex] E_STAR_VERSION = "1.0.0"
+[codex] SCHEMA = "e_star.outcome/v1"
+[codex] 
+[codex] HERE = Path(__file__).resolve().parent
+[codex] CHILD_PATH = HERE / "e_star_child.py"
+[codex] SOURCE_FILES = ("e_star.py", "e_star_child.py")
+[codex] 
+[codex] # Upstream constants (circle_packing_env/evaluate.py).
+[codex] EPS = 1e-9  # evaluate.py:23
+[codex] DEFAULT_NUM_CIRCLES = 26  # evaluate.py:26
+[codex] DEFAULT_RUNTIME_RUNS = 5  # evaluate.py:27
+[codex] DEFAULT_RUNTIME_BUDGET_MS = 250.0  # evaluate.py:28
+[codex] UNIT_SQUARE_MIN = 0.0
+[codex] UNIT_SQUARE_MAX = 1.0
+[codex] 
+[codex] # Protocol constants (§4.2.2): KAPSO's registered fast-tier defaults.
+[codex] DEFAULT_SEED = 1337  # kapso: evaluation_maintainer.subsample_seed
+[codex] DEFAULT_FAST_FRACTION = 0.15  # kapso: FidelitySpec.eval_fast_fraction (fidelity.py:247)
+[codex] DEFAULT_TIMEOUT_S = 120.0
+[codex] 
+[codex] STATUS_OK = "ok"
+[codex] STATUS_INVALID = "invalid"
+[codex] STATUS_ERROR = "error"
+[codex] EXIT_CODES = {STATUS_OK: 0, STATUS_INVALID: 2, STATUS_ERROR: 3}
+[codex] 
+[codex] OBJECTIVE_NAME = "sum_radii"
+[codex] OBJECTIVE_UNIT = "radius_sum"
+[codex] OBJECTIVE_DIRECTION = "max"
+[codex] 
+[codex] # Check names follow upstream's `tests_executed` list (evaluate.py:322-329) so
+[codex] # that an adapter can diff its own test report against E*'s; the audited scope of
+[codex] # the decimated checks is recorded separately in `validity.audit`.
+[codex] VALIDITY_CHECKS = (
+[codex]     "count_equals_n",
+[codex]     "radius_positive_check",
+[codex]     "bounds_check",
+[codex]     "overlap_check",
+[codex] )
+[codex] 
+[codex] 
+[codex] # --------------------------------------------------------------------------- #
+[codex] # canonical serialisation
+[codex] # --------------------------------------------------------------------------- #
+[codex] 
+[codex] def canonical_json(payload: object) -> str:
+[codex]     """The single canonical byte form of any E* payload."""
+[codex]     return json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+[codex] 
+[codex] 
+[codex] def sha256_bytes(data: bytes) -> str:
+[codex]     return hashlib.sha256(data).hexdigest()
+[codex] 
+[codex] 
+[codex] def sha256_text(text: str) -> str:
+[codex]     return sha256_bytes(text.encode("utf-8"))
+[codex] 
+[codex] 
+[codex] def evaluator_source_digest() -> str:
+[codex]     """Content digest of E*'s own source files (order- and path-independent)."""
+[codex]     entries = []
+[codex]     for name in SOURCE_FILES:
+[codex]         data = (HERE / name).read_bytes()
+[codex]         entries.append({"name": name, "sha256": sha256_bytes(data), "bytes": len(data)})
+[codex]     return sha256_text(canonical_json(entries))
+[codex] 
+[codex] 
+[codex] def source_file_digests() -> list[dict[str, Any]]:
+[codex]     out = []
+[codex]     for name in SOURCE_FILES:
+[codex]         data = (HERE / name).read_bytes()
+[codex]         out.append({"name": name, "bytes": len(data), "sha256": sha256_bytes(data)})
+[codex]     return out
+[codex] 
+[codex] 
+[codex] # --------------------------------------------------------------------------- #
+[codex] # theta_E and the audit subsample
+[codex] # --------------------------------------------------------------------------- #
+[codex] 
+[codex] def audit_sample(n: int, size: int, seed: int) -> list[int]:
+[codex]     """Deterministic decimation of the item set, driven only by `seed`.
+[codex] 
+[codex]     Items are ordered by sha256(f"e_star/v1|seed=<seed>|n=<n>|index=<i>") with
+[codex]     the index as tie-break, which is reproducible on any Python version and
+[codex]     platform (unlike `random.Random.sample`, whose algorithm is a CPython
+[codex]     implementation detail), then the first `size` indices are taken in ascending
+[codex]     order.  `size >= n` returns every item.
+[codex]     """
+[codex]     if size >= n:
+[codex]         return list(range(n))
+[codex]     if size <= 0:
+[codex]         return []
+[codex]     keyed = sorted(
+[codex]         range(n),
+[codex]         key=lambda index: (
+[codex]             sha256_text(f"e_star/v1|seed={int(seed)}|n={int(n)}|index={index}"),
+[codex]             index,
+[codex]         ),
+[codex]     )
+[codex]     return sorted(keyed[:size])
+[codex] 
+[codex] 
+[codex] def resolve_theta(args: argparse.Namespace) -> dict[str, Any]:
+[codex]     fidelity = args.fidelity
+[codex]     if args.fraction is None:
+[codex]         fraction = 1.0 if fidelity == "full" else DEFAULT_FAST_FRACTION
+[codex]     else:
+[codex]         fraction = float(args.fraction)
+[codex]     if not 0.0 < fraction <= 1.0:
+[codex]         raise ValueError(f"--fraction must be in (0, 1], got {fraction!r}")
+[codex]     if fidelity == "full" and fraction != 1.0:
+[codex]         raise ValueError(
+[codex]             "--fidelity full evaluates every item; pass --fraction 1.0 "
+[codex]             f"(or use --fidelity fast) instead of {fraction!r}"
+[codex]         )
+[codex]     if int(args.n) <= 0:
+[codex]         raise ValueError(f"--n must be positive, got {args.n!r}")
+[codex]     if int(args.runs) <= 0:
+[codex]         raise ValueError(f"--runs must be positive, got {args.runs!r}")
+[codex]     return {
+[codex]         "seed": int(args.seed),
+[codex]         "fidelity": fidelity,
+[codex]         "fraction": float(fraction),
+[codex]         "n": int(args.n),
+[codex]         "runs": int(args.runs),
+[codex]         "runtime_budget_ms": float(args.runtime_budget_ms),
+[codex]         "timeout_s": float(args.timeout_s),
+[codex]     }
+[codex] 
+[codex] 
+[codex] def audited_item_count(theta: Mapping[str, Any]) -> int:
+[codex]     n = int(theta["n"])
+[codex]     if theta["fidelity"] == "full":
+[codex]         return n
+[codex]     return max(1, min(n, int(round(float(theta["fraction"]) * n))))
+[codex] 
+[codex] 
+[codex] def theta_digest(theta: Mapping[str, Any]) -> str:
+[codex]     return sha256_text(canonical_json(dict(theta)))[:16]
+[codex] 
+[codex] 
+[codex] # --------------------------------------------------------------------------- #
+[codex] # candidate resolution and state root
+[codex] # --------------------------------------------------------------------------- #
+[codex] 
+[codex] def resolve_candidate(path_str: str) -> tuple[Path, bytes]:
+[codex]     """Return the candidate source file and its exact bytes.
+[codex] 
+[codex]     `path` may be a `solution.py`-style file or a directory containing one.
+[codex]     """
+[codex]     path = Path(path_str).expanduser()
+[codex]     if path.is_dir():
+[codex]         path = path / "solution.py"
+[codex]     if not path.is_file():
+[codex]         raise FileNotFoundError(
+[codex]             f"candidate not found: {path} (expected a solution.py file or a "
+[codex]             "directory containing one)"
+[codex]         )
+[codex]     return path, path.read_bytes()
+[codex] 
+[codex] 
+[codex] def default_state_root() -> Path:
+[codex]     return Path(tempfile.gettempdir()) / "e-star-state"
+[codex] 
+[codex] 
+[codex] def state_dir_for(root: Path, candidate_sha256: str, theta: Mapping[str, Any]) -> Path:
+[codex]     """State is keyed by candidate *content* and theta_E, never by path."""
+[codex]     return root / f"{candidate_sha256[:16]}-{theta_digest(theta)}"
+[codex] 
+[codex] 
+[codex] # --------------------------------------------------------------------------- #
+[codex] # isolated execution
+[codex] # --------------------------------------------------------------------------- #
+[codex] 
+[codex] def child_environment(state_dir: Path) -> dict[str, str]:
+[codex]     """A fully specified environment: nothing of the caller's can leak in."""
+[codex]     for sub in ("home", "tmp", "cwd"):
+[codex]         (state_dir / sub).mkdir(parents=True, exist_ok=True)
+[codex]     return {
+[codex]         "PATH": "",
+[codex]         "PYTHONPATH": "",
+[codex]         "PYTHONDONTWRITEBYTECODE": "1",
+[codex]         "PYTHONHASHSEED": "0",
+[codex]         "PYTHONNOUSERSITE": "1",
+[codex]         "PYTHONIOENCODING": "utf-8",
+[codex]         "LC_ALL": "C",
+[codex]         "LANG": "C",
+[codex]         "HOME": str(state_dir / "home"),
+[codex]         "TMPDIR": str(state_dir / "tmp"),
+[codex]     }
+[codex] 
+[codex] 
+[codex] def run_child(
+[codex]     *,
+[codex]     solution_copy: Path,
+[codex]     run_dir: Path,
+[codex]     theta: Mapping[str, Any],
+[codex] 
+[codex] exec
+[codex] /bin/bash -lc "sed -n '260,620p' /home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py" in /home/ebt/rsi-dev/a0/runtimes/kapso/runs/e2e-mechanical/workspace/sessions/generic_exp_0
+[codex]  succeeded in 0ms:
+[codex]     theta: Mapping[str, Any],
+[codex]     state_dir: Path,
+[codex] ) -> dict[str, Any]:
+[codex]     """Execute the candidate in a child process; return the raw artifacts.
+[codex] 
+[codex]     This process never imports candidate code.  The child writes one artifact
+[codex]     file per call plus a done marker; a missing marker means the candidate
+[codex]     terminated the runner, which is reported as an error rather than a score.
+[codex]     The run directory is emptied first so that no leftover state from an earlier
+[codex]     invocation can be mistaken for a measurement.
+[codex]     """
+[codex]     shutil.rmtree(run_dir, ignore_errors=True)
+[codex]     run_dir.mkdir(parents=True, exist_ok=True)
+[codex]     command = [
+[codex]         sys.executable,
+[codex]         str(CHILD_PATH),
+[codex]         "--solution",
+[codex]         str(solution_copy),
+[codex]         "--n",
+[codex]         str(int(theta["n"])),
+[codex]         "--runs",
+[codex]         str(int(theta["runs"])),
+[codex]         "--run-dir",
+[codex]         str(run_dir),
+[codex]     ]
+[codex]     info: dict[str, Any] = {
+[codex]         "command": command,
+[codex]         "returncode": None,
+[codex]         "timed_out": False,
+[codex]         "stdout": "",
+[codex]         "stderr": "",
+[codex]         "runs": [],
+[codex]         "done": None,
+[codex]     }
+[codex]     try:
+[codex]         completed = subprocess.run(
+[codex]             command,
+[codex]             cwd=str(state_dir / "cwd"),
+[codex]             env=child_environment(state_dir),
+[codex]             capture_output=True,
+[codex]             timeout=float(theta["timeout_s"]),
+[codex]             check=False,
+[codex]         )
+[codex]         info["returncode"] = completed.returncode
+[codex]         info["stdout"] = completed.stdout.decode("utf-8", "replace")[-4000:]
+[codex]         info["stderr"] = completed.stderr.decode("utf-8", "replace")[-4000:]
+[codex]     except subprocess.TimeoutExpired as exc:
+[codex]         info["timed_out"] = True
+[codex]         info["stdout"] = (exc.stdout or b"").decode("utf-8", "replace")[-4000:]
+[codex]         info["stderr"] = (exc.stderr or b"").decode("utf-8", "replace")[-4000:]
+[codex] 
+[codex]     done_path = run_dir / "child_done.json"
+[codex]     if done_path.is_file():
+[codex]         try:
+[codex]             info["done"] = json.loads(done_path.read_text(encoding="utf-8"))
+[codex]         except json.JSONDecodeError as exc:
+[codex]             info["done_error"] = f"unreadable done marker: {exc}"
+[codex]     for index in range(int(theta["runs"])):
+[codex]         run_path = run_dir / f"run_{index:02d}.json"
+[codex]         if run_path.is_file():
+[codex]             try:
+[codex]                 info["runs"].append(json.loads(run_path.read_text(encoding="utf-8")))
+[codex]             except json.JSONDecodeError as exc:
+[codex]                 info["runs"].append({"run": index, "error": f"unreadable artifact: {exc}"})
+[codex]     return info
+[codex] 
+[codex] 
+[codex] # --------------------------------------------------------------------------- #
+[codex] # scoring (parent side, on artifacts only)
+[codex] # --------------------------------------------------------------------------- #
+[codex] 
+[codex] def coerce_circles(entries: object) -> tuple[list[tuple[float, float, float]] | None, str | None]:
+[codex]     """Mirror upstream `_coerce_circle` / `_coerce_circles` (evaluate.py:75-97)."""
+[codex]     if not isinstance(entries, list):
+[codex]         return None, "the return value is not an iterable of circle entries"
+[codex]     circles: list[tuple[float, float, float]] = []
+[codex]     for index, entry in enumerate(entries):
+[codex]         if not isinstance(entry, list) or len(entry) != 3:
+[codex]             return None, f"circle #{index} is not an iterable of length 3: {entry!r}"
+[codex]         try:
+[codex]             x, y, r = float(entry[0]), float(entry[1]), float(entry[2])
+[codex]         except (TypeError, ValueError):
+[codex]             return None, f"circle #{index} contains non-numeric values: {entry!r}"
+[codex]         if not (math.isfinite(x) and math.isfinite(y) and math.isfinite(r)):
+[codex]             return None, f"circle #{index} contains non-finite values: {entry!r}"
+[codex]         circles.append((x, y, r))
+[codex]     return circles, None
+[codex] 
+[codex] 
+[codex] def _percentile(values: Sequence[float], percentile: float) -> float:
+[codex]     ordered = sorted(float(item) for item in values)
+[codex]     if len(ordered) == 1:
+[codex]         return ordered[0]
+[codex]     rank = max(0.0, min(1.0, float(percentile))) * (len(ordered) - 1)
+[codex]     lower = int(rank)
+[codex]     upper = min(len(ordered) - 1, lower + 1)
+[codex]     if lower == upper:
+[codex]         return ordered[lower]
+[codex]     fraction = rank - lower
+[codex]     return ordered[lower] + (ordered[upper] - ordered[lower]) * fraction
+[codex] 
+[codex] 
+[codex] def p50_ms(durations_s: Sequence[float]) -> float:
+[codex]     if not durations_s:
+[codex]         return 0.0
+[codex]     return _percentile([float(item) * 1000.0 for item in durations_s], 0.5)
+[codex] 
+[codex] 
+[codex] def in_bounds(circle: tuple[float, float, float]) -> bool:
+[codex]     x, y, r = circle
+[codex]     return (
+[codex]         x - r >= UNIT_SQUARE_MIN - EPS
+[codex]         and x + r <= UNIT_SQUARE_MAX + EPS
+[codex]         and y - r >= UNIT_SQUARE_MIN - EPS
+[codex]         and y + r <= UNIT_SQUARE_MAX + EPS
+[codex]     )
+[codex] 
+[codex] 
+[codex] def structure_fields(
+[codex]     circles: Sequence[tuple[float, float, float]], sample: Sequence[int], n: int
+[codex] ) -> dict[str, Any]:
+[codex]     """Structural fields computed over the audited subset of the item set.
+[codex] 
+[codex]     `sum_radii` and `packing_density` follow upstream `_compute_metrics`
+[codex]     (evaluate.py:133-145) and always cover *every* returned circle;
+[codex]     `overlap_count`, `min_gap` and `min_boundary_margin` are audit-scoped.
+[codex]     """
+[codex]     sampled = [circles[i] for i in sample if 0 <= i < len(circles)]
+[codex] 
+[codex]     # Bit-for-bit upstream `_compute_metrics` (evaluate.py:137-140): the same
+[codex]     # `sum(...)` expressions, deliberately, because CPython >= 3.12 sums floats
+[codex]     # with compensated summation while an explicit accumulator loop does not.
+[codex]     # Mirroring the expression makes E* bit-identical to the plugin on whatever
+[codex]     # interpreter the study pins, instead of merely close.
+[codex]     total_area = sum(math.pi * (r**2) for _, _, r in circles)
+[codex]     sum_radii = sum(r for _, _, r in circles)
+[codex] 
+[codex]     min_boundary_margin: float | None = None
+[codex]     for x, y, r in sampled:
+[codex]         value = min(x - r, y - r, UNIT_SQUARE_MAX - (x + r), UNIT_SQUARE_MAX - (y + r))
+[codex]         min_boundary_margin = value if min_boundary_margin is None else min(min_boundary_margin, value)
+[codex] 
+[codex]     overlap_count = 0
+[codex]     min_gap: float | None = None
+[codex]     pairs_audited = 0
+[codex]     for a in range(len(sampled)):
+[codex]         x1, y1, r1 = sampled[a]
+[codex]         for b in range(a + 1, len(sampled)):
+[codex]             x2, y2, r2 = sampled[b]
+[codex]             gap = math.hypot(x2 - x1, y2 - y1) - (r1 + r2)
+[codex]             pairs_audited += 1
+[codex]             min_gap = gap if min_gap is None else min(min_gap, gap)
+[codex]             if gap < -EPS:
+[codex]                 overlap_count += 1
+[codex] 
+[codex]     return {
+[codex]         "num_circles": len(circles),
+[codex]         "num_circles_expected": n,
+[codex]         "sum_radii": sum_radii,
+[codex]         "packing_density": total_area,  # container area is 1.0
+[codex]         "overlap_count": overlap_count,
+[codex]         "min_gap": min_gap,
+[codex]         "min_boundary_margin": min_boundary_margin,
+[codex]         "pairs_audited": pairs_audited,
+[codex]     }
+[codex] 
+[codex] 
+[codex] def build_outcome(
+[codex]     *,
+[codex]     theta: Mapping[str, Any],
+[codex]     candidate_sha256: str,
+[codex]     candidate_bytes: int,
+[codex]     source_digest: str,
+[codex]     child: Mapping[str, Any],
+[codex] ) -> dict[str, Any]:
+[codex]     n = int(theta["n"])
+[codex]     sample = audit_sample(n, audited_item_count(theta), int(theta["seed"]))
+[codex]     total_pairs = n * (n - 1) // 2
+[codex] 
+[codex]     checks: list[dict[str, Any]] = []
+[codex] 
+[codex]     def check(name: str, passed: bool, detail: Any) -> bool:
+[codex]         checks.append({"name": name, "passed": bool(passed), "detail": detail})
+[codex]         return bool(passed)
+[codex] 
+[codex]     status = STATUS_ERROR
+[codex]     failure: dict[str, str] | None = None
+[codex]     objective: dict[str, Any] | None = None
+[codex]     structure: dict[str, Any] | None = None
+[codex]     runs = list(child.get("runs", []))
+[codex]     durations = [float(run.get("duration_s", 0.0)) for run in runs]
+[codex] 
+[codex]     done = child.get("done")
+[codex]     artifacts_ok = check(
+[codex]         "child_artifacts_complete",
+[codex]         done is not None,
+[codex]         {
+[codex]             "runs_requested": int(theta["runs"]),
+[codex]             "runs_written": None if done is None else done.get("runs_written"),
+[codex]             "returncode": child.get("returncode"),
+[codex]             "timed_out": bool(child.get("timed_out")),
+[codex]         },
+[codex]     )
+[codex] 
+[codex]     if not artifacts_ok:
+[codex]         failure = {
+[codex]             "kind": "timeout" if child.get("timed_out") else "child_terminated_early",
+[codex]             "message": (
+[codex]                 f"candidate exceeded the {theta['timeout_s']} s wall-clock budget"
+[codex]                 if child.get("timed_out")
+[codex]                 else "the isolated runner did not write its done marker; no measurement exists"
+[codex]             ),
+[codex]         }
+[codex]     elif done.get("import_error"):
+[codex]         check("candidate_module_imports", False, done["import_error"])
+[codex]         failure = {"kind": "candidate_import_failed", "message": str(done["import_error"])}
+[codex]     elif done.get("entry_error"):
+[codex]         check("candidate_module_imports", True, None)
+[codex]         check("candidate_defines_entrypoint", False, done["entry_error"])
+[codex]         failure = {"kind": "candidate_entrypoint_missing", "message": str(done["entry_error"])}
+[codex]     else:
+[codex]         check("candidate_module_imports", True, None)
+[codex]         check("candidate_defines_entrypoint", True, done.get("entry_type"))
+[codex]         runs_ok = check(
+[codex]             "all_runs_recorded", len(runs) == int(theta["runs"]),
+[codex]             {"recorded": len(runs), "expected": int(theta["runs"])},
+[codex]         )
+[codex]         if not runs_ok:
+[codex]             failure = {"kind": "child_terminated_early", "message": "artifact set is incomplete"}
+[codex]         else:
+[codex]             call_errors = [run.get("error") for run in runs if run.get("error")]
+[codex]             call_ok = check("candidate_call_succeeds", not call_errors, call_errors[0] if call_errors else None)
+[codex]             if not call_ok:
+[codex]                 failure = {"kind": "candidate_call_raised", "message": str(call_errors[0])}
+[codex]             else:
+[codex]                 per_run: list[list[tuple[float, float, float]] | None] = []
+[codex]                 parse_error: str | None = None
+[codex]                 for index, run in enumerate(runs):
+[codex]                     circles_i, error_i = coerce_circles(run.get("value"))
+[codex]                     per_run.append(circles_i)
+[codex]                     if error_i is not None and parse_error is None:
+[codex]                         parse_error = f"run {index}: {error_i}"
+[codex]                 circles = per_run[0]
+[codex]                 parse_ok = check("output_parses_as_triples", parse_error is None, parse_error)
+[codex]                 if not parse_ok or circles is None:
+[codex]                     failure = {"kind": "malformed_output", "message": str(parse_error)}
+[codex]                 else:
+[codex]                     structure = structure_fields(circles, sample, n)
+[codex]                     sampled_radii = [circles[i][2] for i in sample if i < len(circles)]
+[codex]                     count_ok = check(
+[codex]                         "count_equals_n",
+[codex]                         len(circles) == n,
+[codex]                         {"num_circles": len(circles), "expected": n},
+[codex]                     )
+[codex]                     positive_ok = check(
+[codex]                         "radius_positive_check",
+[codex]                         all(r > 0.0 for r in sampled_radii),
+[codex]                         {"items_audited": len(sampled_radii), "min_radius": min(sampled_radii) if sampled_radii else None},
+[codex]                     )
+[codex]                     bounds_ok = check(
+[codex]                         "bounds_check",
+[codex]                         all(in_bounds(circles[i]) for i in sample if i < len(circles)),
+[codex]                         {"items_audited": len(sampled_radii), "min_boundary_margin": structure["min_boundary_margin"]},
+[codex]                     )
+[codex]                     overlap_ok = check(
+[codex]                         "overlap_check",
+[codex]                         structure["overlap_count"] == 0,
+[codex]                         {
+[codex]                             "pairs_audited": structure["pairs_audited"],
+[codex]                             "overlap_count": structure["overlap_count"],
+[codex]                             "min_gap": structure["min_gap"],
+[codex]                         },
+[codex]                     )
+[codex]                     deterministic_ok = check(
+[codex]                         "determinism_check",
+[codex]                         _deterministic(per_run),
+[codex]                         {"runs": len(per_run), "checked": len(per_run) > 1},
+[codex]                     )
+[codex]                     budget_enabled = float(theta["runtime_budget_ms"]) > 0.0
+[codex]                     budget_ok = check(
+[codex]                         "runtime_budget_check",
+[codex]                         p50_ms(durations) <= float(theta["runtime_budget_ms"]) if budget_enabled else True,
+[codex]                         {
+[codex]                             "enabled": budget_enabled,
+[codex]                             "budget_ms": float(theta["runtime_budget_ms"]),
+[codex]                             "runs": len(runs),
+[codex]                             # The measured p50 itself is wall-clock dependent and
+[codex]                             # therefore lives in the state root (resources.json),
+[codex]                             # never in the canonical Outcome.
+[codex]                             "measurement": "resources.json",
+[codex]                         },
+[codex]                     )
+[codex]                     mandatory_ok = count_ok and positive_ok and bounds_ok and overlap_ok
+[codex]                     if not mandatory_ok:
+[codex]                         status = STATUS_INVALID
+[codex]                         failure = {"kind": "invalid_configuration", "message": _first_failure(checks)}
+[codex]                     elif not deterministic_ok:
+[codex]                         status = STATUS_ERROR
+[codex]                         failure = {
+[codex]                             "kind": "non_deterministic",
+[codex]                             "message": "repeated calls returned different circle sets",
+[codex]                         }
+[codex]                     elif not budget_ok:
+[codex]                         status = STATUS_ERROR
+[codex]                         failure = {
+[codex]                             "kind": "runtime_budget_exceeded",
+[codex]                             "message": (
+[codex]                                 "measured p50 runtime exceeds the "
+[codex]                                 f"{float(theta['runtime_budget_ms']):.3f} ms budget "
+[codex]                                 "(measurement in resources.json)"
+[codex]                             ),
+[codex]                         }
+[codex]                     else:
+[codex]                         status = STATUS_OK
+[codex]                         objective = {
+[codex]                             "name": OBJECTIVE_NAME,
+[codex]                             "value": structure["sum_radii"],
+[codex]                             "unit": OBJECTIVE_UNIT,
+[codex]                             "direction": OBJECTIVE_DIRECTION,
+[codex]                         }
+[codex] 
+[codex]     # Flat, scalar-izable projection of the outcome for the adapter's
+[codex]     # F_r(E*) = scalar(E*) declaration (a0/contract/fr/scalar.json reads
+[codex]     # `outcome.fields.sum_radii`).  This is the score-facing surface, so every
+[codex]     # metric here is null unless status == "ok" -- never 0.0, and never the sum
+[codex]     # of a rejected configuration, so no adapter can read a score out of a
+[codex]     # failure by accident.  Diagnostics for a rejected configuration are kept in
+[codex]     # `structure`, which is not a score surface.
+[codex]     fields_ok = structure is not None and status == STATUS_OK
+[codex]     outcome: dict[str, Any] = {
+[codex]         "schema": SCHEMA,
+[codex]         "e_star_version": E_STAR_VERSION,
+[codex]         "evaluator_source_sha256": source_digest,
+[codex]         "interpreter": {
+[codex]             "implementation": sys.implementation.name,
+[codex]             "version": "{}.{}.{}".format(*sys.version_info[:3]),
+[codex]         },
+[codex]         "theta_e": {
+[codex]             "seed": int(theta["seed"]),
+[codex]             "fidelity": theta["fidelity"],
+[codex]             "fraction": float(theta["fraction"]),
+[codex]             "n": n,
+[codex]             "runs": int(theta["runs"]),
+[codex]             "runtime_budget_ms": float(theta["runtime_budget_ms"]),
+[codex]             "timeout_s": float(theta["timeout_s"]),
+[codex]         },
+[codex]         "candidate": {
+[codex]             "entry": "pack_circles",
+[codex]             "source_sha256": candidate_sha256,
+[codex]             "source_bytes": int(candidate_bytes),
+[codex]         },
+[codex]         "status": status,
+[codex]         "scored": status == STATUS_OK,
+[codex]         "failure": failure,
+[codex]         "objective": objective,
+[codex]         "structure": structure,
+[codex]         "fields": {
+[codex]             "sum_radii": structure["sum_radii"] if fields_ok else None,
+[codex]             "packing_density": structure["packing_density"] if fields_ok else None,
+[codex]             "num_circles": structure["num_circles"] if fields_ok else None,
+[codex]             "overlap_count": structure["overlap_count"] if fields_ok else None,
+[codex] 
+[codex] codex
+[codex] Measurement characterization is complete: full fidelity requests exactly 26 circles, runs the candidate five times, audits every circle and all 325 pairs, requires deterministic valid triples within 250 ms p50, and scores the unweighted `sum_radii` across all 26 circles. There are no dataset rows or strata; the only coverage axis is the fixed `n=26` full audit. I will not alter `kapso_evaluation/` because it is explicitly read-and-execute only, and I will make the prescribed `solution.py` replacement plus the mandatory `changes.log` audit record.
+[codex] ERROR: Reconnecting... 1/5

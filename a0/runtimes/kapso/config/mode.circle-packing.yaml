@@ -1,0 +1,93 @@
+# KAPSO mode config for the A0 evaluator-adapter study (circle-packing).
+#
+# Three settings are mandatory for A0 (adapter_contract.md section 6.1,
+# a0/acceptance/ACCEPTANCE.md A01/A02-K*):
+#   * search_strategy.params.parent_policy = "best"   (the A0.2 frozen condition,
+#     strategy.py:211-212, default value; declared explicitly here)
+#   * evaluation_maintainer.max_change_requests = 0   (the implementing agent may
+#     not request edits to the registered evaluator at all — an accepted change
+#     request re-registers the evaluator, which would change EID_r mid-run)
+#   * budget.fidelity.mode = "off"                    (the FidelitySpec default
+#     fidelity.py:244; declared explicitly so no tier ever issues a `fast` grant
+#     while the registered command class is `full` — the D16 mismatch)
+#
+# Front-door closure (protocol section 4.3, plan:569): KAPSO's autonomous
+# external-acquisition doors are shut here by configuration, and the closure
+# probe measures the resulting strategy object rather than trusting this file.
+#   * web_search: false            -> ideation claude sessions get
+#     --disallowedTools WebSearch,WebFetch (strategy.py:245-253) and the codex
+#     member gets no --search (codex_agent.py:118, :192-193)
+#   * implementation_web: false    -> same for implementation sessions
+#     (strategy.py:355-362)
+#   * ideation_gates / implementation_gates = []  -> no gate MCP servers are
+#     mounted at all (no research / knowledge / wiki tools exist in-session)
+#   * no knowledge_search block    -> KnowledgeSearchFactory.create_null()
+#     unless the embedder passes is_kg_active=True (orchestrator.py:517-552);
+#     nothing in this run does
+#   * agent_specific.disallowed_tools includes Bash/WebSearch/WebFetch/WebFetch
+#     -> the claude lane's Bash side door is additionally shut at the CLI flag
+#     level (claude_code_agent.py:1207-1214).  This is *not* the protocol's
+#     assumed situation ("no lane-level sandbox parameter"); it is recorded as a
+#     config-level closure with the flag construction verified from KAPSO's own
+#     build_command, and it is NOT empirically verified because no model backend
+#     is reachable on this host (see README.md, closure section).
+#
+# The model names are placeholders: every model-dependent call in this study's
+# run is driven through a documented seam (adapter/seams.py) because the codex
+# and claude lanes are unusable on this host.
+
+default_mode: CIRCLE_PACKING
+
+modes:
+  CIRCLE_PACKING:
+    search_strategy:
+      type: "generic"
+      params:
+        parent_policy: "best"
+        web_search: false
+        implementation_web: false
+        ideation_gates: []
+        implementation_gates: []
+        design_axes: [
+          "geometry / parametrisation — the circle layout representation (hex lattice, concentric rings, strip packing) and how coordinates are parameterised",
+          "optimisation procedure — local refinement, seeding, perturbation and constraint-repair strategy inside pack_circles",
+          "numerical robustness — determinism across repeated calls, p50 runtime under the 250 ms budget gate, and the overlap / bounds margins",
+        ]
+        idea_generation_model: "claude-opus-5"
+        implementation_model: "claude-opus-5"
+        implementation_cli: "claude_code"
+        gate_failure_policy: "warn"
+        repo_memory_failure_policy: "warn"
+        node_expansion_value: 1
+
+    coding_agent:
+      type: "claude_code"
+      model: "claude-opus-5"
+      agent_specific:
+        streaming: false
+        disallowed_tools: ["Bash", "WebSearch", "WebFetch", "WebFetch", "Task", "NotebookEdit"]
+
+    feedback_generator:
+      type: "claude_code"
+      model: "claude-opus-5"
+      agent_specific:
+        streaming: false
+        disallowed_tools: ["Bash", "WebSearch", "WebFetch", "WebFetch", "Task", "NotebookEdit"]
+
+    evaluation_maintainer:
+      type: "claude_code"
+      model: "claude-opus-5"
+      agent_specific:
+        streaming: false
+        disallowed_tools: ["Bash", "WebSearch", "WebFetch", "WebFetch", "Task"]
+      subsample_seed: 1337
+      calibration_fraction: 0.03
+      calibration_timeout_seconds: 120
+      fast_variant_threshold_minutes: 20
+      overhead_factor: 1.25
+      max_change_requests: 0
+      transition_freeze_fraction: 0.85
+
+    budget:
+      fidelity:
+        mode: "off"

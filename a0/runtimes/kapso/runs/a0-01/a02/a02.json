@@ -1,0 +1,1277 @@
+{
+  "checks": [
+    {
+      "check_id": "A02-K1",
+      "description": "get_best_experiment() is not None and is the max-score valid node",
+      "evidence": {
+        "node_history": [
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_0",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 0,
+            "score": 0.25,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_1",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 1,
+            "score": 2.4519205208433132,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_2",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 2,
+            "score": 2.6e-05,
+            "tier": 2
+          }
+        ]
+      },
+      "expected": {
+        "candidate_id": "c01_good_hex",
+        "node_id": 1,
+        "not_none": true
+      },
+      "observed": {
+        "candidate_id": "c01_good_hex",
+        "node_id": 1,
+        "not_none": true
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K2",
+      "description": "the next round's parent branch/node are c01 (the higher E* score)",
+      "evidence": {
+        "third_round_branch": "generic_exp_2",
+        "third_round_candidate": "c14_near_zero",
+        "third_round_parent_branch": "generic_exp_1"
+      },
+      "expected": {
+        "parent_candidate_id": "c01_good_hex",
+        "parent_node_id": 1
+      },
+      "observed": {
+        "parent_candidate_id": "c01_good_hex",
+        "parent_node_id": 1
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K3",
+      "description": "the deliverable is c01 and its score is E*(c01)",
+      "evidence": {
+        "checkout_branch": "generic_exp_1"
+      },
+      "expected": {
+        "candidate_id": "c01_good_hex",
+        "deliverable_node_id": 1,
+        "score": 2.4519205208433132
+      },
+      "observed": {
+        "candidate_id": "c01_good_hex",
+        "deliverable_node_id": 1,
+        "score": 2.4519205208433132
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K4",
+      "description": "both candidates sit at TIER_FULL under the same granted class (otherwise the K3 assertion is not legitimate)",
+      "evidence": {
+        "maximize_scoring": true,
+        "parent_policy": "best"
+      },
+      "expected": {
+        "grant_high": {
+          "fidelity": "full",
+          "fraction": 1.0
+        },
+        "grant_low": {
+          "fidelity": "full",
+          "fraction": 1.0
+        },
+        "tier_high": 2,
+        "tier_low": 2
+      },
+      "observed": {
+        "grant_high": {
+          "fidelity": "full",
+          "fraction": 1.0
+        },
+        "grant_low": {
+          "fidelity": "full",
+          "fraction": 1.0
+        },
+        "tier_high": 2,
+        "tier_low": 2
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K-EXT",
+      "description": "the externally supplied scores decided the selection: the winning node's score equals E*(c01) from the adapter's own reference run, and the lower-scoring node was passed over",
+      "evidence": {
+        "branch_sha_ok": {
+          "c01": true,
+          "c02": true
+        },
+        "external_scores": {
+          "c01": 2.4519205208433132,
+          "c02": 0.25
+        },
+        "runtime_scores": {
+          "c01": 2.4519205208433132,
+          "c02": 0.25
+        }
+      },
+      "expected": true,
+      "observed": true,
+      "pass": true
+    },
+    {
+      "check_id": "A02-K2-REVERSED",
+      "description": "with the low scorer evaluated *last*, the next round's parent is still the high scorer (c01, node 0)",
+      "evidence": {
+        "node_history": [
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_0",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 0,
+            "score": 2.4519205208433132,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_1",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 1,
+            "score": 0.25,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_2",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 2,
+            "score": 2.6e-05,
+            "tier": 2
+          }
+        ]
+      },
+      "expected": {
+        "parent_candidate_id": "c01_good_hex",
+        "parent_node_id": 0
+      },
+      "observed": {
+        "parent_candidate_id": "c01_good_hex",
+        "parent_node_id": 0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K3-REVERSED",
+      "description": "the deliverable is likewise the high scorer, not the newest node",
+      "evidence": {},
+      "expected": {
+        "candidate_id": "c01_good_hex",
+        "deliverable_node_id": 0
+      },
+      "observed": {
+        "candidate_id": "c01_good_hex",
+        "deliverable_node_id": 0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K7",
+      "description": "with exactly equal scores the first node in node_history wins (Python max semantics), for parent and deliverable alike",
+      "evidence": {
+        "distinct_candidates": [
+          "generic_exp_0",
+          "generic_exp_1"
+        ]
+      },
+      "expected": {
+        "best_node_id": 0,
+        "deliverable_node_id": 0,
+        "parent_node_id": 0,
+        "scores": [
+          2.4519205208433132,
+          2.4519205208433132
+        ]
+      },
+      "observed": {
+        "best_node_id": 0,
+        "deliverable_node_id": 0,
+        "parent_node_id": 0,
+        "scores": [
+          2.4519205208433132,
+          2.4519205208433132
+        ]
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K5-ERROR",
+      "description": "a candidate whose E* verdict is error carries no score of record (None, never 0.0) and never becomes parent or deliverable",
+      "evidence": {
+        "evaluation_valid": true,
+        "verdict": "seam judge: the registered evaluation's manifest line is the score of record; validity granted, no stop vote"
+      },
+      "expected": {
+        "attempts": 0,
+        "best_node_id": 0,
+        "deliverable_node_id": 0,
+        "score": null
+      },
+      "observed": {
+        "attempts": 0,
+        "best_node_id": 0,
+        "deliverable_node_id": 0,
+        "score": null
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K5-TAMPER",
+      "description": "a candidate whose committed evaluation tree differs from the registered head is rejected by enforce_evaluation_integrity and cannot become parent or deliverable",
+      "evidence": {
+        "integrity_error": "Provided evaluation integrity check failed (changed: kapso_eval.py)"
+      },
+      "expected": {
+        "best_node_id": 0,
+        "deliverable_node_id": 0,
+        "evaluation_valid": false,
+        "integrity_error_present": true,
+        "score": null
+      },
+      "observed": {
+        "best_node_id": 0,
+        "deliverable_node_id": 0,
+        "evaluation_valid": false,
+        "integrity_error_present": true,
+        "score": null
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K5-NEXT-PARENT",
+      "description": "the next round's parent is the surviving high scorer (c01, node 0), not the rejected or scoreless nodes",
+      "evidence": {},
+      "expected": {
+        "parent_candidate_id": "c01_good_hex",
+        "parent_node_id": 0
+      },
+      "observed": {
+        "parent_candidate_id": "c01_good_hex",
+        "parent_node_id": 0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K5-HAD-ERROR-GATE",
+      "description": "had_error nodes are invisible to the parent argmax (the third gate of get_best_experiment, strategy.py:1429-1433), probed on real nodes",
+      "evidence": {
+        "note": "a constructed node with had_error=True and a 9.0 score is appended to node_history, the real get_best_experiment() is called, and the append is reverted"
+      },
+      "expected": {
+        "best_node_id_ignoring_had_error": 0
+      },
+      "observed": {
+        "best_node_id_ignoring_had_error": 0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K6",
+      "description": "a fast-only high scorer does not win the deliverable against a full-tier candidate, but it does win the parent (the two objects are not the same)",
+      "evidence": {
+        "fast_attempts": [
+          {
+            "commit_sha": "9d57c99ead033cbd973e45846878895cae94e5a5",
+            "duration_seconds": 0.17797252000309527,
+            "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+            "fidelity": "fast",
+            "fraction": 0.15,
+            "metrics": {},
+            "score": 2.4519205208433132,
+            "seed": 1337
+          }
+        ],
+        "fast_score": 2.4519205208433132,
+        "full_attempts": [
+          {
+            "commit_sha": "398f646937b6d4a63fba6637cb67ef6dba52e45e",
+            "duration_seconds": 0.18261544500273885,
+            "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 0.25,
+            "seed": 1337
+          }
+        ],
+        "full_score": 0.25,
+        "manifest_class_matched_the_grant": true,
+        "note": "the fast node's manifest triple matched its fast grant, so this is K06's eligibility rule and not a manifest mismatch"
+      },
+      "expected": {
+        "deliverable_node_id": 0,
+        "fast_score_higher": true,
+        "fast_tier": 0,
+        "full_tier": 2,
+        "parent_node_id": 1
+      },
+      "observed": {
+        "deliverable_node_id": 0,
+        "fast_score_higher": true,
+        "fast_tier": 0,
+        "full_tier": 2,
+        "parent_node_id": 1
+      },
+      "pass": true
+    },
+    {
+      "check_id": "A02-K6-CLASS",
+      "description": "the fast node's recorded attempt carries the fast class the grant issued (fidelity fast, fraction 0.15)",
+      "evidence": {
+        "grant": {
+          "fidelity": "fast",
+          "fraction": 0.15
+        }
+      },
+      "expected": {
+        "fidelity": "fast",
+        "fraction": 0.15
+      },
+      "observed": {
+        "fidelity": "fast",
+        "fraction": 0.15
+      },
+      "pass": true
+    }
+  ],
+  "contract_note": "selection.source_score_event_id is now populated (it names the score event of the run's merged stream, traces/<runtime>.<run_id>.all.jsonl). The earlier record's `contract_defect` note is void: the 2026-09-20 arbitration made the RUN the validation unit (contract/README.md section 8, item 3; adapter_contract.md section 6.3), and this adapter validates with `trace_validate.py validate-run`.",
+  "e_star_identity": {
+    "cmd": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py digest",
+    "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+    "e_star_version": "1.0.0",
+    "pass": true,
+    "returncode": 0,
+    "source_files": [
+      {
+        "bytes": 34860,
+        "name": "e_star.py",
+        "sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567"
+      },
+      {
+        "bytes": 4704,
+        "name": "e_star_child.py",
+        "sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca"
+      }
+    ],
+    "stderr_tail": ""
+  },
+  "eid_r": {
+    "declaration": "KAPSO's native evaluator identity: EID_r = manifest_fingerprint over the two-file registered evaluation tree (evaluation_integrity.py:112-119); the tree's a0_locator.json carries EID*'s EvaluatorSource records and canonical theta_E, which kapso_eval.py re-hashes and enforces on every invocation.",
+    "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "mapping_mode": "native",
+    "native_scheme": "manifest_fingerprint",
+    "recomputable": true,
+    "value": "manifest:1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962"
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "elapsed_sec": 4.121442,
+  "external_scores": {
+    "c01_good_hex": {
+      "exit_code": 0,
+      "objective": 2.4519205208433132,
+      "status": "ok"
+    },
+    "c02_baseline_upstream": {
+      "exit_code": 0,
+      "objective": 0.25,
+      "status": "ok"
+    },
+    "c03_mirror": {
+      "exit_code": 0,
+      "objective": 2.4519205208433132,
+      "status": "ok"
+    },
+    "c10_raises": {
+      "exit_code": 3,
+      "objective": null,
+      "status": "error"
+    },
+    "c14_near_zero": {
+      "exit_code": 0,
+      "objective": 2.6e-05,
+      "status": "ok"
+    }
+  },
+  "failure_stage_counts": {
+    "counts": {
+      "boundary_violation": 1,
+      "evaluator_failed": 1,
+      "none": 19
+    },
+    "counts_score_trace_only": {
+      "boundary_violation": 1,
+      "evaluator_failed": 1,
+      "none": 14
+    },
+    "note": "declared by the adapter from its own emitted events, one unit per (iteration, candidate_id, stage) so a failure reported on both the score and the resource event of a unit is counted once (plan:577, plan:628). `counts` is over the run's merged stream (the validation unit); `counts_score_trace_only` is the same rule over the score trace alone. The mapping is the A0-wide table in contract/selection/kapso.selection.json.",
+    "source": "runs/a0-01/a02/traces/kapso.a0-01.score.jsonl"
+  },
+  "failures": [],
+  "frozen_conditions": {
+    "fidelity_mode": "off",
+    "maximize_scoring": true,
+    "one_registered_evaluator_head": true,
+    "parent_policy": "best"
+  },
+  "pass": true,
+  "run_id": "a0-01",
+  "runtime": "kapso",
+  "scenarios": {
+    "error_and_tamper": {
+      "checks": [
+        {
+          "check_id": "A02-K5-ERROR",
+          "description": "a candidate whose E* verdict is error carries no score of record (None, never 0.0) and never becomes parent or deliverable",
+          "evidence": {
+            "evaluation_valid": true,
+            "verdict": "seam judge: the registered evaluation's manifest line is the score of record; validity granted, no stop vote"
+          },
+          "expected": {
+            "attempts": 0,
+            "best_node_id": 0,
+            "deliverable_node_id": 0,
+            "score": null
+          },
+          "observed": {
+            "attempts": 0,
+            "best_node_id": 0,
+            "deliverable_node_id": 0,
+            "score": null
+          },
+          "pass": true
+        },
+        {
+          "check_id": "A02-K5-TAMPER",
+          "description": "a candidate whose committed evaluation tree differs from the registered head is rejected by enforce_evaluation_integrity and cannot become parent or deliverable",
+          "evidence": {
+            "integrity_error": "Provided evaluation integrity check failed (changed: kapso_eval.py)"
+          },
+          "expected": {
+            "best_node_id": 0,
+            "deliverable_node_id": 0,
+            "evaluation_valid": false,
+            "integrity_error_present": true,
+            "score": null
+          },
+          "observed": {
+            "best_node_id": 0,
+            "deliverable_node_id": 0,
+            "evaluation_valid": false,
+            "integrity_error_present": true,
+            "score": null
+          },
+          "pass": true
+        },
+        {
+          "check_id": "A02-K5-NEXT-PARENT",
+          "description": "the next round's parent is the surviving high scorer (c01, node 0), not the rejected or scoreless nodes",
+          "evidence": {},
+          "expected": {
+            "parent_candidate_id": "c01_good_hex",
+            "parent_node_id": 0
+          },
+          "observed": {
+            "parent_candidate_id": "c01_good_hex",
+            "parent_node_id": 0
+          },
+          "pass": true
+        },
+        {
+          "check_id": "A02-K5-HAD-ERROR-GATE",
+          "description": "had_error nodes are invisible to the parent argmax (the third gate of get_best_experiment, strategy.py:1429-1433), probed on real nodes",
+          "evidence": {
+            "note": "a constructed node with had_error=True and a 9.0 score is appended to node_history, the real get_best_experiment() is called, and the append is reverted"
+          },
+          "expected": {
+            "best_node_id_ignoring_had_error": 0
+          },
+          "observed": {
+            "best_node_id_ignoring_had_error": 0
+          },
+          "pass": true
+        }
+      ],
+      "decisions": {
+        "best_candidate_id": "c01_good_hex",
+        "best_node_id": 0,
+        "deliverable_candidate_id": "c01_good_hex",
+        "deliverable_node_id": 0,
+        "deliverable_score": 2.4519205208433132,
+        "maximize_scoring": true,
+        "node_history": [
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_0",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 0,
+            "score": 2.4519205208433132,
+            "tier": 2
+          },
+          {
+            "attempts": 0,
+            "branch_name": "generic_exp_1",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 1,
+            "score": null,
+            "tier": 0
+          },
+          {
+            "attempts": 0,
+            "branch_name": "generic_exp_2",
+            "eval_fidelity": "full",
+            "evaluation_valid": false,
+            "had_error": false,
+            "node_id": 2,
+            "score": null,
+            "tier": 0
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_3",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 3,
+            "score": 2.6e-05,
+            "tier": 2
+          }
+        ],
+        "parent_policy": "best",
+        "scored_nodes": [
+          0,
+          3
+        ]
+      },
+      "pass": true,
+      "workdir": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a02/error_and_tamper/workspace"
+    },
+    "fast_only": {
+      "checks": [
+        {
+          "check_id": "A02-K6",
+          "description": "a fast-only high scorer does not win the deliverable against a full-tier candidate, but it does win the parent (the two objects are not the same)",
+          "evidence": {
+            "fast_attempts": [
+              {
+                "commit_sha": "9d57c99ead033cbd973e45846878895cae94e5a5",
+                "duration_seconds": 0.17797252000309527,
+                "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+                "fidelity": "fast",
+                "fraction": 0.15,
+                "metrics": {},
+                "score": 2.4519205208433132,
+                "seed": 1337
+              }
+            ],
+            "fast_score": 2.4519205208433132,
+            "full_attempts": [
+              {
+                "commit_sha": "398f646937b6d4a63fba6637cb67ef6dba52e45e",
+                "duration_seconds": 0.18261544500273885,
+                "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+                "fidelity": "full",
+                "fraction": 1.0,
+                "metrics": {},
+                "score": 0.25,
+                "seed": 1337
+              }
+            ],
+            "full_score": 0.25,
+            "manifest_class_matched_the_grant": true,
+            "note": "the fast node's manifest triple matched its fast grant, so this is K06's eligibility rule and not a manifest mismatch"
+          },
+          "expected": {
+            "deliverable_node_id": 0,
+            "fast_score_higher": true,
+            "fast_tier": 0,
+            "full_tier": 2,
+            "parent_node_id": 1
+          },
+          "observed": {
+            "deliverable_node_id": 0,
+            "fast_score_higher": true,
+            "fast_tier": 0,
+            "full_tier": 2,
+            "parent_node_id": 1
+          },
+          "pass": true
+        },
+        {
+          "check_id": "A02-K6-CLASS",
+          "description": "the fast node's recorded attempt carries the fast class the grant issued (fidelity fast, fraction 0.15)",
+          "evidence": {
+            "grant": {
+              "fidelity": "fast",
+              "fraction": 0.15
+            }
+          },
+          "expected": {
+            "fidelity": "fast",
+            "fraction": 0.15
+          },
+          "observed": {
+            "fidelity": "fast",
+            "fraction": 0.15
+          },
+          "pass": true
+        }
+      ],
+      "decisions": {
+        "best_candidate_id": "c01_good_hex",
+        "best_node_id": 1,
+        "deliverable_candidate_id": "c02_baseline_upstream",
+        "deliverable_node_id": 0,
+        "deliverable_score": 0.25,
+        "maximize_scoring": true,
+        "node_history": [
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_0",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 0,
+            "score": 0.25,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_1",
+            "eval_fidelity": "fast",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 1,
+            "score": 2.4519205208433132,
+            "tier": 0
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_2",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 2,
+            "score": 2.6e-05,
+            "tier": 2
+          }
+        ],
+        "parent_policy": "best",
+        "scored_nodes": [
+          0,
+          1,
+          2
+        ]
+      },
+      "pass": true,
+      "workdir": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a02/fast_only/workspace"
+    },
+    "ordered_pair": {
+      "checks": [
+        {
+          "check_id": "A02-K1",
+          "description": "get_best_experiment() is not None and is the max-score valid node",
+          "evidence": {
+            "node_history": [
+              {
+                "attempts": 1,
+                "branch_name": "generic_exp_0",
+                "eval_fidelity": "full",
+                "evaluation_valid": true,
+                "had_error": false,
+                "node_id": 0,
+                "score": 0.25,
+                "tier": 2
+              },
+              {
+                "attempts": 1,
+                "branch_name": "generic_exp_1",
+                "eval_fidelity": "full",
+                "evaluation_valid": true,
+                "had_error": false,
+                "node_id": 1,
+                "score": 2.4519205208433132,
+                "tier": 2
+              },
+              {
+                "attempts": 1,
+                "branch_name": "generic_exp_2",
+                "eval_fidelity": "full",
+                "evaluation_valid": true,
+                "had_error": false,
+                "node_id": 2,
+                "score": 2.6e-05,
+                "tier": 2
+              }
+            ]
+          },
+          "expected": {
+            "candidate_id": "c01_good_hex",
+            "node_id": 1,
+            "not_none": true
+          },
+          "observed": {
+            "candidate_id": "c01_good_hex",
+            "node_id": 1,
+            "not_none": true
+          },
+          "pass": true
+        },
+        {
+          "check_id": "A02-K2",
+          "description": "the next round's parent branch/node are c01 (the higher E* score)",
+          "evidence": {
+            "third_round_branch": "generic_exp_2",
+            "third_round_candidate": "c14_near_zero",
+            "third_round_parent_branch": "generic_exp_1"
+          },
+          "expected": {
+            "parent_candidate_id": "c01_good_hex",
+            "parent_node_id": 1
+          },
+          "observed": {
+            "parent_candidate_id": "c01_good_hex",
+            "parent_node_id": 1
+          },
+          "pass": true
+        },
+        {
+          "check_id": "A02-K3",
+          "description": "the deliverable is c01 and its score is E*(c01)",
+          "evidence": {
+            "checkout_branch": "generic_exp_1"
+          },
+          "expected": {
+            "candidate_id": "c01_good_hex",
+            "deliverable_node_id": 1,
+            "score": 2.4519205208433132
+          },
+          "observed": {
+            "candidate_id": "c01_good_hex",
+            "deliverable_node_id": 1,
+            "score": 2.4519205208433132
+          },
+          "pass": true
+        },
+        {
+          "check_id": "A02-K4",
+          "description": "both candidates sit at TIER_FULL under the same granted class (otherwise the K3 assertion is not legitimate)",
+          "evidence": {
+            "maximize_scoring": true,
+            "parent_policy": "best"
+          },
+          "expected": {
+            "grant_high": {
+              "fidelity": "full",
+              "fraction": 1.0
+            },
+            "grant_low": {
+              "fidelity": "full",
+              "fraction": 1.0
+            },
+            "tier_high": 2,
+            "tier_low": 2
+          },
+          "observed": {
+            "grant_high": {
+              "fidelity": "full",
+              "fraction": 1.0
+            },
+            "grant_low": {
+              "fidelity": "full",
+              "fraction": 1.0
+            },
+            "tier_high": 2,
+            "tier_low": 2
+          },
+          "pass": true
+        },
+        {
+          "check_id": "A02-K-EXT",
+          "description": "the externally supplied scores decided the selection: the winning node's score equals E*(c01) from the adapter's own reference run, and the lower-scoring node was passed over",
+          "evidence": {
+            "branch_sha_ok": {
+              "c01": true,
+              "c02": true
+            },
+            "external_scores": {
+              "c01": 2.4519205208433132,
+              "c02": 0.25
+            },
+            "runtime_scores": {
+              "c01": 2.4519205208433132,
+              "c02": 0.25
+            }
+          },
+          "expected": true,
+          "observed": true,
+          "pass": true
+        }
+      ],
+      "decisions": {
+        "best_candidate_id": "c01_good_hex",
+        "best_node_id": 1,
+        "deliverable_candidate_id": "c01_good_hex",
+        "deliverable_node_id": 1,
+        "deliverable_score": 2.4519205208433132,
+        "maximize_scoring": true,
+        "node_history": [
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_0",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 0,
+            "score": 0.25,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_1",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 1,
+            "score": 2.4519205208433132,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_2",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 2,
+            "score": 2.6e-05,
+            "tier": 2
+          }
+        ],
+        "parent_policy": "best",
+        "scored_nodes": [
+          0,
+          1,
+          2
+        ]
+      },
+      "pass": true,
+      "rounds": [
+        {
+          "attempts": [
+            {
+              "commit_sha": "daeb73eb869491bad814b1e341d48d94287f6046",
+              "duration_seconds": 0.26067033099388937,
+              "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+              "fidelity": "full",
+              "fraction": 1.0,
+              "metrics": {},
+              "score": 0.25,
+              "seed": 1337
+            }
+          ],
+          "branch_name": "generic_exp_0",
+          "branch_solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+          "build_fidelity": "full",
+          "candidate_id": "c02_baseline_upstream",
+          "eval_fidelity": "full",
+          "evaluation_integrity_error": "",
+          "evaluation_valid": true,
+          "fidelity_grant": {
+            "fidelity": "full",
+            "fraction": 1.0
+          },
+          "had_error": false,
+          "manifest_exit_code": 0,
+          "node_id": 0,
+          "parent_branch_name": "main",
+          "parent_node_id": null,
+          "score": 0.25,
+          "tamper": null
+        },
+        {
+          "attempts": [
+            {
+              "commit_sha": "6e002f56e9bab60affacdf10c4a93d1a38d966ea",
+              "duration_seconds": 0.1788774390006438,
+              "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+              "fidelity": "full",
+              "fraction": 1.0,
+              "metrics": {},
+              "score": 2.4519205208433132,
+              "seed": 1337
+            }
+          ],
+          "branch_name": "generic_exp_1",
+          "branch_solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+          "build_fidelity": "full",
+          "candidate_id": "c01_good_hex",
+          "eval_fidelity": "full",
+          "evaluation_integrity_error": "",
+          "evaluation_valid": true,
+          "fidelity_grant": {
+            "fidelity": "full",
+            "fraction": 1.0
+          },
+          "had_error": false,
+          "manifest_exit_code": 0,
+          "node_id": 1,
+          "parent_branch_name": "generic_exp_0",
+          "parent_node_id": 0,
+          "score": 2.4519205208433132,
+          "tamper": null
+        },
+        {
+          "attempts": [
+            {
+              "commit_sha": "1cb9aa1f58e9a64d0c7b3b128b0faf3b47aeb4d9",
+              "duration_seconds": 0.18158843900164356,
+              "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+              "fidelity": "full",
+              "fraction": 1.0,
+              "metrics": {},
+              "score": 2.6e-05,
+              "seed": 1337
+            }
+          ],
+          "branch_name": "generic_exp_2",
+          "branch_solution_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+          "build_fidelity": "full",
+          "candidate_id": "c14_near_zero",
+          "eval_fidelity": "full",
+          "evaluation_integrity_error": "",
+          "evaluation_valid": true,
+          "fidelity_grant": {
+            "fidelity": "full",
+            "fraction": 1.0
+          },
+          "had_error": false,
+          "manifest_exit_code": 0,
+          "node_id": 2,
+          "parent_branch_name": "generic_exp_1",
+          "parent_node_id": 1,
+          "score": 2.6e-05,
+          "tamper": null
+        }
+      ],
+      "workdir": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a02/ordered_pair/workspace"
+    },
+    "reversed_order": {
+      "checks": [
+        {
+          "check_id": "A02-K2-REVERSED",
+          "description": "with the low scorer evaluated *last*, the next round's parent is still the high scorer (c01, node 0)",
+          "evidence": {
+            "node_history": [
+              {
+                "attempts": 1,
+                "branch_name": "generic_exp_0",
+                "eval_fidelity": "full",
+                "evaluation_valid": true,
+                "had_error": false,
+                "node_id": 0,
+                "score": 2.4519205208433132,
+                "tier": 2
+              },
+              {
+                "attempts": 1,
+                "branch_name": "generic_exp_1",
+                "eval_fidelity": "full",
+                "evaluation_valid": true,
+                "had_error": false,
+                "node_id": 1,
+                "score": 0.25,
+                "tier": 2
+              },
+              {
+                "attempts": 1,
+                "branch_name": "generic_exp_2",
+                "eval_fidelity": "full",
+                "evaluation_valid": true,
+                "had_error": false,
+                "node_id": 2,
+                "score": 2.6e-05,
+                "tier": 2
+              }
+            ]
+          },
+          "expected": {
+            "parent_candidate_id": "c01_good_hex",
+            "parent_node_id": 0
+          },
+          "observed": {
+            "parent_candidate_id": "c01_good_hex",
+            "parent_node_id": 0
+          },
+          "pass": true
+        },
+        {
+          "check_id": "A02-K3-REVERSED",
+          "description": "the deliverable is likewise the high scorer, not the newest node",
+          "evidence": {},
+          "expected": {
+            "candidate_id": "c01_good_hex",
+            "deliverable_node_id": 0
+          },
+          "observed": {
+            "candidate_id": "c01_good_hex",
+            "deliverable_node_id": 0
+          },
+          "pass": true
+        }
+      ],
+      "decisions": {
+        "best_candidate_id": "c01_good_hex",
+        "best_node_id": 0,
+        "deliverable_candidate_id": "c01_good_hex",
+        "deliverable_node_id": 0,
+        "deliverable_score": 2.4519205208433132,
+        "maximize_scoring": true,
+        "node_history": [
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_0",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 0,
+            "score": 2.4519205208433132,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_1",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 1,
+            "score": 0.25,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_2",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 2,
+            "score": 2.6e-05,
+            "tier": 2
+          }
+        ],
+        "parent_policy": "best",
+        "scored_nodes": [
+          0,
+          1,
+          2
+        ]
+      },
+      "pass": true,
+      "workdir": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a02/reversed_order/workspace"
+    },
+    "tie_break": {
+      "checks": [
+        {
+          "check_id": "A02-K7",
+          "description": "with exactly equal scores the first node in node_history wins (Python max semantics), for parent and deliverable alike",
+          "evidence": {
+            "distinct_candidates": [
+              "generic_exp_0",
+              "generic_exp_1"
+            ]
+          },
+          "expected": {
+            "best_node_id": 0,
+            "deliverable_node_id": 0,
+            "parent_node_id": 0,
+            "scores": [
+              2.4519205208433132,
+              2.4519205208433132
+            ]
+          },
+          "observed": {
+            "best_node_id": 0,
+            "deliverable_node_id": 0,
+            "parent_node_id": 0,
+            "scores": [
+              2.4519205208433132,
+              2.4519205208433132
+            ]
+          },
+          "pass": true
+        }
+      ],
+      "decisions": {
+        "best_candidate_id": "c01_good_hex",
+        "best_node_id": 0,
+        "deliverable_candidate_id": "c01_good_hex",
+        "deliverable_node_id": 0,
+        "deliverable_score": 2.4519205208433132,
+        "maximize_scoring": true,
+        "node_history": [
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_0",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 0,
+            "score": 2.4519205208433132,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_1",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 1,
+            "score": 2.4519205208433132,
+            "tier": 2
+          },
+          {
+            "attempts": 1,
+            "branch_name": "generic_exp_2",
+            "eval_fidelity": "full",
+            "evaluation_valid": true,
+            "had_error": false,
+            "node_id": 2,
+            "score": 2.6e-05,
+            "tier": 2
+          }
+        ],
+        "parent_policy": "best",
+        "scored_nodes": [
+          0,
+          1,
+          2
+        ]
+      },
+      "pass": true,
+      "workdir": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a02/tie_break/workspace"
+    }
+  },
+  "schema": "a0.kapso.selection/v1",
+  "seams": {
+    "ideation": "a0_adapter/seams.py::seam_generate_solution <- strategy.py:845",
+    "implementation": "a0_adapter/seams.py::seam_run_implementation <- strategy.py:1036",
+    "judge": "a0_adapter/seams.py::SeamFeedbackJudge <- feedback_flow.py:16",
+    "note": "the LLM-driven end-to-end path for the patched phases is UNVERIFIED"
+  },
+  "selection_declaration": {
+    "canonical_digest": "c1a993650b4edc4e7a0a799d12d2f6f74e7927b364021dd454454b6e22fc4d6c",
+    "digest_rule": "sha256 over the contract's canonical JSON (sorted keys, no whitespace, ASCII) -- evalcontract.py:102",
+    "failure_stage_mapping": {
+      "exit_0_ok": "none",
+      "exit_2_invalid": "verify_failed",
+      "exit_3_error_candidate_call_raised": "evaluator_failed",
+      "exit_3_error_candidate_import_failed": "resolve_failed",
+      "exit_3_error_child_terminated_early": "evaluator_failed",
+      "exit_3_error_non_deterministic": "verify_failed",
+      "exit_3_error_other": "evaluator_failed",
+      "exit_3_error_runtime_budget_exceeded": "timeout",
+      "note": "E* verdict -> trace failure_stage. The trace schema fixes the enum but not this per-runtime mapping; SimpleLoop freezes it here and reports it to the contract owner so the other runtimes can adopt the same one.",
+      "solver_lane_produced_no_proposal": "search_failed"
+    },
+    "frozen_canonical_copy": {
+      "canonical_digest": "143bfc949f074079e612041622640afd8321ff7c24dab0b62d0cfda8a4e10d59",
+      "differing_top_level_keys": [
+        "selection"
+      ],
+      "identical_to_this_declaration": false,
+      "note": "the runtime-side declaration changed after the contract owner froze their copy; the frozen copy must be re-adopted (see differing_top_level_keys). The normative A0-wide blocks are checked separately in shared_blocks and are unaffected by this note.",
+      "path": "/home/ebt/rsi-dev/a0/contract/selection/kapso.selection.json",
+      "present": true
+    },
+    "path": "/home/ebt/rsi-dev/a0/runtimes/kapso/contract/selection/kapso.selection.json",
+    "policy_id": "kapso-selection-v1",
+    "schema": "a0.selection/v1",
+    "shared_blocks": {
+      "failure_stage_mapping": {
+        "digest": "201fed78b72587786fcafcc0a0caf9b2a1e65705b7f58e1cdd1c914436ef318f",
+        "identical": true
+      },
+      "scalarization": {
+        "digest": "d59f09309b61be515935c8faf72f77f5b66162f5c1375e2eb8ca16934c149b3c",
+        "identical": true
+      }
+    },
+    "shared_blocks_from": "/home/ebt/rsi-dev/a0/contract/selection/simpleloop.selection.json",
+    "shared_blocks_note": null,
+    "status": "adopted-by-kapso-workstream"
+  },
+  "theta_E": {
+    "fidelity": "full",
+    "fraction": 1.0,
+    "seed": 1337
+  },
+  "trace_paths": {
+    "all": "runs/a0-01/a02/traces/kapso.a0-01.all.jsonl",
+    "resource": "runs/a0-01/a02/traces/kapso.a0-01.resource.jsonl",
+    "score": "runs/a0-01/a02/traces/kapso.a0-01.score.jsonl",
+    "selection": "runs/a0-01/a02/traces/kapso.a0-01.selection.jsonl"
+  },
+  "trace_validation": {
+    "cmd": "python /home/ebt/rsi-dev/a0/contract/trace_validate.py validate-run --run-dir runs/a0-01/a02",
+    "merged": {
+      "events": 38,
+      "path": "runs/a0-01/a02/traces/kapso.a0-01.all.jsonl"
+    },
+    "per_kind": {
+      "resource": {
+        "path": "runs/a0-01/a02/traces/kapso.a0-01.resource.jsonl",
+        "stats_stdout": "events              16\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         2\n  events[kapso] 16"
+      },
+      "score": {
+        "path": "runs/a0-01/a02/traces/kapso.a0-01.score.jsonl",
+        "stats_stdout": "events              16\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         2\n  events[kapso] 16"
+      },
+      "selection": {
+        "path": "runs/a0-01/a02/traces/kapso.a0-01.selection.jsonl",
+        "stats_stdout": "events              6\nschema/semantic errors 6\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[kapso] 6"
+      }
+    },
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "[ok ] kapso.a0-01  events=38  [score=16 selection=6 resource=16]  merged kapso.a0-01.all.jsonl\nvalid: 1 run(s), 38 event(s)",
+    "unit": "run"
+  },
+  "unverified": "the LLM-driven end-to-end path (a real ideation session proposing a change and a real implementation session writing and evaluating it) is UNVERIFIED on this host; the scores that drove these selections were produced by real E* runs through KAPSO's registered-evaluation command, and the selection code that consumed them is unmodified runtime code."
+}

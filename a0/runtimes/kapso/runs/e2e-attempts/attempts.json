@@ -1,0 +1,57 @@
+{
+ "schema": "a0.kapso.e2e_attempts/v1",
+ "runtime": "kapso",
+ "purpose": "attempt the full LLM-driven path (real ideation/implementation sessions) now that the codex lane answers; A0.1/A0.2 in runs/a0-01 are seam-driven",
+ "attempts": [
+  {
+   "id": "attempt1-open-ended",
+   "prompt": "improve solution.py's pack_circles(26) (open-ended)",
+   "started": "2026-09-20T17:35+08:00",
+   "outcome": "killed by the box after ~25 min with the session still exploring: it read kapso_evaluation/kapso_eval.py and a0_locator.json, enumerated the frozen C* digests, and discovered A0_KAPSO_ALLOW_UNFROZEN_CANDIDATE=1 (the closure sentinel override) \u2014 no solution.py edit, no registered-evaluation run, no committed candidate",
+   "log": "runs/e2e-attempts/attempt1-open-ended.log"
+  },
+  {
+   "id": "attempt2-mechanical",
+   "prompt": "install frozen candidate c04_near_tie byte-for-byte, then run the registered evaluation command in the foreground",
+   "started": "2026-09-20T17:47+08:00",
+   "outcome": "killed after ~13 min; the session had characterised the evaluator and stated it would install the candidate, but had not yet written solution.py \u2014 no committed candidate, no e2e.json",
+   "log": "runs/e2e-attempts/attempt2-mechanical.log"
+  },
+  {
+   "id": "attempt3-real-mechanical-c04",
+   "prompt": "install frozen candidate c04_near_tie byte-for-byte, run the registered evaluation in the foreground, report the manifest score (real run_implementation; the codex lane is live again)",
+   "started": "2026-09-20T18:07:54+08:00",
+   "ended": "2026-09-20T18:18:30+08:00",
+   "elapsed_sec": 636,
+   "outcome": "SUCCESS \u2014 the real session wrote solution.py (sha256 3bf7bf31\u2026 = c04_near_tie), ran `python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337` in its own session folder, and returned <score>2.451820520843313</score>; KAPSO's own manifest_of_record accepted the line (no class mismatch printed) and node 0 completed with score 2.451820520843313",
+   "verification": "runs/e2e-real/e2e_verification.json (verdict verified_end_to_end): the session's manifest triple == the granted class, the node's score of record == an independent E* run on the committed candidate, and the session's manifest line names candidate c04_near_tie with in_frozen_set: true",
+   "notes": [
+    "e2e_round.py's own verification step crashed after the round completed (it fingerprinted a materialize_ref worktree after the context manager removed it); bin/e2e_verify.py reconstructs the evidence from the branch and the runtime log, and the bug is fixed for later rounds",
+    "the session added a non-evaluator file `eval_profile.md` inside kapso_evaluation/; KAPSO's verify_evaluation_tree only protects evaluator source suffixes, and every frame run re-syncs the registered head, so the measurement stands \u2014 recorded as branch_tree_extra_files"
+   ],
+   "log": "runs/e2e-attempts/attempt3-real-round.log",
+   "transcript": "runs/e2e-real/workspace/.kapso/sessions/generic_exp_0/stream.jsonl"
+  },
+  {
+   "id": "attempt4-real-mechanical-c04-round2",
+   "prompt": "same as attempt 3 (install c04_near_tie, run the registered evaluation)",
+   "started": "2026-09-20T18:21:04+08:00",
+   "ended": "2026-09-20T18:36:15+08:00",
+   "elapsed_sec": 900.3,
+   "outcome": "NOT VERIFIED \u2014 the codex CLI was killed by its own 900 s deadline ('Codex CLI killed by its deadline after 900s', KAPSO implementation flow) while the session was still in its planning phase; solution.py stayed at the baseline 1441 bytes, no registered evaluation ran, no manifest line, node 0 completed with score=None. run/e2e.json records verdict 'not_verified'",
+   "cause": "the local codex proxy was intermittently reconnecting ('ERROR: Reconnecting... 1/5' appears in both real rounds); round 1 recovered within its budget, round 2 did not",
+   "log": "runs/e2e-attempts/attempt4-real-round2.log",
+   "artifacts": {
+    "e2e_json": "runs/e2e-real2/e2e.json",
+    "workspace": "runs/e2e-real2/workspace"
+   }
+  }
+ ],
+ "verdict": "VERIFIED END TO END for one round (attempt 3): a real codex implementation session installed the candidate, executed the registered evaluation, and its manifest became the runtime's score of record, matching an independent E* run",
+ "how_to_finish": [
+  ".venv/bin/python bin/e2e_round.py --timeout 1000 --run-dir runs/e2e-mechanical --install-candidate c04_near_tie",
+  "the script writes e2e.json with the session's manifest triple, the independently re-measured E* score, and the integrity verdict"
+ ],
+ "caveat": "the ideation phase was still seamed (the adapter supplied the candidate text to install) and the judge was the adapter's deterministic stand-in; the implementation lane, the registered evaluation, the manifest-of-record path and the selection machinery are all real runtime code",
+ "endpoint_note": "the local codex endpoint is usable but flaky: 1 of 2 bounded real rounds completed (attempt 3, 636 s), the other died on the CLI's own deadline (attempt 4, 900 s). The wiring is not the constraint; the model's latency and the proxy's reconnects are."
+}

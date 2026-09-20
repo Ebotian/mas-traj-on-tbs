@@ -1,0 +1,53 @@
+{
+  "schema": "a0.selection/v1",
+  "runtime": "kapso",
+  "policy_id": "kapso-selection-v1",
+  "status": "adopted-by-kapso-workstream",
+  "status_note": "not `frozen-a0-contract`: the contract owner freezes the canonical copy at a0/contract/selection/kapso.selection.json. This file is the runtime-side declaration the adapter reads at run time; its canonical digest is recorded in every A0.1/A0.2 report.",
+  "authority": "a0/contract/adapter_contract.md section 5.3 (the frozen A0-wide scalarization rule and verdict->failure_stage table) plus the KAPSO frozen condition parent_policy=best (plan:591-603 comparison; strategy.py:198,212)",
+  "adoption_note": "Adopted by the KAPSO workstream. The `scalarization` and `failure_stage_mapping` blocks below are copied verbatim from a0/contract/selection/simpleloop.selection.json; a01.py/a02.py recompute both blocks' canonical digests at run time and refuse to report a run in which they differ. The `selection` block is KAPSO's own: KAPSO does not run an argmax over C*, it runs parent_policy=best over its node history plus a separate tier rule for the deliverable, so only the two shared blocks can be identical.",
+  "coverage_note": "The selection block describes what the adapter observed on real runtime code (a02.py drives `_select_parent`, `get_deliverable_experiment`, `get_deliverable_score` and `checkout_to_best_experiment_branch` unmodified); the ideation/implementation/judge seams are documented in runs/a0-01/adapter.md.",
+  "frozen_before_run": true,
+  "scalarization": {
+    "applies": "scalar",
+    "direction": "maximize",
+    "identity_check": "when status == ok the adapter asserts objective.value == fields.sum_radii and fails the candidate otherwise",
+    "input": "outcome.fields.sum_radii",
+    "nonfinite": "a non-finite scalar (nan/inf) is rejected as an adapter-side measurement error, not compared",
+    "null_is_not_zero": "a null scalar is never coerced to 0.0 or to -inf; an unscored candidate is recorded as unscored and is excluded from the argmax. E* exit 2 / exit 3 propagate as failure_stage values with failure_detail, not as a number.",
+    "status_gate": "scalar is defined iff outcome.status == \"ok\"; when status is \"invalid\" or \"error\" the scalar is null"
+  },
+  "selection": {
+    "comparison": "exact binary64 comparison in the runtime's own `max()` (strategy.py:1373-1406)",
+    "deliverable_rule": "the deliverable is NOT the same decision as the parent: select_committed_candidate (fidelity.py:184-213) keys on (granted class, score), so a fast-tier high scorer is the parent but loses the deliverable to a full-tier lower scorer (measured: a02.json scenario fast_only)",
+    "epsilon_role": "the frozen conformance epsilon (1e-9, EID* Config.conformance.epsilon) is the A0.1 tolerance only; it is NOT applied in selection",
+    "null_handling": "a candidate whose E_r verdict is invalid/error has node.score None (registered_evaluation.py:100-102, :256-261) and is ineligible, never selected with a substituted 0.0 (measured: a02.json scenario error_and_tamper)",
+    "rule": "parent_{t+1} = argmax over the valid nodes of node_history (parent_policy=\"best\"); the deliverable is chosen separately by the tier rule",
+    "rule_expression": "get_best_experiment() (strategy.py:1420-1434) / get_deliverable_experiment() (:1436-1453)",
+    "tie_break": "first maximum in node_history order (Python max() keeps the first maximal element) -- KAPSO's actual behaviour, measured (a02.json scenario tie_break)",
+    "tie_break_divergence": "MEASURED DIVERGENCE from the A0-wide byte-wise rule, demonstrated in BOTH proposal orders by execution. KAPSO's rule is max() over node_history, i.e. the FIRST maximal element, which is a function of proposal order; the frozen A0-wide rule (smallest candidate_id by UTF-8 bytes) is not. With C*'s exact tie pair (c01_good_hex and c03_mirror score bit-identically, 2.4519205208433132): (a) c01_good_hex proposed first -> KAPSO selects c01_good_hex, coinciding with the byte-wise rule, so the A0.2 tie_break assertion passes (runs/a0-01/a02/a02.json, scenario tie_break); (b) c03_mirror proposed first -> KAPSO selects c03_mirror for parent, deliverable and next-round parent (runs/tie-order-probe/outcome.json, diverges_from_frozen_tie_break = true), while the byte-wise rule still selects c01_good_hex. Consequence: KAPSO is conformant with the frozen tie-break only for proposal orders in which the byte-wise-smallest tied candidate happens to be proposed first, and the A0.2 assertion as run does NOT establish the frozen tie-break in general. Reported to the contract owner rather than adjusted here (an ordering-dependent break cannot be fixed inside the adapter without changing the runtime).",
+    "tie_break_divergence_evidence": {
+      "order_agreeing": "runs/a0-01/a02/a02.json -> scenarios.tie_break (c01_good_hex proposed first; parent/deliverable = c01_good_hex)",
+      "order_diverging": "runs/tie-order-probe/outcome.json (c03_mirror proposed first; parent/deliverable/next-round parent = c03_mirror)",
+      "probe": "runs/tie-order-probe/probe.py (the adapter's own a02 machinery, proposal order reversed)",
+      "byte_wise_smallest_of_tie_pair": "c01_good_hex"
+    },
+    "when_nothing_scored": "chosen_candidate_id is null; the iteration is recorded and the run continues"
+  },
+  "failure_stage_mapping": {
+    "exit_0_ok": "none",
+    "exit_2_invalid": "verify_failed",
+    "exit_3_error_candidate_call_raised": "evaluator_failed",
+    "exit_3_error_candidate_import_failed": "resolve_failed",
+    "exit_3_error_child_terminated_early": "evaluator_failed",
+    "exit_3_error_non_deterministic": "verify_failed",
+    "exit_3_error_other": "evaluator_failed",
+    "exit_3_error_runtime_budget_exceeded": "timeout",
+    "note": "E* verdict -> trace failure_stage. The trace schema fixes the enum but not this per-runtime mapping; SimpleLoop freezes it here and reports it to the contract owner so the other runtimes can adopt the same one.",
+    "solver_lane_produced_no_proposal": "search_failed"
+  },
+  "kapso_specific_stages": {
+    "boundary_violation": "KAPSO-only row, outside the shared table: candidate's committed evaluation tree differs from the registered head, so enforce_evaluation_integrity (base.py:740-798) rejected the measurement (a02.py scenario error_and_tamper)",
+    "evaluator_failed": "the adapter's own E_r(c) vs E*(c) comparison failed, or the manifest class did not match its grant (plan:538)"
+  }
+}

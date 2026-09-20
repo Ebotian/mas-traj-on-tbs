@@ -1,0 +1,2100 @@
+{
+  "adapter_setup_log": [
+    "removed the previous workspace at /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/workspace before rebuilding (a stale untracked .kapso/evaluation_registry.json makes KAPSO's baseline commit fail: base.py:568-572)",
+    "no staged delta for 'chore(kapso): candidate c02_baseline_upstream': nothing to commit"
+  ],
+  "candidates": [
+    {
+      "branch": "cand_c01_good_hex",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c01_good_hex",
+      "frame_run": {
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "commit_sha": "e95e5d495ca025d0ac7e0fe76f41e413322215ad",
+            "duration_seconds": 0.5033932980004465,
+            "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 2.4519205208433132,
+            "seed": 1337
+          }
+        ],
+        "score": 2.4519205208433132
+      },
+      "reference": {
+        "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c01_good_hex --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c01_good_hex.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.041725,
+        "exit_code": 0,
+        "failure_kind": null,
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 325,
+          "sum_radii": 2.4519205208433132
+        },
+        "objective": 2.4519205208433132,
+        "status": "ok"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.060972,
+        "exit_code": 0,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c01_good_hex",
+            "in_frozen_set": true,
+            "solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+          },
+          "e_star_canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 0,
+          "e_star_items_audited": 26,
+          "e_star_objective_value": 2.4519205208433132,
+          "e_star_outcome": "outcomes/bca4286ed3b15035.full.1.1337.json",
+          "e_star_status": "ok",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "score": 2.4519205208433132,
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_objective_value",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "score",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": true,
+          "seed": 1337
+        },
+        "score": 2.4519205208433132,
+        "status": "ok"
+      },
+      "role": "good",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": 2.4519205208433132,
+        "objective_value": 2.4519205208433132,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "ok"
+      },
+      "solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+      "verdict": {
+        "attempt_count": 1,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": true,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c02_baseline_upstream",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c02_baseline_upstream",
+      "frame_run": {
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "commit_sha": "e8edbda799b706dff33ce961e017cabd19ae0f75",
+            "duration_seconds": 0.5033209460016224,
+            "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 0.25,
+            "seed": 1337
+          }
+        ],
+        "score": 0.25
+      },
+      "reference": {
+        "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c02_baseline_upstream --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c02_baseline_upstream.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.042844,
+        "exit_code": 0,
+        "failure_kind": null,
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": 0.0,
+          "min_gap": 0.036249916677713497,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.007551905417283158,
+          "pairs_audited": 325,
+          "sum_radii": 0.25
+        },
+        "objective": 0.25,
+        "status": "ok"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.061334,
+        "exit_code": 0,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c02_baseline_upstream",
+            "in_frozen_set": true,
+            "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+          },
+          "e_star_canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 0,
+          "e_star_items_audited": 26,
+          "e_star_objective_value": 0.25,
+          "e_star_outcome": "outcomes/18bacee43b713e5a.full.1.1337.json",
+          "e_star_status": "ok",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "score": 0.25,
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_objective_value",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "score",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": true,
+          "seed": 1337
+        },
+        "score": 0.25,
+        "status": "ok"
+      },
+      "role": "baseline",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": 0.25,
+        "objective_value": 0.25,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "ok"
+      },
+      "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+      "verdict": {
+        "attempt_count": 1,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": true,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c03_mirror",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c03_mirror",
+      "frame_run": {
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "commit_sha": "47da5e89845aaa4b2cdcd6e1893827e6f603d9aa",
+            "duration_seconds": 0.503238704004616,
+            "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 2.4519205208433132,
+            "seed": 1337
+          }
+        ],
+        "score": 2.4519205208433132
+      },
+      "reference": {
+        "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c03_mirror --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c03_mirror.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.04098,
+        "exit_code": 0,
+        "failure_kind": null,
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 325,
+          "sum_radii": 2.4519205208433132
+        },
+        "objective": 2.4519205208433132,
+        "status": "ok"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.057128,
+        "exit_code": 0,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c03_mirror",
+            "in_frozen_set": true,
+            "solution_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf"
+          },
+          "e_star_canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 0,
+          "e_star_items_audited": 26,
+          "e_star_objective_value": 2.4519205208433132,
+          "e_star_outcome": "outcomes/893d0aa439433d52.full.1.1337.json",
+          "e_star_status": "ok",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "score": 2.4519205208433132,
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_objective_value",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "score",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": true,
+          "seed": 1337
+        },
+        "score": 2.4519205208433132,
+        "status": "ok"
+      },
+      "role": "tie",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": 2.4519205208433132,
+        "objective_value": 2.4519205208433132,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "ok"
+      },
+      "solution_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+      "verdict": {
+        "attempt_count": 1,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": true,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c04_near_tie",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c04_near_tie",
+      "frame_run": {
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "commit_sha": "67f0d8d1338df6bc18f208d2eccba8ab4b43e21c",
+            "duration_seconds": 0.5034985649981536,
+            "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 2.451820520843313,
+            "seed": 1337
+          }
+        ],
+        "score": 2.451820520843313
+      },
+      "reference": {
+        "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c04_near_tie --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c04_near_tie.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.040331,
+        "exit_code": 0,
+        "failure_kind": null,
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.726363301607073,
+          "pairs_audited": 325,
+          "sum_radii": 2.451820520843313
+        },
+        "objective": 2.451820520843313,
+        "status": "ok"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.059477,
+        "exit_code": 0,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c04_near_tie",
+            "in_frozen_set": true,
+            "solution_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418"
+          },
+          "e_star_canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 0,
+          "e_star_items_audited": 26,
+          "e_star_objective_value": 2.451820520843313,
+          "e_star_outcome": "outcomes/3bf7bf310c976e9a.full.1.1337.json",
+          "e_star_status": "ok",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "score": 2.451820520843313,
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_objective_value",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "score",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": true,
+          "seed": 1337
+        },
+        "score": 2.451820520843313,
+        "status": "ok"
+      },
+      "role": "tie",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": 2.451820520843313,
+        "objective_value": 2.451820520843313,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "ok"
+      },
+      "solution_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+      "verdict": {
+        "attempt_count": 1,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": true,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c05_overlapping",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c05_overlapping",
+      "frame_run": {
+        "attempt_count": 0,
+        "attempts": [],
+        "score": null
+      },
+      "reference": {
+        "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c05_overlapping --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c05_overlapping.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.041627,
+        "exit_code": 2,
+        "failure_kind": "invalid_configuration",
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "objective": null,
+        "status": "invalid"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.059159,
+        "exit_code": 2,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c05_overlapping",
+            "in_frozen_set": true,
+            "solution_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c"
+          },
+          "e_star_canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 2,
+          "e_star_items_audited": 26,
+          "e_star_outcome": "outcomes/1054b613063beeb6.full.1.1337.json",
+          "e_star_status": "invalid",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "score": null,
+        "status": "invalid"
+      },
+      "role": "bad",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": null,
+        "objective_value": null,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "invalid"
+      },
+      "solution_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+      "verdict": {
+        "attempt_count": 0,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c06_empty",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c06_empty",
+      "frame_run": {
+        "attempt_count": 0,
+        "attempts": [],
+        "score": null
+      },
+      "reference": {
+        "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c06_empty --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c06_empty.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.039984,
+        "exit_code": 2,
+        "failure_kind": "invalid_configuration",
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "objective": null,
+        "status": "invalid"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.058387,
+        "exit_code": 2,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c06_empty",
+            "in_frozen_set": true,
+            "solution_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41"
+          },
+          "e_star_canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 2,
+          "e_star_items_audited": 26,
+          "e_star_outcome": "outcomes/245b052ae2156885.full.1.1337.json",
+          "e_star_status": "invalid",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "score": null,
+        "status": "invalid"
+      },
+      "role": "bad",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": null,
+        "objective_value": null,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "invalid"
+      },
+      "solution_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+      "verdict": {
+        "attempt_count": 0,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c07_single",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c07_single",
+      "frame_run": {
+        "attempt_count": 0,
+        "attempts": [],
+        "score": null
+      },
+      "reference": {
+        "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c07_single --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c07_single.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.040652,
+        "exit_code": 2,
+        "failure_kind": "invalid_configuration",
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "objective": null,
+        "status": "invalid"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.058947,
+        "exit_code": 2,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c07_single",
+            "in_frozen_set": true,
+            "solution_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90"
+          },
+          "e_star_canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 2,
+          "e_star_items_audited": 26,
+          "e_star_outcome": "outcomes/06fd7c81ea1b82c7.full.1.1337.json",
+          "e_star_status": "invalid",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "score": null,
+        "status": "invalid"
+      },
+      "role": "bad",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": null,
+        "objective_value": null,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "invalid"
+      },
+      "solution_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+      "verdict": {
+        "attempt_count": 0,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c08_out_of_bounds",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c08_out_of_bounds",
+      "frame_run": {
+        "attempt_count": 0,
+        "attempts": [],
+        "score": null
+      },
+      "reference": {
+        "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c08_out_of_bounds --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c08_out_of_bounds.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.045641,
+        "exit_code": 2,
+        "failure_kind": "invalid_configuration",
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "objective": null,
+        "status": "invalid"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.095933,
+        "exit_code": 2,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c08_out_of_bounds",
+            "in_frozen_set": true,
+            "solution_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143"
+          },
+          "e_star_canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 2,
+          "e_star_items_audited": 26,
+          "e_star_outcome": "outcomes/8724d76ce22c6675.full.1.1337.json",
+          "e_star_status": "invalid",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "score": null,
+        "status": "invalid"
+      },
+      "role": "bad",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": null,
+        "objective_value": null,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "invalid"
+      },
+      "solution_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+      "verdict": {
+        "attempt_count": 0,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c09_malformed_import",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c09_malformed_import",
+      "frame_run": {
+        "attempt_count": 0,
+        "attempts": [],
+        "score": null
+      },
+      "reference": {
+        "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c09_malformed_import --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c09_malformed_import.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.037974,
+        "exit_code": 3,
+        "failure_kind": "candidate_import_failed",
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "objective": null,
+        "status": "error"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.05737,
+        "exit_code": 3,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c09_malformed_import",
+            "in_frozen_set": true,
+            "solution_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17"
+          },
+          "e_star_canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 3,
+          "e_star_items_audited": 26,
+          "e_star_outcome": "outcomes/8f3cc2c8e62dec77.full.1.1337.json",
+          "e_star_status": "error",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "score": null,
+        "status": "error"
+      },
+      "role": "bad",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": null,
+        "objective_value": null,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "error"
+      },
+      "solution_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+      "verdict": {
+        "attempt_count": 0,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c10_raises",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c10_raises",
+      "frame_run": {
+        "attempt_count": 0,
+        "attempts": [],
+        "score": null
+      },
+      "reference": {
+        "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c10_raises --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c10_raises.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.042179,
+        "exit_code": 3,
+        "failure_kind": "candidate_call_raised",
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "objective": null,
+        "status": "error"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.060172,
+        "exit_code": 3,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c10_raises",
+            "in_frozen_set": true,
+            "solution_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206"
+          },
+          "e_star_canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 3,
+          "e_star_items_audited": 26,
+          "e_star_outcome": "outcomes/8739f824fab190ec.full.1.1337.json",
+          "e_star_status": "error",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "score": null,
+        "status": "error"
+      },
+      "role": "bad",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": null,
+        "objective_value": null,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "error"
+      },
+      "solution_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+      "verdict": {
+        "attempt_count": 0,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c11_non_deterministic",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c11_non_deterministic",
+      "frame_run": {
+        "attempt_count": 0,
+        "attempts": [],
+        "score": null
+      },
+      "reference": {
+        "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c11_non_deterministic --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c11_non_deterministic.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.043274,
+        "exit_code": 3,
+        "failure_kind": "non_deterministic",
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "objective": null,
+        "status": "error"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.058903,
+        "exit_code": 3,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c11_non_deterministic",
+            "in_frozen_set": true,
+            "solution_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044"
+          },
+          "e_star_canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 3,
+          "e_star_items_audited": 26,
+          "e_star_outcome": "outcomes/f4e7d12ecf5cf50f.full.1.1337.json",
+          "e_star_status": "error",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "score": null,
+        "status": "error"
+      },
+      "role": "bad",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": null,
+        "objective_value": null,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "error"
+      },
+      "solution_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+      "verdict": {
+        "attempt_count": 0,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c12_exit_without_artifacts",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c12_exit_without_artifacts",
+      "frame_run": {
+        "attempt_count": 0,
+        "attempts": [],
+        "score": null
+      },
+      "reference": {
+        "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c12_exit_without_artifacts --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c12_exit_without_artifacts.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.035623,
+        "exit_code": 3,
+        "failure_kind": "child_terminated_early",
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "objective": null,
+        "status": "error"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.054782,
+        "exit_code": 3,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c12_exit_without_artifacts",
+            "in_frozen_set": true,
+            "solution_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d"
+          },
+          "e_star_canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 3,
+          "e_star_items_audited": 26,
+          "e_star_outcome": "outcomes/f8dcd5c14eafc57a.full.1.1337.json",
+          "e_star_status": "error",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "score": null,
+        "status": "error"
+      },
+      "role": "bad",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": null,
+        "objective_value": null,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "error"
+      },
+      "solution_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+      "verdict": {
+        "attempt_count": 0,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c13_slow",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c13_slow",
+      "frame_run": {
+        "attempt_count": 0,
+        "attempts": [],
+        "score": null
+      },
+      "reference": {
+        "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c13_slow --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c13_slow.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 1.546516,
+        "exit_code": 3,
+        "failure_kind": "runtime_budget_exceeded",
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "objective": null,
+        "status": "error"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 1.56631,
+        "exit_code": 3,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c13_slow",
+            "in_frozen_set": true,
+            "solution_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14"
+          },
+          "e_star_canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 3,
+          "e_star_items_audited": 26,
+          "e_star_outcome": "outcomes/f085fe77acc30b3d.full.1.1337.json",
+          "e_star_status": "error",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "score": null,
+        "status": "error"
+      },
+      "role": "bad",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": null,
+        "objective_value": null,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "error"
+      },
+      "solution_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+      "verdict": {
+        "attempt_count": 0,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": false,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    },
+    {
+      "branch": "cand_c14_near_zero",
+      "branch_registered_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "candidate_id": "c14_near_zero",
+      "frame_run": {
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "commit_sha": "64007c44b0fdf4808ef82c1c61506f8a9ae47047",
+            "duration_seconds": 0.5035384090006119,
+            "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 2.6e-05,
+            "seed": 1337
+          }
+        ],
+        "score": 2.6e-05
+      },
+      "reference": {
+        "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c14_near_zero --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/reference/c14_near_zero.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/a0-01/a01/state/e_star_state",
+        "elapsed_sec": 0.041749,
+        "exit_code": 0,
+        "failure_kind": null,
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": 0.499939,
+          "min_gap": 7.99999999995449e-06,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 8.168140899333462e-11,
+          "pairs_audited": 325,
+          "sum_radii": 2.6e-05
+        },
+        "objective": 2.6e-05,
+        "status": "ok"
+      },
+      "registered_channel": {
+        "command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+        "elapsed_sec": 0.059176,
+        "exit_code": 0,
+        "manifest": {
+          "candidate_identity": {
+            "candidate_id": "c14_near_zero",
+            "in_frozen_set": true,
+            "solution_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113"
+          },
+          "e_star_canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+          "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "e_star_exit_code": 0,
+          "e_star_items_audited": 26,
+          "e_star_objective_value": 2.6e-05,
+          "e_star_outcome": "outcomes/b8412ada1bb33483.full.1.1337.json",
+          "e_star_status": "ok",
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "items": 26,
+          "metric_name": "sum_radii",
+          "score": 2.6e-05,
+          "seed": 1337,
+          "theta_e_canonical_match": true,
+          "total_items": 26
+        },
+        "manifest_field_check": {
+          "adapter_extra_keys": [
+            "candidate_identity",
+            "e_star_canonical_digest",
+            "e_star_evaluator_source_sha256",
+            "e_star_exit_code",
+            "e_star_items_audited",
+            "e_star_objective_value",
+            "e_star_outcome",
+            "e_star_status",
+            "eid_star",
+            "eid_star_evaluator_source",
+            "metric_name",
+            "theta_e_canonical_match"
+          ],
+          "evaluator_identity_field_in_kapsos_keys": false,
+          "kapsos_contract_keys": [
+            "fidelity",
+            "fraction",
+            "items",
+            "score",
+            "seed",
+            "total_items"
+          ],
+          "present": true
+        },
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": true,
+          "seed": 1337
+        },
+        "score": 2.6e-05,
+        "status": "ok"
+      },
+      "role": "bad",
+      "scalarization_identity": {
+        "detail": null,
+        "field": "sum_radii",
+        "field_value": 2.6e-05,
+        "objective_value": 2.6e-05,
+        "pass": true,
+        "rule": "contract/selection/kapso.selection.json scalarization.status_gate + identity_check (A0-wide, adapter_contract.md section 5.3)",
+        "status": "ok"
+      },
+      "solution_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+      "verdict": {
+        "attempt_count": 1,
+        "evaluator_evidence_detail": null,
+        "evaluator_evidence_status": "ok",
+        "exit_match": true,
+        "manifest_triple": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "has_score_key": true,
+          "seed": 1337
+        },
+        "no_synthetic_score": true,
+        "pass": true,
+        "reasons": [],
+        "scalar_match": true,
+        "status_match": true
+      }
+    }
+  ],
+  "capability_note": "A0.1 as run here exercises the runtime's registered-evaluation path with the real maintainer, real tree sync, real manifest parser and real frame-run subprocess. The LLM-driven session that would normally invoke the registered command is replaced by a documented seam (a0_adapter/seams.py); the full end-to-end path is UNVERIFIED.",
+  "controls": {
+    "candidate_set_gate": {
+      "pass": true,
+      "registered_tree_env_override_attempt": {
+        "env": {
+          "A0_KAPSO_ALLOW_UNFROZEN_CANDIDATE": "1"
+        },
+        "exit_code": 3,
+        "expected": "exit 3, no manifest",
+        "manifest_parsed": false,
+        "stderr_tail": "kapso_eval: solution.py sha256 3a287d2cd8c5a7e76b7f9125d201848950d5571666edc7e249e002f3c16daae9 is not a member of the frozen candidate set C* recorded in EID* (664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328)"
+      },
+      "registered_tree_locator_flag": false,
+      "scratch_tree_flag_off_with_same_env": {
+        "exit_code": 3,
+        "manifest_parsed": false
+      },
+      "scratch_tree_flag_on": {
+        "candidate_identity": {
+          "candidate_id": null,
+          "in_frozen_set": false,
+          "solution_sha256": "3a287d2cd8c5a7e76b7f9125d201848950d5571666edc7e249e002f3c16daae9"
+        },
+        "exit_code": 0
+      },
+      "what": "the frozen-candidate gate cannot be opened from inside a session: it lives in the registered tree's locator, which is fingerprinted as EID_r and re-synced into every frame run"
+    },
+    "e_star_source_drift": {
+      "exit_code": 3,
+      "expected": "exit 3, no manifest, no score",
+      "manifest_parsed": false,
+      "pass": true,
+      "stderr_tail": "kapso_eval: E* source drifted: e_star.py sha256 2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567 != 0000000000000000000000000000000000000000000000000000000000000000 recorded in EID* (664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328)",
+      "what": "the registered wrapper's EID* EvaluatorSource binding, with one recorded E* file digest corrupted"
+    },
+    "e_star_source_intact": {
+      "exit_code": 0,
+      "pass": true,
+      "score": 2.4519205208433132,
+      "what": "the same wrapper on an unmodified copy of the tree"
+    },
+    "manifest_class_mismatch": {
+      "accepted_under_matching_grant": {
+        "candidate_identity": {
+          "candidate_id": "c01_good_hex",
+          "in_frozen_set": true,
+          "solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+        },
+        "e_star_canonical_digest": "1c373159f74c4502e04ab150cb78111a97faf9a115244a97d59650c6f0ad3606",
+        "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "e_star_exit_code": 0,
+        "e_star_items_audited": 4,
+        "e_star_objective_value": 2.4519205208433132,
+        "e_star_outcome": "outcomes/bca4286ed3b15035.fast.0.15.1337.json",
+        "e_star_status": "ok",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "eid_star_evaluator_source": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+        "fidelity": "fast",
+        "fraction": 0.15,
+        "items": 4,
+        "metric_name": "sum_radii",
+        "score": 2.4519205208433132,
+        "seed": 1337,
+        "theta_e_canonical_match": false,
+        "total_items": 26
+      },
+      "grant": {
+        "fidelity": "full",
+        "fraction": 1.0
+      },
+      "manifest_of_record_returned": null,
+      "pass": true,
+      "session_ran": {
+        "fidelity": "fast",
+        "fraction": 0.15,
+        "seed": 1337
+      },
+      "what": "KAPSO's manifest_of_record with a fast-class session output against a full grant (registered_evaluation.py:87-99)"
+    },
+    "pass": true
+  },
+  "e_star_identity": {
+    "cmd": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py digest",
+    "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+    "e_star_version": "1.0.0",
+    "pass": true,
+    "returncode": 0,
+    "source_files": [
+      {
+        "bytes": 34860,
+        "name": "e_star.py",
+        "sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567"
+      },
+      {
+        "bytes": 4704,
+        "name": "e_star_child.py",
+        "sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca"
+      }
+    ],
+    "stderr_tail": ""
+  },
+  "eid_r": {
+    "declaration": "KAPSO's native evaluator identity: EID_r = manifest_fingerprint(kapso_evaluation/) over the two-file registered tree this adapter installs (execution/evaluation_integrity.py:112-119, maintainer.py:216-218). a0_locator.json carries EID*'s EvaluatorSource records and canonical theta_E; kapso_eval.py re-hashes E*'s sources on every invocation and exits 3 without a score on any mismatch, so EID_r cannot be produced by a different E*.",
+    "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "mapping_mode": "native",
+    "native_scheme": "manifest_fingerprint",
+    "recomputable": true,
+    "value": "manifest:1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962"
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "eid_star_checks": {
+    "epsilon": 1e-09,
+    "verify": "run before the evaluation loop (see eid_checks.json)"
+  },
+  "elapsed_sec": 16.228485,
+  "failure_stage_counts": {
+    "counts": {
+      "evaluator_failed": 2,
+      "none": 5,
+      "resolve_failed": 1,
+      "timeout": 1,
+      "verify_failed": 5
+    },
+    "counts_score_trace_only": {
+      "evaluator_failed": 2,
+      "none": 5,
+      "resolve_failed": 1,
+      "timeout": 1,
+      "verify_failed": 5
+    },
+    "note": "declared by the adapter from its own emitted events, one unit per (iteration, candidate_id, stage) so a failure reported on both the score and the resource event of a unit is counted once (plan:577, plan:628, trace_validate.py count_failure_stages). `counts` is over the run's merged stream (the validation unit); `counts_score_trace_only` is the same rule over the score trace alone, which is what a0/conformance/conformance.py counts when an adapter declares nothing. The mapping is the A0-wide table in contract/selection/kapso.selection.json",
+    "source": "runs/a0-01/a01/traces/kapso.a0-01-a01.score.jsonl"
+  },
+  "fr": {
+    "applies": "scalar",
+    "declared_in": "a0/contract/fr/scalar.json",
+    "name": "F_r = scalar(E*)",
+    "spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+    "version": "v1"
+  },
+  "frozen_conditions": {
+    "effective_config": {
+      "budget": {
+        "checkpoint_heartbeat_seconds": 60,
+        "fidelity": {
+          "mode": "off"
+        }
+      },
+      "coding_agent": {
+        "agent_specific": {
+          "disallowed_tools": [
+            "Bash",
+            "WebSearch",
+            "WebFetch",
+            "WebFetch",
+            "Task",
+            "NotebookEdit"
+          ],
+          "streaming": false
+        },
+        "model": "claude-opus-5",
+        "type": "claude_code"
+      },
+      "evaluation_maintainer": {
+        "agent_specific": {
+          "disallowed_tools": [
+            "Bash",
+            "WebSearch",
+            "WebFetch",
+            "WebFetch",
+            "Task"
+          ],
+          "streaming": false
+        },
+        "calibration_fraction": 0.03,
+        "calibration_timeout_seconds": 120,
+        "fast_variant_threshold_minutes": 20,
+        "max_change_requests": 0,
+        "model": "claude-opus-5",
+        "overhead_factor": 1.25,
+        "subsample_seed": 1337,
+        "transition_freeze_fraction": 0.85,
+        "type": "claude_code"
+      },
+      "feedback_generator": {
+        "agent_specific": {
+          "disallowed_tools": [
+            "Bash",
+            "WebSearch",
+            "WebFetch",
+            "WebFetch",
+            "Task",
+            "NotebookEdit"
+          ],
+          "streaming": false
+        },
+        "model": "claude-opus-5",
+        "type": "claude_code"
+      },
+      "inbox": {
+        "enabled": true,
+        "registry": "~/.kapso/campaigns.jsonl",
+        "stop_grace_seconds": 120
+      },
+      "models": {
+        "embedding": "text-embedding-3-small"
+      },
+      "retry": {
+        "request_timeout_seconds": 600
+      },
+      "search_strategy": {
+        "params": {
+          "design_axes": [
+            "geometry / parametrisation \u2014 the circle layout representation (hex lattice, concentric rings, strip packing) and how coordinates are parameterised",
+            "optimisation procedure \u2014 local refinement, seeding, perturbation and constraint-repair strategy inside pack_circles",
+            "numerical robustness \u2014 determinism across repeated calls, p50 runtime under the 250 ms budget gate, and the overlap / bounds margins"
+          ],
+          "gate_failure_policy": "warn",
+          "idea_generation_model": "claude-opus-5",
+          "ideation_gates": [],
+          "implementation_cli": "claude_code",
+          "implementation_gates": [],
+          "implementation_model": "claude-opus-5",
+          "implementation_web": false,
+          "node_expansion_value": 1,
+          "parent_policy": "best",
+          "repo_memory_failure_policy": "warn",
+          "web_search": false
+        },
+        "type": "generic"
+      }
+    },
+    "fidelity_mode": "off",
+    "max_change_requests": 0,
+    "mode_config_path": "/home/ebt/rsi-dev/a0/runtimes/kapso/config/mode.circle-packing.yaml",
+    "parent_policy_param": "best",
+    "subsample_seed": 1337
+  },
+  "mismatches": [],
+  "pass": true,
+  "registration": {
+    "calibration_exit": 0,
+    "calibration_manifest": {
+      "fast_fraction": 0.15,
+      "per_item_seconds": 0.060903427001903765,
+      "startup_seconds": 0.0,
+      "subsample_seed": 1337,
+      "timing_basis": "calibration",
+      "total_items": 26
+    },
+    "calibration_seconds": 0.06506332900607958,
+    "calibration_stdout": "",
+    "command_calibration": "python kapso_evaluation/kapso_eval.py --fidelity fast --fraction 0.03 --seed 1337",
+    "command_full": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+    "data_manifest_entries": 0,
+    "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+    "provenance": "provided",
+    "registered_tree_manifest": {
+      "a0_locator.json": "ec22ca55ac5c420c4bf769e929c3dfcdaa6b1a35be39d83f9baf2160662b4365",
+      "kapso_eval.py": "781f54ee7674164d2b71e78d42640f985f3907a76542b8d5a84a3b5220d9e5ba"
+    },
+    "registry_head_evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+    "setup_agent_seam": "EvaluationMaintainer._run_agent monkeypatched to a no-op (maintainer.py:206): the provided evaluation tree needs no build session; every other maintainer post-condition runs for real",
+    "tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+    "version": 1
+  },
+  "repeats": {
+    "candidate_id": "c01_good_hex",
+    "canonical_digests": [
+      "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+      "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+      "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8"
+    ],
+    "distinct_digests": 1,
+    "epsilon": 1e-09,
+    "repeats": 3,
+    "scores": [
+      2.4519205208433132,
+      2.4519205208433132,
+      2.4519205208433132
+    ],
+    "spread": 0.0,
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "verdict": "deterministic at full fidelity (identical canonical digests); the frozen epsilon=1e-9 covers the observed spread",
+    "within_epsilon": true
+  },
+  "run_id": "a0-01-a01",
+  "runtime": "kapso",
+  "schema": "a0.kapso.conformance/v1",
+  "selection": {
+    "canonical_digest": "c1a993650b4edc4e7a0a799d12d2f6f74e7927b364021dd454454b6e22fc4d6c",
+    "digest_rule": "sha256 over the contract's canonical JSON (sorted keys, no whitespace, ASCII) -- evalcontract.py:102",
+    "failure_stage_mapping": {
+      "exit_0_ok": "none",
+      "exit_2_invalid": "verify_failed",
+      "exit_3_error_candidate_call_raised": "evaluator_failed",
+      "exit_3_error_candidate_import_failed": "resolve_failed",
+      "exit_3_error_child_terminated_early": "evaluator_failed",
+      "exit_3_error_non_deterministic": "verify_failed",
+      "exit_3_error_other": "evaluator_failed",
+      "exit_3_error_runtime_budget_exceeded": "timeout",
+      "note": "E* verdict -> trace failure_stage. The trace schema fixes the enum but not this per-runtime mapping; SimpleLoop freezes it here and reports it to the contract owner so the other runtimes can adopt the same one.",
+      "solver_lane_produced_no_proposal": "search_failed"
+    },
+    "frozen_canonical_copy": {
+      "canonical_digest": "143bfc949f074079e612041622640afd8321ff7c24dab0b62d0cfda8a4e10d59",
+      "differing_top_level_keys": [
+        "selection"
+      ],
+      "identical_to_this_declaration": false,
+      "note": "the runtime-side declaration changed after the contract owner froze their copy; the frozen copy must be re-adopted (see differing_top_level_keys). The normative A0-wide blocks are checked separately in shared_blocks and are unaffected by this note.",
+      "path": "/home/ebt/rsi-dev/a0/contract/selection/kapso.selection.json",
+      "present": true
+    },
+    "path": "/home/ebt/rsi-dev/a0/runtimes/kapso/contract/selection/kapso.selection.json",
+    "policy_id": "kapso-selection-v1",
+    "schema": "a0.selection/v1",
+    "shared_blocks": {
+      "failure_stage_mapping": {
+        "digest": "201fed78b72587786fcafcc0a0caf9b2a1e65705b7f58e1cdd1c914436ef318f",
+        "identical": true
+      },
+      "scalarization": {
+        "digest": "d59f09309b61be515935c8faf72f77f5b66162f5c1375e2eb8ca16934c149b3c",
+        "identical": true
+      }
+    },
+    "shared_blocks_from": "/home/ebt/rsi-dev/a0/contract/selection/simpleloop.selection.json",
+    "shared_blocks_note": null,
+    "status": "adopted-by-kapso-workstream"
+  },
+  "theta_E": {
+    "defaults_applied": {},
+    "extra": {
+      "e_star_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "e_star_version": "1.0.0",
+      "fidelity_mode": "off",
+      "granted_class": {
+        "eval_fidelity": "full",
+        "eval_fraction": 1.0,
+        "profile": "full"
+      },
+      "max_change_requests": 0,
+      "parent_policy": "best",
+      "registered_command": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+      "registered_subsample_seed": 1337,
+      "registered_wrapper_sha256": "781f54ee7674164d2b71e78d42640f985f3907a76542b8d5a84a3b5220d9e5ba"
+    },
+    "fidelity": "full",
+    "fraction": 1.0,
+    "seed": 1337
+  },
+  "trace_validation": {
+    "cmd": "python /home/ebt/rsi-dev/a0/contract/trace_validate.py validate-run --run-dir runs/a0-01/a01",
+    "merged": {
+      "events": 28,
+      "path": "runs/a0-01/a01/traces/kapso.a0-01-a01.all.jsonl"
+    },
+    "per_kind": {
+      "resource": {
+        "path": "runs/a0-01/a01/traces/kapso.a0-01-a01.resource.jsonl",
+        "stats_stdout": "events              14\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         8\n  events[kapso] 14"
+      },
+      "score": {
+        "path": "runs/a0-01/a01/traces/kapso.a0-01-a01.score.jsonl",
+        "stats_stdout": "events              14\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         8\n  events[kapso] 14"
+      }
+    },
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "[ok ] kapso.a0-01-a01  events=28  [score=14 resource=14]  merged kapso.a0-01-a01.all.jsonl\nvalid: 1 run(s), 28 event(s)",
+    "unit": "run"
+  },
+  "verdict": "pass"
+}
