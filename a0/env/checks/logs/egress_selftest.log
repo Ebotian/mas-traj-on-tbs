@@ -1,0 +1,25 @@
+probe_egress: starting sibling listener on a0-egress-internal
+probe_egress: sibling redis is up
+
+### mechanism=host expectation=egress_open image=alpine:3.21 timeout=30s date=2026-09-20T15:53:31+08:00
+EVIDENCE mechanism=host mode=canary rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN
+VERDICT host: CONFIRMED (expected egress_open, observed egress_OPEN)
+
+### mechanism=docker-bridge expectation=egress_open image=alpine:3.21 timeout=30s date=2026-09-20T15:53:33+08:00
+EVIDENCE mechanism=docker-bridge mode=canary rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN
+VERDICT docker-bridge: CONFIRMED (expected egress_open, observed egress_OPEN)
+
+### mechanism=docker-internal expectation=egress_blocked image=alpine:3.21 timeout=30s date=2026-09-20T15:53:35+08:00
+EVIDENCE mechanism=docker-internal mode=canary rc=0 dns=fail tcp=fail tcpvia=none https=fail local=ok egress=BLOCKED
+VERDICT docker-internal: CONFIRMED (expected egress_blocked, observed egress_BLOCKED)
+(selectivity requirement: local=ok expected on docker-internal)
+
+### mechanism=docker-none expectation=egress_blocked image=alpine:3.21 timeout=30s date=2026-09-20T15:53:45+08:00
+EVIDENCE mechanism=docker-none mode=canary rc=0 dns=fail tcp=fail tcpvia=none https=fail local=n/a egress=BLOCKED
+VERDICT docker-none: CONFIRMED (expected egress_blocked, observed egress_BLOCKED)
+
+### mechanism=unshare-rn expectation=egress_blocked image=alpine:3.21 timeout=30s date=2026-09-20T15:53:56+08:00
+EVIDENCE mechanism=unshare-rn mode=canary rc=0 dns=fail tcp=fail tcpvia=none https=fail local=n/a egress=BLOCKED
+VERDICT unshare-rn: CONFIRMED (expected egress_blocked, observed egress_BLOCKED)
+
+SELF-TEST: PASS -- every mechanism behaved as its label claims.

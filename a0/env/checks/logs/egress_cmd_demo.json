@@ -1,0 +1,10 @@
+{"mechanism":"host","expected":"open","observed":"OPEN","raw":"EVIDENCE mechanism=host mode=cmd rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN
+OBSERVED-OUTPUT-BEGIN
+RUNTIME EGRESS SUCCEEDED: 200
+CANARY dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a
+OBSERVED-OUTPUT-END"}
+{"mechanism":"unshare-rn","expected":"blocked","observed":"BLOCKED","raw":"EVIDENCE mechanism=unshare-rn mode=cmd rc=0 dns=fail tcp=fail tcpvia=none https=fail local=n/a egress=BLOCKED
+OBSERVED-OUTPUT-BEGIN
+RUNTIME EGRESS FAILED: URLError
+CANARY dns=fail tcp=fail tcpvia=none https=fail local=n/a
+OBSERVED-OUTPUT-END"}

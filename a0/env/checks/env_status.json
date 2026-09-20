@@ -1,0 +1,290 @@
+{
+  "audit": {
+    "auditor": "environment-readiness subagent",
+    "date": "2026-09-20",
+    "window_local": "15:44-15:56 +08:00",
+    "host": "Nico-arch-home",
+    "os": "Arch Linux",
+    "kernel": "7.2.4-arch1-2",
+    "user": "ebt",
+    "write_scope": "/home/ebt/rsi-dev/a0/env/checks/",
+    "method_note": "Every verdict below is backed by an executed command whose raw output is in logs/. No credential file was opened, printed, copied or transmitted. No billed model call was made.",
+    "verdict_legend": {
+      "PASS": "verified working by execution",
+      "FAIL": "verified not working by execution",
+      "BLOCKED": "cannot be done in this environment (missing privilege/tool)",
+      "UNKNOWN": "not determinable without an action this audit declined to take; smallest confirming command given"
+    }
+  },
+
+  "toolchain_reported_by_protocol": {
+    "codex": { "claimed": "codex-cli 0.154.0", "command": "codex --version", "observed": "codex-cli 0.154.0", "verdict": "PASS" },
+    "claude": { "claimed": "2.1.260", "command": "claude --version", "observed": "2.1.260 (Claude Code)", "verdict": "PASS" },
+    "docker": { "claimed": "29.8.0", "command": "docker version --format '{{.Server.Version}}'", "observed": "29.8.0", "verdict": "PASS" },
+    "uv": { "claimed": "present", "command": "uv --version", "observed": "uv 0.12.13 (0ebbd9274 2026-09-10 x86_64-unknown-linux-gnu)", "verdict": "PASS" },
+    "node": { "claimed": "v26.8.2", "command": "node --version", "observed": "v26.8.2", "verdict": "PASS" },
+    "python_system": { "claimed": "3.14.7", "command": "python3 --version", "observed": "Python 3.14.7", "verdict": "PASS" },
+    "typst": { "claimed": "0.15.1", "command": "typst --version", "observed": "typst 0.15.1 (9dfd3a08)", "verdict": "PASS" }
+  },
+
+  "source_checkouts": {
+    "kapso": {
+      "path": "/home/ebt/kapso_ck/kapso",
+      "expected_head": "7d99b152",
+      "observed_head_short": "7d99b15",
+      "observed_head_full": "7d99b1527921d3f09ebd47a8d375d05e9fee2488",
+      "observed_subject": "chore(release): 0.4.7",
+      "observed_date": "2026-09-17T17:33:58+00:00",
+      "verdict": "PASS",
+      "verified_by": "git -C /home/ebt/kapso_ck/kapso log -1 --format='%H %ad %s'",
+      "caveat": "HEAD identity confirmed; byte-identity with the audit snapshot NOT re-verified"
+    },
+    "eve": {
+      "path": "/tmp/eve",
+      "expected_head": "979065fd",
+      "observed_head_short": "979065f",
+      "observed_head_full": "979065fd2cf1b3be9caf70596478fe27df7815ad",
+      "observed_subject": "Sync latest EvE runtime, lifecycle, sampling and doc updates (#19)",
+      "verdict": "PASS",
+      "verified_by": "git -C /tmp/eve log -1 --format='%H %ad %s'",
+      "caveat": "HEAD identity confirmed; byte-identity with the audit snapshot NOT re-verified"
+    },
+    "loreley": {
+      "expected_pin": "4c375920",
+      "expected_clone_target": "/home/ebt/rsi-dev/a0/env/upstream/loreley",
+      "observed": "target directory is EMPTY; no `git clone` process running at 15:51; the clone reported as 'in the background' never ran",
+      "secondary_path": "/tmp/lor",
+      "secondary_status": "exists but has NO .git — confirmed not a git checkout; loreley/_version.py reads importlib.metadata version('loreley'), so its version is unverifiable",
+      "pin_reachable": true,
+      "pin_evidence": "git ls-remote https://github.com/NeapolitanIcecream/loreley -> '4c3759208e6b908f90716488ac3eec3dceaaf397 HEAD' and '... refs/heads/main'",
+      "verdict": "BLOCKED",
+      "implication": "Loreley adapter cannot start until a clone lands at the pin. The pin is the upstream main tip, so a plain `git clone` lands exactly on it. Outside this audit's write scope, so not performed."
+    }
+  },
+
+  "cli_login": {
+    "codex": {
+      "installed": { "verdict": "PASS", "command": "codex --version", "observed": "codex-cli 0.154.0" },
+      "credentials_configured": {
+        "verdict": "PASS",
+        "command": "codex login status",
+        "observed": "Logged in using an API key - ***   (exit 0)",
+        "corroborating_command": "codex doctor --json",
+        "corroborating_observed": "auth.credentials status='ok' summary='auth is configured' stored auth mode='api_key'",
+        "secret_handling": "the credential file ~/.codex/auth.json was NOT opened; only codex's own redacted report was read"
+      },
+      "usable_model_call": {
+        "verdict": "FAIL",
+        "command": "timeout 90 codex exec --sandbox read-only --skip-git-repo-check 'Reply with exactly: OK'",
+        "observed": "ERROR: Reconnecting... 1/5 through 4/5, then timeout (exit 124). No completion produced.",
+        "root_cause": "codex is configured against a local relay that is not running",
+        "config_evidence": "~/.codex/config.toml: model_provider=custom, model=gpt-5.6-sol, [model_providers.custom] name=zjapi, wire_api=responses, requires_openai_auth=true, base_url=http://127.0.0.1:15722/v1",
+        "port_evidence": "ss -ltn shows NO listener on 15722; curl --noproxy '*' http://127.0.0.1:15722/v1/models -> HTTP 000 (refused); through the host proxy -> HTTP 502",
+        "no_relay_found": "no 'zjapi' binary in PATH, no systemd user or system unit, no ssh tunnel, no container serving it",
+        "billing": "the attempt FAILED, so nothing was billed"
+      },
+      "overall": "FAIL",
+      "blocks": ["EvE (requires codex)", "KAPSO codex lane (requires codex and claude)"],
+      "fix": "start/restore the relay on 127.0.0.1:15722, or repoint [model_providers.custom].base_url at a live endpoint"
+    },
+    "claude": {
+      "installed": { "verdict": "PASS", "command": "claude --version", "observed": "2.1.260 (Claude Code)" },
+      "credential_artifact_present": {
+        "verdict": "PASS",
+        "command": "claude auth status",
+        "observed": "{\"loggedIn\": true, \"authMethod\": \"oauth_token\", \"apiProvider\": \"firstParty\", ...}",
+        "warning": "this is a stored-credential report, not proof of a live session; it is contradicted by claude doctor"
+      },
+      "anthropic_login": {
+        "verdict": "FAIL",
+        "command": "claude doctor",
+        "observed": "- Not connected to the Anthropic API (api.anthropic.com)\n- Not signed in to claude.ai\n- claude.ai subscription auth not active\n- Sign-in is missing the user:profile scope",
+        "cause": "ANTHROPIC_BASE_URL is overridden to a third-party relay"
+      },
+      "effective_backend": {
+        "config_file": "/home/ebt/.claude/settings.json",
+        "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
+        "ANTHROPIC_AUTH_TOKEN": "<redacted by auditor, len=35; value never read or printed>",
+        "ANTHROPIC_MODEL": "deepseek-v4.1-flash-expires-on-0910",
+        "risk": "model id carries an expiry label of 2026-09-10, i.e. 10 days past at audit time",
+        "endpoint_probe": { "command": "curl -s -o /dev/null -w '%{http_code}' -X POST https://api.deepseek.com/anthropic/v1/messages -H 'content-type: application/json' -d '{}'", "observed": "401", "means": "endpoint alive and auth-enforced; token validity not tested" }
+      },
+      "usable_model_call": {
+        "verdict": "UNKNOWN",
+        "reason": "settling it requires a real (possibly billed) model call; this audit declined per method constraints",
+        "smallest_safe_confirming_command": "cd /tmp && timeout 120 claude -p 'Reply with exactly: OK'",
+        "expected_if_healthy": "prints OK",
+        "if_it_fails": "likely HTTP 404/model-not-found => ANTHROPIC_MODEL has expired; update ~/.claude/settings.json"
+      },
+      "overall": "UNKNOWN",
+      "blocks": ["KAPSO claude lane (unproven, not proven broken)"]
+    }
+  },
+
+  "interpreter_pinning": {
+    "verdict": "PASS",
+    "install_command": "uv python install 3.11 3.12",
+    "observed": "Installed 2 versions in 35ms\n + cpython-3.11.15-linux-x86_64-gnu (python3.11)\n + cpython-3.12.11-linux-x86_64-gnu (python3.12)",
+    "host_note": "no system python3.11/python3.12 exist; only python3.14 (/usr/bin/python3.14, which python3 points at)",
+    "recommended_pin": "3.12",
+    "recommendation_reason": "inside every project's declared range (KAPSO >=3.10, EvE >=3.11,<3.15, Loreley >=3.11) and needed no source build"
+  },
+
+  "dependency_resolution": {
+    "method": "real installs into throwaway venvs under a0/env/checks/<project>/, http_proxy/https_proxy unset; logs in logs/dep_matrix.log and logs/dep_py314.log",
+    "cases": [
+      { "project": "KAPSO", "source": "pyproject.toml core dependencies", "python": "3.11.15", "verdict": "PASS", "exit_code": 0, "source_builds": ["antlr4-python3-runtime==4.9.3 (pure-Python sdist, no wheel on PyPI)"], "missing": [] },
+      { "project": "KAPSO", "source": "pyproject.toml core dependencies", "python": "3.12.11", "verdict": "PASS", "exit_code": 0, "source_builds": [], "missing": [] },
+      { "project": "KAPSO", "source": "pyproject.toml core dependencies", "python": "3.14.7", "verdict": "PASS", "exit_code": 0, "source_builds": [], "missing": [] },
+      { "project": "KAPSO", "source": "requirements.txt", "python": "3.11.15", "verdict": "FAIL", "exit_code": 1, "reason": "unsatisfiable: openhands>=0.10.0 requires Python>=3.12 for versions >=1.3.0; openhands<0.10.0 does not satisfy the lower bound" },
+      { "project": "KAPSO", "source": "requirements.txt", "python": "3.12.11", "verdict": "FAIL", "exit_code": 1, "reason": "unsatisfiable: aider-chat>=0.35.0 and openhands>=1.0.0 are incompatible over litellm==1.75.0" },
+      { "project": "EvE", "source": "uv.lock locked set (95 packages)", "python": "3.11.15", "verdict": "PASS", "exit_code": 0, "source_builds": ["antlr4-python3-runtime==4.9.3 (pure-Python sdist)"], "missing": [] },
+      { "project": "EvE", "source": "uv.lock locked set (95 packages)", "python": "3.12.11", "verdict": "PASS", "exit_code": 0, "source_builds": [], "missing": [] },
+      { "project": "EvE", "source": "uv.lock locked set (95 packages)", "python": "3.14.7", "verdict": "PASS", "exit_code": 0, "note": "dry-run only", "source_builds": [], "missing": [] }
+    ],
+    "kapso_documented_install_path": "pip install -e .  (README.md:135) -> resolves cleanly; requirements.txt is a stale aggregate that must NOT be used",
+    "eve_project_untouched": "uv export / uv sync --dry-run were run with UV_PROJECT_ENVIRONMENT redirected into a0/env/checks/, so /tmp/eve (uv.lock, .python-version) was not modified",
+    "protocol_risk_3_14_wheels": {
+      "claim": "python 3.14.7 is newer than these projects support and may lack prebuilt wheels",
+      "measured": "REFUTED for dependency resolution: both projects resolve AND install on 3.14.7 with 0 source builds (tiktoken==0.14.0, weaviate-client==4.23.1, wandb==0.25.1, numpy, scipy all had wheels)",
+      "conclusion": "pinning to 3.11/3.12 is a cheap reproducibility precaution, not a hard necessity"
+    },
+    "cleanup": "all four throwaway venvs (157M + 49M + 449M + 203M) and the uv cache (77M) were deleted"
+  },
+
+  "containers": {
+    "verdict": "PASS",
+    "existing_unrelated_container": {
+      "name": "adapdc-catalog-postgres-1",
+      "image": "postgres:16",
+      "state": "Up 7 hours (healthy)",
+      "ports": "127.0.0.1:5433->5432/tcp",
+      "network": "adapdc_temporal-network",
+      "compose_project": "adapdc",
+      "handling": "NEVER touched, stopped, reconnected or reused; verified still Up (healthy) after cleanup"
+    },
+    "loreley_requires": {
+      "images_per_compose": ["postgres:18", "redis:8"],
+      "credentials": { "user": "loreley", "password": "loreley", "database": "loreley" },
+      "env": {
+        "DATABASE_URL": "postgresql+psycopg://loreley:loreley@localhost:5432/loreley",
+        "TASKS_REDIS_URL": "redis://127.0.0.1:6379/0",
+        "DB_AUTO_MIGRATE": "true"
+      }
+    },
+    "verified_docker_run_commands": {
+      "variant_A_host_ports": [
+        "docker run -d --name loreley-postgres -e POSTGRES_USER=loreley -e POSTGRES_PASSWORD=loreley -e POSTGRES_DB=loreley -p 127.0.0.1:5432:5432 postgres:18",
+        "docker run -d --name loreley-redis -p 127.0.0.1:6379:6379 redis:8 redis-server --appendonly yes"
+      ],
+      "variant_B_closed_network_recommended": [
+        "docker network create --internal a0-egress-internal",
+        "docker run -d --name loreley-postgres --network a0-egress-internal -e POSTGRES_USER=loreley -e POSTGRES_PASSWORD=loreley -e POSTGRES_DB=loreley postgres:18",
+        "docker run -d --name loreley-redis --network a0-egress-internal redis:8 redis-server --appendonly yes",
+        "# runtime joins the same network; then use container-name hostnames:",
+        "# DATABASE_URL=postgresql+psycopg://loreley:loreley@loreley-postgres:5432/loreley",
+        "# TASKS_REDIS_URL=redis://loreley-redis:6379/0"
+      ],
+      "variant_B_note": "recommended because it simultaneously satisfies the section 4.3 closure requirement: external egress blocked, sibling containers still reachable by name (empirically local=ok)"
+    },
+    "verification_evidence": {
+      "redis": "docker exec a0-loreley-redis redis-cli ping -> PONG; SET/GET round-trip OK; redis_version 8.10.1; raw socket PING from host -> b'+PONG\\r\\n'",
+      "postgres": "docker exec a0-loreley-postgres pg_isready -U loreley -d loreley -> accepting connections after 2s; select version() -> PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2); CREATE TABLE/INSERT/SELECT round-trip; host psql 'postgresql://loreley:loreley@localhost:5432/loreley' -> loreley | loreley",
+      "redis_cli_on_host": "MISSING (protocol claim confirmed) - container-side docker exec used instead"
+    },
+    "cleanup": {
+      "removed_containers": ["a0-loreley-redis", "a0-loreley-postgres", "a0-egress-sibling"],
+      "removed_networks": ["a0-egress-internal"],
+      "images_left_in_place": ["postgres:18", "redis:8", "alpine:3.21"],
+      "images_rationale": "needed by the Loreley adapter and by probe_egress.sh; re-pulling postgres:18 costs ~600MB",
+      "post_cleanup_state": "docker ps -a, docker network ls and ss -ltn identical to the pre-audit snapshot"
+    }
+  },
+
+  "ports": {
+    "occupied_avoid": [
+      { "port": 5433, "bind": "127.0.0.1", "owner": "adapdc-catalog-postgres-1 (pre-existing, do not touch)" },
+      { "port": 7890, "bind": "*", "owner": "mihomo proxy (http_proxy/https_proxy target)" },
+      { "port": 7891, "bind": "*", "owner": "mihomo proxy (TCP and UDP)" },
+      { "port": 1053, "bind": "*", "owner": "mihomo DNS (TCP and UDP)" },
+      { "port": 9093, "bind": "127.0.0.1", "owner": "unidentified host service" },
+      { "port": 44169, "bind": "127.0.0.1", "owner": "unidentified host service" },
+      { "port": 39349, "bind": "127.0.0.1", "owner": "VSCode/electron extension host" },
+      { "port": 7233, "bind": "127.0.0.1", "owner": "adapdc-temporal-1 (currently exited; will reclaim if restarted)" },
+      { "port": 8080, "bind": "127.0.0.1", "owner": "adapdc-temporal-ui-1 (currently exited; will reclaim if restarted)" }
+    ],
+    "free_recommended": [
+      { "port": 5432, "use": "Loreley Postgres" },
+      { "port": 6379, "use": "Loreley Redis" }
+    ]
+  },
+
+  "egress": {
+    "question": "Can the study PROVE by probe that a runtime has no autonomous external access (section 4.3)?",
+    "answer": "YES for two rootless mechanisms; NO for any firewall-based approach",
+    "probe_tool": "a0/env/checks/probe_egress.sh  (subcommands: list | check | self-test)",
+    "mechanisms": [
+      { "name": "docker-internal", "verdict": "PASS", "expectation": "egress blocked, siblings reachable", "observed": "dns=fail tcp=fail tcpvia=none https=fail local=ok egress=BLOCKED", "command": "docker network create --internal a0-egress-internal", "significance": "the recommended barrier: selective, verified by a surviving sibling connection" },
+      { "name": "docker-none", "verdict": "PASS", "expectation": "egress blocked", "observed": "dns=fail tcp=fail tcpvia=none https=fail local=n/a egress=BLOCKED", "significance": "total isolation; siblings also unreachable" },
+      { "name": "unshare-rn", "verdict": "PASS", "expectation": "egress blocked (rootless)", "observed": "dns=fail tcp=fail tcpvia=none https=fail egress=BLOCKED", "command": "unshare -rn <cmd>", "significance": "the only host-level rootless barrier; candidate for KAPSO's unclosable Bash-side door" },
+      { "name": "host", "verdict": "PASS (positive control)", "expectation": "egress open", "observed": "dns=ok tcp=ok tcpvia=example.com:443 https=ok egress=OPEN" },
+      { "name": "docker-bridge", "verdict": "PASS (positive control)", "expectation": "egress open", "observed": "dns=ok tcp=ok tcpvia=example.com:443 https=ok egress=OPEN" },
+      { "name": "iptables", "verdict": "BLOCKED", "observed": "iptables v1.8.13: Could not fetch rule set generation id: Permission denied (you must be root)" },
+      { "name": "nftables", "verdict": "BLOCKED", "observed": "netlink: Error: cache initialization failed: Operation not permitted" },
+      { "name": "unshare -n (without -r)", "verdict": "FAIL", "observed": "unshare: unshare failed: Operation not permitted" },
+      { "name": "ip link add / NET_ADMIN", "verdict": "BLOCKED", "observed": "RTNETLINK answers: Operation not permitted" },
+      { "name": "passwordless sudo", "verdict": "BLOCKED", "observed": "sudo: a password is required" }
+    ],
+    "self_test_result": "SELF-TEST: PASS -- every mechanism behaved as its label claims. Both positive controls (host, docker-bridge) were OPEN and all three negative controls were BLOCKED, with local=ok on docker-internal proving the barrier is selective rather than broken networking.",
+    "real_connection_attempt_evidence": "logs/egress_cmd_demo.log: the same runtime command (urllib.request.urlopen https://example.com) printed 'RUNTIME EGRESS SUCCEEDED: 200' on the host and 'RUNTIME EGRESS FAILED: URLError' inside unshare -rn",
+    "sharp_edges": [
+      "A new network namespace has its OWN loopback: `unshare -rn` + `ip link set lo up` works, but the host's 127.0.0.1 services are NOT reachable (measured: postgres on 127.0.0.1:5432 -> OSError Errno 101 Network is unreachable).",
+      "`docker --internal` likewise has no route to the host; local services must be SIBLINGS on the same internal network (proven reachable by container name).",
+      "Consequence for KAPSO: only the lane's candidate-execution channel can be wrapped; the orchestrator that talks to the model endpoint must stay outside the barrier. This matches the design anyway, since the orchestrator legitimately needs model access.",
+      "Section 4.3's 'Codex CLI workspace-write defaults to network_access:false' could NOT be tested end-to-end because codex cannot complete any call on this machine (see cli_login.codex)."
+    ],
+    "environment_quirks": [
+      "http_proxy/https_proxy are set to http://127.0.0.1:7890 (mihomo/Clash Meta, PID 608, tun0 interface 10.8.0.106/24 up); the proxy BREAKS some hosts (curl https://pypi.org/simple/ via proxy -> 000/timeout, direct -> 200).",
+      "Raw TCP to some public IP literals times out even though the host is online: 1.1.1.1:443, 8.8.8.8:443, 9.9.9.9:443 all time out; 1.1.1.1:80, 8.8.8.8:53 and example.com:443 by name connect. The canary therefore tries several targets and reports tcpvia=<which worked>.",
+      "The canary uses --noproxy '*': a probe must measure the context's own egress, not a relay the host has configured.",
+      "Adapter guidance: run network-touching installs with the proxy unset, or pypi/npm may fail even though the network is fine."
+    ]
+  },
+
+  "resources": {
+    "verdict": "PASS",
+    "cpu": { "logical": 12, "model": "AMD Ryzen 5 9600X 6-Core Processor", "topology": "6 cores / 2 threads per core / 1 socket" },
+    "memory": { "total": "30Gi", "used": "11Gi", "available": "19Gi", "swap_total": "8.0Gi", "swap_used": "0B" },
+    "disk": { "mount": "/", "device": "/dev/nvme0n1p3", "size": "286G", "used": "135G", "available": "137G", "use_pct": "50%" },
+    "tmp_note": "/tmp is a 16GiB tmpfs (RAM-backed). Keep venvs and checkouts off /tmp where it matters.",
+    "load_average_at_audit": "0.26, 0.28, 0.37",
+    "measured_venv_footprints": { "kapso_3_11": "157M", "kapso_3_12": "49M", "eve_3_11": "449M", "eve_3_12": "203M", "uv_cache": "77M" },
+    "assessment": "One Postgres (~150-250MB) plus one Redis (~10MB) are negligible. Several concurrent agent runtimes are feasible; the binding constraint is CPU (12 threads) and model-endpoint network latency, not memory or disk.",
+    "remote_reachable_endpoints": { "example.com": 200, "pypi.org": 200, "registry.npmjs.org": 200, "github.com": 200, "api.anthropic.com": 403, "api.openai.com": 401, "api.deepseek.com (unauthenticated POST)": 401 }
+  },
+
+  "open_items": [
+    {
+      "item": "Restore the codex provider relay on 127.0.0.1:15722",
+      "priority": "blocking",
+      "affects": ["EvE", "KAPSO codex lane"],
+      "how_to_confirm": "safer: ss -ltn | grep 15722 ; then definitively: timeout 90 codex exec --sandbox read-only 'Reply with exactly: OK'"
+    },
+    {
+      "item": "Confirm claude can complete a call and that its model id has not expired",
+      "priority": "high",
+      "affects": ["KAPSO claude lane"],
+      "how_to_confirm": "cd /tmp && timeout 120 claude -p 'Reply with exactly: OK'",
+      "note": "this is a billed call; the audit deliberately did not run it. The configured model id is deepseek-v4.1-flash-expires-on-0910, an expiry label 10 days past."
+    },
+    {
+      "item": "Clone Loreley and pin it at 4c375920",
+      "priority": "high",
+      "affects": ["Loreley adapter"],
+      "how_to_confirm": "git clone https://github.com/NeapolitanIcecream/loreley <target> && git -C <target> rev-parse HEAD  # expect 4c3759208e6b908f90716488ac3eec3dceaaf397",
+      "note": "outside this audit's write scope (a0/env/checks/** only); the pin is currently the upstream main tip so a plain clone lands on it"
+    }
+  ],
+
+  "bottom_line": "Infrastructure prerequisites (interpreters, dependency resolution, container infra, egress closure, resources) are all satisfied. The blocker is model access: with codex unable to complete any call, only SimpleLoop is guaranteed runnable today, and the A0 rule |R_1| >= 1 would reduce A0 to the baseline. Restoring the relay on 127.0.0.1:15722 and confirming claude are the two highest-value fixes before the adapters are written."
+}

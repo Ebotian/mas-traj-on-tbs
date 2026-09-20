@@ -1,0 +1,15 @@
+### DATE 2026-09-20T15:54:20+08:00
+### venv sizes before deletion
+157M	kapso/venv311
+49M	kapso/venv312
+449M	eve/venv311
+203M	eve/venv312
+77M	.uvcache
+### CMD: docker stop/rm a0-loreley-redis a0-loreley-postgres
+a0-loreley-redis
+a0-loreley-postgres
+### CMD: docker rm -f a0-egress-sibling (should already be gone)
+### CMD: docker network rm a0-egress-internal
+a0-egress-internal
+### CMD: rm -rf throwaway venvs + uv cache
+removed; exit=0

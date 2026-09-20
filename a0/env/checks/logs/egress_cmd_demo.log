@@ -1,0 +1,40 @@
+### demo: point the probe at a runtime-style egress attempt
+### runtime cmd = python3 -c "
+import urllib.request,sys
+try:
+    print(\"RUNTIME EGRESS SUCCEEDED:\", urllib.request.urlopen(\"https://example.com\", timeout=10).status)
+except Exception as e:
+    print(\"RUNTIME EGRESS FAILED:\", type(e).__name__); sys.exit(1)
+"
+
+--- (a) unisolated host (positive control) ---
+### mechanism=host expectation=egress_open image=alpine:3.21 timeout=30s date=2026-09-20T15:54:10+08:00
+### runtime command under test: python3 -c "
+import urllib.request,sys
+try:
+    print(\"RUNTIME EGRESS SUCCEEDED:\", urllib.request.urlopen(\"https://example.com\", timeout=10).status)
+except Exception as e:
+    print(\"RUNTIME EGRESS FAILED:\", type(e).__name__); sys.exit(1)
+"
+EVIDENCE mechanism=host mode=cmd rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN
+OBSERVED-OUTPUT-BEGIN
+RUNTIME EGRESS SUCCEEDED: 200
+CANARY dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a
+OBSERVED-OUTPUT-END
+VERDICT host: CONFIRMED (expected egress_open, observed egress_OPEN)
+
+--- (b) same runtime cmd inside unshare -rn (barrier) ---
+### mechanism=unshare-rn expectation=egress_blocked image=alpine:3.21 timeout=30s date=2026-09-20T15:54:14+08:00
+### runtime command under test: python3 -c "
+import urllib.request,sys
+try:
+    print(\"RUNTIME EGRESS SUCCEEDED:\", urllib.request.urlopen(\"https://example.com\", timeout=10).status)
+except Exception as e:
+    print(\"RUNTIME EGRESS FAILED:\", type(e).__name__); sys.exit(1)
+"
+EVIDENCE mechanism=unshare-rn mode=cmd rc=0 dns=fail tcp=fail tcpvia=none https=fail local=n/a egress=BLOCKED
+OBSERVED-OUTPUT-BEGIN
+RUNTIME EGRESS FAILED: URLError
+CANARY dns=fail tcp=fail tcpvia=none https=fail local=n/a
+OBSERVED-OUTPUT-END
+VERDICT unshare-rn: CONFIRMED (expected egress_blocked, observed egress_BLOCKED)

@@ -1,0 +1,18 @@
+### CMD: docker pull alpine:3.21
+Status: Downloaded newer image for alpine:3.21
+docker.io/library/alpine:3.21
+### Ports free check before start (expect empty):
+  5432 and 6379 both FREE
+### CMD: docker run -d --name a0-loreley-redis -p 127.0.0.1:6379:6379 redis:8 redis-server --appendonly yes
+b66eae302f1a3ac6c5b409b3637ab80b3f24926b2b9494b8360ff41a844981bc
+### CMD: docker exec a0-loreley-redis redis-cli ping
+PONG
+### CMD: docker exec a0-loreley-redis redis-cli set/get round-trip
+OK
+ok
+### CMD: docker exec a0-loreley-redis redis-cli info server | head
+redis_version:8.10.1
+tcp_port:6379
+uptime_in_seconds:0
+### host-side reachability of 6379 (python socket, no redis-cli on host)
+redis PING -> b'+PONG\r\n'
