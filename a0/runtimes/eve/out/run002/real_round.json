@@ -1,0 +1,99 @@
+{
+ "attempt": 1,
+ "budget": {
+  "turn_timeout_s": 420.0,
+  "turns": 8,
+  "wall_cap_s": 900.0
+ },
+ "config": {
+  "application_editable_files": [
+   "solution.py"
+  ],
+  "driver": "codex_exec",
+  "eid_r": "sha256:b903b051c87218a3599609ade2e742565f4244b893a49d9850fb7cd09a79fc0a",
+  "eid_r_note": "value recorded by the EID_r derivation in force when this round ran (sha256:ce7e5ac3c1012ee8d13599f8741f520a2631ad39f92194c2767eb6c44de12bf6, the sha256 of that run's generated step). Replaced on 2026-09-20, after audit R3, with the value the current derivation (a0_adapter/eidmap.py) gives for the same unchanged inputs (EID*, the E* source bytes, fr_spec_hash) \u2014 no field of this run was re-executed.",
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "evaluation_steps": [
+   "/home/ebt/rsi-dev/a0/runtimes/eve/out/run002/evaluator/eve_evaluator_step.sh"
+  ],
+  "loop_max_iterations": 1,
+  "model": "gpt-5.6-sol",
+  "n_solver_examples_phase2": 1,
+  "n_workers_phase2": 1,
+  "reasoning_effort": "xhigh",
+  "rollout_max_turns": 8,
+  "timeout_seconds": 420.0,
+  "web_search": "live"
+ },
+ "eve_checkout": {
+  "commit": "979065fd2cf1b3be9caf70596478fe27df7815ad",
+  "root": "/tmp/eve"
+ },
+ "finished_at": "2026-09-20T10:18:33Z",
+ "iterations_completed": 1,
+ "populations_after": {
+  "optimizer": [
+   "optimizer_b9658249ca9e"
+  ],
+  "solver": [
+   {
+    "id": "solver_c3bf61262b61",
+    "score": {
+     "score": 0.25,
+     "sum_radii": 0.25
+    },
+    "solution_bytes": 1441,
+    "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+   },
+   {
+    "id": "solver_7967359bf6d8",
+    "score": {
+     "e_star_candidate_source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+     "e_star_canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+     "e_star_fields": {
+      "audit_coverage": 1.0,
+      "items_audited": 26,
+      "min_boundary_margin": 0.0,
+      "min_gap": 0.036249916677713497,
+      "num_circles": 26,
+      "overlap_count": 0,
+      "packing_density": 0.007551905417283158,
+      "pairs_audited": 325,
+      "sum_radii": 0.25
+     },
+     "e_star_status": "ok",
+     "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+     "score": 0.25,
+     "summary": "E* status=ok sum_radii=0.25"
+    },
+    "solution_bytes": 1441,
+    "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+   }
+  ]
+ },
+ "populations_before": {
+  "optimizer": [
+   "optimizer_b9658249ca9e"
+  ],
+  "solver": [
+   "solver_c3bf61262b61"
+  ]
+ },
+ "run_dir": "/home/ebt/rsi-dev/a0/runtimes/eve/out/run002",
+ "schema": "a0.eve.real_round/v1",
+ "seed_repo": {
+  "commit": "6ac22c440e241b7e19d89fff91cc4f9841cc951d",
+  "editable_files": [
+   "solution.py"
+  ],
+  "github_url": "https://github.com/scaling-group/evolve-testbed",
+  "snapshot_root": "/home/ebt/rsi-dev/a0/runtimes/eve/out/run002/.repo_cache/snapshots/6ac22c440e241b7e19d89fff91cc4f9841cc951d"
+ },
+ "seed_solver": {
+  "declared_score": 0.25,
+  "id": "solver_c3bf61262b61",
+  "source": "C*/c02_baseline_upstream/solution.py"
+ },
+ "started_at": "2026-09-20T10:16:50Z",
+ "wall_seconds": 103.54
+}

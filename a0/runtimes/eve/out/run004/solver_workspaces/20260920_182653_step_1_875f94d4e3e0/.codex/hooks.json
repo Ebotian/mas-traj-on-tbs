@@ -1,0 +1,45 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Edit|Write|MultiEdit|Glob|Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "env PYTHONPATH=/tmp/eve/src /home/ebt/rsi-dev/a0/runtimes/eve/.venv/bin/python -m scaling_evolve.providers.agent.hooks.workspace_guard"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "env PYTHONPATH=/tmp/eve/src /home/ebt/rsi-dev/a0/runtimes/eve/.venv/bin/python -m scaling_evolve.providers.agent.hooks.workspace_guard"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "env PYTHONPATH=/tmp/eve/src /home/ebt/rsi-dev/a0/runtimes/eve/.venv/bin/python -m scaling_evolve.providers.agent.hooks.workspace_guard"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "env PYTHONPATH=/tmp/eve/src /home/ebt/rsi-dev/a0/runtimes/eve/.venv/bin/python -m scaling_evolve.providers.agent.hooks.workspace_guard"
+          }
+        ]
+      }
+    ]
+  }
+}

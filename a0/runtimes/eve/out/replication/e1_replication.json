@@ -1,0 +1,69 @@
+{
+ "case": "solver_examples order, N=2, num=min(4,2), no_replacement",
+ "pooled": {
+  "ci95": [
+   0.7225066587337489,
+   0.7354933412662511
+  ],
+  "draws": 18000,
+  "expected_p": 0.7310585786300049,
+  "p_hat": 0.729,
+  "successes": 13122,
+  "two_sided_p": 0.5339723993507226,
+  "z": -0.6228719532600361
+ },
+ "profile": {
+  "draws_per_replicate": 3000,
+  "population_scores": {
+   "c01_good_hex": 2.4519205208433132,
+   "c02_baseline_upstream": 0.25
+  },
+  "replicates": 6,
+  "rng": "solver_pop._rng, unseeded (populations/base.py:40)"
+ },
+ "replicates": [
+  {
+   "draws": 3000,
+   "p_hat": 0.7346666666666667,
+   "replicate": 0,
+   "successes": 2204,
+   "two_sided_p_vs_0.7310585786300049": 0.6655338740203767
+  },
+  {
+   "draws": 3000,
+   "p_hat": 0.738,
+   "replicate": 1,
+   "successes": 2214,
+   "two_sided_p_vs_0.7310585786300049": 0.39865699336673777
+  },
+  {
+   "draws": 3000,
+   "p_hat": 0.7266666666666667,
+   "replicate": 2,
+   "successes": 2180,
+   "two_sided_p_vs_0.7310585786300049": 0.5924588109613654
+  },
+  {
+   "draws": 3000,
+   "p_hat": 0.7246666666666667,
+   "replicate": 3,
+   "successes": 2174,
+   "two_sided_p_vs_0.7310585786300049": 0.43402006590893466
+  },
+  {
+   "draws": 3000,
+   "p_hat": 0.7263333333333334,
+   "replicate": 4,
+   "successes": 2179,
+   "two_sided_p_vs_0.7310585786300049": 0.5643097964925826
+  },
+  {
+   "draws": 3000,
+   "p_hat": 0.7236666666666667,
+   "replicate": 5,
+   "successes": 2171,
+   "two_sided_p_vs_0.7310585786300049": 0.3650102220618362
+  }
+ ],
+ "schema": "a0.eve.replication/v1"
+}

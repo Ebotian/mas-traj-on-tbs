@@ -1,0 +1,150 @@
+#!/usr/bin/env python3
+"""Recompute EvE's `EID_r` from published files alone.
+
+This script deliberately imports **nothing** from `a0_adapter`: it re-implements the declared
+derivation so that the value an auditor recomputes does not depend on the adapter's own code
+(audit `verify/VERDICT.md` R3).
+
+    value = 'sha256:' + sha256("a0/eve/eid_r/v1" || 0x00 || canonical_json(payload))
+    payload = {schema, eid_star, native_scheme, mapping_mode,
+               evaluator_source {digest, files}, fr_spec_hash}
+
+Inputs, all published:
+
+  * `eid_star` and `components.EvaluatorSource` from the EID* document
+    (`a0/contract/out/plumbing.EID.json` by default) — the component's `records` are re-hashed
+    from `a0/tasks/circle-packing/{e_star.py,e_star_child.py}` and compared, so a mutated
+    evaluator cannot be hashed under a stale identity;
+  * `fr_spec_hash` = sha256 of the canonical form of `a0/contract/fr/scalar.json`
+    (`evalcontract.canonical_file_digest`), recomputed here without importing it.
+
+Mutation check (the property R3 asks for — a different `EID*` must give a different `EID_r`):
+
+    tools/recompute-eid-r --eid <EID document with one nibble of eid_star changed>
+
+Exit 0 on success; 2 on a usage error; 3 when an input does not match what EID* records.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+DOMAIN = "a0/eve/eid_r/v1"
+SCHEMA = "a0/eve/eid_r/v1"
+VALUE_PREFIX = "sha256:"
+
+
+def canonical_bytes(value) -> bytes:
+    """`evalcontract.canonical_json`: sorted keys, no whitespace, ASCII, no NaN/Infinity."""
+    return json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=True,
+        allow_nan=False,
+    ).encode("ascii")
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def fail(message: str):
+    """Report an input that does not match what EID* records, then exit 3."""
+    print(message, file=sys.stderr)
+    raise SystemExit(3)
+
+
+def source_records(eid_document: dict, a0_root: Path) -> tuple[list[dict], str]:
+    component = (eid_document.get("components") or {}).get("EvaluatorSource") or {}
+    rel_root = str(component.get("root") or "").strip("/")
+    records = []
+    for record in component.get("records") or []:
+        rel = f"{rel_root}/{record['path']}" if rel_root else str(record["path"])
+        path = a0_root / rel
+        if not path.is_file():
+            fail(f"evaluator source {rel} is missing under {a0_root}")
+        actual = sha256_file(path)
+        if actual != record.get("sha256"):
+            fail(
+                f"evaluator source {rel} hashes to {actual}, EID* records "
+                f"{record.get('sha256')} — the document does not describe these bytes"
+            )
+        records.append({"path": rel, "sha256": actual})
+    records.sort(key=lambda item: item["path"])
+    if not records:
+        fail("the EID* document carries no EvaluatorSource records")
+    digest = component.get("digest")
+    if not isinstance(digest, str) or not digest:
+        fail("the EID* document carries no EvaluatorSource digest")
+    return records, digest
+
+
+def main(argv=None) -> int:
+    here = Path(__file__).resolve()
+    default_a0 = here.parents[3]
+    parser = argparse.ArgumentParser(prog="recompute-eid-r", description=__doc__.splitlines()[0])
+    parser.add_argument("--eid", default=str(default_a0 / "contract" / "out" / "plumbing.EID.json"))
+    parser.add_argument("--fr", default=str(default_a0 / "contract" / "fr" / "scalar.json"))
+    parser.add_argument("--a0-root", default=str(default_a0))
+    parser.add_argument("--run-dir", default=None,
+                        help="optional: also report the injected step's provenance for a run")
+    args = parser.parse_args(argv)
+
+    a0_root = Path(args.a0_root).resolve()
+    eid_document = json.loads(Path(args.eid).read_text(encoding="utf-8"))
+    eid_star = eid_document.get("eid_star")
+    if not isinstance(eid_star, str) or len(eid_star) != 64:
+        print(f"2: {args.eid} carries no 64-hex eid_star", file=sys.stderr)
+        return 2
+    records, source_digest = source_records(eid_document, a0_root)
+    fr_spec_hash = hashlib.sha256(
+        canonical_bytes(json.loads(Path(args.fr).read_text(encoding="utf-8")))
+    ).hexdigest()
+
+    payload = {
+        "schema": SCHEMA,
+        "eid_star": eid_star,
+        "native_scheme": "none",
+        "mapping_mode": "adapter_declared_injection",
+        "evaluator_source": {"digest": source_digest, "files": records},
+        "fr_spec_hash": fr_spec_hash,
+    }
+    payload_canonical = canonical_bytes(payload)
+    value = VALUE_PREFIX + hashlib.sha256(
+        DOMAIN.encode("ascii") + b"\x00" + payload_canonical
+    ).hexdigest()
+
+    doc = {
+        "algorithm": 'sha256("a0/eve/eid_r/v1" || 0x00 || canonical_json(payload)), prefixed "sha256:"',
+        "domain": DOMAIN,
+        "value": value,
+        "payload": payload,
+        "payload_canonical": payload_canonical.decode("ascii"),
+        "eid_document": str(Path(args.eid).resolve()),
+        "fr_declaration": str(Path(args.fr).resolve()),
+    }
+    if args.run_dir:
+        run_dir = Path(args.run_dir).resolve()
+        step = run_dir / "evaluator" / "eve_evaluator_step.sh"
+        doc["injected_step"] = {
+            "path": str(step),
+            "sha256": sha256_file(step) if step.is_file() else None,
+            "note": "provenance only: the rendered step embeds the run's absolute paths, so it "
+                    "is reported next to EID_r rather than hashed into it",
+        }
+    json.dump(doc, sys.stdout, indent=1, sort_keys=True)
+    sys.stdout.write("\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

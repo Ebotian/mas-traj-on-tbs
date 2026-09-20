@@ -1,0 +1,111 @@
+{
+ "attempt": 2,
+ "budget": {
+  "turn_timeout_s": 300.0,
+  "turns": 6,
+  "wall_cap_s": 780.0
+ },
+ "codex_provider_injection": {
+  "fields": {
+   "base_url": "http://127.0.0.1:15722/v1",
+   "name": "zjapi",
+   "requires_openai_auth": true,
+   "wire_api": "responses"
+  },
+  "injected": true,
+  "provider_id": "custom",
+  "source": "/home/ebt/.codex/config.toml",
+  "why": "EvE's isolated Codex HOME has a thin config.toml with no model_providers block (codex_isolation.py:42-66); without this injection the agent's calls go to api.openai.com and fail with 401"
+ },
+ "config": {
+  "application_editable_files": [
+   "solution.py"
+  ],
+  "driver": "codex_exec",
+  "eid_r": "sha256:b903b051c87218a3599609ade2e742565f4244b893a49d9850fb7cd09a79fc0a",
+  "eid_r_note": "value recorded by the EID_r derivation in force when this round ran (sha256:71f324f2a85653df4e509faccfb364c7a22a6c527794111acc2c6636f81cd57c, the sha256 of that run's generated step). Replaced on 2026-09-20, after audit R3, with the value the current derivation (a0_adapter/eidmap.py) gives for the same unchanged inputs (EID*, the E* source bytes, fr_spec_hash) \u2014 no field of this run was re-executed.",
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "evaluation_steps": [
+   "/home/ebt/rsi-dev/a0/runtimes/eve/out/run003/evaluator/eve_evaluator_step.sh"
+  ],
+  "loop_max_iterations": 1,
+  "model": "gpt-5.6-sol",
+  "n_solver_examples_phase2": 1,
+  "n_workers_phase2": 1,
+  "reasoning_effort": "xhigh",
+  "rollout_max_turns": 6,
+  "timeout_seconds": 300.0,
+  "web_search": "live"
+ },
+ "eve_checkout": {
+  "commit": "979065fd2cf1b3be9caf70596478fe27df7815ad",
+  "root": "/tmp/eve"
+ },
+ "finished_at": "2026-09-20T10:25:57Z",
+ "iterations_completed": 1,
+ "populations_after": {
+  "optimizer": [
+   "optimizer_eda9048ca0a6"
+  ],
+  "solver": [
+   {
+    "id": "solver_07aa7591a00c",
+    "score": {
+     "score": 0.25,
+     "sum_radii": 0.25
+    },
+    "solution_bytes": 1441,
+    "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+   },
+   {
+    "id": "solver_430fb9ac7f1c",
+    "score": {
+     "e_star_candidate_source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+     "e_star_canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+     "e_star_fields": {
+      "audit_coverage": 1.0,
+      "items_audited": 26,
+      "min_boundary_margin": 0.0,
+      "min_gap": 0.036249916677713497,
+      "num_circles": 26,
+      "overlap_count": 0,
+      "packing_density": 0.007551905417283158,
+      "pairs_audited": 325,
+      "sum_radii": 0.25
+     },
+     "e_star_status": "ok",
+     "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+     "score": 0.25,
+     "summary": "E* status=ok sum_radii=0.25"
+    },
+    "solution_bytes": 1441,
+    "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+   }
+  ]
+ },
+ "populations_before": {
+  "optimizer": [
+   "optimizer_eda9048ca0a6"
+  ],
+  "solver": [
+   "solver_07aa7591a00c"
+  ]
+ },
+ "run_dir": "/home/ebt/rsi-dev/a0/runtimes/eve/out/run003",
+ "schema": "a0.eve.real_round/v1",
+ "seed_repo": {
+  "commit": "6ac22c440e241b7e19d89fff91cc4f9841cc951d",
+  "editable_files": [
+   "solution.py"
+  ],
+  "github_url": "https://github.com/scaling-group/evolve-testbed",
+  "snapshot_root": "/home/ebt/rsi-dev/a0/runtimes/eve/out/run003/.repo_cache/snapshots/6ac22c440e241b7e19d89fff91cc4f9841cc951d"
+ },
+ "seed_solver": {
+  "declared_score": 0.25,
+  "id": "solver_07aa7591a00c",
+  "source": "C*/c02_baseline_upstream/solution.py"
+ },
+ "started_at": "2026-09-20T10:20:54Z",
+ "wall_seconds": 303.62
+}

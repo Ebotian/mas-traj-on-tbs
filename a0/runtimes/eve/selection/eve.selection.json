@@ -1,0 +1,38 @@
+{
+ "adoption_note": "Adopted by the EvE workstream from a0/contract/selection/simpleloop.selection.json. The `scalarization` and `failure_stage_mapping` blocks are copied VERBATIM from it; a0_adapter/selectionmap.py re-derives both blocks' canonical digests at run time, compares them with the frozen values (failure_stage_mapping = 201fed78..., scalarization = d59f0930...) and with this copy, and refuses to report a run in which any of the three disagrees (adapter exit 3). The `selection` block below is EvE's own: EvE does not run an argmax over C* -- its A0.2 semantics are the sampler's, so that block states what the adapter actually observed on the runtime's real machinery.",
+ "failure_stage_mapping": {
+  "exit_0_ok": "none",
+  "exit_2_invalid": "verify_failed",
+  "exit_3_error_candidate_call_raised": "evaluator_failed",
+  "exit_3_error_candidate_import_failed": "resolve_failed",
+  "exit_3_error_child_terminated_early": "evaluator_failed",
+  "exit_3_error_non_deterministic": "verify_failed",
+  "exit_3_error_other": "evaluator_failed",
+  "exit_3_error_runtime_budget_exceeded": "timeout",
+  "note": "E* verdict -> trace failure_stage. The trace schema fixes the enum but not this per-runtime mapping; SimpleLoop freezes it here and reports it to the contract owner so the other runtimes can adopt the same one.",
+  "solver_lane_produced_no_proposal": "search_failed"
+ },
+ "frozen_failure_stage_mapping_digest": "201fed78b72587786fcafcc0a0caf9b2a1e65705b7f58e1cdd1c914436ef318f",
+ "frozen_scalarization_digest": "d59f09309b61be515935c8faf72f77f5b66162f5c1375e2eb8ca16934c149b3c",
+ "policy_id": "eve-adopted-v1",
+ "runtime": "eve",
+ "scalarization": {
+  "applies": "scalar",
+  "direction": "maximize",
+  "identity_check": "when status == ok the adapter asserts objective.value == fields.sum_radii and fails the candidate otherwise",
+  "input": "outcome.fields.sum_radii",
+  "nonfinite": "a non-finite scalar (nan/inf) is rejected as an adapter-side measurement error, not compared",
+  "null_is_not_zero": "a null scalar is never coerced to 0.0 or to -inf; an unscored candidate is recorded as unscored and is excluded from the argmax. E* exit 2 / exit 3 propagate as failure_stage values with failure_detail, not as a number.",
+  "status_gate": "scalar is defined iff outcome.status == \"ok\"; when status is \"invalid\" or \"error\" the scalar is null"
+ },
+ "schema": "a0.selection/v1",
+ "selection": {
+  "claim_under_test": "position 0 of the rendered order is the draw the runtime consumes as its parent example; the draw's weight is E*'s score through the sampler's own softmax, which is what makes a changed score change the selection (the A0.2 injected-score control).",
+  "not_claimed": "EvE's shipped loop is a full evolutionary search, not an argmax: the adapter does not claim the frozen SimpleLoop champion rule applies to a real EvE run, only that the sampler under test consumes the score as A0.2 requires.",
+  "null_fold": "the same `scalarization` block as the other runtimes: a null scalar is never 0.0 or -inf",
+  "runtime_machinery": "EvE has no argmax over an evaluated pool that the adapter could point at. What A0.2 tests is the runtime's sampler: `loop.sampling.solver_examples` instantiated by Hydra from the shipped config (seam S1, factory.py:291-299), called through the real call site Phase2BatchRunner._sample_solvers with the population's unseeded RNG (S2, phase2.py:597-605), and observed through the {solver_examples_block} order rendered into the Phase-2 README (S3, immutable_renderers/base.py:179-196).",
+  "search_signal": "F_r(E*) = scalar(E*) = outcome.fields.sum_radii (contract/fr/scalar.json, fr.spec_hash 1fa6f941...), written into the score payload the step emits; EvE reads it with populations/score.py:11-33. E* itself is never scalarized by the runtime."
+ },
+ "status": "adopted-by-eve-workstream",
+ "status_note": "Not `frozen-a0-contract`: the contract owner freezes the canonical copy at a0/contract/selection/eve.selection.json (not created yet). This file is the runtime-side declaration a0_adapter/selectionmap.py reads at run time; the canonical digests of both shared blocks are recomputed from a0/contract/selection/simpleloop.selection.json and recorded in every A0.1/A0.2 report."
+}
