@@ -1,0 +1,62 @@
+{
+ "checks": [
+  {
+   "check_id": "order_invariance",
+   "pass": true
+  },
+  {
+   "check_id": "tie_break_observable",
+   "pass": true
+  },
+  {
+   "check_id": "near_tie_not_absorbed",
+   "pass": true
+  },
+  {
+   "check_id": "null_never_wins",
+   "pass": true
+  },
+  {
+   "check_id": "error_verdicts_propagate",
+   "pass": true
+  },
+  {
+   "check_id": "injected_score_moves_selection",
+   "pass": true
+  },
+  {
+   "check_id": "running_max_monotone",
+   "pass": true
+  },
+  {
+   "check_id": "fr_frozen",
+   "pass": true
+  },
+  {
+   "check_id": "argmax_is_a_set_function",
+   "pass": true
+  }
+ ],
+ "failed": [],
+ "passed": 9,
+ "runs": {
+  "forward": {
+   "champion": "c01_good_hex",
+   "champion_scalar": 2.4519205208433132,
+   "exit_code": 0
+  },
+  "injected": {
+   "champion": "c02_baseline_upstream",
+   "champion_scalar": 99.0,
+   "exit_code": 0
+  },
+  "reverse": {
+   "champion": "c01_good_hex",
+   "champion_scalar": 2.4519205208433132,
+   "exit_code": 0
+  }
+ },
+ "schema": "a0.simpleloop.a02/v1",
+ "verdict": "pass"
+}
+written: a0/runtimes/simpleloop/out/a02/a02_checks.json

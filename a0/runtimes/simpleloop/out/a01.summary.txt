@@ -1,0 +1,41 @@
+{
+ "candidate_count": 14,
+ "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+ "epsilon": {
+  "kind": "abs",
+  "source": "EID* Config.conformance.epsilon",
+  "unit": "sum_radii",
+  "value": 1e-09
+ },
+ "failed": [],
+ "passed": 14,
+ "schema": "a0.simpleloop.conformance/v1",
+ "theta_E": {
+  "fidelity": "full",
+  "fraction": 1.0,
+  "seed": 1337
+ },
+ "trace_paths": {
+  "combined": "a0/runtimes/simpleloop/out/a01/traces/simpleloop.a01.all.jsonl",
+  "resource": "a0/runtimes/simpleloop/out/a01/traces/simpleloop.a01.resource.jsonl",
+  "score": "a0/runtimes/simpleloop/out/a01/traces/simpleloop.a01.score.jsonl"
+ },
+ "verdict": "pass",
+ "verdicts_seen": {
+  "c01_good_hex": "ok/exit0",
+  "c02_baseline_upstream": "ok/exit0",
+  "c03_mirror": "ok/exit0",
+  "c04_near_tie": "ok/exit0",
+  "c05_overlapping": "invalid/exit2",
+  "c06_empty": "invalid/exit2",
+  "c07_single": "invalid/exit2",
+  "c08_out_of_bounds": "invalid/exit2",
+  "c09_malformed_import": "error/exit3",
+  "c10_raises": "error/exit3",
+  "c11_non_deterministic": "error/exit3",
+  "c12_exit_without_artifacts": "error/exit3",
+  "c13_slow": "error/exit3",
+  "c14_near_zero": "ok/exit0"
+ }
+}
+written: a0/runtimes/simpleloop/out/a01/conformance.json

@@ -1,0 +1,222 @@
+#!/usr/bin/env python3
+"""Check this runtime's executed conventions against the frozen A0-wide copy.
+
+`a0/contract/selection/simpleloop.selection.json` is the contract owner's frozen copy
+of the `scalarization` / `selection` / `failure_stage_mapping` blocks this workstream
+proposed (adapter_contract.md §5.3: the first two and the verdict→`failure_stage`
+table are A0-wide). This script answers one question by execution rather than by
+reading: does what this substrate *runs* still equal what `a0/contract` froze?
+
+Four checks, all mechanical:
+
+1. the frozen file's canonical digest is the one §5.3 prints;
+2. the frozen `scalarization` and `selection` blocks are byte-identical to this
+   runtime's authoritative `policy/simpleloop.policy.json` and to the proposal that
+   was copied from it;
+3. every `E*` verdict → `failure_stage` row in the frozen table is reproduced by
+   `a0_adapter.traces.failure_stage_for`, including the "other" fallback and the
+   solver-lane row (`solver_lane_produced_no_proposal` → `search_failed`);
+4. the frozen `scalarization` semantics are reproduced by `a0_adapter.policy`:
+   `null` (never `0.0`/`-inf`) when `status != "ok"`, the ok-value otherwise, and the
+   tie-break is the byte-wise smallest `candidate_id` under every proposal order
+   while the rejected "earliest index" rule is not.
+
+Also re-derives `EID_r` from the declared inputs and compares it with the value the
+conformance handoff reports (`--expected-eid-r`).
+
+Exit 0 iff every check passes; prints one JSON object with a `checks` list.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+DEFAULT_WORK_ROOT = "/home/ebt/rsi-dev"
+EXPECTED_FROZEN_DIGEST = "ca995f95d41fbf6330289ca59dcf00cc242a419f1fc9f0fc27ad920c78c721cd"
+EXPECTED_EID_R = "5773dfe1e86728df2ee07be92b2166858eda94cfe7c02e3e737a9a091c8ed42e"
+
+# frozen table key -> (exit_code, failure.kind); "other" is the fallback for a kind
+# that is not in the table, not a literal kind name.
+VERDICT_ROWS = {
+    "exit_0_ok": (0, None),
+    "exit_2_invalid": (2, None),
+    "exit_3_error_candidate_import_failed": (3, "candidate_import_failed"),
+    "exit_3_error_non_deterministic": (3, "non_deterministic"),
+    "exit_3_error_runtime_budget_exceeded": (3, "runtime_budget_exceeded"),
+    "exit_3_error_candidate_call_raised": (3, "candidate_call_raised"),
+    "exit_3_error_child_terminated_early": (3, "child_terminated_early"),
+}
+
+
+def resolve(work_root: Path, value: str) -> Path:
+    path = Path(value)
+    return path if path.is_absolute() else work_root / value
+
+
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--work-root", default=DEFAULT_WORK_ROOT)
+    parser.add_argument(
+        "--frozen", default="a0/contract/selection/simpleloop.selection.json"
+    )
+    parser.add_argument(
+        "--policy", default="a0/runtimes/simpleloop/policy/simpleloop.policy.json"
+    )
+    parser.add_argument(
+        "--proposal",
+        default="a0/runtimes/simpleloop/policy/proposed.a0.contract.simpleloop.selection.json",
+    )
+    parser.add_argument("--eid", default="a0/tasks/circle-packing/plumbing.EID.proposed.json")
+    parser.add_argument("--expected-eid-r", default=EXPECTED_EID_R)
+    parser.add_argument("--out")
+    args = parser.parse_args(argv)
+
+    work_root = Path(args.work_root).resolve()
+    adapter_dir = Path(__file__).resolve().parent.parent
+    sys.path.insert(0, str(adapter_dir))
+
+    from a0_adapter.eidmap import derive_eid_r
+    from a0_adapter.policy import PolicyError, canonical_bytes, choose, choose_earliest_index, load_policy, scalar_of
+    from a0_adapter.traces import failure_stage_for
+
+    frozen_path, policy_path, proposal_path = (
+        resolve(work_root, args.frozen),
+        resolve(work_root, args.policy),
+        resolve(work_root, args.proposal),
+    )
+    frozen = json.loads(frozen_path.read_text(encoding="utf-8"))
+    proposal = json.loads(proposal_path.read_text(encoding="utf-8"))
+    policy = load_policy(policy_path)
+
+    checks: list[dict] = []
+
+    def check(name: str, ok: bool, detail: str) -> None:
+        checks.append({"check": name, "status": "PASS" if ok else "FAIL", "detail": detail})
+
+    digest = hashlib.sha256(canonical_bytes(frozen)).hexdigest()
+    check(
+        "frozen-canonical-digest",
+        digest == EXPECTED_FROZEN_DIGEST,
+        f"a0/contract/selection/simpleloop.selection.json canonical digest = {digest}",
+    )
+
+    for block in ("scalarization", "selection"):
+        same_policy = canonical_bytes(frozen[block]) == canonical_bytes(policy[block])
+        same_proposal = canonical_bytes(frozen[block]) == canonical_bytes(proposal[block])
+        check(
+            f"block-identical:{block}",
+            same_policy and same_proposal,
+            f"frozen == policy: {same_policy}; frozen == proposal: {same_proposal}",
+        )
+
+    frozen_map = frozen["failure_stage_mapping"]
+    policy_map = policy["failure_stage_mapping"]
+    executed: dict[str, str] = {}
+    for key, (exit_code, kind) in VERDICT_ROWS.items():
+        executed[key] = failure_stage_for(exit_code, kind)
+    executed["exit_3_error_other"] = failure_stage_for(3, "a_kind_not_in_the_table")
+    declared = {k: v for k, v in frozen_map.items() if k not in ("note", "solver_lane_produced_no_proposal")}
+    mismatches = {k: (declared[k], executed.get(k)) for k in declared if executed.get(k) != declared[k]}
+    check(
+        "failure_stage-table-executes",
+        not mismatches,
+        f"{len(declared) - len(mismatches)}/{len(declared)} verdict rows reproduced by "
+        f"traces.failure_stage_for; mismatches: {mismatches or 'none'}",
+    )
+    check(
+        "failure_stage-rows-subset-of-policy",
+        all(policy_map.get(k) == v for k, v in declared.items()),
+        "every frozen verdict row is present in the runtime's authoritative policy file",
+    )
+    solver_stage = frozen_map["solver_lane_produced_no_proposal"]
+    loop_source = (adapter_dir / "a0_adapter" / "loop.py").read_text(encoding="utf-8")
+    check(
+        "solver-lane-row",
+        solver_stage == "search_failed" and f'failure_stage="{solver_stage}"' in loop_source,
+        f"frozen says solver_lane_produced_no_proposal -> {solver_stage}; the loop emits that "
+        f"literal at its no-proposal site",
+    )
+
+    null_gate = all(
+        scalar_of(outcome, "sum_radii") is None
+        for outcome in (
+            None,
+            {"status": "invalid", "fields": {"sum_radii": 2.4519205208433132}},
+            {"status": "error", "fields": {"sum_radii": None}},
+            {"status": "ok", "fields": {"sum_radii": None}},
+        )
+    )
+    honoured = scalar_of({"status": "ok", "fields": {"sum_radii": 0.25}, "objective": {"value": 0.25}}, "sum_radii")
+    check(
+        "scalar-null-gate",
+        null_gate and honoured == 0.25,
+        f"status != ok -> None (never 0.0/-inf) for round-1 invalid/error/null; ok -> {honoured}",
+    )
+    try:
+        scalar_of({"status": "ok", "fields": {"sum_radii": float("nan")}}, "sum_radii")
+        nonfinite_rejected, nonfinite_detail = False, "nan was returned instead of raising"
+    except PolicyError as exc:
+        nonfinite_rejected, nonfinite_detail = True, f"nan rejected: {exc}"
+    check("scalar-nonfinite-rejected", nonfinite_rejected, nonfinite_detail)
+
+    tie_values = {"c01_good_hex": 2.4519205208433132, "c03_mirror": 2.4519205208433132}
+    winners = set()
+    rejected = set()
+    for order in (
+        ["c01_good_hex", "c03_mirror"],
+        ["c03_mirror", "c01_good_hex"],
+    ):
+        scores = {cid: tie_values[cid] for cid in order}
+        winners.add(choose(scores)[0])
+        rejected.add(choose_earliest_index(scores))
+    check(
+        "tie-break-order-invariant",
+        winners == {"c01_good_hex"} and len(rejected) == 2,
+        f"frozen rule returns {winners} in both proposal orders; the rejected earliest-index rule "
+        f"returns {rejected}, i.e. the tie-break is not vacuous",
+    )
+    check(
+        "tie-break-ignores-unscored",
+        choose({"a": None, "b": None}) == (None, None),
+        "when nothing scored, chosen_candidate_id is null and no epsilon-like default is invented",
+    )
+
+    eid_doc = json.loads(resolve(work_root, args.eid).read_text(encoding="utf-8"))
+    eid_r = derive_eid_r(
+        eid_star=eid_doc["eid_star"],
+        source_records=eid_doc["components"]["EvaluatorSource"]["records"],
+        policy=policy,
+    )
+    check(
+        "eid-r-matches-handoff",
+        eid_r == args.expected_eid_r,
+        f"derived EID_r = {eid_r}; conformance handoff reports {args.expected_eid_r}",
+    )
+
+    failed = [c for c in checks if c["status"] == "FAIL"]
+    report = {
+        "schema": "a0.simpleloop.frozen-conventions-check/v1",
+        "runtime": "simpleloop",
+        "inputs": {
+            "frozen": str(frozen_path),
+            "policy": str(policy_path),
+            "proposal": str(proposal_path),
+            "eid_document": str(resolve(work_root, args.eid)),
+        },
+        "checks": checks,
+        "verdict": "PASS" if not failed else "FAIL",
+        "failed": [c["check"] for c in failed],
+    }
+    text = json.dumps(report, indent=1, sort_keys=True)
+    if args.out:
+        Path(args.out).write_text(text + "\n", encoding="utf-8")
+    print(text)
+    return 0 if not failed else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

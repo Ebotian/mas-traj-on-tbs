@@ -1,0 +1,13 @@
+{
+  "schema": "a0.simpleloop.solver_script/v1",
+  "note": "Primary SimpleLoop run for A0. The proposal sequence lives in a file rather than in a model call: solvers.py::InjectedSolver.propose is the documented seam. Each entry is a byte copy of the named C* member, whose sha256 is re-checked against the manifest after the copy, so the script cannot smuggle in different bytes under a C* id. The sequence is chosen to exercise every verdict the study needs in one stream: a real improvement, a near-tie, an invalid candidate with the highest nominal score, an exact tie pair, and an unmeasurable candidate.",
+  "proposals": [
+    {"iteration": 0, "kind": "c_star_member", "candidate_id": "c02_baseline_upstream"},
+    {"iteration": 1, "kind": "c_star_member", "candidate_id": "c14_near_zero"},
+    {"iteration": 2, "kind": "c_star_member", "candidate_id": "c01_good_hex"},
+    {"iteration": 3, "kind": "c_star_member", "candidate_id": "c04_near_tie"},
+    {"iteration": 4, "kind": "c_star_member", "candidate_id": "c05_overlapping"},
+    {"iteration": 5, "kind": "c_star_member", "candidate_id": "c03_mirror"},
+    {"iteration": 6, "kind": "c_star_member", "candidate_id": "c09_malformed_import"}
+  ]
+}

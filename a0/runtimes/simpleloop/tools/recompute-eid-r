@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+"""Recompute SimpleLoop's `EID_r` from declared inputs — a third-party check.
+
+Run from anywhere; it reads only files under the work root and prints the
+derivation material next to the digest, so a reader can verify the recipe by hand
+instead of trusting this script:
+
+    sha256( "a0/simpleloop/eid_r/v1" + 0x00 + canonical_json({...}) )   -> EID_r.value
+
+where `canonical_json` is a0/contract/evalcontract.py's canonicalization
+(sort_keys, separators (",",":"), ensure_ascii, allow_nan=False) and the payload is
+`{schema, eid_star, evaluator_source_records, policy_digest}` with
+
+  * `eid_star`                 read from the EID*.json document,
+  * `evaluator_source_records` the EvaluatorSource records inside that document
+                               (path + sha256 of the evaluator source files),
+  * `policy_digest`            canonical digest of
+                               a0/runtimes/simpleloop/policy/simpleloop.policy.json.
+
+Output: one JSON object on stdout with a `value` key, bare 64-hex — the format the
+A0 conformance runner compares against the adapter's declared `EID_r`.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import sys
+from pathlib import Path
+
+DEFAULT_WORK_ROOT = "/home/ebt/rsi-dev"
+
+
+def main(argv=None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--work-root", default=DEFAULT_WORK_ROOT)
+    parser.add_argument("--eid", default="a0/tasks/circle-packing/plumbing.EID.proposed.json")
+    parser.add_argument("--policy", default="a0/runtimes/simpleloop/policy/simpleloop.policy.json")
+    args = parser.parse_args(argv)
+
+    work_root = Path(args.work_root).resolve()
+    adapter_dir = Path(__file__).resolve().parent.parent
+    sys.path.insert(0, str(adapter_dir))
+
+    from a0_adapter.eidmap import EID_R_SCHEMA, derive_eid_r
+    from a0_adapter.policy import canonical_bytes, canonical_file_digest, load_policy
+
+    eid_path = Path(args.eid)
+    if not eid_path.is_absolute():
+        eid_path = work_root / args.eid
+    policy_path = Path(args.policy)
+    if not policy_path.is_absolute():
+        policy_path = work_root / args.policy
+
+    document = json.loads(eid_path.read_text(encoding="utf-8"))
+    eid_star = document["eid_star"]
+    records = document["components"]["EvaluatorSource"]["records"]
+    policy = load_policy(policy_path)
+
+    policy_digest = canonical_file_digest(policy_path)
+    payload = {
+        "schema": EID_R_SCHEMA,
+        "eid_star": eid_star,
+        "evaluator_source_records": [
+            {"path": r["path"], "sha256": r["sha256"]} for r in records
+        ],
+        "policy_digest": policy_digest,
+    }
+    canonical = canonical_bytes(payload).decode("ascii")
+    value = hashlib.sha256(b"a0/simpleloop/eid_r/v1\x00" + canonical.encode("ascii")).hexdigest()
+
+    # the module the adapter itself uses must agree with the hand-written recipe above
+    from_module = derive_eid_r(eid_star=eid_star, source_records=records, policy=policy)
+
+    print(json.dumps({
+        "value": value,
+        "algorithm": "sha256(domain || 0x00 || canonical_json(payload))",
+        "domain": "a0/simpleloop/eid_r/v1",
+        "payload_canonical": canonical,
+        "payload": payload,
+        "agrees_with_adapter_module": value == from_module,
+        "inputs": {
+            "eid_document": str(eid_path),
+            "evaluator_source_records": [r["path"] for r in records],
+            "policy_file": str(policy_path),
+            "policy_canonical_digest": policy_digest,
+        },
+    }, indent=1, sort_keys=True))
+    return 0 if value == from_module else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

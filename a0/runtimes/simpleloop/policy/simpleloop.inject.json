@@ -1,0 +1,12 @@
+{
+  "schema": "a0.fr/v1",
+  "name": "F_r = injected external score (B0+ channel probe)",
+  "version": "v1",
+  "applies": "scalar",
+  "input": "injected.scores[<candidate_id>]",
+  "primary_field": "sum_radii",
+  "direction": "maximize",
+  "frozen_before_run": true,
+  "note": "NOT the round-one shared rule. This declaration is in force only for `run --inject-scores`: an externally supplied scalar replaces the scalar(E*) search signal so that the study can observe whether a score the substrate did not derive from E* can change the selection (B0+ channel existence). The score event still carries E*'s true multi-field Outcome in `outcome`; only `search_signal` and the selection input come from the injection. Events under this F_r must never be pooled with F_r = scalar(E*) events.",
+  "spec_source": "a0/runtimes/simpleloop/policy/simpleloop.inject.json"
+}

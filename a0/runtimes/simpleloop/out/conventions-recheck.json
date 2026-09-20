@@ -1,0 +1,69 @@
+{
+ "checks": [
+  {
+   "check": "frozen-canonical-digest",
+   "detail": "a0/contract/selection/simpleloop.selection.json canonical digest = ca995f95d41fbf6330289ca59dcf00cc242a419f1fc9f0fc27ad920c78c721cd",
+   "status": "PASS"
+  },
+  {
+   "check": "block-identical:scalarization",
+   "detail": "frozen == policy: True; frozen == proposal: True",
+   "status": "PASS"
+  },
+  {
+   "check": "block-identical:selection",
+   "detail": "frozen == policy: True; frozen == proposal: True",
+   "status": "PASS"
+  },
+  {
+   "check": "failure_stage-table-executes",
+   "detail": "8/8 verdict rows reproduced by traces.failure_stage_for; mismatches: none",
+   "status": "PASS"
+  },
+  {
+   "check": "failure_stage-rows-subset-of-policy",
+   "detail": "every frozen verdict row is present in the runtime's authoritative policy file",
+   "status": "PASS"
+  },
+  {
+   "check": "solver-lane-row",
+   "detail": "frozen says solver_lane_produced_no_proposal -> search_failed; the loop emits that literal at its no-proposal site",
+   "status": "PASS"
+  },
+  {
+   "check": "scalar-null-gate",
+   "detail": "status != ok -> None (never 0.0/-inf) for round-1 invalid/error/null; ok -> 0.25",
+   "status": "PASS"
+  },
+  {
+   "check": "scalar-nonfinite-rejected",
+   "detail": "nan rejected: non-finite scalar for sum_radii: nan",
+   "status": "PASS"
+  },
+  {
+   "check": "tie-break-order-invariant",
+   "detail": "frozen rule returns {'c01_good_hex'} in both proposal orders; the rejected earliest-index rule returns {'c01_good_hex', 'c03_mirror'}, i.e. the tie-break is not vacuous",
+   "status": "PASS"
+  },
+  {
+   "check": "tie-break-ignores-unscored",
+   "detail": "when nothing scored, chosen_candidate_id is null and no epsilon-like default is invented",
+   "status": "PASS"
+  },
+  {
+   "check": "eid-r-matches-handoff",
+   "detail": "derived EID_r = 5773dfe1e86728df2ee07be92b2166858eda94cfe7c02e3e737a9a091c8ed42e; conformance handoff reports 5773dfe1e86728df2ee07be92b2166858eda94cfe7c02e3e737a9a091c8ed42e",
+   "status": "PASS"
+  }
+ ],
+ "failed": [],
+ "inputs": {
+  "eid_document": "/home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.EID.proposed.json",
+  "frozen": "/home/ebt/rsi-dev/a0/contract/selection/simpleloop.selection.json",
+  "policy": "/home/ebt/rsi-dev/a0/runtimes/simpleloop/policy/simpleloop.policy.json",
+  "proposal": "/home/ebt/rsi-dev/a0/runtimes/simpleloop/policy/proposed.a0.contract.simpleloop.selection.json"
+ },
+ "runtime": "simpleloop",
+ "schema": "a0.simpleloop.frozen-conventions-check/v1",
+ "verdict": "PASS"
+}

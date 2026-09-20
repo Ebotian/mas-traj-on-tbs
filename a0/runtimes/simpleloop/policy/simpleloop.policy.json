@@ -1,0 +1,50 @@
+{
+  "schema": "a0.simpleloop.policy/v1",
+  "runtime": "simpleloop",
+  "policy_id": "simpleloop-selection-v1",
+  "authority": "open_world_plan_review.typ:605-614 (SimpleLoop 的固定定义) read together with plan:528 (F_r(E*) = scalar(E*), round one)",
+  "frozen_before_run": true,
+  "scalarization": {
+    "applies": "scalar",
+    "input": "outcome.fields.sum_radii",
+    "direction": "maximize",
+    "status_gate": "scalar is defined iff outcome.status == \"ok\"; when status is \"invalid\" or \"error\" the scalar is null",
+    "null_is_not_zero": "a null scalar is never coerced to 0.0 or to -inf; an unscored candidate is recorded as unscored and is excluded from the argmax. E* exit 2 / exit 3 propagate as failure_stage values with failure_detail, not as a number.",
+    "nonfinite": "a non-finite scalar (nan/inf) is rejected as an adapter-side measurement error, not compared",
+    "identity_check": "when status == ok the adapter asserts objective.value == fields.sum_radii and fails the candidate otherwise"
+  },
+  "selection": {
+    "rule": "c*_t = argmax over { c_i : i <= t and scalar(c_i) is not null } of scalar(c_i)",
+    "rule_expression": "argmax_{i<=t} E(c_i)",
+    "champion_update": "running max over all candidates evaluated so far, so c*_t is monotone and never loses a previously best candidate",
+    "comparison": "exact binary64 comparison",
+    "epsilon_role": "the frozen conformance epsilon (1e-9, EID* Config.conformance.epsilon) is the A0.1 tolerance only; it is NOT applied in selection, so no tolerance window can absorb a score gap (measured below) and no rank transform can either (rank is a monotone map of the value)",
+    "tie_break": "smallest candidate_id by byte-wise comparison of the UTF-8 encoding of candidate_id",
+    "tie_break_alternative_rejected": "earliest-evaluation-index (Python max() over a sequence keeps the first maximum) is REJECTED because it is a function of the order in which candidates happened to be considered, and A0.2 requires selection to be invariant to candidate ordering",
+    "when_nothing_scored": "chosen_candidate_id is null; the run continues with parent = null and the iteration is recorded honestly",
+    "order_invariance": "c*_t is a function of the set {(candidate_id, scalar)}; permuting the order in which candidates are proposed cannot change the champion"
+  },
+  "search_policy": {
+    "definition": "c_0 = baseline; c_{t+1} = Agent(c_t, H_t); c*_t = argmax_{i<=t} E(c_i); parent_{t+1} = c*_t",
+    "forbidden": [
+      "archive/QD",
+      "evolved harness or guidance",
+      "multi-island",
+      "learned operator selection",
+      "external retrieval (A1 stage)",
+      "undeclared special prompt"
+    ],
+    "baseline_selection": "the unique C* member with role == \"baseline\" (c02_baseline_upstream)"
+  },
+  "failure_stage_mapping": {
+    "note": "E* verdict -> trace failure_stage. The trace schema fixes the enum but not this per-runtime mapping; SimpleLoop freezes it here and reports it to the contract owner so the other runtimes can adopt the same one.",
+    "exit_0_ok": "none",
+    "exit_2_invalid": "verify_failed",
+    "exit_3_error_candidate_import_failed": "resolve_failed",
+    "exit_3_error_non_deterministic": "verify_failed",
+    "exit_3_error_runtime_budget_exceeded": "timeout",
+    "exit_3_error_candidate_call_raised": "evaluator_failed",
+    "exit_3_error_child_terminated_early": "evaluator_failed",
+    "exit_3_error_other": "evaluator_failed"
+  }
+}

@@ -1,0 +1,165 @@
+{
+ "budget": {
+  "N_evaluatorCalls": 200,
+  "T_wall_sec": 3600.0,
+  "concurrency_cap": 1
+ },
+ "champion_id": "c02_baseline_upstream",
+ "champion_scalar": 0.25,
+ "eid_document": "a0/tasks/circle-packing/plumbing.EID.proposed.json",
+ "eid_recompute_returncode": 0,
+ "eid_spec": "a0/tasks/circle-packing/plumbing.contract.proposed.json",
+ "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+ "eid_verify_returncode": 0,
+ "evaluator": {
+  "evaluator_source_sha256_self_reported": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+  "interpreter_version": "3.12.11",
+  "python": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+  "recorded_source_digest": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+  "script": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+  "source_records": [
+   {
+    "kind": "file",
+    "path": "e_star.py",
+    "sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+    "size": 34860
+   },
+   {
+    "kind": "file",
+    "path": "e_star_child.py",
+    "sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca",
+    "size": 4704
+   }
+  ],
+  "source_sha256_recomputed": {
+   "e_star.py": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+   "e_star_child.py": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca"
+  },
+  "source_verified": true
+ },
+ "evaluator_calls": 1,
+ "exit_code": 8,
+ "failure_counts": {
+  "search_failed": 1
+ },
+ "history": [
+  {
+   "candidate_id": "c02_baseline_upstream",
+   "e_star_exit_code": 0,
+   "e_star_failure_kind": null,
+   "e_star_scalar": 0.25,
+   "e_star_status": "ok",
+   "evaluation_sec": 0.043,
+   "failure_detail": null,
+   "failure_stage": "none",
+   "fields": {
+    "audit_coverage": 1.0,
+    "items_audited": 26,
+    "min_boundary_margin": 0.0,
+    "min_gap": 0.036249916677713497,
+    "num_circles": 26,
+    "overlap_count": 0,
+    "packing_density": 0.007551905417283158,
+    "pairs_audited": 325,
+    "sum_radii": 0.25
+   },
+   "injected_scalar": null,
+   "iteration": 0,
+   "proposal_source": "baseline:c02_baseline_upstream",
+   "score_event_id": "codex-live2.s0.i0.c02_baseline_upstream",
+   "search_signal": 0.25,
+   "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+   "structure": {
+    "min_boundary_margin": 0.0,
+    "min_gap": 0.036249916677713497,
+    "num_circles": 26,
+    "num_circles_expected": 26,
+    "overlap_count": 0,
+    "packing_density": 0.007551905417283158,
+    "pairs_audited": 325,
+    "sum_radii": 0.25
+   }
+  }
+ ],
+ "inject_scores": null,
+ "iterations": 1,
+ "policy": {
+  "authority": "open_world_plan_review.typ:605-614 (SimpleLoop \u7684\u56fa\u5b9a\u5b9a\u4e49) read together with plan:528 (F_r(E*) = scalar(E*), round one)",
+  "failure_stage_mapping": {
+   "exit_0_ok": "none",
+   "exit_2_invalid": "verify_failed",
+   "exit_3_error_candidate_call_raised": "evaluator_failed",
+   "exit_3_error_candidate_import_failed": "resolve_failed",
+   "exit_3_error_child_terminated_early": "evaluator_failed",
+   "exit_3_error_non_deterministic": "verify_failed",
+   "exit_3_error_other": "evaluator_failed",
+   "exit_3_error_runtime_budget_exceeded": "timeout",
+   "note": "E* verdict -> trace failure_stage. The trace schema fixes the enum but not this per-runtime mapping; SimpleLoop freezes it here and reports it to the contract owner so the other runtimes can adopt the same one."
+  },
+  "frozen_before_run": true,
+  "policy_id": "simpleloop-selection-v1",
+  "runtime": "simpleloop",
+  "scalarization": {
+   "applies": "scalar",
+   "direction": "maximize",
+   "identity_check": "when status == ok the adapter asserts objective.value == fields.sum_radii and fails the candidate otherwise",
+   "input": "outcome.fields.sum_radii",
+   "nonfinite": "a non-finite scalar (nan/inf) is rejected as an adapter-side measurement error, not compared",
+   "null_is_not_zero": "a null scalar is never coerced to 0.0 or to -inf; an unscored candidate is recorded as unscored and is excluded from the argmax. E* exit 2 / exit 3 propagate as failure_stage values with failure_detail, not as a number.",
+   "status_gate": "scalar is defined iff outcome.status == \"ok\"; when status is \"invalid\" or \"error\" the scalar is null"
+  },
+  "schema": "a0.simpleloop.policy/v1",
+  "search_policy": {
+   "baseline_selection": "the unique C* member with role == \"baseline\" (c02_baseline_upstream)",
+   "definition": "c_0 = baseline; c_{t+1} = Agent(c_t, H_t); c*_t = argmax_{i<=t} E(c_i); parent_{t+1} = c*_t",
+   "forbidden": [
+    "archive/QD",
+    "evolved harness or guidance",
+    "multi-island",
+    "learned operator selection",
+    "external retrieval (A1 stage)",
+    "undeclared special prompt"
+   ]
+  },
+  "selection": {
+   "champion_update": "running max over all candidates evaluated so far, so c*_t is monotone and never loses a previously best candidate",
+   "comparison": "exact binary64 comparison",
+   "epsilon_role": "the frozen conformance epsilon (1e-9, EID* Config.conformance.epsilon) is the A0.1 tolerance only; it is NOT applied in selection, so no tolerance window can absorb a score gap (measured below) and no rank transform can either (rank is a monotone map of the value)",
+   "order_invariance": "c*_t is a function of the set {(candidate_id, scalar)}; permuting the order in which candidates are proposed cannot change the champion",
+   "rule": "c*_t = argmax over { c_i : i <= t and scalar(c_i) is not null } of scalar(c_i)",
+   "rule_expression": "argmax_{i<=t} E(c_i)",
+   "tie_break": "smallest candidate_id by byte-wise comparison of the UTF-8 encoding of candidate_id",
+   "tie_break_alternative_rejected": "earliest-evaluation-index (Python max() over a sequence keeps the first maximum) is REJECTED because it is a function of the order in which candidates happened to be considered, and A0.2 requires selection to be invariant to candidate ordering",
+   "when_nothing_scored": "chosen_candidate_id is null; the run continues with parent = null and the iteration is recorded honestly"
+  }
+ },
+ "run_id": "codex-live2",
+ "runtime": "simpleloop",
+ "schema": "a0.simpleloop.run_meta/v1",
+ "solver_lane": "codex",
+ "solver_script": null,
+ "stopped_because": "solver_failed:codex lane produced no solution.py (exit 124, timed out) after 840.0s; agent output tail: + | +## Status | +**Currently in Phase 2** - searching for a high-sum configuration.; full stdout/stderr kept in iter001/solver.stdout.txt and .stderr.txt",
+ "task": "circle-packing",
+ "theta_E": {
+  "extra": {
+   "candidate_set_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+   "e_star_script_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+   "evaluator_lane": "subprocess: e_star.py evaluate (frozen CLI)",
+   "n": 26,
+   "runs": 5,
+   "runtime_budget_ms": 250.0,
+   "solver_lane": "codex",
+   "timeout_s": 120.0
+  },
+  "fidelity": "full",
+  "fraction": 1.0,
+  "seed": 1337
+ },
+ "trace_paths": {
+  "combined": "a0/runtimes/simpleloop/out/cli-lane/codex-live2/traces/simpleloop.codex-live2.all.jsonl",
+  "resource": "a0/runtimes/simpleloop/out/cli-lane/codex-live2/traces/simpleloop.codex-live2.resource.jsonl",
+  "score": "a0/runtimes/simpleloop/out/cli-lane/codex-live2/traces/simpleloop.codex-live2.score.jsonl",
+  "selection": "a0/runtimes/simpleloop/out/cli-lane/codex-live2/traces/simpleloop.codex-live2.selection.jsonl"
+ },
+ "wall_sec": 840.073932
+}

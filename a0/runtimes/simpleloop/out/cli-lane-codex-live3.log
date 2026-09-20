@@ -1,0 +1,74 @@
+{
+ "champion_id": "codex_i001",
+ "champion_scalar": 2.6251746109048,
+ "exit_code": 0,
+ "exit_meaning": "run completed within budget; all three traces written",
+ "failure_counts": {},
+ "iterations": 2,
+ "run_dir": "a0/runtimes/simpleloop/out/cli-lane/codex-live3",
+ "run_id": "codex-live3",
+ "schema": "a0.simpleloop.run_summary/v1",
+ "scored_candidates": 2,
+ "stopped_because": "solver_exhausted",
+ "trace_paths": {
+  "combined": "a0/runtimes/simpleloop/out/cli-lane/codex-live3/traces/simpleloop.codex-live3.all.jsonl",
+  "resource": "a0/runtimes/simpleloop/out/cli-lane/codex-live3/traces/simpleloop.codex-live3.resource.jsonl",
+  "score": "a0/runtimes/simpleloop/out/cli-lane/codex-live3/traces/simpleloop.codex-live3.score.jsonl",
+  "selection": "a0/runtimes/simpleloop/out/cli-lane/codex-live3/traces/simpleloop.codex-live3.selection.jsonl"
+ },
+ "trace_validation_per_file": {
+  "combined": {
+   "stats": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "events              7\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 7"
+   },
+   "validate": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "valid: 7 event(s)"
+   }
+  },
+  "resource": {
+   "stats": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "events              3\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 3"
+   },
+   "validate": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "valid: 3 event(s)"
+   }
+  },
+  "score": {
+   "stats": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "events              2\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 2"
+   },
+   "validate": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "valid: 2 event(s)"
+   }
+  },
+  "selection": {
+   "stats": {
+    "returncode": 1,
+    "stderr": "",
+    "stdout": "events              2\nschema/semantic errors 2\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 2"
+   },
+   "validate": {
+    "returncode": 1,
+    "stderr": "",
+    "stdout": "INVALID event 'codex-live3.s2.i0.c02_baseline_upstream' (event_seq 2): selection.source_score_event_id 'codex-live3.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'codex-live3.s5.i1.codex_i001' (event_seq 5): selection.source_score_event_id 'codex-live3.s3.i1.codex_i001' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\n2 error(s) in 2 event(s)"
+   }
+  }
+ },
+ "trace_validation_run_unit": {
+  "returncode": 0,
+  "stderr": "",
+  "stdout": "[ok ] simpleloop.codex-live3  events=7  [score=2 selection=2 resource=3]  merged simpleloop.codex-live3.all.jsonl\nvalid: 1 run(s), 7 event(s)"
+ }
+}
