@@ -1,0 +1,44 @@
+# Python tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.venv-*/
+.uvcache/
+.uv/
+
+# E* state roots (keyed by candidate content + theta, reproducible)
+**/e-star-state/
+
+# Pinned upstream checkouts and nested repos: the version pins are recorded in
+# a0/tasks/circle-packing/EID_INPUTS.json, so the trees themselves stay out.
+a0/tasks/circle-packing/upstream/
+a0/runtimes/loreley/checkout/
+**/.codex-driver-home/
+
+# Repo caches and materialized candidate workspaces (reproducible from C*)
+**/.repo_cache/
+**/cache/checkouts/
+**/workspace/
+**/worktree/
+
+# Merged trace streams: duplicated from the three per-kind files, and
+# `trace_validate.py validate-run` recomposes them when absent.
+*.all.jsonl
+
+# Independent-verification byte copies of sibling workstreams
+a0/verify/runtimes/
+a0/verify/tasks/
+a0/verify/contract/
+a0/verify/conformance/
+a0/verify/confrun/
+
+# Full-filesystem snapshot manifests (they hash ignored trees such as venvs)
+a0/verify/out/snap_*.json
+
+# Container data
+**/pgdata/
+**/redis-data/
+
+# Scratch
+**/tmp/
