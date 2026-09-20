@@ -1,0 +1,18 @@
+{"closed": 2, "inconclusive": 2}
+
+CLOSED mechanisms:
+  eve         codex-tmux-config            unblocked_ctl=True blocked_case=True suspect=[]
+  kapso       codex-lane-bash-side-door    unblocked_ctl=True blocked_case=True suspect=['command_ran=false', 'never observed', 'rc=124', 'timed out', 'timeout']
+  loreley     codex-backend                unblocked_ctl=True blocked_case=True suspect=[]
+  simpleloop  solver-is-codex-workspace-write unblocked_ctl=True blocked_case=True suspect=[]
+  simpleloop  solver-is-unsandboxed-or-claude unblocked_ctl=True blocked_case=True suspect=[]
+
+SUSPECT:
+
+non-closed / other verdicts:
+  eve         codex-exec-config            egress_detected (study: OPEN)
+  kapso       front-doors-config           inconclusive (study: CONDITIONAL)
+  kapso       claude-lane-bash-side-door   inconclusive (study: CONDITIONAL (external cut or lane switch))
+  kapso       research-inference-lane      inconclusive (study: CONDITIONAL)
+  loreley     default-kilocode-backend     inconclusive (study: OPEN)
+  loreley     cursor-backend               inconclusive (study: OPEN)

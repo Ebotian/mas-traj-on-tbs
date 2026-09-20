@@ -1,0 +1,955 @@
+{
+  "schema": "a0.conformance.report/v1",
+  "generated_at": "2026-09-20T19:10:05+0800",
+  "generated_by": "a0/conformance/conformance.py run",
+  "step": "A0.1 evaluator integration conformance",
+  "protocol": {
+    "formula": "for every r in R and every c in C*: E_r(c; theta_E) = E*(c; theta_E) +- epsilon, and EID_r derived from EID* (plan:513-519)",
+    "screen": "A0 is a candidate screen, not a collective gate: R_1 = {r : A0.1_r and A0.2_r}, |R_1| >= 1 to continue (plan:490)",
+    "f_r": "round one freezes F_r(E*) = scalar(E*) (plan:528)",
+    "false_green": "plan:551-552"
+  },
+  "frozen": {
+    "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_star_binding": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_document": "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json",
+    "eid_document_name": "canonical",
+    "eid_document_requested": "canonical",
+    "eid_document_sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+    "eid_document_supplied_to_adapters": {
+      "label": "canonical",
+      "path": "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json",
+      "exists": true,
+      "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "matches_binding": true
+    },
+    "candidate_set": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/manifest.json",
+    "candidate_set_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+    "candidate_ids": [
+      "c01_good_hex",
+      "c02_baseline_upstream",
+      "c03_mirror",
+      "c04_near_tie",
+      "c05_overlapping",
+      "c06_empty",
+      "c07_single",
+      "c08_out_of_bounds",
+      "c09_malformed_import",
+      "c10_raises",
+      "c11_non_deterministic",
+      "c12_exit_without_artifacts",
+      "c13_slow",
+      "c14_near_zero"
+    ],
+    "reference_table": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/E_STAR.json",
+    "reference_table_sha256": "f5ac1abfa61872541ea92a6a09fcc6178c244d914234211dcc633bac0ea66f5f",
+    "epsilon": 1e-09,
+    "primary_field": "sum_radii",
+    "direction": "maximize",
+    "theta_e": {
+      "seed": 1337,
+      "fidelity": "full",
+      "fraction": 1.0,
+      "n": 26,
+      "runs": 5,
+      "runtime_budget_ms": 250.0,
+      "timeout_s": 120.0
+    },
+    "f_star": {
+      "declaration": "/home/ebt/rsi-dev/a0/verify/contract/fr/scalar.json",
+      "spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+      "pinned_spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+      "matches_pinned": true,
+      "name": "F_r = scalar(E*)",
+      "applies": "scalar",
+      "primary_field": "sum_radii",
+      "direction": "maximize",
+      "rule": "F_r(E*) = scalar(E*) = outcome.objective.sum_radii, maximize (plan:528)"
+    },
+    "evaluator": {
+      "script": "tasks/circle-packing/e_star.py",
+      "interpreter": "tasks/circle-packing/.venv/bin/python",
+      "argv_template": "tasks/circle-packing/.venv/bin/python tasks/circle-packing/e_star.py evaluate --candidate <C_STAR/<id>> --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out <out.json> --state-dir <state>"
+    }
+  },
+  "eid": {
+    "expected_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "checks": [
+      {
+        "check_id": "EID-inputs-match-binding",
+        "ok": true,
+        "detail": "EID_INPUTS.json eid_star == binding 664115e0... : True"
+      },
+      {
+        "check_id": "EID-document-found",
+        "ok": true,
+        "detail": "an EID*.json with eid_star == 664115e0... was found"
+      },
+      {
+        "check_id": "EID-document-as-requested",
+        "ok": true,
+        "detail": "the document handed to the adapters is the one requested (`--eid-document canonical` -> /home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json)"
+      },
+      {
+        "check_id": "EID-recompute",
+        "ok": true,
+        "detail": "evalcontract.py recompute is filesystem-free and recomputed EID* matching 664115e0d63ad2e1 (exit 0)"
+      },
+      {
+        "check_id": "EID-verify-inputs",
+        "ok": true,
+        "detail": "evalcontract.py verify re-hashed the declared inputs against /home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.contract.proposed.json (exit 0)"
+      },
+      {
+        "check_id": "EID-documents-agree",
+        "ok": true,
+        "detail": "2 document(s) carry EID* = 664115e0...: ['/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json', '/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/plumbing.EID.proposed.json']; the runner hands /home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json to the adapters (sha256 50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b)"
+      }
+    ],
+    "eid_inputs": {
+      "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/EID_INPUTS.json",
+      "sha256": "4f925f62cb1b5ec9fdb43fa98521e964caeed259ca54152e8e8b6e028650868a",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "spec_path": "a0/tasks/circle-packing/plumbing.contract.proposed.json"
+    },
+    "resolution": {
+      "expected_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "requested": "canonical",
+      "requested_path": "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json",
+      "requested_ok": true,
+      "substituted": false,
+      "documents": [
+        {
+          "path": "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json",
+          "label": "canonical",
+          "requested": true,
+          "exists": true,
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "matches_binding": true
+        },
+        {
+          "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/plumbing.EID.proposed.json",
+          "label": "proposed",
+          "requested": false,
+          "exists": true,
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "matches_binding": true
+        }
+      ],
+      "chosen": {
+        "path": "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json",
+        "label": "canonical",
+        "requested": true,
+        "exists": true,
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "matches_binding": true
+      }
+    },
+    "requested": "canonical",
+    "eid_document_supplied": {
+      "label": "canonical",
+      "path": "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json",
+      "exists": true,
+      "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "matches_binding": true
+    },
+    "spec_resolved": "/home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.contract.proposed.json",
+    "recompute": {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/verify/contract/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/verify/contract/evalcontract.py",
+        "recompute",
+        "--eid-file",
+        "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json"
+      ],
+      "exit_code": 0,
+      "stdout": "  [ok ] EvaluatorSource    recorded=a3d6534b4e3bc78f recomputed=a3d6534b4e3bc78f\n  [ok ] DependencyLock     recorded=7b02f1a71288335f recomputed=7b02f1a71288335f\n  [ok ] DataManifest       recorded=b21c975a51ef24cd recomputed=b21c975a51ef24cd\n  [ok ] Config             recorded=550ca3cdd8af04ec recomputed=550ca3cdd8af04ec\n  [ok ] MetricDefinition   recorded=420ab0acf24e1c73 recomputed=420ab0acf24e1c73\n  [ok ] EID*               recorded=664115e0d63ad2e1 recomputed=664115e0d63ad2e1\n",
+      "stderr": ""
+    },
+    "verify": {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/verify/contract/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/verify/contract/evalcontract.py",
+        "verify",
+        "--eid-file",
+        "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json",
+        "--spec",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.contract.proposed.json",
+        "--base",
+        "/home/ebt/rsi-dev/a0/verify"
+      ],
+      "exit_code": 0,
+      "stdout": "clean: all recorded inputs match; EID* = 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\n",
+      "stderr": "",
+      "spec": "/home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.contract.proposed.json"
+    },
+    "eid_document": "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json",
+    "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328"
+  },
+  "integrity": {
+    "candidate_set": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/manifest.json",
+    "candidate_set_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+    "checked": 14,
+    "ok": true,
+    "problems": [],
+    "rows": [
+      {
+        "candidate_id": "c01_good_hex",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c01_good_hex/solution.py",
+        "declared": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+        "observed": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+        "ok": true
+      },
+      {
+        "candidate_id": "c02_baseline_upstream",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c02_baseline_upstream/solution.py",
+        "declared": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "observed": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "ok": true
+      },
+      {
+        "candidate_id": "c03_mirror",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c03_mirror/solution.py",
+        "declared": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+        "observed": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+        "ok": true
+      },
+      {
+        "candidate_id": "c04_near_tie",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c04_near_tie/solution.py",
+        "declared": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+        "observed": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+        "ok": true
+      },
+      {
+        "candidate_id": "c05_overlapping",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c05_overlapping/solution.py",
+        "declared": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+        "observed": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+        "ok": true
+      },
+      {
+        "candidate_id": "c06_empty",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c06_empty/solution.py",
+        "declared": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+        "observed": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+        "ok": true
+      },
+      {
+        "candidate_id": "c07_single",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c07_single/solution.py",
+        "declared": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+        "observed": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+        "ok": true
+      },
+      {
+        "candidate_id": "c08_out_of_bounds",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c08_out_of_bounds/solution.py",
+        "declared": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+        "observed": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+        "ok": true
+      },
+      {
+        "candidate_id": "c09_malformed_import",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c09_malformed_import/solution.py",
+        "declared": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+        "observed": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+        "ok": true
+      },
+      {
+        "candidate_id": "c10_raises",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c10_raises/solution.py",
+        "declared": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+        "observed": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+        "ok": true
+      },
+      {
+        "candidate_id": "c11_non_deterministic",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c11_non_deterministic/solution.py",
+        "declared": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+        "observed": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+        "ok": true
+      },
+      {
+        "candidate_id": "c12_exit_without_artifacts",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c12_exit_without_artifacts/solution.py",
+        "declared": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+        "observed": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+        "ok": true
+      },
+      {
+        "candidate_id": "c13_slow",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c13_slow/solution.py",
+        "declared": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+        "observed": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+        "ok": true
+      },
+      {
+        "candidate_id": "c14_near_zero",
+        "path": "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/c14_near_zero/solution.py",
+        "declared": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+        "observed": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+        "ok": true
+      }
+    ]
+  },
+  "runtimes": {
+    "kindlier": {
+      "state": "PASS",
+      "reason": null,
+      "checks": [
+        {
+          "check_id": "EID-star-verbatim",
+          "ok": true,
+          "detail": "adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)"
+        },
+        {
+          "check_id": "EID-r-derives-from-EID-star",
+          "ok": true,
+          "detail": "eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'"
+        },
+        {
+          "check_id": "EID-r-declaration-present",
+          "ok": true,
+          "detail": "native_scheme='none' mapping_mode='adapter_declared_injection' recomputable=True"
+        },
+        {
+          "check_id": "EID-r-recomputes",
+          "ok": true,
+          "detail": "recomputed a0/fixture/reference_adapter/v1/EID_r digest = d0e427c2b015a1f3ef59e31ff5167a3b90acc061881fb18832a3f66db5df3c28; declared value = 'd0e427c2b015a1f3ef59e31ff5167a3b90acc061881fb18832a3f66db5df3c28'",
+          "recompute_mode": "executed"
+        },
+        {
+          "check_id": "theta-E-identical",
+          "ok": true,
+          "detail": "adapter declares theta_E = {\"fidelity\": \"full\", \"fraction\": 1.0, \"n\": 26, \"runs\": 5, \"runtime_budget_ms\": 250.0, \"seed\": 1337, \"timeout_s\": 120.0}",
+          "frozen_theta_E": {
+            "seed": 1337,
+            "fidelity": "full",
+            "fraction": 1.0,
+            "n": 26,
+            "runs": 5,
+            "runtime_budget_ms": 250.0,
+            "timeout_s": 120.0
+          },
+          "declared": true,
+          "observed_from_manifest_echo": [],
+          "defaults_applied": {}
+        },
+        {
+          "check_id": "E-star-manifest-echo",
+          "ok": true,
+          "detail": "no E* manifest echo found in the adapter's own evidence, so this independent confirmation is unavailable (not a failure: it is a bonus channel)",
+          "echoes_checked": 0,
+          "candidates_with_echo": []
+        },
+        {
+          "check_id": "F-r-frozen",
+          "ok": true,
+          "detail": "adapter declares F_r spec_hash='1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0'; frozen first-round F_r hash is '1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0' (plan:528)"
+        },
+        {
+          "check_id": "candidate-coverage",
+          "ok": true,
+          "detail": "adapter produced usable rows for 14/14 members of C*"
+        },
+        {
+          "check_id": "E-r-equals-E-star",
+          "ok": true,
+          "detail": "14/14 candidates agree with E*(c) within epsilon=1e-09 (or compare equal as verdicts); disagreeing: none"
+        },
+        {
+          "check_id": "evidence-fresh-or-declared",
+          "ok": true,
+          "detail": "every compared row is a fresh measurement (evaluator_evidence.status == ok)",
+          "evidence_declared_by_adapter": true,
+          "synthetic_declared_candidates": []
+        }
+      ],
+      "rows": [
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c01_good_hex",
+          "role": "good",
+          "e_star_status": "ok",
+          "e_star_value": 2.4519205208433132,
+          "e_star_failure_kind": null,
+          "reference_value_fresh_sweep": 2.4519205208433132,
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c02_baseline_upstream",
+          "role": "baseline",
+          "e_star_status": "ok",
+          "e_star_value": 0.25,
+          "e_star_failure_kind": null,
+          "reference_value_fresh_sweep": 0.25,
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c03_mirror",
+          "role": "tie",
+          "e_star_status": "ok",
+          "e_star_value": 2.4519205208433132,
+          "e_star_failure_kind": null,
+          "reference_value_fresh_sweep": 2.4519205208433132,
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c04_near_tie",
+          "role": "tie",
+          "e_star_status": "ok",
+          "e_star_value": 2.451820520843313,
+          "e_star_failure_kind": null,
+          "reference_value_fresh_sweep": 2.451820520843313,
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c05_overlapping",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c06_empty",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c07_single",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c08_out_of_bounds",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c09_malformed_import",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "candidate_import_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c10_raises",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "candidate_call_raised",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c11_non_deterministic",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "non_deterministic",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c12_exit_without_artifacts",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "child_terminated_early",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c13_slow",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "runtime_budget_exceeded",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "kindlier",
+          "candidate_id": "c14_near_zero",
+          "role": "bad",
+          "e_star_status": "ok",
+          "e_star_value": 2.6e-05,
+          "e_star_failure_kind": null,
+          "reference_value_fresh_sweep": 2.6e-05,
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        }
+      ],
+      "false_green_findings": [],
+      "synthetic_declared_candidates": [],
+      "evidence_source": "adapter conformance subcommand",
+      "traces": null,
+      "adapter_run_dir": null,
+      "failure_stage_counts": null,
+      "adapter_declared_verdict": null,
+      "adapter_schema": "a0.adapter.conformance/v1",
+      "adapter_rows_section": "top level",
+      "adapter_unverified_notes": null,
+      "adapter_seams": null,
+      "a0_2": null,
+      "a0_2_note": "owned by the A0.2 workstream (a0/acceptance); this runner does not judge selection semantics",
+      "adapter": {
+        "adapter_root": "/home/ebt/rsi-dev/a0/verify/runtimes",
+        "runtime_dir": "/home/ebt/rsi-dev/a0/verify/runtimes/kindlier",
+        "source": "cli-override",
+        "cmd": [
+          "/home/ebt/rsi-dev/a0/contract/.venv/bin/python",
+          "/home/ebt/rsi-dev/a0/verify/fixtures/adapters/kindlier_adapter.py"
+        ]
+      },
+      "rerun": "cd /home/ebt/rsi-dev/a0/verify/confrun && python3 conformance.py run --runtimes kindlier --out report.kindlier.json",
+      "conformance_invocation": {
+        "argv": [
+          "/home/ebt/rsi-dev/a0/contract/.venv/bin/python",
+          "/home/ebt/rsi-dev/a0/verify/fixtures/adapters/kindlier_adapter.py",
+          "conformance",
+          "--runtime",
+          "kindlier",
+          "--candidate-set",
+          "/home/ebt/rsi-dev/a0/verify/tasks/circle-packing/C_STAR/manifest.json",
+          "--eid",
+          "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json",
+          "--theta",
+          "seed=1337,fidelity=full,fraction=1.0,n=26,runs=5,runtime_budget_ms=250.0,timeout_s=120.0",
+          "--epsilon",
+          "1e-09",
+          "--out",
+          "/home/ebt/rsi-dev/a0/verify/confrun/out/adapters/kindlier.conformance.json"
+        ],
+        "cwd": "/home/ebt/rsi-dev/a0/verify/confrun",
+        "exit_code": 0,
+        "duration_sec": 2.091,
+        "timed_out": false,
+        "stdout_tail": "",
+        "stderr_tail": "",
+        "out_path": "/home/ebt/rsi-dev/a0/verify/confrun/out/adapters/kindlier.conformance.json",
+        "out_exists": true
+      },
+      "run_invocation": null,
+      "raw": {
+        "stdout": "/home/ebt/rsi-dev/a0/verify/confrun/out/adapters/kindlier.conformance.stdout.txt",
+        "stderr": "/home/ebt/rsi-dev/a0/verify/confrun/out/adapters/kindlier.conformance.stderr.txt",
+        "exit_code_file": "/home/ebt/rsi-dev/a0/verify/confrun/out/adapters/kindlier.conformance.exit",
+        "output_json": "/home/ebt/rsi-dev/a0/verify/confrun/out/adapters/kindlier.conformance.json"
+      },
+      "adapter_declared": {
+        "schema": "a0.adapter.conformance/v1",
+        "state": null,
+        "blocked_reason": null,
+        "verdict": null,
+        "row_count": 14
+      },
+      "exit_code_semantics": {
+        "exit_code": 0,
+        "meaning": "run completed within budget; all three traces written"
+      },
+      "eid_document_supplied": {
+        "label": "canonical",
+        "path": "/home/ebt/rsi-dev/a0/verify/contract/out/plumbing.EID.json",
+        "exists": true,
+        "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "matches_binding": true
+      }
+    }
+  },
+  "controls": {},
+  "env": {
+    "cwd": "/home/ebt/rsi-dev/a0/verify/confrun",
+    "argv": [
+      "conformance.py",
+      "run",
+      "--runtimes",
+      "kindlier",
+      "--adapter",
+      "kindlier=/home/ebt/rsi-dev/a0/contract/.venv/bin/python /home/ebt/rsi-dev/a0/verify/fixtures/adapters/kindlier_adapter.py",
+      "--no-controls",
+      "--out",
+      "/home/ebt/rsi-dev/a0/verify/out/kindlie.report.json"
+    ],
+    "python": "3.12.11"
+  },
+  "runtimes_requested": [
+    "kindlier"
+  ],
+  "note": "this report covers ['kindlier'], not the study's four runtimes ['simpleloop', 'kapso', 'eve', 'loreley']; rows are still compared against the frozen E_STAR.json table",
+  "reference": {
+    "document": "/home/ebt/rsi-dev/a0/verify/confrun/reference.json",
+    "source": "a0/conformance/reference.json (fresh E* sweep) cross-checked against E_STAR.json",
+    "agreement_with_frozen_table": {
+      "reproduces_frozen_table": true,
+      "per_candidate": [
+        {
+          "candidate_id": "c01_good_hex",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c02_baseline_upstream",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c03_mirror",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c04_near_tie",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c05_overlapping",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c06_empty",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c07_single",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c08_out_of_bounds",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c09_malformed_import",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c10_raises",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c11_non_deterministic",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c12_exit_without_artifacts",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c13_slow",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c14_near_zero",
+          "reproduces_table": true,
+          "problems": []
+        }
+      ]
+    },
+    "c_star_unchanged_after_sweep": {
+      "before": "ef1cfa38b39a2392b95c4b076e12d524aa9ec890e179d12031cbfbe9c7a48e6b",
+      "after": "ef1cfa38b39a2392b95c4b076e12d524aa9ec890e179d12031cbfbe9c7a48e6b",
+      "unchanged": true
+    },
+    "theta_e": {
+      "seed": 1337,
+      "fidelity": "full",
+      "fraction": 1.0,
+      "n": 26,
+      "runs": 5,
+      "runtime_budget_ms": 250.0,
+      "timeout_s": 120.0
+    },
+    "rows": [
+      {
+        "candidate_id": "c01_good_hex",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.4519205208433132,
+        "failure_kind": null,
+        "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8"
+      },
+      {
+        "candidate_id": "c02_baseline_upstream",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 0.25,
+        "failure_kind": null,
+        "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc"
+      },
+      {
+        "candidate_id": "c03_mirror",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.4519205208433132,
+        "failure_kind": null,
+        "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa"
+      },
+      {
+        "candidate_id": "c04_near_tie",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.451820520843313,
+        "failure_kind": null,
+        "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3"
+      },
+      {
+        "candidate_id": "c05_overlapping",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573"
+      },
+      {
+        "candidate_id": "c06_empty",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2"
+      },
+      {
+        "candidate_id": "c07_single",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743"
+      },
+      {
+        "candidate_id": "c08_out_of_bounds",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376"
+      },
+      {
+        "candidate_id": "c09_malformed_import",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "candidate_import_failed",
+        "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9"
+      },
+      {
+        "candidate_id": "c10_raises",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "candidate_call_raised",
+        "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3"
+      },
+      {
+        "candidate_id": "c11_non_deterministic",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "non_deterministic",
+        "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8"
+      },
+      {
+        "candidate_id": "c12_exit_without_artifacts",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "child_terminated_early",
+        "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64"
+      },
+      {
+        "candidate_id": "c13_slow",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "runtime_budget_exceeded",
+        "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181"
+      },
+      {
+        "candidate_id": "c14_near_zero",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.6e-05,
+        "failure_kind": null,
+        "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe"
+      }
+    ]
+  },
+  "verdicts": {
+    "a0_1": {
+      "kindlier": "PASS"
+    },
+    "n_pass": 1,
+    "n_fail": 0,
+    "n_pending": 0,
+    "n_blocked": 0,
+    "r_1_a0_1_only": [
+      "kindlier"
+    ],
+    "gate": "|R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2",
+    "screen_semantics": "each runtime is evaluated independently; no runtime's failure aborted another's run"
+  },
+  "exit_code": 0,
+  "duration_sec": 2.337,
+  "report_path": "/home/ebt/rsi-dev/a0/verify/out/kindlie.report.json",
+  "table_path": "/home/ebt/rsi-dev/a0/verify/out/kindlie.report.md",
+  "tools": {
+    "runner": "/home/ebt/rsi-dev/a0/verify/confrun/conformance.py",
+    "selftest": "/home/ebt/rsi-dev/a0/verify/confrun/selftest.py",
+    "reference": "/home/ebt/rsi-dev/a0/verify/confrun/reference.json",
+    "frozen_toolchain": {
+      "items": {
+        "e_star_script": true,
+        "e_star_interpreter": true,
+        "c_star_manifest": true,
+        "e_star_table": true,
+        "fr_declaration": true,
+        "evalcontract": true
+      },
+      "ok": true,
+      "missing": []
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "simpleloop": {
+    "kind": "digest-of-published-canonical-payload",
+    "declared": "5773dfe1e86728df2ee07be92b2166858eda94cfe7c02e3e737a9a091c8ed42e",
+    "recomputed": "5773dfe1e86728df2ee07be92b2166858eda94cfe7c02e3e737a9a091c8ed42e",
+    "match": true,
+    "eid_star_in_payload": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "depends_on_eid_star": true,
+    "recipe": "sha256(\"a0/simpleloop/eid_r/v1\" + 0x00 + canonical_json(payload))"
+  },
+  "kapso": {
+    "kind": "native-manifest-fingerprint (no recompute_cmd in the adapter output)",
+    "declared": "manifest:1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+    "registered_tree_files_match_disk": {
+      "a0_locator.json": true,
+      "kapso_eval.py": true
+    },
+    "fingerprint_rule_reproduced": true,
+    "reproduced_with": [
+      "files-map",
+      "files-map-ascii-false"
+    ],
+    "my_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+    "recorded_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+    "recompute_mode_in_runner": "cross_checked_against_attempts (runner did not recompute)"
+  },
+  "eve": {
+    "kind": "sha256 of the adapter-generated evaluation step script",
+    "declared": "sha256:60ee4117e1c4a9cb8f0bf7697a0b347a25e8d573a096ae94088da9b1fc24cd7e",
+    "recomputed": "sha256:60ee4117e1c4a9cb8f0bf7697a0b347a25e8d573a096ae94088da9b1fc24cd7e",
+    "match": true,
+    "step_script_contains_eid_star": true,
+    "eid_r_independent_of_EID_star_by_construction": true,
+    "note": "EvE's EID_r digests the script the adapter itself wrote. It is a self-consistency check on that artefact, not a recomputation of a derivation from EID*. The step script does embed EID_STAR, but nothing in the recompute proves it had to."
+  },
+  "loreley": {
+    "kind": "native triple + published derivation recipe, recomputed by hand",
+    "declared_value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b163b61c6b5cb6aea9de5cdf546c0c1d1c9650c9b03f8f24b2ab5e4a8a1dd2a8",
+    "recomputed_value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b163b61c6b5cb6aea9de5cdf546c0c1d1c9650c9b03f8f24b2ab5e4a8a1dd2a8",
+    "value_match": true,
+    "declared_plugin_sha": "53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+    "ondisk_plugin_sha": "53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+    "declared_program_sha": "b163b61c6b5cb6aea9de5cdf546c0c1d1c9650c9b03f8f24b2ab5e4a8a1dd2a8",
+    "ondisk_program_sha": "b163b61c6b5cb6aea9de5cdf546c0c1d1c9650c9b03f8f24b2ab5e4a8a1dd2a8",
+    "declared_eidr_derivation": "d8ea724979611b8e91554d1141ceb6d4725b16e0f6b1590e7f165905e3e5325b",
+    "recomputed_eidr_derivation": "d8ea724979611b8e91554d1141ceb6d4725b16e0f6b1590e7f165905e3e5325b",
+    "derivation_match": true,
+    "recipe_used": "sha256(canonical_json({eid_star,plugin_source_sha256,campaign_program_sha256,native_scheme}, ensure_ascii=False))"
+  },
+  "kapso_theta_e_label_probe": {
+    "theta_e.extra.evaluator_source_sha256": null,
+    "E*'s real evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+    "is_the_adapter_wrapper_kapso_eval_py_hash": false,
+    "verdict": "MISLABEL"
+  }
+}

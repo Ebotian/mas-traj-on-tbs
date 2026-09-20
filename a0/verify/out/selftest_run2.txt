@@ -1,0 +1,73 @@
+running: /home/ebt/rsi-dev/a0/contract/.venv/bin/python /home/ebt/rsi-dev/a0/verify/confrun/conformance.py run --runtimes selftest_honest,selftest_clean,selftest_zero_on_error,selftest_cache_hit,selftest_timeout,selftest_truncated,selftest_drift_1e_6,selftest_drift_1e_10,selftest_swap_near_tie,selftest_digest_swap,selftest_partial,selftest_manifest_triple,selftest_attempt_theta_drift,selftest_stale_eid,selftest_native_theta,selftest_synthetic_declared,selftest_synthetic_mislabeled,selftest_wrong_failure_kind,selftest_wrong_failure_stage --out /home/ebt/rsi-dev/a0/verify/confrun/selftest_runner_report.json --adapter ...
+--- selftest_honest ---
+    PASS: all checks passed
+--- selftest_clean ---
+    PASS: all checks passed
+--- selftest_zero_on_error ---
+    FAIL: false-green finding(s): FG-EVE-SYNTH
+--- selftest_cache_hit ---
+    FAIL: false-green finding(s): FG-LORELEY-CACHE
+--- selftest_timeout ---
+    FAIL: false-green finding(s): FG-LORELEY-TIMEOUT
+--- selftest_truncated ---
+    FAIL: false-green finding(s): FG-LORELEY-CAP, FG-LORELEY-TRUNCATED
+--- selftest_drift_1e_6 ---
+    FAIL: E_r(c) disagrees with E*(c)
+--- selftest_drift_1e_10 ---
+    PASS: all checks passed
+--- selftest_swap_near_tie ---
+    FAIL: E_r(c) disagrees with E*(c)
+--- selftest_digest_swap ---
+    FAIL: E_r(c) disagrees with E*(c)
+--- selftest_partial ---
+    FAIL: incomplete coverage of C*
+--- selftest_manifest_triple ---
+    FAIL: false-green finding(s): FG-MANIFEST-TRIPLE
+--- selftest_attempt_theta_drift ---
+    FAIL: false-green finding(s): FG-ATTEMPT-THETA-DRIFT
+--- selftest_stale_eid ---
+    FAIL: adapter check(s) failed: EID-star-verbatim, EID-r-derives-from-EID-star
+--- selftest_native_theta ---
+    FAIL: adapter check(s) failed: theta-E-identical
+--- selftest_synthetic_declared ---
+    PASS: all checks passed
+--- selftest_synthetic_mislabeled ---
+    FAIL: false-green finding(s): FG-EVE-SYNTH
+--- selftest_wrong_failure_kind ---
+    FAIL: false-green finding(s): FG-FAILURE-KIND
+--- selftest_wrong_failure_stage ---
+    FAIL: false-green finding(s): FG-FAILURE-STAGE
+--- controls (fixture adapters, not runtimes) ---
+    control_honest: PASS (expected PASS)
+    control_zero_on_error: FAIL (expected FAIL)
+    control_cache_hit: FAIL (expected FAIL)
+written: /home/ebt/rsi-dev/a0/verify/confrun/selftest_runner_report.json
+written: /home/ebt/rsi-dev/a0/verify/confrun/selftest_runner_report.md
+verdicts (A0.1 only): {"selftest_honest": "PASS", "selftest_clean": "PASS", "selftest_zero_on_error": "FAIL", "selftest_cache_hit": "FAIL", "selftest_timeout": "FAIL", "selftest_truncated": "FAIL", "selftest_drift_1e_6": "FAIL", "selftest_drift_1e_10": "PASS", "selftest_swap_near_tie": "FAIL", "selftest_digest_swap": "FAIL", "selftest_partial": "FAIL", "selftest_manifest_triple": "FAIL", "selftest_attempt_theta_drift": "FAIL", "selftest_stale_eid": "FAIL", "selftest_native_theta": "FAIL", "selftest_synthetic_declared": "PASS", "selftest_synthetic_mislabeled": "FAIL", "selftest_wrong_failure_kind": "FAIL", "selftest_wrong_failure_stage": "FAIL"}
+
+integrity abort check ... exit 4 (expected 4), flagged ['c04_near_tie'] -> ok
+
+fixture                          injected fault         expected actual   verdict
+selftest_honest                  /home/ebt/rsi-dev/a0   PASS     PASS     ok
+selftest_clean                   pass                   PASS     PASS     ok
+selftest_zero_on_error           zero_on_error          FAIL     FAIL     ok
+selftest_cache_hit               cache_hit              FAIL     FAIL     ok
+selftest_timeout                 timeout                FAIL     FAIL     ok
+selftest_truncated               truncated              FAIL     FAIL     ok
+selftest_drift_1e_6              drift_1e_6             FAIL     FAIL     ok
+selftest_drift_1e_10             drift_1e_10            PASS     PASS     ok
+selftest_swap_near_tie           swap_near_tie          FAIL     FAIL     ok
+selftest_digest_swap             digest_swap            FAIL     FAIL     ok
+selftest_partial                 partial                FAIL     FAIL     ok
+selftest_manifest_triple         manifest_triple        FAIL     FAIL     ok
+selftest_attempt_theta_drift     attempt_theta_drift    FAIL     FAIL     ok
+selftest_stale_eid               stale_eid              FAIL     FAIL     ok
+selftest_native_theta            native_theta           FAIL     FAIL     ok
+selftest_synthetic_declared      synthetic_declared     PASS     PASS     ok
+selftest_synthetic_mislabeled    synthetic_mislabeled   FAIL     FAIL     ok
+selftest_wrong_failure_kind      wrong_failure_kind     FAIL     FAIL     ok
+selftest_wrong_failure_stage     wrong_failure_stage    FAIL     FAIL     ok
+
+all fixtures behaved as expected: True
+written: /home/ebt/rsi-dev/a0/verify/confrun/selftest_report.json
+EXIT=0

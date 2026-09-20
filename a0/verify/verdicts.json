@@ -1,0 +1,555 @@
+{
+  "schema": "a0.verify.verdicts/v2",
+  "auditor": "independent adversarial verification workstream (a0/verify/)",
+  "date": "2026-09-20",
+  "scope": "A-1 / A0.1 / A0.2 claim set for a0/",
+  "method": "every verdict below rests on a command this auditor executed and whose real output is quoted; nothing is carried over from another workstream's assertion",
+  "snapshot_note": "Other workstreams were actively rewriting their artifacts while this audit ran (e.g. runtimes/kapso/contract/selection/kapso.selection.json created 19:01:32; runtimes/kapso/runs/closure-01/closure.json rewritten 19:08:02; conformance/report.json rewritten 19:08:05). Every artifact below is pinned by the digest/mtime recorded at read time.",
+  "claims": [
+    {
+      "id": "C1.1",
+      "claim": "EID* is frozen at 664115e0... and recomputable from the recorded inputs.",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "a0/contract/.venv/bin/python a0/verify/myEID.py   # this auditor's own re-implementation, imports nothing from evalcontract.py",
+        "a0/contract/.venv/bin/python a0/contract/evalcontract.py recompute --eid-file a0/contract/out/plumbing.EID.json"
+      ],
+      "observed": [
+        "myEID.py: EvaluatorSource a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29 / DependencyLock 7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75 / DataManifest b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21 / Config 550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac / MetricDefinition 420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0, eid_star 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "their CLI: [ok] for all five components and EID*; exit 0",
+        "their verify: 'clean: all recorded inputs match; EID* = 664115e0...' exit 0"
+      ],
+      "artifact": "verify/out/myEID.plumbing.json, verify/out/theirs.recompute.txt"
+    },
+    {
+      "id": "C1.2",
+      "claim": "EvaluatorSource covers exactly {e_star.py, e_star_child.py} and nothing else.",
+      "verdict": "ACCEPTED",
+      "command": "sha256sum a0/tasks/circle-packing/e_star.py a0/tasks/circle-packing/e_star_child.py ; jq .components.EvaluatorSource.records a0/contract/out/plumbing.EID.json",
+      "observed": "records = exactly two entries: {e_star.py, 2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567, 34860} and {e_star_child.py, e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca, 4704}; both recomputed hashes equal the recorded ones. The include list is the frozen pair; no third file is selected."
+    },
+    {
+      "id": "C1.3",
+      "claim": "Any single-input change yields a new component digest and a new EID*, and only that component changes.",
+      "verdict": "ACCEPTED",
+      "command": "a0/contract/.venv/bin/python a0/verify/mutate_inputs.py",
+      "observed": "5/5 PASS + negative control PASS: appending a byte to e_star.py changes only EvaluatorSource; a line to requirements.lock only DependencyLock; editing candidate.json only DataManifest; conformance epsilon only Config; the unit string only MetricDefinition; EID* changed in every case. Negative control: an unrelated.py placed beside e_star.py (outside the include list) changed nothing. The staged harness reproduced 4 of the 5 real component digests bit-for-bit (only DataManifest differs, by design, because the staged file list was trimmed).",
+      "artifact": "verify/out/mutation_results.json, verify/out/mutation_run.txt"
+    },
+    {
+      "id": "C1.4",
+      "claim": "No document under a0/ still carries the superseded fac50fc4... in a way that could mislead a consumer.",
+      "verdict": "FIXED",
+      "commands": [
+        "grep -rn fac50fc4 a0/ (excluding .venv)",
+        "for f in fetch every *EID*.json and print every 64-hex value under an eid* key"
+      ],
+      "observed": "(a) TRUE part: no JSON/EID document carries fac50fc4 as its eid_star - the only identity documents are contract/out/plumbing.EID.json, tasks/circle-packing/plumbing.EID.proposed.json and EID_INPUTS.json, all 664115e0..., plus a deliberately stale test fixture (conformance/fixtures/adapters/deviant.py::STALE_EID). (b) FALSE part: two SimpleLoop documents assert the opposite and are now factually wrong - runtimes/simpleloop/HANDOFF_to_contract_owner.md:190 'a0/contract/out/plumbing.EID.json still carries fac50fc4... over the wrong file' (it carries 664115e0, and had already done so at 16:57, an hour before the handoff was written at 18:25) and runtimes/simpleloop/A0_REPORT.md:55-58 'the printed value in a0/contract/adapter_contract.md section 1 still carr[ies] EID* = fac50fc4' (adapter_contract.md section 1 prints 664115e0 and mentions fac50fc4 only inside a revision note that says it was wrong). The error direction is conservative (they warn readers away from a correct value) but a consumer following those two documents is told that the contract is stale when it is not.",
+      "artifact": "verify/out/cstar_integrity.json (scan), see VERDICT.md F6",
+      "pass2": {
+        "disposition": "FIXED",
+        "commands": [
+          "grep -rn fac50fc4 --include=* . (excluding .venv)",
+          "grep -rl fac50fc4 --include=*.jsonl .",
+          "for f in $(grep -rl fac50fc4 --include=*.json --include=*.jsonl --include=*.py --include=*.toml .): ..."
+        ],
+        "observed": "Both SimpleLoop documents now carry an explicit retraction that quotes the old wrong text and labels it. runtimes/simpleloop/HANDOFF_to_contract_owner.md sha256 0dae73ef48ecb3c133f9d1e8038dc24a19f7f088e914ff54103a4068fc399682 (mtime 19:18:36) -> 'Corrected - there is nothing to fix in the contract (verifier finding R2). ... That was already false when this file was written at 18:25: the contract was repaired at 16:57'. runtimes/simpleloop/A0_REPORT.md sha256 92c41f2bb10723283fc55973d5fda96e461a6b82a23cd50297048dc00c04f496 (mtime 19:18:50) -> 'Corrected (verifier finding R2). An earlier revision of this report warned that ...'. The stale assertion is gone from both. Their second sub-claim also holds and I verified it independently: every json/jsonl file in the tree containing fac50fc4 - outside my own verify/ - is the negative fixture selftest_stale_eid (its source constant, the self-test expectation, its deliberately-stale output document); and grep -rl fac50fc4 --include=*.jsonl over the whole tree returns NOTHING, so no run trace ever carried it as an identity.",
+        "artifact": "verify/out/cstar_integrity.json (pass-1 scan); pass-2 scans recorded in VERDICT.md R2"
+      }
+    },
+    {
+      "id": "C2.1",
+      "claim": "All 14 C* solution_sha256 values match C_STAR/manifest.json.",
+      "verdict": "ACCEPTED",
+      "command": "a0/contract/.venv/bin/python a0/verify/check_cstar.py",
+      "observed": "14/14 ok, exit 0. Each candidate's solution_sha256, source.sha256 and source.bytes all match; candidate_count 14 == 14 actual entries; C_STAR holds exactly the 14 manifest directories plus README.md and manifest.json; no extra or missing directory. manifest.json sha256 = 8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2, mtime 1789891420.8478048.",
+      "artifact": "verify/out/cstar_integrity.json, verify/out/cstar_integrity.txt"
+    },
+    {
+      "id": "C2.2",
+      "claim": "C* is unchanged since E_STAR.json was written.",
+      "verdict": "ACCEPTED",
+      "command": "find a0/tasks/circle-packing/C_STAR -type f -newermt '2026-09-20 16:06:12' ; find ... -printf '%T@ %p' | sort -n | tail",
+      "observed": "Every candidate file and manifest.json has mtime 16:03:40.847, before E_STAR.json at 16:06:12. The only later write under C_STAR is C_STAR/README.md (16:07:47), which is not in DataManifest and is not hashed into EID*. Independent confirmation: my own E* sweep reproduced all 14 canonical digests, so the candidate bytes cannot have changed after the table was written.",
+      "artifact": "verify/out/reproduce_results.json"
+    },
+    {
+      "id": "C2.3",
+      "claim": "E* is reproducible for at least three candidates including one invalid and one error case.",
+      "verdict": "ACCEPTED",
+      "command": "a0/contract/.venv/bin/python a0/verify/reproduce_e_star.py (all 14 ids, each from a fresh tempdir state root)",
+      "observed": "14/14 MATCH, 0 mismatches. Exit code, status, canonical_digest and objective agree with E_STAR.json bit-for-bit: c01 0/ok/1144adc6.../2.4519205208433132; c02 0/ok/b4ddfc46.../0.25; c03 0/ok/c0b8113c.../2.4519205208433132; c04 0/ok/f2d0d25d.../2.451820520843313; c14 0/ok/cabca356.../2.6e-05; c05/c06/c07/c08 exit 2 invalid objective null; c09/c10/c11/c12/c13 exit 3 error objective null. Exactly one E_STAR_MANIFEST stdout line per run. c13_slow completed in 1.542s.",
+      "artifact": "verify/out/reproduce_results.json"
+    },
+    {
+      "id": "C2.4",
+      "claim": "E* does not depend on cwd or PATH (hostile-environment invariance).",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "a0/contract/.venv/bin/python a0/verify/hostile_cwd_probe.py",
+        "cd /tmp/vtest && SENTINEL=... PATH=/tmp/vtest/shim:$PATH <venv>/python <e_star.py> evaluate --candidate <abs> ..."
+      ],
+      "observed": "A (hostile cwd full of decoy solution.py / e_star.py / e_star_child.py / C_STAR/c01_good_hex + a PATH whose first entry is a shim dir of fake python/sh/bash/env/git): canonical_digest 1144adc6..., objective 2.4519205208433132, identical to the clean control; the decoy solution.py was never used (source_sha256 = bca4286e..., the real c01); no shim ever executed; the hostile cwd was left byte-identical (only the decoys present afterwards). C (relative candidate path from the hostile cwd) resolves the decoy and errors - documented caller responsibility, not an evaluator defect. B (additionally PYTHONPATH pointed at the hostile cwd - beyond the stated claim): score still identical, but the E* PARENT interpreter imported the injected sitecustomize.py and wrote __pycache__/sitecustomize.cpython-312.pyc into the cwd. See UNVERIFIED/RESIDUAL.",
+      "artifact": "verify/out/hostile_cwd.json, verify/out/hostile_cwd.txt"
+    },
+    {
+      "id": "C3.1",
+      "claim": "a0/conformance/conformance.py re-run gives all four runtimes PASS, and report.json says what it claims.",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "a0/contract/.venv/bin/python a0/conformance/conformance.py reference    # 19:00:14",
+        "cd a0/verify/confrun && a0/contract/.venv/bin/python conformance.py run --out a0/verify/out/conformance.report.json   # 19:03:31, exec of a byte-copy (sha256 62e492fba6fdc3db539321a1a7c3e69f520c640b2e579e73c65930a7a5b890e6)"
+      ],
+      "observed": "reference: 'reference table reproduced exactly: True' (14/14, exit 0). run: verdicts {simpleloop PASS, kapso PASS, eve PASS, loreley PASS}, controls control_honest PASS / control_zero_on_error FAIL / control_cache_hit FAIL as expected, exit 0. The conformance workstream's own report.json (generated_at 19:07:12, all four runtimes, exit 0) agrees. CAVEAT: report.json at 18:56 (before my window) covered only ['simpleloop'] with note \"this report covers ['simpleloop'], not the study's four runtimes\"; the four-runtime report only exists from 19:07 onward.",
+      "artifact": "verify/out/conformance.report.json, verify/out/conformance.report.md, verify/out/conformance_digests_before.txt"
+    },
+    {
+      "id": "C3.2",
+      "claim": "The checker cannot be made to produce a false PASS (deviant adapter, tampered candidate, swapped digest).",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "cd a0/verify/confrun && a0/contract/.venv/bin/python selftest.py",
+        "the same run drives the three control fixtures through the identical checker"
+      ],
+      "observed": "17/17 fixtures behaved as expected, 'all fixtures behaved as expected: True', exit 0. deviant adapter -> FAIL (zero_on_error FAIL/FG-EVE-SYNTH, cache_hit FAIL, timeout FAIL, truncated FAIL, drift_1e_6 FAIL while drift_1e_10 PASS, swap_near_tie FAIL, digest_swap FAIL, partial FAIL 'incomplete coverage of C*', manifest_triple FAIL, attempt_theta_drift FAIL, stale_eid FAIL, native_theta FAIL, synthetic_mislabeled FAIL, synthetic_declared PASS). Tampered candidate -> integrity abort at exit 4 naming exactly ['c04_near_tie'], before any evaluation. controls: control_honest PASS, control_zero_on_error FAIL, control_cache_hit FAIL.",
+      "artifact": "verify/out/selftest_run.txt, verify/confrun/selftest_report.json"
+    },
+    {
+      "id": "C3.3",
+      "claim": "The nine non-ok candidates are compared as VERDICTS rather than numbers.",
+      "verdict": "FIXED (residual hole open: see C3.3b)",
+      "commands": [
+        "grep -n failure_kind a0/conformance/conformance.py",
+        "a0/contract/.venv/bin/python a0/verify/fixtures/adapters/kindlier_adapter.py  (copy of the honest reference fixture with ONE field patched)",
+        "cd a0/verify/confrun && a0/contract/.venv/bin/python conformance.py run --runtimes kindlier --adapter 'kindlier=<venv>/python a0/verify/fixtures/adapters/kindlier_adapter.py' --no-controls --out a0/verify/out/kindlie.report.json"
+      ],
+      "observed": "The runner compares only the COARSE STATUS. adapter_contract.md section 4 item 5 requires: 'Candidates whose E* verdict is invalid or error compare on verdict and failure.kind, not on a number.' conformance.py:1409-1415 compares obs['status'] against expected_status and never reads the per-row failure_kind; failure_kind is used only in the E* reference sweep self-check (conformance.py:681). FALSIFICATION EXECUTED: an adapter that reports status truthfully but failure_kind='adversarially_wrong_kind' on all nine non-ok rows is reported 'PASS: all checks passed', exit 0, with every check ok=true, including E-r-equals-E-star and evidence-fresh-or-declared. Row evidence: c09_malformed_import E*_kind=candidate_import_failed adapter said adversarially_wrong_kind, verdict MATCH_VERDICT; likewise c10 (candidate_call_raised), c11 (non_deterministic), c13 (runtime_budget_exceeded) and c05 (invalid_configuration). A runtime that misattributes every failure to the wrong stage -- which is exactly what the A0-wide failure_stage table exists to make joinable -- passes A0.1.",
+      "artifact": "verify/out/kindlie.report.json, verify/out/kindlie.report.md, verify/fixtures/adapters/kindlier_adapter.py, verify/confrun/out/adapters/kindlier.conformance.json",
+      "severity": "high",
+      "pass2": {
+        "disposition": "FIXED",
+        "command": "cd a0/verify/confrun && a0/contract/.venv/bin/python conformance.py run --runtimes kindlier --adapter \"kindlier=<venv>/python a0/verify/fixtures/adapters/kindlier_adapter.py\" --no-controls --out a0/verify/out/kindlie.recheck.json",
+        "observed": "FAIL: false-green finding(s): FG-FAILURE-KIND; exit 3; row verdicts {MATCH: 5, MISMATCH_FAILURE_KIND: 9}; failing checks ['E-r-equals-E-star', 'E-r-failure-kind']; the other 9 checks ok. Matches the owner's reported numbers exactly. Row c10_raises: e_star_failure_kind=candidate_call_raised, e_r_failure_kind=adversarially_wrong_kind, e_star_failure_stage=evaluator_failed, verdict=MISMATCH_FAILURE_KIND. The pass-1 false PASS is gone.",
+        "new_surface": "conformance.py 2d7040750f164d8f44ce1600a68b673856d6dec2de48a2584af61fe47ed88511 (147927 B, 19:24:10): declared_failure_kind() :1039-1052, check_failure_kind() :1071-1110, MISMATCH_FAILURE_KIND :123, FALSE_GREEN_KIND='FG-FAILURE-KIND' :129, E-r-failure-kind check :2177-2202",
+        "selftest": "my re-run: 19/19 fixtures behaved as expected (was 17/17); new selftest_wrong_failure_kind -> FAIL FG-FAILURE-KIND and selftest_wrong_failure_stage -> FAIL FG-FAILURE-STAGE; integrity abort still exit 4 naming ['c04_near_tie']",
+        "artifact": "verify/out/kindlie.recheck.json, verify/out/selftest_run2.txt",
+        "adapter_digest": "verify/fixtures/adapters/kindlier_adapter.py sha256 6be8f8ad3ff6cc5e87ba8ffb5d0f923e14e5416c69a5bccb02a7eab4bf87f5cf (rebuilt from the CURRENT fixture, sha256 51d4f286c6b5405c0eae2a65f4a7cc0cfc05aa3c4b1026e2f9ef6c879d0e2e55)"
+      }
+    },
+    {
+      "id": "C3.4a",
+      "claim": "SimpleLoop's EID_r recompute is real evidence (executed / independent recipe).",
+      "verdict": "ACCEPTED",
+      "command": "a0/contract/.venv/bin/python a0/verify/eid_r_recompute.py",
+      "observed": "I recomputed sha256('a0/simpleloop/eid_r/v1' + 0x00 + canonical_json(payload)) myself from the published payload and got 5773dfe1e86728df2ee07be92b2166858eda94cfe7c02e3e737a9a091c8ed42e, equal to the declared value; the payload carries eid_star = 664115e0..., so the mapping is a genuine function of EID*."
+    },
+    {
+      "id": "C3.4b",
+      "claim": "Loreley's EID_r recompute is real evidence (executed / independent recipe).",
+      "verdict": "ACCEPTED",
+      "command": "a0/contract/.venv/bin/python a0/verify/eid_r_recompute.py  (formula read out of src/a0_adapter/eidr.py:derive_eidr, then applied by this auditor's own code)",
+      "observed": "plugin_source_sha256 recomputed from runtimes/loreley/src/loreley_a0_plugin.py = 53e6cfe8... equals the declared value; campaign_program_sha256 recomputed from out/conformance/loreley.program.md = b163b61c... equals declared; the value string recomputed exactly; eidr_derivation recomputed by hand = d8ea7249... equals declared. The recompute_cmd the runner executes invokes the adapter's own eidr-recompute subcommand (circular), but a third party CAN derive it independently, and I did."
+    },
+    {
+      "id": "C3.4c",
+      "claim": "KAPSO's EID_r recompute is real evidence.",
+      "verdict": "ACCEPTED (with a runner limitation)",
+      "command": "a0/contract/.venv/bin/python a0/verify/eid_r_recompute.py",
+      "observed": "The runner does NOT recompute KAPSO's EID_r: recompute_mode = 'cross_checked_against_attempts' and the check detail says so in terms ('the runner did NOT recompute the fingerprint itself'). I recomputed it independently: both registered files hash as recorded (a0_locator.json ec22ca55..., kapso_eval.py 781f54ee...), and sha256(canonical_json(manifest_files)) = 1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962 = the declared 'manifest:1c6cdec3...'. So the value IS third-party recomputable; only the runner's check is reduced to a consistency check. The adapter's extra defence (kapso_eval.py re-hashes E*'s sources and exits 3 on mismatch) is separately verified: see C5.3.",
+      "artifact": "verify/out/eid_r_recompute.json"
+    },
+    {
+      "id": "C3.4d",
+      "claim": "EvE's EID_r recompute is real evidence that EID_r derives from EID*.",
+      "verdict": "FIXED",
+      "command": "a0/contract/.venv/bin/python a0/verify/eid_r_recompute.py ; head -45 a0/runtimes/eve/out/conf-a0-eve-run001/evaluator/eve_evaluator_step.sh",
+      "observed": "EID_r.value is sha256 of the evaluation step script the ADAPTER ITSELF generated; I recomputed it (60ee4117...) and it matches, and the script does embed EID_STAR='664115e0...'. But nothing in the recompute forces that: the digest would recompute equally for a script that ignored EID*. It is a self-consistency check on an artefact the adapter produced, not a recomputation of a derivation from EID*. The separate derives_from_eid_star field is a declaration compared by string equality. Note also the premise of the assignment ('the two adapters whose EID_r recompute is only declared_prose') does NOT hold at my snapshot: no runtime's report shows recompute_mode=declared_prose (simpleloop/eve/loreley = executed, kapso = cross_checked_against_attempts).",
+      "artifact": "verify/out/eid_r_recompute.json",
+      "pass2": {
+        "disposition": "FIXED",
+        "commands": [
+          "runtimes/eve/.venv/bin/python runtimes/eve/tools/recompute-eid-r --eid a0/contract/out/plumbing.EID.json",
+          "runtimes/eve/.venv/bin/python runtimes/eve/tools/recompute-eid-r --eid a0/verify/out/eve-eidr/eid.mutated-star.json",
+          "runtimes/eve/.venv/bin/python runtimes/eve/tools/recompute-eid-r --eid a0/verify/out/eve-eidr/eid.mutated-record.json",
+          "runtimes/eve/.venv/bin/python runtimes/eve/tools/recompute-eid-r --a0-root a0/verify/out/eve-eidr/mutroot --eid a0/contract/out/plumbing.EID.json",
+          "cd a0/runtimes/eve && PYTHONPATH=$PWD ./.venv/bin/python -m a0_adapter conformance --runtime eve --eid a0/verify/out/eve-eidr/eid.mutated-star.json ...",
+          "runtimes/eve/.venv/bin/python runtimes/eve/tools/eid_r_mutation_check.py"
+        ],
+        "observed": "(1) standalone recomputation reproduces the declared value exactly: sha256:b903b051c87218a3599609ade2e742565f4244b893a49d9850fb7cd09a79fc0a, over a payload containing eid_star='664115e0...' and the re-hashed evaluator source records; the runner now executes this tool (EID-r-recomputes mode=executed, recomputed == declared). Tool sha256 e78ffac585cb208c52ad5df4be0170d2d48512dcb833fc41a118ee63dfa5a8b8. (2) MUTATING EID* CHANGES THE VALUE: with one nibble of eid_star flipped to f64115e0... the derived value becomes sha256:9635bba934c350894e3134e77c7e3ebf3166c5717029adc9c83a948c9382ad34 - so EID* is a genuine argument, not a hardcoded constant. (3) A MISMATCHED EVALUATOR SOURCE IS REFUSED, exit 3, twice: a corrupted recorded digest -> 'hashes to 2abc6ea1..., EID* records 0000...0 - the document does not describe these bytes'; and genuinely appended bytes to a staged e_star.py -> 'hashes to 44876e70..., EID* records 2abc6ea1...'. (4) THE ADAPTER ITSELF REFUSES A MISMATCHED EID*: exit 3, 'a0_adapter(eve): evalcontract verify failed: DRIFT EID* changed f64115e0d63ad2e1 -> 664115e0d63ad2e1', no output document produced. This closes the original objection. Their tools/eid_r_mutation_check.py (sha256 9297169993374fc4854245d1e781b7ed45bdc4a86a0e55c3b1641b08c0bd976c) reports M1-M4 all PASS; I reproduced M3 and M4 independently rather than taking them on trust.",
+        "residual_limit": "This proves the RECOMPUTATION cannot ignore EID* and that the adapter refuses a document that does not match its own inputs. It does not prove the adapter used the passed document at every internal point; that rests on items 2-4 plus the runner's EID-star-verbatim echo.",
+        "artifact": "verify/out/eve-eidr/ (recompute.real.json, eid.mutated-star.json, mutroot, eve.mutated-eid.stderr)"
+      }
+    },
+    {
+      "id": "C4.1",
+      "claim": "KAPSO: an externally supplied score actually changed the selection (ordered_pair + fast_only tier control).",
+      "verdict": "ACCEPTED",
+      "command": "cd a0/runtimes/kapso && PYTHONPATH=$PWD timeout 280 ./.venv/bin/python -m a0_adapter run --runtime kapso --run-id verify-a02 --run-dir a0/verify/out/kapso-a02 --skip-a01 ...",
+      "observed": "My own re-run: a02_pass true, all five scenarios true (ordered_pair, reversed_order, tie_break, error_and_tamper, fast_only), 14 checks all pass. Mechanism: KAPSO's own GenericSearch; each round clones the branch, commits the candidate's solution.py, syncs the registered tree, runs the registered command (kapso_eval.py -> E*), and the score of record is the manifest line. A02-K2-REVERSED is the discriminator: with the low scorer (0.25) evaluated LAST, the next parent is still the high scorer (c01, node 0) -- so score, not recency, decides. A02-K6/fast_only: a fast-tier 2.4519 wins the parent (node 1) but a full-tier 0.25 (node 0) wins the deliverable -> the two objects really are different, as the frozen semantics claim. Seams: ideation (strategy.py:845), implementation (strategy.py:1036) and the feedback judge (feedback_flow.py:16) are replaced, and the adapter's seams.py enumerates exactly which real runtime functions remain (_select_parent, get_best_experiment, get_deliverable_experiment, checkout_to_best_experiment_branch, enforce_evaluation_integrity, manifest_of_record, select_committed_candidate ...). The proposal stream is seamed; the selection code and the evaluator lane are real. The full LLM-driven path is declared UNVERIFIED in the artifact and I did not verify it.",
+      "artifact": "verify/out/kapso-a02/a02/a02.json, verify/out/kapso_a02_rerun.log"
+    },
+    {
+      "id": "C4.2",
+      "claim": "EvE: the frequency test shows the score drives the selection; pooling, independence, per-iteration counting, competing hypotheses and pre-registered n all hold up.",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "PYTHONPATH=/tmp/eve/src a0/runtimes/eve/.venv/bin/python a0/verify/eve_a02_probe.py   (my own 3000-draw driver)",
+        "independent exact two-sided binomial on the pooled replication numbers",
+        "git -C /tmp/eve rev-parse HEAD ; sed -n '30,50p' /tmp/eve/src/.../populations/base.py"
+      ],
+      "observed": "HEAD = 979065fd2cf1b3be9caf70596478fe27df7815ad (the pin). base.py:40 sets _rng = rng or random.Random() -> unseeded, fresh entropy per population, so the six replicates in e1_replication.json are independent draws; each replicate builds a fresh population and sampler. My fresh 3000 draws through the real call site: E1 p_hat = 0.7357 (closed form 0.7310586), swap control 0.2553 (closed form 0.2689414), two-proportion z = 37.21, p ~ 5e-303; the results differ from theirs (0.7540 / 0.2630), which is expected with an unseeded RNG and proves the numbers are not hard-coded. Sampler class = RankExponentialSumSampler instantiated by Hydra from the shipped config; my instrumented wrapper counted exactly one sampler.sample call per draw (3000 calls / 3000 iterations) -> the count is per iteration, not per worker, and Phase2BatchRunner._sample_solvers (phase2.py:597-605) samples n_solver_examples_phase2 once per call with the population RNG. Pooled arithmetic reproduced: p_hat 0.7290 and z -0.6228719532600361 exactly, exact two-sided p 0.5339723993557 vs their 0.5339723993507 (agreement to ~5e-12). Competing hypotheses are rejected in the artifact (uniform 0.5 at p=2.1e-119; wrong population 0.731 at p=1.6e-16; re-ranking 0.8808 at p=0.0021). Pre-registered n (43 normal / 44 exact, binding ~515 by their own reading) is met with 2000 iterations, ~4x margin. Honest disclosure present and correct: the single E1 run lands at p=0.020, just under alpha, and is superseded by the pooled figure. Pooling including E1 gives 0.7315 (n=20000), also consistent.",
+      "artifact": "verify/out/eve_a02_replication.json, verify/out/eve_a02_replication.json (pooled arithmetic in VERDICT.md F-notes)"
+    },
+    {
+      "id": "C4.3",
+      "claim": "Loreley: same-cell replacement is score-decided, with a real cross-cell negative control and the multi-objective caveat stated.",
+      "verdict": "ACCEPTED",
+      "command": "a0/runtimes/loreley/bin/a0-loreley a02 --runtime loreley --run-id verify-a02 --run-dir a0/verify/out/loreley-a0 --out a0/verify/out/loreley.a02.json",
+      "observed": "My own re-run: A02-L1, L3, L5, L8, L3-M, L7, L5-M all pass. L1 scores c01 and c02 through the real Evaluator path (run_through_loreley -> Evaluator.evaluate_outcome) and then calls the real ParetoGridArchive.add twice: adding c2 first is retained with no removal; adding c1 into the same cell (index 68, measures (0.25,0.25)) removes c02_baseline_upstream, with |gap| = 2.2019 >> epsilon. L3/L3-M are the cross-cell negative control: strictly higher score, different cell, no eviction. L7: sampling is score-independent (4000 draws, 1970/2030). The archive is built by the pinned checkout's own archive_ops.build_archive (checkout HEAD = 4c3759208e6b908f90716488ac3eec3dceaaf397, matching the pin), and the L1 observation reproduces a real internal quirk (`_build_add_outcomes` fills removed_commit_hashes only for a single-candidate batch, pareto_archive.py:407), which is not something a mock would emit. Caveat honestly self-disclosed and confirmed: under a single objective every cell front has one member, so L1 alone does not prove the QD semantics; the discriminating control only exists under the two-objective config, which is also run.",
+      "artifact": "verify/out/loreley.a02.json"
+    },
+    {
+      "id": "C4.4",
+      "claim": "SimpleLoop: ordering invariance and the frozen tie-break.",
+      "verdict": "ACCEPTED",
+      "command": "cd a0/runtimes/simpleloop && PYTHONPATH=$PWD timeout 280 ./.venv/bin/python -m a0_adapter a02-check --run-dir a0/verify/out/simpleloop-a02 --out a0/verify/out/simpleloop.a02.json",
+      "observed": "My own re-run: verdict pass, 9 passed, 0 failed. order_invariance: forward and reversed orders give the same champion (c01, 2.4519205208433132). tie_break_observable: both orders give c01 under the frozen rule (smallest candidate_id by UTF-8 bytes), while the REJECTED earliest-index rule would give c01 forward and c03 reverse -- so the test has discriminating power; the tie events record reason 'smallest_candidate_id_by_utf8_bytes'. near_tie_not_absorbed: gap 1.0000000000021e-4 = 100000x epsilon and a monotone rank transform cannot flip c01/c04. null_never_wins: c05_overlapping is not given a number (see C5.4). injected_score_moves_selection: with --inject-scores giving c02 99.0, the champion flips from c01 to c02_baseline_upstream, while the logged E* Outcome stays the real one -- the clearest direct demonstration of score-driven selection of the four runtimes. argmax_is_a_set_function: every permutation gives the same winner; all-null gives null.",
+      "artifact": "verify/out/simpleloop.a02.json"
+    },
+    {
+      "id": "C5.1",
+      "claim": "EvE's synthetic failure_score 0.0 trap fires: a runtime that 'agrees' only because a crash was recorded as 0.0 is FAILED, not passed.",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "cd a0/verify/confrun && a0/contract/.venv/bin/python selftest.py  (fixture selftest_zero_on_error)",
+        "cd a0/verify/confrun && conformance.py run ... (control control_zero_on_error)"
+      ],
+      "observed": "Both fire. Fixture run: FAIL with fatal finding FG-EVE-SYNTH on all nine non-ok candidates; row c05_overlapping shows E*=invalid/null, adapter reported status ok / value 0.0, verdict FALSE_GREEN_SYNTHETIC_ZERO, and the checks E-r-equals-E-star and evidence-fresh-or-declared are reported as FAILED. Control row control_zero_on_error: FAIL (expected FAIL). Converse test: selftest_synthetic_declared PASSes and selftest_synthetic_mislabeled FAILs, so the discriminator is 'declared vs hidden', not 'any 0.0'. See C3.3's finding: the same fixture class is caught only because the status is wrong, not because the kind is wrong."
+    },
+    {
+      "id": "C5.2",
+      "claim": "Loreley's timeout / 64-metric-truncation / persistent-cache trio is detected.",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "a0/runtimes/loreley/bin/a0-loreley traps --runtime loreley --run-id verify-traps --run-dir a0/verify/out/loreley-traps --out a0/verify/out/loreley.traps.json",
+        "cd a0/verify/confrun && a0/contract/.venv/bin/python selftest.py  (fixtures selftest_timeout, selftest_truncated, selftest_cache_hit)"
+      ],
+      "observed": "My own traps re-run: verdict pass, T2 true (timeout -> runtime synthesizes 'Evaluation plugin timed out after 1s.', 0 metrics, evidence status timeout, sum_radii null), T3 true (mapping payload with 77 emitted metrics -> 64 returned, 13 dropped, labelled truncated_metrics; EvalPass payload -> 77 returned, cap NOT applied), T4 true (cache_hit labelled, reuse_kind exact_tree). Checker side: fixtures selftest_timeout / selftest_truncated / selftest_cache_hit all FAIL with findings FG-LORELEY-TIMEOUT / FG-LORELEY-CAP+FG-LORELEY-TRUNCATED / FG-LORELEY-CACHE; the runtime-level controls control_cache_hit FAIL as expected. Notable: T3 does not hide the uncomfortable half of its own finding -- the cap is bypassed entirely on the EvalPass payload path, which is a genuine upstream gap reported rather than smoothed over."
+    },
+    {
+      "id": "C5.3",
+      "claim": "KAPSO's manifest-triple trap (granted class != commanded class) is detected.",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "a0/contract/.venv/bin/python -c ... runtimes/kapso/runs/a0-01/a01/conformance.json -> controls.manifest_class_mismatch",
+        "cd a0/verify/confrun && a0/contract/.venv/bin/python selftest.py  (fixture selftest_manifest_triple, selftest_attempt_theta_drift)"
+      ],
+      "observed": "KAPSO's own control: grant full/1.0, session ran fast/0.15/1337 -> manifest_of_record_returned null, no score of record, 'theta_e_canonical_match': false, pass true. Same block also carries e_star_source_drift (a corrupted recorded E* digest -> exit 3, no manifest, no score, and stderr names the drift) against e_star_source_intact (unmodified -> exit 0, 2.4519205208433132), and candidate_set_gate (a candidate outside C* -> exit 3; A0_KAPSO_ALLOW_UNFROZEN_CANDIDATE=1 does not open the gate from inside a session). Checker side: selftest_manifest_triple FAILs with FG-MANIFEST-TRIPLE and selftest_attempt_theta_drift FAILs with FG-ATTEMPT-THETA-DRIFT. A02-K5-TAMPER additionally shows a tampered kapso_eval.py is rejected by enforce_evaluation_integrity so it cannot become parent or deliverable.",
+      "artifact": "verify/confrun/selftest_report.json"
+    },
+    {
+      "id": "C5.4",
+      "claim": "c05_overlapping: a candidate whose nominal value equals the best candidate's, yet which is invalid, is not given a number anywhere.",
+      "verdict": "ACCEPTED",
+      "command": "a0/tasks/circle-packing/.venv/bin/python e_star.py evaluate --candidate C_STAR/c05_overlapping --seed 1337 --fidelity full --fraction 1.0 --out .../c05.json --state-dir ...",
+      "observed": "The trap is real and E* closes it. c05's pre-gate structure.sum_radii = 2.4519205208433132, bit-identical to c01_good_hex's score, but overlap_check fails (overlap_count 1, min_gap -0.1886) so status=invalid, exit 2, objective=null and fields.sum_radii=null. Downstream: conformance rows give c05 MATCH_VERDICT (simpleloop/kapso/loreley) or SYNTHETIC_DECLARED with the 0.0 explicitly annotated as synthetic (eve) -- never a number; simpleloop's null_never_wins records c05_nominal_structure_sum_radii = 2.4519205208433132 next to c05_scalar = null; KAPSO's error_and_tamper scenario holds the error candidate at score None; the zero_on_error fixture shows a c05 scored 0.0 is a fatal FG-EVE-SYNTH."
+    },
+    {
+      "id": "C6.1",
+      "claim": "Each closure probe record really shows the two-control pattern (unblocked genuinely reaches the network, blocked genuinely fails).",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "a0/closure/probes/cli_sandbox_probe.sh --workspace a0/verify/out/sandbox_ws --json a0/verify/out/cli_sandbox.json",
+        "a0/contract/.venv/bin/python a0/verify/closure_scan.py"
+      ],
+      "observed": "CLI sandbox probe re-run by me, exit 0, PASS: host-no-sandbox egress=OPEN (positive control); codex sandbox workspace-write egress=BLOCKED; danger-full-access egress=OPEN; workspace-write + sandbox_workspace_write.network_access=true egress=OPEN (so config alone is not proof -- the record says so and is right). Four end-to-end model-lane pairs (evidence/11*/13*/17*.json) each report returncode 0, model_call_completed true, tool_ran true and a canary PERSISTED BY THE IN-LANE SHELL TOOL rather than read from the model's prose: closed posture egress=BLOCKED (17_kapso_lane_closed, 17_simpleloop_lane_closed) vs open posture egress=OPEN (17_kapso_lane_open, 17_simpleloop_lane_open). My scan of all four closure.<runtime>.json: 5 mechanisms carry schema_verdict=closed and all 5 carry both an unblocked control and a blocked case; none rests on a timeout, an absent tool or 'NOT PROBED'. The one lexical 'suspect' hit (KAPSO codex-lane-bash-side-door matching rc=124/timed out/command_ran=false) is a QUOTATION of the superseded other-workstream evidence inside an authority_note, not the basis of its own verdict.",
+      "artifact": "verify/out/closure_scan.json, verify/out/closure_scan.txt, verify/out/cli_sandbox.json"
+    },
+    {
+      "id": "C6.2",
+      "claim": "Nothing labelled closed rests on inconclusive.",
+      "verdict": "ACCEPTED",
+      "command": "a0/contract/.venv/bin/python a0/verify/closure_scan.py",
+      "observed": "Top-level verdicts: eve closed, simpleloop closed, kapso inconclusive, loreley inconclusive; study_verdict CONDITIONAL / CONDITIONAL / CLOSED / CONDITIONAL. Every 'inconclusive' is explicitly glossed as 'treated as NOT closed', and each is tied to a named reason (KAPSO's DEFAULT lane is claude_code, which has no CLI sandbox; Loreley's DEFAULT backend is kilocode whose binary is not even installed). No closed mechanism lacks a control pair (C6.1)."
+    },
+    {
+      "id": "C6.3",
+      "claim": "closure.reconciliation.json's authority claims hold against the runtime workstreams' own records.",
+      "verdict": "ACCEPTED (but the reconciliation is now STALE)",
+      "command": "a0/contract/.venv/bin/python -c ... runtimes/kapso/runs/closure-01/closure.json ; stat -c '%y %n'",
+      "observed": "The reconciliation (written 18:13) cites KAPSO's lane_probes.codex_workspace_write as {returncode 124, timed_out true, command_ran false} and rules that a timed-out probe cannot support a closure claim. At my snapshot (runtimes/kapso/runs/closure-01/closure.json rewritten 19:08:02) that entry instead reads {returncode 0, ran true, command_ran true, network_reached false, egress_ok false} with the getaddrinfo failure in stderr_tail -- i.e. the workstream re-ran the probe and the specific defect the reconciliation cites no longer exists. The reconciliation's other two claims check out at my snapshot: KAPSO's own record does say the claude lane is closed by tool removal (lane_closure_by: 'agent_specific.disallowed_tools removes Bash ... the probe observes an absent tool, never a denied attempt'), and KAPSO's top-level verdict is 'inconclusive', not 'closed'. Direction of the reconciliation's authority rule is sound (it correctly refuses to credit an absent tool as closure).",
+      "artifact": "verify/out/closure_scan.json"
+    },
+    {
+      "id": "C7.1",
+      "claim": "KAPSO's runs/e2e-real/ real-lane round is what it claims.",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "a0/contract/.venv/bin/python -c ... runtimes/kapso/runs/e2e-real/e2e_verification.json",
+        "a0/tasks/circle-packing/.venv/bin/python e_star.py evaluate --candidate C_STAR/c04_near_tie ... (my own run)"
+      ],
+      "observed": "verdict 'verified_end_to_end'; lane 'real run_implementation (strategy.py:1036); ideation and judge seamed'; the committed branch holds c04_near_tie (solution_sha256 3bf7bf310c976e9a...); three-way score agreement session_manifest.score = node_score_from_log = independent E* = 2.451820520843313; manifest_triple_matches_grant true; manifest_class_mismatch_printed false. My own E* run of c04_near_tie gives 2.451820520843313, so the independent-reference side of that agreement is reproduced. Honest negatives retained: branch_tree_is_registered_head false (an extra eval_profile.md), and the note that node state is in-memory and had to be re-derived from the committed branch."
+    },
+    {
+      "id": "C7.2",
+      "claim": "SimpleLoop's codex-live3 / codex-live4 are real model-lane rounds and their scores are real.",
+      "verdict": "ACCEPTED",
+      "commands": [
+        "grep -o '\"champion_id\"/\"champion_scalar\"' a0/runtimes/simpleloop/out/cli-lane-codex-live{3,4}.log",
+        "a0/tasks/circle-packing/.venv/bin/python e_star.py evaluate --candidate <run>/work/iter001/solution.py --seed 1337 --fidelity full --fraction 1.0 ..."
+      ],
+      "observed": "My own E* runs on the model-authored candidates reproduce the recorded champions exactly: codex-live3 work/iter001/solution.py -> 2.6251746109048 (recorded champion_scalar 2.6251746109048); codex-live4 work/iter001/solution.py -> 2.5414213562373096 (recorded 2.5414213562373096). Both beat every member of C* (best C* = 2.4519), so the live lane produced a genuine improvement rather than replaying a frozen candidate. The baselines in the same runs score 0.25 as E* says. The score events carry eid_star 664115e0..., the frozen F_r spec_hash 1fa6f941..., and evaluator_evidence.status 'ok'."
+    },
+    {
+      "id": "C7.3",
+      "claim": "EvE's three real attempts exist and failed attempts are recorded as failures.",
+      "verdict": "ACCEPTED",
+      "command": "a0/contract/.venv/bin/python -c ... out/run00{2,3,4}/real_round.json ; my own E* on out/run004/agent_best_packing_candidate/solution.py",
+      "observed": "run002 (attempt 1) and run003 (attempt 2) each completed one iteration at solver score 0.25 (the untouched prefill). run004 (attempt 3) records a FAILURE rather than dressing it up: 'driver rollout timeout at 660 s (agent_error.txt: Codex exec timed out), so solver/solution.py kept the prefill sha 18bacee4... and the produced candidate scored E* = 0.25 (the untouched baseline)'. run004 also records the agent's own artifact with the honest label 'adapter transcription of the agent's own artifact, not an agent-authored solution.py': agent declared 2.616871696851752; the file out/run004/agent_best_packing_candidate/solution.py scored against its recorded outcome 2.6168716968517516 \u2014 and my own E* run gives exactly 2.6168716968517516, status ok. So the third attempt is recorded as a failure at the round level while its by-product is recorded, measured and reproduced."
+    },
+    {
+      "id": "C7.4",
+      "claim": "Loreley's planning round is real and its failure is recorded as a failure.",
+      "verdict": "ACCEPTED",
+      "command": "cat a0/runtimes/loreley/llm-round/RESULT.md ; cat a0/runtimes/loreley/llm-round/stage_a_result.json ; ls -la a0/runtimes/loreley/llm-round/logs/.../planning/",
+      "observed": "RESULT.md states plainly: 'Answer: yes for the lane and for planning; no for a completed round inside the cap.' Measured: 'Planning agent generated plan in 144.1s (attempt 1/2) <- real codex call, succeeded', then 'Coding attempt 1 failed: codex exec timed out after 480s', round watchdog stopped at t+782s of a 1200s cap. Final DB state: evolution_jobs 1 row status=RUNNING result_commit_hash=NULL; evaluation_attempts 0 rows; candidate_commits 0 rows. The planning and coding logs exist on disk (planning-...-20260920-182709-196092.json, 11802 bytes; coding-...-20260920-183509-267029.json, 9531 bytes). stage_a2_result.json records a real successful backend probe (66.0s, ok true); stage_a_result.json records a genuine earlier FAILURE as a failure ('ok': false with a 401 Unauthorized from api.openai.com in the error text)."
+    },
+    {
+      "id": "C7.5",
+      "claim": "No mock was silently substituted for a runtime.",
+      "verdict": "UNPROVEN (partially verified)",
+      "command": "grep -rn 'monkeypatch|MagicMock|unittest.mock|class Fake|class Mock|class Stub' a0/runtimes/*/a0_adapter/*.py a0/runtimes/*/src/a0_adapter/*.py a0/runtimes/simpleloop/solvers/*.py",
+      "observed": "Exactly one hit across all four adapters: runtimes/kapso/a0_adapter/runtime.py:288, which is the DECLARED 'EvaluationMaintainer._run_agent monkeypatched to a no-op' (also surfaced as setup_agent_seam in the conformance document). No mock/stub/fake class exists in any adapter source, and each adapter publishes its seams and an 'unverified' block naming the untested path (KAPSO a02.json unverified, EvE a02.seams, Loreley traps.json T4 unverified, SimpleLoop run summaries). I could NOT prove the absence of a quieter substitution: I did not read every line of all four adapters, and the check is lexical. What I did establish by execution is stronger for the seamed paths anyway: KAPSO's A0.2 and A0.1 ran real KAPSO strategy code with real E* subprocesses (14/14 rows carry E* canonical digests), EvE's draws came from the real sampler class and the real call site, Loreley's archive is the pinned checkout's own class, and SimpleLoop's A0.2 used the real loop."
+    },
+    {
+      "id": "C3.3b",
+      "claim": "The failure-bearing surface is FULLY enforced: an adapter cannot avoid the failure-kind comparison.",
+      "verdict": "REJECTED (residual hole open; judged not to affect this study)",
+      "commands": [
+        "a0/contract/.venv/bin/python  # built verify/fixtures/adapters/omitter_adapter.py = the honest fixture with \"failure_kind\": None, sha256 981ec7b16498662f11c91c34ab75e4c0cda2201ce97fa4c6afd2d53c9c08782d",
+        "cd a0/verify/confrun && conformance.py run --runtimes omitter --adapter \"omitter=<venv>/python a0/verify/fixtures/adapters/omitter_adapter.py\" --no-controls --out a0/verify/out/omitter.report.json"
+      ],
+      "observed": "PASS: all checks passed; exit 0. E-r-failure-kind.ok = True with kind_declared_for = [] and kind_undeclared_for = [c05..c13] (all nine), failure_kind_declared = false on every affected row, rows MATCH_VERDICT x9 + MATCH x5. Cause: check_failure_kind() returns None without setting a verdict when declared_kind is None (:1091-1096), so kind_bad stays empty and the check's flag (\"ok\": not kind_bad, :2181) is True. The gap IS disclosed in the check detail and in every affected row's notes, but the runtime still reads PASS. No selftest fixture exercises the omission path.",
+      "judgement": "Does not matter for A0.1 as this study runs it: all four real runtimes declare 9/9 kinds and every declared kind matches E*'s (verify/out/recheck.final.json). It matters (a) as a reusable artefact - the checker is the study's deliverable and selftest.py is supposed to prove it rejects faults; and (b) for the contract - adapter_contract.md 4.3.5 requires the field on every non-ok candidate, so an omitting adapter is non-conformant yet passes. Requested fix: make E-r-failure-kind ok=False (or a distinct non-fatal state) when len(kind_declared) < len(non_ok_rows), and add an omission fixture.",
+      "settling_command": "after a fix: re-run verify/fixtures/adapters/omitter_adapter.py through conformance.py run and require FAIL, or a non-ok verdict on E-r-failure-kind",
+      "artifact": "verify/out/omitter.report.json, verify/out/omitter.report.md"
+    },
+    {
+      "id": "C8.1",
+      "claim": "The contract owner re-adopted KAPSO's corrected selection declaration (143bfc94... -> c1a99365...).",
+      "verdict": "ACCEPTED (LANDED, verified by my own computation)",
+      "commands": [
+        "a0/contract/.venv/bin/python -  # my own sha256(canonical_json(...)) over contract/selection/*.selection.json and over each block",
+        "a0/contract/.venv/bin/python -c ... conformance/out/adapters/kapso.conformance.json -> selection.frozen_canonical_copy",
+        "cd a0/contract && ./.venv/bin/python -m pytest -q"
+      ],
+      "observed": "contract/selection/kapso.selection.json (sha256 29ee490abc1717ad27f00a1732e9a4c4a7f44b394a36f4043e253bacddc865f6, mtime 19:23:25) canonical digest computed by me = c1a993650b4edc4e7a0a799d12d2f6f74e7927b364021dd454454b6e22fc4d6c, equal to the contract pin (contract/tests/test_evalcontract.py:240), to KAPSO's declared canonical_digest, and to the value in adapter_contract.md:402 that supersedes 143bfc94 at :404. The two A0-wide blocks are byte-identical to the frozen simpleloop declaration and hash to the pinned digests (scalarization d59f0930..., failure_stage_mapping 201fed78...). My fresh KAPSO run reports selection.frozen_canonical_copy.identical_to_this_declaration = true with BOTH digests c1a99365... (pass 1 the outstanding item was that the contract file did not yet exist). Contract test suite: 73 passed (was 62).",
+      "stale_note": "The stored artifact conformance/out/adapters/kapso.conformance.json (19:26:42) still records frozen copy 143bfc94... / identical:false - it was written by a run that began before the 19:23:25 re-adoption. The conformance workstream needs a re-run for its stored artifacts to match its code.",
+      "artifact": "verify/confrun/out/adapters/kapso.conformance.json, verify/out/recheck.final.json"
+    },
+    {
+      "id": "C8.2",
+      "claim": "EvE and Loreley adopt the frozen failure_stage_mapping so their declared counts match the frozen map over C* ({none:5, verify_failed:5, resolve_failed:1, evaluator_failed:2, timeout:1}).",
+      "verdict": "ACCEPTED (LANDED, verified only by re-running the adapters myself)",
+      "commands": [
+        "a0/contract/.venv/bin/python -  # my own application of the frozen table to E_STAR.json (verdict, failure.kind) pairs",
+        "cd a0/verify/confrun && conformance.py run --runtimes eve,loreley --no-controls --out a0/verify/out/recheck.eve-loreley.json",
+        "cd a0/verify/confrun && conformance.py run --no-controls --out a0/verify/out/recheck.final.json"
+      ],
+      "observed": "I recomputed the target independently first: applying contract/selection/simpleloop.selection.json's failure_stage_mapping to E_STAR.json's (status, failure.kind) pairs with my own code gives exactly {'none':5,'verify_failed':5,'resolve_failed':1,'evaluator_failed':2,'timeout':1} (c01-c04,c14 -> none; c05-c08 -> verify_failed; c09 -> resolve_failed; c10,c12 -> evaluator_failed; c11 -> verify_failed; c13 -> timeout). My four-runtime re-run (exit 0, all four PASS) then gives eve {evaluator_failed:2, none:5, resolve_failed:1, timeout:1, verify_failed:5} and loreley the same, both equal to the frozen map; simpleloop and kapso match too but nest theirs under a `counts` key. Loreley additionally declares a per-row failure_stage on 14/14 rows; EvE declares none per row (0/14), only aggregates. EvE's a01.py documents replacing the previous classification-keyed mapping that staged all nine as resolve_failed.",
+      "stale_note": "EvE's stored artifact conformance/out/adapters/eve.conformance.json (19:28:27) and conformance/report.json (19:27:01) still show {none:5, resolve_failed:9}; the fix landed in runtimes/eve/a0_adapter/a01.py at 19:35:48 and my 19:36:10 run is the first to exercise it. From the stored artifacts alone this item would have read 'not landed' - it is landed.",
+      "artifact": "verify/out/recheck.eve-loreley.json, verify/out/recheck.final.json"
+    },
+    {
+      "id": "C8.3",
+      "claim": "The runner's stored report.json and per-adapter artifacts describe the current adapter code.",
+      "verdict": "REJECTED (auditor probe, not a study headline claim)",
+      "commands": [
+        "stat -c '%y %n' conformance/report.json conformance/out/adapters/eve.conformance.json runtimes/eve/a0_adapter/a01.py",
+        "stat -c '%y %n' conformance/out/adapters/kapso.conformance.json contract/selection/kapso.selection.json",
+        "cd a0/verify/confrun && conformance.py run --no-controls --out a0/verify/out/recheck.final.json"
+      ],
+      "observed": "conformance/report.json (19:27:01) and conformance/out/adapters/eve.conformance.json (19:28:27) both predate runtimes/eve/a0_adapter/a01.py (19:35:48), so the stored EvE counts are the pre-fix {none:5, resolve_failed:9}. conformance/out/adapters/kapso.conformance.json (19:26:42) still reports identical_to_this_declaration:false against a digest the contract file no longer has. My own re-run at 19:38-19:41 gives the corrected values. Owner action: re-run conformance.py run.",
+      "artifact": "verify/out/recheck.final.json",
+      "note": "This is an auditor-constructed probe of the runner's own artifacts, not one of the study's claims."
+    },
+    {
+      "id": "C8.4",
+      "claim": "EvE's A0.1 answer is stable across a re-run window.",
+      "verdict": "REJECTED (auditor probe, not a study headline claim)",
+      "commands": [
+        "cd a0/verify/confrun && conformance.py run --no-controls --out a0/verify/out/recheck.all.json   # 19:37",
+        "cd a0/verify/confrun && conformance.py run --runtimes eve --no-controls --out a0/verify/out/recheck.eve2.json   # 19:38",
+        "stat -c '%y %n' runtimes/eve/a0_adapter/selectionmap.py"
+      ],
+      "observed": "At 19:37 my four-runtime run put EVE at PENDING: 'conformance exit 1; stderr tail: [a0_adapter.selectionmap.SelectionMappingError: cannot read /home/ebt/rsi-dev/a0/a0/contract/selection/simpleloop.selection.json: [Errno 2] ...]' - a doubled a0/ segment. selectionmap.py was written 19:36:32, fixed 19:37:59, and my 19:38 re-run gave PASS. A workstream's verdict can therefore flip for about a minute while its own file is mid-write, and any run started in that window records a false FAIL. Reported as an observed transient, not a standing defect.",
+      "artifact": "verify/out/recheck.all.json, verify/out/recheck.eve2.json",
+      "note": "This is an auditor-constructed stability probe, not one of the study's claims."
+    }
+  ],
+  "unreproduced_or_unverifiable": [
+    {
+      "item": "KAPSO's A0.1 result is race-sensitive to a file outside the frozen contract",
+      "detail": "My first full conformance run (19:00:15) FAILED KAPSO with adapter exit 10, 'incomplete coverage of C*', 0/14 rows, and the traceback FileNotFoundError: /home/ebt/rsi-dev/a0/runtimes/kapso/contract/selection/kapso.selection.json. That file was created at 19:01:32 by the KAPSO workstream; rerunning at 19:03 gave PASS. The declaration file is required by the adapter from ITS OWN TREE, it is not part of a0/contract, and its absence collapses the whole A0.1 answer for KAPSO to a crash rather than a diagnosable FAIL. Both outcomes are real; the PASS is the current state."
+    },
+    {
+      "item": "The runtime workstreams' artifacts were moving during the audit",
+      "detail": "runtimes/kapso/contract/selection/kapso.selection.json created 19:01:32; runtimes/kapso/runs/closure-01/closure.json rewritten 19:08:02; conformance/report.json rewritten 19:08:05 (the 18:56 version covered only simpleloop). Every verdict above is pinned to the snapshot I read, and my snapshot files record sizes and mtimes."
+    },
+    {
+      "item": "Files written or removed outside a0/verify/ by this audit (pass 1 + pass 2)",
+      "detail": "(1) a0/conformance/reference.json, mtime 19:00:14, from my 'conformance.py reference' run in pass 1; it regenerates the same E* sweep the tool always produces. STILL OUTSTANDING: I cannot restore the pre-existing bytes and the file has not been rewritten since; the owner should know their copy was regenerated. (2) a0/conformance/out/fixture-runs/{kindlier,omitter}/**, created by my R1 probes - 143 files in pass 1, then kindlier+omitter again in pass 2. Cause: conformance/fixtures/adapters/reference_adapter.py:63 defaults the run dir to A0/'conformance'/'out'/'fixture-runs'/runtime with A0 = <fixture dir>.parents[2], and the runner passes --run-dir only on the 'run' fallback path, not on the 'conformance' path; my copies under a0/verify/fixtures/adapters/ resolved A0 back to a0/. BOTH TIMES REMOVED: a snapshot check confirmed every file was mine and none pre-existed, and a0/conformance/out/fixture-runs/ is back to control_honest + selftest_honest (verified by ls after the removal). I also PATCHED my own adapter copies so their default run dir resolves under verify/out/fixture-runs/ - that is where pass 2's re-runs wrote. F6 is the corresponding request to the conformance owner. Beyond that, pass-2 snapshots (verify/out/snap_t2_before.json / snap_t2_after.json) show 1876 files added and 962 modified outside a0/verify/, essentially all under a0/runtimes/{eve,loreley,simpleloop}/** and a0/conformance/out/** - the other workstreams' own concurrent work. Of the 346 files deleted outside my tree, 216 are my two fixture-run directories; I checked the remaining 130 individually and they are the loreley/eve workstreams clearing their own out/ run directories. Pass 1: 3238 added / 1137 modified / 1 deleted elsewhere, plus my same kindlier cleanup."
+    },
+    {
+      "item": "EvE's A0.1 evidence for the nine non-ok candidates is a declared synthetic 0.0, not a measurement",
+      "detail": "EVE rows c05-c13 report e_r_value = 0.0 with evaluator_evidence.status = synthesized_failure. The checker counts SYNTHETIC_DECLARED among ACCEPTING_VERDICTS (conformance.py:120), so the check text '14/14 candidates agree with E*(c) within epsilon (or compare equal as verdicts)' is, for EvE, 5 measurements plus 9 declared synthesised zeros. This is defensible as 'the trap is silent mapping, and this mapping is declared' (and the artifact says so), but the literal A0.1 acceptance formula E_r(c) = E*(c) +/- epsilon is NOT satisfied on those 9 rows for EvE, and EvE's lane structurally cannot express invalid/error at all. A consumer reading '14/14 agree' should read '5/14 measured, 9/14 declared synthetic' instead."
+    },
+    {
+      "item": "Residual injection surface via PYTHONPATH (outside the frozen claim)",
+      "detail": "E*'s Config freezes the CHILD environment (PATH empty, PYTHONPATH empty, private HOME/TMPDIR/cwd) and the child honours it. The PARENT process is whatever the caller launches; it honours a caller-supplied PYTHONPATH and will import a sitecustomize.py from it (I demonstrated this: the file was imported and a .pyc appeared in the hostile cwd). The score was unaffected in my probe, and PYTHONPATH is not covered by the frozen 'no cwd or PATH dependence' claim, so this is a residual, not a violation."
+    },
+    {
+      "item": "The assignment's premise that two adapters' EID_r recompute is only declared_prose",
+      "detail": "No current report shows recompute_mode = declared_prose. At my snapshot: simpleloop executed, eve executed, loreley executed, kapso cross_checked_against_attempts. I judged each on its merits instead (C3.4a-d)."
+    },
+    {
+      "item": "Both workstreams' stored conformance artifacts describe a code state older than the code on disk",
+      "detail": "conformance/report.json (19:27:01) and conformance/out/adapters/eve.conformance.json (19:28:27) predate runtimes/eve/a0_adapter/a01.py (19:35:48), so they still show EvE's pre-fix counts {none:5, resolve_failed:9}; conformance/out/adapters/kapso.conformance.json (19:26:42) reports frozen_canonical_copy.identical_to_this_declaration=false against a digest the contract file no longer has. Two items I was asked to check would have read 'not landed' from the stored artifacts alone and are in fact landed. Settled by re-running conformance.py run; my re-runs already show the corrected values."
+    },
+    {
+      "item": "R1b residual: the failure-kind check passes an adapter that declares no kind at all",
+      "detail": "E-r-failure-kind.ok = True with 0/9 kinds declared; the runtime reads PASS. Not live for this study (all four runtimes declare 9/9) but it is an untested path in the checker and a non-conformance the contract requires. Settling command after a fix: re-run verify/fixtures/adapters/omitter_adapter.py through conformance.py run and require FAIL or a non-ok E-r-failure-kind verdict."
+    }
+  ],
+  "additional_findings": [
+    {
+      "id": "F1",
+      "severity": "medium",
+      "title": "KAPSO's theta_E.extra.evaluator_source_sha256 collides with the A0-wide meaning of that key",
+      "evidence": "runtimes/kapso .../kapso.conformance.json theta_E.extra.evaluator_source_sha256 = 781f54ee7674164d2b71e78d42640f985f3907a76542b8d5a84a3b5220d9e5ba, which sha256sum shows is kapso_eval.py (the ADAPTER WRAPPER), not E*. Everywhere else in the study evaluator_source_sha256 means E*'s frozen 5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532 (E_STAR.json, e_star's own E_STAR_MANIFEST, SimpleLoop's A0_REPORT). KAPSO itself uses the unambiguous e_star_evaluator_source_sha256 in KAPSO_EVAL_MANIFEST. A downstream consumer joining runtimes on that key reads a spurious identity drift. Requested fix: rename to adapter_wrapper_sha256 (owner: KAPSO workstream).",
+      "disposition": "FIXED",
+      "pass2": "theta_E.extra now carries BOTH keys, correctly named: e_star_evaluator_source_sha256 = 5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532 (E*) and registered_wrapper_sha256 = 781f54ee7674164d2b71e78d42640f985f3907a76542b8d5a84a3b5220d9e5ba. I re-ran sha256sum on conformance/out/adapters/registered_evaluation_source/kapso_eval.py = 781f54ee... to confirm the second is the wrapper. The ambiguous key is gone."
+    },
+    {
+      "id": "F2",
+      "severity": "low",
+      "title": "The runner's E-star-manifest-echo check has a false negative for KAPSO",
+      "evidence": "The check reports 'no E* manifest echo found in the adapter's own evidence, so this independent confirmation is unavailable' for KAPSO, while Eve/SimpleLoop/Loreley get 56/28/28 echoes. But all 14 KAPSO rows DO carry a nested echo: registered_channel.manifest.e_star_canonical_digest equals E_STAR.json's canonical_digest for all 14 candidates and e_star_evaluator_source_sha256 = 5ae97ad9... (my own comparison: 14 matches, 0 mismatches). The check looks for the literal E_STAR_MANIFEST line; KAPSO's wrapper emits KAPSO_EVAL_MANIFEST with nested E* fields. So KAPSO's evidence is stronger than the report credits.",
+      "disposition": "FIXED",
+      "pass2": "report.json now shows KAPSO E-star-manifest-echo ok=true, echoes_checked=14, echo_forms=['fields'], all 14 candidates listed (was 'no E* manifest echo found'). I did not take the count on trust: my own comparison of every row's registered_channel.manifest.e_star_canonical_digest against E_STAR.json gives 14 matches, 0 mismatches, with e_star_evaluator_source_sha256 = 5ae97ad9... on all 14. SimpleLoop/eve/loreley remain 28/56/28."
+    },
+    {
+      "id": "F3",
+      "severity": "low",
+      "title": "Stale cross-references in two SimpleLoop documents (see C1.4)",
+      "evidence": "runtimes/simpleloop/HANDOFF_to_contract_owner.md:190 and runtimes/simpleloop/A0_REPORT.md:55-58 both assert the contract documents still carry fac50fc4; they do not and had not since 16:57.",
+      "disposition": "FIXED (see R2)"
+    },
+    {
+      "id": "F4",
+      "severity": "informational",
+      "title": "C_STAR/README.md was written after E_STAR.json but is not hashed",
+      "evidence": "mtime 16:07:47 vs E_STAR.json 16:06:12; the file is not in DataManifest and does not enter EID*. Harmless, but it means 'C* unchanged since the table was written' is true of the candidate data and the manifest, not of the whole directory.",
+      "disposition": "still open (info)"
+    },
+    {
+      "id": "F5",
+      "severity": "info",
+      "title": "EvE's A0.1 '14/14 agree' is 5 measurements plus 9 declared synthesised failures",
+      "disposition": "still open (info; unchanged by the failure_stage work)",
+      "evidence": "EvE rows c05-c13 report e_r_value = 0.0 with evaluator_evidence.status = synthesized_failure, and the checker counts SYNTHETIC_DECLARED among ACCEPTING_VERDICTS. Defensible under 'the trap is silent mapping and this mapping is declared', but the literal acceptance formula E_r(c) = E*(c) +/- epsilon does not hold on those 9 rows, and EvE's lane structurally cannot express invalid/error at all. A consumer should read EvE's row as 5/14 measured. EvE's failure_stage counts now match the frozen map (C8.2), which is about the staging, not the measurement."
+    },
+    {
+      "id": "F6",
+      "severity": "low",
+      "title": "The reference fixture's default run dir resolves from the fixture's own location and escapes the adapter root",
+      "evidence": "conformance/fixtures/adapters/reference_adapter.py:63 sets run_dir = Path(flags.get('run-dir', A0 / 'conformance' / 'out' / 'fixture-runs' / runtime)) with A0 = <fixture dir>.parents[2] (fixture_common.py:17). The runner passes --run-dir only on the `run` fallback path, not on the `conformance` path, so a copy of the fixture placed anywhere else writes its E* state under that copy's grandparent. I hit this: my copy under a0/verify/fixtures/adapters/ resolved A0 back to a0/ and created 143 files in a0/conformance/out/fixture-runs/kindlier (since removed). Harmless for the study as laid out, but any harness that copies the fixture will litter the original tree. Requested fix: take the run dir from an explicit flag/env, or default it under the fixture's own directory. Owner: conformance workstream.",
+      "disposition": "still open - it bit me twice; my own adapter copies are now patched to write under verify/out/fixture-runs"
+    },
+    {
+      "id": "F7",
+      "severity": "info",
+      "title": "A workstream's A0.1 verdict can flip for ~1 minute while its own file is mid-write",
+      "disposition": "observed transient, resolved",
+      "evidence": "19:37 four-runtime run -> EvE PENDING with a doubled-a0/ path error from runtimes/eve/a0_adapter/selectionmap.py (written 19:36:32); fixed 19:37:59; 19:38 re-run PASS. Same shape as the pass-1 KAPSO race on runtimes/kapso/contract/selection/kapso.selection.json (created 19:01:32). Nothing to fix in the checker; the operational lesson is that a verdict is only as current as the run that produced it."
+    }
+  ],
+  "artifacts_verified_against": [
+    {
+      "path": "a0/contract/out/plumbing.EID.json",
+      "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+      "note": "read at ~18:58; EID* field 664115e0..."
+    },
+    {
+      "path": "a0/contract/plumbing.contract.json",
+      "sha256": "d278d0db711d7c101f88861f2a61ba0c24435fd932a9bd395435d9f609069b01"
+    },
+    {
+      "path": "a0/tasks/circle-packing/e_star.py",
+      "sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567"
+    },
+    {
+      "path": "a0/tasks/circle-packing/e_star_child.py",
+      "sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca"
+    },
+    {
+      "path": "a0/tasks/circle-packing/C_STAR/manifest.json",
+      "sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2"
+    },
+    {
+      "path": "a0/conformance/conformance.py",
+      "sha256": "62e492fba6fdc3db539321a1a7c3e69f520c640b2e579e73c65930a7a5b890e6",
+      "note": "mtime 18:59:51"
+    },
+    {
+      "path": "/tmp/eve",
+      "note": "git HEAD 979065fd2cf1b3be9caf70596478fe27df7815ad (the pin)"
+    },
+    {
+      "path": "a0/runtimes/loreley/checkout",
+      "note": "git HEAD 4c3759208e6b908f90716488ac3eec3dceaaf397 (the pin)"
+    }
+  ],
+  "pass": 2,
+  "pass2_note": "Pass 2 re-verifies the three pass-1 rejections and the two findings after the workstreams acted, plus the two items that were still in flight. Each affected claim keeps its original evidence and gains a `pass2` block with the disposition and the commands I ran. Runner digest moved from conformance.py sha256 62e492fba6fdc3db539321a1a7c3e69f520c640b2e579e73c65930a7a5b890e6 (128603 B, 18:59:51) to 2d7040750f164d8f44ce1600a68b673856d6dec2de48a2584af61fe47ed88511 (147927 B, 19:24:10).",
+  "bottom_line": {
+    "accepted": [
+      "EID* = 664115e0... is frozen, single-input sensitive and independently recomputable (my own re-implementation).",
+      "C* is intact (14/14 hashes) and E* is deterministic: all 14 results reproduced bit-for-bit, including invalid and error.",
+      "E* does not depend on cwd or PATH: hostile cwd + poisoned PATH leaves the score bit-identical and never touches the decoys.",
+      "A0.1: all four runtimes PASS my own conformance re-run; the checker's fault matrix is 19/19, including the two new failure-surface fixtures.",
+      "A0.1 failure-bearing surface: my liar adapter now FAILS with FG-FAILURE-KIND, {MATCH: 5, MISMATCH_FAILURE_KIND: 9}.",
+      "A0.2: all four selection semantics reproduced by me (KAPSO ordered pair + reversals + tier control; EvE frequency test on my own 3000 draws; Loreley same-cell replacement + cross-cell control; SimpleLoop ordering invariance + injected-score flip).",
+      "All four false-green trap families fire; a crash recorded as 0.0 is failed, not passed.",
+      "Closure is measured, not asserted: CLI sandbox two controls re-run by me plus four end-to-end model-lane pairs; 5/5 closed mechanisms carry both controls; nothing closed rests on inconclusive.",
+      "Real-lane evidence is real: I reproduced SimpleLoop 2.6251746109048 / 2.5414213562373096, EvE 2.6168716968517516 and KAPSO 2.451820520843313 with my own E* runs; failures are recorded as failures.",
+      "EvE's EID_r is now a genuine function of EID*: mutating eid_star changes the value, a mutated evaluator source is refused, and the adapter refuses a mismatched EID*.",
+      "All four runtimes declare failure_stage counts equal to the frozen map over C*; KAPSO's re-adopted declaration digest c1a99365... is confirmed by my own computation."
+    ],
+    "rejected": [],
+    "partially_fixed": [
+      "R1b: an adapter can dodge the failure-kind check by OMITTING failure.kind (E-r-failure-kind still ok=true on 0/9 declared). Not live for this study; the check's ok semantics are wrong and no fixture exercises the path."
+    ],
+    "unproven": [
+      "That no mock was silently substituted for a runtime (lexical check only).",
+      "KAPSO's unseamed end-to-end campaign loop; Loreley's full EvolutionWorker cache orchestration; EvE's provider-side web_search tool."
+    ],
+    "caveats_worth_quoting": [
+      "EvE's A0.1 '14/14 agree' is 5 real measurements plus 9 DECLARED synthesised failures; its lane cannot express invalid/error at all.",
+      "Both workstreams' stored conformance artifacts describe a code state older than the code on disk; re-run conformance.py run.",
+      "An A0.1 verdict can flip for about a minute while a workstream's own file is mid-write (observed twice)."
+    ]
+  },
+  "claim_counts": {
+    "study_claims": {
+      "accepted": 29,
+      "fixed": 3,
+      "rejected": 1,
+      "unproven": 1
+    },
+    "auditor_probes": {
+      "rejected": 2
+    },
+    "note": "Rejected = C3.3b (the failure-bearing surface is not FULLY enforced: an adapter may omit failure.kind). The two auditor probes C8.3/C8.4 are REJECTED as written and are not study headline claims: C8.3 says the stored conformance artifacts are stale, C8.4 says EvE's A0.1 answer was not stable across a mid-write window."
+  }
+}

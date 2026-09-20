@@ -1,0 +1,21 @@
+BASELINE
+  EvaluatorSource    a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29
+  DependencyLock     7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75
+  DataManifest       5871eeec57cfdb360d9e59dc4d067a289891e0b3173c5524f37b549d9d240e40
+  Config             550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac
+  MetricDefinition   420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0
+  EID*               1b85860db195a0da12aee51821ac4e2ece6fcd061c7764480d2051f063be5591
+
+[PASS] EvaluatorSource: append byte to e_star.py: changed=['EvaluatorSource'] expected=[EvaluatorSource] eid*_changed=True
+
+[PASS] DependencyLock: append line to requirements.lock: changed=['DependencyLock'] expected=[DependencyLock] eid*_changed=True
+
+[PASS] DataManifest: edit candidate.json: changed=['DataManifest'] expected=[DataManifest] eid*_changed=True
+
+[PASS] Config: change conformance epsilon: changed=['Config'] expected=[Config] eid*_changed=True
+
+[PASS] MetricDefinition: change unit string: changed=['MetricDefinition'] expected=[MetricDefinition] eid*_changed=True
+
+[PASS] negative control: unrelated.py beside e_star.py does not perturb any digest (unchanged=True)
+
+wrote verify/out/mutation_results.json

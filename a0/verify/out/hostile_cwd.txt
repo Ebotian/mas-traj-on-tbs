@@ -1,0 +1,70 @@
+{
+  "control": {
+    "digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+    "objective": {
+      "direction": "max",
+      "name": "sum_radii",
+      "unit": "radius_sum",
+      "value": 2.4519205208433132
+    },
+    "exit": 0
+  },
+  "A_hostile_cwd_path": {
+    "exit": 0,
+    "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+    "objective": {
+      "direction": "max",
+      "name": "sum_radii",
+      "unit": "radius_sum",
+      "value": 2.4519205208433132
+    },
+    "status": "ok",
+    "digest_equals_control": true,
+    "objective_equals_control": true,
+    "candidate_source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+    "used_real_candidate": true,
+    "stderr": "e_star: status=ok state_dir=/tmp/hostile-zapn455k/state-A/bca4286ed3b15035-8c9da155eb13c73b out=/tmp/hostile-zapn455k/out-A.json\n"
+  },
+  "B_plus_pythonpath": {
+    "exit": 0,
+    "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+    "objective": {
+      "direction": "max",
+      "name": "sum_radii",
+      "unit": "radius_sum",
+      "value": 2.4519205208433132
+    },
+    "status": "ok",
+    "digest_equals_control": true,
+    "objective_equals_control": true,
+    "candidate_source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+    "used_real_candidate": true,
+    "stderr": "e_star: status=ok state_dir=/tmp/hostile-zapn455k/state-B/bca4286ed3b15035-8c9da155eb13c73b out=/tmp/hostile-zapn455k/out-B.json\n"
+  },
+  "C_relative_candidate": {
+    "exit": 3,
+    "canonical_digest": "605ed1f1293057c7e708e2d0fe122f064c9f09e4891c55f0af18ee6c96ec259d",
+    "objective": null,
+    "status": "error",
+    "digest_equals_control": false,
+    "objective_equals_control": false,
+    "candidate_source_sha256": "d7bded58ffbab6b3304252e161fd76ee02443221abc062d8767bd775ad14605f",
+    "used_real_candidate": false,
+    "stderr": "e_star: status=error state_dir=/tmp/hostile-zapn455k/state-C/d7bded58ffbab6b3-8c9da155eb13c73b out=/tmp/hostile-zapn455k/out-C.json\ne_star: failure=candidate_call_raised: RuntimeError: DECOY\n"
+  },
+  "sentinel_log": "SITECUSTOMIZE_IN_CWD\n",
+  "shim_never_executed": true,
+  "new_files_in_hostile_cwd": [
+    "__pycache__",
+    "__pycache__/sitecustomize.cpython-312.pyc"
+  ],
+  "wrote_nothing_to_cwd": false,
+  "verdict": {
+    "A_invariant": true,
+    "B_invariant": true,
+    "no_shim_executed": true,
+    "cwd_untouched": false
+  }
+}
+
+VERDICT: {"A_invariant": true, "B_invariant": true, "no_shim_executed": true, "cwd_untouched": false}

@@ -1,0 +1,143 @@
+{
+  "T2": {
+    "adapter_label": {
+      "cached_from_run_id": null,
+      "detail": "the runtime synthesized a candidate failure on timeout: Evaluation plugin timed out after 1s.",
+      "metrics_dropped": null,
+      "status": "timeout"
+    },
+    "check_id": "T2",
+    "config": {
+      "WORKER_EVALUATOR_TIMEOUT_SECONDS": 1,
+      "candidate": "c13_slow",
+      "plugin": "loreley_a0_plugin:plugin"
+    },
+    "distinguishable_from_a_real_score": {
+      "evidence_status": "timeout",
+      "outcome_fields_recorded": {
+        "sum_radii": null
+      },
+      "why": "the score event carries evaluator_evidence.status=timeout and a null primary field, while a measured candidate carries status=ok and a number; there is no synthesized 0.0 anywhere"
+    },
+    "mechanism": "Evaluator._execute_with_timeout raises EvaluationError on the deadline (loreley/core/worker/evaluator.py:1859-1912) and evaluate_outcome turns it into a synthesized candidate failure (evaluator.py:1513-1520)",
+    "observed": {
+      "plugin_evidence_present": false,
+      "runtime_failure_summary": "Evaluation plugin timed out after 1s.",
+      "runtime_metrics_count": 0,
+      "runtime_outcome_kind": "infrastructure_failed"
+    },
+    "passed": true,
+    "reference_e_star": {
+      "failure_kind": "runtime_budget_exceeded",
+      "note": "E* itself takes longer than the runtime timeout on this candidate, so the runtime timeout is what fired; E*'s own verdict is recorded separately",
+      "primary": null,
+      "status": "error"
+    }
+  },
+  "T3": {
+    "adapter_handling": "the adapter never infers truncation from a metric count: it compares the plugin's own reported count with what the runtime returned, and it asserts the frozen evaluator's count against the cap independently of either payload path",
+    "check_id": "T3",
+    "config": {
+      "A0_T3_PADDING": 70,
+      "WORKER_EVALUATOR_MAX_METRICS": 64
+    },
+    "finding": "the cap is only enforced on payloads that reach _coerce_result - a Mapping (the shape examples/circle_packing_env/evaluate.py returns) or an EvaluationResult. An EvalPass payload short-circuits _coerce_outcome (evaluator.py:2029-2037) and is returned verbatim. Measured: the EvalPass path returned 77 metrics for 77 emitted; the Mapping path returned 64 for 77 emitted.",
+    "frozen_evaluator_metric_count": {
+      "actual": 6,
+      "cap": 64,
+      "real_e_star_fields": [
+        "min_boundary_margin",
+        "min_gap",
+        "num_circles",
+        "overlap_count",
+        "packing_density",
+        "sum_radii"
+      ],
+      "truncation_possible": false,
+      "with_declared_F_r_scalar": 7
+    },
+    "mechanism": "Evaluator._coerce_result truncates result.metrics to self.max_metrics (loreley/core/worker/evaluator.py:2304-2310); worker_evaluator_max_metrics defaults to 64 (loreley/config.py:565-568)",
+    "observations": {
+      "evalpass_path": {
+        "adapter_label": {
+          "cached_from_run_id": null,
+          "detail": null,
+          "metrics_dropped": null,
+          "status": "ok"
+        },
+        "padding_metrics_survived": 70,
+        "payload_kind": "evalpass",
+        "plugin": "loreley_a0_plugin_metrics_heavy:plugin",
+        "plugin_metrics_emitted": 77,
+        "runtime_metrics_returned": 77,
+        "truncation_applied": false
+      },
+      "mapping_path": {
+        "adapter_label": {
+          "cached_from_run_id": null,
+          "detail": "worker_evaluator_max_metrics=64; the plugin emitted 77 metrics and the runtime returned 64",
+          "metrics_dropped": 13,
+          "status": "truncated_metrics"
+        },
+        "padding_metrics_survived": 57,
+        "payload_kind": "mapping",
+        "plugin": "loreley_a0_plugin_metrics_mapping:plugin",
+        "plugin_metrics_emitted": 77,
+        "runtime_metrics_returned": 64,
+        "truncation_applied": true
+      }
+    },
+    "passed": true,
+    "plugin_is_a_test_double": true
+  },
+  "T4": {
+    "adapter_label_when_reused": {
+      "cached_from_run_id": "2efe7b96-7f20-4b0e-83c4-7d5e8b1257e0",
+      "detail": "Loreley reused measurement reuse_kind='exact_tree' measurement_reused=False protocol=one_shot",
+      "metrics_dropped": null,
+      "status": "cache_hit"
+    },
+    "check_id": "T4",
+    "config": {
+      "DATABASE_URL": "postgresql+psycopg://loreley:loreley@127.0.0.1:5432/loreley",
+      "campaign_program_hash": "b163b61c6b5cb6aea9de5cdf546c0c1d1c9650c9b03f8f24b2ab5e4a8a1dd2a8",
+      "eid_r": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b163b61c6b5cb6aea9de5cdf546c0c1d1c9650c9b03f8f24b2ab5e4a8a1dd2a8",
+      "evaluator_name": "loreley_a0_plugin:plugin",
+      "evaluator_version_in_cache_key": "source-sha256:stored-under-a-previous-evaluator",
+      "source_tree_hash": "4f04fadc2787f8ebc2b54d190d732e36f2a124819c45ff3cb3d031a8a69be550"
+    },
+    "mechanism": "EvolutionJobStore.find_reusable_evaluation returns a stored passed outcome whose (source_tree_hash, evaluator_name, evaluator_version, campaign_program_hash) match (loreley/core/worker/job_store.py:519-600); EvolutionWorker consults it before measuring (loreley/core/worker/evolution.py:913-929)",
+    "observed": {
+      "reuse_with_different_evaluator_version": false,
+      "reuse_with_matching_evaluator_identity": true,
+      "reused_metrics": [
+        "composite_score"
+      ],
+      "reused_summary": "Reused a passed evaluation for an identical Git source tree from commit cached_commi."
+    },
+    "passed": true,
+    "unverified": "the full EvolutionWorker + phased-measurement-cache orchestration (evolution.py:1640-1665, :1741-1766) was not driven; the reuse DECISION is the runtime's own, but the worker that consumes it was not run end to end",
+    "why_it_matters": "a 'correct-looking' 2.45 could have been computed under a different evaluator head or candidate tree; the adapter refuses any reused observation for A0.1/A0.2 and reports the reuse count"
+  },
+  "eid_r": {
+    "declaration": "Loreley computes its own identity: evaluator_name = WORKER_EVALUATOR_PLUGIN (evaluator.py:1481-1485), evaluator_version = source fingerprint of that module (evaluator_identity.py:90-105), campaign_program_hash = sha256 of loreley.program.md (campaign_program.py:212). The adapter renders loreley.program.md from the frozen EID* document (Goal / Primary metric / Correctness gates / Evaluation budget sections come from EID*.Config and EID*.MetricDefinition), so the triple is a function of EID*; eidr_derivation is the sha256 over (eid_star, plugin_source_sha256, campaign_program_sha256, native_scheme) and recomputes.",
+    "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "mapping_mode": "native",
+    "native_scheme": "evaluator_name_version_campaign_program_hash",
+    "recomputable": true,
+    "value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b163b61c6b5cb6aea9de5cdf546c0c1d1c9650c9b03f8f24b2ab5e4a8a1dd2a8"
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "evidence_policy": {
+    "cache_hit": "a persistent cache supplied the value; it is not a fresh measurement",
+    "manifest_mismatch": "KAPSO-only; unused by Loreley",
+    "not_run": "the evaluation was skipped",
+    "ok": "a fresh measurement of E*; the outcome fields are E*'s own",
+    "synthesized_failure": "the runtime reported a failure with no measurement at all",
+    "timeout": "the runtime turned a timeout into a candidate failure - not a score",
+    "truncated_metrics": "the runtime kept fewer metrics than the plugin emitted"
+  },
+  "runtime": "loreley",
+  "schema": "a0.loreley.traps/v1",
+  "verdict": "pass"
+}

@@ -1,0 +1,50 @@
+{
+  "draws_per_case": 3000,
+  "cases": {
+    "E1_frozen_scores": {
+      "scores": {
+        "c01_good_hex": 2.4519205208433132,
+        "c02_baseline_upstream": 0.25
+      },
+      "draws": 3000,
+      "p_hat_sampler_order": 0.7356666666666667,
+      "p_hat_readme_order": 0.7356666666666667,
+      "closed_form_p": 0.7310585786300049,
+      "sampler_sample_calls": 3000,
+      "one_call_per_draw": true,
+      "sampler_class": "RankExponentialSumSampler",
+      "config": {
+        "_target_": "scaling_evolve.algorithms.eve.populations.samplers.rank_softmax.RankExponentialSumSampler",
+        "features": "{'score': {'weight': 1.0, 'temperature': 1.0}}",
+        "replacement_mode": "no_replacement"
+      },
+      "exact_two_sided_p_vs_closed_form": 0.5783466347752403
+    },
+    "control_injected_swap": {
+      "scores": {
+        "c01_good_hex": 0.25,
+        "c02_baseline_upstream": 2.4519205208433132
+      },
+      "draws": 3000,
+      "p_hat_sampler_order": 0.25533333333333336,
+      "p_hat_readme_order": 0.25533333333333336,
+      "closed_form_p": 0.2689414213699951,
+      "sampler_sample_calls": 3000,
+      "one_call_per_draw": true,
+      "sampler_class": "RankExponentialSumSampler",
+      "config": {
+        "_target_": "scaling_evolve.algorithms.eve.populations.samplers.rank_softmax.RankExponentialSumSampler",
+        "features": "{'score': {'weight': 1.0, 'temperature': 1.0}}",
+        "replacement_mode": "no_replacement"
+      },
+      "exact_two_sided_p_vs_closed_form": 0.09537640750726746
+    }
+  },
+  "score_dependence_z": 37.207966965744454,
+  "score_dependence_two_sided_p": 5.0725570559871064e-303,
+  "verdict": {
+    "E1_within_ci_of_closed_form": true,
+    "control_moved": true,
+    "one_call_per_draw": true
+  }
+}

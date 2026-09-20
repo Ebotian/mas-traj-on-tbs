@@ -1,0 +1,381 @@
+{
+  "closed_mechanisms": [
+    {
+      "runtime": "eve",
+      "id": "codex-tmux-config",
+      "schema_verdict": "closed",
+      "study_verdict": "CLOSED",
+      "has_unblocked_control": true,
+      "has_blocked_case": true,
+      "suspect_text": [],
+      "probe_status": null
+    },
+    {
+      "runtime": "eve",
+      "id": "codex-exec-config",
+      "schema_verdict": "egress_detected",
+      "study_verdict": "OPEN",
+      "has_unblocked_control": true,
+      "has_blocked_case": false,
+      "suspect_text": [],
+      "probe_status": null
+    },
+    {
+      "runtime": "kapso",
+      "id": "front-doors-config",
+      "schema_verdict": "inconclusive",
+      "study_verdict": "CONDITIONAL",
+      "has_unblocked_control": false,
+      "has_blocked_case": false,
+      "suspect_text": [
+        "inconclusive"
+      ],
+      "probe_status": "NOT PROBED dynamically; a config-only closure claim for these paths would be a false green."
+    },
+    {
+      "runtime": "kapso",
+      "id": "codex-lane-bash-side-door",
+      "schema_verdict": "closed",
+      "study_verdict": "OPEN as shipped; CLOSED by one config key (agent_specific.sandbox=workspace-write, web_search=false)",
+      "has_unblocked_control": true,
+      "has_blocked_case": true,
+      "suspect_text": [
+        "command_ran=false",
+        "never observed",
+        "rc=124",
+        "timed out",
+        "timeout"
+      ],
+      "probe_status": null
+    },
+    {
+      "runtime": "kapso",
+      "id": "claude-lane-bash-side-door",
+      "schema_verdict": "inconclusive",
+      "study_verdict": "CONDITIONAL (external cut or lane switch)",
+      "has_unblocked_control": false,
+      "has_blocked_case": false,
+      "suspect_text": [
+        "ABSENT tool",
+        "command never ran",
+        "command_ran=false",
+        "inconclusive"
+      ],
+      "probe_status": "The lane command class can only be constrained from outside: unshare -rn / docker --internal (probe-proven to block egress, evidence/01_external_isolation.log)."
+    },
+    {
+      "runtime": "kapso",
+      "id": "research-inference-lane",
+      "schema_verdict": "inconclusive",
+      "study_verdict": "CONDITIONAL",
+      "has_unblocked_control": false,
+      "has_blocked_case": false,
+      "suspect_text": [
+        "inconclusive"
+      ],
+      "probe_status": null
+    },
+    {
+      "runtime": "loreley",
+      "id": "default-kilocode-backend",
+      "schema_verdict": "inconclusive",
+      "study_verdict": "OPEN",
+      "has_unblocked_control": true,
+      "has_blocked_case": false,
+      "suspect_text": [
+        "inconclusive",
+        "not installed"
+      ],
+      "probe_status": "NOT PROBEABLE HERE: `kilo` is not installed (shutil.which -> None), so the default lane cannot start. Recorded as BLOCKED, not as a pass."
+    },
+    {
+      "runtime": "loreley",
+      "id": "codex-backend",
+      "schema_verdict": "closed",
+      "study_verdict": "CLOSED (shell channel)",
+      "has_unblocked_control": true,
+      "has_blocked_case": true,
+      "suspect_text": [],
+      "probe_status": null
+    },
+    {
+      "runtime": "loreley",
+      "id": "cursor-backend",
+      "schema_verdict": "inconclusive",
+      "study_verdict": "OPEN",
+      "has_unblocked_control": true,
+      "has_blocked_case": false,
+      "suspect_text": [
+        "inconclusive"
+      ],
+      "probe_status": null
+    },
+    {
+      "runtime": "simpleloop",
+      "id": "solver-is-codex-workspace-write",
+      "schema_verdict": "closed",
+      "study_verdict": "CLOSED",
+      "has_unblocked_control": true,
+      "has_blocked_case": true,
+      "suspect_text": [],
+      "probe_status": null
+    },
+    {
+      "runtime": "simpleloop",
+      "id": "solver-is-unsandboxed-or-claude",
+      "schema_verdict": "closed",
+      "study_verdict": "CONDITIONAL (claude branch or any unsandboxed shell)",
+      "has_unblocked_control": true,
+      "has_blocked_case": true,
+      "suspect_text": [],
+      "probe_status": null
+    }
+  ],
+  "suspect": [],
+  "verdict_counts": {
+    "closed": 2,
+    "inconclusive": 2
+  },
+  "evidence_log_scan": {
+    "00_self_test.log": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": true,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "01_external_isolation.log": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": true,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "02_host_loopback_cut.log": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "03_cli_sandbox.jsonl": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "03_cli_sandbox.log": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": true,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "04_seam_eve.log": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": true,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "04_seam_kapso.log": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "04_seam_loreley.log": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "05_codex_surface.log": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "06_simpleloop_codex-danger-full-access.log": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": true,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "06_simpleloop_codex-workspace-write.log": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": true,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "06_simpleloop_unsandboxed-shell.log": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": true,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "07_model_lane_blocked.log": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "08_e2e_codex_workspace_write.jsonl": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "09_e2e_codex_bypass.jsonl": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": true,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "10_e2e_websearch_live.jsonl": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "10b_e2e_websearch_live.jsonl": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "11_kapso_lane_closed.json": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": true,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "11b_kapso_lane_open.json": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "12_f4_regression.log": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": true,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "13_simpleloop_lane_closed.json": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": true,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "13b_simpleloop_lane_open.json": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "17_kapso_lane_closed.json": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": true,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "17_kapso_lane_closed.log": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": true,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "17_kapso_lane_open.json": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "17_kapso_lane_open.log": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "17_simpleloop_lane_closed.json": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": true,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "17_simpleloop_lane_closed.log": {
+      "mentions_OPEN": false,
+      "mentions_BLOCKED": true,
+      "mentions_CLOSED_verdict": true,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "17_simpleloop_lane_open.json": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    },
+    "17_simpleloop_lane_open.log": {
+      "mentions_OPEN": true,
+      "mentions_BLOCKED": false,
+      "mentions_CLOSED_verdict": false,
+      "mentions_CONFIRMED": false,
+      "mentions_inconclusive": false,
+      "mentions_timeout_or_124": false
+    }
+  }
+}

@@ -1,0 +1,479 @@
+{
+ "checks": [
+  {
+   "check_id": "order_invariance",
+   "description": "proposing the same candidate multiset in forward and reversed order yields the same champion (A0.2: selection is a deterministic argmax, not an order artefact)",
+   "evidence": {
+    "forward_champion": "c01_good_hex",
+    "forward_champion_scalar": 2.4519205208433132,
+    "forward_order": [
+     "c01_good_hex",
+     "c03_mirror",
+     "c04_near_tie",
+     "c05_overlapping",
+     "c09_malformed_import"
+    ],
+    "reverse_champion": "c01_good_hex",
+    "reverse_champion_scalar": 2.4519205208433132,
+    "reverse_order": [
+     "c09_malformed_import",
+     "c05_overlapping",
+     "c04_near_tie",
+     "c03_mirror",
+     "c01_good_hex"
+    ]
+   },
+   "pass": true
+  },
+  {
+   "check_id": "tie_break_observable",
+   "description": "the tie pair (identical metrics, different bytes) is decided by the frozen rule in both orders, and the rejected earliest-index rule gives a different answer",
+   "evidence": {
+    "c01_scalar": 2.4519205208433132,
+    "c01_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+    "c03_scalar": 2.4519205208433132,
+    "c03_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+    "frozen_rule_champion_forward": "c01_good_hex",
+    "frozen_rule_champion_reverse": "c01_good_hex",
+    "rejected_earliest_index_forward": "c01_good_hex",
+    "rejected_earliest_index_reverse": "c03_mirror",
+    "tie_event_reason": [
+     "iteration 2: smallest_candidate_id_by_utf8_bytes",
+     "iteration 3: smallest_candidate_id_by_utf8_bytes",
+     "iteration 4: smallest_candidate_id_by_utf8_bytes",
+     "iteration 5: smallest_candidate_id_by_utf8_bytes"
+    ]
+   },
+   "pass": true
+  },
+  {
+   "check_id": "near_tie_not_absorbed",
+   "description": "the near-tie pair stays ordered: the gap exceeds the A0.1 epsilon by ~5 orders of magnitude, so an epsilon-tolerant comparison cannot call them equal, and a rank transform is monotone so it cannot flip them",
+   "evidence": {
+    "c01_scalar": 2.4519205208433132,
+    "c04_scalar": 2.451820520843313,
+    "champion_forward": "c01_good_hex",
+    "champion_reverse": "c01_good_hex",
+    "epsilon": 1e-09,
+    "epsilon_tolerant_comparison_calls_them_equal": false,
+    "full_ranking_by_measured_signal": [
+     "c01_good_hex",
+     "c03_mirror",
+     "c04_near_tie",
+     "c02_baseline_upstream"
+    ],
+    "gap": 0.00010000000000021103,
+    "gap_over_epsilon": 100000.00000021103,
+    "rank_order": [
+     "c01_good_hex",
+     "c04_near_tie"
+    ],
+    "value_order": [
+     "c01_good_hex",
+     "c04_near_tie"
+    ]
+   },
+   "pass": true
+  },
+  {
+   "check_id": "null_never_wins",
+   "description": "c05_overlapping carries the highest nominal structure.sum_radii but E* says invalid, so it is unscored and never wins; a 0.0 or a nominal reading would be a false green",
+   "evidence": {
+    "c01_scalar": 2.4519205208433132,
+    "c05_exit_code": 2,
+    "c05_nominal_structure_sum_radii": 2.4519205208433132,
+    "c05_scalar": null,
+    "c05_search_signal": null,
+    "c05_status": "invalid",
+    "forward_champion": "c01_good_hex",
+    "reverse_champion": "c01_good_hex"
+   },
+   "pass": true
+  },
+  {
+   "check_id": "error_verdicts_propagate",
+   "description": "E*'s invalid (exit 2) and error (exit 3) verdicts arrive as named failure_stages with detail, and never as a number",
+   "evidence": [
+    {
+     "candidate_id": "c05_overlapping",
+     "exit_code": 2,
+     "failure_detail": "E* exit 2 status=invalid failure.kind=invalid_configuration: overlap_check failed: {'pairs_audited': 325, 'overlap_count': 1, 'min_gap': -0.188609270834101}",
+     "failure_kind": "invalid_configuration",
+     "failure_stage": "verify_failed",
+     "scalar": null,
+     "status": "invalid"
+    },
+    {
+     "candidate_id": "c09_malformed_import",
+     "exit_code": 3,
+     "failure_detail": "E* exit 3 status=error failure.kind=candidate_import_failed: SyntaxError: expected ':' (solution.py, line 6)",
+     "failure_kind": "candidate_import_failed",
+     "failure_stage": "resolve_failed",
+     "scalar": null,
+     "status": "error"
+    }
+   ],
+   "pass": true
+  },
+  {
+   "check_id": "injected_score_moves_selection",
+   "description": "an externally supplied scalar (--inject-scores) changes the champion while the logged E* Outcome stays the real one: the B0+ injection channel exists end to end",
+   "evidence": {
+    "c01_real_scalar": 2.4519205208433132,
+    "c02_injected_scalar": 99.0,
+    "c02_real_scalar": 0.25,
+    "injected_champion": "c02_baseline_upstream",
+    "uninjected_champion": "c01_good_hex"
+   },
+   "pass": true
+  },
+  {
+   "check_id": "running_max_monotone",
+   "description": "each recorded decision equals the frozen argmax over everything considered so far, so the champion is a running maximum and never loses a better candidate",
+   "evidence": {
+    "forward": {
+     "champion_scalar_trajectory": [
+      0.25,
+      2.4519205208433132,
+      2.4519205208433132,
+      2.4519205208433132,
+      2.4519205208433132,
+      2.4519205208433132
+     ],
+     "pass": true,
+     "steps": [
+      {
+       "chosen": "c02_baseline_upstream",
+       "expected": "c02_baseline_upstream",
+       "iteration": 0,
+       "n_considered": 1
+      },
+      {
+       "chosen": "c01_good_hex",
+       "expected": "c01_good_hex",
+       "iteration": 1,
+       "n_considered": 2
+      },
+      {
+       "chosen": "c01_good_hex",
+       "expected": "c01_good_hex",
+       "iteration": 2,
+       "n_considered": 3
+      },
+      {
+       "chosen": "c01_good_hex",
+       "expected": "c01_good_hex",
+       "iteration": 3,
+       "n_considered": 4
+      },
+      {
+       "chosen": "c01_good_hex",
+       "expected": "c01_good_hex",
+       "iteration": 4,
+       "n_considered": 5
+      },
+      {
+       "chosen": "c01_good_hex",
+       "expected": "c01_good_hex",
+       "iteration": 5,
+       "n_considered": 6
+      }
+     ]
+    },
+    "reverse": {
+     "champion_scalar_trajectory": [
+      0.25,
+      0.25,
+      0.25,
+      2.451820520843313,
+      2.4519205208433132,
+      2.4519205208433132
+     ],
+     "pass": true,
+     "steps": [
+      {
+       "chosen": "c02_baseline_upstream",
+       "expected": "c02_baseline_upstream",
+       "iteration": 0,
+       "n_considered": 1
+      },
+      {
+       "chosen": "c02_baseline_upstream",
+       "expected": "c02_baseline_upstream",
+       "iteration": 1,
+       "n_considered": 2
+      },
+      {
+       "chosen": "c02_baseline_upstream",
+       "expected": "c02_baseline_upstream",
+       "iteration": 2,
+       "n_considered": 3
+      },
+      {
+       "chosen": "c04_near_tie",
+       "expected": "c04_near_tie",
+       "iteration": 3,
+       "n_considered": 4
+      },
+      {
+       "chosen": "c03_mirror",
+       "expected": "c03_mirror",
+       "iteration": 4,
+       "n_considered": 5
+      },
+      {
+       "chosen": "c01_good_hex",
+       "expected": "c01_good_hex",
+       "iteration": 5,
+       "n_considered": 6
+      }
+     ]
+    }
+   },
+   "pass": true
+  },
+  {
+   "check_id": "fr_frozen",
+   "description": "F_r = scalar(E*) events carry the frozen declaration hash; the injection run carries a different, separately frozen declaration and cannot be pooled with them",
+   "evidence": {
+    "frozen_fr_spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+    "injection_fr_spec_hash": "ec4aac9df462efcea8d272332447b25dd52dfa5454b9763556a3cd092c603c7e",
+    "spec_hashes_seen": [
+     "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+     "ec4aac9df462efcea8d272332447b25dd52dfa5454b9763556a3cd092c603c7e"
+    ]
+   },
+   "pass": true
+  },
+  {
+   "check_id": "argmax_is_a_set_function",
+   "description": "the frozen rule is a function of the set of (candidate_id, scalar) pairs: every permutation of the insertion order gives the same winner, and all-unscored gives null",
+   "evidence": {
+    "inputs": {
+     "a": 0.7,
+     "b": 0.7,
+     "c": 0.3
+    },
+    "policy_rule": "argmax_{i<=t} E(c_i)",
+    "results": {
+     "abc": "a",
+     "all_null": null,
+     "bac": "a",
+     "cba": "a"
+    },
+    "tie_break": "smallest candidate_id by byte-wise comparison of the UTF-8 encoding of candidate_id"
+   },
+   "pass": true
+  }
+ ],
+ "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+ "epsilon": 1e-09,
+ "failed": [],
+ "passed": 9,
+ "runs": {
+  "forward": {
+   "champion": "c01_good_hex",
+   "champion_scalar": 2.4519205208433132,
+   "exit_code": 0,
+   "failure_counts": {
+    "resolve_failed": 1,
+    "verify_failed": 1
+   },
+   "run_dir": "a0/verify/out/runs/a02-forward",
+   "trace_paths": {
+    "combined": "a0/verify/out/runs/a02-forward/traces/simpleloop.a02-forward.all.jsonl",
+    "resource": "a0/verify/out/runs/a02-forward/traces/simpleloop.a02-forward.resource.jsonl",
+    "score": "a0/verify/out/runs/a02-forward/traces/simpleloop.a02-forward.score.jsonl",
+    "selection": "a0/verify/out/runs/a02-forward/traces/simpleloop.a02-forward.selection.jsonl"
+   }
+  },
+  "injected": {
+   "champion": "c02_baseline_upstream",
+   "champion_scalar": 99.0,
+   "exit_code": 0,
+   "failure_counts": {
+    "resolve_failed": 1,
+    "verify_failed": 1
+   },
+   "run_dir": "a0/verify/out/runs/a02-injected",
+   "trace_paths": {
+    "combined": "a0/verify/out/runs/a02-injected/traces/simpleloop.a02-injected.all.jsonl",
+    "resource": "a0/verify/out/runs/a02-injected/traces/simpleloop.a02-injected.resource.jsonl",
+    "score": "a0/verify/out/runs/a02-injected/traces/simpleloop.a02-injected.score.jsonl",
+    "selection": "a0/verify/out/runs/a02-injected/traces/simpleloop.a02-injected.selection.jsonl"
+   }
+  },
+  "reverse": {
+   "champion": "c01_good_hex",
+   "champion_scalar": 2.4519205208433132,
+   "exit_code": 0,
+   "failure_counts": {
+    "resolve_failed": 1,
+    "verify_failed": 1
+   },
+   "run_dir": "a0/verify/out/runs/a02-reverse",
+   "trace_paths": {
+    "combined": "a0/verify/out/runs/a02-reverse/traces/simpleloop.a02-reverse.all.jsonl",
+    "resource": "a0/verify/out/runs/a02-reverse/traces/simpleloop.a02-reverse.resource.jsonl",
+    "score": "a0/verify/out/runs/a02-reverse/traces/simpleloop.a02-reverse.score.jsonl",
+    "selection": "a0/verify/out/runs/a02-reverse/traces/simpleloop.a02-reverse.selection.jsonl"
+   }
+  }
+ },
+ "runtime": "simpleloop",
+ "schema": "a0.simpleloop.a02/v1",
+ "task": "circle-packing",
+ "trace_validation": {
+  "forward": {
+   "combined": {
+    "stats": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "events              19\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         1\n  events[simpleloop] 19"
+    },
+    "validate": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "valid: 19 event(s)"
+    }
+   },
+   "resource": {
+    "stats": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "events              7\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         1\n  events[simpleloop] 7"
+    },
+    "validate": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "valid: 7 event(s)"
+    }
+   },
+   "score": {
+    "stats": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "events              6\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         1\n  events[simpleloop] 6"
+    },
+    "validate": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "valid: 6 event(s)"
+    }
+   },
+   "selection": {
+    "stats": {
+     "returncode": 1,
+     "stderr": "",
+     "stdout": "events              6\nschema/semantic errors 6\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 6"
+    },
+    "validate": {
+     "returncode": 1,
+     "stderr": "",
+     "stdout": "INVALID event 'a02-forward.s2.i0.c02_baseline_upstream' (event_seq 2): selection.source_score_event_id 'a02-forward.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-forward.s5.i1.c01_good_hex' (event_seq 5): selection.source_score_event_id 'a02-forward.s3.i1.c01_good_hex' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-forward.s8.i2.c03_mirror' (event_seq 8): selection.source_score_event_id 'a02-forward.s3.i1.c01_good_hex' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-forward.s11.i3.c04_near_tie' (event_seq 11): selection.source_score_event_id 'a02-forward.s3.i1.c01_good_hex' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-forward.s14.i4.c05_overlapping' (event_seq 14): selection.source_score_event_id 'a02-forward.s3.i1.c01_good_hex' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-forward.s17.i5.c09_malformed_import' (event_seq 17): selection.source_score_event_id 'a02-forward.s3.i1.c01_good_hex' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\n6 error(s) in 6 event(s)"
+    }
+   }
+  },
+  "injected": {
+   "combined": {
+    "stats": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "events              19\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         1\n  events[simpleloop] 19"
+    },
+    "validate": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "valid: 19 event(s)"
+    }
+   },
+   "resource": {
+    "stats": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "events              7\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         1\n  events[simpleloop] 7"
+    },
+    "validate": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "valid: 7 event(s)"
+    }
+   },
+   "score": {
+    "stats": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "events              6\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         1\n  events[simpleloop] 6"
+    },
+    "validate": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "valid: 6 event(s)"
+    }
+   },
+   "selection": {
+    "stats": {
+     "returncode": 1,
+     "stderr": "",
+     "stdout": "events              6\nschema/semantic errors 6\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 6"
+    },
+    "validate": {
+     "returncode": 1,
+     "stderr": "",
+     "stdout": "INVALID event 'a02-injected.s2.i0.c02_baseline_upstream' (event_seq 2): selection.source_score_event_id 'a02-injected.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-injected.s5.i1.c01_good_hex' (event_seq 5): selection.source_score_event_id 'a02-injected.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-injected.s8.i2.c03_mirror' (event_seq 8): selection.source_score_event_id 'a02-injected.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-injected.s11.i3.c04_near_tie' (event_seq 11): selection.source_score_event_id 'a02-injected.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-injected.s14.i4.c05_overlapping' (event_seq 14): selection.source_score_event_id 'a02-injected.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-injected.s17.i5.c09_malformed_import' (event_seq 17): selection.source_score_event_id 'a02-injected.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\n6 error(s) in 6 event(s)"
+    }
+   }
+  },
+  "reverse": {
+   "combined": {
+    "stats": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "events              19\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         1\n  events[simpleloop] 19"
+    },
+    "validate": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "valid: 19 event(s)"
+    }
+   },
+   "resource": {
+    "stats": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "events              7\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         1\n  events[simpleloop] 7"
+    },
+    "validate": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "valid: 7 event(s)"
+    }
+   },
+   "score": {
+    "stats": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "events              6\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         1\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         1\n  events[simpleloop] 6"
+    },
+    "validate": {
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "valid: 6 event(s)"
+    }
+   },
+   "selection": {
+    "stats": {
+     "returncode": 1,
+     "stderr": "",
+     "stdout": "events              6\nschema/semantic errors 6\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 6"
+    },
+    "validate": {
+     "returncode": 1,
+     "stderr": "",
+     "stdout": "INVALID event 'a02-reverse.s2.i0.c02_baseline_upstream' (event_seq 2): selection.source_score_event_id 'a02-reverse.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-reverse.s5.i1.c09_malformed_import' (event_seq 5): selection.source_score_event_id 'a02-reverse.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-reverse.s8.i2.c05_overlapping' (event_seq 8): selection.source_score_event_id 'a02-reverse.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-reverse.s11.i3.c04_near_tie' (event_seq 11): selection.source_score_event_id 'a02-reverse.s9.i3.c04_near_tie' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-reverse.s14.i4.c03_mirror' (event_seq 14): selection.source_score_event_id 'a02-reverse.s12.i4.c03_mirror' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\nINVALID event 'a02-reverse.s17.i5.c01_good_hex' (event_seq 17): selection.source_score_event_id 'a02-reverse.s15.i5.c01_good_hex' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\n6 error(s) in 6 event(s)"
+    }
+   }
+  }
+ },
+ "verdict": "pass"
+}
