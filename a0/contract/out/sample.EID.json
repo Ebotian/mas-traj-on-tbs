@@ -1,0 +1,186 @@
+{
+  "base_declared": ".",
+  "components": {
+    "Config": {
+      "declared": {
+        "value": {
+          "candidate_set": "C*",
+          "conformance": {
+            "candidates": "all of C*",
+            "epsilon": {
+              "kind": "abs",
+              "value": 1e-09
+            }
+          },
+          "cwd_independence": {
+            "required": true
+          },
+          "network": {
+            "allow_network": false,
+            "web_search": "disabled"
+          },
+          "task": "circle-packing",
+          "theta_E_defaults": {
+            "fidelity": "fast",
+            "fraction": 0.15,
+            "seed": 1337
+          }
+        }
+      },
+      "digest": "948f08d341053cf66bb449a35d82337a7390daa3abcb586cdf90dc719b57b993",
+      "kind": "value",
+      "value": {
+        "candidate_set": "C*",
+        "conformance": {
+          "candidates": "all of C*",
+          "epsilon": {
+            "kind": "abs",
+            "value": 1e-09
+          }
+        },
+        "cwd_independence": {
+          "required": true
+        },
+        "network": {
+          "allow_network": false,
+          "web_search": "disabled"
+        },
+        "task": "circle-packing",
+        "theta_E_defaults": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "seed": 1337
+        }
+      }
+    },
+    "DataManifest": {
+      "declared": {
+        "files": [
+          "data/candidates.json"
+        ]
+      },
+      "digest": "f4c98cd42499fe63bf749bc26d909b45479313ad561017f7f5779558d84ff3a5",
+      "kind": "data_manifest",
+      "records": [
+        {
+          "data": "data/candidates.json",
+          "kind": "file",
+          "sha256": "75571b637641da91702bbaf6be6e3ac31fc253b9fd4c206fbea9191ec76d987e",
+          "size": 130
+        }
+      ]
+    },
+    "DependencyLock": {
+      "declared": {
+        "files": [
+          {
+            "kind": "pyproject.toml",
+            "path": "evaluator/pyproject.toml"
+          },
+          {
+            "kind": "requirements.txt",
+            "path": "requirements.txt"
+          }
+        ]
+      },
+      "digest": "10d1a0445f4790cd17df6e8895fbdbffeaf27bae03377d1a87bae125a5a7e6a5",
+      "kind": "lock_entries",
+      "records": [
+        {
+          "entry": "numpy==2.3.3",
+          "kind": "pyproject.toml",
+          "lock": "evaluator/pyproject.toml"
+        },
+        {
+          "entry": "numpy==2.3.3",
+          "kind": "requirements.txt",
+          "lock": "requirements.txt"
+        },
+        {
+          "entry": "pytest==9.1.1",
+          "kind": "pyproject.toml",
+          "lock": "evaluator/pyproject.toml"
+        }
+      ]
+    },
+    "EvaluatorSource": {
+      "declared": {
+        "exclude": [
+          "**/*.tmp"
+        ],
+        "include": [
+          "**/*.py",
+          "**/*.toml",
+          "**/*.json"
+        ],
+        "root": "evaluator"
+      },
+      "digest": "790cee944d7814688f47523cf103fff0fb24f8d44d6c2ac2bf0b6d5ec362bcbd",
+      "include": [
+        "**/*.py",
+        "**/*.toml",
+        "**/*.json"
+      ],
+      "kind": "source_tree",
+      "records": [
+        {
+          "kind": "file",
+          "path": "evaluator.py",
+          "sha256": "6d70d0bbdffab939f88b6529aff0a2814caf8045cc796e1d9de117efbd4f4447",
+          "size": 1138
+        },
+        {
+          "kind": "file",
+          "path": "pyproject.toml",
+          "sha256": "6962b5a72496c7b75d09a2b001161dd4e7d9f69fc11a080f4702ddcb9f5a601d",
+          "size": 193
+        }
+      ],
+      "root": "evaluator"
+    },
+    "MetricDefinition": {
+      "declared": {
+        "files": [
+          {
+            "kind": "json",
+            "path": "metric.json"
+          }
+        ]
+      },
+      "digest": "1ec4f4ff8f55728ff9f07b95ea4e42765b77618b215343c6f67410cd6fe6bf0c",
+      "direction": "maximize",
+      "kind": "value",
+      "metric_name": "coverage",
+      "value": {
+        "metric.json": {
+          "metric": {
+            "direction": "maximize",
+            "name": "coverage",
+            "range": [
+              0.0,
+              0.7853981633974483
+            ],
+            "unit": "ratio-of-unit-square"
+          },
+          "outcome_fields": [
+            "coverage",
+            "packed",
+            "feasible"
+          ],
+          "outcome_type": "Candidate -> Outcome (multi-field; E* never scalarizes)",
+          "scalarization_owner": "F_r",
+          "task": "circle-packing"
+        }
+      }
+    }
+  },
+  "eid_star": "22c643f821b5bcb7553db636dae9466778d8153ba14f0c37e943e8833e8b22a3",
+  "eid_star_derivation": {
+    "algorithm": "sha256",
+    "domain": "a0/evalcontract/v1/EID*",
+    "payload_canonical": "{\"Config\":\"948f08d341053cf66bb449a35d82337a7390daa3abcb586cdf90dc719b57b993\",\"DataManifest\":\"f4c98cd42499fe63bf749bc26d909b45479313ad561017f7f5779558d84ff3a5\",\"DependencyLock\":\"10d1a0445f4790cd17df6e8895fbdbffeaf27bae03377d1a87bae125a5a7e6a5\",\"EvaluatorSource\":\"790cee944d7814688f47523cf103fff0fb24f8d44d6c2ac2bf0b6d5ec362bcbd\",\"MetricDefinition\":\"1ec4f4ff8f55728ff9f07b95ea4e42765b77618b215343c6f67410cd6fe6bf0c\"}"
+  },
+  "schema": "a0.evalcontract/v1",
+  "spec": "contract.json",
+  "task": "circle-packing-stand-in"
+}

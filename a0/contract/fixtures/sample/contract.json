@@ -1,0 +1,35 @@
+{
+  "schema": "a0.evalcontract.spec/v1",
+  "task": "circle-packing-stand-in",
+  "base": ".",
+  "note": "Self-contained fixture that exercises the EID* machinery. This is NOT the plumbing-task E*; see ../plumbing.contract.json.",
+  "components": {
+    "EvaluatorSource": {
+      "root": "evaluator",
+      "include": ["**/*.py", "**/*.toml", "**/*.json"],
+      "exclude": ["**/*.tmp"]
+    },
+    "DependencyLock": {
+      "files": [
+        {"path": "evaluator/pyproject.toml", "kind": "pyproject.toml"},
+        {"path": "requirements.txt", "kind": "requirements.txt"}
+      ]
+    },
+    "DataManifest": {
+      "files": ["data/candidates.json"]
+    },
+    "Config": {
+      "value": {
+        "task": "circle-packing",
+        "candidate_set": "C*",
+        "theta_E_defaults": {"seed": 1337, "fidelity": "fast", "fraction": 0.15},
+        "conformance": {"epsilon": {"kind": "abs", "value": 1e-09}, "candidates": "all of C*"},
+        "cwd_independence": {"required": true},
+        "network": {"allow_network": false, "web_search": "disabled"}
+      }
+    },
+    "MetricDefinition": {
+      "files": [{"path": "metric.json", "kind": "json"}]
+    }
+  }
+}

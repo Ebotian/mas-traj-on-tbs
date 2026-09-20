@@ -1,0 +1,11 @@
+{
+  "schema": "a0.fr/v1",
+  "name": "F_r = scalar(E*)",
+  "version": "v1",
+  "applies": "scalar",
+  "input": "outcome.fields.sum_radii",
+  "primary_field": "sum_radii",
+  "direction": "maximize",
+  "frozen_before_run": true,
+  "note": "Default first-round rule, plan:528. Every runtime declares this same F_r in round one; a native-F_r control arm may be run separately but must not be pooled with this one."
+}

@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a0.contract/trace_schema/v1",
+  "title": "A0 evaluator/search traces (score, selection, resource)",
+  "description": "One JSON object per jsonl line. See trace_schema.md for the semantics behind each field.",
+  "oneOf": [
+    {"$ref": "#/$defs/scoreEvent"},
+    {"$ref": "#/$defs/selectionEvent"},
+    {"$ref": "#/$defs/resourceEvent"}
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "failureStage": {
+      "description": "Trajectory stratum at which the pipeline stopped (protocol line 628: Search -> Found -> Resolved -> Verified -> Injected -> Used -> Improved).",
+      "enum": [
+        "none",
+        "evaluator_failed",
+        "search_failed",
+        "resolve_failed",
+        "verify_failed",
+        "comprehension_failed",
+        "mechanism_mismatch",
+        "injection_failed",
+        "used_not_improved",
+        "timeout",
+        "boundary_violation",
+        "budget_exhausted"
+      ]
+    },
+    "eidR": {
+      "description": "The runtime's own evaluator identity plus the adapter's declaration of how it derives from EID*.",
+      "type": "object",
+      "properties": {
+        "value": {"type": "string", "minLength": 1},
+        "native_scheme": {
+          "enum": ["manifest_fingerprint", "evaluator_name_version_campaign_program_hash", "none"]
+        },
+        "mapping_mode": {
+          "description": "native = the runtime computes its own identity; adapter_declared_injection = the runtime has no identity concept and the adapter pins it.",
+          "enum": ["native", "adapter_declared_injection"]
+        },
+        "derives_from_eid_star": {"$ref": "#/$defs/sha256"},
+        "declaration": {"type": "string", "minLength": 1},
+        "recomputable": {"type": "boolean"}
+      },
+      "required": ["value", "native_scheme", "mapping_mode", "derives_from_eid_star", "declaration", "recomputable"],
+      "additionalProperties": false
+    },
+    "thetaE": {
+      "description": "Evaluator parameters, identical across all wrappers. A parameter that is null must also appear in defaults_applied with the fixed equivalent value used instead.",
+      "type": "object",
+      "properties": {
+        "seed": {"type": ["integer", "null"]},
+        "fidelity": {"type": ["string", "null"]},
+        "fraction": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "defaults_applied": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "value": {},
+              "source": {"type": "string", "minLength": 1}
+            },
+            "required": ["value", "source"],
+            "additionalProperties": false
+          }
+        },
+        "extra": {"type": "object"}
+      },
+      "required": ["seed", "fidelity", "fraction", "defaults_applied"],
+      "additionalProperties": false
+    },
+    "fr": {
+      "description": "The runtime-specific search signal mapping in force. F_r: Outcome -> SearchSignal_r; may differ per runtime but must be declared and frozen before the run.",
+      "type": "object",
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "applies": {"enum": ["scalar", "pytree", "multiobjective"]},
+        "spec_hash": {"$ref": "#/$defs/sha256"},
+        "declared_in": {"type": "string", "minLength": 1}
+      },
+      "required": ["name", "version", "applies", "spec_hash", "declared_in"],
+      "additionalProperties": false
+    },
+    "common": {
+      "type": "object",
+      "properties": {
+        "trace": {"enum": ["score", "selection", "resource"]},
+        "event_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+        "event_seq": {"type": "integer", "minimum": 0},
+        "ts": {"type": "string", "format": "date-time"},
+        "run_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "task": {"type": "string", "minLength": 1},
+        "runtime": {"enum": ["kapso", "eve", "loreley", "simpleloop"]},
+        "iteration": {"type": "integer", "minimum": 0},
+        "candidate_id": {"type": "string", "minLength": 1},
+        "parent_id": {"type": ["string", "null"]},
+        "eid_star": {"$ref": "#/$defs/sha256"},
+        "eid_r": {"$ref": "#/$defs/eidR"},
+        "theta_E": {"$ref": "#/$defs/thetaE"},
+        "failure_stage": {"$ref": "#/$defs/failureStage"},
+        "failure_detail": {"type": ["string", "null"]}
+      },
+      "required": [
+        "trace", "event_id", "event_seq", "run_id", "task", "runtime", "iteration",
+        "candidate_id", "eid_star", "eid_r", "theta_E", "failure_stage"
+      ]
+    },
+    "scoreEvent": {
+      "description": "One evaluation of one candidate by E* (as executed by runtime r), plus the resulting search signal.",
+      "allOf": [
+        {"$ref": "#/$defs/common"},
+        {
+          "properties": {
+            "trace": {"const": "score"},
+            "outcome": {
+              "description": "Raw multi-field Outcome of E*. Scalarization belongs to F_r and must not appear here.",
+              "type": "object",
+              "properties": {
+                "fields": {"type": "object", "minProperties": 1},
+                "cardinality": {"type": "integer", "minimum": 1}
+              },
+              "required": ["fields"],
+              "additionalProperties": false
+            },
+            "fr": {"$ref": "#/$defs/fr"},
+            "search_signal": {},
+            "evaluator_evidence": {
+              "description": "Guards the two false-green traps: a synthesized failure score must never look like a real 0.0, and a cache hit must never look like a fresh evaluation.",
+              "type": "object",
+              "properties": {
+                "status": {
+                  "enum": ["ok", "synthesized_failure", "timeout", "cache_hit", "truncated_metrics", "manifest_mismatch", "not_run"]
+                },
+                "detail": {"type": ["string", "null"]},
+                "cached_from_run_id": {"type": ["string", "null"]},
+                "metrics_dropped": {"type": ["integer", "null"], "minimum": 0}
+              },
+              "required": ["status"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["outcome", "fr", "search_signal", "evaluator_evidence"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "selectionEvent": {
+      "description": "The selection decision the runtime actually made, and the candidates/signals it was made from.",
+      "allOf": [
+        {"$ref": "#/$defs/common"},
+        {
+          "properties": {
+            "trace": {"const": "selection"},
+            "selection": {
+              "type": "object",
+              "properties": {
+                "policy": {"type": "string", "minLength": 1},
+                "chosen_candidate_id": {"type": ["string", "null"]},
+                "considered": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "candidate_id": {"type": "string", "minLength": 1},
+                      "search_signal": {}
+                    },
+                    "required": ["candidate_id", "search_signal"],
+                    "additionalProperties": false
+                  }
+                },
+                "reason": {"type": "string"},
+                "tie_break": {"type": ["string", "null"]},
+                "source_score_event_id": {"type": ["string", "null"]},
+                "check_point": {
+                  "description": "Which A0.2 executable check this decision corresponds to.",
+                  "type": ["string", "null"]
+                }
+              },
+              "required": ["policy", "chosen_candidate_id", "considered", "reason"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["selection"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "resourceEvent": {
+      "description": "Hard-enforceable budget counters (protocol line 608) plus secondary telemetry.",
+      "allOf": [
+        {"$ref": "#/$defs/common"},
+        {
+          "properties": {
+            "trace": {"const": "resource"},
+            "T_wall": {
+              "type": "object",
+              "properties": {
+                "value_sec": {"type": "number", "minimum": 0},
+                "clock": {"enum": ["monotonic", "wall"]},
+                "scope": {"enum": ["iteration", "run", "delta"]}
+              },
+              "required": ["value_sec", "clock", "scope"],
+              "additionalProperties": false
+            },
+            "N_evaluatorCalls": {"type": "integer", "minimum": 0},
+            "concurrency": {
+              "type": "object",
+              "properties": {
+                "cap": {"type": "integer", "minimum": 1},
+                "observed_max": {"type": "integer", "minimum": 0}
+              },
+              "required": ["cap", "observed_max"],
+              "additionalProperties": false
+            },
+            "secondary": {
+              "type": "object",
+              "properties": {
+                "N_modelCalls": {"type": ["number", "null"]},
+                "T_in": {"type": ["number", "null"]},
+                "T_out": {"type": ["number", "null"]},
+                "C_usd": {"type": ["number", "null"]}
+              },
+              "additionalProperties": false
+            },
+            "budget_hard": {
+              "type": ["object", "null"],
+              "properties": {
+                "T_wall_sec": {"type": ["number", "null"]},
+                "N_evaluatorCalls": {"type": ["integer", "null"]},
+                "concurrency_cap": {"type": ["integer", "null"]}
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": ["T_wall", "N_evaluatorCalls", "concurrency"]
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "adoption_note": "Adopted by the Loreley workstream. The `scalarization` and `failure_stage_mapping` blocks below are copied verbatim from a0/contract/selection/simpleloop.selection.json and were verified byte-identical to it (and to a0/contract/selection/kapso.selection.json) when this file was written; the adapter recomputes both digests at run time. The `selection` block is Loreley's own: Loreley does not run a global argmax over C*, it admits candidates into a bounded per-cell Pareto front and reports a global argmax only over *retained* members, so only the two shared blocks can be identical.",
+  "authority": "a0/contract/adapter_contract.md section 5.3 (the frozen A0-wide scalarization rule and the E* verdict -> failure_stage table) plus Loreley's frozen A0.2 condition (two candidates sharing descriptor/measures, plan:562)",
+  "coverage_note": "The selection block describes what the adapter observed on real runtime code: a02.py drives ParetoGridArchive.add/_select_front/_dominates exactly as shipped, and the report branch runs EvolutionScheduler._resolve_best_primary_commit against real PostgreSQL. The plan-mode side seams (scheduler, worker, ingestion) were not run and are documented in runs' adapter.md.",
+  "failure_stage_mapping": {
+    "exit_0_ok": "none",
+    "exit_2_invalid": "verify_failed",
+    "exit_3_error_candidate_call_raised": "evaluator_failed",
+    "exit_3_error_candidate_import_failed": "resolve_failed",
+    "exit_3_error_child_terminated_early": "evaluator_failed",
+    "exit_3_error_non_deterministic": "verify_failed",
+    "exit_3_error_other": "evaluator_failed",
+    "exit_3_error_runtime_budget_exceeded": "timeout",
+    "note": "E* verdict -> trace failure_stage. The trace schema fixes the enum but not this per-runtime mapping; SimpleLoop freezes it here and reports it to the contract owner so the other runtimes can adopt the same one.",
+    "solver_lane_produced_no_proposal": "search_failed"
+  },
+  "frozen_before_run": true,
+  "loreley_specific_stages": {
+    "resolve_failed": "in addition to the frozen table's candidate_import_failed, the adapter uses resolve_failed when the evaluator lane produced no readable Outcome at all (a plugin crash or an unreadable payload)",
+    "timeout": "TWO distinct causes map here. (a) the frozen table's own entry: E* exit 3 with failure.kind=runtime_budget_exceeded, i.e. the candidate was evaluated and missed the runtime budget. (b) a runtime-level timeout with NO E* verdict at all: the plugin process is killed by Evaluator._execute_with_timeout (evaluator.py:1859-1912) and evaluate_outcome synthesizes a failure (evaluator.py:1513-1520). Case (b) is outside the frozen table because the table maps E* verdicts and case (b) has none; the adapter records which of the two fired in evaluator_evidence.detail (measured: out/traps.json, T2)"
+  },
+  "policy_id": "loreley-selection-v1",
+  "runtime": "loreley",
+  "scalarization": {
+    "applies": "scalar",
+    "direction": "maximize",
+    "identity_check": "when status == ok the adapter asserts objective.value == fields.sum_radii and fails the candidate otherwise",
+    "input": "outcome.fields.sum_radii",
+    "nonfinite": "a non-finite scalar (nan/inf) is rejected as an adapter-side measurement error, not compared",
+    "null_is_not_zero": "a null scalar is never coerced to 0.0 or to -inf; an unscored candidate is recorded as unscored and is excluded from the argmax. E* exit 2 / exit 3 propagate as failure_stage values with failure_detail, not as a number.",
+    "status_gate": "scalar is defined iff outcome.status == \"ok\"; when status is \"invalid\" or \"error\" the scalar is null"
+  },
+  "schema": "a0.selection/v1",
+  "selection": {
+    "comparison": "exact binary64 comparison of the objective vector inside the archive's dominance test (pareto_archive.py:459-468), with the archive's own epsilon as the only tolerance",
+    "epsilon_role": "the frozen conformance epsilon (1e-9, EID* Config.conformance.epsilon) is the A0.1 tolerance only; inside the archive the tolerance is mapelites_pareto_epsilon (default 1.0e-9), and it decides dominance, not the A0.1 comparison",
+    "no_global_argmax": "Loreley makes no global-argmax guarantee: a strictly better candidate in another cell never evicts a worse one. Under the single-objective contract every cell front has size 1, so the archive IS the per-cell argmax and the report IS the global argmax over retained members; the claim only bites under >=2 objectives (measured: out/a02.json, check A02-L8)",
+    "null_handling": "a candidate whose E_r verdict is invalid/error is an EvalFail and carries no metric vector, so it cannot enter the archive at all; a null scalar is never coerced to 0.0 (measured: out/run-a0/run.summary.json, evaluator_evidence_counts)",
+    "report_branch": "best-primary-commit query over archive membership: Metric.value ordered by the primary direction, tie-break commit_hash ASC, joined to MapElitesArchiveCell (scheduler/main.py:876-931). It is a global argmax over *retained* members and must not be used as a cross-cell control",
+    "rule": "admit(c) iff c is non-dominated within its own cell against the cell's current front; the cell is fixed by `measures` alone and score can never move a candidate between cells",
+    "rule_expression": "front[cell(c)] = nondominated(front[cell(c)] U {c}) truncated by crowding distance at max_front_size",
+    "sampling": "score-independent: a uniform occupied cell then a uniform member of that cell's front (pareto_archive.py:265-278, sampler.py:531-559)",
+    "tie_break": "commit_hash ascending: objective-equivalent candidates are deduplicated within epsilon keeping the lexicographically smallest commit_hash (pareto_archive.py:424-431), and a truncated front is sorted by (-crowding, commit_hash) (pareto_archive.py:442-450)"
+  },
+  "status": "adopted-by-loreley-workstream",
+  "status_note": "not `frozen-a0-contract`: the contract owner freezes the canonical copies at a0/contract/selection/simpleloop.selection.json. This file is the runtime-side declaration the adapter reads at run time; the canonical digests of its `scalarization` and `failure_stage_mapping` blocks are recomputed on every run and a run whose blocks differ from the frozen ones is refused (a0_adapter/failure_stage.py::adopt)."
+}

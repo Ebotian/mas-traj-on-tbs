@@ -1,0 +1,41 @@
+{
+  "authority": "open_world_plan_review.typ:605-614 (SimpleLoop \u7684\u56fa\u5b9a\u5b9a\u4e49) read together with plan:528 (F_r(E*) = scalar(E*), round one)",
+  "failure_stage_mapping": {
+    "exit_0_ok": "none",
+    "exit_2_invalid": "verify_failed",
+    "exit_3_error_candidate_call_raised": "evaluator_failed",
+    "exit_3_error_candidate_import_failed": "resolve_failed",
+    "exit_3_error_child_terminated_early": "evaluator_failed",
+    "exit_3_error_non_deterministic": "verify_failed",
+    "exit_3_error_other": "evaluator_failed",
+    "exit_3_error_runtime_budget_exceeded": "timeout",
+    "note": "E* verdict -> trace failure_stage. The trace schema fixes the enum but not this per-runtime mapping; SimpleLoop freezes it here and reports it to the contract owner so the other runtimes can adopt the same one.",
+    "solver_lane_produced_no_proposal": "search_failed"
+  },
+  "frozen_before_run": true,
+  "note": "FROZEN by the a0/contract owner. Adopted verbatim from the SimpleLoop workstream's proposal a0/runtimes/simpleloop/policy/proposed.a0.contract.simpleloop.selection.json, whose scalarization, selection and failure_stage_mapping blocks are themselves copied verbatim from a0/runtimes/simpleloop/policy/simpleloop.policy.json (the source the substrate executed); byte-level equality of all three blocks was re-checked when this was adopted. The scalarization and failure_stage_mapping blocks are A0-wide: every runtime must declare the same null policy and the same E* verdict -> failure_stage table, otherwise plan:577's per-runtime FailureStage counts are not comparable.",
+  "policy_id": "simpleloop-selection-v1",
+  "runtime": "simpleloop",
+  "scalarization": {
+    "applies": "scalar",
+    "direction": "maximize",
+    "identity_check": "when status == ok the adapter asserts objective.value == fields.sum_radii and fails the candidate otherwise",
+    "input": "outcome.fields.sum_radii",
+    "nonfinite": "a non-finite scalar (nan/inf) is rejected as an adapter-side measurement error, not compared",
+    "null_is_not_zero": "a null scalar is never coerced to 0.0 or to -inf; an unscored candidate is recorded as unscored and is excluded from the argmax. E* exit 2 / exit 3 propagate as failure_stage values with failure_detail, not as a number.",
+    "status_gate": "scalar is defined iff outcome.status == \"ok\"; when status is \"invalid\" or \"error\" the scalar is null"
+  },
+  "schema": "a0.selection/v1",
+  "selection": {
+    "champion_update": "running max over all candidates evaluated so far, so c*_t is monotone and never loses a previously best candidate",
+    "comparison": "exact binary64 comparison",
+    "epsilon_role": "the frozen conformance epsilon (1e-9, EID* Config.conformance.epsilon) is the A0.1 tolerance only; it is NOT applied in selection, so no tolerance window can absorb a score gap (measured below) and no rank transform can either (rank is a monotone map of the value)",
+    "order_invariance": "c*_t is a function of the set {(candidate_id, scalar)}; permuting the order in which candidates are proposed cannot change the champion",
+    "rule": "c*_t = argmax over { c_i : i <= t and scalar(c_i) is not null } of scalar(c_i)",
+    "rule_expression": "argmax_{i<=t} E(c_i)",
+    "tie_break": "smallest candidate_id by byte-wise comparison of the UTF-8 encoding of candidate_id",
+    "tie_break_alternative_rejected": "earliest-evaluation-index (Python max() over a sequence keeps the first maximum) is REJECTED because it is a function of the order in which candidates happened to be considered, and A0.2 requires selection to be invariant to candidate ordering",
+    "when_nothing_scored": "chosen_candidate_id is null; the run continues with parent = null and the iteration is recorded honestly"
+  },
+  "status": "frozen-a0-contract"
+}
