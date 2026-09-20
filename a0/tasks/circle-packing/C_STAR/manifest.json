@@ -1,0 +1,300 @@
+{
+  "candidate_count": 14,
+  "candidate_set_id": "C*",
+  "candidates": [
+    {
+      "candidate_id": "c01_good_hex",
+      "dir": "c01_good_hex",
+      "expected_status_at_theta_e_star": "ok",
+      "kind": "valid",
+      "note": "clearly good valid packing (26 equal circles, r ~ 0.0943)",
+      "path": "c01_good_hex",
+      "purpose": "The high end of the required ordered pair: the A0.2 tests need E(c1) > E(c2) with a decidable margin, and c01 is that c1.",
+      "role": "good",
+      "solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+      "source": {
+        "bytes": 2867,
+        "path": "c01_good_hex/solution.py",
+        "sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c02_baseline_upstream",
+      "dir": "c02_baseline_upstream",
+      "expected_status_at_theta_e_star": "ok",
+      "kind": "valid",
+      "note": "upstream baseline from circle-packing@b91c090 (sum_radii = 0.25)",
+      "path": "c02_baseline_upstream",
+      "purpose": "The clearly bad member of the required ordered pair, taken verbatim from upstream, so it is also the study's c_0 baseline for SimpleLoop (4.4: 'c_0 = baseline').",
+      "role": "baseline",
+      "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+      "source": {
+        "bytes": 1441,
+        "path": "c02_baseline_upstream/solution.py",
+        "sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+      },
+      "verbatim_from": {
+        "commit": "b91c0906c9f676eb661990d881144909d99f2d72",
+        "path": "solution.py",
+        "repo": "https://github.com/NeapolitanIcecream/circle-packing.git"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c03_mirror",
+      "dir": "c03_mirror",
+      "expected_status_at_theta_e_star": "ok",
+      "kind": "valid",
+      "note": "c01 reflected across the main diagonal: different content, identical score",
+      "path": "c03_mirror",
+      "purpose": "Required tied pair: (x, y) swapped is an exact isometry, so every metric equals c01's to the last bit while the file bytes differ. Downstream tie tests and the 'identical structure, different content' check both use it.",
+      "role": "tie",
+      "solution_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+      "source": {
+        "bytes": 2849,
+        "path": "c03_mirror/solution.py",
+        "sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c04_near_tie",
+      "dir": "c04_near_tie",
+      "expected_status_at_theta_e_star": "ok",
+      "kind": "valid",
+      "note": "c01 with one radius reduced by 1e-4: near-tied, decidable margin",
+      "path": "c04_near_tie",
+      "purpose": "Required near-tied pair: sum_radii differs from c01 by exactly 1e-4, which is decidable in binary64 yet small enough to stress adapters that compare scores with sloppy tolerances.",
+      "role": "tie",
+      "solution_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+      "source": {
+        "bytes": 2808,
+        "path": "c04_near_tie/solution.py",
+        "sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c05_overlapping",
+      "dir": "c05_overlapping",
+      "expected_status_at_theta_e_star": "invalid",
+      "kind": "invalid_geometry",
+      "note": "26 circles with one pair fully overlapping",
+      "path": "c05_overlapping",
+      "purpose": "Degenerate geometry: upstream's overlap gate must reject it. Distinct from a zero score because E* returns status=invalid with objective=null and a nonzero overlap_count.",
+      "role": "bad",
+      "solution_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+      "source": {
+        "bytes": 2854,
+        "path": "c05_overlapping/solution.py",
+        "sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c06_empty",
+      "dir": "c06_empty",
+      "expected_status_at_theta_e_star": "invalid",
+      "kind": "invalid_geometry",
+      "note": "returns no circles at all",
+      "path": "c06_empty",
+      "purpose": "Empty-output degenerate case: count gate fails. An adapter that maps 'no objective' to 0.0 would be indistinguishable from c14's genuine near-zero score, which is what this pair of candidates is for.",
+      "role": "bad",
+      "solution_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+      "source": {
+        "bytes": 703,
+        "path": "c06_empty/solution.py",
+        "sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c07_single",
+      "dir": "c07_single",
+      "expected_status_at_theta_e_star": "invalid",
+      "kind": "invalid_geometry",
+      "note": "returns exactly one circle",
+      "path": "c07_single",
+      "purpose": "One-circle degenerate case: the single circle is perfectly valid (r = 0.5 centred in the square), so only the count gate rejects it. Exercises the audit-scope fields (1 audited item, 0 audited pairs).",
+      "role": "bad",
+      "solution_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+      "source": {
+        "bytes": 776,
+        "path": "c07_single/solution.py",
+        "sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c08_out_of_bounds",
+      "dir": "c08_out_of_bounds",
+      "expected_status_at_theta_e_star": "invalid",
+      "kind": "invalid_geometry",
+      "note": "c01 translated 0.05 to the left, so all 26 circles leave the square",
+      "path": "c08_out_of_bounds",
+      "purpose": "Isolated bounds-gate failure: translation preserves every pairwise distance, so overlap_count stays 0 and only the bounds check fails.",
+      "role": "bad",
+      "solution_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+      "source": {
+        "bytes": 2780,
+        "path": "c08_out_of_bounds/solution.py",
+        "sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c09_malformed_import",
+      "dir": "c09_malformed_import",
+      "expected_status_at_theta_e_star": "error",
+      "kind": "not_measurable",
+      "note": "solution.py does not parse",
+      "path": "c09_malformed_import",
+      "purpose": "Malformed candidate: E* cannot import it, so it must report status=error (not invalid, not 0.0). A runtime whose adapter swallows import errors and substitutes a score is exactly the false green A0.1 looks for.",
+      "role": "bad",
+      "solution_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+      "source": {
+        "bytes": 206,
+        "path": "c09_malformed_import/solution.py",
+        "sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c10_raises",
+      "dir": "c10_raises",
+      "expected_status_at_theta_e_star": "error",
+      "kind": "not_measurable",
+      "note": "pack_circles raises on every call",
+      "path": "c10_raises",
+      "purpose": "Candidate that fails at call time: E* reports status=error with kind=candidate_call_raised. Covers the 'evaluation exception silently mapped to failure_score(0.0)' false green directly.",
+      "role": "bad",
+      "solution_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+      "source": {
+        "bytes": 865,
+        "path": "c10_raises/solution.py",
+        "sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c11_non_deterministic",
+      "dir": "c11_non_deterministic",
+      "expected_status_at_theta_e_star": "error",
+      "kind": "not_measurable",
+      "note": "valid geometry, but the returned radii differ between calls",
+      "path": "c11_non_deterministic",
+      "purpose": "Non-determinism gate (upstream evaluate.py:256-259). Each call is individually valid, so only the cross-run comparison rejects it: status=error, objective=null, never 0.0.",
+      "role": "bad",
+      "solution_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+      "source": {
+        "bytes": 2908,
+        "path": "c11_non_deterministic/solution.py",
+        "sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c12_exit_without_artifacts",
+      "dir": "c12_exit_without_artifacts",
+      "expected_status_at_theta_e_star": "error",
+      "kind": "not_measurable",
+      "note": "kills its own interpreter with os._exit(0) instead of returning",
+      "path": "c12_exit_without_artifacts",
+      "purpose": "False-green trap: the isolated runner exits with code 0 without writing any artifact. E* must detect the missing done marker and report status=error (kind=child_terminated_early); a runtime that reads only the subprocess exit code would score this as success/0.0.",
+      "role": "bad",
+      "solution_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+      "source": {
+        "bytes": 909,
+        "path": "c12_exit_without_artifacts/solution.py",
+        "sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c13_slow",
+      "dir": "c13_slow",
+      "expected_status_at_theta_e_star": "error",
+      "kind": "not_measurable",
+      "note": "returns c01's geometry, but sleeps 0.3 s per call",
+      "path": "c13_slow",
+      "purpose": "Runtime-budget gate (upstream DEFAULT_RUNTIME_BUDGET_MS = 250 ms). The geometry is valid, so the only failure is the p50 budget: status=error, objective=null.",
+      "role": "bad",
+      "solution_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+      "source": {
+        "bytes": 2787,
+        "path": "c13_slow/solution.py",
+        "sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14"
+      },
+      "version": "1.0.0"
+    },
+    {
+      "candidate_id": "c14_near_zero",
+      "dir": "c14_near_zero",
+      "expected_status_at_theta_e_star": "ok",
+      "kind": "valid",
+      "note": "valid but nearly worthless: 26 circles of radius 1e-6",
+      "path": "c14_near_zero",
+      "purpose": "A genuine near-zero objective. Required so that the degenerate candidates (c06 empty, c10 raising) are distinguishable from a real 0-ish score: E*(c14) is a number ~2.6e-05, E*(c06) is null.",
+      "role": "bad",
+      "solution_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+      "source": {
+        "bytes": 1188,
+        "path": "c14_near_zero/solution.py",
+        "sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113"
+      },
+      "version": "1.0.0"
+    }
+  ],
+  "designed_relations": {
+    "exact_tie_different_content": {
+      "note": "Identical structure (mirrored geometry, bit-identical metrics), different content (different source sha256).",
+      "pair": [
+        "c01_good_hex",
+        "c03_mirror"
+      ]
+    },
+    "expected_to_raise_not_return": [
+      "c09_malformed_import",
+      "c10_raises",
+      "c11_non_deterministic",
+      "c12_exit_without_artifacts",
+      "c13_slow"
+    ],
+    "genuine_near_zero": "c14_near_zero",
+    "near_tie": {
+      "note": "objective differs by 1e-4 up to binary64 summation error (measured 1.0000000000021e-04 at theta_E*).",
+      "pair": [
+        "c01_good_hex",
+        "c04_near_tie"
+      ]
+    },
+    "ordered_pair_decidable_margin": {
+      "greater": "c01_good_hex",
+      "less": "c02_baseline_upstream",
+      "note": "A0.2 needs E(c1) > E(c2) with a margin that no reasonable tolerance can absorb (about 2.2 vs 0.25)."
+    },
+    "returns_instead_of_raising": [
+      "c05_overlapping",
+      "c06_empty",
+      "c07_single",
+      "c08_out_of_bounds"
+    ]
+  },
+  "e_star_cli": "a0/tasks/circle-packing/.venv/bin/python a0/tasks/circle-packing/e_star.py evaluate --candidate <path> --seed <S> --fidelity <full|fast> --out <json>",
+  "e_star_table": "a0/tasks/circle-packing/E_STAR.json",
+  "notes": [
+    "Candidate directories contain solution.py (the upstream entry point) plus candidate.json (identity, version, purpose); no pointer to a mutable worktree.",
+    "The directory is C_STAR/ (this workstream's layout). adapter_contract.md §3 shows `candidates/manifest.json`; pass `--candidate-set a0/tasks/circle-packing/C_STAR/manifest.json` instead."
+  ],
+  "produced_by": "a0/tasks/circle-packing/tools/build_c_star.py",
+  "role_legend": {
+    "bad": "degenerate, invalid or unmeasurable candidate",
+    "baseline": "the upstream baseline (c_0)",
+    "good": "clearly good valid candidate",
+    "tie": "member of a tied or near-tied pair"
+  },
+  "schema": "a0.candidateset/v1",
+  "task": "circle-packing",
+  "version": "1.0.0"
+}

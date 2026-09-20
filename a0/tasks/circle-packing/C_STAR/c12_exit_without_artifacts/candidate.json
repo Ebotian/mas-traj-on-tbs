@@ -1,0 +1,11 @@
+{
+  "candidate_id": "c12_exit_without_artifacts",
+  "expected_status_at_theta_e_star": "error",
+  "kind": "not_measurable",
+  "purpose": "False-green trap: the isolated runner exits with code 0 without writing any artifact. E* must detect the missing done marker and report status=error (kind=child_terminated_early); a runtime that reads only the subprocess exit code would score this as success/0.0.",
+  "role": "bad",
+  "source_bytes": 909,
+  "source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+  "summary": "kills its own interpreter with os._exit(0) instead of returning",
+  "version": "1.0.0"
+}

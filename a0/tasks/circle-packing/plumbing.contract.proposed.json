@@ -1,0 +1,207 @@
+{
+  "base": "../../",
+  "components": {
+    "Config": {
+      "value": {
+        "conformance": {
+          "epsilon": {
+            "kind": "abs",
+            "unit": "sum_radii",
+            "value": 1e-09
+          }
+        },
+        "cwd_independence": {
+          "note": "candidate source is executed as a private copy below E*'s state root; scores never depend on caller cwd or PATH",
+          "required": true
+        },
+        "environment_policy": {
+          "allow_network": false,
+          "child_env_specified_by_evaluator": true,
+          "path": "",
+          "private_home_tmpdir_cwd": true,
+          "pythondontwritebytecode": "1",
+          "pythonhashseed": "0",
+          "pythonnousersite": "1",
+          "pythonpath": ""
+        },
+        "evaluator": {
+          "cli": "e_star.py evaluate --candidate <path> --seed <S> [--fidelity full|fast] [--fraction F] --out <json>",
+          "exit_codes": {
+            "error": 3,
+            "invalid": 2,
+            "ok": 0
+          },
+          "outcome_is_multi_field": true,
+          "scalarization_owner": "F_r"
+        },
+        "evaluator_constants": {
+          "epsilon": 1e-09,
+          "runtime_budget_ms_default": 250.0,
+          "runtime_runs_default": 5,
+          "unit_square": [
+            0.0,
+            1.0
+          ]
+        },
+        "revert_safety": {
+          "note": "E* writes only below --state-dir and --out; never inside a candidate worktree",
+          "required": true
+        },
+        "task": "circle-packing-plumbing",
+        "theta_e_canonical": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "theta_e_fast_example": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "theta_e_semantics": {
+          "defaults_source": "KAPSO: evaluation_maintainer.subsample_seed=1337, fidelity.py:247 eval_fast_fraction=0.15",
+          "fidelity": "full audits every item; fast audits a seeded decimation",
+          "fraction": "fast-tier audit fraction in (0, 1]; forced to 1.0 at fidelity=full",
+          "seed": "draws the deterministic audit subsample; inert at fidelity=full"
+        }
+      }
+    },
+    "DataManifest": {
+      "entries": [
+        {
+          "commit": "4c3759208e6b908f90716488ac3eec3dceaaf397",
+          "pinned_at": "a0/tasks/circle-packing/upstream/loreley",
+          "role": "provides the plumbing task definition and the authoritative evaluator plugin",
+          "upstream_repo": "github.com/NeapolitanIcecream/loreley"
+        },
+        {
+          "commit": "b91c0906c9f676eb661990d881144909d99f2d72",
+          "pinned_at": "a0/tasks/circle-packing/upstream/circle-packing",
+          "role": "problem statement, objective, baseline solution.py",
+          "upstream_repo": "github.com/NeapolitanIcecream/circle-packing"
+        },
+        {
+          "candidate_set_id": "C*",
+          "manifest": "tasks/circle-packing/C_STAR/manifest.json",
+          "produced_by": "a0/tasks/circle-packing/tools/build_c_star.py",
+          "status": "published"
+        },
+        {
+          "note": "derived artifact (E* applied to C*); deliberately not hashed into EID*, hash it separately for provenance",
+          "reference_table": "tasks/circle-packing/E_STAR.json"
+        }
+      ],
+      "files": [
+        "tasks/circle-packing/C_STAR/c01_good_hex/candidate.json",
+        "tasks/circle-packing/C_STAR/c01_good_hex/solution.py",
+        "tasks/circle-packing/C_STAR/c02_baseline_upstream/candidate.json",
+        "tasks/circle-packing/C_STAR/c02_baseline_upstream/solution.py",
+        "tasks/circle-packing/C_STAR/c03_mirror/candidate.json",
+        "tasks/circle-packing/C_STAR/c03_mirror/solution.py",
+        "tasks/circle-packing/C_STAR/c04_near_tie/candidate.json",
+        "tasks/circle-packing/C_STAR/c04_near_tie/solution.py",
+        "tasks/circle-packing/C_STAR/c05_overlapping/candidate.json",
+        "tasks/circle-packing/C_STAR/c05_overlapping/solution.py",
+        "tasks/circle-packing/C_STAR/c06_empty/candidate.json",
+        "tasks/circle-packing/C_STAR/c06_empty/solution.py",
+        "tasks/circle-packing/C_STAR/c07_single/candidate.json",
+        "tasks/circle-packing/C_STAR/c07_single/solution.py",
+        "tasks/circle-packing/C_STAR/c08_out_of_bounds/candidate.json",
+        "tasks/circle-packing/C_STAR/c08_out_of_bounds/solution.py",
+        "tasks/circle-packing/C_STAR/c09_malformed_import/candidate.json",
+        "tasks/circle-packing/C_STAR/c09_malformed_import/solution.py",
+        "tasks/circle-packing/C_STAR/c10_raises/candidate.json",
+        "tasks/circle-packing/C_STAR/c10_raises/solution.py",
+        "tasks/circle-packing/C_STAR/c11_non_deterministic/candidate.json",
+        "tasks/circle-packing/C_STAR/c11_non_deterministic/solution.py",
+        "tasks/circle-packing/C_STAR/c12_exit_without_artifacts/candidate.json",
+        "tasks/circle-packing/C_STAR/c12_exit_without_artifacts/solution.py",
+        "tasks/circle-packing/C_STAR/c13_slow/candidate.json",
+        "tasks/circle-packing/C_STAR/c13_slow/solution.py",
+        "tasks/circle-packing/C_STAR/c14_near_zero/candidate.json",
+        "tasks/circle-packing/C_STAR/c14_near_zero/solution.py",
+        "tasks/circle-packing/C_STAR/manifest.json",
+        "tasks/circle-packing/upstream/loreley/examples/circle_packing_env/evaluate.py",
+        "tasks/circle-packing/upstream/loreley/examples/circle_packing_env/local_eval.py",
+        "tasks/circle-packing/upstream/loreley/examples/circle_packing_env/README.md",
+        "tasks/circle-packing/upstream/loreley/examples/evol_circle_packing.py",
+        "tasks/circle-packing/upstream/circle-packing/README.md",
+        "tasks/circle-packing/upstream/circle-packing/loreley.program.md",
+        "tasks/circle-packing/upstream/circle-packing/solution.py",
+        "tasks/circle-packing/upstream/circle-packing/pyproject.toml",
+        "tasks/circle-packing/upstream/circle-packing/scripts/local_eval.py",
+        "tasks/circle-packing/tools/good_packing_26.json"
+      ]
+    },
+    "DependencyLock": {
+      "entries": [
+        {
+          "implementation": "CPython",
+          "note": "E* and every candidate of C* import the standard library only",
+          "python": "3.12.11",
+          "third_party_packages": []
+        }
+      ],
+      "files": [
+        {
+          "kind": "raw",
+          "path": "tasks/circle-packing/requirements.lock"
+        }
+      ]
+    },
+    "EvaluatorSource": {
+      "exclude": [
+        "**/*.tmp"
+      ],
+      "include": [
+        "e_star.py",
+        "e_star_child.py"
+      ],
+      "root": "tasks/circle-packing"
+    },
+    "MetricDefinition": {
+      "value": {
+        "definition": "sum of the radii of the circles returned by pack_circles(n=26), accumulated in returned order with CPython's sum()",
+        "direction": "maximize",
+        "failure_semantics": "when status != ok the objective is null, never 0.0; the adapter must not coerce a missing objective into a score",
+        "implementation": [
+          "tasks/circle-packing/e_star.py::structure_fields",
+          "upstream/circle-packing/loreley.program.md:8-10",
+          "upstream/circle-packing/README.md:19-27",
+          "upstream/loreley/examples/circle_packing_env/evaluate.py:133-145"
+        ],
+        "known_upstream_discrepancy": "evaluate.py (the plugin Loreley's worker actually loads) and scripts/local_eval.py differ by one ULP in sum_radii because the latter accumulates in a loop while the former uses sum(); E* mirrors evaluate.py, verified bit-for-bit by tools/crosscheck_upstream.py",
+        "name": "sum_radii",
+        "outcome_fields": [
+          "sum_radii",
+          "packing_density",
+          "num_circles",
+          "overlap_count",
+          "min_gap",
+          "min_boundary_margin"
+        ],
+        "scalarization_owner": "F_r",
+        "unit": "radius_sum (length in the unit square, n=26)",
+        "validity_gates": [
+          "count_equals_n",
+          "radius_positive_check",
+          "bounds_check",
+          "overlap_check",
+          "determinism_check",
+          "runtime_budget_check"
+        ]
+      }
+    }
+  },
+  "note": "EID* inputs for the plumbing task, as produced by the circle-packing workstream. EvaluatorSource is the frozen evaluator itself (e_star.py + e_star_child.py); DataManifest carries the frozen candidate set C* and the two pinned upstream repositories.",
+  "schema": "a0.evalcontract.spec/v1",
+  "task": "circle-packing-plumbing"
+}

@@ -1,0 +1,643 @@
+{
+  "base_declared": "../../",
+  "components": {
+    "Config": {
+      "declared": {
+        "value": {
+          "conformance": {
+            "epsilon": {
+              "kind": "abs",
+              "unit": "sum_radii",
+              "value": 1e-09
+            }
+          },
+          "cwd_independence": {
+            "note": "candidate source is executed as a private copy below E*'s state root; scores never depend on caller cwd or PATH",
+            "required": true
+          },
+          "environment_policy": {
+            "allow_network": false,
+            "child_env_specified_by_evaluator": true,
+            "path": "",
+            "private_home_tmpdir_cwd": true,
+            "pythondontwritebytecode": "1",
+            "pythonhashseed": "0",
+            "pythonnousersite": "1",
+            "pythonpath": ""
+          },
+          "evaluator": {
+            "cli": "e_star.py evaluate --candidate <path> --seed <S> [--fidelity full|fast] [--fraction F] --out <json>",
+            "exit_codes": {
+              "error": 3,
+              "invalid": 2,
+              "ok": 0
+            },
+            "outcome_is_multi_field": true,
+            "scalarization_owner": "F_r"
+          },
+          "evaluator_constants": {
+            "epsilon": 1e-09,
+            "runtime_budget_ms_default": 250.0,
+            "runtime_runs_default": 5,
+            "unit_square": [
+              0.0,
+              1.0
+            ]
+          },
+          "revert_safety": {
+            "note": "E* writes only below --state-dir and --out; never inside a candidate worktree",
+            "required": true
+          },
+          "task": "circle-packing-plumbing",
+          "theta_e_canonical": {
+            "fidelity": "full",
+            "fraction": 1.0,
+            "n": 26,
+            "runs": 5,
+            "runtime_budget_ms": 250.0,
+            "seed": 1337,
+            "timeout_s": 120.0
+          },
+          "theta_e_fast_example": {
+            "fidelity": "fast",
+            "fraction": 0.15,
+            "n": 26,
+            "runs": 5,
+            "runtime_budget_ms": 250.0,
+            "seed": 1337,
+            "timeout_s": 120.0
+          },
+          "theta_e_semantics": {
+            "defaults_source": "KAPSO: evaluation_maintainer.subsample_seed=1337, fidelity.py:247 eval_fast_fraction=0.15",
+            "fidelity": "full audits every item; fast audits a seeded decimation",
+            "fraction": "fast-tier audit fraction in (0, 1]; forced to 1.0 at fidelity=full",
+            "seed": "draws the deterministic audit subsample; inert at fidelity=full"
+          }
+        }
+      },
+      "digest": "550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac",
+      "kind": "value",
+      "value": {
+        "conformance": {
+          "epsilon": {
+            "kind": "abs",
+            "unit": "sum_radii",
+            "value": 1e-09
+          }
+        },
+        "cwd_independence": {
+          "note": "candidate source is executed as a private copy below E*'s state root; scores never depend on caller cwd or PATH",
+          "required": true
+        },
+        "environment_policy": {
+          "allow_network": false,
+          "child_env_specified_by_evaluator": true,
+          "path": "",
+          "private_home_tmpdir_cwd": true,
+          "pythondontwritebytecode": "1",
+          "pythonhashseed": "0",
+          "pythonnousersite": "1",
+          "pythonpath": ""
+        },
+        "evaluator": {
+          "cli": "e_star.py evaluate --candidate <path> --seed <S> [--fidelity full|fast] [--fraction F] --out <json>",
+          "exit_codes": {
+            "error": 3,
+            "invalid": 2,
+            "ok": 0
+          },
+          "outcome_is_multi_field": true,
+          "scalarization_owner": "F_r"
+        },
+        "evaluator_constants": {
+          "epsilon": 1e-09,
+          "runtime_budget_ms_default": 250.0,
+          "runtime_runs_default": 5,
+          "unit_square": [
+            0.0,
+            1.0
+          ]
+        },
+        "revert_safety": {
+          "note": "E* writes only below --state-dir and --out; never inside a candidate worktree",
+          "required": true
+        },
+        "task": "circle-packing-plumbing",
+        "theta_e_canonical": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "theta_e_fast_example": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "theta_e_semantics": {
+          "defaults_source": "KAPSO: evaluation_maintainer.subsample_seed=1337, fidelity.py:247 eval_fast_fraction=0.15",
+          "fidelity": "full audits every item; fast audits a seeded decimation",
+          "fraction": "fast-tier audit fraction in (0, 1]; forced to 1.0 at fidelity=full",
+          "seed": "draws the deterministic audit subsample; inert at fidelity=full"
+        }
+      }
+    },
+    "DataManifest": {
+      "declared": {
+        "entries": [
+          {
+            "commit": "4c3759208e6b908f90716488ac3eec3dceaaf397",
+            "pinned_at": "a0/tasks/circle-packing/upstream/loreley",
+            "role": "provides the plumbing task definition and the authoritative evaluator plugin",
+            "upstream_repo": "github.com/NeapolitanIcecream/loreley"
+          },
+          {
+            "commit": "b91c0906c9f676eb661990d881144909d99f2d72",
+            "pinned_at": "a0/tasks/circle-packing/upstream/circle-packing",
+            "role": "problem statement, objective, baseline solution.py",
+            "upstream_repo": "github.com/NeapolitanIcecream/circle-packing"
+          },
+          {
+            "candidate_set_id": "C*",
+            "manifest": "tasks/circle-packing/C_STAR/manifest.json",
+            "produced_by": "a0/tasks/circle-packing/tools/build_c_star.py",
+            "status": "published"
+          },
+          {
+            "note": "derived artifact (E* applied to C*); deliberately not hashed into EID*, hash it separately for provenance",
+            "reference_table": "tasks/circle-packing/E_STAR.json"
+          }
+        ],
+        "files": [
+          "tasks/circle-packing/C_STAR/c01_good_hex/candidate.json",
+          "tasks/circle-packing/C_STAR/c01_good_hex/solution.py",
+          "tasks/circle-packing/C_STAR/c02_baseline_upstream/candidate.json",
+          "tasks/circle-packing/C_STAR/c02_baseline_upstream/solution.py",
+          "tasks/circle-packing/C_STAR/c03_mirror/candidate.json",
+          "tasks/circle-packing/C_STAR/c03_mirror/solution.py",
+          "tasks/circle-packing/C_STAR/c04_near_tie/candidate.json",
+          "tasks/circle-packing/C_STAR/c04_near_tie/solution.py",
+          "tasks/circle-packing/C_STAR/c05_overlapping/candidate.json",
+          "tasks/circle-packing/C_STAR/c05_overlapping/solution.py",
+          "tasks/circle-packing/C_STAR/c06_empty/candidate.json",
+          "tasks/circle-packing/C_STAR/c06_empty/solution.py",
+          "tasks/circle-packing/C_STAR/c07_single/candidate.json",
+          "tasks/circle-packing/C_STAR/c07_single/solution.py",
+          "tasks/circle-packing/C_STAR/c08_out_of_bounds/candidate.json",
+          "tasks/circle-packing/C_STAR/c08_out_of_bounds/solution.py",
+          "tasks/circle-packing/C_STAR/c09_malformed_import/candidate.json",
+          "tasks/circle-packing/C_STAR/c09_malformed_import/solution.py",
+          "tasks/circle-packing/C_STAR/c10_raises/candidate.json",
+          "tasks/circle-packing/C_STAR/c10_raises/solution.py",
+          "tasks/circle-packing/C_STAR/c11_non_deterministic/candidate.json",
+          "tasks/circle-packing/C_STAR/c11_non_deterministic/solution.py",
+          "tasks/circle-packing/C_STAR/c12_exit_without_artifacts/candidate.json",
+          "tasks/circle-packing/C_STAR/c12_exit_without_artifacts/solution.py",
+          "tasks/circle-packing/C_STAR/c13_slow/candidate.json",
+          "tasks/circle-packing/C_STAR/c13_slow/solution.py",
+          "tasks/circle-packing/C_STAR/c14_near_zero/candidate.json",
+          "tasks/circle-packing/C_STAR/c14_near_zero/solution.py",
+          "tasks/circle-packing/C_STAR/manifest.json",
+          "tasks/circle-packing/upstream/loreley/examples/circle_packing_env/evaluate.py",
+          "tasks/circle-packing/upstream/loreley/examples/circle_packing_env/local_eval.py",
+          "tasks/circle-packing/upstream/loreley/examples/circle_packing_env/README.md",
+          "tasks/circle-packing/upstream/loreley/examples/evol_circle_packing.py",
+          "tasks/circle-packing/upstream/circle-packing/README.md",
+          "tasks/circle-packing/upstream/circle-packing/loreley.program.md",
+          "tasks/circle-packing/upstream/circle-packing/solution.py",
+          "tasks/circle-packing/upstream/circle-packing/pyproject.toml",
+          "tasks/circle-packing/upstream/circle-packing/scripts/local_eval.py",
+          "tasks/circle-packing/tools/good_packing_26.json"
+        ]
+      },
+      "digest": "b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21",
+      "kind": "data_manifest",
+      "records": [
+        {
+          "data": "tasks/circle-packing/C_STAR/c01_good_hex/candidate.json",
+          "kind": "file",
+          "sha256": "9b8803233ec02ae0763e4dc72465280dc343d11ee5cd456172347210c39409bc",
+          "size": 462
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c01_good_hex/solution.py",
+          "kind": "file",
+          "sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+          "size": 2867
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c02_baseline_upstream/candidate.json",
+          "kind": "file",
+          "sha256": "0873d20e0bf15632fdcdc67a3c57008fd18e55cb247eaa67bfe6b26e830443cb",
+          "size": 704
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c02_baseline_upstream/solution.py",
+          "kind": "file",
+          "sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+          "size": 1441
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c03_mirror/candidate.json",
+          "kind": "file",
+          "sha256": "99d6d5513423f7bc419b4007b123fb4bdb722e285ee396b8a434fb7cc6c270ed",
+          "size": 574
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c03_mirror/solution.py",
+          "kind": "file",
+          "sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+          "size": 2849
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c04_near_tie/candidate.json",
+          "kind": "file",
+          "sha256": "41b2aecb729b1450a9a5bd51b7b25a195cf90568dc0e3e1534f737c32ba97433",
+          "size": 526
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c04_near_tie/solution.py",
+          "kind": "file",
+          "sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+          "size": 2808
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c05_overlapping/candidate.json",
+          "kind": "file",
+          "sha256": "10933e485126d6c6d96fdff767c9ee24f65ef5715cec21e2de470a55a93d052e",
+          "size": 514
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c05_overlapping/solution.py",
+          "kind": "file",
+          "sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+          "size": 2854
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c06_empty/candidate.json",
+          "kind": "file",
+          "sha256": "d2ba6d734882283d350f0474080369658c68bfa277957be292b37ed8f548b9a6",
+          "size": 519
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c06_empty/solution.py",
+          "kind": "file",
+          "sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+          "size": 703
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c07_single/candidate.json",
+          "kind": "file",
+          "sha256": "297b8c000c319d9dd28fb9ccd36d9b46f8c29c26f5e1af3d82e40073abeabcbc",
+          "size": 522
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c07_single/solution.py",
+          "kind": "file",
+          "sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+          "size": 776
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c08_out_of_bounds/candidate.json",
+          "kind": "file",
+          "sha256": "2bb91a140d8104fd870a35049e3c8c0970073596fcd2c0115623809c838f0dae",
+          "size": 505
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c08_out_of_bounds/solution.py",
+          "kind": "file",
+          "sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+          "size": 2780
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c09_malformed_import/candidate.json",
+          "kind": "file",
+          "sha256": "93c476f4319f13b2fbf32b080f2fe17d16501bcb69ca1223842ea28b850f0c4b",
+          "size": 538
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c09_malformed_import/solution.py",
+          "kind": "file",
+          "sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+          "size": 206
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c10_raises/candidate.json",
+          "kind": "file",
+          "sha256": "d90b736f9b8e2658fb2ad6a18f47e6b6d5ef71af5ffa20643ef09cd8398397d5",
+          "size": 510
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c10_raises/solution.py",
+          "kind": "file",
+          "sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+          "size": 865
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c11_non_deterministic/candidate.json",
+          "kind": "file",
+          "sha256": "2431e40958dec23337d54b781aff42a4ee9698670d0797473df2e454ad043cdd",
+          "size": 534
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c11_non_deterministic/solution.py",
+          "kind": "file",
+          "sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+          "size": 2908
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c12_exit_without_artifacts/candidate.json",
+          "kind": "file",
+          "sha256": "3808da3d9c651e1c637a9db46f303fcb52c448cbe981563b6dbb266a3b663ca8",
+          "size": 634
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c12_exit_without_artifacts/solution.py",
+          "kind": "file",
+          "sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+          "size": 909
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c13_slow/candidate.json",
+          "kind": "file",
+          "sha256": "45486794fa6f8489204b614220ff795b7f7727713199cc0c80fdf8409223c793",
+          "size": 498
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c13_slow/solution.py",
+          "kind": "file",
+          "sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+          "size": 2787
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c14_near_zero/candidate.json",
+          "kind": "file",
+          "sha256": "110ec00b3133243537af68bb203e5425d6a4e7af241b5cf6c76f2576738fcc45",
+          "size": 527
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/c14_near_zero/solution.py",
+          "kind": "file",
+          "sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+          "size": 1188
+        },
+        {
+          "data": "tasks/circle-packing/C_STAR/manifest.json",
+          "kind": "file",
+          "sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+          "size": 13371
+        },
+        {
+          "data": "tasks/circle-packing/tools/good_packing_26.json",
+          "kind": "file",
+          "sha256": "1b01a02eb1b5e2e1acc6e2a6e4607068da31994d3ec5002d979480596d094d3d",
+          "size": 2168
+        },
+        {
+          "data": "tasks/circle-packing/upstream/circle-packing/README.md",
+          "kind": "file",
+          "sha256": "e5f81ceb24c8120d94e99825b9d1bada05b66aa7aa643af12c2425606046f4d2",
+          "size": 1977
+        },
+        {
+          "data": "tasks/circle-packing/upstream/circle-packing/loreley.program.md",
+          "kind": "file",
+          "sha256": "ddeab133682947deddfacbf48e19da8b21210e37751659b2474fd0725b6c9ccd",
+          "size": 1443
+        },
+        {
+          "data": "tasks/circle-packing/upstream/circle-packing/pyproject.toml",
+          "kind": "file",
+          "sha256": "e05fd004a336e32d5ffe8bc35096d76952d3e1ca03fcc529b2052379635ef696",
+          "size": 160
+        },
+        {
+          "data": "tasks/circle-packing/upstream/circle-packing/scripts/local_eval.py",
+          "kind": "file",
+          "sha256": "a42dd17f584aff34506921f7f7d697e2bb4cd42634dcb83ad2c9ae105725eac8",
+          "size": 9240
+        },
+        {
+          "data": "tasks/circle-packing/upstream/circle-packing/solution.py",
+          "kind": "file",
+          "sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+          "size": 1441
+        },
+        {
+          "data": "tasks/circle-packing/upstream/loreley/examples/circle_packing_env/README.md",
+          "kind": "file",
+          "sha256": "a5c7fa9d33a630a6027c05a44b996b4a1b53c8778eae2e3cd82a3b302fcd7fdf",
+          "size": 4314
+        },
+        {
+          "data": "tasks/circle-packing/upstream/loreley/examples/circle_packing_env/evaluate.py",
+          "kind": "file",
+          "sha256": "d0eb3ad6567b6b71fe43916943257ff7ba302aafdb519a6ed4807fa2b7502f77",
+          "size": 14045
+        },
+        {
+          "data": "tasks/circle-packing/upstream/loreley/examples/circle_packing_env/local_eval.py",
+          "kind": "file",
+          "sha256": "fede3af996c8724b809feace7d8361d742107b9563b73486d7e3b5a2eeba190e",
+          "size": 9628
+        },
+        {
+          "data": "tasks/circle-packing/upstream/loreley/examples/evol_circle_packing.py",
+          "kind": "file",
+          "sha256": "e3f05703ad4a8bb476d8934556ba59dfea5db219ffedafd309c726f1bb2a5b3c",
+          "size": 63374
+        },
+        {
+          "entry": {
+            "candidate_set_id": "C*",
+            "manifest": "tasks/circle-packing/C_STAR/manifest.json",
+            "produced_by": "a0/tasks/circle-packing/tools/build_c_star.py",
+            "status": "published"
+          },
+          "kind": "inline"
+        },
+        {
+          "entry": {
+            "commit": "4c3759208e6b908f90716488ac3eec3dceaaf397",
+            "pinned_at": "a0/tasks/circle-packing/upstream/loreley",
+            "role": "provides the plumbing task definition and the authoritative evaluator plugin",
+            "upstream_repo": "github.com/NeapolitanIcecream/loreley"
+          },
+          "kind": "inline"
+        },
+        {
+          "entry": {
+            "commit": "b91c0906c9f676eb661990d881144909d99f2d72",
+            "pinned_at": "a0/tasks/circle-packing/upstream/circle-packing",
+            "role": "problem statement, objective, baseline solution.py",
+            "upstream_repo": "github.com/NeapolitanIcecream/circle-packing"
+          },
+          "kind": "inline"
+        },
+        {
+          "entry": {
+            "note": "derived artifact (E* applied to C*); deliberately not hashed into EID*, hash it separately for provenance",
+            "reference_table": "tasks/circle-packing/E_STAR.json"
+          },
+          "kind": "inline"
+        }
+      ]
+    },
+    "DependencyLock": {
+      "declared": {
+        "entries": [
+          {
+            "implementation": "CPython",
+            "note": "E* and every candidate of C* import the standard library only",
+            "python": "3.12.11",
+            "third_party_packages": []
+          }
+        ],
+        "files": [
+          {
+            "kind": "raw",
+            "path": "tasks/circle-packing/requirements.lock"
+          }
+        ]
+      },
+      "digest": "7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75",
+      "kind": "lock_entries",
+      "records": [
+        {
+          "entry": {
+            "implementation": "CPython",
+            "note": "E* and every candidate of C* import the standard library only",
+            "python": "3.12.11",
+            "third_party_packages": []
+          },
+          "kind": "inline"
+        },
+        {
+          "kind": "raw",
+          "lock": "tasks/circle-packing/requirements.lock",
+          "sha256": "861a979139cea7d490e43f60dc3a2e277ec2dca08d3f70af3ebfdae28caf14fd",
+          "size": 386
+        }
+      ]
+    },
+    "EvaluatorSource": {
+      "declared": {
+        "exclude": [
+          "**/*.tmp"
+        ],
+        "include": [
+          "e_star.py",
+          "e_star_child.py"
+        ],
+        "root": "tasks/circle-packing"
+      },
+      "digest": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+      "include": [
+        "e_star.py",
+        "e_star_child.py"
+      ],
+      "kind": "source_tree",
+      "records": [
+        {
+          "kind": "file",
+          "path": "e_star.py",
+          "sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+          "size": 34860
+        },
+        {
+          "kind": "file",
+          "path": "e_star_child.py",
+          "sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca",
+          "size": 4704
+        }
+      ],
+      "root": "tasks/circle-packing"
+    },
+    "MetricDefinition": {
+      "declared": {
+        "value": {
+          "definition": "sum of the radii of the circles returned by pack_circles(n=26), accumulated in returned order with CPython's sum()",
+          "direction": "maximize",
+          "failure_semantics": "when status != ok the objective is null, never 0.0; the adapter must not coerce a missing objective into a score",
+          "implementation": [
+            "tasks/circle-packing/e_star.py::structure_fields",
+            "upstream/circle-packing/loreley.program.md:8-10",
+            "upstream/circle-packing/README.md:19-27",
+            "upstream/loreley/examples/circle_packing_env/evaluate.py:133-145"
+          ],
+          "known_upstream_discrepancy": "evaluate.py (the plugin Loreley's worker actually loads) and scripts/local_eval.py differ by one ULP in sum_radii because the latter accumulates in a loop while the former uses sum(); E* mirrors evaluate.py, verified bit-for-bit by tools/crosscheck_upstream.py",
+          "name": "sum_radii",
+          "outcome_fields": [
+            "sum_radii",
+            "packing_density",
+            "num_circles",
+            "overlap_count",
+            "min_gap",
+            "min_boundary_margin"
+          ],
+          "scalarization_owner": "F_r",
+          "unit": "radius_sum (length in the unit square, n=26)",
+          "validity_gates": [
+            "count_equals_n",
+            "radius_positive_check",
+            "bounds_check",
+            "overlap_check",
+            "determinism_check",
+            "runtime_budget_check"
+          ]
+        }
+      },
+      "digest": "420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0",
+      "direction": "maximize",
+      "kind": "value",
+      "metric_name": "sum_radii",
+      "value": {
+        "definition": "sum of the radii of the circles returned by pack_circles(n=26), accumulated in returned order with CPython's sum()",
+        "direction": "maximize",
+        "failure_semantics": "when status != ok the objective is null, never 0.0; the adapter must not coerce a missing objective into a score",
+        "implementation": [
+          "tasks/circle-packing/e_star.py::structure_fields",
+          "upstream/circle-packing/loreley.program.md:8-10",
+          "upstream/circle-packing/README.md:19-27",
+          "upstream/loreley/examples/circle_packing_env/evaluate.py:133-145"
+        ],
+        "known_upstream_discrepancy": "evaluate.py (the plugin Loreley's worker actually loads) and scripts/local_eval.py differ by one ULP in sum_radii because the latter accumulates in a loop while the former uses sum(); E* mirrors evaluate.py, verified bit-for-bit by tools/crosscheck_upstream.py",
+        "name": "sum_radii",
+        "outcome_fields": [
+          "sum_radii",
+          "packing_density",
+          "num_circles",
+          "overlap_count",
+          "min_gap",
+          "min_boundary_margin"
+        ],
+        "scalarization_owner": "F_r",
+        "unit": "radius_sum (length in the unit square, n=26)",
+        "validity_gates": [
+          "count_equals_n",
+          "radius_positive_check",
+          "bounds_check",
+          "overlap_check",
+          "determinism_check",
+          "runtime_budget_check"
+        ]
+      }
+    }
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "eid_star_derivation": {
+    "algorithm": "sha256",
+    "domain": "a0/evalcontract/v1/EID*",
+    "payload_canonical": "{\"Config\":\"550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac\",\"DataManifest\":\"b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21\",\"DependencyLock\":\"7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75\",\"EvaluatorSource\":\"a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29\",\"MetricDefinition\":\"420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0\"}"
+  },
+  "schema": "a0.evalcontract/v1",
+  "spec": "tasks/circle-packing/plumbing.contract.proposed.json",
+  "task": "circle-packing-plumbing"
+}
