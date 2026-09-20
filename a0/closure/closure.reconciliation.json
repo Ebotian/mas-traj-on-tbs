@@ -1,0 +1,141 @@
+{
+  "schema": "a0.closure.reconciliation/v1",
+  "date": "2026-09-20T18:20+08:00",
+  "author": "closure-verification workstream (a0/closure/)",
+  "purpose": "reconcile this workstream's closure verdicts with each runtime workstream's own closure record; name which record is authoritative for which channel and why",
+  "authority_rule": [
+    "A record is authoritative for a channel only if it contains an EXECUTED observation of that channel with a control (unblocked reaches / blocked fails).",
+    "A probe that timed out, or that only shows a tool being absent, establishes nothing about closure and must not be reported as closed.",
+    "Where two records disagree, the one with the executed two-control observation for the disputed channel wins; the other is retained with its scope narrowed."
+  ],
+  "lane_e2e_measurements": {
+    "method": "a0/closure/probes/lane_e2e_probe.py -- lane argv built by the runtime's OWN code, executed for real; the model is asked to run the shared canary through its shell tool and to PERSIST the canary's stdout to a file, so the model's prose is never the evidence",
+    "results": [
+      {"runtime": "kapso", "posture": "closed (agent_specific.sandbox=workspace-write, web_search=false)",
+       "verdict": "closed", "model_call_completed": true, "returncode": 0, "tool_ran": true,
+       "canary": "LANE_PROBE dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED",
+       "elapsed_sec": 34.8, "evidence": "a0/closure/evidence/11_kapso_lane_closed.json"},
+      {"runtime": "kapso", "posture": "open (shipped default: --sandbox danger-full-access + --search)",
+       "verdict": "egress_detected", "model_call_completed": true, "returncode": 0, "tool_ran": true,
+       "canary": "LANE_PROBE ... egress=OPEN", "elapsed_sec": 102.0,
+       "evidence": "a0/closure/evidence/11b_kapso_lane_open.json"},
+      {"runtime": "simpleloop", "posture": "closed (its shipped CliSolver argv: codex exec --sandbox workspace-write)",
+       "verdict": "closed", "model_call_completed": true, "returncode": 0, "tool_ran": true,
+       "canary": "LANE_PROBE dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED",
+       "elapsed_sec": 68.6, "evidence": "a0/closure/evidence/13_simpleloop_lane_closed.json"},
+      {"runtime": "simpleloop", "posture": "open (control: same machinery, danger-full-access)",
+       "verdict": "egress_detected", "model_call_completed": true, "returncode": 0, "tool_ran": true,
+       "canary": "LANE_PROBE ... egress=OPEN", "elapsed_sec": 37.2,
+       "evidence": "a0/closure/evidence/13b_simpleloop_lane_open.json"}
+    ]
+  },
+  "per_runtime": [
+    {
+      "runtime": "kapso",
+      "other_record": "a0/runtimes/kapso/runs/closure-01/closure.json",
+      "other_verdict": {"verdict": "closed", "mechanism": "config",
+                        "verdict_by_channel": {"egress_sentinel": "closed", "front_doors_config": "closed",
+                                               "llm_agent_lane": "closed_by_config",
+                                               "registered_evaluation_channel": "closed"}},
+      "agreements": [
+        "their channel_detail.codex_lane.note states the same fact as this workstream's F2: KAPSO DOES expose a lane-level codex sandbox parameter (agent_specific.sandbox, codex_agent.py:117) whose default is danger-full-access, and the claude lane has no equivalent parameter",
+        "their recipe.not_closed_by and this workstream agree that the codex lane's default is what plan:569 describes",
+        "the barrier observations agree: unshare-rn blocks egress and the registered evaluation still scores identically under the barrier"
+      ],
+      "contradictions": [
+        {
+          "channel": "codex lane, closed posture",
+          "their_evidence": "lane_probes.codex_workspace_write = {returncode: 124, timed_out: true, command_ran: false, egress_ok: false} -- the probe TIMED OUT and the in-lane command never ran",
+          "their_claim": "verdict_by_channel.llm_agent_lane = 'closed_by_config', top-level verdict 'closed'",
+          "this_workstream": "closed, measured: returncode 0, model call completed, in-lane canary persisted egress=BLOCKED (evidence/11_kapso_lane_closed.json)",
+          "authoritative": "this workstream (a0/closure/closure.kapso.json mechanism codex-lane-bash-side-door)",
+          "why": "a timed-out probe and a probe that never ran its command cannot support a closure claim; the executed run here does, and it also shows the model call still completes (rc=0), which is the part that matters for A0/A1 usability",
+          "effect": "their verdict is UPGRADED from inference to evidence; the channel is genuinely closable by ONE config key (agent_specific.sandbox=workspace-write), not only by a code change"
+        },
+        {
+          "channel": "claude lane",
+          "their_evidence": "lane_probes.claude_with_tool_bans: command_ran=false, network_reached=false; the agent's own reply 'the Bash tool isn't available in this session'; lane_closure_by = ['claude lane: agent_specific.disallowed_tools removes Bash']",
+          "their_claim": "the claude lane is closed by config",
+          "this_workstream": "NOT closed as a runtime lane; closure here is achieved by DELETING the shell tool",
+          "authoritative": "this workstream for the study-level verdict; theirs for the narrow statement 'with Bash banned, this lane cannot run shell commands'",
+          "why": "removing Bash closes the network by removing the capability the coding lane exists to use, and (a) their probe therefore observed an ABSENT tool, never a DENIED network attempt, and (b) a KAPSO coding lane without Bash cannot run the registered evaluation through its own machinery, which is the premise A0.1 rests on. This is the same defect class as `claude --restricted`",
+          "effect": "claude lane verdict must read CONDITIONAL (external cut or lane switch), not closed"
+        },
+        {
+          "channel": "record hygiene",
+          "issue": "lane_backend_evidence still says 'No model call was attempted in this probe, so the lane stays UNPROBED', while lane_probes.codex_reachable / claude_reachable are model calls; and unprobed_channels is [] although the codex closed-posture probe timed out",
+          "effect": "documentation defect in that record; no measurement conflict with this workstream"
+        }
+      ]
+    },
+    {
+      "runtime": "eve",
+      "other_record": "a0/runtimes/eve/out/run001/closure.json",
+      "other_verdict": {"verdict": "egress_detected", "mechanism": "external_network_isolation",
+                        "mechanism_detail": {"agent_lane_shipped_config": "OPEN (curl HTTP 200)", "agent_lane_recommended_config": "BLOCKED (curl exit 7)", "codex_exec_closable_by_config": false}},
+      "agreements": [
+        "complete agreement with this workstream's F1: the shipped full-run driver is codex_exec, it carries no sandbox parameter, its argv bypasses the sandbox, and it enables live web search; closure is possible ONLY by switching the driver to codex_tmux with web_search disabled",
+        "both records show the codex_tmux/workspace-write posture blocked (their curl exit 7; this workstream's canary dns/tcp/https fail with local=ok)",
+        "both records show the unsandboxed/shipped posture open (their HTTP 200; this workstream's egress=OPEN)"
+      ],
+      "contradictions": [
+        {
+          "channel": "scope of the top-level verdict",
+          "detail": "their verdict 'egress_detected' describes EvE AS SHIPPED; this workstream's closure.eve.json 'closed' describes the codex_tmux posture the protocol recipe names, with the shipped path recorded as a separate OPEN mechanism",
+          "authoritative": "theirs for 'EvE as shipped'; this workstream's for the per-mechanism/posture breakdown",
+          "why": "neither claim is wrong, they answer different questions; the study must quote both together (EvE = CONDITIONAL, shipped default OPEN)"
+        },
+        {
+          "channel": "evidence that the model lane is reachable",
+          "detail": "their observed.agent_lane.cmd finished with rc=124 (40s timeout) yet the conclusion reads 'the agent lane is reachable: codex completes a model call'",
+          "authoritative": "this workstream (evidence/07_model_lane_blocked.log rc=0 'OK'; evidence/08, 09, 11, 11b, 13, 13b all rc=0)",
+          "why": "rc=124 is a timeout kill and does not support a reachability claim; the claim is nevertheless true and now has clean executed support"
+        },
+        {
+          "channel": "model id",
+          "detail": "their record notes the shipped driver pins model gpt-5.6-sol while the provider answered as gpt-5.6-terra",
+          "action": "relay to the EvE workstream: a full EvE run must confirm the configured model id is served before A0.1/A0.2 numbers are trusted"
+        }
+      ]
+    },
+    {
+      "runtime": "loreley",
+      "other_record": "a0/runtimes/loreley/out/closure.json",
+      "other_verdict": {"verdict": "closed", "mechanism": "external_network_isolation"},
+      "agreements": [
+        "external isolation is the mechanism, not configuration",
+        "docker --internal keeps siblings reachable while killing egress (their sibling_postgres/sibling_redis ok), and it also cuts the host route (their host_loopback_127_0_0_1_5432 fail; this workstream's 02_host_loopback_cut.log)"
+      ],
+      "contradictions": [
+        {
+          "channel": "scope of 'closed'",
+          "their_evidence": "their own caveats say 'the probed lane is the evaluator/candidate lane, which is the only lane this adapter can drive' and that the codex backend 'could not be exercised'",
+          "this_workstream": "the LLM lane was measured by this workstream: the codex backend selects `--sandbox workspace-write`, and that exact CLI posture is now proven closed with the model call completing (evidence/08, 13). The DEFAULT backend (kilocode, `kilo run --auto`, no closure switch) is still OPEN by construction and cannot even start here (`kilo` not installed)",
+          "authoritative": "theirs for the candidate/evaluator channel; this workstream's closure.loreley.json for the LLM lane and for the default-backend verdict",
+          "why": "their caveat about the unusable model lane was true when written and is now obsolete; their verdict does not cover the channel the protocol's closure requirement is about (autonomous acquisition by the agent lane)",
+          "effect": "Loreley stays CONDITIONAL: codex backend closed, default kilocode backend open/unprobeable, evaluated lane closed under external isolation"
+        }
+      ]
+    },
+    {
+      "runtime": "simpleloop",
+      "other_record": "a0/runtimes/simpleloop/out/closure.json",
+      "other_verdict": {"verdict": "closed", "mechanism": "external_network_isolation", "solver_lane": "injected"},
+      "agreements": [
+        "no contradiction: their record explicitly states 'The solver lane is NOT covered by this verdict in isolation: with --solver codex|claude the substrate inherits that CLI's network posture. A closed deployment must run the solver lane inside the same barrier (probe with --probe-cmd) or use --solver injected.'",
+        "both records treat the injected lane as closed under unshare -rn, and both use the two-control pattern"
+      ],
+      "contradictions": [],
+      "resolution": {
+        "channel": "CLI solver lane (now implemented: a0/runtimes/simpleloop/a0_adapter/solvers.py, CliSolver._command -> codex exec --sandbox workspace-write)",
+        "authoritative": "this workstream (evidence/13_simpleloop_lane_closed.json)",
+        "why": "it is the executed end-to-end measurement of that lane with a model turn and a persisted in-lane canary; the SimpleLoop record explicitly leaves this channel open",
+        "effect": "SimpleLoop's study verdict moves from CONDITIONAL/inconclusive to CLOSED for its shipped solver argv; re-probe if the solver CLI changes"
+      }
+    }
+  ],
+  "cross_runtime_consequence": [
+    "All four substrates can now run under the SAME access policy on this host: codex workspace-write with web search disabled (KAPSO by one agent_specific key, SimpleLoop by its shipped argv, EvE by driver switch, Loreley by backend switch). That is what plan:591-603 requires of the A1 comparison.",
+    "EvE's shipped default remains the outlier: any EvE arm must state which driver it ran, because codex_exec (open) and codex_tmux (closed) are not the same experiment."
+  ]
+}

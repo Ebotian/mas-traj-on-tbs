@@ -1,0 +1,26 @@
+### F4 regression demo  date=2026-09-20T18:10:37+08:00
+### command under test prints its own 'egress=BLOCKED'; mechanism=host canary says OPEN
+### the correct verdict is CONFIRMED (the command's own marker must be ignored)
+
+--- BEFORE (pre-patch classifier, byte-identical script with the one-line classifier reverted) ---
+### mechanism=host expectation=egress_open image=alpine:3.21 timeout=30s date=2026-09-20T18:10:37+08:00
+### runtime command under test: echo "command-under-test says egress=BLOCKED"
+EVIDENCE mechanism=host mode=cmd rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN
+OBSERVED-OUTPUT-BEGIN
+command-under-test says egress=BLOCKED
+CANARY dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a
+OBSERVED-OUTPUT-END
+VERDICT host: MISMATCH (expected egress_open, observed egress_OPEN
+BLOCKED)
+rc=1
+
+--- AFTER (a0/env/checks/probe_egress.sh, patched) ---
+### mechanism=host expectation=egress_open image=alpine:3.21 timeout=30s date=2026-09-20T18:10:38+08:00
+### runtime command under test: echo "command-under-test says egress=BLOCKED"
+EVIDENCE mechanism=host mode=cmd rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN
+OBSERVED-OUTPUT-BEGIN
+command-under-test says egress=BLOCKED
+CANARY dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a
+OBSERVED-OUTPUT-END
+VERDICT host: CONFIRMED (expected egress_open, observed egress_OPEN)
+rc=0

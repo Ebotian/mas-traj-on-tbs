@@ -1,0 +1,19 @@
+### codex CLI sandbox probe  date=2026-09-20T18:35:40+08:00
+### codex=codex-cli 0.154.0  canary=/home/ebt/rsi-dev/a0/closure/probes/lane_net_probe.py  workspace=/home/ebt/rsi-dev/a0/closure/probes/../evidence/_sandbox_workspace
+
+--- control 1: no sandbox at all (host) ---
+EVIDENCE case=host-no-sandbox mode=positive-control dns=ok tcp=ok tcpvia=example.com:443 https=ok local=ok egress=OPEN
+VERDICT host-no-sandbox: CONFIRMED (expected egress_open, observed egress_OPEN)
+
+--- codex sandbox modes (same canary, CLI sandbox applied) ---
+EVIDENCE case=codex-sandbox-workspace-write codex-args=[sandbox -c sandbox_mode="workspace-write" -- /usr/bin/python3 /home/ebt/rsi-dev/a0/closure/probes/lane_net_probe.py] dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED
+VERDICT codex-sandbox-workspace-write: CONFIRMED (expected egress_blocked, observed egress_BLOCKED)
+
+EVIDENCE case=codex-sandbox-danger-full-access codex-args=[sandbox -c sandbox_mode="danger-full-access" -- /usr/bin/python3 /home/ebt/rsi-dev/a0/closure/probes/lane_net_probe.py] dns=ok tcp=ok tcpvia=example.com:443 https=ok local=ok egress=OPEN
+VERDICT codex-sandbox-danger-full-access: CONFIRMED (expected egress_open, observed egress_OPEN)
+
+--- the network_access knob inside workspace-write (why config alone is not proof) ---
+EVIDENCE case=codex-sandbox-workspace-write+network_access=true codex-args=[sandbox -c sandbox_mode="workspace-write" -c sandbox_workspace_write.network_access=true -- /usr/bin/python3 /home/ebt/rsi-dev/a0/closure/probes/lane_net_probe.py] dns=ok tcp=ok tcpvia=example.com:443 https=ok local=ok egress=OPEN
+VERDICT codex-sandbox-workspace-write+network_access=true: CONFIRMED (expected egress_open, observed egress_OPEN)
+
+CLI-SANDBOX-PROBE: PASS

@@ -1,0 +1,10 @@
+Reading additional input from stdin...
+{"type":"thread.started","thread_id":"01a0be1b-9ac0-7423-9b42-f2528c3e93a0"}
+{"type":"turn.started"}
+{"type":"error","message":"Reconnecting... 1/5 (stream disconnected before completion: stream closed before response.completed)"}
+{"type":"error","message":"Reconnecting... 2/5 (stream disconnected before completion: stream closed before response.completed)"}
+{"type":"error","message":"Reconnecting... 3/5 (stream disconnected before completion: stream closed before response.completed)"}
+{"type":"item.started","item":{"id":"item_0","type":"command_execution","command":"/bin/bash -lc 'env -u http_proxy -u https_proxy /usr/bin/python3 /home/ebt/rsi-dev/a0/closure/probes/lane_net_probe.py'","aggregated_output":"","exit_code":null,"status":"in_progress"}}
+{"type":"item.completed","item":{"id":"item_0","type":"command_execution","command":"/bin/bash -lc 'env -u http_proxy -u https_proxy /usr/bin/python3 /home/ebt/rsi-dev/a0/closure/probes/lane_net_probe.py'","aggregated_output":"LANE_PROBE dns=ok tcp=ok tcpvia=example.com:443 https=ok local=ok egress=OPEN\n","exit_code":0,"status":"completed"}}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"LANE_PROBE dns=ok tcp=ok tcpvia=example.com:443 https=ok local=ok egress=OPEN"}}
+{"type":"turn.completed","usage":{"input_tokens":37286,"cached_input_tokens":36352,"cache_write_input_tokens":0,"output_tokens":268,"reasoning_output_tokens":162}}

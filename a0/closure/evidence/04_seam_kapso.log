@@ -1,0 +1,19 @@
+### KAPSO seam probe: argv built by KAPSO's own adapters
+
+--- shipped agent_specific defaults from agents.yaml ---
+codex: agent_specific={"effort": "xhigh", "sandbox": "danger-full-access", "timeout": 3600, "web_search": true}
+claude_code: agent_specific={"allowed_tools": ["Edit", "Read", "Write", "Bash"], "planning_mode": false, "streaming": true, "timeout": 3600}
+
+--- codex lane, as KAPSO ships it ---
+codex lane sandbox='danger-full-access' web_search=True
+codex lane argv (fresh session): ['codex', '--search', 'exec', '--sandbox', 'danger-full-access', '--skip-git-repo-check', '--color', 'never', '--output-last-message', '/tmp/last', '-m', 'gpt-5.6-sol', '-c', 'model_reasoning_effort="xhigh"']
+
+--- codex lane after a one-key code change (hypothetical closure) ---
+codex lane sandbox='workspace-write' web_search=False
+codex lane argv: ['codex', 'exec', '--sandbox', 'workspace-write', '--skip-git-repo-check', '--color', 'never', '--output-last-message', '/tmp/last', '-m', 'gpt-5.6-sol', '-c', 'model_reasoning_effort="xhigh"']
+
+--- claude lane, as KAPSO ships it ---
+claude lane argv: ['claude', '-p', '--dangerously-skip-permissions', '--output-format', 'text', '--model', 'claude-opus-4-5', '--allowedTools', 'Edit,Read,Write,Bash', '--disallowedTools', 'ScheduleWakeup']
+claude lane allowed tools: ['Edit', 'Read', 'Write', 'Bash']
+claude lane disallowed tools: []
+claude lane capabilities: {'native_git': False, 'sandbox': False, 'planning_mode': True, 'cost_tracking': True, 'streaming': True, 'oauth': True, 'api_key': False, 'bedrock': False, 'mcp': False}

@@ -1,0 +1,9 @@
+### date=2026-09-20T18:35:08+08:00 relay=127.0.0.1:15722
+--- on the host, no barrier ---
+HOST_RELAY_HTTP=200
+--- inside unshare -rn, same URL ---
+NETNS_RELAY_HTTP=000
+NETNS_RELAY_HTTP=000 (unreachable)
+--- inside an --internal docker network, reaching the host gateway ---
+INTERNAL_HOSTGW_RELAY=fail
+INTERNAL_EGRESS=blocked

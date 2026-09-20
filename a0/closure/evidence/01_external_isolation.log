@@ -1,0 +1,16 @@
+### mechanism=host expectation=egress_open image=alpine:3.21 timeout=60s date=2026-09-20T18:35:32+08:00
+### runtime command under test: env -u http_proxy -u https_proxy /usr/bin/python3 /home/ebt/rsi-dev/a0/closure/probes/lane_net_probe.py
+EVIDENCE mechanism=host mode=cmd rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN
+OBSERVED-OUTPUT-BEGIN
+LANE_PROBE dns=ok tcp=ok tcpvia=example.com:443 https=ok local=ok egress=OPEN
+CANARY dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a
+OBSERVED-OUTPUT-END
+VERDICT host: CONFIRMED (expected egress_open, observed egress_OPEN)
+### mechanism=unshare-rn expectation=egress_blocked image=alpine:3.21 timeout=60s date=2026-09-20T18:35:35+08:00
+### runtime command under test: env -u http_proxy -u https_proxy /usr/bin/python3 /home/ebt/rsi-dev/a0/closure/probes/lane_net_probe.py
+EVIDENCE mechanism=unshare-rn mode=cmd rc=0 dns=fail tcp=fail tcpvia=none https=fail local=n/a egress=BLOCKED
+OBSERVED-OUTPUT-BEGIN
+LANE_PROBE dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED
+CANARY dns=fail tcp=fail tcpvia=none https=fail local=n/a
+OBSERVED-OUTPUT-END
+VERDICT unshare-rn: CONFIRMED (expected egress_blocked, observed egress_BLOCKED)

@@ -1,0 +1,36 @@
+### date=2026-09-20T18:35:50+08:00
+### codex codex-cli 0.154.0
+--- feature flags relevant to external acquisition ---
+apps                                     stable             true
+apps_mcp_path_override                   removed            false
+browser_use                              stable             true
+browser_use_external                     stable             true
+browser_use_full_cdp_access              stable             true
+computer_use                             stable             true
+enable_mcp_apps                          under development  false
+in_app_browser                           stable             true
+mcp_2026_07_28                           under development  false
+mcp_oauth_refresh_coordination           under development  false
+network_proxy                            experimental       false
+non_prefixed_mcp_tool_names              under development  false
+respect_system_proxy                     under development  false
+responses_websockets                     removed            false
+responses_websockets_v2                  removed            false
+search_tool                              removed            false
+skill_mcp_dependency_install             stable             true
+skill_search                             stable             true
+standalone_web_search                    under development  false
+tool_call_mcp_elicitation                stable             true
+tool_search                              removed            false
+tool_search_always_defer_mcp_tools       removed            true
+web_search_cached                        deprecated         false
+web_search_request                       deprecated         false
+--- --search help text ---
+      --search
+          Enable live web search. When enabled, the native Responses `web_search` tool is available
+          to the model (no per‑call approval)
+--- exec bypass flag help text ---
+      --dangerously-bypass-approvals-and-sandbox
+          Skip all confirmation prompts and execute commands without sandboxing. EXTREMELY
+          DANGEROUS. Intended solely for running in environments that are externally sandboxed
+

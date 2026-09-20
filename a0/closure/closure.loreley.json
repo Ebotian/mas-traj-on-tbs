@@ -1,0 +1,84 @@
+{
+  "schema": "a0.closureprobe/v1",
+  "runtime": "loreley",
+  "probe_id": "a0-closure-loreley-2026-09-20",
+  "probe_date": "2026-09-20T17:12+08:00",
+  "protocol": "open_world_plan_review.typ:569 ('Loreley \u9ed8\u8ba4\u8def\u5f84\u65e0\u7f51\u7edc\u5f00\u5173\uff0c\u9700\u65ad\u7f51\u6216\u6539\u7528 codex \u540e\u7aef'), independent_review.typ:320 (D15)",
+  "study_verdict": "CONDITIONAL",
+  "study_verdict_scope": "conditional on changing the worker backend to the codex backend (a BACKEND change, not a config flag inside the default path). The default kilocode path is OPEN and has no closure switch at all.",
+  "verdict": "inconclusive",
+  "verdict_note": "Nothing dynamic was observed on the default path: the `kilo` binary is not installed on this host, so the default lane cannot be run, let alone probed. `inconclusive` must be treated as not-closed.",
+  "configured": {
+    "default_backends": {
+      "worker_planning_backend": "loreley.core.worker.agent.backends.kilocode_cli:kilocode_planning_backend",
+      "worker_coding_backend": "loreley.core.worker.agent.backends.kilocode_cli:kilocode_coding_backend",
+      "worker_seed_portfolio_backend": "loreley.core.worker.agent.backends.kilocode_cli:kilocode_seed_portfolio_backend",
+      "source": "loreley/config.py:418-421, 467-473 (Settings defaults; env-overridable via WORKER_*_BACKEND)"
+    },
+    "closure_switches_in_default_path": "none"
+  },
+  "observed": {
+    "egress_attempts": 0,
+    "dns_lookups": 0,
+    "sentinel_hits": 0,
+    "evidence": "backends built by Loreley's own code: kilo -> ['kilo','run','--auto','--title','t','PROMPT']; codex coding -> ['codex','-a','never','--sandbox','workspace-write','exec','--ephemeral','--color','never','--json']; codex planning -> [... '--sandbox','read-only' ...]; shutil.which('kilo') is None (evidence/04_seam_loreley.log)"
+  },
+  "mechanisms": [
+    {
+      "id": "default-kilocode-backend",
+      "runtime_path": "kilo run --auto (default planning/coding/seed-portfolio)",
+      "mechanism": "none",
+      "study_verdict": "OPEN",
+      "schema_verdict": "inconclusive",
+      "why": "The backend builds `kilo run --auto` (kilocode_cli.py:716-750) and its dataclass exposes no sandbox, no network and no web-search field (kilocode_cli.py:447-470); `--auto` auto-approves tool use. The lane therefore inherits whatever the host has.",
+      "probe_status": "NOT PROBEABLE HERE: `kilo` is not installed (shutil.which -> None), so the default lane cannot start. Recorded as BLOCKED, not as a pass.",
+      "possible_closure": "external network cut around the lane process (probe-proven mechanism, but see sharp edges), or a code change to the backend."
+    },
+    {
+      "id": "codex-backend",
+      "runtime_path": "worker_{planning,coding}_backend = ...codex_cli:codex_{planning,coding}_backend",
+      "mechanism": "config",
+      "study_verdict": "CLOSED (shell channel)",
+      "schema_verdict": "closed",
+      "why": "The codex backend passes explicit approval/sandbox flags: `-a never --sandbox workspace-write exec ...` for coding (codex_cli.py:313, full_auto=True) and `--sandbox read-only` for planning (codex_cli.py:294). It never passes `--search`, so web search is left at the CLI default.",
+      "executed_probe": {
+        "positive_control": "canary on host -> egress=OPEN",
+        "negative_case": "codex sandbox -c sandbox_mode=\"workspace-write\" -- <canary> -> egress=BLOCKED",
+        "end_to_end": "on the real model lane, a codex turn with the shell tool at `-s workspace-write` produced canary egress=BLOCKED (evidence/08_e2e_codex_workspace_write.jsonl)",
+        "note": "the same CLI sandbox the backend selects; run through a0/closure/probes/cli_sandbox_probe.sh"
+      },
+      "cost_of_the_change": "Switching the backend changes M (model/provider route), P (prompt/tool surface) and T for the run -- A0.1/A0.2 must be re-run for the backend actually used, and A1 must not silently mix backends."
+    },
+    {
+      "id": "cursor-backend",
+      "runtime_path": "loreley.core.worker.agent.backends.cursor_cli:cursor_*_backend",
+      "mechanism": "none",
+      "study_verdict": "OPEN",
+      "schema_verdict": "inconclusive",
+      "why": "cursor_cli.py:40-62 builds `<cursor-agent> -p PROMPT --model ... --force`; `--force` skips confirmations and no sandbox/network switch is passed. Same class of problem as the kilocode default."
+    }
+  ],
+  "sharp_edges": [
+    "The lane's environment is inherited from the host (kilocode_cli.py:544-565 (env = os.environ.copy() at :546) copies os.environ, then applies extra_env and per-job HOME/XDG/TMPDIR redirection when state_root is set), so an agent can also reach any service the host environment exposes -- closure is not just about the CLI flags.",
+    "An external network cut severs host-local services; Loreley additionally needs Postgres and Redis. Under docker --internal those must be SIBLINGS on the same internal network (probe-proven 'sibling reachable, egress blocked'), not published host ports; and the model endpoint must live inside the barrier too.",
+    "Loreley's evaluator may be reworked by a rework agent (worker_evaluator_rework_enabled=True by default, config.py Settings output in evidence/04_seam_loreley.log) -- a second agent lane inside the same boundary that A0.1 must account for."
+  ],
+  "unverified": [
+    "Any dynamic loreley behaviour: default backend missing (kilo not installed), Postgres/Redis not started by this workstream, and no campaign was run.",
+    "Whether the codex backend's default `web_search` state keeps the provider-side search tool off. Note the provider caveat carried over from the EvE/KAPSO probes: on this machine's custom provider a real model turn reported no web-search tool even with web search enabled (evidence/10b_e2e_websearch_live.jsonl), so this front door is provider-dependent."
+  ],
+  "probe_commands": [
+    "cd /tmp && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=<loreley checkout at 4c375920> <venv>/bin/python a0/closure/probes/seam_loreley_argv.py",
+    "a0/closure/probes/cli_sandbox_probe.sh   # the codex backend's sandbox, executed",
+    "a0/env/checks/probe_egress.sh check --mechanism docker-internal --cmd '<lane canary>'  # for the external-cut route"
+  ],
+  "evidence_files": [
+    "a0/closure/evidence/04_seam_loreley.log",
+    "a0/closure/evidence/03_cli_sandbox.log",
+    "a0/closure/evidence/00_self_test.log",
+    "a0/closure/evidence/02_host_loopback_cut.log"
+  ],
+  "reconciliation": "a0/closure/closure.reconciliation.json",
+  "reconciliation_note": "the Loreley workstream's record (a0/runtimes/loreley/out/closure.json, verdict closed / external_network_isolation) is scoped to the evaluator/candidate lane by its own caveats, which also state the codex backend 'could not be exercised'. That caveat is obsolete: the model lane works, and the codex backend's `--sandbox workspace-write` posture is proven closed with a live model turn (evidence/08, 13). Theirs stays authoritative for the candidate/evaluator channel; this record for the LLM lane and for the default-backend verdict (kilo run --auto, no closure switch, binary not installed).",
+  "verdict_summary": "top-level `verdict=inconclusive` (treated as NOT closed) because the DEFAULT backends are kilocode (`kilo run --auto`, no closure switch, binary not installed here). The codex backend posture is probe-proven closed; switching backends is the closure mechanism and changes M/P/T, so it must be declared."
+}

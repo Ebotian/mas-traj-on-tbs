@@ -1,0 +1,29 @@
+### EvE seam probe: argv built by EvE's own driver code
+### scaling_evolve from: /tmp/eve/src/scaling_evolve/__init__.py
+
+--- codex_tmux driver (the one the protocol recipe describes) ---
+codex_tmux default-closed argv: ['codex', '--no-alt-screen', '-a', 'never', '-s', 'workspace-write', '-C', '/tmp/a0-closure-eve-worktree', '-m', 'gpt-5.4-mini', '-c', 'model_reasoning_effort="low"', '-c', 'web_search="disabled"', 'PROMPT']
+codex_tmux sandbox_mode='workspace-write' web_search='disabled'
+
+--- codex_exec driver (SHIPPED full-run preset uses this) ---
+codex_exec argv (Driver constructor has NO sandbox_mode parameter): ['codex', 'exec', 'PROMPT', '--dangerously-bypass-approvals-and-sandbox', '--json', '-C', '/tmp/a0-closure-eve-worktree', '-m', 'gpt-5.4-mini', '-c', 'model_reasoning_effort="low"', '-c', 'web_search="live"']
+
+--- config-plumbing check: does driver.sandbox_mode reach codex_exec? ---
+cfg={'driver': 'codex_exec', 'sandbox_mode': 'workspace-write', 'allow_network': False, 'web_search': 'disabled'}
+built subtype=CodexExecSessionDriver has sandbox_mode attr=False
+codex_exec argv with sandbox_mode=workspace-write in the config: ['codex', 'exec', 'PROMPT', '--dangerously-bypass-approvals-and-sandbox', '--json', '-C', '/tmp/a0-closure-eve-worktree', '-m', 'gpt-5.4-mini', '-c', 'model_reasoning_effort="low"', '-c', 'web_search="disabled"']
+FINDING: the config key `driver.sandbox_mode` is SILENTLY IGNORED by the codex_exec driver (accepted, never applied). Config-only closure for this driver is a false green.
+
+--- helpers that translate driver config into sandbox/web-search ---
+_sandbox_mode_from_driver_cfg({'sandbox_mode': 'workspace-write', 'allow_network': False}) = 'workspace-write'  web_search='disabled'
+_sandbox_mode_from_driver_cfg({'allow_network': False}) = 'workspace-write'  web_search='disabled'
+_sandbox_mode_from_driver_cfg({'allow_network': True}) = 'danger-full-access'  web_search='disabled'
+_sandbox_mode_from_driver_cfg({}) = 'workspace-write'  web_search='disabled'
+
+--- tmux driver built through the same config plumbing ---
+tmux built from cfg: sandbox_mode='workspace-write' web_search='disabled' approval_policy='never'
+
+--- shipped presets, read from the pinned checkout (configs/eve/driver/) ---
+codex_smoke.yaml: driver: ; driver: codex_exec | web_search: disabled
+codex_max.yaml: driver: ; driver: codex_exec | web_search: live
+circle_packing.yaml defaults -> - driver: codex_max

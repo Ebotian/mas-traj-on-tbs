@@ -1,0 +1,16 @@
+### SimpleLoop lane posture probe  posture=unsandboxed-shell  date=2026-09-20T18:35:53+08:00
+### lane command under test: env -u http_proxy -u https_proxy /usr/bin/python3 /home/ebt/rsi-dev/a0/closure/probes/lane_net_probe.py
+
+--- positive control: same command, no barrier ---
+LANE_PROBE dns=ok tcp=ok tcpvia=example.com:443 https=ok local=ok egress=OPEN
+VERDICT host-no-barrier: CONFIRMED (expected egress_open, observed egress_OPEN)
+
+--- negative case: same command inside an external network cut (unshare -rn) ---
+LANE_PROBE dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED
+VERDICT unshare-rn: CONFIRMED (expected egress_blocked, observed egress_BLOCKED)
+
+--- does that same cut still reach a HOST-LOCAL model relay? ---
+NETNS_RELAY_HTTP=000
+### mechanism = external_network_isolation (the orchestrator must stay OUTSIDE the barrier)
+
+SIMPLELOOP-LANE-PROBE(unsandboxed-shell): PASS

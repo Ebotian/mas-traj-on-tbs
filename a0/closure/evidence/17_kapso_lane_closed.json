@@ -1,0 +1,48 @@
+{
+  "schema": "a0.closureprobe.lane/v1",
+  "runtime": "kapso",
+  "posture": "closed",
+  "probe_id": "a0-closure-kapso-lane-closed",
+  "date": "2026-09-20T18:38:19+0800",
+  "lane_detail": {
+    "agent_specific": {
+      "effort": "xhigh",
+      "timeout": 3600,
+      "sandbox": "workspace-write",
+      "web_search": false
+    },
+    "adapter_sandbox": "workspace-write",
+    "adapter_web_search": false
+  },
+  "prompt": "Run exactly this one shell command, with no substitution, and then act on its output:\n\nenv -u http_proxy -u https_proxy /home/ebt/rsi-dev/a0/closure/.venv/bin/python /home/ebt/rsi-dev/a0/closure/probes/lane_net_probe.py\n\nSteps:\n1. Run it with your shell tool.\n2. Write its raw stdout (the single LANE_PROBE line) to the file `lane_probe_out.txt`\n   in the current working directory.\n3. Reply with only that LANE_PROBE line.\n",
+  "observation": {
+    "argv": [
+      "codex",
+      "exec",
+      "--sandbox",
+      "workspace-write",
+      "--skip-git-repo-check",
+      "--color",
+      "never",
+      "--output-last-message",
+      "/tmp/a0-closure-lane-kapso-closed/last_message.txt",
+      "-m",
+      "gpt-5.6-terra",
+      "-c",
+      "model_reasoning_effort=\"xhigh\""
+    ],
+    "prompt_mode": "stdin",
+    "returncode": 0,
+    "timed_out": false,
+    "elapsed_sec": 137.9,
+    "model_call_completed": true,
+    "tool_ran": true,
+    "persisted_canary_line": "LANE_PROBE dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED",
+    "persisted_egress": "BLOCKED",
+    "stdout_tail": "LANE_PROBE dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED\n",
+    "stderr_tail": "ror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED\ndiff --git a/lane_probe_out.txt b/lane_probe_out.txt\nnew file mode 100644\nindex 0000000000000000000000000000000000000000..35db685f3c5b767954efc81949da832bc40c798f\n--- /dev/null\n+++ b/lane_probe_out.txt\n@@ -0,0 +1 @@\n+LANE_PROBE dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED\n\ntokens used\n23,816\n"
+  },
+  "verdict": "closed",
+  "verdict_reason": "model call completed AND the in-lane canary reported egress=BLOCKED",
+  "guard": "the persisted file is written BY the in-lane shell tool; the model's prose is not evidence"
+}

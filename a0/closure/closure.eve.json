@@ -1,0 +1,133 @@
+{
+  "schema": "a0.closureprobe/v1",
+  "runtime": "eve",
+  "probe_id": "a0-closure-eve-2026-09-20",
+  "probe_date": "2026-09-20T17:12+08:00",
+  "protocol": "open_world_plan_review.typ:569 (prove by probe), independent_review.typ:320 (D15)",
+  "study_verdict": "CONDITIONAL",
+  "study_verdict_scope": "conditional on driving EvE through the codex_tmux driver. The SHIPPED full-run preset (configs/eve/driver/codex_max.yaml, selected by configs/eve/circle_packing.yaml) uses the codex_exec driver and is OPEN by construction: no configuration key can close it.",
+  "verdict": "closed",
+  "verdict_note": "This verdict covers the CANDIDATE-EXECUTION (shell) channel of the codex_tmux driver and is backed by an executed probe. It does not cover the provider-side web_search tool, for which no probe is possible on this machine (codex cannot complete a model call). See residual_channels.",
+  "configured": {
+    "driver": "codex_tmux",
+    "sandbox_mode": "workspace-write",
+    "allow_network": false,
+    "approval_policy": "never",
+    "web_search": "disabled",
+    "source": "/tmp/eve/src/scaling_evolve/algorithms/eve/runtime/driver.py:380-395 (_sandbox_mode_from_driver_cfg, _web_search_from_driver_cfg), codex_tmux.py:200-201, 228-229"
+  },
+  "observed": {
+    "egress_attempts": 2,
+    "dns_lookups": 2,
+    "sentinel_hits": 0,
+    "evidence": "END TO END on the real model lane (the codex relay started working mid-audit): a real codex model turn was asked to run the canary with its shell tool. Under `-s workspace-write` the tool's exit_code was 0 and the canary reported `dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED` (evidence/08_e2e_codex_workspace_write.jsonl). Under `--dangerously-bypass-approvals-and-sandbox` -- EvE's codex_exec posture -- the same prompt produced `dns=ok tcp=ok tcpvia=example.com:443 https=ok local=ok egress=OPEN` (evidence/09_e2e_codex_bypass.jsonl). Seam-level agreement: `codex sandbox -c sandbox_mode=\"workspace-write\"` -> egress=BLOCKED, `danger-full-access` -> egress=OPEN (evidence/03_cli_sandbox.log)."
+  },
+  "mechanisms": [
+    {
+      "id": "codex-tmux-config",
+      "runtime_path": "codex_tmux driver",
+      "mechanism": "config",
+      "study_verdict": "CLOSED",
+      "schema_verdict": "closed",
+      "why": "EvE's codex_tmux driver passes `-s workspace-write`, `-a never` and `-c web_search=\"disabled\"`; the Codex CLI's workspace-write sandbox is executed here and blocks egress while leaving the channel able to do local work.",
+      "executed_probe": {
+        "positive_control": "canary on host -> egress=OPEN (same command text)",
+        "negative_case": "codex sandbox -c sandbox_mode=\"workspace-write\" -- <canary> -> egress=BLOCKED",
+        "second_control": "codex sandbox -c sandbox_mode=\"danger-full-access\" -- <canary> -> egress=OPEN",
+        "end_to_end": "real codex model turn + shell tool at `-s workspace-write` -> exit_code 0, canary egress=BLOCKED (evidence/08_e2e_codex_workspace_write.jsonl)",
+        "command": "a0/closure/probes/cli_sandbox_probe.sh"
+      },
+      "requested_argv_snapshot": [
+        "codex",
+        "--no-alt-screen",
+        "-a",
+        "never",
+        "-s",
+        "workspace-write",
+        "-C",
+        "<worktree>",
+        "-m",
+        "gpt-5.4-mini",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "web_search=\"disabled\"",
+        "PROMPT"
+      ],
+      "requested_argv_evidence": "evidence/04_seam_eve.log (built by EvE's own CodexTmuxSessionDriver._argv)"
+    },
+    {
+      "id": "codex-exec-config",
+      "runtime_path": "codex_exec driver (SHIPPED full-run default)",
+      "mechanism": "none",
+      "study_verdict": "OPEN",
+      "schema_verdict": "egress_detected",
+      "schema_verdict_reason": "observed end to end: the same canary run by a real codex model turn under this exact posture (no sandbox) reached the network (egress=OPEN, evidence/09_e2e_codex_bypass.jsonl). The remaining gap is only that EvE itself was not launched (no EvE campaign), not the posture.",
+      "why": "The driver's constructor has no sandbox parameter and its argv hardcodes `--dangerously-bypass-approvals-and-sandbox` (codex_exec.py:419-436). The shipped presets select it: configs/eve/driver/codex_max.yaml (driver: codex_exec, web_search: live) is the default of configs/eve/circle_packing.yaml (defaults: - driver: codex_max).",
+      "false_green": "Feeding `driver.sandbox_mode=workspace-write` to the codex_exec driver is SILENTLY IGNORED: the built driver has no sandbox_mode attribute and still emits the bypass flag (evidence/04_seam_eve.log). Config-only closure for this driver is a false green.",
+      "requested_argv_snapshot": [
+        "codex",
+        "exec",
+        "PROMPT",
+        "--dangerously-bypass-approvals-and-sandbox",
+        "--json",
+        "-C",
+        "<worktree>",
+        "-m",
+        "gpt-5.4-mini",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "web_search=\"live\""
+      ],
+      "requested_argv_evidence": "evidence/04_seam_eve.log (built by EvE's own CodexExecSessionDriver._argv)",
+      "cli_flag_semantics": "codex exec --help: 'Skip all confirmation prompts and execute commands without sandboxing. EXTREMELY DANGEROUS. Intended solely for running in environments that are externally sandboxed' (evidence/05_codex_surface.log)"
+    }
+  ],
+  "residual_channels": [
+    {
+      "channel": "provider-side native web_search tool",
+      "state": "disabled by config in codex_tmux (`-c web_search=\"disabled\"`); the shipped codex_exec preset asks for `web_search: live`",
+      "why_the_sandbox_does_not_cover_it": "codex --help describes --search as making 'the native Responses `web_search` tool ... available to the model': the search runs on the provider side, not inside the sandboxed shell, so no OS/CLI sandbox that only wraps shell commands can close it.",
+      "probe_status": "PROBED ON THIS PROVIDER: with `-c web_search=\"live\"` a real model turn answered `NO_WEB_SEARCH_TOOL` (evidence/10b_e2e_websearch_live.jsonl) -- the configured custom provider (zjapi relay, wire_api=responses) did not surface the tool. So on this machine the front door happens to be shut by the PROVIDER, not by configuration; that is not a closure guarantee and must be re-probed if the provider changes."
+    },
+    {
+      "channel": "sub-agent definitions inside the workspace (.codex/agents/*.toml)",
+      "state": "in-tree proof that the mechanism is real: configs/eve/optimizer/icon/immutable/.codex/agents/check-runner.toml:5 sets `sandbox_mode = \"danger-full-access\"` for a sub-agent. The circle_packing check-runner file sets no sandbox_mode.",
+      "probe_status": "UNVERIFIED -- needs a live session to see whether a sub-agent inherits the parent's sandbox or can carry its own, and whether the agent can write such a file into its own workspace before a sub-agent launch."
+    },
+    {
+      "channel": "CLI capability flags beyond the shell",
+      "state": "`codex features list` reports browser_use=true, browser_use_external=true, browser_use_full_cdp_access=true, in_app_browser=true, computer_use=true (all 'stable'); network_proxy=false (experimental).",
+      "probe_status": "OBSERVED AS CLI STATE ONLY (evidence/05_codex_surface.log). Whether any of these tools is offered to the model in this configuration can only be read off a real request/turn -> UNVERIFIED today."
+    }
+  ],
+  "sharp_edges": [
+    "An external network cut (unshare -rn / docker --internal) does NOT work for EvE on this host while the model endpoint is the host-local relay http://127.0.0.1:15722/v1: the relay answers 200 on the host and 000 inside the cut (evidence/02_host_loopback_cut.log), and `--add-host=host.docker.internal:host-gateway` on the internal network does not restore it (INTERNAL_HOSTGW_RELAY=fail). Only the CLI's own sandbox separates 'model lane' from 'tool lane'.",
+    "The whole EvE run cannot be wrapped in a barrier: the same process tree runs the orchestrator (model I/O) and the candidate-execution channel."
+  ],
+  "unverified": [
+    "No EvE campaign was launched: the driver postures are proven end to end at the CLI level, but EvE's own loop, workspace rendering and role wiring were not exercised.",
+    "Whether a sub-agent launched via `features.multi_agent` can carry its own sandbox_mode out of a workspace file."
+  ],
+  "probe_commands": [
+    "a0/closure/probes/cli_sandbox_probe.sh",
+    "PYTHONPATH=/tmp/eve/src a0/runtimes/eve/.venv/bin/python a0/closure/probes/seam_eve_argv.py",
+    "codex exec -C <scratch> -s workspace-write --json '<run the canary>'    # end-to-end, evidence 08",
+    "codex exec -C <scratch> --dangerously-bypass-approvals-and-sandbox --json '<run the canary>'   # end-to-end, evidence 09",
+    "a0/env/checks/probe_egress.sh check --mechanism unshare-rn --cmd '<lane canary>'"
+  ],
+  "evidence_files": [
+    "a0/closure/evidence/03_cli_sandbox.log",
+    "a0/closure/evidence/03_cli_sandbox.jsonl",
+    "a0/closure/evidence/04_seam_eve.log",
+    "a0/closure/evidence/08_e2e_codex_workspace_write.jsonl",
+    "a0/closure/evidence/09_e2e_codex_bypass.jsonl",
+    "a0/closure/evidence/10b_e2e_websearch_live.jsonl",
+    "a0/closure/evidence/02_host_loopback_cut.log",
+    "a0/closure/evidence/05_codex_surface.log"
+  ],
+  "reconciliation": "a0/closure/closure.reconciliation.json",
+  "reconciliation_note": "the EvE workstream's own record (a0/runtimes/eve/out/run001/closure.json) reaches the same verdict for EvE as shipped (egress_detected, codex_exec not closable by config); quote both records together: theirs is authoritative for 'EvE as shipped', this one for the per-posture breakdown. Their note that the shipped preset pins model gpt-5.6-sol while the provider answered gpt-5.6-terra is relayed to the EvE workstream.",
+  "verdict_summary": "top-level `verdict=closed` covers the codex_tmux driver posture named by the protocol recipe (executed, two controls). It does NOT cover EvE as shipped: codex_exec is a separate mechanism entry with schema_verdict `egress_detected` (measured). A0/A1 must state which driver each EvE arm ran."
+}

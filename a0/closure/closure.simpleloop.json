@@ -1,0 +1,85 @@
+{
+  "schema": "a0.closureprobe/v1",
+  "runtime": "simpleloop",
+  "probe_id": "a0-closure-simpleloop-2026-09-20",
+  "probe_date": "2026-09-20T17:13+08:00",
+  "protocol": "open_world_plan_review.typ:591-603 (SimpleLoop R_S = (M,P,T,E,pi_S): same model, tools, evaluator and ACCESS POLICY as the complex runtimes, only the search policy simplified); plan:569 (closure by probe)",
+  "study_verdict": "CLOSED",
+  "study_verdict_scope": "settled on the lane the driver actually ships. a0/runtimes/simpleloop/a0_adapter/solvers.py CliSolver._command builds `codex exec --sandbox workspace-write --skip-git-repo-check <prompt>`; a real model turn on that exact argv completed (rc=0) while the in-lane canary persisted egress=BLOCKED (evidence/13_simpleloop_lane_closed.json). The positive control through the same machinery (sandbox token changed to danger-full-access) reached the network (evidence/13b_simpleloop_lane_open.json). The verdict is bounded by the CLI choice: it must be re-probed if the solver CLI or its sandbox token changes, and the `claude` branch of the same driver (`claude -p ... --permission-mode acceptEdits`) has no sandbox and would need an external cut.",
+  "verdict": "closed",
+  "verdict_note": "Closed for the shipped codex solver lane, measured end to end. The injected-solver channel is separately recorded as closed under external isolation by the SimpleLoop workstream's own record; the two are complementary, not alternatives.",
+  "configured": {
+    "solver_cli": "codex (shipped by a0/runtimes/simpleloop/a0_adapter/solvers.py CliSolver._command)",
+    "solver_argv": [
+      "codex",
+      "exec",
+      "--sandbox",
+      "workspace-write",
+      "--skip-git-repo-check",
+      "<prompt>"
+    ],
+    "solver_argv_source": "a0/runtimes/simpleloop/a0_adapter/solvers.py:229 (unmodified; the probe imports the module and calls CliSolver._command)",
+    "policy_file": "a0/runtimes/simpleloop/policy/simpleloop.policy.json (search policy only; no access-policy field)",
+    "required_by_protocol": "M, P, T, E and the sandbox/access policy must match the complex runtimes (plan:591-603)"
+  },
+  "observed": {
+    "egress_attempts": 2,
+    "dns_lookups": 2,
+    "sentinel_hits": 0,
+    "evidence": "end to end on the real model lane, lane argv built by the driver's own code: shipped posture -> rc=0 (model call completed), in-lane shell tool ran and persisted `LANE_PROBE dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED` (68.6s); control with only the sandbox token changed to danger-full-access -> rc=0 and `egress=OPEN` (37.2s). Seam probes for the same postures: evidence/06_simpleloop_*.log."
+  },
+  "mechanisms": [
+    {
+      "id": "solver-is-codex-workspace-write",
+      "runtime_path": "solver CLI = codex, -s workspace-write, no --search",
+      "mechanism": "config",
+      "study_verdict": "CLOSED",
+      "schema_verdict": "closed",
+      "why": "The driver's own CliSolver._command builds `codex exec --sandbox workspace-write --skip-git-repo-check <prompt>`, i.e. it already selects the Codex CLI sandbox that blocks egress by default (network_access=false).",
+      "executed_probe": {
+        "positive_control": "same machinery, only the sandbox token changed to danger-full-access -> rc=0 and canary egress=OPEN (evidence/13b_simpleloop_lane_open.json)",
+        "negative_case": "shipped argv -> rc=0 (model call completed) and persisted in-lane canary egress=BLOCKED (evidence/13_simpleloop_lane_closed.json)",
+        "end_to_end": "real model turn, canary persisted BY the in-lane shell tool, so the model's prose is not the evidence",
+        "command": "a0/closure/probes/lane_e2e_probe.py --runtime simpleloop --posture closed   (and --posture open for the control)"
+      },
+      "condition": "the codex branch only. The driver's claude branch (`claude -p <prompt> --permission-mode acceptEdits`) has no sandbox and would need an external cut; the solver CLI choice must be recorded per run."
+    },
+    {
+      "id": "solver-is-unsandboxed-or-claude",
+      "runtime_path": "solver CLI = claude --dangerously-skip-permissions, or any plain shell",
+      "mechanism": "external_network_isolation",
+      "study_verdict": "CONDITIONAL (claude branch or any unsandboxed shell)",
+      "schema_verdict": "closed",
+      "why": "No CLI-level sandbox exists, so closure requires an external cut around the candidate-execution channel: `unshare -rn` (proven: same command egress=OPEN on host, egress=BLOCKED inside) or a container on docker --internal.",
+      "executed_probe": {
+        "positive_control": "canary on host -> egress=OPEN",
+        "negative_case": "unshare -rn sh -c '<same canary>' -> egress=BLOCKED, local=ok",
+        "command": "a0/closure/probes/simpleloop_lane_probe.sh --posture unsandboxed-shell  (and lane_e2e_probe.py --runtime simpleloop --posture open for the model-lane control)"
+      },
+      "condition": "the barrier must not cut the model endpoint. It DOES cut a host-local relay: NETNS_RELAY_HTTP=000 while the host sees 200 (evidence/02_host_loopback_cut.log). The relay must therefore be reachable from inside the barrier (sibling container) or the lane cannot run closed on this host."
+    }
+  ],
+  "sharp_edges": [
+    "SimpleLoop's closure is not a property of SimpleLoop: it is inherited. It must be recorded per run (which CLI, which sandbox mode, which web-search setting) or A1 will compare substrates with different access policies -- exactly what plan:591-603 forbids.",
+    "The positive control must use the SAME command text as the negative case; a probe that only ever shows failure cannot distinguish a sandbox from broken networking."
+  ],
+  "unverified": [
+    "No full SimpleLoop iteration with the CLI solver end to end (proposal -> E* -> selection -> trace): the lane was driven for closure only. The SimpleLoop workstream owns the run-level evidence.",
+    "Whether the entrypoint's environment can re-enable web search through a codex config layer; re-probe at run time (adapter contract section 7)."
+  ],
+  "probe_commands": [
+    "a0/closure/probes/lane_e2e_probe.py --runtime simpleloop --posture closed",
+    "a0/closure/probes/lane_e2e_probe.py --runtime simpleloop --posture open",
+    "a0/closure/probes/simpleloop_lane_probe.sh --posture unsandboxed-shell"
+  ],
+  "evidence_files": [
+    "a0/closure/evidence/13_simpleloop_lane_closed.json",
+    "a0/closure/evidence/13b_simpleloop_lane_open.json",
+    "a0/closure/evidence/06_simpleloop_codex-workspace-write.log",
+    "a0/closure/evidence/06_simpleloop_codex-danger-full-access.log",
+    "a0/closure/evidence/06_simpleloop_unsandboxed-shell.log",
+    "a0/closure/evidence/02_host_loopback_cut.log"
+  ],
+  "reconciliation": "a0/closure/closure.reconciliation.json",
+  "verdict_summary": "top-level `verdict=closed` for the shipped solver lane (codex exec --sandbox workspace-write, real model turn, in-lane canary persisted egress=BLOCKED, control egress=OPEN). Bounded by the CLI choice: the claude branch of the same driver has no sandbox and would need an external cut."
+}
