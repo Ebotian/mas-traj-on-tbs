@@ -1,0 +1,544 @@
+### a0-loreley plan
+{
+ "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+ "primary_field": "sum_radii",
+ "epsilon": 1e-09,
+ "base_declared": "..",
+ "verify": "clean"
+}
+EXIT=0
+### a0-loreley eidr --run-dir out/eidr
+{
+ "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+ "eid_r_value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+ "eidr_derivation": "15c5b4374c5b9c7b6011e0a2f4c26d0bac6e093c86dda9c71d72186f08e994e8",
+ "recomputed": true,
+ "problems": [],
+ "mapping": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/eidr/eidr.mapping.json",
+ "campaign_program": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/eidr/loreley.program.md",
+ "mutation_test": {
+  "design": "each of the five EID* components is perturbed in turn; the contract owner's own evalcontract.recompute_from_records recomputes the component digest and EID*, the campaign program is re-rendered from the perturbed document and EID_r is re-derived",
+  "plugin_source": "/home/ebt/rsi-dev/a0/runtimes/loreley/src/loreley_a0_plugin.py",
+  "plugin_source_sha256": "53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+  "plugin_source_unchanged_by_design": true,
+  "baseline": {
+   "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+   "component_digests": {
+    "EvaluatorSource": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+    "DependencyLock": "7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75",
+    "DataManifest": "b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21",
+    "Config": "550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac",
+    "MetricDefinition": "420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0"
+   },
+   "campaign_program_sha256": "b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+   "eid_r_value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+   "eidr_derivation": "15c5b4374c5b9c7b6011e0a2f4c26d0bac6e093c86dda9c71d72186f08e994e8",
+   "program": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/eidr/loreley.program.664115e0.md"
+  },
+  "baseline_self_check": {
+   "recomputed_digests": {
+    "EvaluatorSource": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+    "DependencyLock": "7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75",
+    "DataManifest": "b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21",
+    "Config": "550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac",
+    "MetricDefinition": "420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0"
+   },
+   "recorded_digests": {
+    "EvaluatorSource": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+    "DependencyLock": "7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75",
+    "DataManifest": "b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21",
+    "Config": "550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac",
+    "MetricDefinition": "420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0"
+   },
+   "digests_match_record": true,
+   "eid_star_recomputed": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+   "eid_star_matches": true,
+   "checked_with": "a0/contract/evalcontract.py::recompute_from_records (the authority's own scheme)"
+  },
+  "components": [
+   {
+    "component": "EvaluatorSource",
+    "change": "EvaluatorSource.records += 1 sentinel record (2 -> 3)",
+    "component_digest_before": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+    "component_digest_after": "977ff9711520dc08fe0638b58c997f2885f1702135a215fe42c7b286629379b8",
+    "component_digest_changed": true,
+    "recorded_digest_after_mutation": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+    "eid_star_before": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_star_after": "cef56070e076e35335155793a770c3ffec766d8ac0176d9facebde4d0ef07ae6",
+    "eid_star_changed": true,
+    "campaign_program_sha256_before": "b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "campaign_program_sha256_after": "b517df2ecd0eeae181d8f5a83fa90a3045aca255838cf663c25a9081772546c6",
+    "eid_r_before": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "eid_r_after": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b517df2ecd0eeae181d8f5a83fa90a3045aca255838cf663c25a9081772546c6",
+    "eid_r_changed": true,
+    "eidr_derivation_after": "302901ee5a4a1a878b86da36df565a121e87a9aef54c0d6ca058887eddc175bb",
+    "program": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/eidr/loreley.program.cef56070.md"
+   },
+   {
+    "component": "DependencyLock",
+    "change": "DependencyLock.records += 1 sentinel record (2 -> 3)",
+    "component_digest_before": "7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75",
+    "component_digest_after": "a25c617b0a5e25f4e13a86affdfb4b647a782dccecceefae0637bcc7f3a53a65",
+    "component_digest_changed": true,
+    "recorded_digest_after_mutation": "7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75",
+    "eid_star_before": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_star_after": "aa8fd67e36eb8e0f4c12d11144ef82c393fee79e4ba6c4ff8095731135c1b44b",
+    "eid_star_changed": true,
+    "campaign_program_sha256_before": "b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "campaign_program_sha256_after": "4e3fdf27366b27031f0e76be629dfcfcbaa92b5091d7b73edbdc446e289b8e94",
+    "eid_r_before": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "eid_r_after": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#4e3fdf27366b27031f0e76be629dfcfcbaa92b5091d7b73edbdc446e289b8e94",
+    "eid_r_changed": true,
+    "eidr_derivation_after": "54178b1c4e31a7cfd1f8e1eec5d127529d7d0d3aa650c50b186a02d6b345b42a",
+    "program": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/eidr/loreley.program.aa8fd67e.md"
+   },
+   {
+    "component": "DataManifest",
+    "change": "DataManifest.records += 1 sentinel record (43 -> 44)",
+    "component_digest_before": "b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21",
+    "component_digest_after": "6e5eb1b1497f71081289fb94ed7d2fc406dcf8f0a383b5f72a4095c29738f8ec",
+    "component_digest_changed": true,
+    "recorded_digest_after_mutation": "b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21",
+    "eid_star_before": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_star_after": "4577a87ddc60d25913d7e5f9eb30f7c549c0431e14701fa97866b974fad5b9d3",
+    "eid_star_changed": true,
+    "campaign_program_sha256_before": "b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "campaign_program_sha256_after": "97ae9c4adf3f07ac8a89f5a60c5b5a037ff3a9880966318f0496115e5cf72a73",
+    "eid_r_before": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "eid_r_after": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#97ae9c4adf3f07ac8a89f5a60c5b5a037ff3a9880966318f0496115e5cf72a73",
+    "eid_r_changed": true,
+    "eidr_derivation_after": "01c39bfb53c653df3f902266842031b40919d3201ecce1409f5674f4e4dc7e86",
+    "program": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/eidr/loreley.program.4577a87d.md"
+   },
+   {
+    "component": "Config",
+    "change": "Config.value.theta_e_canonical.seed 1337 -> 1338",
+    "component_digest_before": "550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac",
+    "component_digest_after": "3c9db3295f752051f41948884f4d487e4d607c389aadb0ebac1cbb7451b0e671",
+    "component_digest_changed": true,
+    "recorded_digest_after_mutation": "550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac",
+    "eid_star_before": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_star_after": "224e6bacbbaf1179883ec8ff5b0a028d03263f4e63ae6a7c8d9a93dad1ccfbbb",
+    "eid_star_changed": true,
+    "campaign_program_sha256_before": "b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "campaign_program_sha256_after": "df3efc34c60948dd5e4991ab279c83944dceda7c2ad9fea8f62a839050c8a356",
+    "eid_r_before": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "eid_r_after": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#df3efc34c60948dd5e4991ab279c83944dceda7c2ad9fea8f62a839050c8a356",
+    "eid_r_changed": true,
+    "eidr_derivation_after": "ff4c2eedcbebd7905fba38b2ebeab10b21958de5568ded31fc8aa4c3783a11b7",
+    "program": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/eidr/loreley.program.224e6bac.md"
+   },
+   {
+    "component": "MetricDefinition",
+    "change": "MetricDefinition.value.unit 'radius_sum (length in the unit square, n=26)' -> 'radius_sum (length in the unit square, n=26) [a0-mutation]'",
+    "component_digest_before": "420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0",
+    "component_digest_after": "efd0e8657c0c5aaa678e3ddaf9cb3ea39c7510a3dde12c802899465506e73e66",
+    "component_digest_changed": true,
+    "recorded_digest_after_mutation": "420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0",
+    "eid_star_before": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_star_after": "545104b8a6333a5c16f1f1a4d52fe73f8a84586cb3329f7b40df27657421b6f5",
+    "eid_star_changed": true,
+    "campaign_program_sha256_before": "b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "campaign_program_sha256_after": "841f65681079e2f1005a545b3560cdfb81487fbf4b826e4d28b904c6b954e67b",
+    "eid_r_before": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "eid_r_after": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#841f65681079e2f1005a545b3560cdfb81487fbf4b826e4d28b904c6b954e67b",
+    "eid_r_changed": true,
+    "eidr_derivation_after": "089cce761725e74974710f6d80a0a89da800d691aec0593c23ff27d044acc197",
+    "program": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/eidr/loreley.program.545104b8.md"
+   }
+  ],
+  "all_five_components_change_eid_star": true,
+  "all_five_components_change_eid_r": true,
+  "why_this_answers_the_auditor": "the claim 'EID_r is derived from EID*' is only meaningful if a third party can see which inputs reach it. The provenance section rendered into loreley.program.md carries all five component digests, so campaign_program_hash - and hence EID_r - changes for every one of the five, which the table above measures rather than asserts. No part of EID_r is a hash of a generated script that the inputs do not reach: the two hash inputs are the plugin source file (the code that will run) and the rendered program (a function of all five component digests)."
+ }
+}
+EXIT=0
+### a0-loreley eidr-recompute --eid /home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.EID.proposed.json --campaign-program out/eidr/loreley.program.md --out out/eidr/eidr.recompute.json
+{"declaration": "Loreley computes its own identity: evaluator_name = WORKER_EVALUATOR_PLUGIN (evaluator.py:1481-1485), evaluator_version = source fingerprint of that module (evaluator_identity.py:90-105), campaign_program_hash = sha256 of loreley.program.md (campaign_program.py:212). The adapter renders loreley.program.md from the frozen EID* document (Goal / Primary metric / Correctness gates / Evaluation budget sections come from EID*.Config and EID*.MetricDefinition), so the triple is a function of EID*; eidr_derivation is the sha256 over (eid_star, plugin_source_sha256, campaign_program_sha256, native_scheme) and recomputes.", "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328", "eid_r_value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1", "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328", "eidr_derivation": "15c5b4374c5b9c7b6011e0a2f4c26d0bac6e093c86dda9c71d72186f08e994e8", "inputs": {"campaign_program": "out/eidr/loreley.program.md", "eid": "/home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.EID.proposed.json", "plugin_source": "/home/ebt/rsi-dev/a0/runtimes/loreley/src/loreley_a0_plugin.py"}, "mapping_mode": "native", "native_components": {"campaign_program_sha256": "b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1", "evaluator_name": "loreley_a0_plugin:plugin", "plugin_source_sha256": "53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad"}, "native_scheme": "evaluator_name_version_campaign_program_hash", "recomputable": true, "runtime": "loreley", "schema": "a0.eidr.loreley.recompute/v1", "value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1"}
+EXIT=0
+### a0-loreley conformance --runtime loreley --run-dir out/conformance-run --out out/conformance.json
+[19:39:21] Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c01_good_hex                                                 
+           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:21.675 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c02_baseline_upstream                                        
+           commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:21.881 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c02_baseline_upstream commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c03_mirror                                                   
+           commit=893d0aa439433d523e2666d62de9b60caacdbab7)                     
+[19:39:22] Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:22.088 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c03_mirror commit=893d0aa439433d523e2666d62de9b60caacdbab7 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c04_near_tie                                                 
+           commit=3bf7bf310c976e9a488fadad81e27ea4dfef47e5)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:22.297 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c04_near_tie commit=3bf7bf310c976e9a488fadad81e27ea4dfef47e5 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c05_overlapping                                              
+           commit=1054b613063beeb62feb2a91d93a190e750eac8d)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:22.502 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c05_overlapping commit=1054b613063beeb62feb2a91d93a190e750eac8d outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c06_empty                                                    
+           commit=245b052ae21568853348257d5fb739c82c498ec4)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:22.711 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c06_empty commit=245b052ae21568853348257d5fb739c82c498ec4 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c07_single                                                   
+           commit=06fd7c81ea1b82c72ff95655c01f09a4bc511389)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:22.918 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c07_single commit=06fd7c81ea1b82c72ff95655c01f09a4bc511389 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c08_out_of_bounds                                            
+           commit=8724d76ce22c6675addb04a0bf42937e13855437)                     
+[19:39:23] Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:23.121 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c08_out_of_bounds commit=8724d76ce22c6675addb04a0bf42937e13855437 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c09_malformed_import                                         
+           commit=8f3cc2c8e62dec779227f80623ebed8e5e5a15fb)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:23.319 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c09_malformed_import commit=8f3cc2c8e62dec779227f80623ebed8e5e5a15fb outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c10_raises                                                   
+           commit=8739f824fab190ec43f684df215f7e02eb480b8e)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:23.523 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c10_raises commit=8739f824fab190ec43f684df215f7e02eb480b8e outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c11_non_deterministic                                        
+           commit=f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18e)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:23.736 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c11_non_deterministic commit=f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18e outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c12_exit_without_artifacts                                   
+           commit=f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4b)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:23.930 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c12_exit_without_artifacts commit=f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4b outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+[19:39:25] Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c13_slow                                                     
+           commit=f085fe77acc30b3dd50a990b5aeedde0bee6c7a7)                     
+[19:39:27] Evaluator finished in 1.7s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:27.148 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c13_slow commit=f085fe77acc30b3dd50a990b5aeedde0bee6c7a7 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c14_near_zero                                                
+           commit=b8412ada1bb33483d7845b144e7ea6dcbeeed752)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:27.368 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c14_near_zero commit=b8412ada1bb33483d7845b144e7ea6dcbeeed752 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+[19:39:28] Loaded settings env='development' db_host='localhost'  config.py:1487
+2026-09-20 19:39:28.374 | INFO     | loreley.config:get_settings:1491 - Settings initialised: {'app_name': 'loreley-a0', 'environment': 'development', 'log_level': 'INFO', 'profile': 'default', 'logs_base_dir': None, 'loreley_agent_api_token': None, 'loreley_api_write_token': None, 'openai_api_spec': 'responses', 'openai_base_url': None, 'openai_api_key': None, 'openai_dynamic_api_key_provider': None, 'openai_dynamic_api_key_ttl_seconds': None, 'openai_dynamic_api_key_refresh_skew_seconds': None, 'llm_usage_tracking_enabled': True, 'llm_usage_pricing_path': None, 'llm_usage_pricing_json_configured': False, 'mapelites_experiment_root_commit': 'b91c0906c9f676eb661990d881144909d99f2d72', 'database_dsn': 'postgresql+psycopg://127.0.0.1:5432/loreley', 'db_scheme': 'postgresql+psycopg', 'db_host': 'localhost', 'db_port': 5432, 'db_name': 'loreley', 'db_password': '***', 'db_pool_size': 10, 'db_max_overflow': 20, 'db_pool_timeout': 30, 'db_echo': False, 'db_auto_migrate': True, 'db_migration_lock_timeout_seconds': 30, 'tasks_redis_url': 'redis://127.0.0.1:6379/0', 'tasks_redis_host': 'localhost', 'tasks_redis_port': 6379, 'tasks_redis_db': 0, 'tasks_redis_password': None, 'tasks_redis_namespace': 'loreley.a0-loreley-loreley-26cc4549', 'tasks_queue_name': 'loreley.evolution.a0-loreley-loreley-26cc4549', 'tasks_queue_prefetch': 1, 'tasks_delay_queue_prefetch': 1, 'tasks_worker_max_retries': 0, 'tasks_worker_time_limit_seconds': 3600, 'experiment_id': 'a0-loreley-loreley', 'effective_routes': {'seed_portfolio': {'backend': 'kilo', 'provider_mode': 'config', 'provider': 'loreley-openai-responses', 'model': 'openai/gpt-5.6-sol', 'variant': 'high', 'reasoning': 'high', 'api_surface': 'responses', 'base_url_host': None}, 'planning': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'coding': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'trajectory_summary': {'enabled': True, 'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': None, 'api_surface': 'responses', 'thinking': 'provider_default', 'reasoning_effort': 'provider_default', 'base_url_host': None}, 'embedding': {'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': 'text-embedding-3-small', 'dimensions': None, 'api_surface': 'embeddings', 'base_url_host': None, 'local_hash_acknowledged': None}, 'commit_summary': {'enabled': True, 'model_call': False, 'source': 'coding.report.summary', 'fallback_source': 'plan.summary'}}, 'scheduler_repo_root': None, 'scheduler_poll_interval_seconds': 30.0, 'worker_repo_worktree': '/home/ebt/.cache/loreley/worker-repo', 'worker_repo_remote_url': None, 'worker_repo_branch': 'main', 'worker_repo_fetch_depth': None, 'worker_scope_gate_cleanup_paths': '', 'worker_repo_enable_lfs': True, 'worker_repo_job_branch_ttl_hours': 168, 'worker_job_lease_ttl_seconds': 1800, 'worker_job_heartbeat_interval_seconds': 60, 'worker_processes': 1, 'worker_planning_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_planning_backend', 'worker_planning_codex_model': None, 'worker_planning_max_attempts': 2, 'worker_planning_timeout_seconds': 900, 'worker_seed_portfolio_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_seed_portfolio_backend', 'worker_seed_portfolio_model': 'openai/gpt-5.6-sol', 'worker_seed_portfolio_reasoning_effort': 'high', 'worker_seed_portfolio_max_attempts': 2, 'worker_seed_portfolio_timeout_seconds': 1800, 'worker_coding_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_coding_backend', 'worker_coding_codex_model': None, 'worker_coding_max_attempts': 2, 'worker_coding_timeout_seconds': 1800, 'worker_cursor_model': 'gpt-5.2-high', 'worker_kilocode_mode': None, 'worker_kilocode_agent': None, 'worker_kilocode_model': None, 'worker_kilocode_planning_model': None, 'worker_kilocode_coding_model': None, 'worker_kilocode_variant': None, 'worker_kilocode_pure': False, 'worker_kilocode_json_output': False, 'worker_kilocode_usage_db_path': None, 'worker_kilocode_state_root': None, 'worker_kilocode_provider_config_mode': 'auto', 'worker_kilocode_openai_api_spec': None, 'worker_kilocode_openai_base_url': None, 'worker_kilocode_openai_api_key': None, 'worker_kilocode_openai_model': None, 'worker_evaluator_plugin': 'loreley_a0_plugin:plugin', 'worker_evaluator_version': None, 'worker_evaluator_timeout_seconds': 900, 'worker_evaluator_max_metrics': 64, 'worker_evaluator_max_concurrency': None, 'worker_evaluator_slot_poll_seconds': 0.25, 'worker_evaluator_measurement_max_json_bytes': 8388608, 'worker_evolution_global_goal': 'Continuously improve the repository while keeping tests passing, maintaining code quality, and respecting project conventions.', 'worker_evolution_commit_author': 'Loreley Worker', 'worker_evolution_commit_email': 'worker@loreley.local', 'worker_planning_trajectory_summary_provider_mode': 'global_openai', 'worker_planning_trajectory_summary_api_key': None, 'worker_planning_trajectory_summary_base_url': None, 'worker_planning_trajectory_summary_api_spec': 'responses', 'worker_planning_trajectory_summary_thinking': 'provider_default', 'worker_planning_trajectory_summary_reasoning_effort': 'provider_default', 'worker_planning_trajectory_summary_model': None, 'mapelites_code_embedding_model': 'text-embedding-3-small', 'mapelites_code_embedding_dimensions': None, 'mapelites_code_embedding_provider_only': [], 'mapelites_code_embedding_allow_fallbacks': True, 'mapelites_code_embedding_require_parameters': False, 'mapelites_code_embedding_data_collection': 'allow', 'mapelites_local_hash_embedding_acknowledged': False, 'mapelites_repo_state_embedding_max_line_chars': 16000, 'mapelites_repo_state_embedding_max_chunk_chars': 65536, 'mapelites_dimensionality_target_dims': 4, 'mapelites_archive_cells_per_dim': 32, 'mapelites_islands': ['circle_packing_alpha'], 'mapelites_objectives': [{'name': 'composite_score', 'direction': 'max'}], 'mapelites_pareto_front_max_size': 8, 'mapelites_pareto_epsilon': 1e-09, 'mapelites_admission_policy': 'pareto', 'mapelites_comparison_confidence': 0.95, 'mapelites_migration_interval_jobs': 50, 'mapelites_sampler_inspiration_count': 3, 'mapelites_sampler_seed': 0, 'mapelites_sampler_recipe_cooldown_jobs': 64, 'mapelites_sampler_max_resample_attempts': 32, 'mapelites_sampler_neighbor_radius': 1, 'mapelites_sampler_neighbor_max_radius': 3, 'mapelites_sampler_fallback_sample_size': 8, 'mapelites_sampler_default_priority': 0, 'mapelites_seed_population_size': 16, 'mapelites_seed_portfolio_enabled': False, 'mapelites_seed_portfolio_direction_count': 8, 'mapelites_seed_portfolio_max_pairwise_overlap': 0.65, 'mapelites_seed_direction_max_unsuccessful_attempts': 2, 'mapelites_seed_immediate_min_improvement_fraction': 0.0, 'scheduler_max_unfinished_jobs': 4, 'scheduler_dispatch_batch_size': 4, 'scheduler_schedule_batch_size': 2, 'scheduler_ingest_batch_size': 2, 'scheduler_max_total_jobs': None, 'scheduler_max_unique_evaluation_identities': None, 'scheduler_startup_approve': False, 'scheduler_stale_running_reclaim_batch_size': 32, 'scheduler_stale_running_max_recovery_attempts': 3, 'campaign_program_change_policy': 'locked', 'baseline_bootstrap_policy': 'required', 'failed_candidate_repair_enabled': False, 'failed_candidate_repair_mode': 'rebase_from_nearest_viable', 'failed_candidate_repair_max_depth': 1, 'failed_candidate_repair_max_attempts': 1, 'failed_candidate_repair_normal_jobs_per_token': 9, 'failed_candidate_repair_max_tokens': 3, 'failed_candidate_repair_max_active_jobs': 1, 'failed_candidate_repair_max_jobs_per_tick': 1, 'failed_candidate_repair_failure_kinds': 'validation_failed,test_failed,typecheck_failed,lint_failed', 'failed_candidate_repair_agent_feedback_mode': 'diagnostic_capsule', 'failed_candidate_repair_max_diff_bytes': 65536, 'failed_candidate_repair_max_diagnostic_bytes': 16384, 'worker_evaluator_rework_enabled': True, 'worker_evaluator_rework_max_attempts': 1, 'worker_evaluator_rework_failure_kinds': 'compile,typecheck,lint,test,validation', 'worker_evaluator_rework_max_seconds': 1800}
+[19:39:28] SQLAlchemy engine ready                                   base.py:121
+           postgresql+psycopg://127.0.0.1:5432/loreley                          
+2026-09-20 19:39:28.398 | INFO     | loreley.db.base:get_engine:122 - SQLAlchemy engine initialised for postgresql+psycopg://127.0.0.1:5432/loreley
+           Database schema ready                                     base.py:202
+           url=postgresql+psycopg://127.0.0.1:5432/loreley                      
+2026-09-20 19:39:28.429 | INFO     | loreley.db.base:ensure_database_schema:207 - Database schema ensured for postgresql+psycopg://127.0.0.1:5432/loreley
+[19:39:28] Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c01_good_hex                                                 
+           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:28.911 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c01_good_hex                                                 
+           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     
+[19:39:29] Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:29.124 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c01_good_hex                                                 
+           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:29.337 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+{
+ "verdict": "pass",
+ "failure_count": 0,
+ "failed_candidates": [],
+ "epsilon": 1e-09,
+ "candidates": 14,
+ "traces": {
+  "score": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance-run/conformance/traces/loreley.lor-a0.score.jsonl",
+  "selection": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance-run/conformance/traces/loreley.lor-a0.selection.jsonl",
+  "resource": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance-run/conformance/traces/loreley.lor-a0.resource.jsonl",
+  "combined": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance-run/conformance/traces/loreley.lor-a0.all.jsonl"
+ },
+ "out": "out/conformance.json"
+}
+EXIT=0
+### a0-loreley a02 --runtime loreley --run-dir out/a02-run --out out/a02.json
+[19:39:29] Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c01_good_hex                                                 
+           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     
+[19:39:30] Evaluator finished in 0.2s outcome=passed metrics=6 evaluator.py:1528
+2026-09-20 19:39:30.148 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=6
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c02_baseline_upstream                                        
+           commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1)                     
+           Evaluator finished in 0.2s outcome=passed metrics=6 evaluator.py:1528
+2026-09-20 19:39:30.320 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c02_baseline_upstream commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=6
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c01_good_hex                                                 
+           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:30.490 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c02_baseline_upstream                                        
+           commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:30.661 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c02_baseline_upstream commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+[19:39:31] Loaded settings env='development' db_host='localhost'  config.py:1487
+2026-09-20 19:39:31.564 | INFO     | loreley.config:get_settings:1491 - Settings initialised: {'app_name': 'loreley-a0', 'environment': 'development', 'log_level': 'INFO', 'profile': 'default', 'logs_base_dir': None, 'loreley_agent_api_token': None, 'loreley_api_write_token': None, 'openai_api_spec': 'responses', 'openai_base_url': None, 'openai_api_key': None, 'openai_dynamic_api_key_provider': None, 'openai_dynamic_api_key_ttl_seconds': None, 'openai_dynamic_api_key_refresh_skew_seconds': None, 'llm_usage_tracking_enabled': True, 'llm_usage_pricing_path': None, 'llm_usage_pricing_json_configured': False, 'mapelites_experiment_root_commit': 'b91c0906c9f676eb661990d881144909d99f2d72', 'database_dsn': 'postgresql+psycopg://127.0.0.1:5432/loreley', 'db_scheme': 'postgresql+psycopg', 'db_host': 'localhost', 'db_port': 5432, 'db_name': 'loreley', 'db_password': '***', 'db_pool_size': 10, 'db_max_overflow': 20, 'db_pool_timeout': 30, 'db_echo': False, 'db_auto_migrate': True, 'db_migration_lock_timeout_seconds': 30, 'tasks_redis_url': 'redis://127.0.0.1:6379/0', 'tasks_redis_host': 'localhost', 'tasks_redis_port': 6379, 'tasks_redis_db': 0, 'tasks_redis_password': None, 'tasks_redis_namespace': 'loreley.a0-loreley-loreley-26cc4549', 'tasks_queue_name': 'loreley.evolution.a0-loreley-loreley-26cc4549', 'tasks_queue_prefetch': 1, 'tasks_delay_queue_prefetch': 1, 'tasks_worker_max_retries': 0, 'tasks_worker_time_limit_seconds': 3600, 'experiment_id': 'a0-loreley-loreley', 'effective_routes': {'seed_portfolio': {'backend': 'kilo', 'provider_mode': 'config', 'provider': 'loreley-openai-responses', 'model': 'openai/gpt-5.6-sol', 'variant': 'high', 'reasoning': 'high', 'api_surface': 'responses', 'base_url_host': None}, 'planning': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'coding': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'trajectory_summary': {'enabled': True, 'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': None, 'api_surface': 'responses', 'thinking': 'provider_default', 'reasoning_effort': 'provider_default', 'base_url_host': None}, 'embedding': {'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': 'text-embedding-3-small', 'dimensions': None, 'api_surface': 'embeddings', 'base_url_host': None, 'local_hash_acknowledged': None}, 'commit_summary': {'enabled': True, 'model_call': False, 'source': 'coding.report.summary', 'fallback_source': 'plan.summary'}}, 'scheduler_repo_root': None, 'scheduler_poll_interval_seconds': 30.0, 'worker_repo_worktree': '/home/ebt/.cache/loreley/worker-repo', 'worker_repo_remote_url': None, 'worker_repo_branch': 'main', 'worker_repo_fetch_depth': None, 'worker_scope_gate_cleanup_paths': '', 'worker_repo_enable_lfs': True, 'worker_repo_job_branch_ttl_hours': 168, 'worker_job_lease_ttl_seconds': 1800, 'worker_job_heartbeat_interval_seconds': 60, 'worker_processes': 1, 'worker_planning_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_planning_backend', 'worker_planning_codex_model': None, 'worker_planning_max_attempts': 2, 'worker_planning_timeout_seconds': 900, 'worker_seed_portfolio_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_seed_portfolio_backend', 'worker_seed_portfolio_model': 'openai/gpt-5.6-sol', 'worker_seed_portfolio_reasoning_effort': 'high', 'worker_seed_portfolio_max_attempts': 2, 'worker_seed_portfolio_timeout_seconds': 1800, 'worker_coding_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_coding_backend', 'worker_coding_codex_model': None, 'worker_coding_max_attempts': 2, 'worker_coding_timeout_seconds': 1800, 'worker_cursor_model': 'gpt-5.2-high', 'worker_kilocode_mode': None, 'worker_kilocode_agent': None, 'worker_kilocode_model': None, 'worker_kilocode_planning_model': None, 'worker_kilocode_coding_model': None, 'worker_kilocode_variant': None, 'worker_kilocode_pure': False, 'worker_kilocode_json_output': False, 'worker_kilocode_usage_db_path': None, 'worker_kilocode_state_root': None, 'worker_kilocode_provider_config_mode': 'auto', 'worker_kilocode_openai_api_spec': None, 'worker_kilocode_openai_base_url': None, 'worker_kilocode_openai_api_key': None, 'worker_kilocode_openai_model': None, 'worker_evaluator_plugin': 'loreley_a0_plugin:plugin', 'worker_evaluator_version': None, 'worker_evaluator_timeout_seconds': 900, 'worker_evaluator_max_metrics': 64, 'worker_evaluator_max_concurrency': None, 'worker_evaluator_slot_poll_seconds': 0.25, 'worker_evaluator_measurement_max_json_bytes': 8388608, 'worker_evolution_global_goal': 'Continuously improve the repository while keeping tests passing, maintaining code quality, and respecting project conventions.', 'worker_evolution_commit_author': 'Loreley Worker', 'worker_evolution_commit_email': 'worker@loreley.local', 'worker_planning_trajectory_summary_provider_mode': 'global_openai', 'worker_planning_trajectory_summary_api_key': None, 'worker_planning_trajectory_summary_base_url': None, 'worker_planning_trajectory_summary_api_spec': 'responses', 'worker_planning_trajectory_summary_thinking': 'provider_default', 'worker_planning_trajectory_summary_reasoning_effort': 'provider_default', 'worker_planning_trajectory_summary_model': None, 'mapelites_code_embedding_model': 'text-embedding-3-small', 'mapelites_code_embedding_dimensions': None, 'mapelites_code_embedding_provider_only': [], 'mapelites_code_embedding_allow_fallbacks': True, 'mapelites_code_embedding_require_parameters': False, 'mapelites_code_embedding_data_collection': 'allow', 'mapelites_local_hash_embedding_acknowledged': False, 'mapelites_repo_state_embedding_max_line_chars': 16000, 'mapelites_repo_state_embedding_max_chunk_chars': 65536, 'mapelites_dimensionality_target_dims': 4, 'mapelites_archive_cells_per_dim': 32, 'mapelites_islands': ['circle_packing_alpha'], 'mapelites_objectives': [{'name': 'sum_radii', 'direction': 'max'}, {'name': 'runtime_p50_ms', 'direction': 'min'}], 'mapelites_pareto_front_max_size': 4, 'mapelites_pareto_epsilon': 1e-09, 'mapelites_admission_policy': 'pareto', 'mapelites_comparison_confidence': 0.95, 'mapelites_migration_interval_jobs': 50, 'mapelites_sampler_inspiration_count': 3, 'mapelites_sampler_seed': 0, 'mapelites_sampler_recipe_cooldown_jobs': 64, 'mapelites_sampler_max_resample_attempts': 32, 'mapelites_sampler_neighbor_radius': 1, 'mapelites_sampler_neighbor_max_radius': 3, 'mapelites_sampler_fallback_sample_size': 8, 'mapelites_sampler_default_priority': 0, 'mapelites_seed_population_size': 16, 'mapelites_seed_portfolio_enabled': False, 'mapelites_seed_portfolio_direction_count': 8, 'mapelites_seed_portfolio_max_pairwise_overlap': 0.65, 'mapelites_seed_direction_max_unsuccessful_attempts': 2, 'mapelites_seed_immediate_min_improvement_fraction': 0.0, 'scheduler_max_unfinished_jobs': 4, 'scheduler_dispatch_batch_size': 4, 'scheduler_schedule_batch_size': 2, 'scheduler_ingest_batch_size': 2, 'scheduler_max_total_jobs': None, 'scheduler_max_unique_evaluation_identities': None, 'scheduler_startup_approve': False, 'scheduler_stale_running_reclaim_batch_size': 32, 'scheduler_stale_running_max_recovery_attempts': 3, 'campaign_program_change_policy': 'locked', 'baseline_bootstrap_policy': 'required', 'failed_candidate_repair_enabled': False, 'failed_candidate_repair_mode': 'rebase_from_nearest_viable', 'failed_candidate_repair_max_depth': 1, 'failed_candidate_repair_max_attempts': 1, 'failed_candidate_repair_normal_jobs_per_token': 9, 'failed_candidate_repair_max_tokens': 3, 'failed_candidate_repair_max_active_jobs': 1, 'failed_candidate_repair_max_jobs_per_tick': 1, 'failed_candidate_repair_failure_kinds': 'validation_failed,test_failed,typecheck_failed,lint_failed', 'failed_candidate_repair_agent_feedback_mode': 'diagnostic_capsule', 'failed_candidate_repair_max_diff_bytes': 65536, 'failed_candidate_repair_max_diagnostic_bytes': 16384, 'worker_evaluator_rework_enabled': True, 'worker_evaluator_rework_max_attempts': 1, 'worker_evaluator_rework_failure_kinds': 'compile,typecheck,lint,test,validation', 'worker_evaluator_rework_max_seconds': 1800}
+[19:39:31] SQLAlchemy engine ready                                   base.py:121
+           postgresql+psycopg://127.0.0.1:5432/loreley                          
+2026-09-20 19:39:31.588 | INFO     | loreley.db.base:get_engine:122 - SQLAlchemy engine initialised for postgresql+psycopg://127.0.0.1:5432/loreley
+           Database schema ready                                     base.py:202
+           url=postgresql+psycopg://127.0.0.1:5432/loreley                      
+2026-09-20 19:39:31.619 | INFO     | loreley.db.base:ensure_database_schema:207 - Database schema ensured for postgresql+psycopg://127.0.0.1:5432/loreley
+           Database schema ready                                     base.py:202
+           url=postgresql+psycopg://127.0.0.1:5432/loreley                      
+2026-09-20 19:39:31.669 | INFO     | loreley.db.base:ensure_database_schema:207 - Database schema ensured for postgresql+psycopg://127.0.0.1:5432/loreley
+{
+ "verdict": "pass",
+ "failed_checks": [],
+ "meaningful_control_config": "config-m-multi-objective",
+ "checks": [
+  {
+   "check_id": "A02-L1",
+   "config": "config-s-single-objective",
+   "passed": true
+  },
+  {
+   "check_id": "A02-L3",
+   "config": "config-s-single-objective",
+   "passed": true
+  },
+  {
+   "check_id": "A02-L5",
+   "config": "config-s-single-objective",
+   "passed": true
+  },
+  {
+   "check_id": "A02-L8",
+   "config": "config-s-single-objective vs config-m-multi-objective",
+   "passed": true
+  },
+  {
+   "check_id": "A02-L3-M",
+   "config": "config-m-multi-objective",
+   "passed": true
+  },
+  {
+   "check_id": "A02-L7",
+   "config": "config-m-multi-objective",
+   "passed": true
+  },
+  {
+   "check_id": "A02-L5-M",
+   "config": "config-m-multi-objective",
+   "passed": true
+  }
+ ],
+ "out": "out/a02.json"
+}
+EXIT=0
+### a0-loreley traps --runtime loreley --run-dir out/traps-run --out out/traps.json --t2-timeout 1
+[19:39:32] Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c13_slow                                                     
+           commit=f085fe77acc30b3dd50a990b5aeedde0bee6c7a7)                     
+[19:39:33] Evaluator finished in 1.0s                          evaluator.py:1528
+           outcome=infrastructure_failed metrics=0                              
+2026-09-20 19:39:33.275 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c13_slow commit=f085fe77acc30b3dd50a990b5aeedde0bee6c7a7 outcome_kind=infrastructure_failed evaluator=loreley_a0_plugin:plugin metrics=0
+[19:39:34] Evaluator running plugin                            evaluator.py:1495
+           loreley_a0_plugin_metrics_heavy:plugin                               
+           (job=a0-c01_good_hex                                                 
+           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     
+           Evaluator finished in 0.2s outcome=passed           evaluator.py:1528
+           metrics=77                                                           
+2026-09-20 19:39:34.990 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin_metrics_heavy:plugin metrics=77
+           Evaluator running plugin                            evaluator.py:1495
+           loreley_a0_plugin_metrics_mapping:plugin                             
+           (job=a0-c01_good_hex                                                 
+           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     
+2026-09-20 19:39:35.157 | WARNING  | loreley.core.worker.evaluator:_coerce_result:2305 - Truncating evaluator metrics from 77 to 64
+[19:39:35] Evaluator finished in 0.2s outcome=passed           evaluator.py:1528
+           metrics=64                                                           
+2026-09-20 19:39:35.158 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin_metrics_mapping:plugin metrics=64
+[19:39:35] Loaded settings env='development' db_host='localhost'  config.py:1487
+2026-09-20 19:39:35.324 | INFO     | loreley.config:get_settings:1491 - Settings initialised: {'app_name': 'loreley-a0', 'environment': 'development', 'log_level': 'INFO', 'profile': 'default', 'logs_base_dir': None, 'loreley_agent_api_token': None, 'loreley_api_write_token': None, 'openai_api_spec': 'responses', 'openai_base_url': None, 'openai_api_key': None, 'openai_dynamic_api_key_provider': None, 'openai_dynamic_api_key_ttl_seconds': None, 'openai_dynamic_api_key_refresh_skew_seconds': None, 'llm_usage_tracking_enabled': True, 'llm_usage_pricing_path': None, 'llm_usage_pricing_json_configured': False, 'mapelites_experiment_root_commit': 'b91c0906c9f676eb661990d881144909d99f2d72', 'database_dsn': 'postgresql+psycopg://127.0.0.1:5432/loreley', 'db_scheme': 'postgresql+psycopg', 'db_host': 'localhost', 'db_port': 5432, 'db_name': 'loreley', 'db_password': '***', 'db_pool_size': 10, 'db_max_overflow': 20, 'db_pool_timeout': 30, 'db_echo': False, 'db_auto_migrate': True, 'db_migration_lock_timeout_seconds': 30, 'tasks_redis_url': 'redis://127.0.0.1:6379/0', 'tasks_redis_host': 'localhost', 'tasks_redis_port': 6379, 'tasks_redis_db': 0, 'tasks_redis_password': None, 'tasks_redis_namespace': 'loreley.a0-loreley-loreley-26cc4549', 'tasks_queue_name': 'loreley.evolution.a0-loreley-loreley-26cc4549', 'tasks_queue_prefetch': 1, 'tasks_delay_queue_prefetch': 1, 'tasks_worker_max_retries': 0, 'tasks_worker_time_limit_seconds': 3600, 'experiment_id': 'a0-loreley-loreley', 'effective_routes': {'seed_portfolio': {'backend': 'kilo', 'provider_mode': 'config', 'provider': 'loreley-openai-responses', 'model': 'openai/gpt-5.6-sol', 'variant': 'high', 'reasoning': 'high', 'api_surface': 'responses', 'base_url_host': None}, 'planning': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'coding': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'trajectory_summary': {'enabled': True, 'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': None, 'api_surface': 'responses', 'thinking': 'provider_default', 'reasoning_effort': 'provider_default', 'base_url_host': None}, 'embedding': {'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': 'text-embedding-3-small', 'dimensions': None, 'api_surface': 'embeddings', 'base_url_host': None, 'local_hash_acknowledged': None}, 'commit_summary': {'enabled': True, 'model_call': False, 'source': 'coding.report.summary', 'fallback_source': 'plan.summary'}}, 'scheduler_repo_root': None, 'scheduler_poll_interval_seconds': 30.0, 'worker_repo_worktree': '/home/ebt/.cache/loreley/worker-repo', 'worker_repo_remote_url': None, 'worker_repo_branch': 'main', 'worker_repo_fetch_depth': None, 'worker_scope_gate_cleanup_paths': '', 'worker_repo_enable_lfs': True, 'worker_repo_job_branch_ttl_hours': 168, 'worker_job_lease_ttl_seconds': 1800, 'worker_job_heartbeat_interval_seconds': 60, 'worker_processes': 1, 'worker_planning_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_planning_backend', 'worker_planning_codex_model': None, 'worker_planning_max_attempts': 2, 'worker_planning_timeout_seconds': 900, 'worker_seed_portfolio_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_seed_portfolio_backend', 'worker_seed_portfolio_model': 'openai/gpt-5.6-sol', 'worker_seed_portfolio_reasoning_effort': 'high', 'worker_seed_portfolio_max_attempts': 2, 'worker_seed_portfolio_timeout_seconds': 1800, 'worker_coding_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_coding_backend', 'worker_coding_codex_model': None, 'worker_coding_max_attempts': 2, 'worker_coding_timeout_seconds': 1800, 'worker_cursor_model': 'gpt-5.2-high', 'worker_kilocode_mode': None, 'worker_kilocode_agent': None, 'worker_kilocode_model': None, 'worker_kilocode_planning_model': None, 'worker_kilocode_coding_model': None, 'worker_kilocode_variant': None, 'worker_kilocode_pure': False, 'worker_kilocode_json_output': False, 'worker_kilocode_usage_db_path': None, 'worker_kilocode_state_root': None, 'worker_kilocode_provider_config_mode': 'auto', 'worker_kilocode_openai_api_spec': None, 'worker_kilocode_openai_base_url': None, 'worker_kilocode_openai_api_key': None, 'worker_kilocode_openai_model': None, 'worker_evaluator_plugin': 'loreley_a0_plugin_metrics_mapping:plugin', 'worker_evaluator_version': None, 'worker_evaluator_timeout_seconds': 900, 'worker_evaluator_max_metrics': 64, 'worker_evaluator_max_concurrency': None, 'worker_evaluator_slot_poll_seconds': 0.25, 'worker_evaluator_measurement_max_json_bytes': 8388608, 'worker_evolution_global_goal': 'Continuously improve the repository while keeping tests passing, maintaining code quality, and respecting project conventions.', 'worker_evolution_commit_author': 'Loreley Worker', 'worker_evolution_commit_email': 'worker@loreley.local', 'worker_planning_trajectory_summary_provider_mode': 'global_openai', 'worker_planning_trajectory_summary_api_key': None, 'worker_planning_trajectory_summary_base_url': None, 'worker_planning_trajectory_summary_api_spec': 'responses', 'worker_planning_trajectory_summary_thinking': 'provider_default', 'worker_planning_trajectory_summary_reasoning_effort': 'provider_default', 'worker_planning_trajectory_summary_model': None, 'mapelites_code_embedding_model': 'text-embedding-3-small', 'mapelites_code_embedding_dimensions': None, 'mapelites_code_embedding_provider_only': [], 'mapelites_code_embedding_allow_fallbacks': True, 'mapelites_code_embedding_require_parameters': False, 'mapelites_code_embedding_data_collection': 'allow', 'mapelites_local_hash_embedding_acknowledged': False, 'mapelites_repo_state_embedding_max_line_chars': 16000, 'mapelites_repo_state_embedding_max_chunk_chars': 65536, 'mapelites_dimensionality_target_dims': 4, 'mapelites_archive_cells_per_dim': 32, 'mapelites_islands': ['circle_packing_alpha'], 'mapelites_objectives': [{'name': 'composite_score', 'direction': 'max'}], 'mapelites_pareto_front_max_size': 8, 'mapelites_pareto_epsilon': 1e-09, 'mapelites_admission_policy': 'pareto', 'mapelites_comparison_confidence': 0.95, 'mapelites_migration_interval_jobs': 50, 'mapelites_sampler_inspiration_count': 3, 'mapelites_sampler_seed': 0, 'mapelites_sampler_recipe_cooldown_jobs': 64, 'mapelites_sampler_max_resample_attempts': 32, 'mapelites_sampler_neighbor_radius': 1, 'mapelites_sampler_neighbor_max_radius': 3, 'mapelites_sampler_fallback_sample_size': 8, 'mapelites_sampler_default_priority': 0, 'mapelites_seed_population_size': 16, 'mapelites_seed_portfolio_enabled': False, 'mapelites_seed_portfolio_direction_count': 8, 'mapelites_seed_portfolio_max_pairwise_overlap': 0.65, 'mapelites_seed_direction_max_unsuccessful_attempts': 2, 'mapelites_seed_immediate_min_improvement_fraction': 0.0, 'scheduler_max_unfinished_jobs': 4, 'scheduler_dispatch_batch_size': 4, 'scheduler_schedule_batch_size': 2, 'scheduler_ingest_batch_size': 2, 'scheduler_max_total_jobs': None, 'scheduler_max_unique_evaluation_identities': None, 'scheduler_startup_approve': False, 'scheduler_stale_running_reclaim_batch_size': 32, 'scheduler_stale_running_max_recovery_attempts': 3, 'campaign_program_change_policy': 'locked', 'baseline_bootstrap_policy': 'required', 'failed_candidate_repair_enabled': False, 'failed_candidate_repair_mode': 'rebase_from_nearest_viable', 'failed_candidate_repair_max_depth': 1, 'failed_candidate_repair_max_attempts': 1, 'failed_candidate_repair_normal_jobs_per_token': 9, 'failed_candidate_repair_max_tokens': 3, 'failed_candidate_repair_max_active_jobs': 1, 'failed_candidate_repair_max_jobs_per_tick': 1, 'failed_candidate_repair_failure_kinds': 'validation_failed,test_failed,typecheck_failed,lint_failed', 'failed_candidate_repair_agent_feedback_mode': 'diagnostic_capsule', 'failed_candidate_repair_max_diff_bytes': 65536, 'failed_candidate_repair_max_diagnostic_bytes': 16384, 'worker_evaluator_rework_enabled': True, 'worker_evaluator_rework_max_attempts': 1, 'worker_evaluator_rework_failure_kinds': 'compile,typecheck,lint,test,validation', 'worker_evaluator_rework_max_seconds': 1800}
+[19:39:35] SQLAlchemy engine ready                                   base.py:121
+           postgresql+psycopg://127.0.0.1:5432/loreley                          
+2026-09-20 19:39:35.347 | INFO     | loreley.db.base:get_engine:122 - SQLAlchemy engine initialised for postgresql+psycopg://127.0.0.1:5432/loreley
+           Database schema ready                                     base.py:202
+           url=postgresql+psycopg://127.0.0.1:5432/loreley                      
+2026-09-20 19:39:35.378 | INFO     | loreley.db.base:ensure_database_schema:207 - Database schema ensured for postgresql+psycopg://127.0.0.1:5432/loreley
+{
+ "verdict": "pass",
+ "T2": true,
+ "T3": true,
+ "T4": true,
+ "out": "out/traps.json"
+}
+EXIT=0
+### a0-loreley run --runtime loreley --run-id lor-a0 --run-dir out/run-a0 --candidate-set /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json --budget T_wall_sec=3600,N_evaluatorCalls=200,concurrency=1 --traces score,selection,resource
+[19:39:35] Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c01_good_hex                                                 
+           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     
+[19:39:36] Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:36.033 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c02_baseline_upstream                                        
+           commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:36.246 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c02_baseline_upstream commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c03_mirror                                                   
+           commit=893d0aa439433d523e2666d62de9b60caacdbab7)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:36.463 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c03_mirror commit=893d0aa439433d523e2666d62de9b60caacdbab7 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c04_near_tie                                                 
+           commit=3bf7bf310c976e9a488fadad81e27ea4dfef47e5)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:36.673 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c04_near_tie commit=3bf7bf310c976e9a488fadad81e27ea4dfef47e5 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c05_overlapping                                              
+           commit=1054b613063beeb62feb2a91d93a190e750eac8d)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:36.886 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c05_overlapping commit=1054b613063beeb62feb2a91d93a190e750eac8d outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c06_empty                                                    
+           commit=245b052ae21568853348257d5fb739c82c498ec4)                     
+[19:39:37] Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:37.100 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c06_empty commit=245b052ae21568853348257d5fb739c82c498ec4 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c07_single                                                   
+           commit=06fd7c81ea1b82c72ff95655c01f09a4bc511389)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:37.312 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c07_single commit=06fd7c81ea1b82c72ff95655c01f09a4bc511389 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c08_out_of_bounds                                            
+           commit=8724d76ce22c6675addb04a0bf42937e13855437)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:37.527 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c08_out_of_bounds commit=8724d76ce22c6675addb04a0bf42937e13855437 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c09_malformed_import                                         
+           commit=8f3cc2c8e62dec779227f80623ebed8e5e5a15fb)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:37.745 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c09_malformed_import commit=8f3cc2c8e62dec779227f80623ebed8e5e5a15fb outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c10_raises                                                   
+           commit=8739f824fab190ec43f684df215f7e02eb480b8e)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:37.957 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c10_raises commit=8739f824fab190ec43f684df215f7e02eb480b8e outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+[19:39:38] Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c11_non_deterministic                                        
+           commit=f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18e)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:38.164 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c11_non_deterministic commit=f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18e outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c12_exit_without_artifacts                                   
+           commit=f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4b)                     
+           Evaluator finished in 0.2s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:38.360 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c12_exit_without_artifacts commit=f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4b outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+[19:39:39] Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c13_slow                                                     
+           commit=f085fe77acc30b3dd50a990b5aeedde0bee6c7a7)                     
+[19:39:41] Evaluator finished in 1.7s outcome=candidate_failed evaluator.py:1528
+           metrics=0                                                            
+2026-09-20 19:39:41.578 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c13_slow commit=f085fe77acc30b3dd50a990b5aeedde0bee6c7a7 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495
+           (job=a0-c14_near_zero                                                
+           commit=b8412ada1bb33483d7845b144e7ea6dcbeeed752)                     
+           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528
+2026-09-20 19:39:41.788 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c14_near_zero commit=b8412ada1bb33483d7845b144e7ea6dcbeeed752 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+[19:39:42] Loaded settings env='development' db_host='localhost'  config.py:1487
+2026-09-20 19:39:42.703 | INFO     | loreley.config:get_settings:1491 - Settings initialised: {'app_name': 'loreley-a0', 'environment': 'development', 'log_level': 'INFO', 'profile': 'default', 'logs_base_dir': None, 'loreley_agent_api_token': None, 'loreley_api_write_token': None, 'openai_api_spec': 'responses', 'openai_base_url': None, 'openai_api_key': None, 'openai_dynamic_api_key_provider': None, 'openai_dynamic_api_key_ttl_seconds': None, 'openai_dynamic_api_key_refresh_skew_seconds': None, 'llm_usage_tracking_enabled': True, 'llm_usage_pricing_path': None, 'llm_usage_pricing_json_configured': False, 'mapelites_experiment_root_commit': 'b91c0906c9f676eb661990d881144909d99f2d72', 'database_dsn': 'postgresql+psycopg://127.0.0.1:5432/loreley', 'db_scheme': 'postgresql+psycopg', 'db_host': 'localhost', 'db_port': 5432, 'db_name': 'loreley', 'db_password': '***', 'db_pool_size': 10, 'db_max_overflow': 20, 'db_pool_timeout': 30, 'db_echo': False, 'db_auto_migrate': True, 'db_migration_lock_timeout_seconds': 30, 'tasks_redis_url': 'redis://127.0.0.1:6379/0', 'tasks_redis_host': 'localhost', 'tasks_redis_port': 6379, 'tasks_redis_db': 0, 'tasks_redis_password': None, 'tasks_redis_namespace': 'loreley.a0-loreley-loreley-26cc4549', 'tasks_queue_name': 'loreley.evolution.a0-loreley-loreley-26cc4549', 'tasks_queue_prefetch': 1, 'tasks_delay_queue_prefetch': 1, 'tasks_worker_max_retries': 0, 'tasks_worker_time_limit_seconds': 3600, 'experiment_id': 'a0-loreley-loreley', 'effective_routes': {'seed_portfolio': {'backend': 'kilo', 'provider_mode': 'config', 'provider': 'loreley-openai-responses', 'model': 'openai/gpt-5.6-sol', 'variant': 'high', 'reasoning': 'high', 'api_surface': 'responses', 'base_url_host': None}, 'planning': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'coding': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'trajectory_summary': {'enabled': True, 'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': None, 'api_surface': 'responses', 'thinking': 'provider_default', 'reasoning_effort': 'provider_default', 'base_url_host': None}, 'embedding': {'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': 'text-embedding-3-small', 'dimensions': None, 'api_surface': 'embeddings', 'base_url_host': None, 'local_hash_acknowledged': None}, 'commit_summary': {'enabled': True, 'model_call': False, 'source': 'coding.report.summary', 'fallback_source': 'plan.summary'}}, 'scheduler_repo_root': None, 'scheduler_poll_interval_seconds': 30.0, 'worker_repo_worktree': '/home/ebt/.cache/loreley/worker-repo', 'worker_repo_remote_url': None, 'worker_repo_branch': 'main', 'worker_repo_fetch_depth': None, 'worker_scope_gate_cleanup_paths': '', 'worker_repo_enable_lfs': True, 'worker_repo_job_branch_ttl_hours': 168, 'worker_job_lease_ttl_seconds': 1800, 'worker_job_heartbeat_interval_seconds': 60, 'worker_processes': 1, 'worker_planning_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_planning_backend', 'worker_planning_codex_model': None, 'worker_planning_max_attempts': 2, 'worker_planning_timeout_seconds': 900, 'worker_seed_portfolio_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_seed_portfolio_backend', 'worker_seed_portfolio_model': 'openai/gpt-5.6-sol', 'worker_seed_portfolio_reasoning_effort': 'high', 'worker_seed_portfolio_max_attempts': 2, 'worker_seed_portfolio_timeout_seconds': 1800, 'worker_coding_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_coding_backend', 'worker_coding_codex_model': None, 'worker_coding_max_attempts': 2, 'worker_coding_timeout_seconds': 1800, 'worker_cursor_model': 'gpt-5.2-high', 'worker_kilocode_mode': None, 'worker_kilocode_agent': None, 'worker_kilocode_model': None, 'worker_kilocode_planning_model': None, 'worker_kilocode_coding_model': None, 'worker_kilocode_variant': None, 'worker_kilocode_pure': False, 'worker_kilocode_json_output': False, 'worker_kilocode_usage_db_path': None, 'worker_kilocode_state_root': None, 'worker_kilocode_provider_config_mode': 'auto', 'worker_kilocode_openai_api_spec': None, 'worker_kilocode_openai_base_url': None, 'worker_kilocode_openai_api_key': None, 'worker_kilocode_openai_model': None, 'worker_evaluator_plugin': 'loreley_a0_plugin:plugin', 'worker_evaluator_version': None, 'worker_evaluator_timeout_seconds': 900, 'worker_evaluator_max_metrics': 64, 'worker_evaluator_max_concurrency': None, 'worker_evaluator_slot_poll_seconds': 0.25, 'worker_evaluator_measurement_max_json_bytes': 8388608, 'worker_evolution_global_goal': 'Continuously improve the repository while keeping tests passing, maintaining code quality, and respecting project conventions.', 'worker_evolution_commit_author': 'Loreley Worker', 'worker_evolution_commit_email': 'worker@loreley.local', 'worker_planning_trajectory_summary_provider_mode': 'global_openai', 'worker_planning_trajectory_summary_api_key': None, 'worker_planning_trajectory_summary_base_url': None, 'worker_planning_trajectory_summary_api_spec': 'responses', 'worker_planning_trajectory_summary_thinking': 'provider_default', 'worker_planning_trajectory_summary_reasoning_effort': 'provider_default', 'worker_planning_trajectory_summary_model': None, 'mapelites_code_embedding_model': 'text-embedding-3-small', 'mapelites_code_embedding_dimensions': None, 'mapelites_code_embedding_provider_only': [], 'mapelites_code_embedding_allow_fallbacks': True, 'mapelites_code_embedding_require_parameters': False, 'mapelites_code_embedding_data_collection': 'allow', 'mapelites_local_hash_embedding_acknowledged': False, 'mapelites_repo_state_embedding_max_line_chars': 16000, 'mapelites_repo_state_embedding_max_chunk_chars': 65536, 'mapelites_dimensionality_target_dims': 4, 'mapelites_archive_cells_per_dim': 32, 'mapelites_islands': ['circle_packing_alpha'], 'mapelites_objectives': [{'name': 'composite_score', 'direction': 'max'}], 'mapelites_pareto_front_max_size': 8, 'mapelites_pareto_epsilon': 1e-09, 'mapelites_admission_policy': 'pareto', 'mapelites_comparison_confidence': 0.95, 'mapelites_migration_interval_jobs': 50, 'mapelites_sampler_inspiration_count': 3, 'mapelites_sampler_seed': 0, 'mapelites_sampler_recipe_cooldown_jobs': 64, 'mapelites_sampler_max_resample_attempts': 32, 'mapelites_sampler_neighbor_radius': 1, 'mapelites_sampler_neighbor_max_radius': 3, 'mapelites_sampler_fallback_sample_size': 8, 'mapelites_sampler_default_priority': 0, 'mapelites_seed_population_size': 16, 'mapelites_seed_portfolio_enabled': False, 'mapelites_seed_portfolio_direction_count': 8, 'mapelites_seed_portfolio_max_pairwise_overlap': 0.65, 'mapelites_seed_direction_max_unsuccessful_attempts': 2, 'mapelites_seed_immediate_min_improvement_fraction': 0.0, 'scheduler_max_unfinished_jobs': 4, 'scheduler_dispatch_batch_size': 4, 'scheduler_schedule_batch_size': 2, 'scheduler_ingest_batch_size': 2, 'scheduler_max_total_jobs': None, 'scheduler_max_unique_evaluation_identities': None, 'scheduler_startup_approve': False, 'scheduler_stale_running_reclaim_batch_size': 32, 'scheduler_stale_running_max_recovery_attempts': 3, 'campaign_program_change_policy': 'locked', 'baseline_bootstrap_policy': 'required', 'failed_candidate_repair_enabled': False, 'failed_candidate_repair_mode': 'rebase_from_nearest_viable', 'failed_candidate_repair_max_depth': 1, 'failed_candidate_repair_max_attempts': 1, 'failed_candidate_repair_normal_jobs_per_token': 9, 'failed_candidate_repair_max_tokens': 3, 'failed_candidate_repair_max_active_jobs': 1, 'failed_candidate_repair_max_jobs_per_tick': 1, 'failed_candidate_repair_failure_kinds': 'validation_failed,test_failed,typecheck_failed,lint_failed', 'failed_candidate_repair_agent_feedback_mode': 'diagnostic_capsule', 'failed_candidate_repair_max_diff_bytes': 65536, 'failed_candidate_repair_max_diagnostic_bytes': 16384, 'worker_evaluator_rework_enabled': True, 'worker_evaluator_rework_max_attempts': 1, 'worker_evaluator_rework_failure_kinds': 'compile,typecheck,lint,test,validation', 'worker_evaluator_rework_max_seconds': 1800}
+[19:39:42] SQLAlchemy engine ready                                   base.py:121
+           postgresql+psycopg://127.0.0.1:5432/loreley                          
+2026-09-20 19:39:42.727 | INFO     | loreley.db.base:get_engine:122 - SQLAlchemy engine initialised for postgresql+psycopg://127.0.0.1:5432/loreley
+           Database schema ready                                     base.py:202
+           url=postgresql+psycopg://127.0.0.1:5432/loreley                      
+2026-09-20 19:39:42.761 | INFO     | loreley.db.base:ensure_database_schema:207 - Database schema ensured for postgresql+psycopg://127.0.0.1:5432/loreley
+{
+ "run_id": "lor-a0",
+ "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+ "evaluator_calls": 14,
+ "candidate_count": 14,
+ "traces": {
+  "score": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.score.jsonl",
+  "selection": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.selection.jsonl",
+  "resource": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.resource.jsonl",
+  "combined": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.all.jsonl"
+ },
+ "failure_stage_counts": {
+  "none": 5,
+  "verify_failed": 5,
+  "resolve_failed": 1,
+  "evaluator_failed": 2,
+  "timeout": 1
+ },
+ "failure_stage_expected_from_frozen_map": {
+  "none": 5,
+  "verify_failed": 5,
+  "resolve_failed": 1,
+  "evaluator_failed": 2,
+  "timeout": 1
+ },
+ "failure_stage_counts_match_frozen_map": true,
+ "evaluator_evidence_counts": {
+  "ok": 14
+ },
+ "wall_clock_s": 7.047315107003669
+}
+EXIT=0
+### a0-loreley closure-probe --runtime loreley --run-dir out/closure-run --out out/closure.json
+{
+ "verdict": "closed",
+ "mechanism": "external_network_isolation",
+ "out": "out/closure.json",
+ "observations": [
+  {
+   "name": "probe_egress:host",
+   "observed": "OPEN",
+   "expectation": "open"
+  },
+  {
+   "name": "probe_egress:docker-bridge",
+   "observed": "OPEN",
+   "expectation": "open"
+  },
+  {
+   "name": "probe_egress:docker-internal",
+   "observed": "BLOCKED",
+   "expectation": "blocked"
+  },
+  {
+   "name": "candidate_channel:bridge",
+   "observed": "OPEN",
+   "expectation": "open"
+  },
+  {
+   "name": "candidate_channel:internal",
+   "observed": "BLOCKED",
+   "expectation": "blocked"
+  }
+ ]
+}
+EXIT=0

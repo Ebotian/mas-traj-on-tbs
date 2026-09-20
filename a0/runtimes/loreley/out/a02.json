@@ -1,0 +1,700 @@
+{
+  "checks": [
+    {
+      "check_id": "A02-L1",
+      "config": "config-s-single-objective",
+      "description": "same cell (identical measures): c_1 admitted as a replacement and c_2 removed from that cell; |delta| > epsilon so the outcome is score-decided",
+      "inputs": {
+        "c01_good_hex_scalar": 2.4519205208433132,
+        "c02_baseline_upstream_scalar": 0.25,
+        "cell_index": 68,
+        "epsilon": 1e-09,
+        "gap": 2.2019205208433132,
+        "measures": [
+          0.25,
+          0.25
+        ],
+        "source": "real evaluation of C* members"
+      },
+      "observations": {
+        "add_c1_after_c2": {
+          "cell_index": 68,
+          "removed_commit_hashes": [
+            "c02_baseline_upstream"
+          ],
+          "retained": true
+        },
+        "add_c2": {
+          "cell_index": 68,
+          "removed_commit_hashes": [],
+          "retained": true
+        },
+        "archive_members": [
+          "c01_good_hex"
+        ],
+        "batch_note": "candidates are added one at a time because _build_add_outcomes only fills removed_commit_hashes for a single-candidate batch (pareto_archive.py:407)",
+        "front_in_cell": [
+          "c01_good_hex"
+        ],
+        "single_candidate_batch": true
+      },
+      "passed": true
+    },
+    {
+      "check_id": "A02-L3",
+      "config": "config-s-single-objective",
+      "description": "different cells: a strictly higher score must NOT evict the other cell's member",
+      "inputs": {
+        "c1": {
+          "composite_score": 0.75
+        },
+        "c2": {
+          "composite_score": 0.25
+        },
+        "cell_c1": 196,
+        "cell_c2": 68,
+        "measures_c1": [
+          0.75,
+          0.25
+        ],
+        "measures_c2": [
+          0.25,
+          0.25
+        ]
+      },
+      "observations": {
+        "add_c1_removed": [],
+        "add_c1_retained": true,
+        "front_c1_cell": [
+          "c01_good_hex"
+        ],
+        "front_c2_cell": [
+          "c02_baseline_upstream"
+        ]
+      },
+      "passed": true
+    },
+    {
+      "check_id": "A02-L5",
+      "config": "config-s-single-objective",
+      "description": "report branch (best-primary-commit query over archive membership) resolves to c_1",
+      "inputs": {
+        "island_id": "circle_packing_alpha",
+        "members": [
+          {
+            "cell_index": 68,
+            "commit_hash": "c02_baseline_upstream",
+            "measures": [
+              0.25,
+              0.25
+            ],
+            "objective_values": [
+              0.25
+            ],
+            "timestamp": 1.0,
+            "value": 0.25
+          },
+          {
+            "cell_index": 68,
+            "commit_hash": "c01_good_hex",
+            "measures": [
+              0.25,
+              0.25
+            ],
+            "objective_values": [
+              2.4519205208433132
+            ],
+            "timestamp": 2.0,
+            "value": 2.4519205208433132
+          }
+        ],
+        "primary_metric_name": "composite_score"
+      },
+      "observations": {
+        "meta": {
+          "island_id": "circle_packing_alpha",
+          "primary_metric_name": "composite_score",
+          "primary_metric_value": 2.4519205208433132,
+          "root_commit_hash": null
+        },
+        "note": "the report is a global argmax over retained members, so it must not be used as the cross-cell control",
+        "resolved_best_commit_hash": "c01_good_hex"
+      },
+      "passed": true
+    },
+    {
+      "check_id": "A02-L8",
+      "config": "config-s-single-objective vs config-m-multi-objective",
+      "description": "regime control: same cell, same pair; single objective replaces (per-cell argmax), two objectives retain both (non-dominated front of size 2)",
+      "inputs": {
+        "c1": {
+          "runtime_p50_ms": 9.0,
+          "sum_radii": 2.4519205208433132
+        },
+        "c2": {
+          "runtime_p50_ms": 1.0,
+          "sum_radii": 0.25
+        },
+        "measures": [
+          0.25,
+          0.25
+        ]
+      },
+      "observations": {
+        "interpretation": "Under a single objective every cell front has exactly one member, so the archive IS the per-cell argmax and the report is the global argmax over retained members: the protocol's 'no global-argmax guarantee' does not hold there. The cross-cell non-eviction control therefore only discriminates under a multi-objective configuration, where two non-dominated candidates can coexist in one cell and a high primary score can coexist with a retained worse primary. Config M (the checkout's own circle-packing example objective list, examples/evol_circle_packing.py:80-84) is that configuration.",
+        "multi_objective": {
+          "front": [
+            "c1",
+            "c2"
+          ],
+          "objective_values_c1": [
+            2.4519205208433132,
+            9.0
+          ],
+          "objective_values_c2": [
+            0.25,
+            1.0
+          ],
+          "removed": []
+        },
+        "single_objective": {
+          "front": [
+            "c1"
+          ],
+          "objective_values_c1": [
+            2.4519205208433132
+          ],
+          "objective_values_c2": [
+            0.25
+          ],
+          "removed": [
+            "c2"
+          ]
+        }
+      },
+      "passed": true
+    },
+    {
+      "check_id": "A02-L3-M",
+      "config": "config-m-multi-objective",
+      "description": "different cells, multi-objective: c_1 has the higher primary score and still does not evict c_2",
+      "inputs": {
+        "c1_objective_scores": [
+          3.0,
+          -9.0
+        ],
+        "c1_objective_values": [
+          3.0,
+          9.0
+        ],
+        "c2_objective_scores": [
+          2.0,
+          -1.0
+        ],
+        "c2_objective_values": [
+          2.0,
+          1.0
+        ],
+        "cell_c1": 196,
+        "cell_c2": 68
+      },
+      "observations": {
+        "add_c1_removed": [],
+        "add_c1_retained": true,
+        "front_c2_cell": [
+          "c2"
+        ],
+        "members": [
+          "c2",
+          "c1"
+        ]
+      },
+      "passed": true
+    },
+    {
+      "check_id": "A02-L7",
+      "config": "config-m-multi-objective",
+      "description": "sampling is score-independent: per-cell pick frequency is ~0.5/0.5",
+      "inputs": {
+        "cell_a": "aaa",
+        "cell_b": "bbb",
+        "draws": 4000,
+        "rng_seed": 20260920
+      },
+      "observations": {
+        "counts": {
+          "aaa": 1970,
+          "bbb": 2030
+        },
+        "frequency": {
+          "aaa": 0.4925,
+          "bbb": 0.5075
+        }
+      },
+      "passed": true
+    },
+    {
+      "check_id": "A02-L5-M",
+      "config": "config-m-multi-objective",
+      "description": "report branch under two objectives returns the global best primary among retained members (why it cannot serve as the cross-cell control)",
+      "inputs": {
+        "members": [
+          {
+            "cell_index": 68,
+            "commit_hash": "c_low",
+            "measures": [
+              0.25,
+              0.25
+            ],
+            "objective_values": [
+              1.0,
+              50.0
+            ],
+            "timestamp": 1.0,
+            "value": 1.0
+          },
+          {
+            "cell_index": 68,
+            "commit_hash": "c_mid",
+            "measures": [
+              0.25,
+              0.25
+            ],
+            "objective_values": [
+              2.0,
+              40.0
+            ],
+            "timestamp": 2.0,
+            "value": 2.0
+          },
+          {
+            "cell_index": 196,
+            "commit_hash": "c_high",
+            "measures": [
+              0.75,
+              0.25
+            ],
+            "objective_values": [
+              9.0,
+              60.0
+            ],
+            "timestamp": 3.0,
+            "value": 9.0
+          }
+        ]
+      },
+      "observations": {
+        "primary_metric_name": "sum_radii",
+        "resolved_best_commit_hash": "c_high"
+      },
+      "passed": true
+    }
+  ],
+  "eid_r": {
+    "declaration": "Loreley computes its own identity: evaluator_name = WORKER_EVALUATOR_PLUGIN (evaluator.py:1481-1485), evaluator_version = source fingerprint of that module (evaluator_identity.py:90-105), campaign_program_hash = sha256 of loreley.program.md (campaign_program.py:212). The adapter renders loreley.program.md from the frozen EID* document (Goal / Primary metric / Correctness gates / Evaluation budget sections come from EID*.Config and EID*.MetricDefinition), so the triple is a function of EID*; eidr_derivation is the sha256 over (eid_star, plugin_source_sha256, campaign_program_sha256, native_scheme) and recomputes.",
+    "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "mapping_mode": "native",
+    "native_scheme": "evaluator_name_version_campaign_program_hash",
+    "recomputable": true,
+    "value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1"
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "failed_checks": [],
+  "frozen_conditions": {
+    "admission_policy": "pareto",
+    "cell_grid": "16^2",
+    "cells_per_dim": 16,
+    "config_m": {
+      "note": "the checkout's own circle-packing example objective list",
+      "objectives": [
+        {
+          "direction": "max",
+          "name": "sum_radii"
+        },
+        {
+          "direction": "min",
+          "name": "runtime_p50_ms"
+        }
+      ],
+      "pareto_front_max_size": 4
+    },
+    "config_s": {
+      "note": "the runtime's default objective name; the regime the acceptance work analysed",
+      "objectives": [
+        {
+          "direction": "max",
+          "name": "composite_score"
+        }
+      ],
+      "pareto_front_max_size": 8
+    },
+    "mapelites_pareto_epsilon": 1e-09,
+    "single_island": "circle_packing_alpha",
+    "target_dims": 2
+  },
+  "meaningful_control_config": "config-m-multi-objective",
+  "real_evaluations": {
+    "config_m": {
+      "c01_good_hex": {
+        "metric_names": [
+          "min_boundary_margin",
+          "min_gap",
+          "num_circles",
+          "overlap_count",
+          "packing_density",
+          "sum_radii",
+          "runtime_p50_ms"
+        ],
+        "metrics": [
+          {
+            "details": {
+              "e_star_field": "min_boundary_margin",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "min_boundary_margin",
+            "unit": null,
+            "value": 1.0000000023879796e-07
+          },
+          {
+            "details": {
+              "e_star_field": "min_gap",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "min_gap",
+            "unit": null,
+            "value": 2.0000000000575113e-07
+          },
+          {
+            "details": {
+              "e_star_field": "num_circles",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "num_circles",
+            "unit": null,
+            "value": 26.0
+          },
+          {
+            "details": {
+              "e_star_field": "overlap_count",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "overlap_count",
+            "unit": null,
+            "value": 0.0
+          },
+          {
+            "details": {
+              "e_star_field": "packing_density",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "packing_density",
+            "unit": null,
+            "value": 0.7264225235411115
+          },
+          {
+            "details": {
+              "e_star_field": "sum_radii",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "sum_radii",
+            "unit": "radius_sum",
+            "value": 2.4519205208433132
+          },
+          {
+            "details": {
+              "note": "timing sidecar; never part of the canonical Outcome",
+              "source": "E*.resources.runtime_ms_p50"
+            },
+            "higher_is_better": false,
+            "name": "runtime_p50_ms",
+            "unit": "ms",
+            "value": 0.0076500000432133675
+          }
+        ],
+        "objective_resolution_error": null,
+        "objective_scores": [
+          2.4519205208433132,
+          -0.0076500000432133675
+        ],
+        "objective_values": [
+          2.4519205208433132,
+          0.0076500000432133675
+        ],
+        "outcome_kind": "passed",
+        "protocol": "one_shot",
+        "reuse_kind": "none"
+      },
+      "c02_baseline_upstream": {
+        "metric_names": [
+          "min_boundary_margin",
+          "min_gap",
+          "num_circles",
+          "overlap_count",
+          "packing_density",
+          "sum_radii",
+          "runtime_p50_ms"
+        ],
+        "metrics": [
+          {
+            "details": {
+              "e_star_field": "min_boundary_margin",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "min_boundary_margin",
+            "unit": null,
+            "value": 0.0
+          },
+          {
+            "details": {
+              "e_star_field": "min_gap",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "min_gap",
+            "unit": null,
+            "value": 0.036249916677713497
+          },
+          {
+            "details": {
+              "e_star_field": "num_circles",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "num_circles",
+            "unit": null,
+            "value": 26.0
+          },
+          {
+            "details": {
+              "e_star_field": "overlap_count",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "overlap_count",
+            "unit": null,
+            "value": 0.0
+          },
+          {
+            "details": {
+              "e_star_field": "packing_density",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "packing_density",
+            "unit": null,
+            "value": 0.007551905417283158
+          },
+          {
+            "details": {
+              "e_star_field": "sum_radii",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "sum_radii",
+            "unit": "radius_sum",
+            "value": 0.25
+          },
+          {
+            "details": {
+              "note": "timing sidecar; never part of the canonical Outcome",
+              "source": "E*.resources.runtime_ms_p50"
+            },
+            "higher_is_better": false,
+            "name": "runtime_p50_ms",
+            "unit": "ms",
+            "value": 0.008381000952795148
+          }
+        ],
+        "objective_resolution_error": null,
+        "objective_scores": [
+          0.25,
+          -0.008381000952795148
+        ],
+        "objective_values": [
+          0.25,
+          0.008381000952795148
+        ],
+        "outcome_kind": "passed",
+        "protocol": "one_shot",
+        "reuse_kind": "none"
+      }
+    },
+    "config_s": {
+      "c01_good_hex": {
+        "metric_names": [
+          "min_boundary_margin",
+          "min_gap",
+          "num_circles",
+          "overlap_count",
+          "packing_density",
+          "sum_radii"
+        ],
+        "metrics": [
+          {
+            "details": {
+              "e_star_field": "min_boundary_margin",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "min_boundary_margin",
+            "unit": null,
+            "value": 1.0000000023879796e-07
+          },
+          {
+            "details": {
+              "e_star_field": "min_gap",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "min_gap",
+            "unit": null,
+            "value": 2.0000000000575113e-07
+          },
+          {
+            "details": {
+              "e_star_field": "num_circles",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "num_circles",
+            "unit": null,
+            "value": 26.0
+          },
+          {
+            "details": {
+              "e_star_field": "overlap_count",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "overlap_count",
+            "unit": null,
+            "value": 0.0
+          },
+          {
+            "details": {
+              "e_star_field": "packing_density",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "packing_density",
+            "unit": null,
+            "value": 0.7264225235411115
+          },
+          {
+            "details": {
+              "e_star_field": "sum_radii",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "sum_radii",
+            "unit": "radius_sum",
+            "value": 2.4519205208433132
+          }
+        ],
+        "objective_resolution_error": "ObjectiveContractError: Missing configured objective 'composite_score'.",
+        "objective_scores": [],
+        "objective_values": [],
+        "outcome_kind": "passed",
+        "protocol": "one_shot",
+        "reuse_kind": "none"
+      },
+      "c02_baseline_upstream": {
+        "metric_names": [
+          "min_boundary_margin",
+          "min_gap",
+          "num_circles",
+          "overlap_count",
+          "packing_density",
+          "sum_radii"
+        ],
+        "metrics": [
+          {
+            "details": {
+              "e_star_field": "min_boundary_margin",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "min_boundary_margin",
+            "unit": null,
+            "value": 0.0
+          },
+          {
+            "details": {
+              "e_star_field": "min_gap",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "min_gap",
+            "unit": null,
+            "value": 0.036249916677713497
+          },
+          {
+            "details": {
+              "e_star_field": "num_circles",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "num_circles",
+            "unit": null,
+            "value": 26.0
+          },
+          {
+            "details": {
+              "e_star_field": "overlap_count",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "overlap_count",
+            "unit": null,
+            "value": 0.0
+          },
+          {
+            "details": {
+              "e_star_field": "packing_density",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "packing_density",
+            "unit": null,
+            "value": 0.007551905417283158
+          },
+          {
+            "details": {
+              "e_star_field": "sum_radii",
+              "source": "E*.outcome.fields"
+            },
+            "higher_is_better": true,
+            "name": "sum_radii",
+            "unit": "radius_sum",
+            "value": 0.25
+          }
+        ],
+        "objective_resolution_error": "ObjectiveContractError: Missing configured objective 'composite_score'.",
+        "objective_scores": [],
+        "objective_values": [],
+        "outcome_kind": "passed",
+        "protocol": "one_shot",
+        "reuse_kind": "none"
+      }
+    }
+  },
+  "regime_note": "Under a single objective every cell front has exactly one member, so the archive IS the per-cell argmax and the report is the global argmax over retained members: the protocol's 'no global-argmax guarantee' does not hold there. The cross-cell non-eviction control therefore only discriminates under a multi-objective configuration, where two non-dominated candidates can coexist in one cell and a high primary score can coexist with a retained worse primary. Config M (the checkout's own circle-packing example objective list, examples/evol_circle_packing.py:80-84) is that configuration.",
+  "runtime": "loreley",
+  "schema": "a0.a02.loreley/v1",
+  "task": "circle-packing",
+  "theta_E": {
+    "defaults_applied": {},
+    "extra": {},
+    "fidelity": "full",
+    "fraction": 1.0,
+    "seed": 1337
+  },
+  "verdict": "pass"
+}

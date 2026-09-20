@@ -1,0 +1,23 @@
+{
+  "derivation_inputs": [
+    "eid_star",
+    "plugin_source_sha256",
+    "campaign_program_sha256",
+    "native_scheme"
+  ],
+  "eid_r": {
+    "declaration": "Loreley computes its own identity: evaluator_name = WORKER_EVALUATOR_PLUGIN (evaluator.py:1481-1485), evaluator_version = source fingerprint of that module (evaluator_identity.py:90-105), campaign_program_hash = sha256 of loreley.program.md (campaign_program.py:212). The adapter renders loreley.program.md from the frozen EID* document (Goal / Primary metric / Correctness gates / Evaluation budget sections come from EID*.Config and EID*.MetricDefinition), so the triple is a function of EID*; eidr_derivation is the sha256 over (eid_star, plugin_source_sha256, campaign_program_sha256, native_scheme) and recomputes.",
+    "mapping_mode": "native",
+    "native_scheme": "evaluator_name_version_campaign_program_hash",
+    "recomputable": true,
+    "value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1"
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "eidr_derivation": "15c5b4374c5b9c7b6011e0a2f4c26d0bac6e093c86dda9c71d72186f08e994e8",
+  "native_components": {
+    "campaign_program_sha256": "b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+    "evaluator_name": "loreley_a0_plugin:plugin",
+    "plugin_source_sha256": "53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad"
+  },
+  "schema": "a0.eidr.loreley/v1"
+}

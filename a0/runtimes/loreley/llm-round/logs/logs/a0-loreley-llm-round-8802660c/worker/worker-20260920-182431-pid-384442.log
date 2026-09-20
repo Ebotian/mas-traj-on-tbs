@@ -1,0 +1,16 @@
+2026-09-20 18:24:31.622 | INFO     | loreley.entrypoints:configure_process_logging:161 - worker logging initialised level=INFO file=/home/ebt/rsi-dev/a0/runtimes/loreley/llm-round/logs/logs/a0-loreley-llm-round-8802660c/worker/worker-20260920-182431-pid-384442.log
+2026-09-20 18:24:31.713 | INFO     | loreley.db.base:get_engine:122 - SQLAlchemy engine initialised for postgresql+psycopg://127.0.0.1:5432/loreley_llm
+2026-09-20 18:24:31.742 | INFO     | loreley.db.base:ensure_database_schema:207 - Database schema ensured for postgresql+psycopg://127.0.0.1:5432/loreley_llm
+2026-09-20 18:24:31.953 | INFO     | loreley.tasks.broker:setup_broker:75 - Redis broker ready: redis=redis://127.0.0.1:6379/1 namespace=loreley.a0-loreley-llm-round-8802660c
+2026-09-20 18:24:31.954 | INFO     | loreley.entrypoints:_apply_dramatiq_prefetch_settings:112 - Applied Dramatiq prefetch settings queue_prefetch=1 delay_queue_prefetch=1
+2026-09-20 18:24:44.993 | INFO     | loreley.tasks.workers:_log_job_start:80 - Starting evolution job c2446372-04d7-4293-aac1-05a005bfabd3 (queue=loreley.evolution.a0-loreley-llm-round-8802660c)
+2026-09-20 18:24:45.073 | WARNING  | loreley.core.worker.repository:_sync_lfs:982 - Git LFS sync skipped: Cmd('git') failed due to: exit code(1)
+  cmdline: git lfs install --local
+  stderr: 'git: 'lfs' is not a git command. See 'git --help'.
+
+The most similar command is
+	refs'
+2026-09-20 18:24:45.078 | INFO     | loreley.core.worker.repository:checkout_lease_for_job:331 - Checked out base commit b91c0906c9f676eb661990d881144909d99f2d72 for job c2446372-04d7-4293-aac1-05a005bfabd3 in worktree /home/ebt/rsi-dev/a0/runtimes/loreley/llm-round/worker-repo-worktrees/c2446372-04d7-4293-aac1-05a005bfabd3-ae85b73e
+2026-09-20 18:35:09.267 | WARNING  | loreley.core.worker.coding:_on_attempt_retry:237 - Coding attempt 1 failed: codex exec timed out after 480s.
+2026-09-20 18:37:48.497 | INFO     | loreley.entrypoints:_handle_signal:204 - Worker received signal 15; stopping
+2026-09-20 18:37:48.497 | INFO     | loreley.entrypoints:emit:50 - Shutting down...

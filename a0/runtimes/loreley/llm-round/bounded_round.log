@@ -1,0 +1,105 @@
+
+### database loreley_llm
+CREATE DATABASE
+migrate exit=0
+2026-09-20 18:24:31.293 | INFO     | loreley.db.base:get_engine:122 - SQLAlchemy engine initialised for postgresql+psycopg://127.0.0.1:5432/loreley_llm
+2026-09-20 18:24:31.384 | INFO     | loreley.db.migrations.runner:_create_fresh_schema:214 - Created fresh Loreley schema at version 23
+from=none to=23 applied=none fresh=true
+
+### worker up
+
+### one scheduler tick
+scheduler exit=0
+2026-09-20 18:24:44.798 | INFO     | loreley.scheduler.main:_create_seed_allocations:1057 - Scheduled 1 seed jobs from root b91c0906c9f676eb661990d881144909d99f2d72 on island circle_packing_alpha (phase=warmup unfinished_jobs=0 warmup_samples=0 target_samples=2)
+           Scheduler tick ingested=0 reclaimed_pending=0             main.py:434
+           reclaimed_failed=0 dispatched=0 seed_scheduled=1                     
+           seed_portfolio_exhausted=0 staged_promoted=0 scheduled=0             
+           unfinished=1 remaining_total=0/1                                     
+scheduler2 exit=0
+
+### waiting for a terminal job state (watchdog)
+t+0s jobs=RUNNING:1
+t+20s jobs=RUNNING:1
+t+40s jobs=RUNNING:1
+t+60s jobs=RUNNING:1
+t+80s jobs=RUNNING:1
+t+100s jobs=RUNNING:1
+t+120s jobs=RUNNING:1
+t+140s jobs=RUNNING:1
+t+160s jobs=RUNNING:1
+t+180s jobs=RUNNING:1
+t+201s jobs=RUNNING:1
+t+221s jobs=RUNNING:1
+t+241s jobs=RUNNING:1
+t+261s jobs=RUNNING:1
+t+281s jobs=RUNNING:1
+t+301s jobs=RUNNING:1
+t+321s jobs=RUNNING:1
+t+341s jobs=RUNNING:1
+t+361s jobs=RUNNING:1
+t+381s jobs=RUNNING:1
+t+401s jobs=RUNNING:1
+t+421s jobs=RUNNING:1
+t+441s jobs=RUNNING:1
+t+461s jobs=RUNNING:1
+t+481s jobs=RUNNING:1
+t+501s jobs=RUNNING:1
+t+521s jobs=RUNNING:1
+t+541s jobs=RUNNING:1
+t+561s jobs=RUNNING:1
+t+581s jobs=RUNNING:1
+t+601s jobs=RUNNING:1
+t+622s jobs=RUNNING:1
+t+642s jobs=RUNNING:1
+t+662s jobs=RUNNING:1
+t+682s jobs=RUNNING:1
+t+702s jobs=RUNNING:1
+t+722s jobs=RUNNING:1
+t+742s jobs=RUNNING:1
+t+762s jobs=RUNNING:1
+
+### final job rows
+ERROR:  column "failure_summary" does not exist
+LINE 1: ..._hash, failure_stage, failure_kind, left(coalesce(failure_su...
+                                                             ^
+
+### evaluation attempts
+ evaluator_name | evaluator_version | protocol | outcome_kind | reuse_kind | failure_kind 
+----------------+-------------------+----------+--------------+------------+--------------
+(0 rows)
+
+
+### archive cells
+ island_id | cell_index | commit_hash | objective_values 
+-----------+------------+-------------+------------------
+(0 rows)
+
+
+### shutting the worker down
+worker log tail:
+[18:24:45] Evolution worker starting                            evolution.py:461
+           job=c2446372-04d7-4293-aac1-05a005bfabd3                             
+           base=b91c0906c9f676eb661990d881144909d99f2d72                        
+2026-09-20 18:24:45.073 | WARNING  | loreley.core.worker.repository:_sync_lfs:982 - Git LFS sync skipped: Cmd('git') failed due to: exit code(1)
+  cmdline: git lfs install --local
+  stderr: 'git: 'lfs' is not a git command. See 'git --help'.
+
+The most similar command is
+	refs'
+[18:24:45] Checked out base commit                             repository.py:327
+           job=c2446372-04d7-4293-aac1-05a005bfabd3                             
+           commit=b91c0906c9f676eb661990d881144909d99f2d72                      
+           worktree=/home/ebt/rsi-dev/a0/runtimes/loreley/llm-                  
+           round/worker-repo-worktrees/c2446372-04d7-4293-aac1                  
+           -05a005bfabd3-ae85b73e                                               
+2026-09-20 18:24:45.078 | INFO     | loreley.core.worker.repository:checkout_lease_for_job:331 - Checked out base commit b91c0906c9f676eb661990d881144909d99f2d72 for job c2446372-04d7-4293-aac1-05a005bfabd3 in worktree /home/ebt/rsi-dev/a0/runtimes/loreley/llm-round/worker-repo-worktrees/c2446372-04d7-4293-aac1-05a005bfabd3-ae85b73e
+[18:24:45] Planning agent requesting plan (attempt 1/2)         planning.py:1060
+[18:27:09] Planning agent generated plan in 144.1s (attempt     planning.py:1071
+           1/2)                                                                 
+[18:27:09] Coding agent requesting execution (attempt 1/2)         coding.py:209
+2026-09-20 18:35:09.267 | WARNING  | loreley.core.worker.coding:_on_attempt_retry:237 - Coding attempt 1 failed: codex exec timed out after 480s.
+[18:35:09] Coding agent requesting execution (attempt 2/2)         coding.py:209
+[18:37:48] Received signal signum=15; stopping worker...      entrypoints.py:203
+2026-09-20 18:37:48.497 | INFO     | loreley.entrypoints:_handle_signal:204 - Worker received signal 15; stopping
+2026-09-20 18:37:48.497 | INFO     | loreley.entrypoints:emit:50 - Shutting down...
+DONE

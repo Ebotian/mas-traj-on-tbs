@@ -1,0 +1,109 @@
+{
+  "caveats": [
+    "docker --internal also removes the container's route to the host, so this barrier cuts host loopback as well as external egress",
+    "the orchestrator process was NOT isolated: it needs its own channels and cannot be placed behind this barrier; only the candidate-execution channel is",
+    "Loreley's own LLM-driven path (codex backend) could not be exercised: codex cannot complete a model call on this host (base_url points at 127.0.0.1:15722 with no listener), so the probed lane is the evaluator/candidate lane, which is the only lane this adapter can drive"
+  ],
+  "configured": {
+    "docker_network": "a0-loreley-internal",
+    "docker_network_internal": true,
+    "network_switch_in_runtime": null,
+    "note": "Loreley's default path has no network switch (protocol plan:569); the closure mechanism is therefore external isolation, not configuration",
+    "sandbox_mode": null,
+    "web_search": null
+  },
+  "interpreter": {
+    "implementation": "CPython",
+    "version": "3.12.11"
+  },
+  "mechanism": "external_network_isolation",
+  "observations": [
+    {
+      "command": "/home/ebt/rsi-dev/a0/env/checks/probe_egress.sh check --mechanism host --image python:3.12-slim --timeout 60",
+      "evidence": "EVIDENCE mechanism=host mode=canary rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN",
+      "expectation": "open",
+      "mechanism": "host",
+      "name": "probe_egress:host",
+      "observed": "OPEN",
+      "raw_output": "### mechanism=host expectation=egress_open image=python:3.12-slim timeout=60s date=2026-09-20T19:39:43+08:00\nEVIDENCE mechanism=host mode=canary rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN\nVERDICT host: CONFIRMED (expected egress_open, observed egress_OPEN)\n",
+      "returncode": 0
+    },
+    {
+      "command": "/home/ebt/rsi-dev/a0/env/checks/probe_egress.sh check --mechanism docker-bridge --image python:3.12-slim --timeout 60",
+      "evidence": "EVIDENCE mechanism=docker-bridge mode=canary rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN",
+      "expectation": "open",
+      "mechanism": "docker-bridge",
+      "name": "probe_egress:docker-bridge",
+      "observed": "OPEN",
+      "raw_output": "### mechanism=docker-bridge expectation=egress_open image=python:3.12-slim timeout=60s date=2026-09-20T19:39:44+08:00\nEVIDENCE mechanism=docker-bridge mode=canary rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN\nVERDICT docker-bridge: CONFIRMED (expected egress_open, observed egress_OPEN)\n",
+      "returncode": 0
+    },
+    {
+      "command": "/home/ebt/rsi-dev/a0/env/checks/probe_egress.sh check --mechanism docker-internal --image python:3.12-slim --timeout 60",
+      "evidence": "EVIDENCE mechanism=docker-internal mode=canary rc=0 dns=fail tcp=fail tcpvia=none https=fail local=ok egress=BLOCKED",
+      "expectation": "blocked",
+      "mechanism": "docker-internal",
+      "name": "probe_egress:docker-internal",
+      "observed": "BLOCKED",
+      "raw_output": "### mechanism=docker-internal expectation=egress_blocked image=python:3.12-slim timeout=60s date=2026-09-20T19:39:45+08:00\nEVIDENCE mechanism=docker-internal mode=canary rc=0 dns=fail tcp=fail tcpvia=none https=fail local=ok egress=BLOCKED\nVERDICT docker-internal: CONFIRMED (expected egress_blocked, observed egress_BLOCKED)\n",
+      "returncode": 0
+    },
+    {
+      "candidate_egress_result": {
+        "dns_example_com": "ok",
+        "host_gateway_172_17_0_1_5432": "fail:ConnectionRefusedError",
+        "host_loopback_127_0_0_1_5432": "fail:ConnectionRefusedError",
+        "https_example_com": "ok",
+        "sibling_postgres_5432": "ok",
+        "sibling_redis_6379": "ok",
+        "tcp_1_1_1_1_53": "ok",
+        "tcp_example_com_443": "ok"
+      },
+      "command": "docker run --rm --network a0-loreley-net -v /home/ebt:/home/ebt -v /home/ebt/rsi-dev/a0/runtimes/loreley/out/closure-run/closure/candidate-egress-bridge:/probe-egress -e A0_EGRESS_RESULT=/home/ebt/rsi-dev/a0/runtimes/loreley/out/closure-run/closure/candidate-egress-bridge/result.json -w /tmp python:3.12-slim /home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/runtimes/loreley/probe/egress_candidate --seed 1337 --fidelity full --fraction 1.0 --out /tmp/a0-closure-bridge.outcome.json",
+      "e_star_exit": 0,
+      "e_star_output_tail": "e_star: status=ok state_dir=/tmp/e-star-state/36eba7f6402a1188-8c9da155eb13c73b out=/tmp/a0-closure-bridge.outcome.json\nE_STAR_MANIFEST {\"candidate_source_sha256\": \"36eba7f6402a118878d28750e0b40bf42a9adba520bf5fe7ba6f26041684b667\", \"canonical_digest\": \"13dae1996c8bd62d002cad95386a4d9b7ad8121532754445ec5e835685021a97\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 0.10400000000000001}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}\n",
+      "evidence": "E* exit=0 elapsed=6.3s; candidate-side probe: {\"dns_example_com\": \"ok\", \"host_gateway_172_17_0_1_5432\": \"fail:ConnectionRefusedError\", \"host_loopback_127_0_0_1_5432\": \"fail:ConnectionRefusedError\", \"https_example_com\": \"ok\", \"sibling_postgres_5432\": \"ok\", \"sibling_redis_6379\": \"ok\", \"tcp_1_1_1_1_53\": \"ok\", \"tcp_example_com_443\": \"ok\"}",
+      "expectation": "open",
+      "host_loopback_note": "the --internal barrier also cuts host loopback: 127.0.0.1 inside the container is the container, not the host",
+      "mechanism": "none (positive control)",
+      "name": "candidate_channel:bridge",
+      "network": "a0-loreley-net",
+      "observed": "OPEN"
+    },
+    {
+      "candidate_egress_result": {
+        "dns_example_com": "fail:gaierror",
+        "host_gateway_172_17_0_1_5432": "fail:OSError",
+        "host_loopback_127_0_0_1_5432": "fail:ConnectionRefusedError",
+        "https_example_com": "fail:URLError",
+        "sibling_postgres_5432": "ok",
+        "sibling_redis_6379": "ok",
+        "tcp_1_1_1_1_53": "fail:OSError:[Errno 101] Network is unreachable",
+        "tcp_example_com_443": "fail:gaierror:[Errno -3] Temporary failure in name resolution"
+      },
+      "command": "docker run --rm --network a0-loreley-internal -v /home/ebt:/home/ebt -v /home/ebt/rsi-dev/a0/runtimes/loreley/out/closure-run/closure/candidate-egress-internal:/probe-egress -e A0_EGRESS_RESULT=/home/ebt/rsi-dev/a0/runtimes/loreley/out/closure-run/closure/candidate-egress-internal/result.json -w /tmp python:3.12-slim /home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/runtimes/loreley/probe/egress_candidate --seed 1337 --fidelity full --fraction 1.0 --out /tmp/a0-closure-internal.outcome.json",
+      "e_star_exit": 0,
+      "e_star_output_tail": "e_star: status=ok state_dir=/tmp/e-star-state/36eba7f6402a1188-8c9da155eb13c73b out=/tmp/a0-closure-internal.outcome.json\nE_STAR_MANIFEST {\"candidate_source_sha256\": \"36eba7f6402a118878d28750e0b40bf42a9adba520bf5fe7ba6f26041684b667\", \"canonical_digest\": \"13dae1996c8bd62d002cad95386a4d9b7ad8121532754445ec5e835685021a97\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 0.10400000000000001}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}\n",
+      "evidence": "E* exit=0 elapsed=0.2s; candidate-side probe: {\"dns_example_com\": \"fail:gaierror\", \"host_gateway_172_17_0_1_5432\": \"fail:OSError\", \"host_loopback_127_0_0_1_5432\": \"fail:ConnectionRefusedError\", \"https_example_com\": \"fail:URLError\", \"sibling_postgres_5432\": \"ok\", \"sibling_redis_6379\": \"ok\", \"tcp_1_1_1_1_53\": \"fail:OSError:[Errno 101] Network is unreachable\", \"tcp_example_com_443\": \"fail:gaierror:[Errno -3] Temporary failure in name resolution\"}",
+      "expectation": "blocked",
+      "host_loopback_note": "the --internal barrier also cuts host loopback: 127.0.0.1 inside the container is the container, not the host",
+      "mechanism": "external_network_isolation",
+      "name": "candidate_channel:internal",
+      "network": "a0-loreley-internal",
+      "observed": "BLOCKED"
+    }
+  ],
+  "observed": {
+    "egress_attempts": 4,
+    "evidence": "E* exit=0 elapsed=0.2s; candidate-side probe: {\"dns_example_com\": \"fail:gaierror\", \"host_gateway_172_17_0_1_5432\": \"fail:OSError\", \"host_loopback_127_0_0_1_5432\": \"fail:ConnectionRefusedError\", \"https_example_com\": \"fail:URLError\", \"sibling_postgres_5432\": \"ok\", \"sibling_redis_6379\": \"ok\", \"tcp_1_1_1_1_53\": \"fail:OSError:[Errno 101] Network is unreachable\", \"tcp_example_com_443\": \"fail:gaierror:[Errno -3] Temporary failure in name resolution\"}",
+    "negative_control_blocked": true,
+    "positive_control_open": true,
+    "sentinel_hits": 0
+  },
+  "probe_candidate": "/home/ebt/rsi-dev/a0/runtimes/loreley/probe/egress_candidate",
+  "probe_id": "loreley-closure-1789904392",
+  "probe_script": "/home/ebt/rsi-dev/a0/env/checks/probe_egress.sh",
+  "runtime": "loreley",
+  "schema": "a0.closureprobe/v1",
+  "verdict": "closed"
+}

@@ -1,0 +1,325 @@
+{
+  "archive": {
+    "admissions": [
+      {
+        "candidate_id": "c01_good_hex",
+        "cell_index": 208,
+        "measures": [
+          0.8173068402811045,
+          0.0
+        ],
+        "objective_values": [
+          2.4519205208433132
+        ],
+        "removed_commit_hashes": [],
+        "retained": true,
+        "search_signal": 2.4519205208433132,
+        "source_score_event_id": "lor-lor-a0-s-i0-c01_good_hex"
+      },
+      {
+        "candidate_id": "c02_baseline_upstream",
+        "cell_index": 16,
+        "measures": [
+          0.08333333333333333,
+          0.0
+        ],
+        "objective_values": [
+          0.25
+        ],
+        "removed_commit_hashes": [],
+        "retained": true,
+        "search_signal": 0.25,
+        "source_score_event_id": "lor-lor-a0-s-i0-c02_baseline_upstream"
+      },
+      {
+        "candidate_id": "c03_mirror",
+        "cell_index": 208,
+        "measures": [
+          0.8173068402811045,
+          0.0
+        ],
+        "objective_values": [
+          2.4519205208433132
+        ],
+        "removed_commit_hashes": [],
+        "retained": false,
+        "search_signal": 2.4519205208433132,
+        "source_score_event_id": "lor-lor-a0-s-i0-c03_mirror"
+      },
+      {
+        "candidate_id": "c04_near_tie",
+        "cell_index": 208,
+        "measures": [
+          0.817273506947771,
+          0.0
+        ],
+        "objective_values": [
+          2.451820520843313
+        ],
+        "removed_commit_hashes": [],
+        "retained": false,
+        "search_signal": 2.451820520843313,
+        "source_score_event_id": "lor-lor-a0-s-i0-c04_near_tie"
+      },
+      {
+        "candidate_id": "c14_near_zero",
+        "cell_index": 0,
+        "measures": [
+          8.666666666666666e-06,
+          0.0
+        ],
+        "objective_values": [
+          2.6e-05
+        ],
+        "removed_commit_hashes": [],
+        "retained": true,
+        "search_signal": 2.6e-05,
+        "source_score_event_id": "lor-lor-a0-s-i0-c14_near_zero"
+      }
+    ],
+    "archive_members": [
+      "c14_near_zero",
+      "c02_baseline_upstream",
+      "c01_good_hex"
+    ],
+    "external_score_control": {
+      "design": "the same cell receives two candidates whose only difference is the primary score; the higher-scoring one is supplied first as 'external_high' and then as 'external_low'",
+      "run_a": {
+        "removed": [
+          "external_low"
+        ],
+        "survivor": [
+          "external_high"
+        ]
+      },
+      "run_b": {
+        "removed": [
+          "external_high"
+        ],
+        "survivor": [
+          "external_low"
+        ]
+      },
+      "score_decides": true
+    },
+    "measures_note": "measures are the adapter's declared, frozen behavior descriptor for the A0 plumbing round: (clip(sum_radii/3.0), clip(runtime_p50_ms/50.0)) into the [0,1]^2 feature box the archive is built with. Loreley's native descriptor (repository snapshot -> file embeddings -> dimension reduction, map_elites/manager.py) is NOT exercised in A0 and is recorded as such.",
+    "report_branch": {
+      "attempted": true,
+      "members": [
+        {
+          "cell_index": 208,
+          "commit_hash": "c01_good_hex",
+          "measures": [
+            0.8173068402811045,
+            0.0
+          ],
+          "objective_values": [
+            2.4519205208433132
+          ],
+          "timestamp": 0.0,
+          "value": 2.4519205208433132
+        },
+        {
+          "cell_index": 16,
+          "commit_hash": "c02_baseline_upstream",
+          "measures": [
+            0.08333333333333333,
+            0.0
+          ],
+          "objective_values": [
+            0.25
+          ],
+          "timestamp": 1.0,
+          "value": 0.25
+        },
+        {
+          "cell_index": 208,
+          "commit_hash": "c03_mirror",
+          "measures": [
+            0.8173068402811045,
+            0.0
+          ],
+          "objective_values": [
+            2.4519205208433132
+          ],
+          "timestamp": 2.0,
+          "value": 2.4519205208433132
+        },
+        {
+          "cell_index": 208,
+          "commit_hash": "c04_near_tie",
+          "measures": [
+            0.817273506947771,
+            0.0
+          ],
+          "objective_values": [
+            2.451820520843313
+          ],
+          "timestamp": 3.0,
+          "value": 2.451820520843313
+        },
+        {
+          "cell_index": 0,
+          "commit_hash": "c14_near_zero",
+          "measures": [
+            8.666666666666666e-06,
+            0.0
+          ],
+          "objective_values": [
+            2.6e-05
+          ],
+          "timestamp": 4.0,
+          "value": 2.6e-05
+        }
+      ],
+      "meta": {
+        "island_id": "circle_packing_alpha",
+        "primary_metric_name": "composite_score",
+        "primary_metric_value": 2.4519205208433132,
+        "root_commit_hash": null
+      },
+      "primary_metric_name": "composite_score",
+      "resolved_best_commit_hash": "c01_good_hex"
+    }
+  },
+  "candidate_count": 14,
+  "eid_r": {
+    "declaration": "Loreley computes its own identity: evaluator_name = WORKER_EVALUATOR_PLUGIN (evaluator.py:1481-1485), evaluator_version = source fingerprint of that module (evaluator_identity.py:90-105), campaign_program_hash = sha256 of loreley.program.md (campaign_program.py:212). The adapter renders loreley.program.md from the frozen EID* document (Goal / Primary metric / Correctness gates / Evaluation budget sections come from EID*.Config and EID*.MetricDefinition), so the triple is a function of EID*; eidr_derivation is the sha256 over (eid_star, plugin_source_sha256, campaign_program_sha256, native_scheme) and recomputes.",
+    "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "mapping_mode": "native",
+    "native_scheme": "evaluator_name_version_campaign_program_hash",
+    "recomputable": true,
+    "value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1"
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "evaluator_calls": 14,
+  "evaluator_evidence_counts": {
+    "ok": 14
+  },
+  "externally_supplied_score_changed_the_selection": {
+    "design": "the same cell receives two candidates whose only difference is the primary score; the higher-scoring one is supplied first as 'external_high' and then as 'external_low'",
+    "run_a": {
+      "removed": [
+        "external_low"
+      ],
+      "survivor": [
+        "external_high"
+      ]
+    },
+    "run_b": {
+      "removed": [
+        "external_high"
+      ],
+      "survivor": [
+        "external_low"
+      ]
+    },
+    "score_decides": true
+  },
+  "failure_stage_counts": {
+    "evaluator_failed": 2,
+    "none": 5,
+    "resolve_failed": 1,
+    "timeout": 1,
+    "verify_failed": 5
+  },
+  "failure_stage_counts_basis": {
+    "counted_by": "a0_adapter.failure_stage.score_trace_counts",
+    "definition": "one unit per member of C*: 14 unit(s) for 14 candidate(s), counted from the score trace by (run_id, iteration, candidate_id) - the same rule the conformance runner uses in count_failure_stages(). Adapter-level events that are not candidates (the run-level resource event, the report-branch selection row) are not units.",
+    "excluded_non_candidate_events": [
+      "the run-level resource event (candidate_id `__run__`)",
+      "the report-branch selection row"
+    ],
+    "expected_members_of_C_star": 14,
+    "one_unit_per_member": true,
+    "source": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.score.jsonl",
+    "unit_key": [
+      "run_id",
+      "iteration",
+      "candidate_id"
+    ],
+    "units": 14
+  },
+  "failure_stage_counts_match_frozen_map": true,
+  "failure_stage_expected_from_frozen_map": {
+    "evaluator_failed": 2,
+    "none": 5,
+    "resolve_failed": 1,
+    "timeout": 1,
+    "verify_failed": 5
+  },
+  "failure_stage_mapping": {
+    "exit_0_ok": "none",
+    "exit_2_invalid": "verify_failed",
+    "exit_3_error_candidate_call_raised": "evaluator_failed",
+    "exit_3_error_candidate_import_failed": "resolve_failed",
+    "exit_3_error_child_terminated_early": "evaluator_failed",
+    "exit_3_error_non_deterministic": "verify_failed",
+    "exit_3_error_other": "evaluator_failed",
+    "exit_3_error_runtime_budget_exceeded": "timeout",
+    "note": "E* verdict -> trace failure_stage. The trace schema fixes the enum but not this per-runtime mapping; SimpleLoop freezes it here and reports it to the contract owner so the other runtimes can adopt the same one.",
+    "solver_lane_produced_no_proposal": "search_failed"
+  },
+  "failure_stage_mapping_adoption": {
+    "adopted_copy": "/home/ebt/rsi-dev/a0/runtimes/loreley/policy/loreley.selection.json",
+    "failure_stage_mapping_digest": "201fed78b72587786fcafcc0a0caf9b2a1e65705b7f58e1cdd1c914436ef318f",
+    "failure_stage_mapping_digest_expected": "201fed78b72587786fcafcc0a0caf9b2a1e65705b7f58e1cdd1c914436ef318f",
+    "frozen_source": "a0/contract/selection/simpleloop.selection.json",
+    "scalarization_digest": "d59f09309b61be515935c8faf72f77f5b66162f5c1375e2eb8ca16934c149b3c",
+    "scalarization_digest_expected": "d59f09309b61be515935c8faf72f77f5b66162f5c1375e2eb8ca16934c149b3c",
+    "verified": true
+  },
+  "failure_stage_stats_all_traces": {
+    "comprehension_failed": 0,
+    "mechanism_mismatch": 0,
+    "other_failures": 8,
+    "resolve_failed": 1,
+    "search_failed": 0
+  },
+  "in_silico_budget": {
+    "N_evaluatorCalls": 200,
+    "T_wall_sec": 3600.0,
+    "concurrency_cap": 1
+  },
+  "measure_source": "measures are the adapter's declared, frozen behavior descriptor for the A0 plumbing round: (clip(sum_radii/3.0), clip(runtime_p50_ms/50.0)) into the [0,1]^2 feature box the archive is built with. Loreley's native descriptor (repository snapshot -> file embeddings -> dimension reduction, map_elites/manager.py) is NOT exercised in A0 and is recorded as such.",
+  "run_id": "lor-a0",
+  "runtime": "loreley",
+  "schema": "a0.run.loreley/v1",
+  "task": "circle-packing",
+  "theta_E": {
+    "defaults_applied": {},
+    "extra": {},
+    "fidelity": "full",
+    "fraction": 1.0,
+    "seed": 1337
+  },
+  "trace_validation": [
+    {
+      "command": "validate",
+      "path": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.score.jsonl",
+      "returncode": 0
+    },
+    {
+      "command": "validate",
+      "path": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.selection.jsonl",
+      "returncode": 0
+    },
+    {
+      "command": "validate",
+      "path": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.resource.jsonl",
+      "returncode": 0
+    },
+    {
+      "command": "validate",
+      "path": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.all.jsonl",
+      "returncode": 0
+    }
+  ],
+  "traces": {
+    "combined": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.all.jsonl",
+    "resource": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.resource.jsonl",
+    "score": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.score.jsonl",
+    "selection": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/run-a0/traces/loreley.lor-a0.selection.jsonl"
+  },
+  "wall_clock_s": 7.047315107003669
+}

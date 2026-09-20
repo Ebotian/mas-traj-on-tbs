@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Absolute entry point for the A0 Loreley adapter.
+#
+# Runs the adapter under the interpreter the pinned checkout was installed into
+# (checkout/.venv, CPython 3.12), so a harness that discovers an adapter by its
+# entry point does not have to know which interpreter the runtime needs.
+set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PYTHON="${A0_LORELEY_PYTHON:-$HERE/../checkout/.venv/bin/python}"
+exec "$PYTHON" "$HERE/a0_loreley.py" "$@"
