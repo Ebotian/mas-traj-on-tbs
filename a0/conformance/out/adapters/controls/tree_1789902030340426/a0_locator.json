@@ -1,0 +1,118 @@
+{
+  "allow_unfrozen_candidate": true,
+  "candidate_set": {
+    "candidate_count": 14,
+    "manifest": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+    "members": {
+      "c01_good_hex": {
+        "path": "c01_good_hex",
+        "solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+      },
+      "c02_baseline_upstream": {
+        "path": "c02_baseline_upstream",
+        "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+      },
+      "c03_mirror": {
+        "path": "c03_mirror",
+        "solution_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf"
+      },
+      "c04_near_tie": {
+        "path": "c04_near_tie",
+        "solution_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418"
+      },
+      "c05_overlapping": {
+        "path": "c05_overlapping",
+        "solution_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c"
+      },
+      "c06_empty": {
+        "path": "c06_empty",
+        "solution_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41"
+      },
+      "c07_single": {
+        "path": "c07_single",
+        "solution_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90"
+      },
+      "c08_out_of_bounds": {
+        "path": "c08_out_of_bounds",
+        "solution_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143"
+      },
+      "c09_malformed_import": {
+        "path": "c09_malformed_import",
+        "solution_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17"
+      },
+      "c10_raises": {
+        "path": "c10_raises",
+        "solution_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206"
+      },
+      "c11_non_deterministic": {
+        "path": "c11_non_deterministic",
+        "solution_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044"
+      },
+      "c12_exit_without_artifacts": {
+        "path": "c12_exit_without_artifacts",
+        "solution_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d"
+      },
+      "c13_slow": {
+        "path": "c13_slow",
+        "solution_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14"
+      },
+      "c14_near_zero": {
+        "path": "c14_near_zero",
+        "solution_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113"
+      }
+    }
+  },
+  "e_star": {
+    "dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing",
+    "entry": "e_star.py",
+    "helper": "e_star_child.py",
+    "python": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+    "source_records": [
+      {
+        "path": "e_star.py",
+        "sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+        "size": 34860
+      },
+      {
+        "path": "e_star_child.py",
+        "sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca",
+        "size": 4704
+      }
+    ]
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "eid_star_components": {
+    "Config": "550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac",
+    "DataManifest": "b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21",
+    "DependencyLock": "7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75",
+    "EvaluatorSource": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+    "MetricDefinition": "420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0"
+  },
+  "metric": {
+    "direction": "maximize",
+    "epsilon": 1e-09,
+    "failure_semantics": "when status != ok the objective is null, never 0.0; the adapter must not coerce a missing objective into a score",
+    "name": "sum_radii",
+    "outcome_fields": [
+      "sum_radii",
+      "packing_density",
+      "num_circles",
+      "overlap_count",
+      "min_gap",
+      "min_boundary_margin"
+    ]
+  },
+  "produced_by": "a0/runtimes/kapso/a0_adapter/registered_tree.py",
+  "runtime": "kapso",
+  "schema": "a0.kapso.registered_locator/v1",
+  "state_root_default": "/home/ebt/rsi-dev/a0/runtimes/kapso/state/registered-eval",
+  "theta_e_canonical": {
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "seed": 1337,
+    "timeout_s": 120.0
+  }
+}

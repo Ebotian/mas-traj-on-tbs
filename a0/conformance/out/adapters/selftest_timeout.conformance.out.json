@@ -1,0 +1,406 @@
+{
+  "schema": "a0.adapter.conformance/v1",
+  "runtime": "selftest_timeout",
+  "adapter": "a0/conformance/fixtures/adapters/deviant.py --mode timeout (FIXTURE, not a runtime)",
+  "mode": "timeout",
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "eid_r": {
+    "value": "6e2b881a8248c80756f4460f28914b03ee76fb6ef54fbb5fa951329920f9b7da",
+    "native_scheme": "none",
+    "mapping_mode": "adapter_declared_injection",
+    "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "declarations_verbatim_from": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "declaration": "deviant/timeout has no native evaluator identity; EID_r is a domain-separated digest over (eid_star, runtime) so that it is a function of EID* alone.",
+    "recomputable": true,
+    "derivation": {
+      "algorithm": "sha256",
+      "domain": "a0/fixture/deviant/timeout/v1/EID_r",
+      "payload_canonical": "{\"eid_star\":\"664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\",\"runtime\":\"selftest_timeout\"}"
+    }
+  },
+  "theta_e": {
+    "seed": 1337,
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "timeout_s": 120.0
+  },
+  "epsilon": 1e-09,
+  "primary_field": "sum_radii",
+  "fr": {
+    "name": "F_r = scalar(E*)",
+    "version": "v1",
+    "applies": "scalar",
+    "spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+    "declared_in": "a0/contract/fr/scalar.json"
+  },
+  "candidate_set": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+  "candidates": [
+    {
+      "candidate_id": "c01_good_hex",
+      "source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+      "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.4519205208433132,
+        "direction": "max"
+      },
+      "objective_value": 2.4519205208433132,
+      "failure_kind": null,
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c02_baseline_upstream",
+      "source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+      "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 0.25,
+        "direction": "max"
+      },
+      "objective_value": 0.25,
+      "failure_kind": null,
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c03_mirror",
+      "source_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+      "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.4519205208433132,
+        "direction": "max"
+      },
+      "objective_value": 2.4519205208433132,
+      "failure_kind": null,
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c04_near_tie",
+      "source_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+      "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.451820520843313,
+        "direction": "max"
+      },
+      "objective_value": 2.451820520843313,
+      "failure_kind": null,
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c05_overlapping",
+      "source_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+      "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c06_empty",
+      "source_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+      "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c07_single",
+      "source_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+      "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c08_out_of_bounds",
+      "source_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+      "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c09_malformed_import",
+      "source_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+      "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "candidate_import_failed",
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c10_raises",
+      "source_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+      "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "candidate_call_raised",
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c11_non_deterministic",
+      "source_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+      "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "non_deterministic",
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c12_exit_without_artifacts",
+      "source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+      "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "child_terminated_early",
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c13_slow",
+      "source_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+      "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "runtime_budget_exceeded",
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    },
+    {
+      "candidate_id": "c14_near_zero",
+      "source_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+      "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.6e-05,
+        "direction": "max"
+      },
+      "objective_value": 2.6e-05,
+      "failure_kind": null,
+      "evaluator_evidence": {
+        "status": "timeout",
+        "detail": "evaluation deadline reached; failure synthesised from the last cached metric"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      }
+    }
+  ]
+}

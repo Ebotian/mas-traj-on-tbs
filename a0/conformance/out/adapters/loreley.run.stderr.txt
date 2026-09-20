@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/src/a0_adapter/cli.py", line 1107, in main
+    return int(args.fn(args))
+               ~~~~~~~^^^^^^
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/src/a0_adapter/cli.py", line 254, in cmd_run
+    runtime_result = run_through_loreley(env, candidate, iteration=0)
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/src/a0_adapter/runtime.py", line 204, in run_through_loreley
+    from loreley.core.worker.evaluator import EvaluationContext
+ModuleNotFoundError: No module named 'loreley'
+a0_adapter: internal error: ModuleNotFoundError: No module named 'loreley'

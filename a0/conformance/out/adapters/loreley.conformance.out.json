@@ -1,0 +1,1649 @@
+{
+  "UNVERIFIED": [
+    "Loreley's LLM-driven path (planning / coding / evolution worker) was not run: the host has no usable model backend at the time of the A0 run (`codex` could not complete a model call; `claude`'s login state was unknown). No candidate generation, job scheduling or worker-driven archive ingestion happened.",
+    "The native behaviour descriptor (repository snapshot -> file embeddings -> PCA -> measures) was not run: it needs an embedding provider. A0 freezes the descriptor condition ('two candidates with equal measures'); the adapter declares its measure function instead (see run.summary.json -> measure_source).",
+    "The phased measurement cache end to end (evolution.py:1640-1665, :1741-1766) is only partially verified: the reuse DECISION is the runtime's own (EvolutionJobStore.find_reusable_evaluation against real PostgreSQL) and the adapter labels a reused outcome cache_hit, but the worker that consumes that decision was not run.",
+    "MAPELITES_ADMISSION_POLICY=fresh_comparison was not exercised; the frozen policy is pareto."
+  ],
+  "adapter": {
+    "entry_point": "/home/ebt/rsi-dev/a0/runtimes/loreley/bin/a0-loreley",
+    "interpreter": "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/bin/python",
+    "objectives": [
+      {
+        "direction": "max",
+        "name": "composite_score"
+      }
+    ],
+    "plugin": "loreley_a0_plugin:plugin",
+    "version": "1.0.0"
+  },
+  "candidate_set": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance",
+  "candidates": [
+    {
+      "candidate_id": "c01_good_hex",
+      "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": null,
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 0,
+      "failure_kind": null,
+      "failure_stage": "none",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d\", \"canonical_digest\": \"1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 2.4519205208433132}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": 2.4519205208433132
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [
+        "min_boundary_margin",
+        "min_gap",
+        "num_circles",
+        "overlap_count",
+        "packing_density",
+        "sum_radii"
+      ],
+      "runtime_outcome_kind": "passed",
+      "runtime_scalar": 2.4519205208433132,
+      "score_event_id": "lor-lor-a0-s-i0-c01_good_hex",
+      "source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+      "status": "ok",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c02_baseline_upstream",
+      "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": null,
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 0,
+      "failure_kind": null,
+      "failure_stage": "none",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f\", \"canonical_digest\": \"b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 0.25}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": 0.25
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [
+        "min_boundary_margin",
+        "min_gap",
+        "num_circles",
+        "overlap_count",
+        "packing_density",
+        "sum_radii"
+      ],
+      "runtime_outcome_kind": "passed",
+      "runtime_scalar": 0.25,
+      "score_event_id": "lor-lor-a0-s-i0-c02_baseline_upstream",
+      "source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+      "status": "ok",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c03_mirror",
+      "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": null,
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 0,
+      "failure_kind": null,
+      "failure_stage": "none",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf\", \"canonical_digest\": \"c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 2.4519205208433132}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": 2.4519205208433132
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [
+        "min_boundary_margin",
+        "min_gap",
+        "num_circles",
+        "overlap_count",
+        "packing_density",
+        "sum_radii"
+      ],
+      "runtime_outcome_kind": "passed",
+      "runtime_scalar": 2.4519205208433132,
+      "score_event_id": "lor-lor-a0-s-i0-c03_mirror",
+      "source_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+      "status": "ok",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c04_near_tie",
+      "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": null,
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 0,
+      "failure_kind": null,
+      "failure_stage": "none",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418\", \"canonical_digest\": \"f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 2.451820520843313}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": 2.451820520843313
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [
+        "min_boundary_margin",
+        "min_gap",
+        "num_circles",
+        "overlap_count",
+        "packing_density",
+        "sum_radii"
+      ],
+      "runtime_outcome_kind": "passed",
+      "runtime_scalar": 2.451820520843313,
+      "score_event_id": "lor-lor-a0-s-i0-c04_near_tie",
+      "source_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+      "status": "ok",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c05_overlapping",
+      "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": "E* status='invalid' kind='invalid_configuration': overlap_check failed: {'pairs_audited': 325, 'overlap_count': 1, 'min_gap': -0.188609270834101}",
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 2,
+      "failure_kind": "invalid_configuration",
+      "failure_stage": "verify_failed",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c\", \"canonical_digest\": \"6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"invalid\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": null
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [],
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_scalar": null,
+      "score_event_id": "lor-lor-a0-s-i0-c05_overlapping",
+      "source_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+      "status": "invalid",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c06_empty",
+      "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": "E* status='invalid' kind='invalid_configuration': count_equals_n failed: {'num_circles': 0, 'expected': 26}",
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 2,
+      "failure_kind": "invalid_configuration",
+      "failure_stage": "verify_failed",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41\", \"canonical_digest\": \"319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"invalid\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": null
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [],
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_scalar": null,
+      "score_event_id": "lor-lor-a0-s-i0-c06_empty",
+      "source_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+      "status": "invalid",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c07_single",
+      "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": "E* status='invalid' kind='invalid_configuration': count_equals_n failed: {'num_circles': 1, 'expected': 26}",
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 2,
+      "failure_kind": "invalid_configuration",
+      "failure_stage": "verify_failed",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90\", \"canonical_digest\": \"a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"invalid\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": null
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [],
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_scalar": null,
+      "score_event_id": "lor-lor-a0-s-i0-c07_single",
+      "source_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+      "status": "invalid",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c08_out_of_bounds",
+      "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": "E* status='invalid' kind='invalid_configuration': bounds_check failed: {'items_audited': 26, 'min_boundary_margin': -0.049999899999999764}",
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 2,
+      "failure_kind": "invalid_configuration",
+      "failure_stage": "verify_failed",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143\", \"canonical_digest\": \"1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"invalid\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": null
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [],
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_scalar": null,
+      "score_event_id": "lor-lor-a0-s-i0-c08_out_of_bounds",
+      "source_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+      "status": "invalid",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c09_malformed_import",
+      "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": "E* status='error' kind='candidate_import_failed': SyntaxError: expected ':' (solution.py, line 6)",
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 3,
+      "failure_kind": "candidate_import_failed",
+      "failure_stage": "resolve_failed",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17\", \"canonical_digest\": \"98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"error\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": null
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [],
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_scalar": null,
+      "score_event_id": "lor-lor-a0-s-i0-c09_malformed_import",
+      "source_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+      "status": "error",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c10_raises",
+      "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": "E* status='error' kind='candidate_call_raised': RuntimeError: this candidate never returns a configuration",
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 3,
+      "failure_kind": "candidate_call_raised",
+      "failure_stage": "evaluator_failed",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206\", \"canonical_digest\": \"0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"error\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": null
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [],
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_scalar": null,
+      "score_event_id": "lor-lor-a0-s-i0-c10_raises",
+      "source_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+      "status": "error",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c11_non_deterministic",
+      "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": "E* status='error' kind='non_deterministic': repeated calls returned different circle sets",
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 3,
+      "failure_kind": "non_deterministic",
+      "failure_stage": "verify_failed",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044\", \"canonical_digest\": \"2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"error\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": null
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [],
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_scalar": null,
+      "score_event_id": "lor-lor-a0-s-i0-c11_non_deterministic",
+      "source_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+      "status": "error",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c12_exit_without_artifacts",
+      "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": "E* status='error' kind='child_terminated_early': the isolated runner did not write its done marker; no measurement exists",
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 3,
+      "failure_kind": "child_terminated_early",
+      "failure_stage": "evaluator_failed",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d\", \"canonical_digest\": \"cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"error\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": null
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [],
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_scalar": null,
+      "score_event_id": "lor-lor-a0-s-i0-c12_exit_without_artifacts",
+      "source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+      "status": "error",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c13_slow",
+      "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": "E* status='error' kind='runtime_budget_exceeded': measured p50 runtime exceeds the 250.000 ms budget (measurement in resources.json)",
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 3,
+      "failure_kind": "runtime_budget_exceeded",
+      "failure_stage": "timeout",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14\", \"canonical_digest\": \"710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"error\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": null
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [],
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_scalar": null,
+      "score_event_id": "lor-lor-a0-s-i0-c13_slow",
+      "source_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+      "status": "error",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    },
+    {
+      "candidate_id": "c14_near_zero",
+      "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+      "evaluator_evidence": {
+        "cached_from_run_id": null,
+        "detail": null,
+        "metrics_dropped": null,
+        "status": "ok"
+      },
+      "exit_code": 0,
+      "failure_kind": null,
+      "failure_stage": "none",
+      "failure_stage_source": "frozen failure_stage_mapping applied to (E*.status, E*.failure.kind)",
+      "manifest_echo": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113\", \"canonical_digest\": \"cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 2.6e-05}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}",
+      "objective": {
+        "direction": "max",
+        "name": "sum_radii",
+        "value": 2.6e-05
+      },
+      "role": null,
+      "runner_row_note": "runtime_scalar is E*'s sum_radii as returned by the runtime's evaluator process; the declared F_r metric is not part of E*'s field set",
+      "runtime_metrics": [
+        "min_boundary_margin",
+        "min_gap",
+        "num_circles",
+        "overlap_count",
+        "packing_density",
+        "sum_radii"
+      ],
+      "runtime_outcome_kind": "passed",
+      "runtime_scalar": 2.6e-05,
+      "score_event_id": "lor-lor-a0-s-i0-c14_near_zero",
+      "source_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+      "status": "ok",
+      "theta_e_attempt": {
+        "commanded_class": "full",
+        "evaluator": "E*",
+        "evaluator_name": "loreley_a0_plugin:plugin",
+        "evaluator_version": "source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "granted_class": "full",
+        "protocol": "one_shot",
+        "seed": 1337
+      }
+    }
+  ],
+  "eid_r": {
+    "declaration": "Loreley computes its own identity: evaluator_name = WORKER_EVALUATOR_PLUGIN (evaluator.py:1481-1485), evaluator_version = source fingerprint of that module (evaluator_identity.py:90-105), campaign_program_hash = sha256 of loreley.program.md (campaign_program.py:212). The adapter renders loreley.program.md from the frozen EID* document (Goal / Primary metric / Correctness gates / Evaluation budget sections come from EID*.Config and EID*.MetricDefinition), so the triple is a function of EID*; eidr_derivation is the sha256 over (eid_star, plugin_source_sha256, campaign_program_sha256, native_scheme) and recomputes.",
+    "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eidr_derivation": "15c5b4374c5b9c7b6011e0a2f4c26d0bac6e093c86dda9c71d72186f08e994e8",
+    "mapping_mode": "native",
+    "native_components": {
+      "campaign_program_sha256": "b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+      "evaluator_name": "loreley_a0_plugin:plugin",
+      "plugin_source_sha256": "53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad"
+    },
+    "native_scheme": "evaluator_name_version_campaign_program_hash",
+    "recomputable": true,
+    "recompute_cmd": [
+      "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/bin/python",
+      "/home/ebt/rsi-dev/a0/runtimes/loreley/tools/verify_eidr.py",
+      "--eid",
+      "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+      "--program",
+      "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/loreley.program.md",
+      "--plugin-source",
+      "/home/ebt/rsi-dev/a0/runtimes/loreley/src/loreley_a0_plugin.py",
+      "--plugin-ref",
+      "loreley_a0_plugin:plugin",
+      "--mapping",
+      "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/eidr.mapping.json"
+    ],
+    "recompute_cmd_is_adapter_independent": true,
+    "recompute_cmd_note": "tools/verify_eidr.py imports a0/contract/evalcontract.py (the authority on how an EID* is formed) and nothing from a0_adapter; it re-derives the value from the document, the plugin source file and the rendered program bytes",
+    "value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1"
+  },
+  "eid_r_mapping": {
+    "derivation_inputs": [
+      "eid_star",
+      "plugin_source_sha256",
+      "campaign_program_sha256",
+      "native_scheme"
+    ],
+    "eid_r": {
+      "declaration": "Loreley computes its own identity: evaluator_name = WORKER_EVALUATOR_PLUGIN (evaluator.py:1481-1485), evaluator_version = source fingerprint of that module (evaluator_identity.py:90-105), campaign_program_hash = sha256 of loreley.program.md (campaign_program.py:212). The adapter renders loreley.program.md from the frozen EID* document (Goal / Primary metric / Correctness gates / Evaluation budget sections come from EID*.Config and EID*.MetricDefinition), so the triple is a function of EID*; eidr_derivation is the sha256 over (eid_star, plugin_source_sha256, campaign_program_sha256, native_scheme) and recomputes.",
+      "mapping_mode": "native",
+      "native_scheme": "evaluator_name_version_campaign_program_hash",
+      "recomputable": true,
+      "value": "loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1"
+    },
+    "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eidr_derivation": "15c5b4374c5b9c7b6011e0a2f4c26d0bac6e093c86dda9c71d72186f08e994e8",
+    "native_components": {
+      "campaign_program_sha256": "b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1",
+      "evaluator_name": "loreley_a0_plugin:plugin",
+      "plugin_source_sha256": "53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad"
+    },
+    "schema": "a0.eidr.loreley/v1"
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "epsilon": {
+    "caller_supplied": 1e-09,
+    "frozen_before_run": true,
+    "kind": "abs",
+    "source": "plumbing.EID.json components.Config.conformance.epsilon",
+    "unit": "sum_radii",
+    "value": 1e-09
+  },
+  "evaluator_calls": 14,
+  "failed_candidates": [],
+  "failure_count": 0,
+  "failure_stage_counts": {
+    "evaluator_failed": 2,
+    "none": 5,
+    "resolve_failed": 1,
+    "timeout": 1,
+    "verify_failed": 5
+  },
+  "failure_stage_counts_basis": {
+    "counted_by": "a0_adapter.failure_stage.score_trace_counts",
+    "definition": "one unit per member of C*: 14 unit(s) for 14 candidate(s), counted from the score trace by (run_id, iteration, candidate_id) - the same rule the conformance runner uses in count_failure_stages(). Adapter-level events that are not candidates (the run-level resource event, the report-branch selection row) are not units.",
+    "excluded_non_candidate_events": [
+      "the run-level resource event (candidate_id `__run__`)",
+      "the report-branch selection row"
+    ],
+    "expected_members_of_C_star": 14,
+    "one_unit_per_member": true,
+    "source": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.score.jsonl",
+    "unit_key": [
+      "run_id",
+      "iteration",
+      "candidate_id"
+    ],
+    "units": 14
+  },
+  "failure_stage_counts_match_frozen_map": true,
+  "failure_stage_expected_from_frozen_map": {
+    "evaluator_failed": 2,
+    "none": 5,
+    "resolve_failed": 1,
+    "timeout": 1,
+    "verify_failed": 5
+  },
+  "failure_stage_mapping": {
+    "exit_0_ok": "none",
+    "exit_2_invalid": "verify_failed",
+    "exit_3_error_candidate_call_raised": "evaluator_failed",
+    "exit_3_error_candidate_import_failed": "resolve_failed",
+    "exit_3_error_child_terminated_early": "evaluator_failed",
+    "exit_3_error_non_deterministic": "verify_failed",
+    "exit_3_error_other": "evaluator_failed",
+    "exit_3_error_runtime_budget_exceeded": "timeout",
+    "note": "E* verdict -> trace failure_stage. The trace schema fixes the enum but not this per-runtime mapping; SimpleLoop freezes it here and reports it to the contract owner so the other runtimes can adopt the same one.",
+    "solver_lane_produced_no_proposal": "search_failed"
+  },
+  "failure_stage_mapping_adoption": {
+    "adopted_copy": "/home/ebt/rsi-dev/a0/runtimes/loreley/policy/loreley.selection.json",
+    "failure_stage_mapping_digest": "201fed78b72587786fcafcc0a0caf9b2a1e65705b7f58e1cdd1c914436ef318f",
+    "failure_stage_mapping_digest_expected": "201fed78b72587786fcafcc0a0caf9b2a1e65705b7f58e1cdd1c914436ef318f",
+    "frozen_source": "a0/contract/selection/simpleloop.selection.json",
+    "scalarization_digest": "d59f09309b61be515935c8faf72f77f5b66162f5c1375e2eb8ca16934c149b3c",
+    "scalarization_digest_expected": "d59f09309b61be515935c8faf72f77f5b66162f5c1375e2eb8ca16934c149b3c",
+    "verified": true
+  },
+  "failure_stage_stats_all_traces": {
+    "evaluator_failed": 2,
+    "none": 5,
+    "resolve_failed": 1,
+    "timeout": 1,
+    "verify_failed": 5
+  },
+  "fr": {
+    "applies": "scalar",
+    "declared_in": "a0/contract/adapter_contract.md#default-first-round-rule",
+    "name": "F_r = scalar(E*)",
+    "spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+    "version": "v1"
+  },
+  "hard_constraint_1_cwd_independence": {
+    "candidate_id": "c01_good_hex",
+    "cwd": "/",
+    "in_run_canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+    "in_run_reference_primary": 2.4519205208433132,
+    "matches_reference": true,
+    "note": "E* is executed with cwd=/ and PATH='' from a third directory; both the primary value and the canonical digest are compared",
+    "path": "",
+    "third_path_canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+    "third_path_primary": 2.4519205208433132
+  },
+  "hard_constraint_3_multi_field": {
+    "declared_outcome_fields": [
+      "audit_coverage",
+      "items_audited",
+      "min_boundary_margin",
+      "min_gap",
+      "num_circles",
+      "overlap_count",
+      "packing_density",
+      "pairs_audited",
+      "sum_radii"
+    ],
+    "example_candidate": "c01_good_hex",
+    "example_fr_projection": {
+      "composite_score": 2.4519205208433132
+    },
+    "example_runtime_field_count": 6,
+    "example_runtime_fields": [
+      "min_boundary_margin",
+      "min_gap",
+      "num_circles",
+      "overlap_count",
+      "packing_density",
+      "sum_radii"
+    ],
+    "fields_preserved": true,
+    "note": "the runtime's metric vector keeps E*'s multi-field Outcome; the declared F_r adds exactly one projection metric and the adapter is the only place a scalar is formed",
+    "scalarization_owner": "F_r"
+  },
+  "interpreter": {
+    "implementation": "CPython",
+    "version": "3.12.11"
+  },
+  "per_candidate": [
+    {
+      "candidate_id": "c01_good_hex",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c01_good_hex",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+      "e_star_exit_code": 0,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+        "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.4519205208433132
+        },
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "ok",
+        "total_items": 26
+      },
+      "e_star_primary": 2.4519205208433132,
+      "e_star_scored": true,
+      "e_star_status": "ok",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "valid",
+      "reasons": [],
+      "role": "good",
+      "runtime_failure_summary": null,
+      "runtime_fields": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26.0,
+        "overlap_count": 0.0,
+        "packing_density": 0.7264225235411115,
+        "sum_radii": 2.4519205208433132
+      },
+      "runtime_fr_projection": {
+        "composite_score": 2.4519205208433132
+      },
+      "runtime_metrics_count": 7,
+      "runtime_outcome_kind": "passed",
+      "runtime_primary": 2.4519205208433132,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c02_baseline_upstream",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c02_baseline_upstream",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+      "e_star_exit_code": 0,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 0.0,
+        "min_gap": 0.036249916677713497,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.007551905417283158,
+        "pairs_audited": 325,
+        "sum_radii": 0.25
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 0.25
+        },
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "ok",
+        "total_items": 26
+      },
+      "e_star_primary": 0.25,
+      "e_star_scored": true,
+      "e_star_status": "ok",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "valid",
+      "reasons": [],
+      "role": "baseline",
+      "runtime_failure_summary": null,
+      "runtime_fields": {
+        "min_boundary_margin": 0.0,
+        "min_gap": 0.036249916677713497,
+        "num_circles": 26.0,
+        "overlap_count": 0.0,
+        "packing_density": 0.007551905417283158,
+        "sum_radii": 0.25
+      },
+      "runtime_fr_projection": {
+        "composite_score": 0.25
+      },
+      "runtime_metrics_count": 7,
+      "runtime_outcome_kind": "passed",
+      "runtime_primary": 0.25,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c03_mirror",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c03_mirror",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+      "e_star_exit_code": 0,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+        "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.4519205208433132
+        },
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "ok",
+        "total_items": 26
+      },
+      "e_star_primary": 2.4519205208433132,
+      "e_star_scored": true,
+      "e_star_status": "ok",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "valid",
+      "reasons": [],
+      "role": "tie",
+      "runtime_failure_summary": null,
+      "runtime_fields": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26.0,
+        "overlap_count": 0.0,
+        "packing_density": 0.7264225235411115,
+        "sum_radii": 2.4519205208433132
+      },
+      "runtime_fr_projection": {
+        "composite_score": 2.4519205208433132
+      },
+      "runtime_metrics_count": 7,
+      "runtime_outcome_kind": "passed",
+      "runtime_primary": 2.4519205208433132,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c04_near_tie",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c04_near_tie",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+      "e_star_exit_code": 0,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.726363301607073,
+        "pairs_audited": 325,
+        "sum_radii": 2.451820520843313
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+        "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.451820520843313
+        },
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "ok",
+        "total_items": 26
+      },
+      "e_star_primary": 2.451820520843313,
+      "e_star_scored": true,
+      "e_star_status": "ok",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "valid",
+      "reasons": [],
+      "role": "tie",
+      "runtime_failure_summary": null,
+      "runtime_fields": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26.0,
+        "overlap_count": 0.0,
+        "packing_density": 0.726363301607073,
+        "sum_radii": 2.451820520843313
+      },
+      "runtime_fr_projection": {
+        "composite_score": 2.451820520843313
+      },
+      "runtime_metrics_count": 7,
+      "runtime_outcome_kind": "passed",
+      "runtime_primary": 2.451820520843313,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c05_overlapping",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c05_overlapping",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+      "e_star_exit_code": 2,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+        "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": null,
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "invalid",
+        "total_items": 26
+      },
+      "e_star_primary": null,
+      "e_star_scored": false,
+      "e_star_status": "invalid",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "invalid_geometry",
+      "reasons": [],
+      "role": "bad",
+      "runtime_failure_summary": "E* reported status=invalid (invalid_configuration)",
+      "runtime_fields": {},
+      "runtime_fr_projection": {},
+      "runtime_metrics_count": 0,
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_primary": null,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c06_empty",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c06_empty",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+      "e_star_exit_code": 2,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+        "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": null,
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "invalid",
+        "total_items": 26
+      },
+      "e_star_primary": null,
+      "e_star_scored": false,
+      "e_star_status": "invalid",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "invalid_geometry",
+      "reasons": [],
+      "role": "bad",
+      "runtime_failure_summary": "E* reported status=invalid (invalid_configuration)",
+      "runtime_fields": {},
+      "runtime_fr_projection": {},
+      "runtime_metrics_count": 0,
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_primary": null,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c07_single",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c07_single",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+      "e_star_exit_code": 2,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+        "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": null,
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "invalid",
+        "total_items": 26
+      },
+      "e_star_primary": null,
+      "e_star_scored": false,
+      "e_star_status": "invalid",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "invalid_geometry",
+      "reasons": [],
+      "role": "bad",
+      "runtime_failure_summary": "E* reported status=invalid (invalid_configuration)",
+      "runtime_fields": {},
+      "runtime_fr_projection": {},
+      "runtime_metrics_count": 0,
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_primary": null,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c08_out_of_bounds",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c08_out_of_bounds",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+      "e_star_exit_code": 2,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+        "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": null,
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "invalid",
+        "total_items": 26
+      },
+      "e_star_primary": null,
+      "e_star_scored": false,
+      "e_star_status": "invalid",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "invalid_geometry",
+      "reasons": [],
+      "role": "bad",
+      "runtime_failure_summary": "E* reported status=invalid (invalid_configuration)",
+      "runtime_fields": {},
+      "runtime_fr_projection": {},
+      "runtime_metrics_count": 0,
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_primary": null,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c09_malformed_import",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c09_malformed_import",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+      "e_star_exit_code": 3,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+        "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": null,
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "error",
+        "total_items": 26
+      },
+      "e_star_primary": null,
+      "e_star_scored": false,
+      "e_star_status": "error",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "not_measurable",
+      "reasons": [],
+      "role": "bad",
+      "runtime_failure_summary": "E* reported status=error (candidate_import_failed)",
+      "runtime_fields": {},
+      "runtime_fr_projection": {},
+      "runtime_metrics_count": 0,
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_primary": null,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c10_raises",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c10_raises",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+      "e_star_exit_code": 3,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+        "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": null,
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "error",
+        "total_items": 26
+      },
+      "e_star_primary": null,
+      "e_star_scored": false,
+      "e_star_status": "error",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "not_measurable",
+      "reasons": [],
+      "role": "bad",
+      "runtime_failure_summary": "E* reported status=error (candidate_call_raised)",
+      "runtime_fields": {},
+      "runtime_fr_projection": {},
+      "runtime_metrics_count": 0,
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_primary": null,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c11_non_deterministic",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c11_non_deterministic",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+      "e_star_exit_code": 3,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+        "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": null,
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "error",
+        "total_items": 26
+      },
+      "e_star_primary": null,
+      "e_star_scored": false,
+      "e_star_status": "error",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "not_measurable",
+      "reasons": [],
+      "role": "bad",
+      "runtime_failure_summary": "E* reported status=error (non_deterministic)",
+      "runtime_fields": {},
+      "runtime_fr_projection": {},
+      "runtime_metrics_count": 0,
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_primary": null,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c12_exit_without_artifacts",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c12_exit_without_artifacts",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+      "e_star_exit_code": 3,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+        "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": null,
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "error",
+        "total_items": 26
+      },
+      "e_star_primary": null,
+      "e_star_scored": false,
+      "e_star_status": "error",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "not_measurable",
+      "reasons": [],
+      "role": "bad",
+      "runtime_failure_summary": "E* reported status=error (child_terminated_early)",
+      "runtime_fields": {},
+      "runtime_fr_projection": {},
+      "runtime_metrics_count": 0,
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_primary": null,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c13_slow",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c13_slow",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+      "e_star_exit_code": 3,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+        "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": null,
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "error",
+        "total_items": 26
+      },
+      "e_star_primary": null,
+      "e_star_scored": false,
+      "e_star_status": "error",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "not_measurable",
+      "reasons": [],
+      "role": "bad",
+      "runtime_failure_summary": "E* reported status=error (runtime_budget_exceeded)",
+      "runtime_fields": {},
+      "runtime_fr_projection": {},
+      "runtime_metrics_count": 0,
+      "runtime_outcome_kind": "candidate_failed",
+      "runtime_primary": null,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    },
+    {
+      "candidate_id": "c14_near_zero",
+      "candidate_path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c14_near_zero",
+      "declared_fields_missing_from_e_star": [],
+      "e_star_canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+      "e_star_exit_code": 0,
+      "e_star_fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 0.499939,
+        "min_gap": 7.99999999995449e-06,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 8.168140899333462e-11,
+        "pairs_audited": 325,
+        "sum_radii": 2.6e-05
+      },
+      "e_star_manifest": {
+        "candidate_source_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+        "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "items": 26,
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.6e-05
+        },
+        "schema": "e_star.manifest/v1",
+        "seed": 1337,
+        "status": "ok",
+        "total_items": 26
+      },
+      "e_star_primary": 2.6e-05,
+      "e_star_scored": true,
+      "e_star_status": "ok",
+      "fabricated_fields": [],
+      "field_discrepancies": [],
+      "kind": "valid",
+      "reasons": [],
+      "role": "bad",
+      "runtime_failure_summary": null,
+      "runtime_fields": {
+        "min_boundary_margin": 0.499939,
+        "min_gap": 7.99999999995449e-06,
+        "num_circles": 26.0,
+        "overlap_count": 0.0,
+        "packing_density": 8.168140899333462e-11,
+        "sum_radii": 2.6e-05
+      },
+      "runtime_fr_projection": {
+        "composite_score": 2.6e-05
+      },
+      "runtime_metrics_count": 7,
+      "runtime_outcome_kind": "passed",
+      "runtime_primary": 2.6e-05,
+      "runtime_reuse_kind": "none",
+      "scalar_projection_ok": true,
+      "status_ok": true,
+      "verdict": "pass"
+    }
+  ],
+  "primary_field": "sum_radii",
+  "repeats": {
+    "candidate_id": "c01_good_hex",
+    "detail": [
+      {
+        "e_star_primary": 2.4519205208433132,
+        "repeat": 0,
+        "runtime_outcome_kind": "passed",
+        "runtime_primary": 2.4519205208433132
+      },
+      {
+        "e_star_primary": 2.4519205208433132,
+        "repeat": 1,
+        "runtime_outcome_kind": "passed",
+        "runtime_primary": 2.4519205208433132
+      },
+      {
+        "e_star_primary": 2.4519205208433132,
+        "repeat": 2,
+        "runtime_outcome_kind": "passed",
+        "runtime_primary": 2.4519205208433132
+      }
+    ],
+    "e_star": {
+      "max": 2.4519205208433132,
+      "min": 2.4519205208433132,
+      "spread": 0.0,
+      "stdev": 0.0
+    },
+    "epsilon_covers_observed_spread": true,
+    "max_observed_spread": 0.0,
+    "repeats": 3,
+    "runtime": {
+      "max": 2.4519205208433132,
+      "min": 2.4519205208433132,
+      "spread": 0.0,
+      "stdev": 0.0
+    }
+  },
+  "run_dir": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance",
+  "runtime": "loreley",
+  "schema": "a0.adapter.conformance/v1",
+  "seams": [
+    {
+      "path": "loreley/scheduler/main.py:876-931",
+      "seam": "EvolutionScheduler.__new__ + settings/_root_commit_hash",
+      "why": "EvolutionScheduler.__init__ requires a writable git repository; the report query itself runs unmodified against real PostgreSQL"
+    },
+    {
+      "path": "loreley/core/worker/evaluator.py:2029-2037 vs :2304-2310",
+      "seam": "plugin payload shape (EvalPass rather than a Mapping)",
+      "why": "the worker_evaluator_max_metrics truncation does not apply on the EvalPass path; the adapter declares which shape it uses and detects truncation by comparing emitted and returned counts, never by inferring it"
+    },
+    {
+      "path": "a0/runtimes/loreley/out/run-a0/run.summary.json -> measure_source",
+      "seam": "adapter-declared behaviour descriptor",
+      "why": "the native descriptor pipeline needs an embedding provider; A0 freezes the descriptor condition instead"
+    }
+  ],
+  "task": "circle-packing",
+  "theta_E": {
+    "defaults_applied": {},
+    "extra": {
+      "n": "26",
+      "runs": "5",
+      "runtime_budget_ms": "250.0",
+      "timeout_s": "120.0"
+    },
+    "fidelity": "full",
+    "fraction": 1.0,
+    "seed": 1337
+  },
+  "theta_e": {
+    "defaults_applied": {},
+    "extra": {
+      "n": 26,
+      "runs": 5,
+      "runtime_budget_ms": 250.0,
+      "timeout_s": 120.0
+    },
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "seed": 1337,
+    "timeout_s": 120.0
+  },
+  "traces": {
+    "combined": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.all.jsonl",
+    "resource": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.resource.jsonl",
+    "score": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.score.jsonl",
+    "selection": "/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.selection.jsonl"
+  },
+  "verdict": "pass",
+  "wall_clock_s": 6.021070805996715
+}

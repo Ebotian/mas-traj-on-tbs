@@ -1,0 +1,19 @@
+{
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "eid_star_component_digests": {
+    "Config": "550ca3cdd8af04ec0895a2515bbee40a9627b805d5477611995f4cef0f4043ac",
+    "DataManifest": "b21c975a51ef24cdfb2078957f0e0e4b2fb194e7c55b3a8058febb019d214a21",
+    "DependencyLock": "7b02f1a71288335ff92fe68da8804349e416ba4ae9e95f8cd0c6a3b5bc372a75",
+    "EvaluatorSource": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+    "MetricDefinition": "420ab0acf24e1c7325b089e2ec4bc6c3d074119c4f3ac8aac8ed3cfa1c45bfc0"
+  },
+  "files": {
+    "a0_locator.json": "ec22ca55ac5c420c4bf769e929c3dfcdaa6b1a35be39d83f9baf2160662b4365",
+    "kapso_eval.py": "781f54ee7674164d2b71e78d42640f985f3907a76542b8d5a84a3b5220d9e5ba"
+  },
+  "fingerprint_rule": "KAPSO's own: sha256(json.dumps(manifest, sort_keys=True, separators=(',',':'))) \u2014 execution/evaluation_integrity.py:112-119",
+  "manifest_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+  "mapping": "EID_r = manifest_fingerprint({kapso_eval.py, a0_locator.json}); a0_locator.json carries the EID* component digests, the E* source records and the canonical theta_E that kapso_eval.py enforces at run time, so recomputing EID_r requires only EID* and this adapter's two source files.",
+  "schema": "a0.kapso.registered_tree/v1",
+  "tree_dir": "/home/ebt/rsi-dev/a0/conformance/out/adapters/registered_evaluation_source"
+}

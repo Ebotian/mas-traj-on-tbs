@@ -1,0 +1,14 @@
+{
+  "_note": [
+    "Optional entry-point registry for a0/conformance/conformance.py.",
+    "`cmd` is the base argv the runner appends `<conformance|run|closure-probe> --runtime ... ` to.",
+    "The runner also discovers `<adapter_dir>/adapter.json` with a `cmd` list, a package",
+    "(`a0_adapter`/`adapter` with __main__.py, cli.py or main.py) under `<adapter_dir>` or",
+    "`<adapter_dir>/src`, a `<adapter_dir>/{a0_adapter,adapter,main,cli}.py` script, and an",
+    "executable in `<adapter_dir>/bin/`. An empty registry changes nothing: it is only needed",
+    "when none of those layouts match.",
+    "`pythonpath` is optional and is prepended to PYTHONPATH (the runner also launches with",
+    "cwd = <adapter_dir>)."
+  ],
+  "adapters": {}
+}

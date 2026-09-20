@@ -1,0 +1,2767 @@
+{
+  "schema": "a0.conformance.report/v1",
+  "generated_at": "2026-09-20T19:24:04+0800",
+  "generated_by": "a0/conformance/conformance.py run",
+  "step": "A0.1 evaluator integration conformance",
+  "protocol": {
+    "formula": "for every r in R and every c in C*: E_r(c; theta_E) = E*(c; theta_E) +- epsilon, and EID_r derived from EID* (plan:513-519)",
+    "screen": "A0 is a candidate screen, not a collective gate: R_1 = {r : A0.1_r and A0.2_r}, |R_1| >= 1 to continue (plan:490)",
+    "f_r": "round one freezes F_r(E*) = scalar(E*) (plan:528)",
+    "false_green": "plan:551-552"
+  },
+  "frozen": {
+    "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_star_binding": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_document": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+    "eid_document_name": "canonical",
+    "eid_document_requested": "canonical",
+    "eid_document_sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+    "eid_document_supplied_to_adapters": {
+      "label": "canonical",
+      "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+      "exists": true,
+      "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "matches_binding": true
+    },
+    "candidate_set": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+    "candidate_set_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+    "candidate_ids": [
+      "c01_good_hex",
+      "c02_baseline_upstream",
+      "c03_mirror",
+      "c04_near_tie",
+      "c05_overlapping",
+      "c06_empty",
+      "c07_single",
+      "c08_out_of_bounds",
+      "c09_malformed_import",
+      "c10_raises",
+      "c11_non_deterministic",
+      "c12_exit_without_artifacts",
+      "c13_slow",
+      "c14_near_zero"
+    ],
+    "reference_table": "/home/ebt/rsi-dev/a0/tasks/circle-packing/E_STAR.json",
+    "reference_table_sha256": "f5ac1abfa61872541ea92a6a09fcc6178c244d914234211dcc633bac0ea66f5f",
+    "epsilon": 1e-09,
+    "primary_field": "sum_radii",
+    "direction": "maximize",
+    "theta_e": {
+      "seed": 1337,
+      "fidelity": "full",
+      "fraction": 1.0,
+      "n": 26,
+      "runs": 5,
+      "runtime_budget_ms": 250.0,
+      "timeout_s": 120.0
+    },
+    "f_star": {
+      "declaration": "/home/ebt/rsi-dev/a0/contract/fr/scalar.json",
+      "spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+      "pinned_spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+      "matches_pinned": true,
+      "name": "F_r = scalar(E*)",
+      "applies": "scalar",
+      "primary_field": "sum_radii",
+      "direction": "maximize",
+      "rule": "F_r(E*) = scalar(E*) = outcome.objective.sum_radii, maximize (plan:528)"
+    },
+    "evaluator": {
+      "script": "tasks/circle-packing/e_star.py",
+      "interpreter": "tasks/circle-packing/.venv/bin/python",
+      "argv_template": "tasks/circle-packing/.venv/bin/python tasks/circle-packing/e_star.py evaluate --candidate <C_STAR/<id>> --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out <out.json> --state-dir <state>"
+    }
+  },
+  "eid": {
+    "expected_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "checks": [
+      {
+        "check_id": "EID-inputs-match-binding",
+        "ok": true,
+        "detail": "EID_INPUTS.json eid_star == binding 664115e0... : True"
+      },
+      {
+        "check_id": "EID-document-found",
+        "ok": true,
+        "detail": "an EID*.json with eid_star == 664115e0... was found"
+      },
+      {
+        "check_id": "EID-document-as-requested",
+        "ok": true,
+        "detail": "the document handed to the adapters is the one requested (`--eid-document canonical` -> /home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json)"
+      },
+      {
+        "check_id": "EID-recompute",
+        "ok": true,
+        "detail": "evalcontract.py recompute is filesystem-free and recomputed EID* matching 664115e0d63ad2e1 (exit 0)"
+      },
+      {
+        "check_id": "EID-verify-inputs",
+        "ok": true,
+        "detail": "evalcontract.py verify re-hashed the declared inputs of plumbing.EID.json against /home/ebt/rsi-dev/a0/contract/plumbing.contract.json [the supplied document's own `spec` field (plumbing.EID.json)] (exit 0)"
+      },
+      {
+        "check_id": "EID-documents-agree",
+        "ok": true,
+        "detail": "2 document(s) carry EID* = 664115e0...: ['/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json', '/home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.EID.proposed.json']; the runner hands /home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json to the adapters (sha256 50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b)"
+      }
+    ],
+    "eid_inputs": {
+      "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/EID_INPUTS.json",
+      "sha256": "4f925f62cb1b5ec9fdb43fa98521e964caeed259ca54152e8e8b6e028650868a",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "spec_path": "a0/tasks/circle-packing/plumbing.contract.proposed.json"
+    },
+    "resolution": {
+      "expected_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "requested": "canonical",
+      "requested_path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+      "requested_ok": true,
+      "substituted": false,
+      "documents": [
+        {
+          "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+          "label": "canonical",
+          "requested": true,
+          "exists": true,
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "matches_binding": true
+        },
+        {
+          "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.EID.proposed.json",
+          "label": "proposed",
+          "requested": false,
+          "exists": true,
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "matches_binding": true
+        }
+      ],
+      "chosen": {
+        "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+        "label": "canonical",
+        "requested": true,
+        "exists": true,
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "matches_binding": true
+      }
+    },
+    "requested": "canonical",
+    "eid_document_supplied": {
+      "label": "canonical",
+      "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+      "exists": true,
+      "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "matches_binding": true
+    },
+    "spec_resolved": "/home/ebt/rsi-dev/a0/contract/plumbing.contract.json",
+    "spec_source": "the supplied document's own `spec` field (plumbing.EID.json)",
+    "recompute": {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/contract/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/contract/evalcontract.py",
+        "recompute",
+        "--eid-file",
+        "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json"
+      ],
+      "exit_code": 0,
+      "stdout": "  [ok ] EvaluatorSource    recorded=a3d6534b4e3bc78f recomputed=a3d6534b4e3bc78f\n  [ok ] DependencyLock     recorded=7b02f1a71288335f recomputed=7b02f1a71288335f\n  [ok ] DataManifest       recorded=b21c975a51ef24cd recomputed=b21c975a51ef24cd\n  [ok ] Config             recorded=550ca3cdd8af04ec recomputed=550ca3cdd8af04ec\n  [ok ] MetricDefinition   recorded=420ab0acf24e1c73 recomputed=420ab0acf24e1c73\n  [ok ] EID*               recorded=664115e0d63ad2e1 recomputed=664115e0d63ad2e1\n",
+      "stderr": ""
+    },
+    "verify": {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/contract/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/contract/evalcontract.py",
+        "verify",
+        "--eid-file",
+        "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+        "--spec",
+        "/home/ebt/rsi-dev/a0/contract/plumbing.contract.json",
+        "--base",
+        "/home/ebt/rsi-dev/a0"
+      ],
+      "exit_code": 0,
+      "stdout": "clean: all recorded inputs match; EID* = 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\n",
+      "stderr": "",
+      "spec": "/home/ebt/rsi-dev/a0/contract/plumbing.contract.json"
+    },
+    "eid_document": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+    "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328"
+  },
+  "integrity": {
+    "candidate_set": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+    "candidate_set_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+    "checked": 14,
+    "ok": true,
+    "problems": [],
+    "rows": [
+      {
+        "candidate_id": "c01_good_hex",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c01_good_hex/solution.py",
+        "declared": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+        "observed": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+        "ok": true
+      },
+      {
+        "candidate_id": "c02_baseline_upstream",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c02_baseline_upstream/solution.py",
+        "declared": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "observed": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "ok": true
+      },
+      {
+        "candidate_id": "c03_mirror",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c03_mirror/solution.py",
+        "declared": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+        "observed": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+        "ok": true
+      },
+      {
+        "candidate_id": "c04_near_tie",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c04_near_tie/solution.py",
+        "declared": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+        "observed": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+        "ok": true
+      },
+      {
+        "candidate_id": "c05_overlapping",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c05_overlapping/solution.py",
+        "declared": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+        "observed": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+        "ok": true
+      },
+      {
+        "candidate_id": "c06_empty",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c06_empty/solution.py",
+        "declared": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+        "observed": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+        "ok": true
+      },
+      {
+        "candidate_id": "c07_single",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c07_single/solution.py",
+        "declared": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+        "observed": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+        "ok": true
+      },
+      {
+        "candidate_id": "c08_out_of_bounds",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c08_out_of_bounds/solution.py",
+        "declared": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+        "observed": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+        "ok": true
+      },
+      {
+        "candidate_id": "c09_malformed_import",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c09_malformed_import/solution.py",
+        "declared": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+        "observed": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+        "ok": true
+      },
+      {
+        "candidate_id": "c10_raises",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c10_raises/solution.py",
+        "declared": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+        "observed": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+        "ok": true
+      },
+      {
+        "candidate_id": "c11_non_deterministic",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c11_non_deterministic/solution.py",
+        "declared": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+        "observed": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+        "ok": true
+      },
+      {
+        "candidate_id": "c12_exit_without_artifacts",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c12_exit_without_artifacts/solution.py",
+        "declared": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+        "observed": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+        "ok": true
+      },
+      {
+        "candidate_id": "c13_slow",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c13_slow/solution.py",
+        "declared": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+        "observed": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+        "ok": true
+      },
+      {
+        "candidate_id": "c14_near_zero",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c14_near_zero/solution.py",
+        "declared": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+        "observed": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+        "ok": true
+      }
+    ]
+  },
+  "runtimes": {
+    "kapso": {
+      "state": "PASS",
+      "reason": null,
+      "checks": [
+        {
+          "check_id": "EID-star-verbatim",
+          "ok": true,
+          "detail": "adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)"
+        },
+        {
+          "check_id": "EID-r-derives-from-EID-star",
+          "ok": true,
+          "detail": "eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'"
+        },
+        {
+          "check_id": "EID-r-declaration-present",
+          "ok": true,
+          "detail": "native_scheme='manifest_fingerprint' mapping_mode='native' recomputable=True"
+        },
+        {
+          "check_id": "EID-r-recomputes",
+          "ok": true,
+          "detail": "native scheme 'manifest_fingerprint': the declared EID_r 'manifest:1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962' matches the evaluator identity recorded on all 14 rows (1 distinct value(s), e.g. ['1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962']); the runner did NOT recompute the fingerprint itself (no recompute_cmd), it cross-checked it against the attempt records",
+          "recompute_mode": "cross_checked_against_attempts"
+        },
+        {
+          "check_id": "theta-E-identical",
+          "ok": true,
+          "detail": "adapter declares theta_E = {\"defaults_applied\": {}, \"extra\": {\"e_star_evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"e_star_version\": \"1.0.0\", \"fidelity_mode\": \"off\", \"granted_class\": {\"eval_fidelity\": \"full\", \"eval_fraction\": 1.0, \"profile\": \"full\"}, \"max_change_requests\": 0, \"parent_policy\": \"best\", \"registered_command\": \"python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337\", \"registered_subsample_seed\": 1337, \"registered_wrapper_sha256\": \"781f54ee7674164d2b71e78d42640f985f3907a76542b8d5a84a3b5220d9e5ba\"}, \"fidelity\": \"full\", \"fraction\": 1.0, \"seed\": 1337}",
+          "frozen_theta_E": {
+            "seed": 1337,
+            "fidelity": "full",
+            "fraction": 1.0,
+            "n": 26,
+            "runs": 5,
+            "runtime_budget_ms": 250.0,
+            "timeout_s": 120.0
+          },
+          "declared": true,
+          "observed_from_manifest_echo": [
+            [
+              1337,
+              "full",
+              1.0
+            ]
+          ],
+          "defaults_applied": {}
+        },
+        {
+          "check_id": "E-star-manifest-echo",
+          "ok": true,
+          "detail": "14 E* manifest echo(es) across 14 candidate(s) verify the frozen evaluator source digest, the per-candidate canonical digest and theta_E",
+          "echoes_checked": 14,
+          "echo_forms": [
+            "fields"
+          ],
+          "candidates_with_echo": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ]
+        },
+        {
+          "check_id": "F-r-frozen",
+          "ok": true,
+          "detail": "adapter declares F_r spec_hash='1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0'; frozen first-round F_r hash is '1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0' (plan:528)"
+        },
+        {
+          "check_id": "candidate-coverage",
+          "ok": true,
+          "detail": "adapter produced usable rows for 14/14 members of C*"
+        },
+        {
+          "check_id": "E-r-equals-E-star",
+          "ok": true,
+          "detail": "14/14 candidates agree with E*(c) within epsilon=1e-09 (or compare equal as verdicts); disagreeing: none"
+        },
+        {
+          "check_id": "E-r-failure-kind",
+          "ok": true,
+          "detail": "9/9 candidate(s) whose E* verdict is not `ok` declare a failure.kind, and every declared kind matches E*'s",
+          "non_ok_candidates": [
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow"
+          ],
+          "kind_declared_for": [
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow"
+          ],
+          "kind_undeclared_for": []
+        },
+        {
+          "check_id": "evidence-fresh-or-declared",
+          "ok": true,
+          "detail": "every compared row is a fresh measurement (evaluator_evidence.status == ok)",
+          "evidence_declared_by_adapter": true,
+          "synthetic_declared_candidates": []
+        }
+      ],
+      "rows": [
+        {
+          "runtime": "kapso",
+          "candidate_id": "c01_good_hex",
+          "role": "good",
+          "e_star_status": "ok",
+          "e_star_value": 2.4519205208433132,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.4519205208433132,
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c02_baseline_upstream",
+          "role": "baseline",
+          "e_star_status": "ok",
+          "e_star_value": 0.25,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 0.25,
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c03_mirror",
+          "role": "tie",
+          "e_star_status": "ok",
+          "e_star_value": 2.4519205208433132,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.4519205208433132,
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c04_near_tie",
+          "role": "tie",
+          "e_star_status": "ok",
+          "e_star_value": 2.451820520843313,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.451820520843313,
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c05_overlapping",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c06_empty",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c07_single",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c08_out_of_bounds",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c09_malformed_import",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "candidate_import_failed",
+          "e_star_failure_stage": "resolve_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c10_raises",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "candidate_call_raised",
+          "e_star_failure_stage": "evaluator_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c11_non_deterministic",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "non_deterministic",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c12_exit_without_artifacts",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "child_terminated_early",
+          "e_star_failure_stage": "evaluator_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c13_slow",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "runtime_budget_exceeded",
+          "e_star_failure_stage": "timeout",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "kapso",
+          "candidate_id": "c14_near_zero",
+          "role": "bad",
+          "e_star_status": "ok",
+          "e_star_value": 2.6e-05,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.6e-05,
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": null,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        }
+      ],
+      "false_green_findings": [],
+      "synthetic_declared_candidates": [],
+      "evidence_source": "adapter conformance subcommand",
+      "traces": {
+        "all": "/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.all.jsonl",
+        "resource": "/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.resource.jsonl",
+        "score": "/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.score.jsonl"
+      },
+      "adapter_run_dir": "/home/ebt/rsi-dev/a0/conformance/out/adapters",
+      "failure_stage_counts": {
+        "counts": {
+          "evaluator_failed": 2,
+          "none": 5,
+          "resolve_failed": 1,
+          "timeout": 1,
+          "verify_failed": 5
+        },
+        "counts_score_trace_only": {
+          "evaluator_failed": 2,
+          "none": 5,
+          "resolve_failed": 1,
+          "timeout": 1,
+          "verify_failed": 5
+        },
+        "note": "declared by the adapter from its own emitted events, one unit per (iteration, candidate_id, stage) so a failure reported on both the score and the resource event of a unit is counted once (plan:577, plan:628, trace_validate.py count_failure_stages). `counts` is over the run's merged stream (the validation unit); `counts_score_trace_only` is the same rule over the score trace alone, which is what a0/conformance/conformance.py counts when an adapter declares nothing. The mapping is the A0-wide table in contract/selection/kapso.selection.json",
+        "source": "/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.score.jsonl"
+      },
+      "adapter_declared_verdict": "pass",
+      "adapter_schema": "a0.kapso.conformance/v1",
+      "adapter_rows_section": "top level",
+      "adapter_unverified_notes": null,
+      "adapter_seams": null,
+      "a0_2": null,
+      "a0_2_note": "owned by the A0.2 workstream (a0/acceptance); this runner does not judge selection semantics",
+      "traces_source": "reported by the adapter",
+      "failure_stage_accounting": {
+        "declared_counts": {
+          "evaluator_failed": 2,
+          "none": 5,
+          "resolve_failed": 1,
+          "timeout": 1,
+          "verify_failed": 5
+        },
+        "declared_units": 14,
+        "expected_from_frozen_map": {
+          "none": 5,
+          "verify_failed": 5,
+          "resolve_failed": 1,
+          "evaluator_failed": 2,
+          "timeout": 1
+        },
+        "comparable_to_C*": true,
+        "matches_frozen_map": true,
+        "note": "the declared counts equal the frozen §5.3 mapping applied to C*'s E* verdicts"
+      },
+      "adapter": {
+        "adapter_root": "/home/ebt/rsi-dev/a0/runtimes",
+        "runtime_dir": "/home/ebt/rsi-dev/a0/runtimes/kapso",
+        "source": "adapter.json",
+        "cmd": [
+          "/home/ebt/rsi-dev/a0/runtimes/kapso/.venv/bin/python",
+          "-m",
+          "a0_adapter"
+        ],
+        "declared": {
+          "schema": "a0.kapso.adapter_entrypoint/v1",
+          "cmd": [
+            "/home/ebt/rsi-dev/a0/runtimes/kapso/.venv/bin/python",
+            "-m",
+            "a0_adapter"
+          ],
+          "pythonpath": "/home/ebt/rsi-dev/a0/runtimes/kapso",
+          "runtime": "kapso",
+          "subcommands": [
+            "run",
+            "conformance",
+            "closure-probe"
+          ],
+          "note": "Entry point declared for a0/conformance/conformance.py (its discovery order is adapters.json, then this file, then heuristics). The adapter imports the pinned KAPSO checkout from PYTHONPATH (config/adapter.json: kapso_src); it never installs into it.",
+          "paths_config": "config/adapter.json"
+        },
+        "pythonpath": "/home/ebt/rsi-dev/a0/runtimes/kapso"
+      },
+      "rerun": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes kapso --out report.kapso.json",
+      "conformance_invocation": {
+        "argv": [
+          "/home/ebt/rsi-dev/a0/runtimes/kapso/.venv/bin/python",
+          "-m",
+          "a0_adapter",
+          "conformance",
+          "--runtime",
+          "kapso",
+          "--candidate-set",
+          "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+          "--eid",
+          "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+          "--theta",
+          "seed=1337,fidelity=full,fraction=1.0,n=26,runs=5,runtime_budget_ms=250.0,timeout_s=120.0",
+          "--epsilon",
+          "1e-09",
+          "--out",
+          "/home/ebt/rsi-dev/a0/conformance/out/adapters/kapso.conformance.json"
+        ],
+        "cwd": "/home/ebt/rsi-dev/a0/runtimes/kapso",
+        "exit_code": 0,
+        "duration_sec": 21.618,
+        "timed_out": false,
+        "stdout_tail": "\n[GenericSearch] Registered evaluation failed (exit 3): kapso_eval: E* verdict error — no score of record (exit 3)\n\n[GenericSearch] Registered evaluation failed (exit 3): kapso_eval: E* verdict error — no score of record (exit 3)\n\n[GenericSearch] Registered evaluation failed (exit 3): kapso_eval: E* verdict error — no score of record (exit 3)\n\n[GenericSearch] Registered evaluation failed (exit 3): kapso_eval: E* verdict error — no score of record (exit 3)\n\n[GenericSearch] Manifest class mismatch: granted full/1.0/1337, session ran fast/0.15/1337 — no mechanical score of record\n{\n \"run_id\": \"kapso-a01-adapters\",\n \"candidates\": 14,\n \"pass\": true,\n \"mismatches\": [],\n \"trace_paths\": {\n  \"score\": \"/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.score.jsonl\",\n  \"resource\": \"/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.resource.jsonl\",\n  \"all\": \"/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.all.jsonl\"\n },\n \"trace_validation\": {\n  \"unit\": \"run\",\n  \"returncode\": 0\n }\n}",
+        "stderr_tail": "",
+        "out_path": "/home/ebt/rsi-dev/a0/conformance/out/adapters/kapso.conformance.json",
+        "out_exists": true
+      },
+      "run_invocation": null,
+      "raw": {
+        "stdout": "/home/ebt/rsi-dev/a0/conformance/out/adapters/kapso.conformance.stdout.txt",
+        "stderr": "/home/ebt/rsi-dev/a0/conformance/out/adapters/kapso.conformance.stderr.txt",
+        "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/kapso.conformance.exit",
+        "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/kapso.conformance.json"
+      },
+      "adapter_declared": {
+        "schema": "a0.kapso.conformance/v1",
+        "state": null,
+        "blocked_reason": null,
+        "verdict": "pass",
+        "row_count": 14
+      },
+      "exit_code_semantics": {
+        "exit_code": 0,
+        "meaning": "run completed within budget; all three traces written"
+      },
+      "eid_document_supplied": {
+        "label": "canonical",
+        "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+        "exists": true,
+        "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "matches_binding": true
+      }
+    }
+  },
+  "controls": {
+    "control_honest": {
+      "state": "PASS",
+      "reason": null,
+      "checks": [
+        {
+          "check_id": "EID-star-verbatim",
+          "ok": true,
+          "detail": "adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)"
+        },
+        {
+          "check_id": "EID-r-derives-from-EID-star",
+          "ok": true,
+          "detail": "eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'"
+        },
+        {
+          "check_id": "EID-r-declaration-present",
+          "ok": true,
+          "detail": "native_scheme='none' mapping_mode='adapter_declared_injection' recomputable=True"
+        },
+        {
+          "check_id": "EID-r-recomputes",
+          "ok": true,
+          "detail": "recomputed a0/fixture/reference_adapter/v1/EID_r digest = abffba247acbe658d7dac6b0afacb271fde37d637188d17bb505281b66ac5bf1; declared value = 'abffba247acbe658d7dac6b0afacb271fde37d637188d17bb505281b66ac5bf1'",
+          "recompute_mode": "executed"
+        },
+        {
+          "check_id": "theta-E-identical",
+          "ok": true,
+          "detail": "adapter declares theta_E = {\"fidelity\": \"full\", \"fraction\": 1.0, \"n\": 26, \"runs\": 5, \"runtime_budget_ms\": 250.0, \"seed\": 1337, \"timeout_s\": 120.0}",
+          "frozen_theta_E": {
+            "seed": 1337,
+            "fidelity": "full",
+            "fraction": 1.0,
+            "n": 26,
+            "runs": 5,
+            "runtime_budget_ms": 250.0,
+            "timeout_s": 120.0
+          },
+          "declared": true,
+          "observed_from_manifest_echo": [],
+          "defaults_applied": {}
+        },
+        {
+          "check_id": "E-star-manifest-echo",
+          "ok": true,
+          "detail": "no E* manifest echo found in the adapter's own evidence, so this independent confirmation is unavailable (not a failure: it is a bonus channel)",
+          "echoes_checked": 0,
+          "echo_forms": [],
+          "candidates_with_echo": []
+        },
+        {
+          "check_id": "F-r-frozen",
+          "ok": true,
+          "detail": "adapter declares F_r spec_hash='1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0'; frozen first-round F_r hash is '1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0' (plan:528)"
+        },
+        {
+          "check_id": "candidate-coverage",
+          "ok": true,
+          "detail": "adapter produced usable rows for 14/14 members of C*"
+        },
+        {
+          "check_id": "E-r-equals-E-star",
+          "ok": true,
+          "detail": "14/14 candidates agree with E*(c) within epsilon=1e-09 (or compare equal as verdicts); disagreeing: none"
+        },
+        {
+          "check_id": "E-r-failure-kind",
+          "ok": true,
+          "detail": "9/9 candidate(s) whose E* verdict is not `ok` declare a failure.kind, and every declared kind matches E*'s",
+          "non_ok_candidates": [
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow"
+          ],
+          "kind_declared_for": [
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow"
+          ],
+          "kind_undeclared_for": []
+        },
+        {
+          "check_id": "evidence-fresh-or-declared",
+          "ok": true,
+          "detail": "every compared row is a fresh measurement (evaluator_evidence.status == ok)",
+          "evidence_declared_by_adapter": true,
+          "synthetic_declared_candidates": []
+        }
+      ],
+      "rows": [
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c01_good_hex",
+          "role": "good",
+          "e_star_status": "ok",
+          "e_star_value": 2.4519205208433132,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.4519205208433132,
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c02_baseline_upstream",
+          "role": "baseline",
+          "e_star_status": "ok",
+          "e_star_value": 0.25,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 0.25,
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c03_mirror",
+          "role": "tie",
+          "e_star_status": "ok",
+          "e_star_value": 2.4519205208433132,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.4519205208433132,
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c04_near_tie",
+          "role": "tie",
+          "e_star_status": "ok",
+          "e_star_value": 2.451820520843313,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.451820520843313,
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c05_overlapping",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c06_empty",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c07_single",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c08_out_of_bounds",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c09_malformed_import",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "candidate_import_failed",
+          "e_star_failure_stage": "resolve_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c10_raises",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "candidate_call_raised",
+          "e_star_failure_stage": "evaluator_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c11_non_deterministic",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "non_deterministic",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c12_exit_without_artifacts",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "child_terminated_early",
+          "e_star_failure_stage": "evaluator_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c13_slow",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "runtime_budget_exceeded",
+          "e_star_failure_stage": "timeout",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "e_r_failure_stage": null,
+          "failure_kind_declared": true,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH_VERDICT",
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        {
+          "runtime": "control_honest",
+          "candidate_id": "c14_near_zero",
+          "role": "bad",
+          "e_star_status": "ok",
+          "e_star_value": 2.6e-05,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.6e-05,
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        }
+      ],
+      "false_green_findings": [],
+      "synthetic_declared_candidates": [],
+      "evidence_source": "adapter conformance subcommand",
+      "traces": null,
+      "adapter_run_dir": null,
+      "failure_stage_counts": null,
+      "adapter_declared_verdict": null,
+      "adapter_schema": "a0.adapter.conformance/v1",
+      "adapter_rows_section": "top level",
+      "adapter_unverified_notes": null,
+      "adapter_seams": null,
+      "a0_2": null,
+      "a0_2_note": "owned by the A0.2 workstream (a0/acceptance); this runner does not judge selection semantics",
+      "failure_stage_accounting": {
+        "declared_counts": null,
+        "declared_units": null,
+        "expected_from_frozen_map": {
+          "none": 5,
+          "verify_failed": 5,
+          "resolve_failed": 1,
+          "evaluator_failed": 2,
+          "timeout": 1
+        },
+        "comparable_to_C*": false,
+        "matches_frozen_map": null,
+        "note": "the adapter declared no FailureStage counts, so nothing could be compared"
+      },
+      "adapter": {
+        "adapter_root": "/home/ebt/rsi-dev/a0/runtimes",
+        "runtime_dir": "/home/ebt/rsi-dev/a0/runtimes/control_honest",
+        "source": "cli-override",
+        "cmd": [
+          "/usr/bin/python3",
+          "/home/ebt/rsi-dev/a0/conformance/fixtures/adapters/reference_adapter.py"
+        ]
+      },
+      "rerun": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes control_honest --out report.control_honest.json",
+      "conformance_invocation": {
+        "argv": [
+          "/usr/bin/python3",
+          "/home/ebt/rsi-dev/a0/conformance/fixtures/adapters/reference_adapter.py",
+          "conformance",
+          "--runtime",
+          "control_honest",
+          "--candidate-set",
+          "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+          "--eid",
+          "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+          "--theta",
+          "seed=1337,fidelity=full,fraction=1.0,n=26,runs=5,runtime_budget_ms=250.0,timeout_s=120.0",
+          "--epsilon",
+          "1e-09",
+          "--out",
+          "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_honest.conformance.json"
+        ],
+        "cwd": "/home/ebt/rsi-dev/a0/conformance",
+        "exit_code": 0,
+        "duration_sec": 2.084,
+        "timed_out": false,
+        "stdout_tail": "",
+        "stderr_tail": "",
+        "out_path": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_honest.conformance.json",
+        "out_exists": true
+      },
+      "run_invocation": null,
+      "raw": {
+        "stdout": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_honest.conformance.stdout.txt",
+        "stderr": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_honest.conformance.stderr.txt",
+        "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_honest.conformance.exit",
+        "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_honest.conformance.json"
+      },
+      "adapter_declared": {
+        "schema": "a0.adapter.conformance/v1",
+        "state": null,
+        "blocked_reason": null,
+        "verdict": null,
+        "row_count": 14
+      },
+      "exit_code_semantics": {
+        "exit_code": 0,
+        "meaning": "run completed within budget; all three traces written"
+      },
+      "control_purpose": "a real E* execution on all of C* -- must PASS",
+      "expectation": "PASS",
+      "behaved_as_expected": true,
+      "eid_document_supplied": {
+        "label": "canonical",
+        "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+        "exists": true,
+        "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "matches_binding": true
+      }
+    },
+    "control_zero_on_error": {
+      "state": "FAIL",
+      "reason": "false-green finding(s): FG-EVE-SYNTH",
+      "checks": [
+        {
+          "check_id": "EID-star-verbatim",
+          "ok": true,
+          "detail": "adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)"
+        },
+        {
+          "check_id": "EID-r-derives-from-EID-star",
+          "ok": true,
+          "detail": "eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'"
+        },
+        {
+          "check_id": "EID-r-declaration-present",
+          "ok": true,
+          "detail": "native_scheme='none' mapping_mode='adapter_declared_injection' recomputable=True"
+        },
+        {
+          "check_id": "EID-r-recomputes",
+          "ok": true,
+          "detail": "recomputed a0/fixture/deviant/zero_on_error/v1/EID_r digest = dd373da2f01dad86ca359fff45dab6f0adad973c02966bac5534c4e814c7ebb0; declared value = 'dd373da2f01dad86ca359fff45dab6f0adad973c02966bac5534c4e814c7ebb0'",
+          "recompute_mode": "executed"
+        },
+        {
+          "check_id": "theta-E-identical",
+          "ok": true,
+          "detail": "adapter declares theta_E = {\"fidelity\": \"full\", \"fraction\": 1.0, \"n\": 26, \"runs\": 5, \"runtime_budget_ms\": 250.0, \"seed\": 1337, \"timeout_s\": 120.0}",
+          "frozen_theta_E": {
+            "seed": 1337,
+            "fidelity": "full",
+            "fraction": 1.0,
+            "n": 26,
+            "runs": 5,
+            "runtime_budget_ms": 250.0,
+            "timeout_s": 120.0
+          },
+          "declared": true,
+          "observed_from_manifest_echo": [],
+          "defaults_applied": {}
+        },
+        {
+          "check_id": "E-star-manifest-echo",
+          "ok": true,
+          "detail": "no E* manifest echo found in the adapter's own evidence, so this independent confirmation is unavailable (not a failure: it is a bonus channel)",
+          "echoes_checked": 0,
+          "echo_forms": [],
+          "candidates_with_echo": []
+        },
+        {
+          "check_id": "F-r-frozen",
+          "ok": true,
+          "detail": "adapter declares F_r spec_hash='1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0'; frozen first-round F_r hash is '1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0' (plan:528)"
+        },
+        {
+          "check_id": "candidate-coverage",
+          "ok": true,
+          "detail": "adapter produced usable rows for 14/14 members of C*"
+        },
+        {
+          "check_id": "E-r-equals-E-star",
+          "ok": false,
+          "detail": "5/14 candidates agree with E*(c) within epsilon=1e-09 (or compare equal as verdicts); disagreeing: c05_overlapping:FALSE_GREEN_SYNTHETIC_ZERO, c06_empty:FALSE_GREEN_SYNTHETIC_ZERO, c07_single:FALSE_GREEN_SYNTHETIC_ZERO, c08_out_of_bounds:FALSE_GREEN_SYNTHETIC_ZERO, c09_malformed_import:FALSE_GREEN_SYNTHETIC_ZERO, c10_raises:FALSE_GREEN_SYNTHETIC_ZERO, c11_non_deterministic:FALSE_GREEN_SYNTHETIC_ZERO, c12_exit_without_artifacts:FALSE_GREEN_SYNTHETIC_ZERO, c13_slow:FALSE_GREEN_SYNTHETIC_ZERO"
+        },
+        {
+          "check_id": "E-r-failure-kind",
+          "ok": true,
+          "detail": "0/9 non-ok candidate(s) declare a failure.kind, and every declared kind matches E*'s; the rest declare none, so their staging could not be compared (adapter_contract.md §4.3.5 asks for it on every non-ok candidate)",
+          "non_ok_candidates": [
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow"
+          ],
+          "kind_declared_for": [],
+          "kind_undeclared_for": [
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow"
+          ]
+        },
+        {
+          "check_id": "evidence-fresh-or-declared",
+          "ok": false,
+          "detail": "9 row(s) report a non-fresh number without declaring it as such: c05_overlapping=synthesized_failure, c06_empty=synthesized_failure, c07_single=synthesized_failure, c08_out_of_bounds=synthesized_failure, c09_malformed_import=synthesized_failure, c10_raises=synthesized_failure, c11_non_deterministic=synthesized_failure, c12_exit_without_artifacts=synthesized_failure, c13_slow=synthesized_failure",
+          "evidence_declared_by_adapter": true,
+          "synthetic_declared_candidates": []
+        }
+      ],
+      "rows": [
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c01_good_hex",
+          "role": "good",
+          "e_star_status": "ok",
+          "e_star_value": 2.4519205208433132,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.4519205208433132,
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c02_baseline_upstream",
+          "role": "baseline",
+          "e_star_status": "ok",
+          "e_star_value": 0.25,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 0.25,
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c03_mirror",
+          "role": "tie",
+          "e_star_status": "ok",
+          "e_star_value": 2.4519205208433132,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.4519205208433132,
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c04_near_tie",
+          "role": "tie",
+          "e_star_status": "ok",
+          "e_star_value": 2.451820520843313,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.451820520843313,
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c05_overlapping",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "ok",
+          "e_r_value": 0.0,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "synthesized_failure",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c06_empty",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "ok",
+          "e_r_value": 0.0,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "synthesized_failure",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c07_single",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "ok",
+          "e_r_value": 0.0,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "synthesized_failure",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c08_out_of_bounds",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "ok",
+          "e_r_value": 0.0,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "synthesized_failure",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c09_malformed_import",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "candidate_import_failed",
+          "e_star_failure_stage": "resolve_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "ok",
+          "e_r_value": 0.0,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "synthesized_failure",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c10_raises",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "candidate_call_raised",
+          "e_star_failure_stage": "evaluator_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "ok",
+          "e_r_value": 0.0,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "synthesized_failure",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c11_non_deterministic",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "non_deterministic",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "ok",
+          "e_r_value": 0.0,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "synthesized_failure",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c12_exit_without_artifacts",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "child_terminated_early",
+          "e_star_failure_stage": "evaluator_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "ok",
+          "e_r_value": 0.0,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "synthesized_failure",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c13_slow",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "runtime_budget_exceeded",
+          "e_star_failure_stage": "timeout",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "ok",
+          "e_r_value": 0.0,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "synthesized_failure",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "notes": []
+        },
+        {
+          "runtime": "control_zero_on_error",
+          "candidate_id": "c14_near_zero",
+          "role": "bad",
+          "e_star_status": "ok",
+          "e_star_value": 2.6e-05,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.6e-05,
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": false,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "ok",
+          "verdict": "MATCH",
+          "notes": []
+        }
+      ],
+      "false_green_findings": [
+        {
+          "finding_id": "FG-EVE-SYNTH",
+          "candidate_id": "c05_overlapping",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "detail": "evaluator_evidence.status=synthesized_failure ('evaluation exception mapped to failure_score(0.0) -- the EvE trap'): the number 0.0 is the runtime's failure_score fallback, not a measurement of E* (E*(c)=None); audit:1016, workflow/evaluation.py:161-167",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-EVE-SYNTH",
+          "candidate_id": "c06_empty",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "detail": "evaluator_evidence.status=synthesized_failure ('evaluation exception mapped to failure_score(0.0) -- the EvE trap'): the number 0.0 is the runtime's failure_score fallback, not a measurement of E* (E*(c)=None); audit:1016, workflow/evaluation.py:161-167",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-EVE-SYNTH",
+          "candidate_id": "c07_single",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "detail": "evaluator_evidence.status=synthesized_failure ('evaluation exception mapped to failure_score(0.0) -- the EvE trap'): the number 0.0 is the runtime's failure_score fallback, not a measurement of E* (E*(c)=None); audit:1016, workflow/evaluation.py:161-167",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-EVE-SYNTH",
+          "candidate_id": "c08_out_of_bounds",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "detail": "evaluator_evidence.status=synthesized_failure ('evaluation exception mapped to failure_score(0.0) -- the EvE trap'): the number 0.0 is the runtime's failure_score fallback, not a measurement of E* (E*(c)=None); audit:1016, workflow/evaluation.py:161-167",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-EVE-SYNTH",
+          "candidate_id": "c09_malformed_import",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "detail": "evaluator_evidence.status=synthesized_failure ('evaluation exception mapped to failure_score(0.0) -- the EvE trap'): the number 0.0 is the runtime's failure_score fallback, not a measurement of E* (E*(c)=None); audit:1016, workflow/evaluation.py:161-167",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-EVE-SYNTH",
+          "candidate_id": "c10_raises",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "detail": "evaluator_evidence.status=synthesized_failure ('evaluation exception mapped to failure_score(0.0) -- the EvE trap'): the number 0.0 is the runtime's failure_score fallback, not a measurement of E* (E*(c)=None); audit:1016, workflow/evaluation.py:161-167",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-EVE-SYNTH",
+          "candidate_id": "c11_non_deterministic",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "detail": "evaluator_evidence.status=synthesized_failure ('evaluation exception mapped to failure_score(0.0) -- the EvE trap'): the number 0.0 is the runtime's failure_score fallback, not a measurement of E* (E*(c)=None); audit:1016, workflow/evaluation.py:161-167",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-EVE-SYNTH",
+          "candidate_id": "c12_exit_without_artifacts",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "detail": "evaluator_evidence.status=synthesized_failure ('evaluation exception mapped to failure_score(0.0) -- the EvE trap'): the number 0.0 is the runtime's failure_score fallback, not a measurement of E* (E*(c)=None); audit:1016, workflow/evaluation.py:161-167",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-EVE-SYNTH",
+          "candidate_id": "c13_slow",
+          "verdict": "FALSE_GREEN_SYNTHETIC_ZERO",
+          "detail": "evaluator_evidence.status=synthesized_failure ('evaluation exception mapped to failure_score(0.0) -- the EvE trap'): the number 0.0 is the runtime's failure_score fallback, not a measurement of E* (E*(c)=None); audit:1016, workflow/evaluation.py:161-167",
+          "protocol": "plan:551-552",
+          "fatal": true
+        }
+      ],
+      "synthetic_declared_candidates": [],
+      "evidence_source": "adapter conformance subcommand",
+      "traces": null,
+      "adapter_run_dir": null,
+      "failure_stage_counts": null,
+      "adapter_declared_verdict": null,
+      "adapter_schema": "a0.adapter.conformance/v1",
+      "adapter_rows_section": "top level",
+      "adapter_unverified_notes": null,
+      "adapter_seams": null,
+      "a0_2": null,
+      "a0_2_note": "owned by the A0.2 workstream (a0/acceptance); this runner does not judge selection semantics",
+      "failure_stage_accounting": {
+        "declared_counts": null,
+        "declared_units": null,
+        "expected_from_frozen_map": {
+          "none": 5,
+          "verify_failed": 5,
+          "resolve_failed": 1,
+          "evaluator_failed": 2,
+          "timeout": 1
+        },
+        "comparable_to_C*": false,
+        "matches_frozen_map": null,
+        "note": "the adapter declared no FailureStage counts, so nothing could be compared"
+      },
+      "adapter": {
+        "adapter_root": "/home/ebt/rsi-dev/a0/runtimes",
+        "runtime_dir": "/home/ebt/rsi-dev/a0/runtimes/control_zero_on_error",
+        "source": "cli-override",
+        "cmd": [
+          "/usr/bin/python3",
+          "/home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py",
+          "--mode",
+          "zero_on_error"
+        ]
+      },
+      "rerun": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes control_zero_on_error --out report.control_zero_on_error.json",
+      "conformance_invocation": {
+        "argv": [
+          "/usr/bin/python3",
+          "/home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py",
+          "--mode",
+          "zero_on_error",
+          "conformance",
+          "--runtime",
+          "control_zero_on_error",
+          "--candidate-set",
+          "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+          "--eid",
+          "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+          "--theta",
+          "seed=1337,fidelity=full,fraction=1.0,n=26,runs=5,runtime_budget_ms=250.0,timeout_s=120.0",
+          "--epsilon",
+          "1e-09",
+          "--out",
+          "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_zero_on_error.conformance.json"
+        ],
+        "cwd": "/home/ebt/rsi-dev/a0/conformance",
+        "exit_code": 0,
+        "duration_sec": 0.015,
+        "timed_out": false,
+        "stdout_tail": "",
+        "stderr_tail": "",
+        "out_path": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_zero_on_error.conformance.json",
+        "out_exists": true
+      },
+      "run_invocation": null,
+      "raw": {
+        "stdout": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_zero_on_error.conformance.stdout.txt",
+        "stderr": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_zero_on_error.conformance.stderr.txt",
+        "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_zero_on_error.conformance.exit",
+        "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_zero_on_error.conformance.json"
+      },
+      "adapter_declared": {
+        "schema": "a0.adapter.conformance/v1",
+        "state": null,
+        "blocked_reason": null,
+        "verdict": null,
+        "row_count": 14
+      },
+      "exit_code_semantics": {
+        "exit_code": 0,
+        "meaning": "run completed within budget; all three traces written"
+      },
+      "control_purpose": "EvE failure_score(0.0) trap -- must FAIL (plan:551)",
+      "expectation": "FAIL",
+      "behaved_as_expected": true,
+      "eid_document_supplied": {
+        "label": "canonical",
+        "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+        "exists": true,
+        "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "matches_binding": true
+      }
+    },
+    "control_cache_hit": {
+      "state": "FAIL",
+      "reason": "false-green finding(s): FG-LORELEY-CACHE",
+      "checks": [
+        {
+          "check_id": "EID-star-verbatim",
+          "ok": true,
+          "detail": "adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)"
+        },
+        {
+          "check_id": "EID-r-derives-from-EID-star",
+          "ok": true,
+          "detail": "eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'"
+        },
+        {
+          "check_id": "EID-r-declaration-present",
+          "ok": true,
+          "detail": "native_scheme='none' mapping_mode='adapter_declared_injection' recomputable=True"
+        },
+        {
+          "check_id": "EID-r-recomputes",
+          "ok": true,
+          "detail": "recomputed a0/fixture/deviant/cache_hit/v1/EID_r digest = c8e65443b84a664e67033be838cec009ec2f159a26bb071aa4603ff5d6f3fb4b; declared value = 'c8e65443b84a664e67033be838cec009ec2f159a26bb071aa4603ff5d6f3fb4b'",
+          "recompute_mode": "executed"
+        },
+        {
+          "check_id": "theta-E-identical",
+          "ok": true,
+          "detail": "adapter declares theta_E = {\"fidelity\": \"full\", \"fraction\": 1.0, \"n\": 26, \"runs\": 5, \"runtime_budget_ms\": 250.0, \"seed\": 1337, \"timeout_s\": 120.0}",
+          "frozen_theta_E": {
+            "seed": 1337,
+            "fidelity": "full",
+            "fraction": 1.0,
+            "n": 26,
+            "runs": 5,
+            "runtime_budget_ms": 250.0,
+            "timeout_s": 120.0
+          },
+          "declared": true,
+          "observed_from_manifest_echo": [],
+          "defaults_applied": {}
+        },
+        {
+          "check_id": "E-star-manifest-echo",
+          "ok": true,
+          "detail": "no E* manifest echo found in the adapter's own evidence, so this independent confirmation is unavailable (not a failure: it is a bonus channel)",
+          "echoes_checked": 0,
+          "echo_forms": [],
+          "candidates_with_echo": []
+        },
+        {
+          "check_id": "F-r-frozen",
+          "ok": true,
+          "detail": "adapter declares F_r spec_hash='1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0'; frozen first-round F_r hash is '1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0' (plan:528)"
+        },
+        {
+          "check_id": "candidate-coverage",
+          "ok": true,
+          "detail": "adapter produced usable rows for 14/14 members of C*"
+        },
+        {
+          "check_id": "E-r-equals-E-star",
+          "ok": false,
+          "detail": "0/14 candidates agree with E*(c) within epsilon=1e-09 (or compare equal as verdicts); disagreeing: c01_good_hex:FALSE_GREEN_CACHE_REUSE, c02_baseline_upstream:FALSE_GREEN_CACHE_REUSE, c03_mirror:FALSE_GREEN_CACHE_REUSE, c04_near_tie:FALSE_GREEN_CACHE_REUSE, c05_overlapping:FALSE_GREEN_CACHE_REUSE, c06_empty:FALSE_GREEN_CACHE_REUSE, c07_single:FALSE_GREEN_CACHE_REUSE, c08_out_of_bounds:FALSE_GREEN_CACHE_REUSE, c09_malformed_import:FALSE_GREEN_CACHE_REUSE, c10_raises:FALSE_GREEN_CACHE_REUSE, c11_non_deterministic:FALSE_GREEN_CACHE_REUSE, c12_exit_without_artifacts:FALSE_GREEN_CACHE_REUSE, c13_slow:FALSE_GREEN_CACHE_REUSE, c14_near_zero:FALSE_GREEN_CACHE_REUSE"
+        },
+        {
+          "check_id": "E-r-failure-kind",
+          "ok": true,
+          "detail": "0/9 non-ok candidate(s) declare a failure.kind, and every declared kind matches E*'s; the rest declare none, so their staging could not be compared (adapter_contract.md §4.3.5 asks for it on every non-ok candidate)",
+          "non_ok_candidates": [
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow"
+          ],
+          "kind_declared_for": [],
+          "kind_undeclared_for": [
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow"
+          ]
+        },
+        {
+          "check_id": "evidence-fresh-or-declared",
+          "ok": false,
+          "detail": "14 row(s) report a non-fresh number without declaring it as such: c01_good_hex=cache_hit, c02_baseline_upstream=cache_hit, c03_mirror=cache_hit, c04_near_tie=cache_hit, c05_overlapping=cache_hit, c06_empty=cache_hit, c07_single=cache_hit, c08_out_of_bounds=cache_hit, c09_malformed_import=cache_hit, c10_raises=cache_hit, c11_non_deterministic=cache_hit, c12_exit_without_artifacts=cache_hit, c13_slow=cache_hit, c14_near_zero=cache_hit",
+          "evidence_declared_by_adapter": true,
+          "synthetic_declared_candidates": []
+        }
+      ],
+      "rows": [
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c01_good_hex",
+          "role": "good",
+          "e_star_status": "ok",
+          "e_star_value": 2.4519205208433132,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.4519205208433132,
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c02_baseline_upstream",
+          "role": "baseline",
+          "e_star_status": "ok",
+          "e_star_value": 0.25,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 0.25,
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c03_mirror",
+          "role": "tie",
+          "e_star_status": "ok",
+          "e_star_value": 2.4519205208433132,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.4519205208433132,
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c04_near_tie",
+          "role": "tie",
+          "e_star_status": "ok",
+          "e_star_value": 2.451820520843313,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.451820520843313,
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c05_overlapping",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c06_empty",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c07_single",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c08_out_of_bounds",
+          "role": "bad",
+          "e_star_status": "invalid",
+          "e_star_value": null,
+          "e_star_failure_kind": "invalid_configuration",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 2,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c09_malformed_import",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "candidate_import_failed",
+          "e_star_failure_stage": "resolve_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c10_raises",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "candidate_call_raised",
+          "e_star_failure_stage": "evaluator_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c11_non_deterministic",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "non_deterministic",
+          "e_star_failure_stage": "verify_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c12_exit_without_artifacts",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "child_terminated_early",
+          "e_star_failure_stage": "evaluator_failed",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c13_slow",
+          "role": "bad",
+          "e_star_status": "error",
+          "e_star_value": null,
+          "e_star_failure_kind": "runtime_budget_exceeded",
+          "e_star_failure_stage": "timeout",
+          "reference_value_fresh_sweep": null,
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": null,
+          "e_r_exit_code": 3,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        },
+        {
+          "runtime": "control_cache_hit",
+          "candidate_id": "c14_near_zero",
+          "role": "bad",
+          "e_star_status": "ok",
+          "e_star_value": 2.6e-05,
+          "e_star_failure_kind": null,
+          "e_star_failure_stage": "none",
+          "reference_value_fresh_sweep": 2.6e-05,
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "e_r_failure_stage": null,
+          "failure_kind_declared": null,
+          "delta": 0.0,
+          "e_r_exit_code": 0,
+          "evaluator_evidence_status": "cache_hit",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "notes": []
+        }
+      ],
+      "false_green_findings": [
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c01_good_hex",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c02_baseline_upstream",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c03_mirror",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c04_near_tie",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c05_overlapping",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c06_empty",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c07_single",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c08_out_of_bounds",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c09_malformed_import",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c10_raises",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c11_non_deterministic",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c12_exit_without_artifacts",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c13_slow",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        },
+        {
+          "finding_id": "FG-LORELEY-CACHE",
+          "candidate_id": "c14_near_zero",
+          "verdict": "FALSE_GREEN_CACHE_REUSE",
+          "detail": "evaluator_evidence.status=cache_hit (cached_from_run_id='loreley-run-0001'): the value was reused from a previous run, so this row cannot confirm that the adapter executed E* under the frozen theta_E now (plan:552, config.py:29,561)",
+          "protocol": "plan:551-552",
+          "fatal": true
+        }
+      ],
+      "synthetic_declared_candidates": [],
+      "evidence_source": "adapter conformance subcommand",
+      "traces": null,
+      "adapter_run_dir": null,
+      "failure_stage_counts": null,
+      "adapter_declared_verdict": null,
+      "adapter_schema": "a0.adapter.conformance/v1",
+      "adapter_rows_section": "top level",
+      "adapter_unverified_notes": null,
+      "adapter_seams": null,
+      "a0_2": null,
+      "a0_2_note": "owned by the A0.2 workstream (a0/acceptance); this runner does not judge selection semantics",
+      "failure_stage_accounting": {
+        "declared_counts": null,
+        "declared_units": null,
+        "expected_from_frozen_map": {
+          "none": 5,
+          "verify_failed": 5,
+          "resolve_failed": 1,
+          "evaluator_failed": 2,
+          "timeout": 1
+        },
+        "comparable_to_C*": false,
+        "matches_frozen_map": null,
+        "note": "the adapter declared no FailureStage counts, so nothing could be compared"
+      },
+      "adapter": {
+        "adapter_root": "/home/ebt/rsi-dev/a0/runtimes",
+        "runtime_dir": "/home/ebt/rsi-dev/a0/runtimes/control_cache_hit",
+        "source": "cli-override",
+        "cmd": [
+          "/usr/bin/python3",
+          "/home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py",
+          "--mode",
+          "cache_hit"
+        ]
+      },
+      "rerun": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes control_cache_hit --out report.control_cache_hit.json",
+      "conformance_invocation": {
+        "argv": [
+          "/usr/bin/python3",
+          "/home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py",
+          "--mode",
+          "cache_hit",
+          "conformance",
+          "--runtime",
+          "control_cache_hit",
+          "--candidate-set",
+          "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+          "--eid",
+          "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+          "--theta",
+          "seed=1337,fidelity=full,fraction=1.0,n=26,runs=5,runtime_budget_ms=250.0,timeout_s=120.0",
+          "--epsilon",
+          "1e-09",
+          "--out",
+          "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_cache_hit.conformance.json"
+        ],
+        "cwd": "/home/ebt/rsi-dev/a0/conformance",
+        "exit_code": 0,
+        "duration_sec": 0.015,
+        "timed_out": false,
+        "stdout_tail": "",
+        "stderr_tail": "",
+        "out_path": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_cache_hit.conformance.json",
+        "out_exists": true
+      },
+      "run_invocation": null,
+      "raw": {
+        "stdout": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_cache_hit.conformance.stdout.txt",
+        "stderr": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_cache_hit.conformance.stderr.txt",
+        "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_cache_hit.conformance.exit",
+        "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_cache_hit.conformance.json"
+      },
+      "adapter_declared": {
+        "schema": "a0.adapter.conformance/v1",
+        "state": null,
+        "blocked_reason": null,
+        "verdict": null,
+        "row_count": 14
+      },
+      "exit_code_semantics": {
+        "exit_code": 0,
+        "meaning": "run completed within budget; all three traces written"
+      },
+      "control_purpose": "Loreley cache-reuse trap -- must FAIL (plan:552)",
+      "expectation": "FAIL",
+      "behaved_as_expected": true,
+      "eid_document_supplied": {
+        "label": "canonical",
+        "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+        "exists": true,
+        "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "matches_binding": true
+      }
+    }
+  },
+  "env": {
+    "cwd": "/home/ebt/rsi-dev/a0/conformance",
+    "argv": [
+      "conformance.py",
+      "run",
+      "--runtimes",
+      "kapso",
+      "--out",
+      "report.kapso.json"
+    ],
+    "python": "3.14.7"
+  },
+  "runtimes_requested": [
+    "kapso"
+  ],
+  "note": "this report covers ['kapso'], not the study's four runtimes ['simpleloop', 'kapso', 'eve', 'loreley']; rows are still compared against the frozen E_STAR.json table",
+  "reference": {
+    "document": "/home/ebt/rsi-dev/a0/conformance/reference.json",
+    "source": "a0/conformance/reference.json (fresh E* sweep) cross-checked against E_STAR.json",
+    "agreement_with_frozen_table": {
+      "reproduces_frozen_table": true,
+      "per_candidate": [
+        {
+          "candidate_id": "c01_good_hex",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c02_baseline_upstream",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c03_mirror",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c04_near_tie",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c05_overlapping",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c06_empty",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c07_single",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c08_out_of_bounds",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c09_malformed_import",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c10_raises",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c11_non_deterministic",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c12_exit_without_artifacts",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c13_slow",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c14_near_zero",
+          "reproduces_table": true,
+          "problems": []
+        }
+      ]
+    },
+    "c_star_unchanged_after_sweep": {
+      "before": "ef1cfa38b39a2392b95c4b076e12d524aa9ec890e179d12031cbfbe9c7a48e6b",
+      "after": "ef1cfa38b39a2392b95c4b076e12d524aa9ec890e179d12031cbfbe9c7a48e6b",
+      "unchanged": true
+    },
+    "theta_e": {
+      "seed": 1337,
+      "fidelity": "full",
+      "fraction": 1.0,
+      "n": 26,
+      "runs": 5,
+      "runtime_budget_ms": 250.0,
+      "timeout_s": 120.0
+    },
+    "rows": [
+      {
+        "candidate_id": "c01_good_hex",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.4519205208433132,
+        "failure_kind": null,
+        "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8"
+      },
+      {
+        "candidate_id": "c02_baseline_upstream",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 0.25,
+        "failure_kind": null,
+        "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc"
+      },
+      {
+        "candidate_id": "c03_mirror",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.4519205208433132,
+        "failure_kind": null,
+        "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa"
+      },
+      {
+        "candidate_id": "c04_near_tie",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.451820520843313,
+        "failure_kind": null,
+        "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3"
+      },
+      {
+        "candidate_id": "c05_overlapping",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573"
+      },
+      {
+        "candidate_id": "c06_empty",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2"
+      },
+      {
+        "candidate_id": "c07_single",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743"
+      },
+      {
+        "candidate_id": "c08_out_of_bounds",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376"
+      },
+      {
+        "candidate_id": "c09_malformed_import",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "candidate_import_failed",
+        "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9"
+      },
+      {
+        "candidate_id": "c10_raises",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "candidate_call_raised",
+        "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3"
+      },
+      {
+        "candidate_id": "c11_non_deterministic",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "non_deterministic",
+        "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8"
+      },
+      {
+        "candidate_id": "c12_exit_without_artifacts",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "child_terminated_early",
+        "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64"
+      },
+      {
+        "candidate_id": "c13_slow",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "runtime_budget_exceeded",
+        "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181"
+      },
+      {
+        "candidate_id": "c14_near_zero",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.6e-05,
+        "failure_kind": null,
+        "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe"
+      }
+    ]
+  },
+  "verdicts": {
+    "a0_1": {
+      "kapso": "PASS"
+    },
+    "n_pass": 1,
+    "n_fail": 0,
+    "n_pending": 0,
+    "n_blocked": 0,
+    "r_1_a0_1_only": [
+      "kapso"
+    ],
+    "gate": "|R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2",
+    "screen_semantics": "each runtime is evaluated independently; no runtime's failure aborted another's run"
+  },
+  "exit_code": 0,
+  "duration_sec": 23.979,
+  "report_path": "report.kapso.json",
+  "table_path": "report.kapso.md",
+  "tools": {
+    "runner": "/home/ebt/rsi-dev/a0/conformance/conformance.py",
+    "selftest": "/home/ebt/rsi-dev/a0/conformance/selftest.py",
+    "reference": "/home/ebt/rsi-dev/a0/conformance/reference.json",
+    "frozen_toolchain": {
+      "items": {
+        "e_star_script": true,
+        "e_star_interpreter": true,
+        "c_star_manifest": true,
+        "e_star_table": true,
+        "fr_declaration": true,
+        "evalcontract": true
+      },
+      "ok": true,
+      "missing": []
+    }
+  }
+}
