@@ -1,0 +1,389 @@
+{
+  "provenance": {
+    "eve_checkout": "/tmp/eve",
+    "eve_commit": "979065fd2cf1b3be9caf70596478fe27df7815ad",
+    "loreley_source": "copy at /tmp/lor, blob-identical to pin 4c3759208e6b908f90716488ac3eec3dceaaf397 (591/592; 1 submodule gitlink)",
+    "simulated_draws_per_case": 1000000,
+    "tolerance": 0.003
+  },
+  "eve": {
+    "rank_softmax_k2_T1_num1_first": {
+      "closed_form": 0.7310585786300049,
+      "simulated": 0.731408,
+      "abs_diff": 0.000349421369995051,
+      "decision_rule": "count how often sample()[0] is the higher-scoring candidate"
+    },
+    "rank_softmax_k2_T1_num4_first_position": {
+      "closed_form": 0.7310585786300049,
+      "simulated": 0.730969,
+      "abs_diff": 8.957863000491617e-05,
+      "note": "num=min(4, N)=2 (samplers/base.py:34): both candidates always returned, so only the *order* carries score information"
+    },
+    "rank_softmax_k2_T1_num4_inclusion": {
+      "closed_form": 1.0,
+      "simulated": 1.0,
+      "abs_diff": 0.0
+    },
+    "rank_softmax_N4_T1_num4_first_position": {
+      "closed_form": 0.6439142598879724,
+      "simulated": 0.643989,
+      "abs_diff": 7.474011202768249e-05
+    },
+    "rank_softmax_N4_T1_num4_inclusion": {
+      "closed_form": 1.0,
+      "simulated": 1.0,
+      "abs_diff": 0.0
+    },
+    "rank_exp_sum_k2_num1_first": {
+      "closed_form": 0.7310585786300049,
+      "simulated": 0.731198,
+      "abs_diff": 0.00013942136999511856
+    },
+    "rank_exp_sum_k2_num4_first_position": {
+      "closed_form": 0.7310585786300049,
+      "simulated": 0.731219,
+      "abs_diff": 0.0001604213699950563
+    },
+    "rank_exp_sum_k2_num4_inclusion_N4": {
+      "closed_form": 1.0,
+      "simulated": 1.0,
+      "abs_diff": 0.0
+    },
+    "conditional_second_draw_N3": {
+      "closed_form": 0.8807970779778823,
+      "simulated": 0.8805074414380508,
+      "abs_diff": 0.00028963653983149484
+    },
+    "conditional_second_draw_N4": {
+      "closed_form": 0.8437947344813395,
+      "simulated": 0.8441330924318665,
+      "abs_diff": 0.0003383579505270573,
+      "note": "the conditional depends on the whole remainder, because the remainder is never re-ranked; a re-ranking implementation would return 1/(1+e^-2)=0.8807971, i.e. the N=3 answer, for both populations"
+    },
+    "uniform_N2_num1_first": {
+      "closed_form": 0.5,
+      "simulated": 0.500082,
+      "abs_diff": 8.20000000000265e-05
+    },
+    "uniform_N4_num1_first": {
+      "closed_form": 0.25,
+      "simulated": 0.249997,
+      "abs_diff": 3.0000000000030003e-06
+    },
+    "uniform_score_invariance": {
+      "closed_form": 0.25,
+      "simulated": 0.249997,
+      "abs_diff": 3.0000000000030003e-06
+    },
+    "auto_N2_num4_first_position": {
+      "closed_form": 0.7310585786300049,
+      "simulated": 0.730392,
+      "abs_diff": 0.0006665786300048548
+    },
+    "auto_N2_num4_fourth_slot": {
+      "closed_form": 0.7310585786300049,
+      "simulated": 0.731775,
+      "abs_diff": 0.0007164213699950572
+    },
+    "inclusion_top_in_first4_N8": {
+      "closed_form": 0.9993682788862112,
+      "simulated": 0.999434,
+      "abs_diff": 6.572111378888579e-05,
+      "closed_form_note": "exact subset DP over the Plackett-Luce set distribution"
+    },
+    "inclusion_top_in_first4_N10": {
+      "closed_form": 0.9993540013226532,
+      "simulated": 0.999375,
+      "abs_diff": 2.0998677346839578e-05,
+      "closed_form_note": "exact subset DP over the Plackett-Luce set distribution"
+    },
+    "closed_form_table": {
+      "2": {
+        "first_position_top": 0.7310585786300049,
+        "inclusion_top_num1": 0.7310585786300049,
+        "inclusion_top_num4": 1.0,
+        "second_position_top": 0.2689414213699951
+      },
+      "3": {
+        "first_position_top": 0.6652409557748218,
+        "inclusion_top_num1": 0.6652409557748219,
+        "inclusion_top_num4": 1.0,
+        "second_position_top": 0.28137374505824353
+      },
+      "4": {
+        "first_position_top": 0.6439142598879724,
+        "inclusion_top_num1": 0.6439142598879724,
+        "inclusion_top_num4": 1.0,
+        "second_position_top": 0.2826774232904856
+      },
+      "5": {
+        "first_position_top": 0.6364086465588308,
+        "inclusion_top_num1": 0.6364086465588308,
+        "inclusion_top_num4": 0.9996500860654917,
+        "second_position_top": 0.282852844222982
+      },
+      "6": {
+        "first_position_top": 0.6336913225737218,
+        "inclusion_top_num1": 0.633691322573722,
+        "inclusion_top_num4": 0.9994697094844897,
+        "second_position_top": 0.2828812744012409
+      },
+      "7": {
+        "first_position_top": 0.6326975042723549,
+        "inclusion_top_num1": 0.632697504272355,
+        "inclusion_top_num4": 0.9993962618171175,
+        "second_position_top": 0.28288707403522584
+      },
+      "8": {
+        "first_position_top": 0.6323326828120425,
+        "inclusion_top_num1": 0.6323326828120425,
+        "inclusion_top_num4": 0.9993682788862112,
+        "second_position_top": 0.2828885879162946
+      },
+      "9": {
+        "first_position_top": 0.6321985783312535,
+        "inclusion_top_num1": 0.6321985783312534,
+        "inclusion_top_num4": 0.9993578540648093,
+        "second_position_top": 0.2828890615107944
+      },
+      "10": {
+        "first_position_top": 0.6321492583604866,
+        "inclusion_top_num1": 0.6321492583604866,
+        "inclusion_top_num4": 0.9993540013226532,
+        "second_position_top": 0.2828892244852734
+      }
+    },
+    "closed_form_table_note": "all values for a population whose score order is strict, T=1, one scalar feature"
+  },
+  "loreley": {
+    "same_cell_replacement": {
+      "cell_index": 99,
+      "c1_retained": true,
+      "c1_removed": [
+        "c2"
+      ],
+      "front_after": [
+        "c1"
+      ],
+      "pass": true
+    },
+    "cross_cell_non_eviction": {
+      "cell_c2": 99,
+      "cell_c1": 825,
+      "c1_removed": [],
+      "front_c2_cell": [
+        "c2"
+      ],
+      "front_c1_cell": [
+        "c1"
+      ],
+      "pass": true
+    },
+    "worse_candidate_admitted": {
+      "c_low_retained": true,
+      "archive_members": [
+        "c_high",
+        "c_low"
+      ],
+      "pass": true
+    },
+    "epsilon_tie_uses_commit_hash": {
+      "gap": 1e-12,
+      "front_after": [
+        "aaa"
+      ],
+      "winner": "aaa"
+    },
+    "single_objective_per_cell_argmax": {
+      "front_sizes": {
+        "16": 1
+      },
+      "members": [
+        "k11"
+      ],
+      "pass": true,
+      "note": "the protocol's 'no global-argmax guarantee' therefore does NOT hold under the default single-objective contract; it needs >=2 objectives"
+    },
+    "crowding_truncation": {
+      "front_sizes": {
+        "16": 4
+      },
+      "pass": true
+    },
+    "sampling_score_independent": {
+      "p_a": 0.500307,
+      "p_b": 0.499693,
+      "pass": true
+    }
+  },
+  "kapso": {
+    "deterministic_argmax": {
+      "parent": "c1",
+      "deliverable": "c1",
+      "pass": true
+    },
+    "tier_outranks_score": {
+      "selected": "c2",
+      "pass": true
+    },
+    "failure_nodes_excluded": {
+      "selected": "c2",
+      "pass": true
+    },
+    "granted_class_gate": {
+      "mismatched_cases": [],
+      "pass": true
+    }
+  },
+  "simpleloop": {
+    "argmax_order_invariant": {
+      "forward": "c1",
+      "reversed": "c1",
+      "pass": true,
+      "trials_needed": 1,
+      "note": "deterministic: one trial has power 1 against any alternative that changes the selection; the meaningful control is counterbalanced candidate order, not repetition"
+    }
+  },
+  "power": {
+    "uniform / no score dependence, N=2 (== solver_prefill, T->inf)": {
+      "h0": 0.7310585786300049,
+      "p_alt": 0.5,
+      "n_normal_two_sided": 43,
+      "n_normal_one_sided": 36,
+      "n_exact_binomial_two_sided": 46,
+      "alpha": 0.05,
+      "power": 0.9
+    },
+    "uniform over N=4 (score-independent, 4 candidates)": {
+      "h0": 0.7310585786300049,
+      "p_alt": 0.25,
+      "n_normal_two_sided": 9,
+      "n_normal_one_sided": 8,
+      "n_exact_binomial_two_sided": 12,
+      "alpha": 0.05,
+      "power": 0.9
+    },
+    "first-position p for N=4, num=4 (wrong population size)": {
+      "h0": 0.7310585786300049,
+      "p_alt": 0.6439142598879724,
+      "n_normal_two_sided": 290,
+      "n_normal_one_sided": 238,
+      "n_exact_binomial_two_sided": 295,
+      "alpha": 0.05,
+      "power": 0.9
+    },
+    "first-position p for N=3, num=4 (wrong population size)": {
+      "h0": 0.7310585786300049,
+      "p_alt": 0.6652409557748218,
+      "n_normal_two_sided": 502,
+      "n_normal_one_sided": 411,
+      "n_exact_binomial_two_sided": 515,
+      "alpha": 0.05,
+      "power": 0.9
+    },
+    "T=0.5 mis-set (p=1/(1+e^-2))": {
+      "h0": 0.7310585786300049,
+      "p_alt": 0.8807970779778823,
+      "n_normal_two_sided": 74,
+      "n_normal_one_sided": 59,
+      "n_exact_binomial_two_sided": 74,
+      "alpha": 0.05,
+      "power": 0.9
+    },
+    "T=2.0 mis-set (p=1/(1+e^-0.5))": {
+      "h0": 0.7310585786300049,
+      "p_alt": 0.6224593312018546,
+      "n_normal_two_sided": 189,
+      "n_normal_one_sided": 155,
+      "n_exact_binomial_two_sided": 194,
+      "alpha": 0.05,
+      "power": 0.9
+    },
+    "N=4, num=4: inclusion_top vs uniform": {
+      "h0": 1.0,
+      "p_alt": 1.0,
+      "n_normal_two_sided": null,
+      "n_normal_one_sided": null,
+      "n_exact_binomial_two_sided": null,
+      "alpha": 0.05,
+      "power": 0.9,
+      "degenerate": true
+    },
+    "N=5, num=4: inclusion_top vs uniform": {
+      "h0": 0.9996500860654917,
+      "p_alt": 0.8,
+      "n_normal_two_sided": 8,
+      "n_normal_one_sided": 8,
+      "n_exact_binomial_two_sided": 11,
+      "alpha": 0.05,
+      "power": 0.9
+    },
+    "N=6, num=4: inclusion_top vs uniform": {
+      "h0": 0.9994697094844897,
+      "p_alt": 0.6666666666666666,
+      "n_normal_two_sided": 4,
+      "n_normal_one_sided": 4,
+      "n_exact_binomial_two_sided": 6,
+      "alpha": 0.05,
+      "power": 0.9
+    },
+    "N=8, num=4: inclusion_top vs uniform": {
+      "h0": 0.9993682788862112,
+      "p_alt": 0.5,
+      "n_normal_two_sided": 2,
+      "n_normal_one_sided": 2,
+      "n_exact_binomial_two_sided": 4,
+      "alpha": 0.05,
+      "power": 0.9
+    },
+    "N=10, num=4: inclusion_top vs uniform": {
+      "h0": 0.9993540013226532,
+      "p_alt": 0.4,
+      "n_normal_two_sided": 2,
+      "n_normal_one_sided": 2,
+      "n_exact_binomial_two_sided": 3,
+      "alpha": 0.05,
+      "power": 0.9
+    },
+    "class_distinguishability": {
+      "rank_softmax_p": 0.7310585786300049,
+      "rank_exp_sum_p": 0.7310585786300049,
+      "identical": true,
+      "note": "same distribution at N=2, num=1, single scalar feature, T=1"
+    },
+    "deterministic_runtimes": {
+      "trials_needed": 1,
+      "rationale": "deterministic selection: any single observation rejects a different-selection alternative with power 1",
+      "required_controls": [
+        "counterbalanced candidate order",
+        "tie-score pair to freeze the tie-break rule",
+        "highest-nominal-score node marked had_error/evaluation_invalid"
+      ]
+    }
+  },
+  "mc_resolution": {
+    "worst_cases": [
+      {
+        "case": "auto_N2_num4_fourth_slot",
+        "abs_diff": 0.0007164213699950572
+      },
+      {
+        "case": "auto_N2_num4_first_position",
+        "abs_diff": 0.0006665786300048548
+      },
+      {
+        "case": "rank_softmax_k2_T1_num1_first",
+        "abs_diff": 0.000349421369995051
+      },
+      {
+        "case": "conditional_second_draw_N4",
+        "abs_diff": 0.0003383579505270573
+      },
+      {
+        "case": "conditional_second_draw_N3",
+        "abs_diff": 0.00028963653983149484
+      }
+    ],
+    "note": "all differences must sit inside the 3-sigma MC half-width"
+  }
+}

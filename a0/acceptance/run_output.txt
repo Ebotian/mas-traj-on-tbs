@@ -1,0 +1,177 @@
+====================================================================================================
+A0.2 independent cross-check: closed form vs simulation of the real sampler code
+====================================================================================================
+EvE checkout      : /tmp/eve @ 979065fd
+Loreley source    : copy at /tmp/lor, blob-identical to pin 4c3759208e6b908f90716488ac3eec3dceaaf397 (591/592; 1 submodule gitlink)
+Draws per case    : 1,000,000
+Agreement tol     : 0.003
+
+sanity: the loaded sampler classes really are EvE's
+  RankSoftmaxSampler        -> scaling_evolve.algorithms.eve.populations.samplers.rank_softmax
+  RankExponentialSumSampler -> scaling_evolve.algorithms.eve.populations.samplers.rank_softmax
+  UniformSampler            -> scaling_evolve.algorithms.eve.populations.samplers.uniform
+  ParetoGridArchive         -> lor_pareto_archive
+
+----------------------------------------------------------------------------------------------------
+1. EvE: induced sampling distribution
+----------------------------------------------------------------------------------------------------
+weights w_rank = weight * exp(-rank / T)  [rank_softmax.py:104 and :181]
+  N=2, T=1: [1.000000, 0.367879]
+  N=3, T=1: [1.000000, 0.367879, 0.135335]
+  N=4, T=1: [1.000000, 0.367879, 0.135335, 0.049787]
+
+protocol claim 1/(1+e^-1) = 0.731058578630
+
+1a. RankSoftmaxSampler, k=2, T=1, single draw (num=1, no_replacement)
+  P(first drawn == c1)                                           closed=0.731059  sim=0.731408  |diff|=0.000349  ok
+
+1b. RankSoftmaxSampler, k=2, T=1, num=4, no_replacement
+  P(first position == c1)  [first draw, num capped at N]         closed=0.731059  sim=0.730969  |diff|=0.000090  ok
+  P(c1 in returned set)     [num=4 capped to N=2]                closed=1.000000  sim=1.000000  |diff|=0.000000  ok
+
+1c. RankSoftmaxSampler, N=4, T=1, num=4, no_replacement (population == candidate set)
+  P(first position == highest scoring)                           closed=0.643914  sim=0.643989  |diff|=0.000075  ok
+  P(highest scoring in returned set)                             closed=1.000000  sim=1.000000  |diff|=0.000000  ok
+
+1d. RankExponentialSumSampler, features.score weight=1.0 T=1.0 (solver_examples config, loop/default.yaml:26-34)
+  P(first drawn == c1)      [== RankSoftmaxSampler]              closed=0.731059  sim=0.731198  |diff|=0.000139  ok
+  P(first position == c1)   [n=4, no_replacement, N=2]           closed=0.731059  sim=0.731219  |diff|=0.000160  ok
+  P(c1 in returned set)     [n=4, N=4 -> deterministic 1]        closed=1.000000  sim=1.000000  |diff|=0.000000  ok
+
+1e. second and later draws keep the ORIGINAL weights (samplers/base.py:41-64 never re-ranks the remainder)
+  P(c1 2nd | c2 1st), N=3  [weights 1 vs e^-2]                   closed=0.880797  sim=0.880507  |diff|=0.000290  ok
+    (this is the check that would FAIL if the implementation re-ranked the remainder: it would give 1/(1+e^-1)=0.7310586 instead)
+  P(c1 2nd | c2 1st), N=4  [weights 1 vs e^-2 vs e^-3]           closed=0.843795  sim=0.844133  |diff|=0.000338  ok
+
+1f. score-independent control: UniformSampler (solver_prefill, loop/default.yaml:35-38, uniform.py:27-36 discards scores)
+  P(first == c1), N=2, num=1                                     closed=0.500000  sim=0.500082  |diff|=0.000082  ok
+  P(first == c1), N=4, num=1                                     closed=0.250000  sim=0.249997  |diff|=0.000003  ok
+  P(first == c1) with c1 scored LAST (score independence)        closed=0.250000  sim=0.249997  |diff|=0.000003  ok
+
+1g. replacement_mode=auto top-up (working_optimizer, loop/default.yaml:12-16)
+  P(first == c1) [auto: no_replacement then with-replacement top-up] closed=0.731059  sim=0.730392  |diff|=0.000667  ok
+  top-up slots use the ORIGINAL weights, so P(c1) = 0.7310586 at every slot:
+  P(4th slot == c1)                                              closed=0.731059  sim=0.731775  |diff|=0.000716  ok
+
+1h. N > n: inclusion of the top candidate in the first 4 draws of the solver_examples population
+  P(c1 in first 4 | N=8, num=4)                                  closed=0.999368  sim=0.999434  |diff|=0.000066  ok
+  P(c1 in first 4 | N=10, num=4)                                 closed=0.999354  sim=0.999375  |diff|=0.000021  ok
+
+1i. exact inclusion / position table for the no_replacement path (closed form only, subset DP)
+  N= 2  P(pos0=c1)=0.731058579  P(c1 in 1)=0.731058579  P(c1 in 4)=1.000000000  P(pos1=c1)=0.268941421
+  N= 3  P(pos0=c1)=0.665240956  P(c1 in 1)=0.665240956  P(c1 in 4)=1.000000000  P(pos1=c1)=0.281373745
+  N= 4  P(pos0=c1)=0.643914260  P(c1 in 1)=0.643914260  P(c1 in 4)=1.000000000  P(pos1=c1)=0.282677423
+  N= 5  P(pos0=c1)=0.636408647  P(c1 in 1)=0.636408647  P(c1 in 4)=0.999650086  P(pos1=c1)=0.282852844
+  N= 6  P(pos0=c1)=0.633691323  P(c1 in 1)=0.633691323  P(c1 in 4)=0.999469709  P(pos1=c1)=0.282881274
+  N= 7  P(pos0=c1)=0.632697504  P(c1 in 1)=0.632697504  P(c1 in 4)=0.999396262  P(pos1=c1)=0.282887074
+  N= 8  P(pos0=c1)=0.632332683  P(c1 in 1)=0.632332683  P(c1 in 4)=0.999368279  P(pos1=c1)=0.282888588
+  N= 9  P(pos0=c1)=0.632198578  P(c1 in 1)=0.632198578  P(c1 in 4)=0.999357854  P(pos1=c1)=0.282889062
+  N=10  P(pos0=c1)=0.632149258  P(c1 in 1)=0.632149258  P(c1 in 4)=0.999354001  P(pos1=c1)=0.282889224
+
+----------------------------------------------------------------------------------------------------
+2. Loreley: archived behaviour of the real ParetoGridArchive (pareto_archive.py)
+----------------------------------------------------------------------------------------------------
+frozen defaults: objectives=((composite_score, max),) [config.py:916-919], epsilon=1e-9 [config.py:924-927], max_front_size=8 [config.py:920-923], admission_policy=pareto [config.py:928-930]
+
+2a. same cell, E(c1) > E(c2): c1 must replace c2
+  cell(c2)=99  cell(c1)=99  same_cell=True
+  add(c2): retained=True removed=()
+  add(c1): retained=True removed=('c2',)
+  front(cell)=('c1',)
+  ASSERTION same-cell replacement: PASS
+
+2b. NEGATIVE CONTROL: different cells, E(c1) > E(c2): nothing evicted
+  cell(c2)=99  cell(c1)=825  different_cells=True
+  add(c1): retained=True removed=()
+  front(cell A)=('c2',)  front(cell B)=('c1',)
+  ASSERTION cross-cell non-eviction: PASS
+
+2b2. NEGATIVE CONTROL (strong): a strictly WORSE candidate must still be admitted when its cell is free -> admission is not a global argmax
+  add(c_low=1.0): retained=True removed=()  archive members=['c_high', 'c_low']
+  ASSERTION no-global-argmax: PASS
+
+2c. epsilon tie: score gap 1e-12 <= epsilon=1e-9 is NOT dominance; the commit_hash-ordered representative wins (pareto_archive.py:425-431)
+  incoming 'aaa' (score 1.0+1e-12) vs incumbent 'zzz' (1.0) -> front=('aaa',)
+  => the winner is decided by commit_hash, NOT by the score
+
+2d. single objective: every cell front has size 1, so the archive keeps exactly the per-cell argmax and (via scheduler/main.py:876-931) the report branch is the argmax over everything evaluated
+  12 candidates all in cell 16, scores 0..11 -> fronts={16: 1} members=['k11']
+  ASSERTION per-cell argmax (k11 wins, k00..k10 evicted): PASS
+
+2e. crowding truncation only bites with >1 objective: 8 mutually non-dominated candidates, max_front_size=4 -> sizes={16: 4}
+  ASSERTION truncation to max_front_size: PASS
+
+2f. archive sampling is score independent (pareto_archive.py:265-278: uniform over occupied cells, uniform within a front)
+  two occupied cells with scores 1.0 and 99.0 -> P(pick 'a')=0.500307 P(pick 'b')=0.499693
+  ASSERTION uniform / score independent: PASS
+
+----------------------------------------------------------------------------------------------------
+3. KAPSO: deterministic selection (transcribed keys, source cited in code)
+----------------------------------------------------------------------------------------------------
+  get_best_experiment([c2, c1])      -> c1   (expect c1)
+  select_committed_candidate(...)    -> c1   (expect c1)
+  ASSERTION deterministic argmax: PASS
+  TRAP: a FAST-only candidate with score 9.0 vs a FULL candidate with score 1.0
+    select_committed_candidate -> c2   (expect c2: TIER_PROBE is ineligible, fidelity.py:202)
+    ASSERTION tier outranks score: PASS
+  TRAP: errored / evaluation_invalid / score=None nodes with a nominal 99.0 or None
+    get_best_experiment -> c2   (expect c2)
+    ASSERTION failure nodes cannot win: PASS
+  manifest granted-class gate (registered_evaluation.py:87-91):
+    exact match      manifest={'fidelity': 'full', 'fraction': 1.0, 'seed': 1337} -> accepted=True (expect True)
+    wrong seed       manifest={'fidelity': 'full', 'fraction': 1.0, 'seed': 7} -> accepted=False (expect False)
+    wrong fraction   manifest={'fidelity': 'full', 'fraction': 0.15, 'seed': 1337} -> accepted=False (expect False)
+    wrong fidelity   manifest={'fidelity': 'fast', 'fraction': 1.0, 'seed': 1337} -> accepted=False (expect False)
+    within 1e-9      manifest={'fidelity': 'full', 'fraction': 1.0000000001, 'seed': 1337} -> accepted=True (expect True)
+    ASSERTION granted-class gate: PASS
+
+4. SimpleLoop (protocol sec 4.4, line ~608): c*_t = argmax_{i<=t} E(c_i)
+  argmax over [c1, c2]      -> c1
+  argmax over [c2, c1]      -> c1   (order counterbalance)
+  ASSERTION order-invariant argmax: PASS
+
+----------------------------------------------------------------------------------------------------
+5. Power analysis for the EvE frequency test
+----------------------------------------------------------------------------------------------------
+H0: p = 0.731058579   alpha=0.05, power=0.90
+observable: the position-0 entry of the rendered solver examples block in the Phase 2 workspace README (immutable_renderers/base.py:179-196 keeps draw order)
+test statistic: Z = (p_hat - p0)/sqrt(p0(1-p0)/n); exact binomial used for n_exact
+
+5a. order statistic (position 0 of the rendered block), H0 = 0.7310586
+alternative                                                     p_alt   n(2s)   n(1s)  n_exact
+uniform / no score dependence, N=2 (== solver_prefill, T->inf)   0.500000      43      36       46
+uniform over N=4 (score-independent, 4 candidates)           0.250000       9       8       12
+first-position p for N=4, num=4 (wrong population size)      0.643914     290     238      295
+first-position p for N=3, num=4 (wrong population size)      0.665241     502     411      515
+T=0.5 mis-set (p=1/(1+e^-2))                                 0.880797      74      59       74
+T=2.0 mis-set (p=1/(1+e^-0.5))                               0.622459     189     155      194
+
+5b. runtime-level inclusion statistic, H0 = exact Plackett-Luce inclusion of the top candidate, H1 = score-independent (uniform m/N)
+    (this is the statistic an auditor who cannot read the README order would use; for N=4 it is fully degenerate)
+alternative                                                     p_alt   n(2s)   n(1s)  n_exact
+N=4, num=4: inclusion_top vs uniform                         1.000000       -       -     none   (degenerate: no test can separate)
+N=5, num=4: inclusion_top vs uniform                         0.800000       8       8       11
+N=6, num=4: inclusion_top vs uniform                         0.666667       4       4        6
+N=8, num=4: inclusion_top vs uniform                         0.500000       2       2        4
+N=10, num=4: inclusion_top vs uniform                        0.400000       2       2        3
+
+5c. can the frequency test tell the two sampler *classes* apart?
+    RankSoftmaxSampler(k=2,T=1,num=1) p = 0.731058579
+    RankExponentialSumSampler(score w=1,T=1,num=1) p = 0.731058579  (identical: single scalar feature, same weight/T, rank_softmax.py:50-51, :104, :181)
+    => under the frozen unit-test conditions the two classes induce the SAME distribution; only N or num distinguishes them, which is why the N=3/N=4 rows above are the class-distinguishing alternatives.
+
+deterministic runtimes (KAPSO, SimpleLoop): n=1 trial has power 1 against a score-ordering flip; repetitions buy nothing. The controls that matter are (a) counterbalanced candidate order, (b) a same-score pair to pin the tie-break, (c) an error/invalid node with the highest nominal score.
+
+----------------------------------------------------------------------------------------------------
+6. Monte-Carlo resolution check
+----------------------------------------------------------------------------------------------------
+  auto_N2_num4_fourth_slot                       |diff|=0.000716  3-sigma MC half-width~0.001329  within
+  auto_N2_num4_first_position                    |diff|=0.000667  3-sigma MC half-width~0.001331  within
+  rank_softmax_k2_T1_num1_first                  |diff|=0.000349  3-sigma MC half-width~0.001330  within
+  conditional_second_draw_N4                     |diff|=0.000338  3-sigma MC half-width~0.001088  within
+  conditional_second_draw_N3                     |diff|=0.000290  3-sigma MC half-width~0.000973  within
+
+====================================================================================================
+ALL CHECKS AGREE: every closed form matched its simulation within tolerance.
+====================================================================================================
+wrote /home/ebt/rsi-dev/a0/acceptance/expected_values.json
