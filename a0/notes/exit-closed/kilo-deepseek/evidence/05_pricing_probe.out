@@ -1,0 +1,10 @@
+pricing table loaded: deepseek-probe rules: 2
+
+input  event: 0 unpriced
+after price_usage_event: None | unpriced | ''
+
+Does a matching rule EXIST in the table? -> PriceRule(provider='loreley-openai-compatible', model='deepseek-v4-pro', api_surface='kilo_run', service_tier='', context_tier='', input_usd_per_1m=Decimal('0.28'), cached_input_usd_per_1m=Decimal('0.028'), cache_write_usd_per_1m=None, output_usd_per_1m=Decimal('0.42'))
+(if a rule exists but the cost stays None/unpriced, the kilo_cli early
+ return is what blocked pricing, not a missing rule)
+
+CONTROL (source=openai_compat): 0.00078669 | estimated | 'deepseek-probe'

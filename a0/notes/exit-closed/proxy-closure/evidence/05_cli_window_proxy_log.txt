@@ -1,0 +1,25 @@
+# Proxy decision log, CLI-run window (container instance 1, 2026-09-21 02:43:45-02:44:29 UTC).
+# Captured as the tail of `docker logs a0pc-proxy` by run_cli_through_proxy.sh; the raw
+# block is reproduced verbatim from evidence/03_cli_routes.log. `docker logs` is per
+# container instance, so a setup.sh re-run starts a fresh log -- see
+# evidence/06_probe_window_proxy_log.txt for the probe-window instance.
+2026-09-21T02:43:45+0000 event=connect peer=172.31.77.2:45642 target=api.anthropic.com:443 decision=DENY
+2026-09-21T02:44:08+0000 event=deny proto=http peer=172.31.77.2:34174 method=HEAD path=/api/hello reason=no_route
+2026-09-21T02:44:10+0000 event=req peer=172.31.77.2:34176 method=POST path=/v1/messages?beta=true upstream=https://api.deepseek.com/anthropic/v1/messages?beta=true status=200 resp_bytes=1739
+2026-09-21T02:44:11+0000 event=connect peer=172.31.77.2:33950 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T02:44:12+0000 event=connect peer=172.31.77.2:33950 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T02:44:14+0000 event=req peer=172.31.77.2:33966 method=POST path=/v1/chat/completions upstream=https://api.deepseek.com/v1/chat/completions status=200 resp_bytes=2155
+2026-09-21T02:44:14+0000 event=error peer=172.31.77.2:33962 upstream=api.deepseek.com stage=relay err=[Errno 104] Connection reset by peer
+2026-09-21T02:44:14+0000 event=connect peer=172.31.77.2:33968 target=models.opencode.ai:443 decision=DENY
+2026-09-21T02:44:14+0000 event=connect peer=172.31.77.2:33972 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T02:44:14+0000 event=connect peer=172.31.77.2:33974 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T02:44:16+0000 event=connect peer=172.31.77.2:33974 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T02:44:16+0000 event=connect peer=172.31.77.2:33972 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T02:44:20+0000 event=req peer=172.31.77.2:33990 method=POST path=/v1/chat/completions upstream=https://api.deepseek.com/v1/chat/completions status=200 resp_bytes=3405
+2026-09-21T02:44:23+0000 event=connect peer=172.31.77.2:42152 target=models.dev:443 decision=DENY
+2026-09-21T02:44:24+0000 event=connect peer=172.31.77.2:42160 target=us.i.posthog.com:443 decision=DENY
+2026-09-21T02:44:24+0000 event=connect peer=172.31.77.2:42174 target=api.kilo.ai:443 decision=DENY
+2026-09-21T02:44:24+0000 event=connect peer=172.31.77.2:42186 target=api.kilo.ai:443 decision=DENY
+2026-09-21T02:44:25+0000 event=connect peer=172.31.77.2:42198 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T02:44:27+0000 event=connect peer=172.31.77.2:42210 target=us.i.posthog.com:443 decision=DENY
+2026-09-21T02:44:29+0000 event=connect peer=172.31.77.2:42216 target=api.anthropic.com:443 decision=DENY

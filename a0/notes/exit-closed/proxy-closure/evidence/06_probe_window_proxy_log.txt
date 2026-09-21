@@ -1,0 +1,12 @@
+2026-09-21T02:46:37+0000 event=start port=8787 allow_connect=['api.deepseek.com', 'openrouter.ai'] routes=['/v1/messages', '/v1/models', '/v1/chat/completions']
+2026-09-21T02:47:20+0000 event=req peer=172.31.77.2:35330 method=GET path=/v1/models upstream=https://api.deepseek.com/v1/models status=200 resp_bytes=153
+2026-09-21T02:47:37+0000 event=deny proto=http peer=172.31.77.5:58396 method=GET path=/https://example.com reason=no_route
+2026-09-21T02:47:38+0000 event=connect peer=172.31.77.5:58406 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T02:47:38+0000 event=connect peer=172.31.77.5:58406 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T02:47:38+0000 event=connect peer=172.31.77.5:58408 target=openrouter.ai:443 decision=ALLOW tunnel=open
+2026-09-21T02:47:38+0000 event=connect peer=172.31.77.5:58418 target=example.com:443 decision=DENY
+2026-09-21T02:47:38+0000 event=connect peer=172.31.77.5:58430 target=1.1.1.1:443 decision=DENY
+2026-09-21T02:47:38+0000 event=connect peer=172.31.77.5:58442 target=api.openai.com:443 decision=DENY
+2026-09-21T02:47:38+0000 event=connect peer=172.31.77.5:58408 target=openrouter.ai:443 tunnel=closed
+2026-09-21T02:47:39+0000 event=req peer=172.31.77.2:53596 method=POST path=/v1/chat/completions upstream=https://api.deepseek.com/v1/chat/completions status=200 resp_bytes=574
+2026-09-21T02:47:41+0000 event=req peer=172.31.77.2:53600 method=POST path=/v1/messages upstream=https://api.deepseek.com/anthropic/v1/messages status=200 resp_bytes=463

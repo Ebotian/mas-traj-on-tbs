@@ -1,0 +1,30 @@
+
+===== 0. start throwaway services on a0pc-internal (internal-only) =====
+  peers: a0pc-cli(172.31.77.2/24) a0pc-proxy(172.31.77.10/24) a0pc-pg(172.31.77.3/24) a0pc-redis(172.31.77.4/24) 
+
+===== 1. from the internal side: reach the services BY CONTAINER NAME =====
+  a0pc-pg       :5432  -> CONNECTED  (dns 172.31.77.3)
+  a0pc-redis    :6379  -> CONNECTED  (dns 172.31.77.4)
+  a0pc-proxy    :8787  -> CONNECTED  (dns 172.31.77.10)
+
+===== 2. from the HOST: is an internal-only container reachable? =====
+  a0pc-pg = 172.31.77.3
+  host -> 172.31.77.3:5432 CONNECTED -- the internal net is one-way: no egress out, but ingress from the host owner
+
+===== 3. with the services up, is the internal client's OWN egress still blocked? =====
+  DIRECT ('123.148.116.184', 443) -> [Errno 101] Network is unreachable
+  DIRECT ('1.1.1.1', 443)         -> [Errno 101] Network is unreachable
+  DIRECT ('8.8.8.8', 53)          -> [Errno 101] Network is unreachable
+
+===== 4. dual-home a0pc-redis and a0pc-pg onto the default bridge -- does the worker gain an uplink? =====
+  a0pc-pg: a0pc-internal(172.31.77.3) bridge(172.17.0.4)
+  a0pc-redis: a0pc-internal(172.31.77.4) bridge(172.17.0.3)
+  client -> a0pc-pg:5432        : CONNECTED (still reachable by name)
+  client -> 1.1.1.1:443          : [Errno 101] Network is unreachable
+  client -> bridge-side redis IP : 
+===== 5. the service's OWN reachability follows its interfaces, not its callers =====
+  redis (dual-homed) -> model endpoint: REACHABLE
+  redis (internal-only) -> model endpoint: NOT reachable
+
+probe_loreley_services.sh: done 2026-09-21T10:44:48+08:00
+left running (see teardown.sh): a0pc-pg, a0pc-redis

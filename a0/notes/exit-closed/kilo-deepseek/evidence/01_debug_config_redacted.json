@@ -1,0 +1,79 @@
+{
+  "instruction_origins": {},
+  "agent": {
+    "loreley-headless": {
+      "description": "Non-interactive Loreley worker agent",
+      "mode": "primary",
+      "permission": {
+        "suggest": "deny",
+        "task": "deny",
+        "interactive_terminal": "deny",
+        "plan_enter": "deny",
+        "plan_exit": "deny",
+        "question": "deny"
+      },
+      "tools": {
+        "suggest": false,
+        "task": false
+      },
+      "options": {}
+    }
+  },
+  "mode": {},
+  "plugin": [
+    "@kilocode/kilo-indexing",
+    "@kilocode/plugin-atomic-chat"
+  ],
+  "command": {},
+  "$schema": "https://app.kilo.ai/config.json",
+  "default_agent": "loreley-headless",
+  "model": "loreley-openai-compatible/deepseek-v4-pro",
+  "permission": {
+    "suggest": "deny",
+    "task": "deny",
+    "interactive_terminal": "deny",
+    "plan_enter": "deny",
+    "plan_exit": "deny",
+    "question": "deny"
+  },
+  "provider": {
+    "loreley-openai-compatible": {
+      "models": {
+        "deepseek-v4-pro": {
+          "name": "deepseek-v4-pro"
+        }
+      },
+      "name": "Loreley OpenAI-compatible gateway",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "apiKey": "<REDACTED-by-env-ref>",
+        "baseURL": "https://api.deepseek.com/v1"
+      }
+    }
+  },
+  "tools": {
+    "suggest": false,
+    "task": false
+  },
+  "permission_origins": {
+    "interactive_terminal": {
+      "*": "local"
+    },
+    "plan_enter": {
+      "*": "local"
+    },
+    "plan_exit": {
+      "*": "local"
+    },
+    "question": {
+      "*": "local"
+    },
+    "suggest": {
+      "*": "local"
+    },
+    "task": {
+      "*": "local"
+    }
+  },
+  "username": "ebt"
+}

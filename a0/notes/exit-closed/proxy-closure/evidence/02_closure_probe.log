@@ -1,0 +1,51 @@
+
+==============================================================
+### P1  name resolution inside an --internal network
+==============================================================
+  container name  a0pc-proxy     -> 172.31.77.10
+  external name   api.deepseek.com -> gaierror: [Errno -3] Temporary failure in name resolution
+  external name   example.com      -> gaierror: [Errno -3] Temporary failure in name resolution
+  resolv.conf nameserver           -> 127.0.0.11 (docker embedded DNS)
+
+==============================================================
+### P2  NEGATIVE CONTROL: internal client -> internet DIRECT (IP literals; DNS cannot mask this)
+==============================================================
+  DIRECT ('123.148.116.184', 443) -> [Errno 101] Network is unreachable
+  DIRECT ('1.1.1.1', 443)       -> [Errno 101] Network is unreachable
+  DIRECT ('8.8.8.8', 53)        -> [Errno 101] Network is unreachable
+  DIRECT ('140.82.121.4', 443)  -> [Errno 101] Network is unreachable
+
+==============================================================
+### P3  POSITIVE CONTROL: SAME client -> model endpoint THROUGH the proxy
+==============================================================
+  GET http://a0pc-proxy:8787/v1/models -> HTTP 200
+  models: ['deepseek-flash', 'deepseek-v4-pro']
+
+==============================================================
+### P4  SELECTIVITY CONTROL: the SAME image, on the default bridge, reaches the internet directly
+==============================================================
+  DIRECT 1.1.1.1:443     -> timed out
+  HTTPS example.com      -> HTTP 200
+
+==============================================================
+### P5  PEER SCAN: what a client on the internal side can actually reach
+==============================================================
+  reachable peers+ports on the internal subnet: ['172.31.77.10:8787 OPEN', '172.31.77.3:5432 OPEN', '172.31.77.4:6379 OPEN']
+  proxy as open relay -> HTTP 403 (refused by allowlist)
+
+==============================================================
+### P6  ALLOWLIST ENFORCEMENT at the proxy (CONNECT)
+==============================================================
+  CONNECT api.deepseek.com:443     -> HTTP/1.1 200 Connection Established
+  CONNECT openrouter.ai:443        -> HTTP/1.1 200 Connection Established
+  CONNECT example.com:443          -> HTTP/1.1 403 Forbidden
+  CONNECT 1.1.1.1:443              -> HTTP/1.1 403 Forbidden
+  CONNECT api.openai.com:443       -> HTTP/1.1 403 Forbidden
+
+==============================================================
+### P7  DUAL-SHAPE UPSTREAM on ONE listener
+==============================================================
+  OpenAI  /v1/chat/completions -> HTTP 200 served_model=deepseek-v4-pro content='' usage={'prompt_tokens': 85, 'completion_tokens': 8, 'total_tokens': 93, 'prompt_tokens_details': {'cached_tokens': 0}, 'completion_tokens_details': {'reasoning_tokens': 8}, 'prompt_cache_hit_tokens': 0, 'prompt_cache_miss_tokens': 85}
+  Anthropic /v1/messages     -> HTTP 200 served_model=deepseek-v4-pro content='[{\'type\': \'thinking\', \'thinking\': \'We need answer user says "say OK". Need respo' usage={'input_tokens': 85, 'cache_creation_input_tokens': 0, 'cache_read_input_tokens': 0, 'output_tokens': 16, 'service_tier': 'standard'}
+
+probe_closure.sh: done 2026-09-21T10:45:56+08:00

@@ -1,0 +1,1 @@
+print("CLAUDE_DEEPSEEK_OK")

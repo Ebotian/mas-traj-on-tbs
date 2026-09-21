@@ -1,0 +1,10 @@
+############ canonical controls via a0/env/checks/probe_egress.sh (pattern reuse) ############
+### date: 2026-09-21T10:45:15+08:00   INTERNAL_NET=a0pc-internal  image=python:3.12-slim
+
+### mechanism=docker-internal expectation=egress_blocked image=python:3.12-slim timeout=40s date=2026-09-21T10:45:15+08:00
+EVIDENCE mechanism=docker-internal mode=canary rc=0 dns=fail tcp=fail tcpvia=none https=fail local=n/a egress=BLOCKED
+VERDICT docker-internal: CONFIRMED (expected egress_blocked, observed egress_BLOCKED)
+
+### mechanism=docker-bridge expectation=egress_open image=python:3.12-slim timeout=40s date=2026-09-21T10:45:15+08:00
+EVIDENCE mechanism=docker-bridge mode=canary rc=0 dns=ok tcp=ok tcpvia=example.com:443 https=ok local=n/a egress=OPEN
+VERDICT docker-bridge: CONFIRMED (expected egress_open, observed egress_OPEN)
