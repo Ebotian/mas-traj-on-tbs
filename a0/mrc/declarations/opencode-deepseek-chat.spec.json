@@ -146,7 +146,7 @@
     "RuntimeAdapters": {
       "adapters": [
         {
-          "adapter_commit": "261f0c9",
+          "adapter_commit": "39e978b8",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/eve/a0_adapter/__init__.py",
@@ -178,7 +178,7 @@
             },
             {
               "path": "a0/runtimes/eve/a0_adapter/common.py",
-              "sha256": "1d97376947c03f019e44b216f50b3cecda5405309ec7253c1c706f6f5e085c6f"
+              "sha256": "c208dbb103986c3be269944bd0ef25ab289e01d5ef60915796a92b02b12efb5b"
             },
             {
               "path": "a0/runtimes/eve/a0_adapter/eidmap.py",
@@ -199,7 +199,7 @@
           ],
           "adapter_source_root": "a0/runtimes/eve/a0_adapter",
           "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
-          "adapter_source_sha256": "57a5c251416f9b378b90fae078bdf2e57a4c8096410b3beadb349722d7eddb70",
+          "adapter_source_sha256": "3405931768156016b6db6b41f80fe3aa5554aa4d7bd20f9d90cb24b8832038e8",
           "lane": "opencode",
           "runtime": "eve",
           "upstream_pin": "979065fd"

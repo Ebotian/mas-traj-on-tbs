@@ -244,7 +244,7 @@ def perm_block(approval, sandbox, fs_scope, exec_scope, net_scope):
 # runtime (launcher wrappers, adapter.json manifests, installed upstream
 # checkouts, generated outputs) is outside the preimage and is therefore *not*
 # covered by adapter_source_sha256 -- see REPORT.md §7 for the stated scope.
-ADAPTER_COMMIT = "261f0c9"
+ADAPTER_COMMIT = "39e978b8"
 ADAPTER_SOURCE_ROOTS = {
     "kapso": "a0/runtimes/kapso/a0_adapter",
     "eve": "a0/runtimes/eve/a0_adapter",

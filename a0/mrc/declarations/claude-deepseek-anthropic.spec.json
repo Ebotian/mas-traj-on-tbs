@@ -150,7 +150,7 @@
     "RuntimeAdapters": {
       "adapters": [
         {
-          "adapter_commit": "261f0c9",
+          "adapter_commit": "39e978b8",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/kapso/a0_adapter/__init__.py",
@@ -178,7 +178,7 @@
             },
             {
               "path": "a0/runtimes/kapso/a0_adapter/common.py",
-              "sha256": "d586a96c4925b6a8c929dd0da0e4ece6dbc30678010456bc580a7f46f2329247"
+              "sha256": "98916748192877eb0ba9574c2e54d6e080b3f1f62019b4b0b0954d4a01a3277c"
             },
             {
               "path": "a0/runtimes/kapso/a0_adapter/registered/kapso_eval.py",
@@ -199,7 +199,7 @@
           ],
           "adapter_source_root": "a0/runtimes/kapso/a0_adapter",
           "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
-          "adapter_source_sha256": "3ab3e139569bc49bf0c21e72521d690673c18ac2533d133ce10a344aa66fa3a4",
+          "adapter_source_sha256": "06df3969358eff8542b43b6ad09319c33353f6af615f23f1c6a61e5fdbebcf82",
           "lane": "claude_code|oss_claude_code",
           "runtime": "kapso",
           "upstream_pin": "7d99b152"

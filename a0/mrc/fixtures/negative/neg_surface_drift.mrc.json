@@ -9,7 +9,7 @@
     "Prompt": "29fcc2802819ab379f1a1e48c3246d7dbd6ce6c588ebc20fe1c596e18b7c03c1",
     "Provider": "ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f",
     "RequestedModel": "7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced",
-    "RuntimeAdapters": "f161603b69a72a823e9bbe2be44179cf8535354c1578430d107b00de3a53faf2",
+    "RuntimeAdapters": "78de87f88a0ccbe8a9f37e2a578f744dec996cae6a514f9d43b236b35fc487c8",
     "TaskSnapshot": "480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac",
     "Tools": "f7381ee837365ab815eddca5eeaab0fc9a9e9bf2267e268032bff1340a77f708"
   },
@@ -158,7 +158,7 @@
     "RuntimeAdapters": {
       "adapters": [
         {
-          "adapter_commit": "261f0c9",
+          "adapter_commit": "39e978b8",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/kapso/a0_adapter/__init__.py",
@@ -186,7 +186,7 @@
             },
             {
               "path": "a0/runtimes/kapso/a0_adapter/common.py",
-              "sha256": "d586a96c4925b6a8c929dd0da0e4ece6dbc30678010456bc580a7f46f2329247"
+              "sha256": "98916748192877eb0ba9574c2e54d6e080b3f1f62019b4b0b0954d4a01a3277c"
             },
             {
               "path": "a0/runtimes/kapso/a0_adapter/registered/kapso_eval.py",
@@ -207,13 +207,13 @@
           ],
           "adapter_source_root": "a0/runtimes/kapso/a0_adapter",
           "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
-          "adapter_source_sha256": "3ab3e139569bc49bf0c21e72521d690673c18ac2533d133ce10a344aa66fa3a4",
+          "adapter_source_sha256": "06df3969358eff8542b43b6ad09319c33353f6af615f23f1c6a61e5fdbebcf82",
           "lane": "codex",
           "runtime": "kapso",
           "upstream_pin": "7d99b152"
         },
         {
-          "adapter_commit": "261f0c9",
+          "adapter_commit": "39e978b8",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/eve/a0_adapter/__init__.py",
@@ -245,7 +245,7 @@
             },
             {
               "path": "a0/runtimes/eve/a0_adapter/common.py",
-              "sha256": "1d97376947c03f019e44b216f50b3cecda5405309ec7253c1c706f6f5e085c6f"
+              "sha256": "c208dbb103986c3be269944bd0ef25ab289e01d5ef60915796a92b02b12efb5b"
             },
             {
               "path": "a0/runtimes/eve/a0_adapter/eidmap.py",
@@ -266,13 +266,13 @@
           ],
           "adapter_source_root": "a0/runtimes/eve/a0_adapter",
           "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
-          "adapter_source_sha256": "57a5c251416f9b378b90fae078bdf2e57a4c8096410b3beadb349722d7eddb70",
+          "adapter_source_sha256": "3405931768156016b6db6b41f80fe3aa5554aa4d7bd20f9d90cb24b8832038e8",
           "lane": "codex_exec|codex_tmux",
           "runtime": "eve",
           "upstream_pin": "979065fd"
         },
         {
-          "adapter_commit": "261f0c9",
+          "adapter_commit": "39e978b8",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/loreley/src/a0_adapter/__init__.py",
@@ -292,7 +292,7 @@
             },
             {
               "path": "a0/runtimes/loreley/src/a0_adapter/closure.py",
-              "sha256": "e294e3035e2a196478d5085adb4e6884a9a22921cb704d177f5c21b5df78d000"
+              "sha256": "e7e08a4083d475ed99c27b22058e7dec4c851a5ecd24f69d4a0e835d408508be"
             },
             {
               "path": "a0/runtimes/loreley/src/a0_adapter/conformance.py",
@@ -300,7 +300,7 @@
             },
             {
               "path": "a0/runtimes/loreley/src/a0_adapter/contracts.py",
-              "sha256": "c52275156c1a5ebed131bbd73051a93404cec1a04bb086a5ed6040ae6c7f622a"
+              "sha256": "8fff4dfba13947687144cd4b8980efa26dfee9f577af94feef3a214dfc94b794"
             },
             {
               "path": "a0/runtimes/loreley/src/a0_adapter/eidr.py",
@@ -333,13 +333,13 @@
           ],
           "adapter_source_root": "a0/runtimes/loreley/src/a0_adapter",
           "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
-          "adapter_source_sha256": "3ab1436fe69cb7cb29b780e4c160b69009fb04403ddd5d90e350e9b048c165df",
+          "adapter_source_sha256": "3107e8b69a326042c5a2e972714eda8654922396ec119850bb8eea126c269eff",
           "lane": "codex_cli",
           "runtime": "loreley",
           "upstream_pin": "4c375920"
         },
         {
-          "adapter_commit": "261f0c9",
+          "adapter_commit": "39e978b8",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/__init__.py",
@@ -594,11 +594,11 @@
     ],
     "primary": "deepseek-flash"
   },
-  "mrc_star": "a9395f784ad622474a4bc3b2dab645ddb8707042e4e9f16a4b5cb296ae700252",
+  "mrc_star": "039289d7c80a90ca7afd1c1b9ae4a1dddce37cc45abf5182c0cba311010c5605",
   "mrc_star_derivation": {
     "algorithm": "sha256",
     "domain": "a0/mrc/v1/MRC*",
-    "payload_canonical": "{\"ApiSurface\":\"f20a468bfd04cd0a89e64a99fc228c9f87247813d302c6eb096c38f275a9a34e\",\"Cli\":\"e9ae79871ac96f382634d138a91156a0867c7e3d88c48653e7b25b9ea999d3f5\",\"Endpoint\":\"ce199e075a11cfad42102db3c040a4a0e82494ae6768977a039b1d121ecfdbb4\",\"Network\":\"b0459be785df988d8ccf6584e6d0617804d6d2b70f3d27210b7b37981d230c1f\",\"Params\":\"0cf3463fa300dc107292329bd07f86609685f17a26abc0e90cce6197cabdfebb\",\"Permissions\":\"9fd813c25202bdcfa13a970cfe768eb4a03b2f2ecb7c420a1bc94f3e5d66c674\",\"Prompt\":\"29fcc2802819ab379f1a1e48c3246d7dbd6ce6c588ebc20fe1c596e18b7c03c1\",\"Provider\":\"ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f\",\"RequestedModel\":\"7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced\",\"RuntimeAdapters\":\"f161603b69a72a823e9bbe2be44179cf8535354c1578430d107b00de3a53faf2\",\"TaskSnapshot\":\"480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac\",\"Tools\":\"f7381ee837365ab815eddca5eeaab0fc9a9e9bf2267e268032bff1340a77f708\"}"
+    "payload_canonical": "{\"ApiSurface\":\"f20a468bfd04cd0a89e64a99fc228c9f87247813d302c6eb096c38f275a9a34e\",\"Cli\":\"e9ae79871ac96f382634d138a91156a0867c7e3d88c48653e7b25b9ea999d3f5\",\"Endpoint\":\"ce199e075a11cfad42102db3c040a4a0e82494ae6768977a039b1d121ecfdbb4\",\"Network\":\"b0459be785df988d8ccf6584e6d0617804d6d2b70f3d27210b7b37981d230c1f\",\"Params\":\"0cf3463fa300dc107292329bd07f86609685f17a26abc0e90cce6197cabdfebb\",\"Permissions\":\"9fd813c25202bdcfa13a970cfe768eb4a03b2f2ecb7c420a1bc94f3e5d66c674\",\"Prompt\":\"29fcc2802819ab379f1a1e48c3246d7dbd6ce6c588ebc20fe1c596e18b7c03c1\",\"Provider\":\"ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f\",\"RequestedModel\":\"7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced\",\"RuntimeAdapters\":\"78de87f88a0ccbe8a9f37e2a578f744dec996cae6a514f9d43b236b35fc487c8\",\"TaskSnapshot\":\"480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac\",\"Tools\":\"f7381ee837365ab815eddca5eeaab0fc9a9e9bf2267e268032bff1340a77f708\"}"
   },
   "notes": [
     "EvE codex_exec hardcodes --dangerously-bypass-approvals-and-sandbox; codex_tmux can be closed. Same route, different Permissions: the two are NOT interchangeable A1 conditions."

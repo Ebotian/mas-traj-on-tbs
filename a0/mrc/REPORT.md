@@ -24,15 +24,15 @@ per-iteration record A1 owes), `mrc_schema.json`, `frozen_routes.json`.
 | `fixtures/negative/*.mrc.json` | the mutated declarations the validator must reject |
 | `SPEC.md` | schema, field-by-field justification, the A1 per-iteration requirement |
 
-Frozen MRC*, recomputed 2026-09-21 after the adapter-preimage fix (§7) — the values first
-reported here covered an `adapter_source_sha256` that had no preimage, so they were superseded
-rather than patched:
+Frozen MRC*, recomputed 2026-09-21 after the adapter path-independence fix moved the adapter
+digests (§7) — the values first reported here covered an `adapter_source_sha256` that had no
+preimage, so they were superseded rather than patched:
 
 ```
-codex-deepseek-responses     0d98045b04e19c96d95857a1c01d031270b18046233b7fe36f98fb2e561ac4e4
-claude-deepseek-anthropic    f31802acc9ff99cbefecfc8d5643c6a8ce69ec21c572b134c2305eb708ccfb66
-kilo-deepseek-chat           e80a353054dd157ac35e988d7dbcc01c4a37538c90ddcbe4a1ed81f62a645773
-opencode-deepseek-chat       046ca78ccdbc70b5830b322d8c9525b0e75c8fb7fce6772a216c5b177abf6131
+codex-deepseek-responses     9becc39c0fea3db8ff456b7d68d42198523a43074249d93faad4a8a7c06cfd01
+claude-deepseek-anthropic    dfb9316f60d44d2c3363d755f777f65e0b0a6938fa864518ad077bcc2aa1f78c
+kilo-deepseek-chat           6688c0d42b0c70605690bb55539a0d6b86d6dc5f7b85c6b2686dab18edf68f24
+opencode-deepseek-chat       d04a41595fac1789ec73874826c449b39a353b7b4572fe8c32a5b61d6edce06d
 ```
 
 ---
@@ -176,7 +176,7 @@ Positive — all four declarations:
 
 ```
 $ python3 mrc.py validate --mrc-file declarations/codex-deepseek-responses.mrc.json --frozen frozen_routes.json
-valid: route=codex-deepseek-responses MRC* = 0d98045b04e19c96d95857a1c01d031270b18046233b7fe36f98fb2e561ac4e4
+valid: route=codex-deepseek-responses MRC* = 9becc39c0fea3db8ff456b7d68d42198523a43074249d93faad4a8a7c06cfd01
 … (claude, kilo, opencode likewise) …
 ```
 
@@ -199,7 +199,7 @@ exit=1
 
 $ python3 mrc.py validate --mrc-file fixtures/negative/neg_abs_path_leak.mrc.json --frozen frozen_routes.json
 FAIL MRC-DIGEST-MISMATCH: Cli: recorded=e9ae79871ac96f382634d138a91156a0867c7e3d88c48653e7b25b9ea999d3f5 recomputed=61d88909ec701e006bd7687e8bf6f0afe2a2081d4ff39ff1d0684032980df933
-FAIL MRC-DIGEST-MISMATCH: MRC*: recorded=0d98045b04e19c96d95857a1c01d031270b18046233b7fe36f98fb2e561ac4e4 recomputed=e9a188a6d06cd625c21f5a8e554ff3e6378072837f4be62799d804ea0ffc63b6
+FAIL MRC-DIGEST-MISMATCH: MRC*: recorded=9becc39c0fea3db8ff456b7d68d42198523a43074249d93faad4a8a7c06cfd01 recomputed=c26135ea90610342f0b1ae32cf60de4153459ddec1b978f2a7e93d32c133cf4b
 FAIL MRC-HYGIENE: Cli.config_files[0]: absolute path leaked into hashed input: '/home/ebt/rsi-dev/a0/runtimes/kapso/config'
 exit=1
 
@@ -212,7 +212,7 @@ FAIL MRC-ADAPTER-PREIMAGE: adapters[0] (kapso): adapter_source_sha256 declared w
 exit=1
 
 $ python3 mrc.py validate --mrc-file fixtures/negative/neg_adapter_digest_off_preimage.mrc.json --frozen frozen_routes.json
-FAIL MRC-ADAPTER-DIGEST: adapters[0] (kapso): adapter_source_sha256=0000000000000000000000000000000000000000000000000000000000000000 is not the digest of the listed preimage (3ab3e139569bc49bf0c21e72521d690673c18ac2533d133ce10a344aa66fa3a4)
+FAIL MRC-ADAPTER-DIGEST: adapters[0] (kapso): adapter_source_sha256=0000000000000000000000000000000000000000000000000000000000000000 is not the digest of the listed preimage (06df3969358eff8542b43b6ad09319c33353f6af615f23f1c6a61e5fdbebcf82)
 exit=1
 ```
 
@@ -330,10 +330,12 @@ curl -s https://api.deepseek.com/v1/chat/completions -H "Authorization: Bearer $
   route was declared closed means it is not the declared route.
 - **Sampling parameters are provider defaults** on all four routes (recorded as null + reason). They
   are an unmeasured degree of freedom.
-- **Adapter digests** are recomputed from the repo at `261f0c9` and carry their preimage in the
+- **Adapter digests** are recomputed from the repo at `39e978b8` and carry their preimage in the
   declaration; §7 states the rule and gives the command that reproduces each value. **Upstream pins**
-  are still read from the archive bundles' provenance, not re-measured here. The repo HEAD advanced
-  to `261f0c9` during this work (STATUS.md documents `0851806`); adapters are recorded at `261f0c9`.
+  are still read from the archive bundles' provenance, not re-measured here. The adapter packages were
+  first recorded at `261f0c9`; the path-independence fix (§7) moved the kapso/eve/loreley bytes, so the
+  digests now describe `39e978b8` (simpleloop's package is unchanged by this workstream, so its digest
+  is the same value it had before).
 - The **prompt-context budgets** are measured only where a tool reported them (claude 200 000
   window / 32 000 output).
 - No **long-context or long-horizon** run was made: every verification turn here is tiny. The codex
@@ -512,33 +514,38 @@ this workstream's ownership; the adapter code is now path-independent, the manif
 `git`, applies the rule; no network, no key; exit 0 iff every value is reproduced):
 
 ```
-[ok  ] codex-deepseek-responses     kapso       a0/runtimes/kapso/a0_adapter             11 files  3ab3e139569bc49bf0c21e72521d690673c18ac2533d133ce10a344aa66fa3a4
-[ok  ] codex-deepseek-responses     eve         a0/runtimes/eve/a0_adapter               12 files  57a5c251416f9b378b90fae078bdf2e57a4c8096410b3beadb349722d7eddb70
-[ok  ] codex-deepseek-responses     loreley     a0/runtimes/loreley/src/a0_adapter       14 files  3ab1436fe69cb7cb29b780e4c160b69009fb04403ddd5d90e350e9b048c165df
+[ok  ] codex-deepseek-responses     kapso       a0/runtimes/kapso/a0_adapter             11 files  06df3969358eff8542b43b6ad09319c33353f6af615f23f1c6a61e5fdbebcf82
+[ok  ] codex-deepseek-responses     eve         a0/runtimes/eve/a0_adapter               12 files  3405931768156016b6db6b41f80fe3aa5554aa4d7bd20f9d90cb24b8832038e8
+[ok  ] codex-deepseek-responses     loreley     a0/runtimes/loreley/src/a0_adapter       14 files  3107e8b69a326042c5a2e972714eda8654922396ec119850bb8eea126c269eff
 [ok  ] codex-deepseek-responses     simpleloop  a0/runtimes/simpleloop/a0_adapter        14 files  167fe070911bb7a4767690e387e6fa2d138ec61cf31b3f6c7014814b1d5bcc89
-[ok  ] claude-deepseek-anthropic    kapso       a0/runtimes/kapso/a0_adapter             11 files  3ab3e139569bc49bf0c21e72521d690673c18ac2533d133ce10a344aa66fa3a4
-[ok  ] kilo-deepseek-chat           loreley     a0/runtimes/loreley/src/a0_adapter       14 files  3ab1436fe69cb7cb29b780e4c160b69009fb04403ddd5d90e350e9b048c165df
-[ok  ] opencode-deepseek-chat       eve         a0/runtimes/eve/a0_adapter               12 files  57a5c251416f9b378b90fae078bdf2e57a4c8096410b3beadb349722d7eddb70
+[ok  ] claude-deepseek-anthropic    kapso       a0/runtimes/kapso/a0_adapter             11 files  06df3969358eff8542b43b6ad09319c33353f6af615f23f1c6a61e5fdbebcf82
+[ok  ] kilo-deepseek-chat           loreley     a0/runtimes/loreley/src/a0_adapter       14 files  3107e8b69a326042c5a2e972714eda8654922396ec119850bb8eea126c269eff
+[ok  ] opencode-deepseek-chat       eve         a0/runtimes/eve/a0_adapter               12 files  3405931768156016b6db6b41f80fe3aa5554aa4d7bd20f9d90cb24b8832038e8
 every adapter digest is reproduced from its preimage
 ```
 
-`adapter_commit` resolves to `261f0c91eeef315b9c6d22123b95301207033257`, and the **working tree
+`adapter_commit` resolves to `39e978b89db1335387a2ff42a860ca50b02fdb94`, and the **working tree
 matches that commit byte-for-byte for all 51 files in the four preimages**, so the digest describes
 both the pinned commit and the tree as it stands (not just one of them):
 
 ```
 $ python3 make_declarations.py --verify
-adapter preimages: 4 runtimes, commit 261f0c9 (261f0c91eeef315b9c6d22123b95301207033257)
-[ok ] eve         a0/runtimes/eve/a0_adapter               12 files  57a5c251416f9b378b90fae078bdf2e57a4c8096410b3beadb349722d7eddb70
-[ok ] kapso       a0/runtimes/kapso/a0_adapter             11 files  3ab3e139569bc49bf0c21e72521d690673c18ac2533d133ce10a344aa66fa3a4
-[ok ] loreley     a0/runtimes/loreley/src/a0_adapter       14 files  3ab1436fe69cb7cb29b780e4c160b69009fb04403ddd5d90e350e9b048c165df
+adapter preimages: 4 runtimes, commit 39e978b8 (39e978b89db1335387a2ff42a860ca50b02fdb94)
+[ok ] eve         a0/runtimes/eve/a0_adapter               12 files  3405931768156016b6db6b41f80fe3aa5554aa4d7bd20f9d90cb24b8832038e8
+[ok ] kapso       a0/runtimes/kapso/a0_adapter             11 files  06df3969358eff8542b43b6ad09319c33353f6af615f23f1c6a61e5fdbebcf82
+[ok ] loreley     a0/runtimes/loreley/src/a0_adapter       14 files  3107e8b69a326042c5a2e972714eda8654922396ec119850bb8eea126c269eff
 [ok ] simpleloop  a0/runtimes/simpleloop/a0_adapter        14 files  167fe070911bb7a4767690e387e6fa2d138ec61cf31b3f6c7014814b1d5bcc89
-working tree matches 261f0c9 for every file in every preimage
+working tree matches 39e978b8 for every file in every preimage
 [ok  ] codex-deepseek-responses.spec.json
 … eight files …
 shipped declarations match a fresh derivation from the repo
 exit=0
 ```
+
+The three adapters this workstream owns changed (`kapso`, `eve`, `loreley`); the **simpleloop**
+digest is unchanged (`167fe070…`), because that package is another workstream's and was not touched
+here. These declarations therefore cover the simpleloop adapter as of `39e978b8`; if its owner lands
+further edits, the declarations must be regenerated again (the preimage rule makes that mechanical).
 
 ### What now makes the field non-repeatable of the old defect
 
@@ -555,9 +562,16 @@ exit=0
 
 ### Consequences for values quoted elsewhere
 
-The four MRC* values in §1 are new; the previously reported ones (`2c5272b8…`, `6630264f…`,
-`821bfd38…`, `b17b21e8…`) are superseded and should not be quoted. `frozen_routes.json` pins
+The four MRC* values in §1 are new; everything reported before them is superseded and should not be
+quoted — `2c5272b8…`, `6630264f…`, `821bfd38…`, `b17b21e8…` (the original, pre-preimage values) and
+then `0d98045b…` (codex), `f31802ac…` (claude), `e80a3530…` (kilo), `046ca78c…` (opencode) (the
+values that stood until the path-independence fix). `frozen_routes.json` pins
 provider/endpoint/surface/model only and does not contain MRC*, so it did not change.
+
+The path-independence fix changes the **adapter digests**, and therefore MRC*, for kapso, eve and
+loreley; simpleloop is unchanged. Any A1 record that pinned the previous adapter digests
+(`3ab3e139…` kapso, `57a5c251…` eve, `3ab1436f…` loreley) is describing the pre-fix adapters and must
+be re-pinned.
 
 One directory outside this one embeds the old values: the reviewer's
 `a0/verify/sprint-contract/mrc-falsify/**` (nine files: the `*_tamper.mrc.json` perturbations, their
