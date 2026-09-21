@@ -1,0 +1,16 @@
+=== -c provider injection: does chat get rejected via -c too? ===
+Error: `wire_api = "chat"` is no longer supported.
+How to fix: set `wire_api = "responses"` in your provider config.
+More info: https://github.com/openai/codex/discussions/7782
+in `model_providers.ds.wire_api`
+
+
+=== -c provider injection with responses => config loads? ===
+{"models":[{"slug":"gpt-6-astra","display_name":"GPT-6-Astra","description":"Our most capable model for complex, demanding work.","default_reasoning_level":"low","supported_reasoning_levels":[{"effort
+
+=== unknown top-level key with --strict-config ===
+error: unexpected argument '--strict-config' found
+
+Usage: codex debug models [OPTIONS]
+
+For more information, try '--help'.

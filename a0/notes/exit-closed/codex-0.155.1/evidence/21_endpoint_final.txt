@@ -1,0 +1,15 @@
+=== /v1/responses with deepseek-v4-pro (the mixed-use model) ===
+HTTP=200
+object: response model: deepseek-v4-pro status: incomplete
+usage: {"input_tokens": 85, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 16, "output_tokens_details": {"reasoning_tokens": 15}, "total_tokens": 101}
+text: We need answer user says "say OK". Need respond OK. Simple.
+
+=== /v1/responses streaming (codex uses SSE) ===
+
+HTTP=200
+30
+event: response.created
+data: {"type":"response.created","response":{"id":"7cb43c26-9150-4128-989f-91321f955d7b","object":"response","created_at":1789973961,"status":"in_progress","background":false,"completed_at":null,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":
+
+=== token usage of the two earlier curl /responses calls + codex runs (summary) ===
+pro call {"input_tokens": 85, "input_tokens_details": {"cached_tokens": 0}, "output_tokens": 16, "output_tokens_details": {"reasoning_tokens": 15}, "total_tokens": 101}

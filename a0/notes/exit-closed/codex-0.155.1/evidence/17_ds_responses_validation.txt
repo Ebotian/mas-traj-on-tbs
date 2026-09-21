@@ -1,0 +1,11 @@
+=== does /v1/responses validate the model id? (bogus id) ===
+HTTP=400
+{"error":{"message":"The supported API model names are deepseek-flash, deepseek-v4-pro, but you passed definitely-not-a-model.","type":"invalid_request_error","param":null,"code":"invalid_request_error"}}
+
+=== does /v1/responses require auth? (no key) ===
+HTTP=401
+Authentication Fails (governor)
+
+=== /v1/responses with a nonsense path variant (control) ===
+HTTP=404
+

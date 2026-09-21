@@ -1,0 +1,77 @@
+=== full body + headers: POST /v1/responses ===
+--- response headers ---
+HTTP/1.1 200 Connection established
+
+HTTP/2 200 
+server: openresty
+content-type: application/json
+vary: origin, access-control-request-method, access-control-request-headers
+access-control-allow-credentials: true
+x-ds-trace-id: c72fef9a7176796956d0372b87746b52
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+x-content-type-options: nosniff
+date: Mon, 21 Sep 2026 06:56:51 GMT
+eo-log-uuid: 16903666599904502254
+eo-cache-status: MISS
+
+--- body (pretty) ---
+{
+    "id": "f4074cfb-a3ea-49a4-86d0-94119d09adb7",
+    "object": "response",
+    "created_at": 1789973811,
+    "status": "completed",
+    "background": false,
+    "completed_at": 1789973812,
+    "content_filters": null,
+    "error": null,
+    "frequency_penalty": 0.0,
+    "incomplete_details": null,
+    "instructions": null,
+    "max_output_tokens": null,
+    "max_tool_calls": null,
+    "model": "deepseek-flash",
+    "moderation": null,
+    "output": [
+        {
+            "type": "reasoning",
+            "id": "2013b202-4933-4206-aa3b-138856b6a00d",
+            "status": "completed",
+            "content": [
+                {
+                    "type": "reasoning_text",
+                    "text": "We need answer simply \"OK\". Need comply."
+                }
+            ],
+            "summary": [],
+            "encrypted_content": "f4074cfb-a3ea-49a4-86d0-94119d09adb7-0"
+        },
+        {
+            "type": "message",
+            "id": "4a1d558b-b3d8-4a05-9591-684d84987c8e",
+            "status": "completed",
+            "content": [
+                {
+                    "type": "output_text",
+                    "annotations": [],
+                    "logprobs": [],
+                    "text": "OK"
+                }
+            ],
+            "phase": "final_answer",
+            "role": "assistant"
+        }
+    ],
+    "parallel_tool_calls": true,
+    "presence_penalty": 0.0,
+    "previous_response_id": null,
+    "prompt_cache_key": null,
+    "prompt_cache_retention": null,
+    "reasoning": {
+        "effort": null,
+        "summary": null
+    },
+    "safety_identifier": null,
+    "service_tier": "default",
+    "store": false,
+    "temperature": 1.0,
+    "text": {

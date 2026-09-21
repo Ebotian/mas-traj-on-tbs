@@ -1,0 +1,46 @@
+=== 1. plain socket() outside sandbox (positive control) ===
+socket() OK
+
+=== 2. socket() inside --sandbox workspace-write (0.155.1) ===
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import socket; socket.socket(); print('socket() OK')
+                   ~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/socket.py", line 236, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+exit=1
+
+=== 3. socket() inside --sandbox read-only ===
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import socket; socket.socket()
+                   ~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/socket.py", line 236, in __init__
+    _socket.socket.__init__(self, family, type, proto, fileno)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+exit=1
+
+=== 4. --sandbox danger-full-access accepted? (help-level check) ===
+Run commands within a Codex-provided sandbox
+
+Usage: codex sandbox [OPTIONS] [COMMAND]...
+
+Arguments:
+  [COMMAND]...
+          Full command args to run under the Linux sandbox
+
+Options:
+  -c, --config <key=value>
+          Override a configuration value that would otherwise be loaded from `~/.codex/config.toml`.
+          Use a dotted path (`foo.bar.baz`) to override nested values. The `value` portion is parsed
+          as TOML. If it fails to parse as TOML, the raw string is used as a literal.
+          
+          Examples: - `-c model="o3"` - `-c 'sandbox_permissions=["disk-full-read-access"]'` - `-c
+          shell_environment_policy.inherit=all`
+
+      --sandbox-state-json <JSON>
+          JSON value from `codex/sandbox-state-meta` to apply directly
+

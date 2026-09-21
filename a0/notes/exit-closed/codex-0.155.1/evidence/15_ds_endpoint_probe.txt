@@ -1,0 +1,11 @@
+=== POST https://api.deepseek.com/v1/responses (the path codex uses) ===
+HTTP=200
+{"id":"c0a4fd9c-1f58-458b-8210-b47f00e78872","object":"response","created_at":1789973803,"status":"completed","background":false,"completed_at":1789973804,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":null,"max_output_tokens":null,"max_tool_calls":null,"model":"deepseek-flash","moderation":null,"output":[{"type":"reasoning","id":"eaca59cd-d82c
+
+=== POST https://api.deepseek.com/v1/chat/completions (the path codex no longer has) ===
+HTTP=200
+{"id":"0f1a5f25-5112-417b-97b1-36b143e9f5a4","object":"chat.completion","created":1789973804,"model":"deepseek-flash","choices":[{"index":0,"message":{"role":"assistant","content":"","reasoning_content":"We need answer user says \"say OK"},"logprobs":null,"finish_reason":"length"}],"usage":{"prompt_tokens":32,"completion_tokens":8,"total_tokens":40,"prompt_tokens_details":{"cached_tokens":0},"comp
+
+=== GET /models ===
+HTTP=200
+{"object":"list","data":[{"id":"deepseek-flash","object":"model","owned_by":"deepseek"},{"id":"deepseek-v4-pro","object":"model","owned_by":"deepseek"}]}
