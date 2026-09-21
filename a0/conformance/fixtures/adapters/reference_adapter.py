@@ -10,7 +10,10 @@ it does exactly what A0.1 asks of an adapter:
   3. report the raw multi-field Outcome plus E*'s own status/exit code, so the *verdict* of an
      invalid/error candidate is compared as a verdict rather than as a number;
   4. carry `eid_star` verbatim and a recomputable `EID_r` derivation;
-  5. mark each row's `evaluator_evidence.status` honestly (`ok` only for a real subprocess run).
+  5. mark each row's `evaluator_evidence.status` honestly (`ok` only for a real subprocess run);
+  6. echo the harness measurement token it was handed (`A0_ENVELOPE`), attesting the evaluator
+     source digest, the candidate bytes and the behaviour digest of the Outcome it produced, and
+     submit that Outcome payload as well (external review D3).
 
 Self-test use: `selftest.py` runs it as the control row that must come back PASS, which is what
 makes the FAIL rows of the deviant fixtures meaningful.
@@ -26,7 +29,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fixture_common import (  # noqa: E402
     A0, C_STAR_MANIFEST, E_STAR_PYTHON, E_STAR_SCRIPT, FR_DECLARATION, THETA_KEYS,
-    canonical_file_digest, eid_r_declaration, read_args, scratch_root, sha256_file, write_out,
+    canonical_file_digest, eid_r_declaration, envelope_from_flags, measurement_block, read_args,
+    scratch_root, sha256_file, write_out,
 )
 from fixture_common import parse_theta  # noqa: E402
 
@@ -64,6 +68,7 @@ def conformance(flags: dict) -> int:
     out_dir = run_dir / "e-star"
     state_dir = run_dir / "e-star-state"
     out_dir.mkdir(parents=True, exist_ok=True)
+    envelope = envelope_from_flags(flags)
 
     rows = []
     for cand in manifest["candidates"]:
@@ -109,6 +114,13 @@ def conformance(flags: dict) -> int:
                     "granted_class": theta["fidelity"],
                     "commanded_class": theta["fidelity"],
                 },
+                # D3: the measurement attestation, and the Outcome payload it attests. The checker
+                # projects the payload itself, so this row's behaviour claim is checkable, not
+                # merely asserted.
+                "measurement": measurement_block(
+                    cid, envelope=envelope, measured_candidate_sha256=observed, outcome=outcome
+                ),
+                "e_star_outcome": outcome,
             }
         )
 
@@ -130,6 +142,12 @@ def conformance(flags: dict) -> int:
         },
         "candidate_set": str(C_STAR_MANIFEST),
         "run_dir": str(run_dir),
+        "measurement_envelope": {
+            "handed_over": envelope is not None,
+            "path": (envelope or {}).get("path"),
+            "nonce": (envelope or {}).get("nonce"),
+            "echoed_on_every_row": envelope is not None,
+        },
         "candidates": rows,
     }
     write_out(out_path, doc)

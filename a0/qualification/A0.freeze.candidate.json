@@ -1,0 +1,285 @@
+{
+  "schema": "a0.freeze/v1",
+  "stage": "A0",
+  "state": "ARMED_NOT_FROZEN",
+  "reason": "baseline recorded by `freeze.py arm` -- NOT a freeze",
+  "frozen_at": "2026-09-21T17:23:39+0800",
+  "frozen_by": "freeze.py",
+  "git_rev": "463e82dfe1081a9b4f713dc95480710ffd28dff0",
+  "git_dirty": true,
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "predicate": {
+    "version": "a0.eligibility/v2",
+    "module": "a0/qualification/eligibility.py",
+    "module_sha256": "8b2ebe5558a379222f63f6f213d1780c59a9965032de2daebcb1e9ec72b1c33d",
+    "rules_sha256": "7f633738315f86bf1511ecf5e255374949e0058cdd53988f7d4169f92c6afa85",
+    "threshold_vectors_sha256": "dd5dba9fd6861bd552ac0b480e7f7ec8ff156c38f77a95fc0a575f9d453326a4",
+    "n_rules": 8,
+    "vectors": [
+      "T_A1",
+      "T_exploratory"
+    ]
+  },
+  "components": {
+    "simpleloop": {
+      "a0_1_measured": {
+        "value": "14/14",
+        "digest": "f6a45c28d250773aa4011166334be84970bc9e60b69feb3ad62fb137859f76cb"
+      },
+      "a0_1_adapted": {
+        "value": "0/14",
+        "digest": "bc6ee34ac0af7abe2a768cc4944e152d6e633dee7639bb6f32378917ad69227a"
+      },
+      "a0_1_attested": {
+        "value": "PASS",
+        "digest": "dfb61e78c149d68cf9c7a6e3157615a0d5156894bd9615b50c4b8ddfda5c584c"
+      },
+      "a0_2_mechanism": {
+        "value": "PASS",
+        "digest": "d06d33c915e7ba73cfded6225717fcf910a7c3215a29acaaec3c5e7804b6a01d"
+      },
+      "a0_2_bridge": {
+        "value": "PASS",
+        "digest": "ed9041ee7f9283f74b6327271a4ad27c773c3ba0a2c4dc84ef263b55637993e4"
+      },
+      "closure": {
+        "value": "CLOSED",
+        "digest": "7567e571ba38f6c4281861fdf7074a2f2a8b80d3608158d80991875cc247cdb8"
+      },
+      "mrc": {
+        "value": "FROZEN",
+        "digest": "32a6408976bc1c3a9e41b3430f53635affdfa78d9c2b2440141496ff11fd1964"
+      }
+    },
+    "kapso": {
+      "a0_1_measured": {
+        "value": "14/14",
+        "digest": "2305d56d74decb829df518790e5d07ab84ded448bfdb7df48f7cff49c38b9003"
+      },
+      "a0_1_adapted": {
+        "value": "0/14",
+        "digest": "b9c0deec90e30a5f172a8de137342cba11f17fc84a6cdd4beabde543287879e2"
+      },
+      "a0_1_attested": {
+        "value": "FAIL",
+        "digest": "3dd038151c147ad3f4915152f6b5ecf2b714a3cd8336a483aabaab94516bcd13"
+      },
+      "a0_2_mechanism": {
+        "value": "PASS",
+        "digest": "70502f45f46ef952659264bb2de9047ba817b64b707bf3961b44671d1e43c64b"
+      },
+      "a0_2_bridge": {
+        "value": "PASS",
+        "digest": "c074c23383564da52b5a67eafbae60b65760edae9b9d170449edf7bafae82a73"
+      },
+      "closure": {
+        "value": "CONDITIONAL",
+        "digest": "0980d5357b326710efd8fe4d22ee862cba158daccce1cdd20ba4d9c66000a036"
+      },
+      "mrc": {
+        "value": "FROZEN",
+        "digest": "81ab5c444cebd4536069b6b9041e3a08f7848e45c506706a6d1001e834512f15"
+      }
+    },
+    "eve": {
+      "a0_1_measured": {
+        "value": "5/14",
+        "digest": "979edbba9add60df5ce95c243be6576a07e8873e20dc016315daa16b52cca32a"
+      },
+      "a0_1_adapted": {
+        "value": "9/14",
+        "digest": "fe96a76c33b808dcb1e0632e688a5a068d883cf9fffa9b2b579a8f2ad174e385"
+      },
+      "a0_1_attested": {
+        "value": "FAIL",
+        "digest": "3dd038151c147ad3f4915152f6b5ecf2b714a3cd8336a483aabaab94516bcd13"
+      },
+      "a0_2_mechanism": {
+        "value": "PASS",
+        "digest": "d9661befa0722687987bd9eeb632de6aee0c49086d31965f559b090eb218403c"
+      },
+      "a0_2_bridge": {
+        "value": "ATTEMPTED",
+        "digest": "66f634683ddb6a81174fda01542db13936894176b4ffeb4956b2e1de94bf76b1"
+      },
+      "closure": {
+        "value": "CONDITIONAL",
+        "digest": "8ec698154ce167d3ad489a0b7689a93e6aae3b382839bc48749a333919afa2be"
+      },
+      "mrc": {
+        "value": "FROZEN",
+        "digest": "6c2e1be1b5c33f6fb3f2c456656f934daa396e90dbe339ad60fcb533aeecd26b"
+      }
+    },
+    "loreley": {
+      "a0_1_measured": {
+        "value": "14/14",
+        "digest": "03210f370ea4035309cc98f4fe33db8a50ecff296167d2c1341243792f199e6d"
+      },
+      "a0_1_adapted": {
+        "value": "0/14",
+        "digest": "c167acfd55d0171bea75118203ca65f5c9fd167d90efc56ca705330c6ee08fd1"
+      },
+      "a0_1_attested": {
+        "value": "FAIL",
+        "digest": "3dd038151c147ad3f4915152f6b5ecf2b714a3cd8336a483aabaab94516bcd13"
+      },
+      "a0_2_mechanism": {
+        "value": "PASS",
+        "digest": "442bf6217abd5977b3173a5a591b820288733f3f7040216c665fab28537b1ec5"
+      },
+      "a0_2_bridge": {
+        "value": "ATTEMPTED",
+        "digest": "6f91fb6c432e18aab04b0e4c4c6d9e7b3864f24ce285267bca548ab4f61a9ea5"
+      },
+      "closure": {
+        "value": "CONDITIONAL",
+        "digest": "8466d1d2607a6f5507974d950e9775353061d2f0e35b7df4c431bb1cfa91aa7e"
+      },
+      "mrc": {
+        "value": "FROZEN",
+        "digest": "a272d0efd7b6d3b1cc7699a5bb23329fc015575e47ab06c1fbd6ef896417c7fa"
+      }
+    }
+  },
+  "artifacts": {
+    "a0/closure/closure.eve.json": "8f456a618cf0cb4ca678a3983c0ce2bffd8e93a52b1af2eaac5f647700242b91",
+    "a0/closure/closure.kapso.json": "4a384e918a0681c9d30c671117ed3cac601416308e185f7913823e6ac76cece5",
+    "a0/closure/closure.loreley.json": "82307ce37170572935210d7529681de29892045cbb6e8abb09896bb3b4a0ef0d",
+    "a0/closure/closure.reconciliation.json": "60e6bf8451632a4140f1b3d067e28aa3b79016ed9de500f81b3a74edd646c19d",
+    "a0/closure/closure.simpleloop.json": "0ec40c84640a87b25d2a4530376a33cbb451828c256f28d851d5eb64ed9d599b",
+    "a0/conformance/conformance.py": "e40d008d9ad0874b0241143c7b436df7640f1e9a7e4af55b443d88469f0978ce",
+    "a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171439.json": "acb67873838a78b3a8faeafed21175ca22066729c49ee7ec4df5dde714a4d96f",
+    "a0/conformance/report.json": "161508ea2107355dd3b3fb0bccd6bbc63fc6d67c6543f7c4205e6a71b88714f7",
+    "a0/conformance/selftest.py": "6a9c8a5bf2281349033332a0037724861e15ad854cfb1ccbdda7c679726f830d",
+    "a0/conformance/selftest_report.json": "ea385e4b0c0c19e479ede0d2ce61d9c2ebdac696e7a254afca30cec7cb8d1309",
+    "a0/contract/selection/kapso.selection.json": "29ee490abc1717ad27f00a1732e9a4c4a7f44b394a36f4043e253bacddc865f6",
+    "a0/envelope/envelope.py": "0f70d89f27783c1881ca91c1755a2ec2ef32c980e3237e375c5f9d4b6829c9b2",
+    "a0/envelope/execution-set.json": "0e41aa53bfdd7ebbdac4a6a96de4bd17be988b6bc0d9882b9fe4745c379f4181",
+    "a0/mrc/declarations/claude-deepseek-anthropic.mrc.json": "c6ce85d849f0c786caf1d2a3e3c22f495f584aec95ff229bff8e49af101b44f0",
+    "a0/mrc/declarations/codex-deepseek-responses.mrc.json": "1bfcc1a7fc93650d2919db50326a1bbfde95a0636e3ff793317fd67b09aaa7a4",
+    "a0/mrc/declarations/kilo-deepseek-chat.mrc.json": "99af353e2ec0718cd8fb2ce94b2a2ad9bcae2678937b68e9ada80a0f49dd913a",
+    "a0/mrc/declarations/opencode-deepseek-chat.mrc.json": "d649a735b7a378eaae752033a31ef15991e138f24c58ee13feb7b681d9829dc6",
+    "a0/mrc/frozen_routes.json": "164f9586c5be3182bdc0a1dce9c9c342309f1706ec757ea48567da351f19109b",
+    "a0/notes/exit-closed/proxy-closure/REPORT.md": "b87000810163b47659bdfb4f737ed42b82794ee50f863fce3de3bc064e1521bb",
+    "a0/qualification/attested-a0-1.contract.json": "d96bcf907a466b9bc2914c241eaba935b421dcf373c1abadeeb5ee2c1fac18e3",
+    "a0/qualification/build_qualification.py": "a0caaf154d1180442b9f7171bfb41687362f0a5eb0684150663fdf8bfeff459b",
+    "a0/qualification/eligibility.py": "8b2ebe5558a379222f63f6f213d1780c59a9965032de2daebcb1e9ec72b1c33d",
+    "a0/qualification/freeze.py": "b5d0024a8517896f1b26c32c50b58ef30906cce9425084e45903fc6604f712bf",
+    "a0/qualification/qualification.json": "bc35e2e57b5cc96203d32659dcb134fe9a14076b34e29f3f608a538b10d4371b",
+    "a0/qualification/verify_qualification.py": "69f27ed3b2f96da39daaf21a94f25c32aca922df824eca8f5a81d98c47ed92df",
+    "a0/runtimes/eve/out/run002/real_round.json": "98bf73a5d96c8a8a57f48b6d66906b1c58e416a9ae3603b973a1162277101b8d",
+    "a0/runtimes/eve/out/run003/real_round.json": "92b391030e1895122e7eccf03d12a7597cb9fce57ccace76d083d479e0776932",
+    "a0/runtimes/eve/out/run004/real_round.json": "3cae6033b5107ba1cad88d472ea17366b69c77d49af719487c374c364946397c",
+    "a0/runtimes/eve/selection/eve.selection.json": "46ac741cf8050390da9bf6921ece70a0391e3091d4ce617e02bfef65be89e8ba",
+    "a0/runtimes/kapso/BRIDGE-2ROUND.md": "7ed39e563d1eb9a75f32bdcbf136ff0634f7c32f1d87892da2da9023b03b05b4",
+    "a0/runtimes/kapso/runs/a0-01/a02/a02.json": "2a8946672df5e32f7508261a31e648c03dc6f35a6bea57ae55e1b495fe5bb8af",
+    "a0/runtimes/kapso/runs/bridge-2round/real/verification.json": "42d78fc7c2b543637e818f2a336e8e72cbd7a94e3050678b4de5d91c4a7e74e1",
+    "a0/runtimes/kapso/runs/e2e-real/e2e_verification.json": "bece8636ee4594fdcbde2e0e6115ee51bea30c3bd0c19bdce690d86bdc0ac1fc",
+    "a0/runtimes/kapso/runs/tie-order-probe/outcome.json": "521b31ffe077c9654c6cec4a200fc706f9f27b715438ee6b104b7faf3150210e",
+    "a0/runtimes/loreley/llm-round/RESULT.md": "9b825e0a461ecedc31fefa6d9428d7055d044df26902ebd61a0ec0a19657e257",
+    "a0/runtimes/loreley/llm-round/bounded_round.log": "5571b0ab431af654ae9702b58a585a9dce8dfe24bf20ed068957826b12adea0a",
+    "a0/runtimes/loreley/llm-round/stage_a2_result.json": "83f784634e51d69344876b03f647814cc521723b393bf6fc547b2b7e4f1abde9",
+    "a0/runtimes/loreley/out/a02.json": "14091d19e58836add30fd65091fd6a1f1a6d3bd3e0f87292dce41476f7e9e2f5",
+    "a0/runtimes/simpleloop/out/a02/a02_checks.json": "714438dd5a2cb2b5e42a1e63ff7373739bf1b579885847252b0bd7de12e30e36",
+    "a0/runtimes/simpleloop/out/cli-lane-codex-live3.log": "e670d9cc0bc85199ba37e7b1bb1425d06ea3bf93ea4a11444a3c2841b2bab31c",
+    "a0/runtimes/simpleloop/out/cli-lane/codex-live3/run_meta.json": "e82e9d052a1551732ecee3c7ecb776beadecd07dec901813058a14a6bd9a2b4e",
+    "a0/runtimes/simpleloop/out/cli-lane/codex-live4/run_meta.json": "831e47806dff6603e3f427401f5457ded4e7846a872bbae2ea497f90a3cb347e",
+    "a0/tasks/circle-packing/C_STAR/manifest.json": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+    "a0/tasks/circle-packing/E_STAR.json": "f5ac1abfa61872541ea92a6a09fcc6178c244d914234211dcc633bac0ea66f5f",
+    "a0/tasks/circle-packing/e_star.py": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+    "a0/tasks/circle-packing/e_star_child.py": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca",
+    "a0/verify/out/eve_a02_replication.json": "222f44e56e7d9e6c793069652233cd063f48ee8e78f951ee6c0a6f260a161872",
+    "a0/verify/verdicts.json": "e04e7f2d96e24198357ae41149b3bb9cc2ebc3bd2f32b3e3f93d137dbd8ef113"
+  },
+  "artifacts_missing_at_build": [],
+  "key_metrics": {
+    "R_A1_main": [
+      "simpleloop"
+    ],
+    "R_exploratory": [
+      "simpleloop"
+    ]
+  },
+  "excluded_runtimes": {},
+  "r_a1_main_empty": false,
+  "gates": [
+    {
+      "gate": "G1_d1_landed",
+      "what": "D1: an interpreter mismatch is its own verdict, not a behaviour disagreement",
+      "kind": "measurement",
+      "owner": "D1 workstream (landed)",
+      "ok": true,
+      "detail": "EXECUTION_ENV_DRIFT is declared in a0/conformance/conformance.py"
+    },
+    {
+      "gate": "G2_predicate_self_test",
+      "what": "the predicate's own self-test passes",
+      "kind": "measurement",
+      "owner": "a0/qualification",
+      "ok": true,
+      "detail": "self-test: ok"
+    },
+    {
+      "gate": "G2b_attestation_fails_closed",
+      "what": "the attestation resolution fails closed on omission and contradiction",
+      "kind": "measurement",
+      "owner": "a0/qualification",
+      "ok": true,
+      "detail": "self-test: ok"
+    },
+    {
+      "gate": "G3_qualification_matches_evidence",
+      "what": "qualification.json re-derives from its evidence",
+      "kind": "measurement",
+      "owner": "a0/qualification",
+      "ok": true,
+      "detail": "/home/ebt/rsi-dev/a0/qualification/qualification.json: matches its evidence (re-derived on 2026-09-21T17:23:40+0800)"
+    },
+    {
+      "gate": "G4_a0_1_rerun_with_attestation_required",
+      "what": "the A0.1 report on record is the post-D3 re-run with the measurement envelope REQUIRED",
+      "kind": "measurement",
+      "owner": "D3 workstream + a0/conformance (landed: the A0.1 re-run happened with the envelope on)",
+      "ok": true,
+      "detail": "A0.1 was re-run with the measurement envelope REQUIRED (run a01-reference-20260921T171439, tokens=14, envelope sha256 acb67873838a78b3a8faeafed21175ca22066729c49ee7ec4df5dde714a4d96f; the freeze pins the envelope document itself, not just the verdicts it produced)"
+    },
+    {
+      "gate": "G5_a0_1_attested",
+      "what": "every required runtime's A0.1 rows are acceptable evidence, not merely numerically agreeing",
+      "kind": "measurement",
+      "owner": "the runtime adapters (they must echo the token and attest the bytes they executed)",
+      "ok": false,
+      "detail": "not every required runtime's rows are acceptable evidence. the A0.1 run asked and the rows did not answer: kapso (MISSING_ATTESTATION), eve (MISSING_ATTESTATION), loreley (MISSING_ATTESTATION) -- a rejection to settle, not a gap"
+    },
+    {
+      "gate": "G6_runtimes_wired_or_excluded",
+      "what": "DECISION: every runtime is wired or explicitly excluded with a reason",
+      "kind": "decision",
+      "owner": "the coordinator / user",
+      "ok": false,
+      "detail": "DECISION REQUIRED, per runtime: wire it (make its lane echo the harness measurement token and attest the bytes it executed, then re-run A0.1) or exclude it explicitly (`--exclude runtime=reason`, which is recorded in the freeze document). Neither yet: ['kapso', 'eve', 'loreley']"
+    },
+    {
+      "gate": "G7_mrc_frozen",
+      "what": "the model route is frozen",
+      "kind": "measurement",
+      "owner": "a0/mrc",
+      "ok": true,
+      "detail": "model route frozen (MRC* validates against frozen_routes.json) for ['simpleloop', 'kapso', 'eve', 'loreley']"
+    }
+  ],
+  "components_note": "each runtime component carries its value and the sha256 of the component object as stored in a0/qualification/qualification.json; `artifacts` carries the sha256 of every file the component was derived from. Any change to any of them unfreezes the document",
+  "freeze_id_covers": [
+    "schema",
+    "stage",
+    "eid_star",
+    "predicate",
+    "components",
+    "artifacts",
+    "artifacts_missing_at_build",
+    "key_metrics",
+    "excluded_runtimes"
+  ],
+  "freeze_id": "d9381b828d59921e7fc17a6ecb223da8a016ce49db5bcd96f79ae8100fd0cb6e"
+}

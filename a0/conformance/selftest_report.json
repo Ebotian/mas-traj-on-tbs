@@ -6,7 +6,7 @@
     "/home/ebt/rsi-dev/a0/conformance/conformance.py",
     "run",
     "--runtimes",
-    "selftest_honest,selftest_clean,selftest_zero_on_error,selftest_cache_hit,selftest_timeout,selftest_truncated,selftest_drift_1e_6,selftest_drift_1e_10,selftest_swap_near_tie,selftest_digest_swap,selftest_partial,selftest_manifest_triple,selftest_attempt_theta_drift,selftest_stale_eid,selftest_native_theta,selftest_synthetic_declared,selftest_synthetic_mislabeled,selftest_wrong_failure_kind,selftest_wrong_failure_stage,selftest_omit_failure_kind",
+    "selftest_honest,selftest_clean,selftest_zero_on_error,selftest_cache_hit,selftest_timeout,selftest_truncated,selftest_drift_1e_6,selftest_drift_1e_10,selftest_swap_near_tie,selftest_digest_swap,selftest_partial,selftest_manifest_triple,selftest_attempt_theta_drift,selftest_stale_eid,selftest_native_theta,selftest_synthetic_declared,selftest_synthetic_mislabeled,selftest_wrong_failure_kind,selftest_wrong_failure_stage,selftest_env_drift,selftest_env_drift_unsanctioned,selftest_measurement_pass,selftest_no_token,selftest_foreign_token,selftest_no_identity,selftest_mutant_identity,selftest_other_candidate_bytes,selftest_attest_other_measurement,selftest_omit_failure_kind",
     "--out",
     "/home/ebt/rsi-dev/a0/conformance/selftest_runner_report.json",
     "--adapter",
@@ -47,6 +47,24 @@
     "selftest_wrong_failure_kind=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode wrong_failure_kind",
     "--adapter",
     "selftest_wrong_failure_stage=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode wrong_failure_stage",
+    "--adapter",
+    "selftest_env_drift=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode env_drift",
+    "--adapter",
+    "selftest_env_drift_unsanctioned=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode env_drift_unsanctioned",
+    "--adapter",
+    "selftest_measurement_pass=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode pass",
+    "--adapter",
+    "selftest_no_token=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode no_token",
+    "--adapter",
+    "selftest_foreign_token=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode foreign_token",
+    "--adapter",
+    "selftest_no_identity=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode no_identity",
+    "--adapter",
+    "selftest_mutant_identity=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode mutant_e_prime_identity",
+    "--adapter",
+    "selftest_other_candidate_bytes=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode other_candidate_bytes",
+    "--adapter",
+    "selftest_attest_other_measurement=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode attest_other_measurement",
     "--adapter",
     "selftest_omit_failure_kind=/usr/bin/python3 /home/ebt/rsi-dev/a0/conformance/fixtures/adapters/deviant.py --mode omit_failure_kind"
   ],
@@ -112,10 +130,76 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -168,10 +252,76 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -228,10 +378,76 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -287,10 +503,76 @@
         "total": 14,
         "measured_candidates": [],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -346,10 +628,76 @@
         "total": 14,
         "measured_candidates": [],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -419,10 +767,76 @@
         "total": 14,
         "measured_candidates": [],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -433,7 +847,7 @@
       "injected_fault": "drift_1e_6",
       "expected_state": "FAIL",
       "actual_state": "FAIL",
-      "actual_reason": "E_r(c) disagrees with E*(c)",
+      "actual_reason": "E_r(c) disagrees with E*(c): 5 x MISMATCH_VALUE",
       "findings": [],
       "failed_checks": [
         "E-r-equals-E-star"
@@ -472,10 +886,76 @@
           "c13_slow"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -528,10 +1008,76 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -542,7 +1088,7 @@
       "injected_fault": "swap_near_tie",
       "expected_state": "FAIL",
       "actual_state": "FAIL",
-      "actual_reason": "E_r(c) disagrees with E*(c)",
+      "actual_reason": "E_r(c) disagrees with E*(c): 1 x MISMATCH_VALUE",
       "findings": [],
       "failed_checks": [
         "E-r-equals-E-star"
@@ -585,10 +1131,76 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -599,9 +1211,10 @@
       "injected_fault": "digest_swap",
       "expected_state": "FAIL",
       "actual_state": "FAIL",
-      "actual_reason": "E_r(c) disagrees with E*(c)",
+      "actual_reason": "E_r(c) disagrees with E*(c): 1 x MISMATCH_DIGEST",
       "findings": [],
       "failed_checks": [
+        "behaviour-vs-execution-env",
         "E-r-equals-E-star"
       ],
       "row_verdicts": {
@@ -642,10 +1255,77 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "MISMATCH_DIGEST",
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -656,7 +1336,7 @@
       "injected_fault": "partial",
       "expected_state": "FAIL",
       "actual_state": "FAIL",
-      "actual_reason": "false-green finding(s): FG-FAILURE-KIND-UNDECLARED",
+      "actual_reason": "incomplete coverage of C*",
       "findings": [
         "FG-FAILURE-KIND-UNDECLARED",
         "FG-FAILURE-KIND-UNDECLARED",
@@ -702,10 +1382,58 @@
           "c05_overlapping"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -760,10 +1488,76 @@
         "total": 14,
         "measured_candidates": [],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -818,10 +1612,76 @@
         "total": 14,
         "measured_candidates": [],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -877,10 +1737,76 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -935,10 +1861,76 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -1002,10 +1994,76 @@
           "c12_exit_without_artifacts",
           "c13_slow"
         ],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -1062,10 +2120,76 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -1122,10 +2246,76 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -1182,10 +2372,1305 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
+      },
+      "behaved_as_expected": true,
+      "problems": []
+    },
+    {
+      "fixture": "selftest_env_drift",
+      "why": "the row's canonical_digest is the frozen payload's digest recomputed under a SANCTIONED interpreter: the behaviour payload is identical, so this is EXECUTION_ENV_DRIFT (accepting, reported) and never MISMATCH_DIGEST -- the false red external review D1 is about",
+      "injected_fault": "env_drift",
+      "expected_state": "PASS",
+      "actual_state": "PASS",
+      "actual_reason": "14/14 rows are EXECUTION_ENV_DRIFT: the behaviour agrees, the interpreter does not match the pinned one (sanctioned set), so this runtime's rows are not measurements in the frozen execution environment",
+      "findings": [],
+      "failed_checks": [],
+      "row_verdicts": {
+        "c01_good_hex": "EXECUTION_ENV_DRIFT",
+        "c02_baseline_upstream": "EXECUTION_ENV_DRIFT",
+        "c03_mirror": "EXECUTION_ENV_DRIFT",
+        "c04_near_tie": "EXECUTION_ENV_DRIFT",
+        "c05_overlapping": "EXECUTION_ENV_DRIFT",
+        "c06_empty": "EXECUTION_ENV_DRIFT",
+        "c07_single": "EXECUTION_ENV_DRIFT",
+        "c08_out_of_bounds": "EXECUTION_ENV_DRIFT",
+        "c09_malformed_import": "EXECUTION_ENV_DRIFT",
+        "c10_raises": "EXECUTION_ENV_DRIFT",
+        "c11_non_deterministic": "EXECUTION_ENV_DRIFT",
+        "c12_exit_without_artifacts": "EXECUTION_ENV_DRIFT",
+        "c13_slow": "EXECUTION_ENV_DRIFT",
+        "c14_near_zero": "EXECUTION_ENV_DRIFT"
+      },
+      "a0_1_qualification": {
+        "state": "PASS",
+        "label": "PASS (14/14 measured)",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "EXECUTION_ENV_DRIFT"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
+      },
+      "behaved_as_expected": true,
+      "problems": []
+    },
+    {
+      "fixture": "selftest_env_drift_unsanctioned",
+      "why": "the same drift with an interpreter OUTSIDE the declared allowed execution set: the behaviour agrees, but the agreement is not evidence about EID*, so it is non-accepting",
+      "injected_fault": "env_drift_unsanctioned",
+      "expected_state": "FAIL",
+      "actual_state": "FAIL",
+      "actual_reason": "E_r(c) disagrees with E*(c): 14 x MISMATCH_EXECUTION_ENV",
+      "findings": [],
+      "failed_checks": [
+        "behaviour-vs-execution-env",
+        "E-r-equals-E-star"
+      ],
+      "row_verdicts": {
+        "c01_good_hex": "MISMATCH_EXECUTION_ENV",
+        "c02_baseline_upstream": "MISMATCH_EXECUTION_ENV",
+        "c03_mirror": "MISMATCH_EXECUTION_ENV",
+        "c04_near_tie": "MISMATCH_EXECUTION_ENV",
+        "c05_overlapping": "MISMATCH_EXECUTION_ENV",
+        "c06_empty": "MISMATCH_EXECUTION_ENV",
+        "c07_single": "MISMATCH_EXECUTION_ENV",
+        "c08_out_of_bounds": "MISMATCH_EXECUTION_ENV",
+        "c09_malformed_import": "MISMATCH_EXECUTION_ENV",
+        "c10_raises": "MISMATCH_EXECUTION_ENV",
+        "c11_non_deterministic": "MISMATCH_EXECUTION_ENV",
+        "c12_exit_without_artifacts": "MISMATCH_EXECUTION_ENV",
+        "c13_slow": "MISMATCH_EXECUTION_ENV",
+        "c14_near_zero": "MISMATCH_EXECUTION_ENV"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "verdicts": [
+            "MISMATCH_EXECUTION_ENV"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
+      },
+      "behaved_as_expected": true,
+      "problems": []
+    },
+    {
+      "fixture": "selftest_measurement_pass",
+      "why": "the same honest fixture as selftest_clean, asserting that the token protocol itself does not cost a conformant adapter anything",
+      "injected_fault": "pass",
+      "expected_state": "PASS",
+      "actual_state": "PASS",
+      "actual_reason": null,
+      "findings": [],
+      "failed_checks": [],
+      "row_verdicts": {
+        "c01_good_hex": "MATCH",
+        "c02_baseline_upstream": "MATCH",
+        "c03_mirror": "MATCH",
+        "c04_near_tie": "MATCH",
+        "c05_overlapping": "MATCH_VERDICT",
+        "c06_empty": "MATCH_VERDICT",
+        "c07_single": "MATCH_VERDICT",
+        "c08_out_of_bounds": "MATCH_VERDICT",
+        "c09_malformed_import": "MATCH_VERDICT",
+        "c10_raises": "MATCH_VERDICT",
+        "c11_non_deterministic": "MATCH_VERDICT",
+        "c12_exit_without_artifacts": "MATCH_VERDICT",
+        "c13_slow": "MATCH_VERDICT",
+        "c14_near_zero": "MATCH"
+      },
+      "a0_1_qualification": {
+        "state": "PASS",
+        "label": "PASS (14/14 measured)",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
+      },
+      "behaved_as_expected": true,
+      "problems": []
+    },
+    {
+      "fixture": "selftest_no_token",
+      "why": "every number agrees and the row still carries no harness measurement token: fail-closed means this is non-accepting, not a silent pass (external review D3)",
+      "injected_fault": "no_token",
+      "expected_state": "FAIL",
+      "actual_state": "FAIL",
+      "actual_reason": "not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+      "findings": [
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION",
+        "MISSING_ATTESTATION"
+      ],
+      "failed_checks": [
+        "measurement-attestation",
+        "E-r-equals-E-star"
+      ],
+      "row_verdicts": {
+        "c01_good_hex": "MISSING_ATTESTATION",
+        "c02_baseline_upstream": "MISSING_ATTESTATION",
+        "c03_mirror": "MISSING_ATTESTATION",
+        "c04_near_tie": "MISSING_ATTESTATION",
+        "c05_overlapping": "MISSING_ATTESTATION",
+        "c06_empty": "MISSING_ATTESTATION",
+        "c07_single": "MISSING_ATTESTATION",
+        "c08_out_of_bounds": "MISSING_ATTESTATION",
+        "c09_malformed_import": "MISSING_ATTESTATION",
+        "c10_raises": "MISSING_ATTESTATION",
+        "c11_non_deterministic": "MISSING_ATTESTATION",
+        "c12_exit_without_artifacts": "MISSING_ATTESTATION",
+        "c13_slow": "MISSING_ATTESTATION",
+        "c14_near_zero": "MISSING_ATTESTATION"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [],
+          "missing_attestation": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "MISSING_ATTESTATION",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": null,
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [],
+          "missing_attestation_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
+      },
+      "behaved_as_expected": true,
+      "problems": []
+    },
+    {
+      "fixture": "selftest_foreign_token",
+      "why": "the row echoes a real OID that the harness did not issue for this candidate (a stale or foreign measurement): the join must be to THIS run's measurement, not to any token",
+      "injected_fault": "foreign_token",
+      "expected_state": "FAIL",
+      "actual_state": "FAIL",
+      "actual_reason": "not accepting: 14 x MISMATCH_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+      "findings": [
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION"
+      ],
+      "failed_checks": [
+        "measurement-attestation",
+        "E-r-equals-E-star"
+      ],
+      "row_verdicts": {
+        "c01_good_hex": "MISMATCH_ATTESTATION",
+        "c02_baseline_upstream": "MISMATCH_ATTESTATION",
+        "c03_mirror": "MISMATCH_ATTESTATION",
+        "c04_near_tie": "MISMATCH_ATTESTATION",
+        "c05_overlapping": "MISMATCH_ATTESTATION",
+        "c06_empty": "MISMATCH_ATTESTATION",
+        "c07_single": "MISMATCH_ATTESTATION",
+        "c08_out_of_bounds": "MISMATCH_ATTESTATION",
+        "c09_malformed_import": "MISMATCH_ATTESTATION",
+        "c10_raises": "MISMATCH_ATTESTATION",
+        "c11_non_deterministic": "MISMATCH_ATTESTATION",
+        "c12_exit_without_artifacts": "MISMATCH_ATTESTATION",
+        "c13_slow": "MISMATCH_ATTESTATION",
+        "c14_near_zero": "MISMATCH_ATTESTATION"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ]
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "MISMATCH_ATTESTATION",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": null,
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
+      },
+      "behaved_as_expected": true,
+      "problems": []
+    },
+    {
+      "fixture": "selftest_no_identity",
+      "why": "the token is echoed but nothing is attested about the bytes used: the token proves which measurement is claimed, not what executed",
+      "injected_fault": "no_identity",
+      "expected_state": "FAIL",
+      "actual_state": "FAIL",
+      "actual_reason": "not accepting: 14 x MISSING_IDENTITY -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+      "findings": [
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY",
+        "MISSING_IDENTITY"
+      ],
+      "failed_checks": [
+        "measurement-attestation",
+        "E-r-equals-E-star"
+      ],
+      "row_verdicts": {
+        "c01_good_hex": "MISSING_IDENTITY",
+        "c02_baseline_upstream": "MISSING_IDENTITY",
+        "c03_mirror": "MISSING_IDENTITY",
+        "c04_near_tie": "MISSING_IDENTITY",
+        "c05_overlapping": "MISSING_IDENTITY",
+        "c06_empty": "MISSING_IDENTITY",
+        "c07_single": "MISSING_IDENTITY",
+        "c08_out_of_bounds": "MISSING_IDENTITY",
+        "c09_malformed_import": "MISSING_IDENTITY",
+        "c10_raises": "MISSING_IDENTITY",
+        "c11_non_deterministic": "MISSING_IDENTITY",
+        "c12_exit_without_artifacts": "MISSING_IDENTITY",
+        "c13_slow": "MISSING_IDENTITY",
+        "c14_near_zero": "MISSING_IDENTITY"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [],
+          "missing_attestation": [],
+          "missing_identity": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "MISSING_IDENTITY",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": null,
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
+      },
+      "behaved_as_expected": true,
+      "problems": []
+    },
+    {
+      "fixture": "selftest_mutant_identity",
+      "why": "the 'claim' attack with the identity made explicit: the row echoes the token the harness issued for E* while attesting the mutant E' evaluator source digest (computed from E' bytes)",
+      "injected_fault": "mutant_e_prime_identity",
+      "expected_state": "FAIL",
+      "actual_state": "FAIL",
+      "actual_reason": "not accepting: 14 x MISMATCH_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+      "findings": [
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION"
+      ],
+      "failed_checks": [
+        "measurement-attestation",
+        "E-r-equals-E-star"
+      ],
+      "row_verdicts": {
+        "c01_good_hex": "MISMATCH_ATTESTATION",
+        "c02_baseline_upstream": "MISMATCH_ATTESTATION",
+        "c03_mirror": "MISMATCH_ATTESTATION",
+        "c04_near_tie": "MISMATCH_ATTESTATION",
+        "c05_overlapping": "MISMATCH_ATTESTATION",
+        "c06_empty": "MISMATCH_ATTESTATION",
+        "c07_single": "MISMATCH_ATTESTATION",
+        "c08_out_of_bounds": "MISMATCH_ATTESTATION",
+        "c09_malformed_import": "MISMATCH_ATTESTATION",
+        "c10_raises": "MISMATCH_ATTESTATION",
+        "c11_non_deterministic": "MISMATCH_ATTESTATION",
+        "c12_exit_without_artifacts": "MISMATCH_ATTESTATION",
+        "c13_slow": "MISMATCH_ATTESTATION",
+        "c14_near_zero": "MISMATCH_ATTESTATION"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ]
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "MISMATCH_ATTESTATION",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": null,
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
+      },
+      "behaved_as_expected": true,
+      "problems": []
+    },
+    {
+      "fixture": "selftest_other_candidate_bytes",
+      "why": "c01's row attests c03's measured bytes and vice versa: the bit-identical value twin is invisible to the numbers and to canonical_digest-by-value, and only the joined measurement sees it",
+      "injected_fault": "other_candidate_bytes",
+      "expected_state": "FAIL",
+      "actual_state": "FAIL",
+      "actual_reason": "not accepting: 2 x MISMATCH_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+      "findings": [
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION"
+      ],
+      "failed_checks": [
+        "measurement-attestation",
+        "E-r-equals-E-star"
+      ],
+      "row_verdicts": {
+        "c01_good_hex": "MISMATCH_ATTESTATION",
+        "c02_baseline_upstream": "MATCH",
+        "c03_mirror": "MISMATCH_ATTESTATION",
+        "c04_near_tie": "MATCH",
+        "c05_overlapping": "MATCH_VERDICT",
+        "c06_empty": "MATCH_VERDICT",
+        "c07_single": "MATCH_VERDICT",
+        "c08_out_of_bounds": "MATCH_VERDICT",
+        "c09_malformed_import": "MATCH_VERDICT",
+        "c10_raises": "MATCH_VERDICT",
+        "c11_non_deterministic": "MATCH_VERDICT",
+        "c12_exit_without_artifacts": "MATCH_VERDICT",
+        "c13_slow": "MATCH_VERDICT",
+        "c14_near_zero": "MATCH"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c02_baseline_upstream",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": [
+            "c01_good_hex",
+            "c03_mirror"
+          ]
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "MISMATCH_ATTESTATION",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c02_baseline_upstream",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [
+            "c01_good_hex",
+            "c03_mirror"
+          ],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
+      },
+      "behaved_as_expected": true,
+      "problems": []
+    },
+    {
+      "fixture": "selftest_attest_other_measurement",
+      "why": "the row echoes the token and the right identity but attests a behaviour digest that is not the one the harness measured: the attestation is compared against the harness's own measurement, not merely collected",
+      "injected_fault": "attest_other_measurement",
+      "expected_state": "FAIL",
+      "actual_state": "FAIL",
+      "actual_reason": "not accepting: 14 x MISMATCH_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+      "findings": [
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION",
+        "MISMATCH_ATTESTATION"
+      ],
+      "failed_checks": [
+        "measurement-attestation",
+        "E-r-equals-E-star"
+      ],
+      "row_verdicts": {
+        "c01_good_hex": "MISMATCH_ATTESTATION",
+        "c02_baseline_upstream": "MISMATCH_ATTESTATION",
+        "c03_mirror": "MISMATCH_ATTESTATION",
+        "c04_near_tie": "MISMATCH_ATTESTATION",
+        "c05_overlapping": "MISMATCH_ATTESTATION",
+        "c06_empty": "MISMATCH_ATTESTATION",
+        "c07_single": "MISMATCH_ATTESTATION",
+        "c08_out_of_bounds": "MISMATCH_ATTESTATION",
+        "c09_malformed_import": "MISMATCH_ATTESTATION",
+        "c10_raises": "MISMATCH_ATTESTATION",
+        "c11_non_deterministic": "MISMATCH_ATTESTATION",
+        "c12_exit_without_artifacts": "MISMATCH_ATTESTATION",
+        "c13_slow": "MISMATCH_ATTESTATION",
+        "c14_near_zero": "MISMATCH_ATTESTATION"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ]
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "MISMATCH_ATTESTATION",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": null,
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []
@@ -1242,10 +3727,76 @@
           "c14_near_zero"
         ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation": [],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "PINNED"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "ATTESTATION_OK",
+          "required": true,
+          "oid": "a01-reference-20260921T171004",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "harness_run_id": "a01-reference-20260921T171004",
+          "nonce": "dc5e66e616ee5a78608f821ccbe709e9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171004.json",
+          "envelope_sha256": "29953a73546ecc20232f809b6de3915af41263cf9f4be2b4d97c0a2180c603d0",
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_attestation_candidates": [],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       },
       "behaved_as_expected": true,
       "problems": []

@@ -1,0 +1,27 @@
+# 05 config hygiene @ 2026-09-21T17:00:08+08:00
+
+## backups (outside the repo; no secret is written into the repo)
+-rw------- 1 ebt ebt 555 Sep  9 10:20 /home/ebt/.claude/settings.json.a0d5-bak-20260921T165606
+-rw------- 1 ebt ebt  77 Sep 21 09:34 /home/ebt/.codex/auth.json.a0d5-bak-20260921T165606
+-rw------- 1 ebt ebt 564 Sep 21 09:34 /home/ebt/.codex/config.toml.a0d5-bak-20260921T165606
+
+b38d65888b66193f1d4935507ff1ee1cd7696ef9179dd3bb374fe7fde425cab6  /home/ebt/.codex/config.toml.a0d5-bak-20260921T165606
+6bbf3e3274dcc8e5d0c9f08c7731df9a4d229f0610e073a3f657867aff0843a4  /home/ebt/.claude/settings.json.a0d5-bak-20260921T165606
+c8e52cebd958b107061ed47fa8d03f764e388f13cb87084a1b5afa88d32b8e82  /home/ebt/.codex/auth.json.a0d5-bak-20260921T165606
+
+## applied diff: ~/.codex/config.toml
+--- /home/ebt/.codex/config.toml.a0d5-bak-20260921T165606	2026-09-21 09:34:29.187596885 +0800
++++ /home/ebt/.codex/config.toml	2026-09-21 16:56:20.219730971 +0800
+@@ -7,7 +7,7 @@
+ name = "zjapi"
+ wire_api = "responses"
+ requires_openai_auth = true
+-base_url = "https://zjapi.com"
++base_url = "https://zjapi.com/v1"
+ 
+ [features]
+ goals = true
+(diff exit=1)
+
+## NOT applied: ~/.claude/settings.json is byte-identical to its backup
+   identical (no change applied)

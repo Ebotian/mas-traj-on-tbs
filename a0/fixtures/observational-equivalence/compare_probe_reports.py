@@ -105,18 +105,27 @@ def main(argv=None) -> int:
     parser.add_argument("--out", required=True)
     parser.add_argument("--label-before", default=None)
     parser.add_argument("--label-after", default=None)
+    parser.add_argument("--scope", choices=("all", "rows"), default="all",
+                        help="all: exit non-zero on any difference, checks included. rows: judge the "
+                             "exit code on the row dimension and on state/reason only, and record "
+                             "check-set differences (a checker revision legitimately adds checks) as "
+                             "informational")
     args = parser.parse_args(argv)
 
     before = load_reports(Path(args.before))
     after = load_reports(Path(args.after))
     names = sorted(set(before) | set(after))
-    problems, results = [], []
+    problems, informational, results = [], [], []
     for name in names:
         if name not in before or name not in after:
             problems.append(f"{name}: present on only one side")
             continue
         b, a = summarise(before[name]["entry"]), summarise(after[name]["entry"])
-        row_problems = diff_runtime(name, b, a)
+        all_problems = diff_runtime(name, b, a)
+        row_problems = [p for p in all_problems if " per-check ok flags changed" not in p
+                        and "a failing check's detail changed" not in p
+                        and "finding ids" not in p]
+        check_problems = [p for p in all_problems if p not in row_problems]
         results.append({
             "runtime": name,
             "before": {k: b[k] for k in ("state", "reason", "checks", "finding_ids",
@@ -127,29 +136,41 @@ def main(argv=None) -> int:
                                         "claim_field_value")},
             "rows_before": b["rows"],
             "rows_after": a["rows"],
-            "identical": not row_problems,
-            "problems": row_problems,
+            "identical": not all_problems,
+            "rows_identical": not row_problems,
+            "problems": all_problems,
+            "check_differences": check_problems,
         })
-        problems.extend(row_problems)
+        if args.scope == "rows":
+            problems.extend(row_problems)
+            informational.extend(check_problems)
+        else:
+            problems.extend(all_problems)
 
     doc = {
         "schema": "a0.fixture.observational-equivalence.probe-reprocheck/v1",
+        "scope": args.scope,
         "before": {"dir": str(args.before), "label": args.label_before},
         "after": {"dir": str(args.after), "label": args.label_after},
         "runtimes_compared": len(results),
         "identical": not problems,
+        "identical_including_checks": not any(r["problems"] for r in results),
+        "informational_check_differences": informational,
         "problems": problems,
         "results": results,
     }
     Path(args.out).write_text(json.dumps(doc, indent=2) + "\n")
 
-    print(f"{'runtime':<22} {'state before':<10} {'state after':<10} {'rows':<8} identical")
+    print(f"scope={args.scope}")
+    print(f"{'runtime':<22} {'state before':<10} {'state after':<10} {'rows':<8} rows-identical")
     for r in results:
         print(f"  {r['runtime']:<20} {str(r['before']['state']):<10} {str(r['after']['state']):<10} "
-              f"{len(r['rows_after']):<8} {r['identical']}")
+              f"{len(r['rows_after']):<8} {r['rows_identical']}")
         print(f"      claim field: before={'adapter_declared_verdict' if r['before']['legacy_claim_field_present'] else '<none>'}"
               f" after={'adapter_claim__untrusted' if r['after']['claim_field_present'] else '<none>'}"
               f" value={r['after']['claim_field_value']!r}")
+        for problem in r["check_differences"]:
+            print(f"      (check-level, informational) {problem[:200]}")
     for problem in problems:
         print(f"  !! {problem}")
     print(f"identical: {not problems}")

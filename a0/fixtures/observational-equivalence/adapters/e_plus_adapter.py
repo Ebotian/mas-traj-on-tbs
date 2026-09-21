@@ -22,9 +22,23 @@ is only what the A0.1 checker does *not* measure for itself:
   --twin-swap        evaluate c03's directory for c01's row (c01 and c03 are
                      bit-identical in value, so only a file-identity field can see it)
   --echo-manifest    carry the evaluator's own `E_STAR_MANIFEST {...}` stdout in the row
+  --attestation      what the row says about the harness's measurement token (D3, the
+                     envelope in `$A0_ENVELOPE`):
+                       none      nothing (the pre-D3 shape; MISSING_ATTESTATION when the
+                                 harness requires a token)
+                       measured  the token for this candidate, plus what *this lane*
+                                 executed: E*'s source-digest scheme over
+                                 --evaluator-dir, the candidate bytes it read, and the
+                                 behaviour digest of the Outcome it produced
+                       copy      the token for this candidate, plus the token's own
+                                 binding values verbatim (evaluator source digest,
+                                 candidate bytes, behaviour digest, canonical digest)
+                                 while the lane still executes --evaluator-dir -- the
+                                 "consistent liar" of `a0/envelope/README.md` §5
 
 Modes `own` + the real E* is the control: it must PASS, or the experiment's
-"the checker accepts E'" rows mean nothing.
+"the checker accepts E'" rows mean nothing.  `--attestation measured` + the real E*
+is the same control for D3.
 """
 
 from __future__ import annotations
@@ -138,6 +152,58 @@ def scratch_root(runtime: str) -> Path:
     return root
 
 
+def load_harness_envelope():
+    """The harness's measurement envelope (D3), handed over in `A0_ENVELOPE`."""
+    path = os.environ.get("A0_ENVELOPE") or None
+    if not path or not Path(path).is_file():
+        return None, None
+    sys.path.insert(0, str(A0 / "envelope"))
+    import envelope as env  # noqa: PLC0415
+
+    return env.load_envelope(path), env
+
+
+def attestation_block(mode, env, token, *, eid_star, evaluator_dir, candidate_sha256, outcome):
+    """What a lane attests about the measurement it reports (D3).
+
+      measured  what this lane really executed: E*'s own source-digest scheme over the
+                evaluator directory it ran, the candidate bytes it read, and the behaviour
+                digest of the Outcome it produced.
+      copy      the harness token's own binding values, verbatim, while the lane runs
+                something else -- the "consistent liar" `a0/envelope/README.md` §5 warns
+                about.  The row's canonical_digest is copied from the binding too, so the
+                lane is internally consistent with the identity it claims.
+    """
+    binding = token["binding"]
+    block = {
+        "schema": env.SCHEMA_ATTESTATION,
+        "oid": token["oid"],
+        "harness_run_id": binding.get("harness_run_id"),
+        "nonce": binding.get("nonce"),
+        "theta_e": binding.get("theta_e"),
+    }
+    if mode == "measured":
+        block.update({
+            "eid_star": eid_star,
+            "evaluator_source_sha256": env.evaluator_source_digest(evaluator_dir),
+            "candidate_sha256": candidate_sha256,
+            "behaviour_digest": env.behaviour_digest(outcome),
+            "interpreter": env.interpreter_of(outcome),
+        })
+    elif mode == "copy":
+        block.update({
+            "eid_star": binding.get("eid_star"),
+            "evaluator_source_sha256": binding.get("evaluator_source_sha256"),
+            "candidate_sha256": binding.get("candidate_sha256"),
+            "behaviour_digest": binding.get("behaviour_digest"),
+            "interpreter": binding.get("interpreter"),
+            "canonical_digest": binding.get("canonical_digest"),
+        })
+    else:
+        raise ValueError(f"unknown attestation mode {mode!r}")
+    return block
+
+
 def conformance(flags: dict) -> int:
     runtime = flags.get("runtime", "unknown")
     out_path = Path(flags["out"])
@@ -147,6 +213,14 @@ def conformance(flags: dict) -> int:
     interpreter = flags.get("python") or str(E_STAR_PYTHON)
     twin_swap = flags.get("twin-swap", "false") not in ("false", "0")
     echo_manifest = flags.get("echo-manifest", "false") not in ("false", "0")
+    attestation = flags.get("attestation", "none")
+    envelope = envmod = None
+    if attestation != "none":
+        envelope, envmod = load_harness_envelope()
+        if envelope is None:
+            print("e_plus_adapter: --attestation needs the harness envelope in A0_ENVELOPE, "
+                  "which this invocation did not provide", file=sys.stderr)
+            return 2
 
     theta = dict(DEFAULT_THETA)
     theta.update({k: v for k, v in parse_theta(flags.get("theta", "")).items() if k in THETA_KEYS})
@@ -234,6 +308,18 @@ def conformance(flags: dict) -> int:
             return 2
         if echo_manifest and manifest_line:
             row["raw_manifest_line"] = manifest_line
+        if attestation != "none":
+            token = envmod.token_for(envelope, cid)
+            if token is None:
+                print(f"e_plus_adapter: the harness issued no token for {cid}", file=sys.stderr)
+                return 2
+            row["measurement"] = attestation_block(
+                attestation, envmod, token,
+                eid_star=eid_star, evaluator_dir=evaluator_dir,
+                candidate_sha256=observed, outcome=outcome,
+            )
+            if attestation == "copy":
+                row["canonical_digest"] = token["binding"].get("canonical_digest")
         rows.append(row)
 
     doc = {

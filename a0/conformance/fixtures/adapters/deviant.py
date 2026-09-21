@@ -36,6 +36,31 @@ a conformant answer plus exactly one fault:
                        truthful and there is no lie to catch, but the (verdict, failure.kind) surface
                        adapter_contract.md §4.3.5 compares is absent, so it must FAIL rather than pass
                        vacuously (audit: the second residual half of R1)
+
+External review D1 (behaviour vs execution environment):
+
+  env_drift            the row's `canonical_digest` is the *frozen payload's* digest recomputed with a
+                       sanctioned interpreter block: the behaviour payload is identical, only the
+                       execution environment differs -> EXECUTION_ENV_DRIFT (accepting), never
+                       MISMATCH_DIGEST
+  env_drift_unsanctioned  the same, with an interpreter outside the declared allowed execution set
+                       -> MISMATCH_EXECUTION_ENV (non-accepting)
+
+External review D3 (the harness measurement token):
+
+  no_token             the row carries its identity but echoes no harness token -> MISSING_ATTESTATION
+  foreign_token        the row echoes a token that is *not* the one the harness issued for its
+                       candidate (a real OID over a different nonce) -> MISMATCH_ATTESTATION
+  no_identity          the row echoes the harness token and attests nothing else -> MISSING_IDENTITY
+  mutant_e_prime_identity  the row echoes the harness token issued for E* while attesting the source
+                       digest of the mutant `E'` (computed from its bytes) -> MISMATCH_ATTESTATION:
+                       this is the 'claim' attack with the identity made explicit
+  other_candidate_bytes  c01's row attests c03's measured candidate bytes (and vice versa) while its
+                       values are c01's -> MISMATCH_ATTESTATION: the twin swap D3 is meant to catch
+  attest_other_measurement  the row echoes the token and the right identity but attests another
+                       candidate's real behaviour digest (the next row's measurement) -> the
+                       attestation is compared against the harness's own measurement, not merely
+                       collected: MISMATCH_ATTESTATION
 """
 
 from __future__ import annotations
@@ -47,17 +72,29 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fixture_common import (  # noqa: E402
-    A0, C_STAR_MANIFEST, FR_DECLARATION, THETA_KEYS, canonical_file_digest, eid_r_declaration,
+    A0, C_STAR_MANIFEST, E_STAR_SCRIPT, FR_DECLARATION, THETA_KEYS, canonical_file_digest,
+    eid_r_declaration, envelope_from_flags, envelope_module, frozen_outcome, measurement_block,
     parse_theta, read_args, reference_rows_from_sweep, write_out,
 )
 
 STALE_EID = "fac50fc4a5c52556b6d4f35c5a68edbfa076cfde813f336346e1e083ffb24b2d"
+#: the mutant from a0/fixtures/observational-equivalence: D3's 'claim' attack, with the evaluator
+#: source digest computed from its actual bytes rather than invented.
+E_PRIME_DIR = A0 / "fixtures" / "observational-equivalence" / "e_prime"
+SANCTIONED_DRIFT_INTERPRETER = {"implementation": "cpython", "version": "3.14.7"}
+UNSANCTIONED_INTERPRETER = {"implementation": "cpython", "version": "3.13.5"}
+TWIN_PAIRS = {"c01_good_hex": "c03_mirror", "c03_mirror": "c01_good_hex"}
 MODES = [
     "pass", "zero_on_error", "cache_hit", "timeout", "truncated", "drift_1e_6", "drift_1e_10",
     "swap_near_tie", "digest_swap", "partial", "manifest_triple", "attempt_theta_drift",
     "stale_eid", "native_theta", "synthetic_declared", "synthetic_mislabeled",
     "wrong_failure_kind", "wrong_failure_stage", "omit_failure_kind",
+    "env_drift", "env_drift_unsanctioned",
+    "no_token", "foreign_token", "no_identity", "mutant_e_prime_identity", "other_candidate_bytes",
+    "attest_other_measurement",
 ]
+ATTESTATION_MODES = ("no_token", "foreign_token", "no_identity", "mutant_e_prime_identity",
+                     "other_candidate_bytes", "attest_other_measurement")
 
 
 def row_from_sweep(ref: dict) -> dict:
@@ -86,6 +123,22 @@ def row_from_sweep(ref: dict) -> dict:
 MODE = [None]
 
 
+def _apply_env_drift(rows: list, interpreter: dict) -> None:
+    """D1 fault: report the *frozen payload's* digest recomputed under another interpreter.
+
+    The behaviour payload is untouched -- only the execution environment differs -- so the checker
+    must classify this as an environment verdict (`EXECUTION_ENV_DRIFT` when the interpreter is in
+    the declared allowed set, `MISMATCH_EXECUTION_ENV` when it is not) and never as a behaviour
+    disagreement. The value is computed with `E*`'s own digest scheme, so it is a real digest of a
+    real payload, not a corrupted string.
+    """
+    env_mod = envelope_module()
+    for row in rows:
+        frozen = frozen_outcome(row["candidate_id"])
+        row["canonical_digest"] = env_mod.digest_with_interpreter(frozen, interpreter)
+        row["measurement"]["interpreter"] = interpreter
+
+
 def build_doc(flags: dict) -> dict:
     mode = MODE[0]
     runtime = flags.get("runtime", "unknown")
@@ -93,8 +146,50 @@ def build_doc(flags: dict) -> dict:
              "runtime_budget_ms": 250.0, "timeout_s": 120.0}
     theta.update({k: v for k, v in parse_theta(flags.get("theta", "")).items() if k in THETA_KEYS})
     eid_star = json.loads(Path(flags["eid"]).read_text()).get("eid_star") if flags.get("eid") else ""
+    envelope = envelope_from_flags(flags)
+    env_mod = envelope_module()
 
-    rows = [row_from_sweep(ref) for ref in reference_rows_from_sweep()]
+    sweep = reference_rows_from_sweep()
+    rows = [row_from_sweep(ref) for ref in sweep]
+    # `attest_other_measurement` needs a *different, real* behaviour digest per row: the measurement
+    # of the next candidate in C* is exactly what a runtime that reused the wrong row's measurement
+    # would attest, and every member has one.
+    next_of = {r["candidate_id"]: sweep[(i + 1) % len(sweep)]["candidate_id"] for i, r in enumerate(sweep)}
+
+    # D3: every row carries a measurement attestation. `pass` and the pre-existing fault modes attest
+    # honestly (so their verdicts are about their own fault, not about a missing token); the
+    # `ATTESTATION_MODES` inject the token/identity faults named in the module docstring.
+    for row in rows:
+        cid = row["candidate_id"]
+        outcome = frozen_outcome(cid)
+        identity = "omit" if mode == "no_identity" else "own"
+        overrides = None
+        if mode == "no_token":
+            overrides = {"oid": None}
+        elif mode == "foreign_token":
+            token = env_mod.token_for(envelope or {}, cid) if envelope else None
+            overrides = (
+                {"oid": env_mod.token_oid(dict(token["binding"], nonce="0" * 32))} if token else {"oid": None}
+            )
+        elif mode == "mutant_e_prime_identity":
+            overrides = {"evaluator_source_sha256": env_mod.evaluator_source_digest(E_PRIME_DIR)}
+        elif mode == "other_candidate_bytes":
+            twin = TWIN_PAIRS.get(cid)
+            overrides = (
+                {"candidate_sha256": env_mod.sha256_file(C_STAR_MANIFEST.parent / twin / "solution.py")}
+                if twin else None
+            )
+        elif mode == "attest_other_measurement":
+            other = frozen_outcome(next_of[cid])
+            overrides = {"behaviour_digest": env_mod.behaviour_digest(other)}
+        row["measurement"] = measurement_block(
+            cid, envelope=envelope, measured_candidate_sha256=row["source_sha256"],
+            outcome=outcome, identity=identity, overrides=overrides,
+        )
+    if mode == "env_drift":
+        _apply_env_drift(rows, SANCTIONED_DRIFT_INTERPRETER)
+    elif mode == "env_drift_unsanctioned":
+        _apply_env_drift(rows, UNSANCTIONED_INTERPRETER)
 
     if mode == "zero_on_error":
         for row in rows:

@@ -1,0 +1,488 @@
+{
+  "schema": "a0.envelope/v1",
+  "issued_at": "2026-09-21T17:24:59+0800",
+  "issued_by": "a0/conformance/conformance.py reference sweep",
+  "harness_run_id": "a01-reference-20260921T172459",
+  "nonce": "eccea5b945d6679720c5d37fe0d2bdcf",
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "theta_e": {
+    "seed": 1337,
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "timeout_s": 120.0
+  },
+  "evaluator": {
+    "script": "tasks/circle-packing/e_star.py",
+    "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+    "e_star_version": "1.0.0",
+    "interpreter": {
+      "implementation": "cpython",
+      "version": "3.14.7"
+    },
+    "source_files": [
+      {
+        "bytes": 34860,
+        "name": "e_star.py",
+        "sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567"
+      },
+      {
+        "bytes": 4704,
+        "name": "e_star_child.py",
+        "sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca"
+      }
+    ]
+  },
+  "execution_set": {
+    "path": "/home/ebt/rsi-dev/a0/envelope/execution-set.json",
+    "sha256": "3779626f67f2c87a47737a99f6acacd88ba8c3229e3899b5eb597bdf0c5cf257",
+    "pinned": {
+      "implementation": "cpython",
+      "version": "3.12.11",
+      "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+      "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+      "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+    },
+    "sanctioned": [
+      {
+        "implementation": "cpython",
+        "version": "3.12.11",
+        "evidence": "the pinned interpreter itself",
+        "measured_on": "a0/tasks/circle-packing/E_STAR.json (frozen table)"
+      },
+      {
+        "implementation": "cpython",
+        "version": "3.14.7",
+        "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+        "measured_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/",
+        "sanctioned_because": "measured equivalent on C*, not asserted equivalent",
+        "residual_risk": "equivalence is measured on C* only, and only for the two interpreter classes above. E*'s own source comment notes that CPython's sum() semantics changed at 3.12, so 3.11 and earlier are a PLAUSIBLE but UNMEASURED source of numeric drift; they are deliberately NOT sanctioned."
+      }
+    ]
+  },
+  "harness_execution_env": {
+    "status": "SANCTIONED",
+    "observed": {
+      "implementation": "cpython",
+      "version": "3.14.7"
+    },
+    "pinned": {
+      "implementation": "cpython",
+      "version": "3.12.11"
+    },
+    "allowed": [
+      {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      {
+        "implementation": "cpython",
+        "version": "3.14.7"
+      }
+    ],
+    "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+    "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+  },
+  "candidate_count": 14,
+  "candidates": {
+    "c01_good_hex": {
+      "oid": "0f37a989ba2a65fcc068d9a93e6ed06ad613e20f3242a18dd4eaa823bc9a18dd",
+      "binding": {
+        "candidate_id": "c01_good_hex",
+        "candidate_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "65daffac4768d8d15650baf0827308d7649b1d5cc08513dcccc49f4bb6fef123",
+        "canonical_digest": "c45d79eeb20c9f551d384d60b33225744f893479e657e99fe43a9538e3cbb83f",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+    },
+    "c02_baseline_upstream": {
+      "oid": "54ebad057ab441765145637cb708913e823b2a6bd8176cae09fed54e1e26e1db",
+      "binding": {
+        "candidate_id": "c02_baseline_upstream",
+        "candidate_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "f01f10f8229f191da93fe8a74a56c58031576ab402f5b5a8a3c7eb9174129207",
+        "canonical_digest": "9bb99f39ecbf56c02dad9aa6a27a980232447e21fc0d5379ca988e3cbe97b058",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+    },
+    "c03_mirror": {
+      "oid": "246a41e0934f4d5d868764f64b081886a4c1d42df9851803e0c58790e0bfbbde",
+      "binding": {
+        "candidate_id": "c03_mirror",
+        "candidate_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "688d4d7e158d052a97b43e766d6faab625031db0313685596bd41b4b3cf1964b",
+        "canonical_digest": "83edc4324f2ffb7ef4785a35b286c21e5de8868d8b07264955181f8bede6c6ad",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf"
+    },
+    "c04_near_tie": {
+      "oid": "3b76419dc404033810b9e488d1e2d066be5e14d671d90ba02a8a8e4dfab18f32",
+      "binding": {
+        "candidate_id": "c04_near_tie",
+        "candidate_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "e00d05d50d64675815640a2807aeb1fc14954e7626d9296cdbe542e3845ff7b0",
+        "canonical_digest": "b6819864f48b50fbd3d1eb5e8b69654d2d0867a175d6cee7b439e2e1eacd400a",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418"
+    },
+    "c05_overlapping": {
+      "oid": "55edd9b07446b7f27008323269e65a97aa619178af4348ffa5c0cfb7ac14f975",
+      "binding": {
+        "candidate_id": "c05_overlapping",
+        "candidate_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "34fce10674ffe5f2b8b657cc5c713158121fba6f39fddd1053044dcb4c13d547",
+        "canonical_digest": "22edb359cf51a01c752f66281eb32c5c7314b59dada2fff2f2ff656e6b8d1131",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c"
+    },
+    "c06_empty": {
+      "oid": "1151897d6af3250abbbe2867d2d21cd65928a73b20811f1c57a1b149e890eea1",
+      "binding": {
+        "candidate_id": "c06_empty",
+        "candidate_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "f410339c4b28814b4d93a2ba38cd3e4b965fff56efb609201ba2079e80c9f3a9",
+        "canonical_digest": "5a52436c2f08b7f28bfd9f034cb1e28085b6259c1da589abc657865c5da980e1",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41"
+    },
+    "c07_single": {
+      "oid": "b770115f19212cd582e5e7cab1557b3be84ebd69822b21f1a9fc2acba583d764",
+      "binding": {
+        "candidate_id": "c07_single",
+        "candidate_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "730e177705fc429bb7950a15895930cfb2990f1d038f4775ea629beb9b2ffbf6",
+        "canonical_digest": "a027fb3f56fec5814e491092331848826e96e8e51ab7916ca925c170b5195465",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90"
+    },
+    "c08_out_of_bounds": {
+      "oid": "4c1c9f1e72afbfcad02862bf1d8c26ebeee96b81bee6b4d68d275f40d9877f85",
+      "binding": {
+        "candidate_id": "c08_out_of_bounds",
+        "candidate_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "bb939996a2d19e045c397d5555549c46acf0ceddf2d4b4a893e486e1fc045459",
+        "canonical_digest": "5b69c559c6c61c3f4b37e186b99cfba487d14f00b820b53cbc5f3dd6de457612",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143"
+    },
+    "c09_malformed_import": {
+      "oid": "72564d93929344dc2ab693a869a14455365554b1ea0b5942ef0547ac37cd230f",
+      "binding": {
+        "candidate_id": "c09_malformed_import",
+        "candidate_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "97886403db96be5c536ffb43c9bd338dba9e977de370771aa13f74b9c04e639e",
+        "canonical_digest": "32c33ad7a945a71ef2f48057a55342a27a95afc1ea0c00498b55b16754b71042",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17"
+    },
+    "c10_raises": {
+      "oid": "ea4169f0eee73dc34c83c4e4afbb41eb452843662e2462c3d14166ffc99d3b75",
+      "binding": {
+        "candidate_id": "c10_raises",
+        "candidate_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "ba0c067ef8235e3a418f1068deb45f22836b4d558e30e896f0fc96af2741d17c",
+        "canonical_digest": "d233b0cae521f20a33294be0a9818f98d38b1a61fbddb6d54dc400d68c027194",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206"
+    },
+    "c11_non_deterministic": {
+      "oid": "2b3a750d3fbf4c5992f8cfb33f978769710184fdfe0ba70964232326d9c42bdc",
+      "binding": {
+        "candidate_id": "c11_non_deterministic",
+        "candidate_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "9c8a16d08cbcde7a97212509c60afd1da9251191ff9f7c3303be8f451f193d0e",
+        "canonical_digest": "e5e8c00ade1107fd998d1ba5ca87106716b88323dad3fff978758a2c52589b8c",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044"
+    },
+    "c12_exit_without_artifacts": {
+      "oid": "825bde51f6283ab58ec24fb307c90a4e15aa7afcc03cd2470d38bb1db3cef8be",
+      "binding": {
+        "candidate_id": "c12_exit_without_artifacts",
+        "candidate_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "8c03704fadac8a8329f3da135b31edfacb5a04f465e5a7e3aaecc8f01fbc5187",
+        "canonical_digest": "a9532e543c7674a9af1b88f906c6938d3a426adf3c26578e0e84198232230ffc",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d"
+    },
+    "c13_slow": {
+      "oid": "febdabfa76abf573d16c5fc51b87a12ab9cb73599a5147088de534790ab4350b",
+      "binding": {
+        "candidate_id": "c13_slow",
+        "candidate_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "442b460585317e9e292888cd3f037a4bd720b46221264f538e8d270be1b06362",
+        "canonical_digest": "a5a2596ee3790ff9c94c4974a21b131116e1783a584787a33f3622d79119641b",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14"
+    },
+    "c14_near_zero": {
+      "oid": "49afebdee26ea21672b4f64331f67d488ad977354b8e6f2e883b5d9f64ced52e",
+      "binding": {
+        "candidate_id": "c14_near_zero",
+        "candidate_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "theta_e": {
+          "seed": 1337,
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "timeout_s": 120.0
+        },
+        "behaviour_digest": "3a90f151499cd9e9c4880ed2ae2f34a55319536847a1ff54bd3e9051ff1c00b2",
+        "canonical_digest": "65c18e93dadccef072f257ee7e99057ac490a256753551b56e09ada8e96a3215",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "harness_run_id": "a01-reference-20260921T172459",
+        "nonce": "eccea5b945d6679720c5d37fe0d2bdcf"
+      },
+      "manifest_solution_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113"
+    }
+  },
+  "verification": {
+    "oid": "sha256(\"a0.envelope.measurement_token/v1\" 0x00 canonical_json(binding))",
+    "binding_fields": [
+      "behaviour_digest",
+      "candidate_id",
+      "candidate_sha256",
+      "canonical_digest",
+      "eid_star",
+      "evaluator_source_sha256",
+      "harness_run_id",
+      "interpreter",
+      "nonce",
+      "theta_e"
+    ],
+    "rule": "a row is acceptable only if it echoes this OID for its candidate and attests the evaluator source digest, the candidate bytes, the theta_E and the behaviour digest it produced; a row that omits the token or the identity fields is non-accepting (MISSING_ATTESTATION / MISSING_IDENTITY), never a silent pass"
+  },
+  "path": "/home/ebt/rsi-dev/a0/verify/converge-d1d3/d1/state.py314/envelope/measurement_tokens.a01-reference-20260921T172459.json",
+  "interpreter_path": "/usr/bin/python3.14",
+  "state_root": "/home/ebt/rsi-dev/a0/verify/converge-d1d3/d1/state.py314"
+}

@@ -1,9 +1,12 @@
+checker revision: e40d008d9ad0874b0241143c7b436df7640f1e9a7e4af55b443d88469f0978ce
+envelope flags: <none: default required>
+writing reports to: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance
 adapter revision: a6cff4b2f20b2fec9197830900e2ea4baf9c549c996b6e000f24459c8ba6bbbd
 mutant E' revision: cfaa619410b2862b1555db41cf5a5d61aa58cb2d82e32dd457711067f00c7b8c
 === eplus_control ===
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_control.json
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_control.md
-A0.1 labels (measured split always shown): {"eplus_control": "PASS (14/14 measured)"}
+A0.1 labels (measured split always shown): {"eplus_control": "FAIL"}
 === eplus_control_py314 ===
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_control_py314.json
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_control_py314.md
@@ -15,25 +18,25 @@ A0.1 labels (measured split always shown): {"eplus_mut_own": "FAIL"}
 === eplus_mut_claim ===
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_mut_claim.json
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_mut_claim.md
-A0.1 labels (measured split always shown): {"eplus_mut_claim": "PASS (14/14 measured)"}
+A0.1 labels (measured split always shown): {"eplus_mut_claim": "FAIL"}
 === eplus_mut_omit ===
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_mut_omit.json
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_mut_omit.md
-A0.1 labels (measured split always shown): {"eplus_mut_omit": "PASS (14/14 measured)"}
+A0.1 labels (measured split always shown): {"eplus_mut_omit": "FAIL"}
 === eplus_mut_twin ===
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_mut_twin.json
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_mut_twin.md
-A0.1 labels (measured split always shown): {"eplus_mut_twin": "PASS (14/14 measured)"}
+A0.1 labels (measured split always shown): {"eplus_mut_twin": "FAIL"}
 === eplus_mut_echo ===
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_mut_echo.json
 written: /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_mut_echo.md
 A0.1 labels (measured split always shown): {"eplus_mut_echo": "FAIL"}
 
 === verdicts ===
-eplus_control          PASS     all checks passed                                       rows={'MATCH': 5, 'MATCH_VERDICT': 9}
-eplus_control_py314    FAIL     E_r(c) disagrees with E*(c)                             rows={'MISMATCH_DIGEST': 14}
-eplus_mut_claim        PASS     all checks passed                                       rows={'MATCH': 5, 'MATCH_VERDICT': 9}
-eplus_mut_echo         FAIL     adapter check(s) failed: E-star-manifest-echo           rows={'MATCH': 5, 'MATCH_VERDICT': 9}
-eplus_mut_omit         PASS     all checks passed                                       rows={'MATCH': 5, 'MATCH_VERDICT': 9}
-eplus_mut_own          FAIL     E_r(c) disagrees with E*(c)                             rows={'MISMATCH_DIGEST': 14}
-eplus_mut_twin         PASS     all checks passed                                       rows={'MATCH': 5, 'MATCH_VERDICT': 9}
+eplus_control          FAIL     not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission) rows={'MISSING_ATTESTATION': 14}
+eplus_control_py314    FAIL     not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission) rows={'MISSING_ATTESTATION': 14}
+eplus_mut_claim        FAIL     not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission) rows={'MISSING_ATTESTATION': 14}
+eplus_mut_echo         FAIL     not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission) rows={'MISSING_ATTESTATION': 14}
+eplus_mut_omit         FAIL     not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission) rows={'MISSING_ATTESTATION': 14}
+eplus_mut_own          FAIL     E_r(c) disagrees with E*(c): 14 x MISMATCH_DIGEST       rows={'MISMATCH_DIGEST': 14}
+eplus_mut_twin         FAIL     not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission) rows={'MISSING_ATTESTATION': 14}

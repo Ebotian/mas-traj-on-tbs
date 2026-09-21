@@ -24,6 +24,9 @@ coordinates come from the binding decisions in `a0/tasks/circle-packing/README.m
 | `fixtures/adapters/reference_adapter.py` | an honest fixture: really executes `E*` on all 14 members of `C*`. The template an adapter should follow. **Not** a runtime |
 | `fixtures/adapters/deviant.py` | one named fault per `--mode` |
 | `adapters.json` | optional entry-point registry, for an adapter layout discovery does not recognise |
+| `out/envelope/measurement_tokens.<run>.json` | **the measurement envelope** the runner issues from its own `E*` sweep: one OID measurement token per member of `C*` (external review D3). One immutable file per sweep (the newest 3 are kept), so a later sweep can never replace the file an existing report names |
+| `a0/envelope/` (sibling) | the projection (behaviour vs execution environment, D1) and the token scheme (D3), plus the declared allowed execution set and their self-test |
+| `out/evidence-d1d3/` | the executed acceptance evidence for D1/D3: `index.json` (each entry names its command), the fixture-row reports, and the `reference --python python3.14` sweep |
 | `out/` | raw adapter stdout/stderr/exit codes, the `E*` outcome files, per-run dirs (pruned to the latest per runtime) |
 
 ## Running it
@@ -31,9 +34,12 @@ coordinates come from the binding decisions in `a0/tasks/circle-packing/README.m
 ```bash
 cd /home/ebt/rsi-dev/a0/conformance
 python3 conformance.py reference                                          # fresh E* sweep vs the frozen table
+python3 conformance.py reference --python /usr/bin/python3.14 --out /tmp/reference.py314.json   # D1: the same E* under another interpreter
+python3 conformance.py run --envelope off                                 # D3 off: exploratory run, marked as such in the report
 python3 conformance.py run                                                # all four runtimes + controls
 python3 conformance.py run --runtimes kapso --out report.kapso.json       # one runtime (subset runs are auto-redirected away from report.json)
 python3 conformance.py run --eid-document proposed --out report.proposed.json   # old EID* document
+python3 conformance.py run --runtimes simpleloop --out report.simpleloop.json
 python3 selftest.py                                                       # prove the checker rejects each fault
 ```
 
@@ -55,7 +61,15 @@ A `PARTIAL` runtime is a qualification, not a failure, so it does not change the
    after, so "`E*` never writes inside a candidate worktree" is measured rather than asserted.
 3. **EID\* checks.** `evalcontract.py recompute` (filesystem-free), `evalcontract.py verify`
    (`--base a0/`), and a check that every EID document on disk carries the binding `EID*`.
-4. **Drives each adapter** through the frozen CLI, then compares the adapter's numbers against
+4. **Issues the measurement envelope.** From the same sweep it writes, into its own state root, one
+   OID measurement token per member of `C*`, binding `(candidate_sha256, EID*, theta_E, behaviour
+   digest, run nonce)` and the evaluator source digest the harness measured. It hands the path to
+   every adapter as `A0_ENVELOPE` (`--envelope <path>` is accepted by adapters that declare the
+   flag; the environment variable is the mechanism because a subcommand parser that rejects an
+   unknown flag would make "the runner broke it" indistinguishable from "this runtime is not
+   wired"). `--envelope off` turns the requirement off and is recorded in the report as an
+   exploratory run (`envelope.required = false`), never as an attested one.
+5. **Drives each adapter** through the frozen CLI, then compares the adapter's numbers against
    `E_STAR.json` **itself**. Everything the adapter says about itself is recorded under a key whose
    name states it is untrusted — `adapter_claim__untrusted` (its own A0.1 "verdict" string) and
    `adapter_self_declaration__untrusted` (its declared outcome, blocked reason, row count) — and is
@@ -66,7 +80,7 @@ A `PARTIAL` runtime is a qualification, not a failure, so it does not change the
    fails on the comparison. For a candidate `E*` did not accept, the compared surface is the
    **verdict and `failure.kind`** (`adapter_contract.md` §4.3.5), so a runtime cannot pass by
    repeating `invalid`/`error` truthfully while lying about *why* it failed.
-5. **Per-runtime PASS / PARTIAL / FAIL / PENDING / BLOCKED**, each runtime in its own try/except and
+6. **Per-runtime PASS / PARTIAL / FAIL / PENDING / BLOCKED**, each runtime in its own try/except and
    its own subprocess: one runtime's failure can never abort another's run (`plan:490`). A runtime
    that was never driven is `PENDING`, never "passing"; a runtime whose rows agree only on
    adapter-supplied semantics is `PARTIAL`, never "passing".
@@ -196,20 +210,28 @@ Per candidate:
 | `E*` has no number, the runtime's lane returned a **declared** synthetic failure (EvE's `failure_score(0.0)`), and the row is not presented as a match | `SYNTHETIC_DECLARED` — acceptable, but its `0.0` is never a measurement |
 | \|Δ\| > epsilon | `MISMATCH_VALUE` |
 | a number where `E*` reports `null` | `FALSE_GREEN_SYNTHETIC_ZERO` (0.0) or `MISMATCH_NULL` |
-| reported `canonical_digest` / `source_sha256` differs from `E*`'s | `MISMATCH_DIGEST` |
+| the row's **behaviour** differs from `E*`'s (the Outcome minus `canonical_digest` and `interpreter`) | `MISMATCH_DIGEST` |
+| the row's `canonical_digest` differs from `E*`'s **only** in the `interpreter` block, and that interpreter is in the declared allowed execution set | `EXECUTION_ENV_DRIFT` — **accepting**: an environment difference, never "the evaluator's behaviour disagrees" |
+| the same, with an interpreter outside the declared allowed execution set | `MISMATCH_EXECUTION_ENV` — non-accepting |
+| reported `source_sha256` differs from `C*`'s | `MISMATCH_DIGEST` |
+| the row carries no harness measurement token | `MISSING_ATTESTATION` — fail-closed, non-accepting |
+| the row echoes a token the harness did not issue for this candidate | `MISMATCH_ATTESTATION` |
+| the row echoes the token but attests no evaluator bytes / candidate bytes / behaviour digest | `MISSING_IDENTITY` — non-accepting |
+| the attested identity contradicts the harness's own measurement | `MISMATCH_ATTESTATION` — non-accepting |
 | truthful `status` but a different `failure.kind` | `MISMATCH_FAILURE_KIND` (`E*` verdict and kind are one surface: `adapter_contract.md` §4.3.5) |
 | a non-ok candidate with **no** `failure.kind` declared at all | `UNDECLARED_FAILURE_KIND` — the surface §4.3.5 compares is absent, so the row cannot "agree" |
 | the row declares a `failure_stage` that is not the one the frozen §5.3 table maps `E*`'s kind to | `MISMATCH_FAILURE_STAGE` |
 | no row for a member of `C*` | `MISSING` → coverage FAIL |
 
-Only `MATCH`, `MATCH_VERDICT` and `SYNTHETIC_DECLARED` count as agreeing. But *agreeing* is not the
-same as *measuring*, so the runtime state is a qualification, not a boolean:
+Only `MATCH`, `MATCH_VERDICT`, `SYNTHETIC_DECLARED` and `EXECUTION_ENV_DRIFT` count as agreeing.
+But *agreeing* is not the same as *measuring*, so the runtime state is a qualification, not a
+boolean:
 
 | state | condition |
 |---|---|
 | `PASS` | every candidate agrees **and** every check passes **and** every row was measured by the runtime's own evaluator interface (`evaluator_evidence.status` is fresh) |
 | `PARTIAL` | every candidate agrees and every check passes, but at least one row agrees only on semantics the **adapter supplied** (`SYNTHETIC_DECLARED`: a declared synthetic failure where `E*` has no number) — that row was not measured |
-| `FAIL` | a candidate disagrees, coverage of `C*` is incomplete, or a check fails |
+| `FAIL` | a candidate disagrees, coverage of `C*` is incomplete, a check fails, or a row is not harness-attested (`MISSING_*` / `MISMATCH_ATTESTATION` / `MISMATCH_EXECUTION_ENV`) |
 | `PENDING` / `BLOCKED` | nothing was run / the adapter declared itself unable to run |
 
 `PARTIAL` exists because a single global `PASS` is the wrong output: EvE's lane maps every
@@ -287,6 +309,127 @@ Two checks deserve a note:
   declared it. Several independent echoes that disagree with each other would fail the check: that
   is exactly KAPSO's D16 drift.
 
+## Behaviour is not the execution environment (D1)
+
+`E*`'s own `canonical_digest` (`a0/tasks/circle-packing/e_star.py:654`) hashes the whole Outcome
+payload, `interpreter` included. So a byte-identical `E*` under `python3.14` produced a different
+digest with `delta = 0.0` on every row, and the checker reported it as `MISMATCH_DIGEST` — "the
+evaluator's behaviour disagrees", which was false (two independent verifiers reproduced it). The
+checker now splits the two surfaces it conflated, **checker-side**: `e_star.py` and `EID*` are
+untouched.
+
+* **Behaviour** = the Outcome payload minus `canonical_digest` and minus `interpreter`. Compared as
+  `a0/envelope/envelope.py:behaviour_digest`. The projection never rescues a different evaluator:
+  the mutant `E'` of `a0/fixtures/observational-equivalence/` has a different behaviour digest on all
+  14 candidates while its objectives are **bit-identical**, and it still fails.
+* **Execution environment** = the `interpreter` block, compared separately against the declared
+  **allowed execution set** in `a0/envelope/execution-set.json`: pinned `cpython 3.12.11` (the
+  environment `E_STAR.json` was measured in) and sanctioned `cpython 3.14.7` (re-measured
+  equivalent on all of `C*`). Inside the set → `EXECUTION_ENV_DRIFT`, which is **accepting** and
+  reported loudly; outside it → `MISMATCH_EXECUTION_ENV`, non-accepting.
+* A row that carries only a `canonical_digest` — every adapter written before this change — is still
+  measurable: the checker re-applies `E*`'s own digest scheme to the frozen payload with each
+  declared interpreter block substituted (`digest_with_interpreter`), and a match proves the payload
+  differs in the interpreter block and nowhere else. A row that submits its Outcome payload
+  (`e_star_outcome`) is projected directly.
+
+**Open and undecided, recorded rather than decided:** if the allowed execution set were folded into
+`EID*`'s `Config`, then *broadening* it would change `Config`'s digest and therefore `EID* =
+664115e0…9328` — a re-freeze of every frozen document, the reference table and every adapter's
+`EID_r` derivation. `a0/envelope/execution-set.json:coupling_question_UNDECIDED` states the three
+options and chooses none; the user has not decided. Until then the set is a checker-side
+declaration, and the report says so (`report.json:execution_set`, and
+`runtimes.<r>.checks[behaviour-vs-execution-env]`).
+
+## The measurement token (D3)
+
+Behavioural testing cannot prove implementation identity: a constructed `E'` agrees with `E*`
+bit-for-bit on `C*` and was accepted by this checker in three modes (`claim`, `omit`, `twin`).
+Identity therefore becomes a **harness measurement**:
+
+1. From its own `E*` sweep the harness issues one **OID measurement token** per member of `C*` into
+   its own state root (`out/envelope/measurement_tokens.<run>.json`), binding at least
+   `(candidate_sha256, EID*, theta_E, behaviour digest, run nonce)` plus the evaluator source digest
+   it measured. The OID is opaque: `sha256("a0.envelope.measurement_token/v1" ‖ canonical_json(binding))`.
+2. Every adapter row must **echo that token** and **attest the bytes it used** — evaluator source
+   digest, candidate bytes, behaviour digest, interpreter, theta — in a `measurement` (or
+   `attestation`/`identity`) block. The runner hands the envelope path over as `A0_ENVELOPE`.
+3. The checker compares the attestation against **its own** measurement and the frozen identity
+   (`E_STAR.json:evaluator.evaluator_source_sha256`, the `C*` manifest's candidate bytes), and fails
+   closed: `MISSING_ATTESTATION` / `MISSING_IDENTITY` / `MISMATCH_ATTESTATION` are all
+   non-accepting, even when every number agrees. The runtime's own evaluation path is *not*
+   replaced — the runtime still evaluates, the harness supplies the reference and the token.
+4. Per runtime the result is also written as a standalone record at
+   `a0/envelope/out/attested/<runtime>/<run>.json`, in the shape the D2 consumer contract
+   (`a0/qualification/attested-a0-1.contract.json`) declares, pinned to the sha256 of the report it
+   describes.
+
+**Limit, stated because it is not closed by this:** the attestation is *submitted by the runtime's
+lane*. It establishes that the row joins the harness's measurement and names the bytes it executed;
+it is not proof that those bytes were executed (a lying producer). The `a0/attestation/` workstream's
+producer, run **inside** the runtime's session, is the step that would close it — for KAPSO
+especially, whose score of record must be produced by the session running its own evaluator.
+
+### Evidence, by running it
+
+```bash
+# (a) the same E* under 3.14: an environment verdict, not a behaviour mismatch
+python3 conformance.py reference --python /usr/bin/python3.14 --out /tmp/reference.py314.json
+#   reference table reproduced exactly: True   behaviour reproduced: True
+#   execution environment: EXECUTION_ENV_DRIFT (observed cpython 3.14.7, pinned cpython 3.12.11)
+#   every per-candidate record: behaviour_reproduced true, canonical_digest_matches false
+
+# (a') through an adapter, with the fixture's own adapter and command shape
+FX=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence
+python3 conformance.py run --runtimes eplus_control_py314 --envelope off --no-controls \
+  --adapter "eplus_control_py314=python3 $FX/adapters/e_plus_adapter.py \
+  --evaluator-dir /home/ebt/rsi-dev/a0/tasks/circle-packing --identity own --python /usr/bin/python3.14" \
+  --out /tmp/eplus_control_py314.json
+#   eplus_control_py314  PASS (14/14 measured)  rows: 14 x EXECUTION_ENV_DRIFT   (was 14 x MISMATCH_DIGEST)
+
+# (b) the mutant's previously-passing modes now FAIL -- default, envelope required
+#   eplus_mut_claim  FAIL  false-green finding(s): MISSING_ATTESTATION
+#   eplus_mut_omit   FAIL  false-green finding(s): MISSING_ATTESTATION
+#   eplus_mut_twin   FAIL  false-green finding(s): MISSING_ATTESTATION
+#   (the same command with --envelope off leaves them PASS: the D1 projection does not close the
+#    claim class, which is exactly why D3's token is the mechanism that does)
+
+# (c) no false red: the honest control still passes, and so does SimpleLoop end to end
+python3 conformance.py run --runtimes eplus_control --envelope off --no-controls \
+  --adapter "eplus_control=python3 $FX/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/tasks/circle-packing --identity own" \
+  --out /tmp/eplus_control.json                      # PASS (14/14 measured)
+python3 conformance.py run --runtimes simpleloop --out report.simpleloop.json
+#   simpleloop PASS (14/14 measured); measurement-attestation: 14/14 rows echo the harness token
+
+# (d) the four runtimes
+python3 conformance.py run
+#   simpleloop PASS (14/14 measured)
+#   kapso/eve/loreley  FAIL -- not accepting: 14 x MISSING_ATTESTATION (the numbers agree 14/14)
+#   controls: control_honest PASS, control_zero_on_error FAIL, control_cache_hit FAIL (as expected)
+```
+
+The Python-level proof of both directions of the projection — pinned vs 3.14.7 vs the mutant `E'`
+on all 14 candidates, with `E'`'s objectives bit-identical — is `python3 a0/envelope/selftest.py`
+(`a0/envelope/out/selftest_report.json`).
+
+### Wiring cost for the three runtimes that are not wired yet
+
+`simpleloop` is wired (`a0/runtimes/simpleloop/a0_adapter/`): `cli.py` gains `--envelope` /
+`A0_ENVELOPE`, the envelope is read in `conformance.py:load_envelope`, and each row carries
+`measurement` + `e_star_outcome`. The other three are **not** wired, and their rows are reported
+non-accepting rather than faked. The seam each would use:
+
+| runtime | seam (path:line) | what it must do |
+|---|---|---|
+| KAPSO | `a0/runtimes/kapso/a0_adapter/channels.py:152` (`run_registered_channel`, the subprocess that runs the registered command, with the `env_overrides` hook at `:158-165`) and `a0/runtimes/kapso/a0_adapter/a01.py:148` (`runtime.registered_channel_for_branch`) | pass `A0_ENVELOPE` into that session's environment, and produce the attestation **inside the session that runs `kapso_evaluation/kapso_eval.py`** (the registered command) — its score of record must come from that session, so the digest of the bytes it executed has to be measured there and carried out, not recomputed by the adapter afterwards |
+| EvE | `a0/runtimes/eve/a0_adapter/eve_runtime.py:76` (`render_step_script`, where EvE's `evaluation.steps` script is generated) and `:496` (`evaluate_candidate_through_eve`), reached from `a01.py:268` (`run_conformance`) | the step script is executed by EvE's own runtime, not by the adapter: the attestation has to be emitted by that execution (the wrapper EvE runs) and echoed onto the row |
+| Loreley | `a0/runtimes/loreley/src/a0_adapter/runtime.py:79` (`WORKER_EVALUATOR_PLUGIN` in the worker environment) and `a0/runtimes/loreley/src/loreley_a0_plugin.py:373` (`plugin(...)`, the entry point Loreley's worker calls) and `:253` (`_run_e_star`, where that plugin invokes `E*`) | the plugin is called by Loreley's worker, so the attestation belongs inside the plugin call next to `_run_e_star`, where the executed bytes are known |
+
+Each needs the same three things: read `A0_ENVELOPE`, hash the evaluator + candidate bytes it really
+executed, and put the token + identity on every row. Until then their A0.1 is `FAIL` with
+`MISSING_ATTESTATION` — evidence-missing, not a verdict on the runtime, and the numbers themselves
+still agree 14/14.
+
 ## Controls and self-test
 
 `report.json` also carries `controls`: fixture adapters driven through exactly the same checker —
@@ -294,7 +437,7 @@ Two checks deserve a note:
 `control_cache_hit` (the two named traps; must FAIL). If a control comes back wrong, the runtime
 verdicts in the same report are not trustworthy.
 
-`selftest.py` runs 20 fixtures (19 injected faults + the honest control) covering: an honest
+`selftest.py` runs 29 fixtures (28 injected faults + the honest control) covering: an honest
 adapter, a no-fault adapter, undeclared
 synthetic zero, declared synthetic zero (must be `PARTIAL (5/14 measured)`, never `PASS`),
 a mislabeled synthetic zero (must FAIL),
@@ -303,7 +446,12 @@ the 1e-4 near-tie swap, a digest swap, partial coverage, a manifest-class mismat
 theta drift, a stale `EID*`, an undeclared native `theta_E`, a truthful `status` with a lying
 `failure.kind` (must FAIL — audit R1), a truthful kind with a mis-staged `failure_stage` (must
 FAIL), and the honest fixture with `failure.kind` omitted altogether (must FAIL — the second half of
-R1: a vacuous PASS is a hole) — plus the candidate-set integrity abort (exit 4). The two `PASS`
+R1: a vacuous PASS is a hole); and for D1/D3: a sanctioned interpreter drift (must PASS, rows
+`EXECUTION_ENV_DRIFT`), an unsanctioned one (must FAIL), no token (must FAIL),
+a foreign token (must FAIL), a token with no identity (must FAIL), the `claim` attack with the
+mutant's real evaluator digest (must FAIL), the value-identical twin swap (must FAIL), and an
+attestation of another candidate's real measurement (must FAIL) — plus the candidate-set integrity
+abort (exit 4). The two `PASS`
 fixtures also pin the split (`qualification.measured == 14`, `adapted == 0`) and the label
 (`PASS (14/14 measured)`), so the measured/adapted accounting cannot silently regress. All of it is
 run `python3 selftest.py` in ~10 s.
@@ -366,6 +514,14 @@ document it handed to each adapter (`frozen.eid_document_name` / `eid_document_s
 inputs. The adapters were still changing during the last full re-run; check each adapter's source
 mtimes against `report.json` → `generated_at` before quoting a number.
 
+**The four-runtime state after D1 + D3 (the honest current picture).** `simpleloop` is
+`PASS (14/14 measured)`; `kapso`, `eve` and `loreley` are `FAIL` with
+`14 x MISSING_ATTESTATION` — their numbers still agree 14/14, and their rows do not carry the
+harness measurement token (the wiring cost is in the table above). EvE's own measurement split is
+unchanged (`PARTIAL`, 5/14 measured) and is still reported per row; what changed is that A0.1 is
+now non-accepting without an attestation, for every runtime. `verdicts.r_1_a0_1_only` is therefore
+`["simpleloop"]`, not the four-runtime set earlier reports showed.
+
 **Confirm no bare `PASS` for EvE survives in the machine-readable output** (any bare `PASS` in
 `report.json` must belong to a runtime whose authoritative `state` is `PASS`, or to the honest
 control; an adapter self-claim never does):
@@ -383,12 +539,20 @@ def leaves(o, p=''):
     else: yield p, o
 rows = list(leaves(d))
 auth = {p: v for p, v in rows if p in ('.runtimes.eve.state', '.runtimes.eve.qualification.a0_1.state', '.verdicts.a0_1_state.eve')}
-hits = [(p, v) for p, v in rows if 'eve' in p and isinstance(v, str) and v.strip() in ('PASS', 'FAIL')]
-assert auth == {'.runtimes.eve.state': 'PARTIAL', '.runtimes.eve.qualification.a0_1.state': 'PARTIAL', '.verdicts.a0_1_state.eve': 'PARTIAL'}, auth
-assert all('__untrusted' in p for p, _ in hits), hits
+# A0.1 is FAIL while the rows are unattested; the measurement split (5/14 measured) is a separate
+# axis and stays visible in qualification.a0_1. What must never appear is a bare PASS.
+assert auth == {'.runtimes.eve.state': 'FAIL', '.runtimes.eve.qualification.a0_1.state': 'FAIL', '.verdicts.a0_1_state.eve': 'FAIL'}, auth
+passes = [(p, v) for p, v in rows if isinstance(v, str) and v.strip() == 'PASS']
+adapter_claims = [p for p, _ in passes if '__untrusted' in p]
+runner_own = [(p, v) for p, v in passes if '__untrusted' not in p]
+# A bare PASS is legitimate only as the runner's own state/label for a runtime it attested
+# (simpleloop), or for a control row; an adapter's self-claim is never legitimate.
+assert all(('simpleloop' in p) or p.startswith('.controls.') for p, _ in runner_own), runner_own
 print('authoritative eve keys        :', auth)
-print('exact PASS/FAIL on an eve path:', hits)
-print('NO BARE PASS FOR EVE OUTSIDE AN __untrusted KEY: ok')
+print('eve measurement split         :', json.load(open('report.json'))['runtimes']['eve']['qualification']['a0_1'])
+print('runner-own bare PASS keys     :', [p for p, _ in runner_own])
+print('adapter PASS claims (untrusted):', adapter_claims)
+print('NO BARE PASS OUTSIDE THE RUNNER OWNING IT: ok')
 "
 ```
 

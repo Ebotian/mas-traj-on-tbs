@@ -1,6 +1,6 @@
 {
   "schema": "a0.conformance.report/v1",
-  "generated_at": "2026-09-21T16:30:05+0800",
+  "generated_at": "2026-09-21T17:19:21+0800",
   "generated_by": "a0/conformance/conformance.py run",
   "step": "A0.1 evaluator integration conformance",
   "protocol": {
@@ -300,20 +300,116 @@
   "runtimes": {
     "eplus_control_py314": {
       "state": "FAIL",
-      "reason": "E_r(c) disagrees with E*(c)",
+      "reason": "not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
       "qualification": {
         "a0_1": {
           "state": "FAIL",
           "label": "FAIL",
-          "measured": 0,
+          "measured": 14,
           "adapted": 0,
           "total": 14,
-          "measured_candidates": [],
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
           "adapted_candidates": [],
-          "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+          "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
           "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
           "c_adapt": "can the adapter supply the missing semantics?",
-          "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+          "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+          "measurement_attestation": {
+            "required": true,
+            "attested": [],
+            "missing_attestation": [
+              "c01_good_hex",
+              "c02_baseline_upstream",
+              "c03_mirror",
+              "c04_near_tie",
+              "c05_overlapping",
+              "c06_empty",
+              "c07_single",
+              "c08_out_of_bounds",
+              "c09_malformed_import",
+              "c10_raises",
+              "c11_non_deterministic",
+              "c12_exit_without_artifacts",
+              "c13_slow",
+              "c14_near_zero"
+            ],
+            "missing_identity": [],
+            "mismatch_attestation": []
+          },
+          "execution_env": {
+            "pinned": {
+              "implementation": "cpython",
+              "version": "3.12.11",
+              "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+              "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+              "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+            },
+            "drift_candidates": [
+              "c01_good_hex",
+              "c02_baseline_upstream",
+              "c03_mirror",
+              "c04_near_tie",
+              "c05_overlapping",
+              "c06_empty",
+              "c07_single",
+              "c08_out_of_bounds",
+              "c09_malformed_import",
+              "c10_raises",
+              "c11_non_deterministic",
+              "c12_exit_without_artifacts",
+              "c13_slow",
+              "c14_near_zero"
+            ],
+            "unsanctioned_candidates": [],
+            "verdicts": [
+              "EXECUTION_ENV_DRIFT"
+            ]
+          },
+          "attestation": {
+            "identity_verdict": "MISSING_ATTESTATION",
+            "required": true,
+            "oid": "a01-reference-20260921T171439",
+            "executed_identity": null,
+            "harness_run_id": "a01-reference-20260921T171439",
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171439.json",
+            "envelope_sha256": "acb67873838a78b3a8faeafed21175ca22066729c49ee7ec4df5dde714a4d96f",
+            "attested_candidates": [],
+            "missing_attestation_candidates": [
+              "c01_good_hex",
+              "c02_baseline_upstream",
+              "c03_mirror",
+              "c04_near_tie",
+              "c05_overlapping",
+              "c06_empty",
+              "c07_single",
+              "c08_out_of_bounds",
+              "c09_malformed_import",
+              "c10_raises",
+              "c11_non_deterministic",
+              "c12_exit_without_artifacts",
+              "c13_slow",
+              "c14_near_zero"
+            ],
+            "missing_identity_candidates": [],
+            "mismatch_attestation_candidates": [],
+            "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+          }
         }
       },
       "checks": [
@@ -369,6 +465,93 @@
           "detail": "adapter declares F_r spec_hash='1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0'; frozen first-round F_r hash is '1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0' (plan:528)"
         },
         {
+          "check_id": "behaviour-vs-execution-env",
+          "ok": true,
+          "detail": "14/14 rows agree with E*'s behaviour payload (the Outcome minus `canonical_digest` and `interpreter`), 14/14 rows declared a digest surface to compare; execution environment: 14 row(s) EXECUTION_ENV_DRIFT (sanctioned, not a behaviour disagreement: c01_good_hex, c02_baseline_upstream, c03_mirror, c04_near_tie, c05_overlapping, c06_empty, c07_single, c08_out_of_bounds, c09_malformed_import, c10_raises, c11_non_deterministic, c12_exit_without_artifacts, c13_slow, c14_near_zero)",
+          "pinned_interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "allowed_execution_set": {
+            "path": "/home/ebt/rsi-dev/a0/envelope/execution-set.json",
+            "sanctioned": [
+              {
+                "implementation": "cpython",
+                "version": "3.12.11",
+                "evidence": "the pinned interpreter itself",
+                "measured_on": "a0/tasks/circle-packing/E_STAR.json (frozen table)"
+              },
+              {
+                "implementation": "cpython",
+                "version": "3.14.7",
+                "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+                "measured_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/",
+                "sanctioned_because": "measured equivalent on C*, not asserted equivalent",
+                "residual_risk": "equivalence is measured on C* only, and only for the two interpreter classes above. E*'s own source comment notes that CPython's sum() semantics changed at 3.12, so 3.11 and earlier are a PLAUSIBLE but UNMEASURED source of numeric drift; they are deliberately NOT sanctioned."
+              }
+            ],
+            "coupling_question": "documented as UNDECIDED in a0/envelope/execution-set.json (folding this set into EID*'s Config would be a re-freeze)"
+          },
+          "rows_with_digest_evidence": 14,
+          "behaviour_mismatch_candidates": [],
+          "execution_env_drift_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "execution_env_unsanctioned_candidates": []
+        },
+        {
+          "check_id": "measurement-attestation",
+          "ok": false,
+          "detail": "14/14 rows carry no harness measurement token (MISSING_ATTESTATION, fail-closed), 0/14 echo a token but attest no identity (MISSING_IDENTITY), 0/14 contradict the harness's own measurement (MISMATCH_ATTESTATION)",
+          "required": true,
+          "envelope": {
+            "path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171439.json",
+            "sha256": "acb67873838a78b3a8faeafed21175ca22066729c49ee7ec4df5dde714a4d96f",
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439",
+            "tokens": 14
+          },
+          "harness_run_id": "a01-reference-20260921T171439",
+          "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+          "attested_candidates": [],
+          "missing_attestation_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "rows_with_oid": 0,
+          "limit": "the attestation is submitted BY the runtime lane, so it establishes that the row names the harness's measurement and the bytes it claims to have executed; it is not proof that those bytes were executed (a lying producer, R5). Producing it inside the runtime's own session (a0/attestation) is the next step, not something this check can do for it."
+        },
+        {
           "check_id": "candidate-coverage",
           "ok": true,
           "detail": "adapter produced usable rows for 14/14 members of C*"
@@ -376,7 +559,9 @@
         {
           "check_id": "E-r-equals-E-star",
           "ok": false,
-          "detail": "0/14 candidates agree with E*(c) within epsilon=1e-09 (or compare equal as verdicts); disagreeing: c01_good_hex:MISMATCH_DIGEST, c02_baseline_upstream:MISMATCH_DIGEST, c03_mirror:MISMATCH_DIGEST, c04_near_tie:MISMATCH_DIGEST, c05_overlapping:MISMATCH_DIGEST, c06_empty:MISMATCH_DIGEST, c07_single:MISMATCH_DIGEST, c08_out_of_bounds:MISMATCH_DIGEST, c09_malformed_import:MISMATCH_DIGEST, c10_raises:MISMATCH_DIGEST, c11_non_deterministic:MISMATCH_DIGEST, c12_exit_without_artifacts:MISMATCH_DIGEST, c13_slow:MISMATCH_DIGEST, c14_near_zero:MISMATCH_DIGEST"
+          "detail": "0/14 candidates are ACCEPTING (their row agrees with E*(c) within epsilon=1e-09 or compares equal as a verdict, AND carries the harness attestation); agreeing on the measurement surface alone: 14/14. not accepting: c01_good_hex:MISSING_ATTESTATION, c02_baseline_upstream:MISSING_ATTESTATION, c03_mirror:MISSING_ATTESTATION, c04_near_tie:MISSING_ATTESTATION, c05_overlapping:MISSING_ATTESTATION, c06_empty:MISSING_ATTESTATION, c07_single:MISSING_ATTESTATION, c08_out_of_bounds:MISSING_ATTESTATION, c09_malformed_import:MISSING_ATTESTATION, c10_raises:MISSING_ATTESTATION, c11_non_deterministic:MISSING_ATTESTATION, c12_exit_without_artifacts:MISSING_ATTESTATION, c13_slow:MISSING_ATTESTATION, c14_near_zero:MISSING_ATTESTATION",
+          "measurement_agreeing": 14,
+          "measurement_disagreeing_candidates": []
         },
         {
           "check_id": "E-r-failure-kind",
@@ -432,10 +617,98 @@
           "delta": 0.0,
           "e_r_exit_code": 0,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "c45d79eeb20c9f551d384d60b33225744f893479e657e99fe43a9538e3cbb83f",
+            "pinned_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+            "table_behaviour_digest": "65daffac4768d8d15650baf0827308d7649b1d5cc08513dcccc49f4bb6fef123",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "4eff82345db02191ce5a85c73fda96b168940aa10ee70641c3285ab300f0ae1b",
+            "expected_binding": {
+              "candidate_id": "c01_good_hex",
+              "candidate_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "65daffac4768d8d15650baf0827308d7649b1d5cc08513dcccc49f4bb6fef123",
+              "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest c45d79eeb20c9f551d384d60b33225744f893479e657e99fe43a9538e3cbb83f != E*'s 1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH"
         },
         {
           "runtime": "eplus_control_py314",
@@ -454,10 +727,98 @@
           "delta": 0.0,
           "e_r_exit_code": 0,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "9bb99f39ecbf56c02dad9aa6a27a980232447e21fc0d5379ca988e3cbe97b058",
+            "pinned_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+            "table_behaviour_digest": "f01f10f8229f191da93fe8a74a56c58031576ab402f5b5a8a3c7eb9174129207",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "c1cf69e267642fca58b2aef5365bcf523e565df5229afb513658f9483688971b",
+            "expected_binding": {
+              "candidate_id": "c02_baseline_upstream",
+              "candidate_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "f01f10f8229f191da93fe8a74a56c58031576ab402f5b5a8a3c7eb9174129207",
+              "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest 9bb99f39ecbf56c02dad9aa6a27a980232447e21fc0d5379ca988e3cbe97b058 != E*'s b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH"
         },
         {
           "runtime": "eplus_control_py314",
@@ -476,10 +837,98 @@
           "delta": 0.0,
           "e_r_exit_code": 0,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "83edc4324f2ffb7ef4785a35b286c21e5de8868d8b07264955181f8bede6c6ad",
+            "pinned_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+            "table_behaviour_digest": "688d4d7e158d052a97b43e766d6faab625031db0313685596bd41b4b3cf1964b",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "84dd00145eeb67f0348e1fb483b4adab08178b9461b609b54d80f073aa7898e3",
+            "expected_binding": {
+              "candidate_id": "c03_mirror",
+              "candidate_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "688d4d7e158d052a97b43e766d6faab625031db0313685596bd41b4b3cf1964b",
+              "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest 83edc4324f2ffb7ef4785a35b286c21e5de8868d8b07264955181f8bede6c6ad != E*'s c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH"
         },
         {
           "runtime": "eplus_control_py314",
@@ -498,10 +947,98 @@
           "delta": 0.0,
           "e_r_exit_code": 0,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "b6819864f48b50fbd3d1eb5e8b69654d2d0867a175d6cee7b439e2e1eacd400a",
+            "pinned_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+            "table_behaviour_digest": "e00d05d50d64675815640a2807aeb1fc14954e7626d9296cdbe542e3845ff7b0",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "d9a8a21a8de970d6a943034992e4027672068e074ba58dd58612137f19370e3c",
+            "expected_binding": {
+              "candidate_id": "c04_near_tie",
+              "candidate_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "e00d05d50d64675815640a2807aeb1fc14954e7626d9296cdbe542e3845ff7b0",
+              "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest b6819864f48b50fbd3d1eb5e8b69654d2d0867a175d6cee7b439e2e1eacd400a != E*'s f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH"
         },
         {
           "runtime": "eplus_control_py314",
@@ -520,10 +1057,99 @@
           "delta": null,
           "e_r_exit_code": 2,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "22edb359cf51a01c752f66281eb32c5c7314b59dada2fff2f2ff656e6b8d1131",
+            "pinned_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+            "table_behaviour_digest": "34fce10674ffe5f2b8b657cc5c713158121fba6f39fddd1053044dcb4c13d547",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "95bfa21ab01ea0b0c1eecce15ef0eaabab8c4cadc7a6017e35dce3d4322f2595",
+            "expected_binding": {
+              "candidate_id": "c05_overlapping",
+              "candidate_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "34fce10674ffe5f2b8b657cc5c713158121fba6f39fddd1053044dcb4c13d547",
+              "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest 22edb359cf51a01c752f66281eb32c5c7314b59dada2fff2f2ff656e6b8d1131 != E*'s 6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH_VERDICT"
         },
         {
           "runtime": "eplus_control_py314",
@@ -542,10 +1168,99 @@
           "delta": null,
           "e_r_exit_code": 2,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "5a52436c2f08b7f28bfd9f034cb1e28085b6259c1da589abc657865c5da980e1",
+            "pinned_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+            "table_behaviour_digest": "f410339c4b28814b4d93a2ba38cd3e4b965fff56efb609201ba2079e80c9f3a9",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "0e86e49b53db1cbfa6aa100fda0162c59b9066dd100e38130acaadf8b0b9421f",
+            "expected_binding": {
+              "candidate_id": "c06_empty",
+              "candidate_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "f410339c4b28814b4d93a2ba38cd3e4b965fff56efb609201ba2079e80c9f3a9",
+              "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest 5a52436c2f08b7f28bfd9f034cb1e28085b6259c1da589abc657865c5da980e1 != E*'s 319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH_VERDICT"
         },
         {
           "runtime": "eplus_control_py314",
@@ -564,10 +1279,99 @@
           "delta": null,
           "e_r_exit_code": 2,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "a027fb3f56fec5814e491092331848826e96e8e51ab7916ca925c170b5195465",
+            "pinned_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+            "table_behaviour_digest": "730e177705fc429bb7950a15895930cfb2990f1d038f4775ea629beb9b2ffbf6",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "e3bfb9f60186115f22fbf158c1510d36ebb3e40e1424722406a5aa7a02b12550",
+            "expected_binding": {
+              "candidate_id": "c07_single",
+              "candidate_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "730e177705fc429bb7950a15895930cfb2990f1d038f4775ea629beb9b2ffbf6",
+              "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest a027fb3f56fec5814e491092331848826e96e8e51ab7916ca925c170b5195465 != E*'s a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH_VERDICT"
         },
         {
           "runtime": "eplus_control_py314",
@@ -586,10 +1390,99 @@
           "delta": null,
           "e_r_exit_code": 2,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "5b69c559c6c61c3f4b37e186b99cfba487d14f00b820b53cbc5f3dd6de457612",
+            "pinned_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+            "table_behaviour_digest": "bb939996a2d19e045c397d5555549c46acf0ceddf2d4b4a893e486e1fc045459",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "04721256d59d1865b4dcf193e923d7164bec953afb50cd9c0b741feddbe71d58",
+            "expected_binding": {
+              "candidate_id": "c08_out_of_bounds",
+              "candidate_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "bb939996a2d19e045c397d5555549c46acf0ceddf2d4b4a893e486e1fc045459",
+              "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest 5b69c559c6c61c3f4b37e186b99cfba487d14f00b820b53cbc5f3dd6de457612 != E*'s 1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH_VERDICT"
         },
         {
           "runtime": "eplus_control_py314",
@@ -608,10 +1501,99 @@
           "delta": null,
           "e_r_exit_code": 3,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "32c33ad7a945a71ef2f48057a55342a27a95afc1ea0c00498b55b16754b71042",
+            "pinned_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+            "table_behaviour_digest": "97886403db96be5c536ffb43c9bd338dba9e977de370771aa13f74b9c04e639e",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "77923d0618a420c4e3c78c51104b4f5fa5e646e041d7cf9d3cea69be808109d2",
+            "expected_binding": {
+              "candidate_id": "c09_malformed_import",
+              "candidate_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "97886403db96be5c536ffb43c9bd338dba9e977de370771aa13f74b9c04e639e",
+              "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest 32c33ad7a945a71ef2f48057a55342a27a95afc1ea0c00498b55b16754b71042 != E*'s 98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=error, adapter='error'",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH_VERDICT"
         },
         {
           "runtime": "eplus_control_py314",
@@ -630,10 +1612,99 @@
           "delta": null,
           "e_r_exit_code": 3,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "d233b0cae521f20a33294be0a9818f98d38b1a61fbddb6d54dc400d68c027194",
+            "pinned_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+            "table_behaviour_digest": "ba0c067ef8235e3a418f1068deb45f22836b4d558e30e896f0fc96af2741d17c",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "168a648d8758cd6ea21ade7f508657b1abdf5aa35e876a761d40444eedcfe0b8",
+            "expected_binding": {
+              "candidate_id": "c10_raises",
+              "candidate_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "ba0c067ef8235e3a418f1068deb45f22836b4d558e30e896f0fc96af2741d17c",
+              "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest d233b0cae521f20a33294be0a9818f98d38b1a61fbddb6d54dc400d68c027194 != E*'s 0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=error, adapter='error'",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH_VERDICT"
         },
         {
           "runtime": "eplus_control_py314",
@@ -652,10 +1723,99 @@
           "delta": null,
           "e_r_exit_code": 3,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "e5e8c00ade1107fd998d1ba5ca87106716b88323dad3fff978758a2c52589b8c",
+            "pinned_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+            "table_behaviour_digest": "9c8a16d08cbcde7a97212509c60afd1da9251191ff9f7c3303be8f451f193d0e",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "7057c6d38e77e4b6a5eb6f3d64701498d6ae16c89b444898e11f23bfb429453c",
+            "expected_binding": {
+              "candidate_id": "c11_non_deterministic",
+              "candidate_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "9c8a16d08cbcde7a97212509c60afd1da9251191ff9f7c3303be8f451f193d0e",
+              "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest e5e8c00ade1107fd998d1ba5ca87106716b88323dad3fff978758a2c52589b8c != E*'s 2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=error, adapter='error'",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH_VERDICT"
         },
         {
           "runtime": "eplus_control_py314",
@@ -674,10 +1834,99 @@
           "delta": null,
           "e_r_exit_code": 3,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "a9532e543c7674a9af1b88f906c6938d3a426adf3c26578e0e84198232230ffc",
+            "pinned_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+            "table_behaviour_digest": "8c03704fadac8a8329f3da135b31edfacb5a04f465e5a7e3aaecc8f01fbc5187",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "4c1fb1269e8ae38ce209dbffa0a0272f4b5ca0269a1888275746c63c579fbb48",
+            "expected_binding": {
+              "candidate_id": "c12_exit_without_artifacts",
+              "candidate_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "8c03704fadac8a8329f3da135b31edfacb5a04f465e5a7e3aaecc8f01fbc5187",
+              "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest a9532e543c7674a9af1b88f906c6938d3a426adf3c26578e0e84198232230ffc != E*'s cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=error, adapter='error'",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH_VERDICT"
         },
         {
           "runtime": "eplus_control_py314",
@@ -696,10 +1945,99 @@
           "delta": null,
           "e_r_exit_code": 3,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "a5a2596ee3790ff9c94c4974a21b131116e1783a584787a33f3622d79119641b",
+            "pinned_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+            "table_behaviour_digest": "442b460585317e9e292888cd3f037a4bd720b46221264f538e8d270be1b06362",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "0f3d7fc473519bfb09b20cf8a467d2bf8d12b7280f104bf2d2e50db40d399a5e",
+            "expected_binding": {
+              "candidate_id": "c13_slow",
+              "candidate_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "442b460585317e9e292888cd3f037a4bd720b46221264f538e8d270be1b06362",
+              "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest a5a2596ee3790ff9c94c4974a21b131116e1783a584787a33f3622d79119641b != E*'s 710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181 (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=error, adapter='error'",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH_VERDICT"
         },
         {
           "runtime": "eplus_control_py314",
@@ -718,17 +2056,218 @@
           "delta": 0.0,
           "e_r_exit_code": 0,
           "evaluator_evidence_status": "ok",
-          "verdict": "MISMATCH_DIGEST",
+          "verdict": "MISSING_ATTESTATION",
+          "behaviour": {
+            "method": "interpreter_substitution",
+            "behaviour_matches": true,
+            "matched_interpreter": {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            },
+            "claimed_canonical_digest": "65c18e93dadccef072f257ee7e99057ac490a256753551b56e09ada8e96a3215",
+            "pinned_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+            "table_behaviour_digest": "3a90f151499cd9e9c4880ed2ae2f34a55319536847a1ff54bd3e9051ff1c00b2",
+            "notes": [
+              "the row's canonical_digest matches the frozen payload recomputed with interpreter {'implementation': 'cpython', 'version': '3.14.7'}: the only difference from the frozen Outcome is the execution environment, not the evaluator's behaviour"
+            ],
+            "interpreter_class": {
+              "status": "SANCTIONED",
+              "observed": {
+                "implementation": "cpython",
+                "version": "3.14.7"
+              },
+              "pinned": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "allowed": [
+                {
+                  "implementation": "cpython",
+                  "version": "3.12.11"
+                },
+                {
+                  "implementation": "cpython",
+                  "version": "3.14.7"
+                }
+              ],
+              "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+              "sanctioned_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/"
+            }
+          },
+          "behaviour_verdict": true,
+          "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+          "attestation": {
+            "required": true,
+            "oid_echoed": null,
+            "oid_present": false,
+            "identity_present": false,
+            "attested": {
+              "eid_star": null,
+              "evaluator_source_sha256": null,
+              "candidate_sha256": null,
+              "behaviour_digest": null,
+              "interpreter": null,
+              "nonce": null,
+              "harness_run_id": null
+            },
+            "self_attested": true,
+            "verdict": "MISSING_ATTESTATION",
+            "reasons": [
+              "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+            ],
+            "expected_oid": "2d41f79d82fef9eeb3741f12afef557c6c4275722ca1109842d7c324070a4244",
+            "expected_binding": {
+              "candidate_id": "c14_near_zero",
+              "candidate_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+              "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+              "theta_e": {
+                "seed": 1337,
+                "fidelity": "full",
+                "fraction": 1.0,
+                "n": 26,
+                "runs": 5,
+                "runtime_budget_ms": 250.0,
+                "timeout_s": 120.0
+              },
+              "behaviour_digest": "3a90f151499cd9e9c4880ed2ae2f34a55319536847a1ff54bd3e9051ff1c00b2",
+              "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+              "interpreter": {
+                "implementation": "cpython",
+                "version": "3.12.11"
+              },
+              "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+              "harness_run_id": "a01-reference-20260921T171439",
+              "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+            },
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+            "harness_run_id": "a01-reference-20260921T171439"
+          },
           "notes": [
-            "canonical_digest 65c18e93dadccef072f257ee7e99057ac490a256753551b56e09ada8e96a3215 != E*'s cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe (a different file was evaluated, or stale state was reused)"
-          ]
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "the row's numbers agree but the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)"
+          ],
+          "attestation_verdict": "MISSING_ATTESTATION",
+          "verdict_before_attestation": "MATCH"
         }
       ],
-      "false_green_findings": [],
+      "false_green_findings": [
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c01_good_hex",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c02_baseline_upstream",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c03_mirror",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c04_near_tie",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c05_overlapping",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c06_empty",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c07_single",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c08_out_of_bounds",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c09_malformed_import",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c10_raises",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c11_non_deterministic",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c12_exit_without_artifacts",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c13_slow",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        },
+        {
+          "finding_id": "MISSING_ATTESTATION",
+          "candidate_id": "c14_near_zero",
+          "verdict": "MISSING_ATTESTATION",
+          "fatal": true,
+          "detail": "the row echoes no harness measurement token: it declares a number but not that this number came from a run the harness can identify (D3 is fail-closed on omission)",
+          "protocol": "external review D3 (measurement token, fail-closed on omission)"
+        }
+      ],
       "synthetic_declared_candidates": [],
       "evidence_source": "adapter conformance subcommand",
       "traces": null,
-      "adapter_run_dir": "/tmp/a0-conformance-controls-rncmhtxf/eplus_control_py314-20260921T163005",
+      "adapter_run_dir": "/tmp/a0-conformance-controls-oe12lq1j/eplus_control_py314-20260921T171921",
       "failure_stage_counts": null,
       "adapter_claim__untrusted": null,
       "adapter_schema": "a0.adapter.conformance/v1",
@@ -798,7 +2337,7 @@
         ],
         "cwd": "/home/ebt/rsi-dev/a0/conformance",
         "exit_code": 0,
-        "duration_sec": 2.353,
+        "duration_sec": 2.387,
         "timed_out": false,
         "stdout_tail": "",
         "stderr_tail": "",
@@ -855,87 +2394,321 @@
     "eplus_control_py314"
   ],
   "note": "this report covers ['eplus_control_py314'], not the study's four runtimes ['simpleloop', 'kapso', 'eve', 'loreley']; rows are still compared against the frozen E_STAR.json table",
+  "envelope": {
+    "schema": "a0.envelope/v1",
+    "mode": "required",
+    "required": true,
+    "why": "the harness issues one OID-style measurement token per member of C* from its own E* sweep, and every adapter row must echo it and attest the evaluator bytes, candidate bytes and behaviour digest it used; a row that omits them is non-accepting (external review D3)",
+    "handed_to_adapters_as": {
+      "env": "A0_ENVELOPE=<path>",
+      "cli_flag": "--envelope (optional)"
+    },
+    "path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171439.json",
+    "sha256": "acb67873838a78b3a8faeafed21175ca22066729c49ee7ec4df5dde714a4d96f",
+    "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+    "harness_run_id": "a01-reference-20260921T171439",
+    "tokens": 14,
+    "harness_execution_env": {
+      "status": "PINNED",
+      "observed": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "pinned": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "allowed": [
+        {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        }
+      ]
+    },
+    "complete": true,
+    "note": "14 tokens at /home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171439.json (sha256 acb67873838a78b3...)"
+  },
+  "execution_set": {
+    "path": "/home/ebt/rsi-dev/a0/envelope/execution-set.json",
+    "pinned": {
+      "implementation": "cpython",
+      "version": "3.12.11",
+      "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+      "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+      "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+    },
+    "sanctioned": [
+      {
+        "implementation": "cpython",
+        "version": "3.12.11",
+        "evidence": "the pinned interpreter itself",
+        "measured_on": "a0/tasks/circle-packing/E_STAR.json (frozen table)"
+      },
+      {
+        "implementation": "cpython",
+        "version": "3.14.7",
+        "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+        "measured_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/",
+        "sanctioned_because": "measured equivalent on C*, not asserted equivalent",
+        "residual_risk": "equivalence is measured on C* only, and only for the two interpreter classes above. E*'s own source comment notes that CPython's sum() semantics changed at 3.12, so 3.11 and earlier are a PLAUSIBLE but UNMEASURED source of numeric drift; they are deliberately NOT sanctioned."
+      }
+    ],
+    "coupling_question": "UNDECIDED and documented, not decided: folding this allowed execution set into EID*'s Config would make broadening it a re-freeze of EID* = 664115e0...9328. See a0/envelope/execution-set.json:coupling_question_UNDECIDED and a0/envelope/README.md."
+  },
   "reference": {
     "document": "/home/ebt/rsi-dev/a0/conformance/reference.json",
     "source": "a0/conformance/reference.json (fresh E* sweep) cross-checked against E_STAR.json",
     "agreement_with_frozen_table": {
       "reproduces_frozen_table": true,
+      "behaviour_reproduced": true,
+      "execution_env": {
+        "verdict": "PINNED",
+        "classification": {
+          "status": "PINNED",
+          "observed": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "allowed": [
+            {
+              "implementation": "cpython",
+              "version": "3.12.11"
+            },
+            {
+              "implementation": "cpython",
+              "version": "3.14.7"
+            }
+          ]
+        },
+        "interpreters_observed": [
+          "{\"implementation\": \"cpython\", \"version\": \"3.12.11\"}"
+        ],
+        "note": "the frozen table was measured under the pinned interpreter; a sanctioned drift reproduces every number and is reported here, not as a behaviour mismatch"
+      },
       "per_candidate": [
         {
           "candidate_id": "c01_good_hex",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "65daffac4768d8d15650baf0827308d7649b1d5cc08513dcccc49f4bb6fef123",
+          "table_behaviour_digest": "65daffac4768d8d15650baf0827308d7649b1d5cc08513dcccc49f4bb6fef123",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c02_baseline_upstream",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "f01f10f8229f191da93fe8a74a56c58031576ab402f5b5a8a3c7eb9174129207",
+          "table_behaviour_digest": "f01f10f8229f191da93fe8a74a56c58031576ab402f5b5a8a3c7eb9174129207",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c03_mirror",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "688d4d7e158d052a97b43e766d6faab625031db0313685596bd41b4b3cf1964b",
+          "table_behaviour_digest": "688d4d7e158d052a97b43e766d6faab625031db0313685596bd41b4b3cf1964b",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c04_near_tie",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "e00d05d50d64675815640a2807aeb1fc14954e7626d9296cdbe542e3845ff7b0",
+          "table_behaviour_digest": "e00d05d50d64675815640a2807aeb1fc14954e7626d9296cdbe542e3845ff7b0",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c05_overlapping",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "34fce10674ffe5f2b8b657cc5c713158121fba6f39fddd1053044dcb4c13d547",
+          "table_behaviour_digest": "34fce10674ffe5f2b8b657cc5c713158121fba6f39fddd1053044dcb4c13d547",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c06_empty",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "f410339c4b28814b4d93a2ba38cd3e4b965fff56efb609201ba2079e80c9f3a9",
+          "table_behaviour_digest": "f410339c4b28814b4d93a2ba38cd3e4b965fff56efb609201ba2079e80c9f3a9",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c07_single",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "730e177705fc429bb7950a15895930cfb2990f1d038f4775ea629beb9b2ffbf6",
+          "table_behaviour_digest": "730e177705fc429bb7950a15895930cfb2990f1d038f4775ea629beb9b2ffbf6",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c08_out_of_bounds",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "bb939996a2d19e045c397d5555549c46acf0ceddf2d4b4a893e486e1fc045459",
+          "table_behaviour_digest": "bb939996a2d19e045c397d5555549c46acf0ceddf2d4b4a893e486e1fc045459",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c09_malformed_import",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "97886403db96be5c536ffb43c9bd338dba9e977de370771aa13f74b9c04e639e",
+          "table_behaviour_digest": "97886403db96be5c536ffb43c9bd338dba9e977de370771aa13f74b9c04e639e",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c10_raises",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "ba0c067ef8235e3a418f1068deb45f22836b4d558e30e896f0fc96af2741d17c",
+          "table_behaviour_digest": "ba0c067ef8235e3a418f1068deb45f22836b4d558e30e896f0fc96af2741d17c",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c11_non_deterministic",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "9c8a16d08cbcde7a97212509c60afd1da9251191ff9f7c3303be8f451f193d0e",
+          "table_behaviour_digest": "9c8a16d08cbcde7a97212509c60afd1da9251191ff9f7c3303be8f451f193d0e",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c12_exit_without_artifacts",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "8c03704fadac8a8329f3da135b31edfacb5a04f465e5a7e3aaecc8f01fbc5187",
+          "table_behaviour_digest": "8c03704fadac8a8329f3da135b31edfacb5a04f465e5a7e3aaecc8f01fbc5187",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c13_slow",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "442b460585317e9e292888cd3f037a4bd720b46221264f538e8d270be1b06362",
+          "table_behaviour_digest": "442b460585317e9e292888cd3f037a4bd720b46221264f538e8d270be1b06362",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         },
         {
           "candidate_id": "c14_near_zero",
           "reproduces_table": true,
+          "behaviour_reproduced": true,
+          "behaviour_digest": "3a90f151499cd9e9c4880ed2ae2f34a55319536847a1ff54bd3e9051ff1c00b2",
+          "table_behaviour_digest": "3a90f151499cd9e9c4880ed2ae2f34a55319536847a1ff54bd3e9051ff1c00b2",
+          "execution_env_verdict": "PINNED",
+          "interpreter": {
+            "implementation": "cpython",
+            "version": "3.12.11"
+          },
+          "canonical_digest_matches": true,
+          "canonical_digest_note": null,
           "problems": []
         }
       ]
     },
     "c_star_unchanged_after_sweep": {
-      "before": "ef1cfa38b39a2392b95c4b076e12d524aa9ec890e179d12031cbfbe9c7a48e6b",
-      "after": "ef1cfa38b39a2392b95c4b076e12d524aa9ec890e179d12031cbfbe9c7a48e6b",
+      "before": "b6f0591eaf7d26360bcd2a80342475ca048fe0d5b7b0dad1c301e7c794807a73",
+      "after": "b6f0591eaf7d26360bcd2a80342475ca048fe0d5b7b0dad1c301e7c794807a73",
       "unchanged": true
     },
     "theta_e": {
@@ -954,7 +2727,12 @@
         "status": "ok",
         "objective_value": 2.4519205208433132,
         "failure_kind": null,
-        "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8"
+        "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+        "behaviour_digest": "65daffac4768d8d15650baf0827308d7649b1d5cc08513dcccc49f4bb6fef123",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c02_baseline_upstream",
@@ -962,7 +2740,12 @@
         "status": "ok",
         "objective_value": 0.25,
         "failure_kind": null,
-        "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc"
+        "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+        "behaviour_digest": "f01f10f8229f191da93fe8a74a56c58031576ab402f5b5a8a3c7eb9174129207",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c03_mirror",
@@ -970,7 +2753,12 @@
         "status": "ok",
         "objective_value": 2.4519205208433132,
         "failure_kind": null,
-        "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa"
+        "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+        "behaviour_digest": "688d4d7e158d052a97b43e766d6faab625031db0313685596bd41b4b3cf1964b",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c04_near_tie",
@@ -978,7 +2766,12 @@
         "status": "ok",
         "objective_value": 2.451820520843313,
         "failure_kind": null,
-        "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3"
+        "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+        "behaviour_digest": "e00d05d50d64675815640a2807aeb1fc14954e7626d9296cdbe542e3845ff7b0",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c05_overlapping",
@@ -986,7 +2779,12 @@
         "status": "invalid",
         "objective_value": null,
         "failure_kind": "invalid_configuration",
-        "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573"
+        "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+        "behaviour_digest": "34fce10674ffe5f2b8b657cc5c713158121fba6f39fddd1053044dcb4c13d547",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c06_empty",
@@ -994,7 +2792,12 @@
         "status": "invalid",
         "objective_value": null,
         "failure_kind": "invalid_configuration",
-        "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2"
+        "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+        "behaviour_digest": "f410339c4b28814b4d93a2ba38cd3e4b965fff56efb609201ba2079e80c9f3a9",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c07_single",
@@ -1002,7 +2805,12 @@
         "status": "invalid",
         "objective_value": null,
         "failure_kind": "invalid_configuration",
-        "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743"
+        "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+        "behaviour_digest": "730e177705fc429bb7950a15895930cfb2990f1d038f4775ea629beb9b2ffbf6",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c08_out_of_bounds",
@@ -1010,7 +2818,12 @@
         "status": "invalid",
         "objective_value": null,
         "failure_kind": "invalid_configuration",
-        "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376"
+        "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+        "behaviour_digest": "bb939996a2d19e045c397d5555549c46acf0ceddf2d4b4a893e486e1fc045459",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c09_malformed_import",
@@ -1018,7 +2831,12 @@
         "status": "error",
         "objective_value": null,
         "failure_kind": "candidate_import_failed",
-        "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9"
+        "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+        "behaviour_digest": "97886403db96be5c536ffb43c9bd338dba9e977de370771aa13f74b9c04e639e",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c10_raises",
@@ -1026,7 +2844,12 @@
         "status": "error",
         "objective_value": null,
         "failure_kind": "candidate_call_raised",
-        "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3"
+        "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+        "behaviour_digest": "ba0c067ef8235e3a418f1068deb45f22836b4d558e30e896f0fc96af2741d17c",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c11_non_deterministic",
@@ -1034,7 +2857,12 @@
         "status": "error",
         "objective_value": null,
         "failure_kind": "non_deterministic",
-        "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8"
+        "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+        "behaviour_digest": "9c8a16d08cbcde7a97212509c60afd1da9251191ff9f7c3303be8f451f193d0e",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c12_exit_without_artifacts",
@@ -1042,7 +2870,12 @@
         "status": "error",
         "objective_value": null,
         "failure_kind": "child_terminated_early",
-        "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64"
+        "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+        "behaviour_digest": "8c03704fadac8a8329f3da135b31edfacb5a04f465e5a7e3aaecc8f01fbc5187",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c13_slow",
@@ -1050,7 +2883,12 @@
         "status": "error",
         "objective_value": null,
         "failure_kind": "runtime_budget_exceeded",
-        "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181"
+        "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+        "behaviour_digest": "442b460585317e9e292888cd3f037a4bd720b46221264f538e8d270be1b06362",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       },
       {
         "candidate_id": "c14_near_zero",
@@ -1058,7 +2896,12 @@
         "status": "ok",
         "objective_value": 2.6e-05,
         "failure_kind": null,
-        "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe"
+        "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+        "behaviour_digest": "3a90f151499cd9e9c4880ed2ae2f34a55319536847a1ff54bd3e9051ff1c00b2",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        }
       }
     ]
   },
@@ -1070,7 +2913,7 @@
       "eplus_control_py314": "FAIL"
     },
     "a0_1_measured": {
-      "eplus_control_py314": 0
+      "eplus_control_py314": 14
     },
     "a0_1_adapted": {
       "eplus_control_py314": 0
@@ -1079,15 +2922,111 @@
       "eplus_control_py314": {
         "state": "FAIL",
         "label": "FAIL",
-        "measured": 0,
+        "measured": 14,
         "adapted": 0,
         "total": 14,
-        "measured_candidates": [],
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
         "adapted_candidates": [],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them. The attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
-        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure.",
+        "measurement_attestation": {
+          "required": true,
+          "attested": [],
+          "missing_attestation": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_identity": [],
+          "mismatch_attestation": []
+        },
+        "execution_env": {
+          "pinned": {
+            "implementation": "cpython",
+            "version": "3.12.11",
+            "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+            "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+            "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+          },
+          "drift_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "unsanctioned_candidates": [],
+          "verdicts": [
+            "EXECUTION_ENV_DRIFT"
+          ]
+        },
+        "attestation": {
+          "identity_verdict": "MISSING_ATTESTATION",
+          "required": true,
+          "oid": "a01-reference-20260921T171439",
+          "executed_identity": null,
+          "harness_run_id": "a01-reference-20260921T171439",
+          "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+          "envelope_path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171439.json",
+          "envelope_sha256": "acb67873838a78b3a8faeafed21175ca22066729c49ee7ec4df5dde714a4d96f",
+          "attested_candidates": [],
+          "missing_attestation_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "missing_identity_candidates": [],
+          "mismatch_attestation_candidates": [],
+          "note": "submitted by the runtime's own lane and compared by the harness against its own measurement; it establishes what the row claims and joins, not that the claimed bytes were executed (a lying producer, R5). Producing it inside the runtime's session is the next step."
+        }
       }
     },
     "n_pass": 0,
@@ -1102,13 +3041,15 @@
     "screen_vs_qualification": "`|R_1| >= 1` is a CANDIDATE SCREEN over runtimes and is a different object from per-runtime qualification. The screen asks whether the study may continue (at least one substrate survives A0); qualification asks whether a given runtime's A0.1 answer is measured or merely adapted. `r_1_a0_1_only` lists runtimes whose A0.1 is PASS (every row measured) and `r_1_a0_1_partial` lists runtimes whose A0.1 is PARTIAL (some rows accepted only on adapter-supplied semantics). A PARTIAL runtime is deliberately NOT in `r_1_a0_1_only`, so a partial result can never be diluted by siblings that passed. Per-runtime eligibility for A1 is declared separately and explicitly by the `Eligible(r)` predicate in `a0/qualification/qualification.json` (see `a0/qualification/QUALIFICATION.md`); the screen can pass while no runtime is Eligible()."
   },
   "exit_code": 3,
-  "duration_sec": 2.614,
+  "duration_sec": 2.648,
   "report_path": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_control_py314.json",
   "table_path": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/conformance/eplus_control_py314.md",
   "tools": {
     "runner": "/home/ebt/rsi-dev/a0/conformance/conformance.py",
     "selftest": "/home/ebt/rsi-dev/a0/conformance/selftest.py",
     "reference": "/home/ebt/rsi-dev/a0/conformance/reference.json",
+    "envelope": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.<run>.json",
+    "attested_records": "/home/ebt/rsi-dev/a0/envelope/out/attested/<runtime>/<run>.json",
     "frozen_toolchain": {
       "items": {
         "e_star_script": true,

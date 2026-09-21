@@ -1,0 +1,2378 @@
+{
+  "schema": "a0.fixture.observational-equivalence.probe-reprocheck/v1",
+  "scope": "rows",
+  "before": {
+    "dir": "out/conformance.pinf33659f6",
+    "label": null
+  },
+  "after": {
+    "dir": "out/conformance.envelope_off",
+    "label": null
+  },
+  "runtimes_compared": 7,
+  "identical": false,
+  "identical_including_checks": false,
+  "informational_check_differences": [
+    "eplus_control: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}",
+    "eplus_control_py314: per-check ok flags changed {'E-r-equals-E-star': (False, True), 'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}",
+    "eplus_control_py314: a failing check's detail changed",
+    "eplus_mut_claim: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}",
+    "eplus_mut_echo: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}",
+    "eplus_mut_omit: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}",
+    "eplus_mut_own: per-check ok flags changed {'behaviour-vs-execution-env': (None, False), 'measurement-attestation': (None, True)}",
+    "eplus_mut_own: a failing check's detail changed",
+    "eplus_mut_twin: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+  ],
+  "problems": [
+    "eplus_control_py314: state 'FAIL' -> 'PASS'",
+    "eplus_control_py314: reason 'E_r(c) disagrees with E*(c)' -> \"14/14 rows are EXECUTION_ENV_DRIFT: the behaviour agrees, the interpreter does not match the pinned one (sanctioned set), so this runtime's rows are not measurements in the frozen execution environment\"",
+    "eplus_control_py314: row c01_good_hex changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest c45d79eeb20c9f551d384d60b33225744f893479e657e99fe43a9538e3cbb83f != E*'s 1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\"]}",
+    "eplus_control_py314: row c02_baseline_upstream changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 0.25, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 9bb99f39ecbf56c02dad9aa6a27a980232447e21fc0d5379ca988e3cbe97b058 != E*'s b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'ok', 'e_r_value': 0.25, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\"]}",
+    "eplus_control_py314: row c03_mirror changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 83edc4324f2ffb7ef4785a35b286c21e5de8868d8b07264955181f8bede6c6ad != E*'s c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\"]}",
+    "eplus_control_py314: row c04_near_tie changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.451820520843313, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest b6819864f48b50fbd3d1eb5e8b69654d2d0867a175d6cee7b439e2e1eacd400a != E*'s f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'ok', 'e_r_value': 2.451820520843313, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\"]}",
+    "eplus_control_py314: row c05_overlapping changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 22edb359cf51a01c752f66281eb32c5c7314b59dada2fff2f2ff656e6b8d1131 != E*'s 6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=invalid, adapter='invalid'\"]}",
+    "eplus_control_py314: row c06_empty changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 5a52436c2f08b7f28bfd9f034cb1e28085b6259c1da589abc657865c5da980e1 != E*'s 319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=invalid, adapter='invalid'\"]}",
+    "eplus_control_py314: row c07_single changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest a027fb3f56fec5814e491092331848826e96e8e51ab7916ca925c170b5195465 != E*'s a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=invalid, adapter='invalid'\"]}",
+    "eplus_control_py314: row c08_out_of_bounds changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 5b69c559c6c61c3f4b37e186b99cfba487d14f00b820b53cbc5f3dd6de457612 != E*'s 1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=invalid, adapter='invalid'\"]}",
+    "eplus_control_py314: row c09_malformed_import changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_import_failed', 'delta': None, 'notes': [\"canonical_digest 32c33ad7a945a71ef2f48057a55342a27a95afc1ea0c00498b55b16754b71042 != E*'s 98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_import_failed', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=error, adapter='error'\"]}",
+    "eplus_control_py314: row c10_raises changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_call_raised', 'delta': None, 'notes': [\"canonical_digest d233b0cae521f20a33294be0a9818f98d38b1a61fbddb6d54dc400d68c027194 != E*'s 0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_call_raised', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=error, adapter='error'\"]}",
+    "eplus_control_py314: row c11_non_deterministic changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'non_deterministic', 'delta': None, 'notes': [\"canonical_digest e5e8c00ade1107fd998d1ba5ca87106716b88323dad3fff978758a2c52589b8c != E*'s 2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'non_deterministic', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=error, adapter='error'\"]}",
+    "eplus_control_py314: row c12_exit_without_artifacts changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'child_terminated_early', 'delta': None, 'notes': [\"canonical_digest a9532e543c7674a9af1b88f906c6938d3a426adf3c26578e0e84198232230ffc != E*'s cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'child_terminated_early', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=error, adapter='error'\"]}",
+    "eplus_control_py314: row c13_slow changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'runtime_budget_exceeded', 'delta': None, 'notes': [\"canonical_digest a5a2596ee3790ff9c94c4974a21b131116e1783a584787a33f3622d79119641b != E*'s 710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'runtime_budget_exceeded', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=error, adapter='error'\"]}",
+    "eplus_control_py314: row c14_near_zero changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.6e-05, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 65c18e93dadccef072f257ee7e99057ac490a256753551b56e09ada8e96a3215 != E*'s cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'ok', 'e_r_value': 2.6e-05, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\"]}",
+    "eplus_mut_own: reason 'E_r(c) disagrees with E*(c)' -> 'E_r(c) disagrees with E*(c): 14 x MISMATCH_DIGEST'",
+    "eplus_mut_own: row c01_good_hex changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 831d818c891b75257fc91d2a3aa5453b472c26157c6660d9c469e51a2d8d3ce0 != E*'s 1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 831d818c891b75257fc91d2a3aa5453b472c26157c6660d9c469e51a2d8d3ce0 vs E*'s 1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8)\"]}",
+    "eplus_mut_own: row c02_baseline_upstream changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 0.25, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 3bf1f7c311650f46ff0e74622a4484e1eada1522f71f1fba765f51f98516ced3 != E*'s b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 0.25, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 3bf1f7c311650f46ff0e74622a4484e1eada1522f71f1fba765f51f98516ced3 vs E*'s b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc)\"]}",
+    "eplus_mut_own: row c03_mirror changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest ba4155fc9a78d9c3c35e0d89bc8157b4d221caffdbd79ad68288ace911c43eed != E*'s c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest ba4155fc9a78d9c3c35e0d89bc8157b4d221caffdbd79ad68288ace911c43eed vs E*'s c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa)\"]}",
+    "eplus_mut_own: row c04_near_tie changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.451820520843313, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 6653d66662c749c923e3bb1fee04c70b2e2570fdfa94bb6ad50617bb7db6a1c3 != E*'s f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.451820520843313, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 6653d66662c749c923e3bb1fee04c70b2e2570fdfa94bb6ad50617bb7db6a1c3 vs E*'s f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3)\"]}",
+    "eplus_mut_own: row c05_overlapping changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 06d41d52c7eb2c8a3412a5e0de2a56e2919ffd61539993eb2c6ee37ce55c6633 != E*'s 6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 06d41d52c7eb2c8a3412a5e0de2a56e2919ffd61539993eb2c6ee37ce55c6633 vs E*'s 6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573)\"]}",
+    "eplus_mut_own: row c06_empty changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 46769871eb044b9417c6f7bf37b6ddcbdae50582f356b226a6aa1bd42c5ce343 != E*'s 319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 46769871eb044b9417c6f7bf37b6ddcbdae50582f356b226a6aa1bd42c5ce343 vs E*'s 319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2)\"]}",
+    "eplus_mut_own: row c07_single changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 18bac026844cc866290f9b89192509fc3b37bbd383021ebafb65f526e74cf824 != E*'s a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 18bac026844cc866290f9b89192509fc3b37bbd383021ebafb65f526e74cf824 vs E*'s a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743)\"]}",
+    "eplus_mut_own: row c08_out_of_bounds changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 21ba5fd0051a42e612f7bc962e539ed35c7c491035072aadc016802ccaaff588 != E*'s 1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 21ba5fd0051a42e612f7bc962e539ed35c7c491035072aadc016802ccaaff588 vs E*'s 1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376)\"]}",
+    "eplus_mut_own: row c09_malformed_import changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_import_failed', 'delta': None, 'notes': [\"canonical_digest af1a539ccc74ce317dc5c6415ba9bb5ab6914337b3ebb38850754761e856bf83 != E*'s 98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_import_failed', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest af1a539ccc74ce317dc5c6415ba9bb5ab6914337b3ebb38850754761e856bf83 vs E*'s 98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9)\"]}",
+    "eplus_mut_own: row c10_raises changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_call_raised', 'delta': None, 'notes': [\"canonical_digest 530c7a0567d8210f854456c9389e34cc11ba6d8e5edc4dbc22427cae234457cb != E*'s 0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_call_raised', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 530c7a0567d8210f854456c9389e34cc11ba6d8e5edc4dbc22427cae234457cb vs E*'s 0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3)\"]}",
+    "eplus_mut_own: row c11_non_deterministic changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'non_deterministic', 'delta': None, 'notes': [\"canonical_digest e6633feb08442e9ba158bc76b929c58a5d1490e1701cc5344ee0b98f14a92555 != E*'s 2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'non_deterministic', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest e6633feb08442e9ba158bc76b929c58a5d1490e1701cc5344ee0b98f14a92555 vs E*'s 2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8)\"]}",
+    "eplus_mut_own: row c12_exit_without_artifacts changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'child_terminated_early', 'delta': None, 'notes': [\"canonical_digest 2b29ddf42c9b6bea35db4199da89c40e40cdf35e0f92a885e8821e3384426c35 != E*'s cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'child_terminated_early', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 2b29ddf42c9b6bea35db4199da89c40e40cdf35e0f92a885e8821e3384426c35 vs E*'s cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64)\"]}",
+    "eplus_mut_own: row c13_slow changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'runtime_budget_exceeded', 'delta': None, 'notes': [\"canonical_digest 44f7eb83d5228fa2bca4a76d5955aa433df439170c4509535c932765b5bdbf62 != E*'s 710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'runtime_budget_exceeded', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 44f7eb83d5228fa2bca4a76d5955aa433df439170c4509535c932765b5bdbf62 vs E*'s 710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181)\"]}",
+    "eplus_mut_own: row c14_near_zero changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.6e-05, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 882f2b2bd65f9d548410cb611c3ab825b3ab0151c1f0fc3f5622e9a1b3ed1538 != E*'s cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.6e-05, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 882f2b2bd65f9d548410cb611c3ab825b3ab0151c1f0fc3f5622e9a1b3ed1538 vs E*'s cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe)\"]}"
+  ],
+  "results": [
+    {
+      "runtime": "eplus_control",
+      "before": {
+        "state": "PASS",
+        "reason": null,
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "after": {
+        "state": "PASS",
+        "reason": null,
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "behaviour-vs-execution-env": true,
+          "measurement-attestation": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "rows_before": {
+        "c01_good_hex": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c03_mirror": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c04_near_tie": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c05_overlapping": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        }
+      },
+      "rows_after": {
+        "c01_good_hex": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c03_mirror": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c04_near_tie": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c05_overlapping": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        }
+      },
+      "identical": false,
+      "rows_identical": true,
+      "problems": [
+        "eplus_control: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+      ],
+      "check_differences": [
+        "eplus_control: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+      ]
+    },
+    {
+      "runtime": "eplus_control_py314",
+      "before": {
+        "state": "FAIL",
+        "reason": "E_r(c) disagrees with E*(c)",
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": false,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "after": {
+        "state": "PASS",
+        "reason": "14/14 rows are EXECUTION_ENV_DRIFT: the behaviour agrees, the interpreter does not match the pinned one (sanctioned set), so this runtime's rows are not measurements in the frozen execution environment",
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "behaviour-vs-execution-env": true,
+          "measurement-attestation": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "rows_before": {
+        "c01_good_hex": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "canonical_digest c45d79eeb20c9f551d384d60b33225744f893479e657e99fe43a9538e3cbb83f != E*'s 1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "canonical_digest 9bb99f39ecbf56c02dad9aa6a27a980232447e21fc0d5379ca988e3cbe97b058 != E*'s b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c03_mirror": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "canonical_digest 83edc4324f2ffb7ef4785a35b286c21e5de8868d8b07264955181f8bede6c6ad != E*'s c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c04_near_tie": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "canonical_digest b6819864f48b50fbd3d1eb5e8b69654d2d0867a175d6cee7b439e2e1eacd400a != E*'s f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c05_overlapping": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "canonical_digest 22edb359cf51a01c752f66281eb32c5c7314b59dada2fff2f2ff656e6b8d1131 != E*'s 6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "canonical_digest 5a52436c2f08b7f28bfd9f034cb1e28085b6259c1da589abc657865c5da980e1 != E*'s 319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "canonical_digest a027fb3f56fec5814e491092331848826e96e8e51ab7916ca925c170b5195465 != E*'s a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "canonical_digest 5b69c559c6c61c3f4b37e186b99cfba487d14f00b820b53cbc5f3dd6de457612 != E*'s 1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "canonical_digest 32c33ad7a945a71ef2f48057a55342a27a95afc1ea0c00498b55b16754b71042 != E*'s 98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "canonical_digest d233b0cae521f20a33294be0a9818f98d38b1a61fbddb6d54dc400d68c027194 != E*'s 0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "canonical_digest e5e8c00ade1107fd998d1ba5ca87106716b88323dad3fff978758a2c52589b8c != E*'s 2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "canonical_digest a9532e543c7674a9af1b88f906c6938d3a426adf3c26578e0e84198232230ffc != E*'s cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "canonical_digest a5a2596ee3790ff9c94c4974a21b131116e1783a584787a33f3622d79119641b != E*'s 710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "canonical_digest 65c18e93dadccef072f257ee7e99057ac490a256753551b56e09ada8e96a3215 != E*'s cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe (a different file was evaluated, or stale state was reused)"
+          ]
+        }
+      },
+      "rows_after": {
+        "c01_good_hex": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)"
+          ]
+        },
+        "c02_baseline_upstream": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)"
+          ]
+        },
+        "c03_mirror": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)"
+          ]
+        },
+        "c04_near_tie": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)"
+          ]
+        },
+        "c05_overlapping": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)",
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "EXECUTION_ENV_DRIFT",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)"
+          ]
+        }
+      },
+      "identical": false,
+      "rows_identical": false,
+      "problems": [
+        "eplus_control_py314: state 'FAIL' -> 'PASS'",
+        "eplus_control_py314: reason 'E_r(c) disagrees with E*(c)' -> \"14/14 rows are EXECUTION_ENV_DRIFT: the behaviour agrees, the interpreter does not match the pinned one (sanctioned set), so this runtime's rows are not measurements in the frozen execution environment\"",
+        "eplus_control_py314: per-check ok flags changed {'E-r-equals-E-star': (False, True), 'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}",
+        "eplus_control_py314: a failing check's detail changed",
+        "eplus_control_py314: row c01_good_hex changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest c45d79eeb20c9f551d384d60b33225744f893479e657e99fe43a9538e3cbb83f != E*'s 1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\"]}",
+        "eplus_control_py314: row c02_baseline_upstream changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 0.25, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 9bb99f39ecbf56c02dad9aa6a27a980232447e21fc0d5379ca988e3cbe97b058 != E*'s b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'ok', 'e_r_value': 0.25, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\"]}",
+        "eplus_control_py314: row c03_mirror changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 83edc4324f2ffb7ef4785a35b286c21e5de8868d8b07264955181f8bede6c6ad != E*'s c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\"]}",
+        "eplus_control_py314: row c04_near_tie changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.451820520843313, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest b6819864f48b50fbd3d1eb5e8b69654d2d0867a175d6cee7b439e2e1eacd400a != E*'s f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'ok', 'e_r_value': 2.451820520843313, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\"]}",
+        "eplus_control_py314: row c05_overlapping changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 22edb359cf51a01c752f66281eb32c5c7314b59dada2fff2f2ff656e6b8d1131 != E*'s 6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=invalid, adapter='invalid'\"]}",
+        "eplus_control_py314: row c06_empty changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 5a52436c2f08b7f28bfd9f034cb1e28085b6259c1da589abc657865c5da980e1 != E*'s 319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=invalid, adapter='invalid'\"]}",
+        "eplus_control_py314: row c07_single changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest a027fb3f56fec5814e491092331848826e96e8e51ab7916ca925c170b5195465 != E*'s a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=invalid, adapter='invalid'\"]}",
+        "eplus_control_py314: row c08_out_of_bounds changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 5b69c559c6c61c3f4b37e186b99cfba487d14f00b820b53cbc5f3dd6de457612 != E*'s 1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=invalid, adapter='invalid'\"]}",
+        "eplus_control_py314: row c09_malformed_import changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_import_failed', 'delta': None, 'notes': [\"canonical_digest 32c33ad7a945a71ef2f48057a55342a27a95afc1ea0c00498b55b16754b71042 != E*'s 98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_import_failed', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=error, adapter='error'\"]}",
+        "eplus_control_py314: row c10_raises changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_call_raised', 'delta': None, 'notes': [\"canonical_digest d233b0cae521f20a33294be0a9818f98d38b1a61fbddb6d54dc400d68c027194 != E*'s 0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_call_raised', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=error, adapter='error'\"]}",
+        "eplus_control_py314: row c11_non_deterministic changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'non_deterministic', 'delta': None, 'notes': [\"canonical_digest e5e8c00ade1107fd998d1ba5ca87106716b88323dad3fff978758a2c52589b8c != E*'s 2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'non_deterministic', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=error, adapter='error'\"]}",
+        "eplus_control_py314: row c12_exit_without_artifacts changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'child_terminated_early', 'delta': None, 'notes': [\"canonical_digest a9532e543c7674a9af1b88f906c6938d3a426adf3c26578e0e84198232230ffc != E*'s cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'child_terminated_early', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=error, adapter='error'\"]}",
+        "eplus_control_py314: row c13_slow changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'runtime_budget_exceeded', 'delta': None, 'notes': [\"canonical_digest a5a2596ee3790ff9c94c4974a21b131116e1783a584787a33f3622d79119641b != E*'s 710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'runtime_budget_exceeded', 'delta': None, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\", \"no objective on either side; verdict compared: E*=error, adapter='error'\"]}",
+        "eplus_control_py314: row c14_near_zero changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.6e-05, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 65c18e93dadccef072f257ee7e99057ac490a256753551b56e09ada8e96a3215 != E*'s cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'EXECUTION_ENV_DRIFT', 'e_r_status': 'ok', 'e_r_value': 2.6e-05, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour agrees; the execution environment differs from the pinned interpreter ({'implementation': 'cpython', 'version': '3.14.7'} vs {'implementation': 'cpython', 'version': '3.12.11'}) and is in the declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement (external review D1)\"]}"
+      ],
+      "check_differences": [
+        "eplus_control_py314: per-check ok flags changed {'E-r-equals-E-star': (False, True), 'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}",
+        "eplus_control_py314: a failing check's detail changed"
+      ]
+    },
+    {
+      "runtime": "eplus_mut_claim",
+      "before": {
+        "state": "PASS",
+        "reason": null,
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "after": {
+        "state": "PASS",
+        "reason": null,
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "behaviour-vs-execution-env": true,
+          "measurement-attestation": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "rows_before": {
+        "c01_good_hex": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c03_mirror": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c04_near_tie": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c05_overlapping": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        }
+      },
+      "rows_after": {
+        "c01_good_hex": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c03_mirror": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c04_near_tie": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c05_overlapping": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        }
+      },
+      "identical": false,
+      "rows_identical": true,
+      "problems": [
+        "eplus_mut_claim: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+      ],
+      "check_differences": [
+        "eplus_mut_claim: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+      ]
+    },
+    {
+      "runtime": "eplus_mut_echo",
+      "before": {
+        "state": "FAIL",
+        "reason": "adapter check(s) failed: E-star-manifest-echo",
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": false,
+          "F-r-frozen": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "after": {
+        "state": "FAIL",
+        "reason": "adapter check(s) failed: E-star-manifest-echo",
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": false,
+          "F-r-frozen": true,
+          "behaviour-vs-execution-env": true,
+          "measurement-attestation": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "rows_before": {
+        "c01_good_hex": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c03_mirror": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c04_near_tie": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c05_overlapping": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        }
+      },
+      "rows_after": {
+        "c01_good_hex": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c03_mirror": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c04_near_tie": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c05_overlapping": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        }
+      },
+      "identical": false,
+      "rows_identical": true,
+      "problems": [
+        "eplus_mut_echo: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+      ],
+      "check_differences": [
+        "eplus_mut_echo: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+      ]
+    },
+    {
+      "runtime": "eplus_mut_omit",
+      "before": {
+        "state": "PASS",
+        "reason": null,
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "after": {
+        "state": "PASS",
+        "reason": null,
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "behaviour-vs-execution-env": true,
+          "measurement-attestation": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "rows_before": {
+        "c01_good_hex": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c03_mirror": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c04_near_tie": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c05_overlapping": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        }
+      },
+      "rows_after": {
+        "c01_good_hex": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c03_mirror": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c04_near_tie": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c05_overlapping": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        }
+      },
+      "identical": false,
+      "rows_identical": true,
+      "problems": [
+        "eplus_mut_omit: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+      ],
+      "check_differences": [
+        "eplus_mut_omit: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+      ]
+    },
+    {
+      "runtime": "eplus_mut_own",
+      "before": {
+        "state": "FAIL",
+        "reason": "E_r(c) disagrees with E*(c)",
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": false,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "after": {
+        "state": "FAIL",
+        "reason": "E_r(c) disagrees with E*(c): 14 x MISMATCH_DIGEST",
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "behaviour-vs-execution-env": false,
+          "measurement-attestation": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": false,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "rows_before": {
+        "c01_good_hex": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "canonical_digest 831d818c891b75257fc91d2a3aa5453b472c26157c6660d9c469e51a2d8d3ce0 != E*'s 1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "canonical_digest 3bf1f7c311650f46ff0e74622a4484e1eada1522f71f1fba765f51f98516ced3 != E*'s b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c03_mirror": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "canonical_digest ba4155fc9a78d9c3c35e0d89bc8157b4d221caffdbd79ad68288ace911c43eed != E*'s c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c04_near_tie": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "canonical_digest 6653d66662c749c923e3bb1fee04c70b2e2570fdfa94bb6ad50617bb7db6a1c3 != E*'s f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c05_overlapping": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "canonical_digest 06d41d52c7eb2c8a3412a5e0de2a56e2919ffd61539993eb2c6ee37ce55c6633 != E*'s 6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "canonical_digest 46769871eb044b9417c6f7bf37b6ddcbdae50582f356b226a6aa1bd42c5ce343 != E*'s 319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "canonical_digest 18bac026844cc866290f9b89192509fc3b37bbd383021ebafb65f526e74cf824 != E*'s a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "canonical_digest 21ba5fd0051a42e612f7bc962e539ed35c7c491035072aadc016802ccaaff588 != E*'s 1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "canonical_digest af1a539ccc74ce317dc5c6415ba9bb5ab6914337b3ebb38850754761e856bf83 != E*'s 98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "canonical_digest 530c7a0567d8210f854456c9389e34cc11ba6d8e5edc4dbc22427cae234457cb != E*'s 0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "canonical_digest e6633feb08442e9ba158bc76b929c58a5d1490e1701cc5344ee0b98f14a92555 != E*'s 2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "canonical_digest 2b29ddf42c9b6bea35db4199da89c40e40cdf35e0f92a885e8821e3384426c35 != E*'s cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "canonical_digest 44f7eb83d5228fa2bca4a76d5955aa433df439170c4509535c932765b5bdbf62 != E*'s 710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181 (a different file was evaluated, or stale state was reused)"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "canonical_digest 882f2b2bd65f9d548410cb611c3ab825b3ab0151c1f0fc3f5622e9a1b3ed1538 != E*'s cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe (a different file was evaluated, or stale state was reused)"
+          ]
+        }
+      },
+      "rows_after": {
+        "c01_good_hex": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 831d818c891b75257fc91d2a3aa5453b472c26157c6660d9c469e51a2d8d3ce0 vs E*'s 1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8)"
+          ]
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 3bf1f7c311650f46ff0e74622a4484e1eada1522f71f1fba765f51f98516ced3 vs E*'s b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc)"
+          ]
+        },
+        "c03_mirror": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest ba4155fc9a78d9c3c35e0d89bc8157b4d221caffdbd79ad68288ace911c43eed vs E*'s c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa)"
+          ]
+        },
+        "c04_near_tie": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 6653d66662c749c923e3bb1fee04c70b2e2570fdfa94bb6ad50617bb7db6a1c3 vs E*'s f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3)"
+          ]
+        },
+        "c05_overlapping": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 06d41d52c7eb2c8a3412a5e0de2a56e2919ffd61539993eb2c6ee37ce55c6633 vs E*'s 6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573)"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 46769871eb044b9417c6f7bf37b6ddcbdae50582f356b226a6aa1bd42c5ce343 vs E*'s 319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2)"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 18bac026844cc866290f9b89192509fc3b37bbd383021ebafb65f526e74cf824 vs E*'s a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743)"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 21ba5fd0051a42e612f7bc962e539ed35c7c491035072aadc016802ccaaff588 vs E*'s 1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376)"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest af1a539ccc74ce317dc5c6415ba9bb5ab6914337b3ebb38850754761e856bf83 vs E*'s 98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9)"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 530c7a0567d8210f854456c9389e34cc11ba6d8e5edc4dbc22427cae234457cb vs E*'s 0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3)"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest e6633feb08442e9ba158bc76b929c58a5d1490e1701cc5344ee0b98f14a92555 vs E*'s 2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8)"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 2b29ddf42c9b6bea35db4199da89c40e40cdf35e0f92a885e8821e3384426c35 vs E*'s cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64)"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 44f7eb83d5228fa2bca4a76d5955aa433df439170c4509535c932765b5bdbf62 vs E*'s 710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181)"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MISMATCH_DIGEST",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": [
+            "behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 882f2b2bd65f9d548410cb611c3ab825b3ab0151c1f0fc3f5622e9a1b3ed1538 vs E*'s cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe)"
+          ]
+        }
+      },
+      "identical": false,
+      "rows_identical": false,
+      "problems": [
+        "eplus_mut_own: reason 'E_r(c) disagrees with E*(c)' -> 'E_r(c) disagrees with E*(c): 14 x MISMATCH_DIGEST'",
+        "eplus_mut_own: per-check ok flags changed {'behaviour-vs-execution-env': (None, False), 'measurement-attestation': (None, True)}",
+        "eplus_mut_own: a failing check's detail changed",
+        "eplus_mut_own: row c01_good_hex changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 831d818c891b75257fc91d2a3aa5453b472c26157c6660d9c469e51a2d8d3ce0 != E*'s 1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 831d818c891b75257fc91d2a3aa5453b472c26157c6660d9c469e51a2d8d3ce0 vs E*'s 1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8)\"]}",
+        "eplus_mut_own: row c02_baseline_upstream changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 0.25, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 3bf1f7c311650f46ff0e74622a4484e1eada1522f71f1fba765f51f98516ced3 != E*'s b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 0.25, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 3bf1f7c311650f46ff0e74622a4484e1eada1522f71f1fba765f51f98516ced3 vs E*'s b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc)\"]}",
+        "eplus_mut_own: row c03_mirror changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest ba4155fc9a78d9c3c35e0d89bc8157b4d221caffdbd79ad68288ace911c43eed != E*'s c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.4519205208433132, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest ba4155fc9a78d9c3c35e0d89bc8157b4d221caffdbd79ad68288ace911c43eed vs E*'s c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa)\"]}",
+        "eplus_mut_own: row c04_near_tie changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.451820520843313, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 6653d66662c749c923e3bb1fee04c70b2e2570fdfa94bb6ad50617bb7db6a1c3 != E*'s f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.451820520843313, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 6653d66662c749c923e3bb1fee04c70b2e2570fdfa94bb6ad50617bb7db6a1c3 vs E*'s f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3)\"]}",
+        "eplus_mut_own: row c05_overlapping changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 06d41d52c7eb2c8a3412a5e0de2a56e2919ffd61539993eb2c6ee37ce55c6633 != E*'s 6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 06d41d52c7eb2c8a3412a5e0de2a56e2919ffd61539993eb2c6ee37ce55c6633 vs E*'s 6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573)\"]}",
+        "eplus_mut_own: row c06_empty changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 46769871eb044b9417c6f7bf37b6ddcbdae50582f356b226a6aa1bd42c5ce343 != E*'s 319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 46769871eb044b9417c6f7bf37b6ddcbdae50582f356b226a6aa1bd42c5ce343 vs E*'s 319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2)\"]}",
+        "eplus_mut_own: row c07_single changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 18bac026844cc866290f9b89192509fc3b37bbd383021ebafb65f526e74cf824 != E*'s a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 18bac026844cc866290f9b89192509fc3b37bbd383021ebafb65f526e74cf824 vs E*'s a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743)\"]}",
+        "eplus_mut_own: row c08_out_of_bounds changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"canonical_digest 21ba5fd0051a42e612f7bc962e539ed35c7c491035072aadc016802ccaaff588 != E*'s 1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'invalid', 'e_r_value': None, 'e_r_failure_kind': 'invalid_configuration', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 21ba5fd0051a42e612f7bc962e539ed35c7c491035072aadc016802ccaaff588 vs E*'s 1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376)\"]}",
+        "eplus_mut_own: row c09_malformed_import changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_import_failed', 'delta': None, 'notes': [\"canonical_digest af1a539ccc74ce317dc5c6415ba9bb5ab6914337b3ebb38850754761e856bf83 != E*'s 98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_import_failed', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest af1a539ccc74ce317dc5c6415ba9bb5ab6914337b3ebb38850754761e856bf83 vs E*'s 98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9)\"]}",
+        "eplus_mut_own: row c10_raises changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_call_raised', 'delta': None, 'notes': [\"canonical_digest 530c7a0567d8210f854456c9389e34cc11ba6d8e5edc4dbc22427cae234457cb != E*'s 0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'candidate_call_raised', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 530c7a0567d8210f854456c9389e34cc11ba6d8e5edc4dbc22427cae234457cb vs E*'s 0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3)\"]}",
+        "eplus_mut_own: row c11_non_deterministic changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'non_deterministic', 'delta': None, 'notes': [\"canonical_digest e6633feb08442e9ba158bc76b929c58a5d1490e1701cc5344ee0b98f14a92555 != E*'s 2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'non_deterministic', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest e6633feb08442e9ba158bc76b929c58a5d1490e1701cc5344ee0b98f14a92555 vs E*'s 2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8)\"]}",
+        "eplus_mut_own: row c12_exit_without_artifacts changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'child_terminated_early', 'delta': None, 'notes': [\"canonical_digest 2b29ddf42c9b6bea35db4199da89c40e40cdf35e0f92a885e8821e3384426c35 != E*'s cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'child_terminated_early', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 2b29ddf42c9b6bea35db4199da89c40e40cdf35e0f92a885e8821e3384426c35 vs E*'s cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64)\"]}",
+        "eplus_mut_own: row c13_slow changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'runtime_budget_exceeded', 'delta': None, 'notes': [\"canonical_digest 44f7eb83d5228fa2bca4a76d5955aa433df439170c4509535c932765b5bdbf62 != E*'s 710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181 (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'error', 'e_r_value': None, 'e_r_failure_kind': 'runtime_budget_exceeded', 'delta': None, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 44f7eb83d5228fa2bca4a76d5955aa433df439170c4509535c932765b5bdbf62 vs E*'s 710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181)\"]}",
+        "eplus_mut_own: row c14_near_zero changed: {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.6e-05, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"canonical_digest 882f2b2bd65f9d548410cb611c3ab825b3ab0151c1f0fc3f5622e9a1b3ed1538 != E*'s cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe (a different file was evaluated, or stale state was reused)\"]} -> {'verdict': 'MISMATCH_DIGEST', 'e_r_status': 'ok', 'e_r_value': 2.6e-05, 'e_r_failure_kind': None, 'delta': 0.0, 'notes': [\"behaviour mismatch: the row's canonical_digest matches the frozen payload under NO interpreter in the declared allowed execution set [{'implementation': 'cpython', 'version': '3.12.11'}, {'implementation': 'cpython', 'version': '3.14.7'}]: the behaviour payload itself differs (canonical_digest 882f2b2bd65f9d548410cb611c3ab825b3ab0151c1f0fc3f5622e9a1b3ed1538 vs E*'s cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe)\"]}"
+      ],
+      "check_differences": [
+        "eplus_mut_own: per-check ok flags changed {'behaviour-vs-execution-env': (None, False), 'measurement-attestation': (None, True)}",
+        "eplus_mut_own: a failing check's detail changed"
+      ]
+    },
+    {
+      "runtime": "eplus_mut_twin",
+      "before": {
+        "state": "PASS",
+        "reason": null,
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "after": {
+        "state": "PASS",
+        "reason": null,
+        "checks": {
+          "EID-star-verbatim": true,
+          "EID-r-derives-from-EID-star": true,
+          "EID-r-declaration-present": true,
+          "EID-r-recomputes": true,
+          "theta-E-identical": true,
+          "E-star-manifest-echo": true,
+          "F-r-frozen": true,
+          "behaviour-vs-execution-env": true,
+          "measurement-attestation": true,
+          "candidate-coverage": true,
+          "E-r-equals-E-star": true,
+          "E-r-failure-kind": true,
+          "evidence-fresh-or-declared": true
+        },
+        "finding_ids": [],
+        "claim_field_present": true,
+        "legacy_claim_field_present": false,
+        "claim_field_value": null
+      },
+      "rows_before": {
+        "c01_good_hex": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c03_mirror": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c04_near_tie": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c05_overlapping": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        }
+      },
+      "rows_after": {
+        "c01_good_hex": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c02_baseline_upstream": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 0.25,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c03_mirror": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.4519205208433132,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c04_near_tie": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.451820520843313,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        },
+        "c05_overlapping": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c06_empty": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c07_single": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c08_out_of_bounds": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "invalid",
+          "e_r_value": null,
+          "e_r_failure_kind": "invalid_configuration",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=invalid, adapter='invalid'"
+          ]
+        },
+        "c09_malformed_import": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_import_failed",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c10_raises": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "candidate_call_raised",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c11_non_deterministic": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "non_deterministic",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c12_exit_without_artifacts": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "child_terminated_early",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c13_slow": {
+          "verdict": "MATCH_VERDICT",
+          "e_r_status": "error",
+          "e_r_value": null,
+          "e_r_failure_kind": "runtime_budget_exceeded",
+          "delta": null,
+          "notes": [
+            "no objective on either side; verdict compared: E*=error, adapter='error'"
+          ]
+        },
+        "c14_near_zero": {
+          "verdict": "MATCH",
+          "e_r_status": "ok",
+          "e_r_value": 2.6e-05,
+          "e_r_failure_kind": null,
+          "delta": 0.0,
+          "notes": []
+        }
+      },
+      "identical": false,
+      "rows_identical": true,
+      "problems": [
+        "eplus_mut_twin: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+      ],
+      "check_differences": [
+        "eplus_mut_twin: per-check ok flags changed {'behaviour-vs-execution-env': (None, True), 'measurement-attestation': (None, True)}"
+      ]
+    }
+  ]
+}

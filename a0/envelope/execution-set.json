@@ -1,0 +1,60 @@
+{
+  "schema": "a0.envelope.execution_set/v1",
+  "role": [
+    "The DECLARED ALLOWED EXECUTION SET for A0.1. `canonical_digest` covers the whole Outcome payload",
+    "including `interpreter`, so a byte-identical E* run under a different interpreter produced",
+    "MISMATCH_DIGEST with delta = 0.0 on every row (external review D1). The checker now splits the two",
+    "surfaces: behaviour (the payload minus `canonical_digest` and `interpreter`) and execution",
+    "environment (the `interpreter` block). This file says which execution environments are sanctioned,",
+    "so a sanctioned drift is reported as EXECUTION_ENV_DRIFT and an unsanctioned one as",
+    "MISMATCH_EXECUTION_ENV. Neither is ever reported as 'the evaluator's behaviour disagrees'."
+  ],
+  "pinned": {
+    "implementation": "cpython",
+    "version": "3.12.11",
+    "interpreter_path": "a0/tasks/circle-packing/.venv/bin/python",
+    "source": "a0/tasks/circle-packing/E_STAR.json:evaluator.interpreter (the environment the frozen table was measured under)",
+    "meaning": "PINNED = the execution environment E_STAR.json's per-candidate canonical_digest values are bound to. The reference sweep and the measurement tokens are issued under it."
+  },
+  "sanctioned": [
+    {
+      "implementation": "cpython",
+      "version": "3.12.11",
+      "evidence": "the pinned interpreter itself",
+      "measured_on": "a0/tasks/circle-packing/E_STAR.json (frozen table)"
+    },
+    {
+      "implementation": "cpython",
+      "version": "3.14.7",
+      "evidence": "re-measured: for all 14 members of C* the behaviour payload is byte-identical to the frozen one (envelope.behaviour_digest equal 14/14), and E*'s own canonical_digest recomputed with the 3.14.7 interpreter block reproduces the digest the 3.14.7 run emitted, 14/14. Values, statuses, failure kinds and structure fields are bit-identical; delta = 0.0 on every row.",
+      "measured_on": "2026-09-21, /usr/bin/python3.14 (3.14.7), full theta_E, this host; evidence a0/envelope/out/",
+      "sanctioned_because": "measured equivalent on C*, not asserted equivalent",
+      "residual_risk": "equivalence is measured on C* only, and only for the two interpreter classes above. E*'s own source comment notes that CPython's sum() semantics changed at 3.12, so 3.11 and earlier are a PLAUSIBLE but UNMEASURED source of numeric drift; they are deliberately NOT sanctioned."
+    }
+  ],
+  "policy": {
+    "pinned_vs_sanctioned_in_a_row": "A row measured under the pinned interpreter gets its ordinary verdict. A row whose behaviour agrees but whose interpreter is sanctioned gets EXECUTION_ENV_DRIFT: accepting (it is not a disagreement with E*), counted, and reported per row and per runtime. A row whose behaviour agrees but whose interpreter is outside this set gets MISMATCH_EXECUTION_ENV: non-accepting.",
+    "behaviour_first": "The behaviour comparison always runs first. A different evaluator whose payload differs is MISMATCH_DIGEST under every interpreter in this file, so the projection can never rescue a mutant that agrees only on values (proved in a0/envelope/selftest.py and in a0/fixtures/observational-equivalence/).",
+    "not_a_licence_to_widen": "Adding an entry here changes which A0.1 rows are accepted. It is a study-level decision, recorded as the open question below, not an implementation detail."
+  },
+  "coupling_question_UNDECIDED": {
+    "status": "documented, NOT decided. The user has not chosen.",
+    "question": "Should this allowed execution set be folded into EID*'s Config component?",
+    "why_it_matters": [
+      "EID* is a content digest over five components, one of which is Config. Today the allowed execution",
+      "set is a checker-side declaration that EID* does not cover, so broadening it does not change EID*.",
+      "If it were folded into Config, then because EID* is a digest over Components (not a monotone",
+      "superset relation), ADDING an interpreter to the sanctioned list would change Config's digest and",
+      "therefore EID* = 664115e0...9328. That is a re-freeze: every frozen document, the A0.1 reference",
+      "table and every adapter's EID_r derivation would have to be re-issued and re-audited, and the",
+      "A0.1 rows measured so far would no longer be rows about EID*.",
+      "Folding it in would also make the sanctioned set self-referential: the set would have to be",
+      "measured under an interpreter that is itself inside the set."
+    ],
+    "options_not_chosen": [
+      "leave it checker-side (today's state): no re-freeze, but the sanctioned set is a declaration by the checker's owner rather than a frozen coordinate;",
+      "fold the PINNED interpreter only into Config (leaving sanctioned drift checker-side), which freezes the environment the table was measured in without making equivalence claims part of EID*;",
+      "fold the whole set into Config and re-freeze EID*."
+    ]
+  }
+}

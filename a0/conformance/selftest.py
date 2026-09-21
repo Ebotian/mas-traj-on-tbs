@@ -45,6 +45,13 @@ def deviant(mode: str) -> str:
     return f"{PY} {FIXTURES / 'deviant.py'} --mode {mode}"
 
 
+#: every member of C*, in the frozen table's order (used where an expectation is "all 14 rows")
+ALL_CIDS = [
+    c["candidate_id"]
+    for c in json.loads((HERE.parent / "tasks" / "circle-packing" / "E_STAR.json").read_text())["candidates"]
+]
+
+
 # fixture -> what the checker must say. `findings` are required finding ids, `rows` required
 # per-candidate verdicts, `failed_checks` required check ids that must be reported as failed.
 EXPECTATIONS = {
@@ -183,6 +190,89 @@ EXPECTATIONS = {
         "failed_checks": ["E-r-failure-kind"],
         "why": "the frozen §5.3 table maps E*'s failure.kind to one failure_stage; a row that declares a "
                "different stage would make plan:577's counts non-joinable and must FAIL (audit R1)",
+    },
+    # --- external review D1: behaviour is not the execution environment ---------------------------
+    "selftest_env_drift": {
+        "state": "PASS",
+        "cmd": deviant("env_drift"),
+        "rows": {cid: "EXECUTION_ENV_DRIFT" for cid in ALL_CIDS},
+        "qualification": {"measured": 14, "adapted": 0, "total": 14},
+        "why": "the row's canonical_digest is the frozen payload's digest recomputed under a SANCTIONED "
+               "interpreter: the behaviour payload is identical, so this is EXECUTION_ENV_DRIFT "
+               "(accepting, reported) and never MISMATCH_DIGEST -- the false red external review D1 "
+               "is about",
+    },
+    "selftest_env_drift_unsanctioned": {
+        "state": "FAIL",
+        "cmd": deviant("env_drift_unsanctioned"),
+        "rows": {cid: "MISMATCH_EXECUTION_ENV" for cid in ALL_CIDS},
+        "failed_checks": ["behaviour-vs-execution-env"],
+        "why": "the same drift with an interpreter OUTSIDE the declared allowed execution set: the "
+               "behaviour agrees, but the agreement is not evidence about EID*, so it is non-accepting",
+    },
+    # --- external review D3: the harness measurement token, fail-closed --------------------------
+    "selftest_measurement_pass": {
+        "state": "PASS",
+        "cmd": deviant("pass"),
+        "qualification": {"measured": 14, "adapted": 0, "total": 14},
+        "why": "the same honest fixture as selftest_clean, asserting that the token protocol itself "
+               "does not cost a conformant adapter anything",
+    },
+    "selftest_no_token": {
+        "state": "FAIL",
+        "cmd": deviant("no_token"),
+        "findings": ["MISSING_ATTESTATION"],
+        "rows": {cid: "MISSING_ATTESTATION" for cid in ALL_CIDS},
+        "failed_checks": ["measurement-attestation"],
+        "why": "every number agrees and the row still carries no harness measurement token: fail-closed "
+               "means this is non-accepting, not a silent pass (external review D3)",
+    },
+    "selftest_foreign_token": {
+        "state": "FAIL",
+        "cmd": deviant("foreign_token"),
+        "findings": ["MISMATCH_ATTESTATION"],
+        "rows": {cid: "MISMATCH_ATTESTATION" for cid in ALL_CIDS},
+        "failed_checks": ["measurement-attestation"],
+        "why": "the row echoes a real OID that the harness did not issue for this candidate (a stale or "
+               "foreign measurement): the join must be to THIS run's measurement, not to any token",
+    },
+    "selftest_no_identity": {
+        "state": "FAIL",
+        "cmd": deviant("no_identity"),
+        "findings": ["MISSING_IDENTITY"],
+        "rows": {cid: "MISSING_IDENTITY" for cid in ALL_CIDS},
+        "failed_checks": ["measurement-attestation"],
+        "why": "the token is echoed but nothing is attested about the bytes used: the token proves which "
+               "measurement is claimed, not what executed",
+    },
+    "selftest_mutant_identity": {
+        "state": "FAIL",
+        "cmd": deviant("mutant_e_prime_identity"),
+        "findings": ["MISMATCH_ATTESTATION"],
+        "rows": {cid: "MISMATCH_ATTESTATION" for cid in ALL_CIDS},
+        "failed_checks": ["measurement-attestation"],
+        "why": "the 'claim' attack with the identity made explicit: the row echoes the token the harness "
+               "issued for E* while attesting the mutant E' evaluator source digest (computed from E' bytes)",
+    },
+    "selftest_other_candidate_bytes": {
+        "state": "FAIL",
+        "cmd": deviant("other_candidate_bytes"),
+        "findings": ["MISMATCH_ATTESTATION"],
+        "rows": {"c01_good_hex": "MISMATCH_ATTESTATION", "c03_mirror": "MISMATCH_ATTESTATION"},
+        "failed_checks": ["measurement-attestation"],
+        "why": "c01's row attests c03's measured bytes and vice versa: the bit-identical value twin is "
+               "invisible to the numbers and to canonical_digest-by-value, and only the joined "
+               "measurement sees it",
+    },
+    "selftest_attest_other_measurement": {
+        "state": "FAIL",
+        "cmd": deviant("attest_other_measurement"),
+        "findings": ["MISMATCH_ATTESTATION"],
+        "rows": {cid: "MISMATCH_ATTESTATION" for cid in ALL_CIDS},
+        "failed_checks": ["measurement-attestation"],
+        "why": "the row echoes the token and the right identity but attests a behaviour digest that is not "
+               "the one the harness measured: the attestation is compared against the harness's own "
+               "measurement, not merely collected",
     },
     "selftest_omit_failure_kind": {
         "state": "FAIL",

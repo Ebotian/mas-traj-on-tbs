@@ -1,0 +1,371 @@
+{
+  "schema": "a0.envelope.evidence/v1",
+  "generated_at": "2026-09-21T17:17:15+0800",
+  "purpose": "executed acceptance evidence for external review D1 (behaviour vs execution environment) and D3 (harness measurement token)",
+  "note": "every entry names the command that produced it; the observed values are read back out of the artifacts, not typed",
+  "entries": [
+    {
+      "id": "a1",
+      "claim": "(a) the real E* under python3.14 reports the environment-drift verdict and NOT a behaviour mismatch, on the runner's own sweep",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py reference --python /usr/bin/python3.14 --state-root /tmp/evrun/out314 --out out/evidence-d1d3/reference.py314.json",
+      "artifact": "out/evidence-d1d3/reference.py314.json",
+      "log": "out/evidence-d1d3/a1.reference.py314.log",
+      "observed": {
+        "reproduces_frozen_table": true,
+        "behaviour_reproduced": true,
+        "execution_env_verdict": "EXECUTION_ENV_DRIFT",
+        "per_candidate_env_verdicts": [
+          "EXECUTION_ENV_DRIFT"
+        ],
+        "per_candidate_behaviour_reproduced": [
+          true
+        ],
+        "canonical_digest_matches_count": 0,
+        "rows": 14,
+        "note": "the frozen table's numbers reproduce exactly; every canonical_digest differs; every behaviour payload is identical"
+      }
+    },
+    {
+      "id": "eplus_control_py314-exploratory",
+      "claim": "(a) through the fixture's own adapter and command shape: the real E* under 3.14 is EXECUTION_ENV_DRIFT on 14/14, not MISMATCH_DIGEST (the previously reported false red)",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eplus_control_py314 --adapter \"eplus_control_py314=python3 /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/tasks/circle-packing --identity own --python /usr/bin/python3.14\" --no-controls --envelope off --out out/evidence-d1d3/eplus_control_py314.exploratory.json",
+      "artifact": "out/evidence-d1d3/eplus_control_py314.exploratory.json",
+      "log": "out/evidence-d1d3/eplus_control_py314.exploratory.log",
+      "observed": {
+        "eplus_control_py314": {
+          "state": "PASS",
+          "label": "PASS (14/14 measured)",
+          "measured": 14,
+          "adapted": 0,
+          "reason": "14/14 rows are EXECUTION_ENV_DRIFT: the behaviour agrees, the interpreter does not match the pinned one (sanctioned set), so this runtime's rows are not measurements in the frozen execution environment",
+          "row_verdicts": {
+            "EXECUTION_ENV_DRIFT": 14
+          },
+          "attestation_identity_verdict": "TOKEN_REQUIREMENT_OFF",
+          "execution_env_verdicts": [
+            "EXECUTION_ENV_DRIFT"
+          ]
+        }
+      }
+    },
+    {
+      "id": "eplus_control-exploratory",
+      "claim": "(c) no false red from the projection: the honest control (real E*, pinned interpreter, honest identity) still PASSes 14/14",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eplus_control --adapter \"eplus_control=python3 /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/tasks/circle-packing --identity own\" --no-controls --envelope off --out out/evidence-d1d3/eplus_control.exploratory.json",
+      "artifact": "out/evidence-d1d3/eplus_control.exploratory.json",
+      "log": "out/evidence-d1d3/eplus_control.exploratory.log",
+      "observed": {
+        "eplus_control": {
+          "state": "PASS",
+          "label": "PASS (14/14 measured)",
+          "measured": 14,
+          "adapted": 0,
+          "reason": null,
+          "row_verdicts": {
+            "MATCH": 5,
+            "MATCH_VERDICT": 9
+          },
+          "attestation_identity_verdict": "TOKEN_REQUIREMENT_OFF",
+          "execution_env_verdicts": [
+            "PINNED"
+          ]
+        }
+      }
+    },
+    {
+      "id": "eplus_mut_own-exploratory",
+      "claim": "(critical) the projection does NOT rescue the mutant: E' reporting its own identity is rejected on BEHAVIOUR (14 x MISMATCH_DIGEST), with the token requirement off",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eplus_mut_own --adapter \"eplus_mut_own=python3 /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime --identity own\" --no-controls --envelope off --out out/evidence-d1d3/eplus_mut_own.exploratory.json",
+      "artifact": "out/evidence-d1d3/eplus_mut_own.exploratory.json",
+      "log": "out/evidence-d1d3/eplus_mut_own.exploratory.log",
+      "observed": {
+        "eplus_mut_own": {
+          "state": "FAIL",
+          "label": "FAIL",
+          "measured": 0,
+          "adapted": 0,
+          "reason": "E_r(c) disagrees with E*(c): 14 x MISMATCH_DIGEST",
+          "row_verdicts": {
+            "MISMATCH_DIGEST": 14
+          },
+          "attestation_identity_verdict": "TOKEN_REQUIREMENT_OFF",
+          "execution_env_verdicts": [
+            "MISMATCH_DIGEST"
+          ]
+        }
+      }
+    },
+    {
+      "id": "eplus_mut_own",
+      "claim": "(critical, default regime) the same mutant row, now also non-accepting for the missing attestation",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eplus_mut_own --adapter \"eplus_mut_own=python3 /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime --identity own\" --no-controls  --out out/evidence-d1d3/eplus_mut_own.required.json",
+      "artifact": "out/evidence-d1d3/eplus_mut_own.required.json",
+      "log": "out/evidence-d1d3/eplus_mut_own.required.log",
+      "observed": {
+        "eplus_mut_own": {
+          "state": "FAIL",
+          "label": "FAIL",
+          "measured": 0,
+          "adapted": 0,
+          "reason": "E_r(c) disagrees with E*(c): 14 x MISMATCH_DIGEST",
+          "row_verdicts": {
+            "MISMATCH_DIGEST": 14
+          },
+          "attestation_identity_verdict": "MISSING_ATTESTATION",
+          "execution_env_verdicts": [
+            "MISMATCH_DIGEST"
+          ]
+        }
+      }
+    },
+    {
+      "id": "eplus_mut_claim",
+      "claim": "(b) the mutant's previously-PASSing identity-assertion mode now FAILs",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eplus_mut_claim --adapter \"eplus_mut_claim=python3 /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime --identity claim-e-star\" --no-controls  --out out/evidence-d1d3/eplus_mut_claim.required.json",
+      "artifact": "out/evidence-d1d3/eplus_mut_claim.required.json",
+      "log": "out/evidence-d1d3/eplus_mut_claim.required.log",
+      "observed": {
+        "eplus_mut_claim": {
+          "state": "FAIL",
+          "label": "FAIL",
+          "measured": 14,
+          "adapted": 0,
+          "reason": "not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+          "row_verdicts": {
+            "MISSING_ATTESTATION": 14
+          },
+          "attestation_identity_verdict": "MISSING_ATTESTATION",
+          "execution_env_verdicts": [
+            "PINNED"
+          ]
+        }
+      }
+    },
+    {
+      "id": "eplus_mut_omit",
+      "claim": "(b) the mutant's previously-PASSing omission mode now FAILs",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eplus_mut_omit --adapter \"eplus_mut_omit=python3 /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime --identity omit\" --no-controls  --out out/evidence-d1d3/eplus_mut_omit.required.json",
+      "artifact": "out/evidence-d1d3/eplus_mut_omit.required.json",
+      "log": "out/evidence-d1d3/eplus_mut_omit.required.log",
+      "observed": {
+        "eplus_mut_omit": {
+          "state": "FAIL",
+          "label": "FAIL",
+          "measured": 14,
+          "adapted": 0,
+          "reason": "not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+          "row_verdicts": {
+            "MISSING_ATTESTATION": 14
+          },
+          "attestation_identity_verdict": "MISSING_ATTESTATION",
+          "execution_env_verdicts": []
+        }
+      }
+    },
+    {
+      "id": "eplus_mut_twin",
+      "claim": "(b) the mutant's previously-PASSing value-identical-twin mode now FAILs",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eplus_mut_twin --adapter \"eplus_mut_twin=python3 /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime --identity omit --twin-swap\" --no-controls  --out out/evidence-d1d3/eplus_mut_twin.required.json",
+      "artifact": "out/evidence-d1d3/eplus_mut_twin.required.json",
+      "log": "out/evidence-d1d3/eplus_mut_twin.required.log",
+      "observed": {
+        "eplus_mut_twin": {
+          "state": "FAIL",
+          "label": "FAIL",
+          "measured": 14,
+          "adapted": 0,
+          "reason": "not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+          "row_verdicts": {
+            "MISSING_ATTESTATION": 14
+          },
+          "attestation_identity_verdict": "MISSING_ATTESTATION",
+          "execution_env_verdicts": []
+        }
+      }
+    },
+    {
+      "id": "eplus_mut_echo",
+      "claim": "(b) the mutant's manifest-echo mode FAILs in both regimes",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eplus_mut_echo --adapter \"eplus_mut_echo=python3 /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime --identity claim-e-star --echo-manifest\" --no-controls  --out out/evidence-d1d3/eplus_mut_echo.required.json",
+      "artifact": "out/evidence-d1d3/eplus_mut_echo.required.json",
+      "log": "out/evidence-d1d3/eplus_mut_echo.required.log",
+      "observed": {
+        "eplus_mut_echo": {
+          "state": "FAIL",
+          "label": "FAIL",
+          "measured": 14,
+          "adapted": 0,
+          "reason": "not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+          "row_verdicts": {
+            "MISSING_ATTESTATION": 14
+          },
+          "attestation_identity_verdict": "MISSING_ATTESTATION",
+          "execution_env_verdicts": [
+            "PINNED"
+          ]
+        }
+      }
+    },
+    {
+      "id": "eplus_mut_claim-exploratory",
+      "claim": "honest counterpoint: with the token requirement OFF the claim mode still PASSes, i.e. the D1 projection does not close that class -- the D3 token does",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eplus_mut_claim --adapter \"eplus_mut_claim=python3 /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime --identity claim-e-star\" --no-controls --envelope off --out out/evidence-d1d3/eplus_mut_claim.exploratory.json",
+      "artifact": "out/evidence-d1d3/eplus_mut_claim.exploratory.json",
+      "log": "out/evidence-d1d3/eplus_mut_claim.exploratory.log",
+      "observed": {
+        "eplus_mut_claim": {
+          "state": "PASS",
+          "label": "PASS (14/14 measured)",
+          "measured": 14,
+          "adapted": 0,
+          "reason": null,
+          "row_verdicts": {
+            "MATCH": 5,
+            "MATCH_VERDICT": 9
+          },
+          "attestation_identity_verdict": "TOKEN_REQUIREMENT_OFF",
+          "execution_env_verdicts": [
+            "PINNED"
+          ]
+        }
+      }
+    },
+    {
+      "id": "d",
+      "claim": "(d) the four-runtime run: which pass, which are non-accepting and why",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run",
+      "artifact": "a0/conformance/report.json",
+      "observed": {
+        "states": {
+          "simpleloop": "PASS",
+          "kapso": "FAIL",
+          "eve": "FAIL",
+          "loreley": "FAIL"
+        },
+        "labels": {
+          "simpleloop": "PASS (14/14 measured)",
+          "kapso": "FAIL",
+          "eve": "FAIL",
+          "loreley": "FAIL"
+        },
+        "measured": {
+          "simpleloop": 14,
+          "kapso": 14,
+          "eve": 5,
+          "loreley": 14
+        },
+        "adapted": {
+          "simpleloop": 0,
+          "kapso": 0,
+          "eve": 9,
+          "loreley": 0
+        },
+        "r_1_a0_1_only": [
+          "simpleloop"
+        ],
+        "row_verdicts": {
+          "simpleloop": {
+            "MATCH": 5,
+            "MATCH_VERDICT": 9
+          },
+          "kapso": {
+            "MISSING_ATTESTATION": 14
+          },
+          "eve": {
+            "MISSING_ATTESTATION": 14
+          },
+          "loreley": {
+            "MISSING_ATTESTATION": 14
+          }
+        },
+        "controls": {
+          "control_honest": "PASS",
+          "control_zero_on_error": "FAIL",
+          "control_cache_hit": "FAIL"
+        },
+        "envelope": {
+          "mode": "required",
+          "required": true,
+          "path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171439.json",
+          "sha256": "acb67873838a78b3a8faeafed21175ca22066729c49ee7ec4df5dde714a4d96f",
+          "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+          "tokens": 14,
+          "complete": true
+        },
+        "exit_code": 3
+      }
+    },
+    {
+      "id": "selftest",
+      "claim": "the checker rejects every injected D1/D3 fault and accepts the honest ones",
+      "command": "cd /home/ebt/rsi-dev/a0/conformance && python3 selftest.py",
+      "artifact": "a0/conformance/selftest_report.json",
+      "observed": {
+        "all_fixtures_behaved": true,
+        "fixtures": 29,
+        "integrity_abort_ok": true,
+        "d1_d3_fixtures": {
+          "selftest_env_drift": "PASS",
+          "selftest_env_drift_unsanctioned": "FAIL",
+          "selftest_measurement_pass": "PASS",
+          "selftest_no_token": "FAIL",
+          "selftest_foreign_token": "FAIL",
+          "selftest_no_identity": "FAIL",
+          "selftest_mutant_identity": "FAIL",
+          "selftest_other_candidate_bytes": "FAIL",
+          "selftest_attest_other_measurement": "FAIL"
+        }
+      }
+    },
+    {
+      "id": "envelope-selftest",
+      "claim": "the projection splits behaviour from environment in both directions, measured on real E* (pinned and 3.14.7) and on the real mutant E'",
+      "command": "python3 a0/envelope/selftest.py",
+      "artifact": "a0/envelope/out/selftest_report.json",
+      "observed": {
+        "ok": true,
+        "canonicalisation": {
+          "check": "canonical_json_bytes/outcome_digest reproduce E_STAR.json's canonical_digest",
+          "candidates_reproduced": 14,
+          "total": 14,
+          "ok": true
+        },
+        "evaluator_identity": {
+          "check": "evaluator_source_digest recomputes the frozen evaluator_source_sha256",
+          "recomputed": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "frozen": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "ok": true
+        },
+        "direction_1": {
+          "what_ran": "frozen E* on all of C* under /home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python (pinned) and /usr/bin/python3.14",
+          "behaviour_digests_equal": 14,
+          "verdicts": [
+            "EXECUTION_ENV_DRIFT"
+          ],
+          "canonical_digests_differ": 14
+        },
+        "direction_2": {
+          "what_ran": "the fixture's mutant E' (/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py) on all of C*",
+          "behaviour_digests_differ": 14,
+          "verdicts": [
+            "MISMATCH_DIGEST"
+          ],
+          "mutant_objective_values_bit_identical": 14,
+          "note": "E' agrees with E* on the objective's float bits and on status/failure.kind, and its behaviour payload still differs (its outcome carries its own evaluator source digest), so the projection rejects it as a behaviour difference -- which is the point: the projection must not become a way to accept a different evaluator"
+        },
+        "token_checks": {
+          "oid_is_recomputable": true,
+          "token_is_per_candidate": true,
+          "foreign_candidate_token_does_not_verify": true,
+          "nonce_changes_the_oid": true,
+          "behaviour_digest_changes_the_oid": true,
+          "candidate_bytes_change_the_oid": true,
+          "eid_star_changes_the_oid": true,
+          "theta_changes_the_oid": true,
+          "every_token_recomputes": true,
+          "document_digest_is_over_the_document": true
+        }
+      }
+    }
+  ]
+}

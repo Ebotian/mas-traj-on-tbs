@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import sys
 import tempfile
 from pathlib import Path
 
@@ -131,3 +132,83 @@ def reference_rows_from_sweep() -> list:
     """The runner's own frozen sweep -- used only by the deviant fixture as ground truth to corrupt."""
     doc = json.loads((A0 / "conformance" / "reference.json").read_text())
     return doc["fresh_sweep"]["rows"]
+
+
+# --------------------------------------------------------------------------------------
+# the measurement envelope (external review D3) for the fixtures
+#
+# A fixture is a test double, so it plays the adapter's side of the protocol: it reads the
+# envelope the runner handed it (`A0_ENVELOPE`, or `--envelope`), echoes the per-candidate
+# measurement token, and attests the evaluator bytes, candidate bytes and behaviour digest it
+# used. The `--envelope` flag exists so a fixture can also be driven by hand.
+
+ENVELOPE_ENV = "A0_ENVELOPE"
+E_ENVELOPE = A0 / "envelope"
+
+
+def envelope_module():
+    """Import `a0/envelope/envelope.py` by path: the fixtures use the checker's own code."""
+    if str(E_ENVELOPE) not in sys.path:
+        sys.path.insert(0, str(E_ENVELOPE))
+    import envelope as envelope_mod  # noqa: PLC0415
+
+    return envelope_mod
+
+
+def envelope_from_flags(flags: dict):
+    """The envelope the runner handed this adapter, or None when none was handed over."""
+    path = flags.get("envelope") or os.environ.get(ENVELOPE_ENV) or None
+    if not path:
+        return None
+    candidate = Path(path)
+    if not candidate.is_file():
+        return None
+    return json.loads(candidate.read_text())
+
+
+def frozen_outcome(candidate_id: str) -> dict:
+    """The frozen Outcome payload for one member of C* (the table is the harness's own record)."""
+    table = json.loads(E_STAR_TABLE.read_text())
+    for entry in table["candidates"]:
+        if entry["candidate_id"] == candidate_id:
+            return entry.get("outcome") or {}
+    return {}
+
+
+def measurement_block(candidate_id: str, *, envelope, measured_candidate_sha256=None,
+                      outcome: dict | None = None, identity: str = "own",
+                      overrides: dict | None = None) -> dict:
+    """Build the row's measurement attestation -- the adapter's side of the D3 protocol.
+
+    `identity="own"` attests what this fixture really did (the honest template); `identity="omit"`
+    emits the token with no identity material at all (the omission fault). Every other fault is
+    injected through `overrides` with a *real* value -- another evaluator's source digest computed
+    from its bytes, another candidate's measured sha256 -- never a fabricated string, so the
+    self-test shows the checker rejecting an attack, not a typo.
+    """
+    env_mod = envelope_module()
+    token = env_mod.token_for(envelope or {}, candidate_id) if envelope else None
+    block = {
+        "schema": env_mod.SCHEMA_ATTESTATION,
+        "oid": (token or {}).get("oid"),
+        "harness_run_id": (envelope or {}).get("harness_run_id"),
+        "nonce": (envelope or {}).get("nonce"),
+        "note": (
+            "the fixture plays the adapter's side of the measurement-token protocol (external review D3)"
+            if token else "no envelope was handed to this adapter, so no token could be echoed"
+        ),
+    }
+    if identity != "omit":
+        block.update(
+            {
+                "eid_star": (envelope or {}).get("eid_star"),
+                "evaluator_source_sha256": env_mod.evaluator_source_digest(E_STAR_SCRIPT.parent),
+                "candidate_sha256": measured_candidate_sha256,
+                "behaviour_digest": env_mod.behaviour_digest(outcome) if outcome else None,
+                "interpreter": (outcome or {}).get("interpreter"),
+                "theta_e": (outcome or {}).get("theta_e"),
+            }
+        )
+    if overrides:
+        block.update(overrides)
+    return block

@@ -1,11 +1,20 @@
 {
   "schema": "a0.qualification/v1",
-  "generated_at": "2026-09-21T15:20:24+0800",
+  "generated_at": "2026-09-21T17:23:26+0800",
   "generated_by": "a0/qualification/build_qualification.py",
-  "purpose": "a per-runtime qualification vector Q_r and an explicit eligibility predicate, so a partial result can never be diluted by siblings that passed (external review point 8); and the corrected EvE A0.1 label PARTIAL -- 5/14 measured, never PASS (point 2)",
+  "purpose": "a per-runtime qualification vector Q_r and one substantive eligibility predicate, so a partial result can never be diluted by siblings that passed (external review point 8); the corrected EvE A0.1 label PARTIAL -- 5/14 measured, never PASS (point 2); and the redefinition D2 asks for: T_A1 (harness-attested A0.1, A0.2 mechanism + bridge, closure, frozen MRC) with the old lenient vector renamed T_exploratory and scoped to integration/pilot/debug only",
   "review_basis": {
     "point_2": "A0.1 for EvE must read `PARTIAL -- 5/14 measured`, never `PASS`",
-    "point_8": "a single global A0 PASS is the wrong output; Q_r = (A0.1_measured, A0.1_adapted, A0.2_mechanism, A0.2_E2E, Closure) and Eligible(r) = f(Q_r)"
+    "point_8": "a single global A0 PASS is the wrong output; Q_r and Eligible(r) = f(Q_r)",
+    "D1": "an interpreter mismatch is its own verdict (EXECUTION_ENV_DRIFT), never 'the evaluator behaviour disagrees' -- landed",
+    "D2": "the strict/literal threshold pair is replaced by T_A1; the lenient vector is renamed T_exploratory and scoped to integration/pilot/debug",
+    "D3": "identity is a harness measurement with fail-closed omission -- landed; this predicate reads its output (`measurement-attestation`) and fails closed"
+  },
+  "two_axes": {
+    "what": "since D3 the conformance runner keeps two axes apart, and Q_r must not merge them: the MEASUREMENT axis (`a0_1_measured` + `a0_1_adapted`) is whether the runtime's own evaluator interface produced a fresh verdict the runner compared against E*; the ACCEPTANCE axis (`a0_1_attested`) is whether the row echoes the harness measurement token and attests the bytes it executed.",
+    "why_it_matters": "KAPSO, EvE and Loreley agree with E* on the measurement surface (14/14, 14/14 and 5/14 measured) and are nonetheless non-accepting: 14 x MISSING_ATTESTATION. Folding that into the measurement component would report 'this runtime's measurement is wrong' when the truth is 'this runtime's evidence is missing'. A measurement error and a missing token are different findings with different remedies.",
+    "runner_vocabulary": "the runner states the same separation: a0_1.basis ('the attestation verdict is a separate axis: it decides whether the row is acceptable evidence, never whether the runtime measured it'), and the E-r-equals-E-star check's `measurement_agreeing` / `measurement_disagreeing_candidates` fields.",
+    "in_q_r": "`a0_1_measured.state` is derived from `rows[].verdict_before_attestation` and is the measurement state; the runner's folded state/label (which since D3 includes the acceptance axis) is carried as `runner_acceptance_state` on the same component. `a0_1_attested` carries the acceptance verdict."
   },
   "provenance_classes": {
     "verified_by_running": "this workstream executed the thing that produced the evidence",
@@ -13,11 +22,195 @@
     "inferred": "derived by rule from other components, not directly observed"
   },
   "component_domains": {
-    "a0_1_measured": "`<measured>/<total>`; `state` in PASS | PARTIAL | FAIL | PENDING | BLOCKED",
+    "a0_1_measured": "`<measured>/<total>`; `state` in PASS | PARTIAL | FAIL | PENDING | BLOCKED. `state` is the MEASUREMENT axis; `runner_acceptance_state` carries the runner's folded state, which since D3 also folds in the acceptance axis",
     "a0_1_adapted": "`<adapted>/<total>`; `all_declared_synthetic` must be true for acceptance",
+    "a0_1_attested": "PASS | FAIL | UNPROVEN -- the ACCEPTANCE axis. contract: a0/qualification/attested-a0-1.contract.json",
     "a0_2_mechanism": "PASS | FAIL | UNPROVEN",
-    "a0_2_e2e": "COMPLETE | PLANNING_ONLY | ATTEMPTED | NONE | UNPROVEN",
-    "closure": "CLOSED | CONDITIONAL | OPEN | UNPROVEN"
+    "a0_2_bridge": "PASS | ATTEMPTED | UNPROVEN | NONE (replaces the former a0_2_e2e)",
+    "closure": "CLOSED | CONDITIONAL | OPEN | UNPROVEN",
+    "mrc": "FROZEN | PRESENT_UNFROZEN | ABSENT"
+  },
+  "attested_a0_1": {
+    "schema": "a0.attested-a0-1/v1",
+    "owner": "a0/qualification/** is the CONSUMER of these records. The producer is the D3 workstream (a0/envelope/** + a0/conformance/**); this file declares the interface so the consumer can be checked before the producer exists.",
+    "why": "Decision D3: behavioural agreement over C* cannot establish implementation identity. The mutant fixture in a0/fixtures/observational-equivalence/ reproduces an E' that agrees with E* bit-for-bit on all 14 candidates and is accepted by the behavioural checker, including when it omits the identity fields entirely. Identity must therefore become a HARNESS measurement: the harness owns the reference value and issues an OID measurement token (a0/envelope/envelope.py), the runtime still evaluates through its own evaluator path, it must submit an attestation of the bytes it executed, and the A0.1 row is accepted only when the harness compares its reference against the runtime-attested outcome AND the attestation's identity fields are present AND the identity check passes. Omission must fail.",
+    "in_one_line": "absent record, or a record that omits the executed-bytes identity or the identity verdict, is UNPROVEN -- never PASS, never inferred from behaviour",
+    "component": "a0_1_attested",
+    "component_domain": [
+      "PASS",
+      "FAIL",
+      "UNPROVEN"
+    ],
+    "domain_rule": {
+      "PASS": "a source decided, every declared field is present and non-empty, and the verdict is positive",
+      "FAIL": "a source decided and the verdict is negative. NOT_SUBMITTED / MISSING_ATTESTATION / MISSING_IDENTITY / MISMATCH_ATTESTATION are all FAIL: the runtime was asked and did not answer with a usable identity. FAIL is never a soft pass either",
+      "UNPROVEN": "no source decided for this runtime, or a source was present but did not establish anything (e.g. the run was made with the token requirement off). UNPROVEN fails T_A1"
+    },
+    "record_sources": [
+      {
+        "kind": "runtime_check",
+        "where": "a0/conformance/report.json#runtimes.<runtime>.checks[check_id=measurement-attestation]",
+        "why": "PREFERRED, and the form the D3 runner actually produces (a0/conformance/conformance.py, check_id `measurement-attestation`, emitted by evaluate_runtime). `required` says whether the token requirement was ON for the run; `ok` is the runner's own per-runtime verdict; `envelope` names the harness run and nonce; the candidate lists name exactly which rows failed closed. A record carried by the run that produced the A0.1 report needs no separate report pin.",
+        "check_id": "measurement-attestation",
+        "required_field": "required",
+        "ok_field": "ok",
+        "envelope_field": "envelope",
+        "harness_run_field": "harness_run_id",
+        "positive_candidates_field": "attested_candidates",
+        "negative_candidate_fields": [
+          "missing_attestation_candidates",
+          "missing_identity_candidates",
+          "mismatch_attestation_candidates"
+        ],
+        "pins_current_report": true
+      },
+      {
+        "kind": "report_block",
+        "where": "a0/conformance/report.json#runtimes.<runtime>.qualification.a0_1.attestation",
+        "why": "a per-runtime attestation block, if the runner is wired to carry one there instead of as a check",
+        "block_path": [
+          "qualification",
+          "a0_1",
+          "attestation"
+        ],
+        "identity_verdict_field": "identity_verdict",
+        "positive": [
+          "IDENTICAL",
+          "PASS",
+          "REALIZED",
+          "ATTESTATION_OK"
+        ],
+        "negative": [
+          "MISMATCH",
+          "NOT_SUBMITTED",
+          "NOT_REALIZED",
+          "FAIL",
+          "MISSING_ATTESTATION",
+          "MISSING_IDENTITY",
+          "MISMATCH_ATTESTATION"
+        ],
+        "executed_identity_fields": [
+          "executed_identity",
+          "attestation_digest",
+          "executed_evaluator_sha256",
+          "eid_execution",
+          "oid"
+        ],
+        "oid_field": "oid",
+        "pins_current_report": true
+      },
+      {
+        "kind": "file",
+        "where": "a0/conformance/attested/<runtime>/*.json",
+        "why": "a standalone per-runtime record next to the runner, for a harness that cannot write inside report.json",
+        "identity_verdict_field": "identity_verdict",
+        "positive": [
+          "IDENTICAL",
+          "PASS",
+          "REALIZED",
+          "ATTESTATION_OK"
+        ],
+        "negative": [
+          "MISMATCH",
+          "NOT_SUBMITTED",
+          "NOT_REALIZED",
+          "FAIL",
+          "MISSING_ATTESTATION",
+          "MISSING_IDENTITY",
+          "MISMATCH_ATTESTATION"
+        ],
+        "executed_identity_fields": [
+          "executed_identity",
+          "attestation_digest",
+          "executed_evaluator_sha256",
+          "eid_execution",
+          "oid"
+        ],
+        "oid_field": "oid",
+        "pins_current_report": true
+      },
+      {
+        "kind": "file",
+        "where": "a0/envelope/out/attested/<runtime>/*.json",
+        "why": "the D3 envelope workstream's own output directory",
+        "identity_verdict_field": "identity_verdict",
+        "positive": [
+          "IDENTICAL",
+          "PASS",
+          "REALIZED",
+          "ATTESTATION_OK"
+        ],
+        "negative": [
+          "MISMATCH",
+          "NOT_SUBMITTED",
+          "NOT_REALIZED",
+          "FAIL",
+          "MISSING_ATTESTATION",
+          "MISSING_IDENTITY",
+          "MISMATCH_ATTESTATION"
+        ],
+        "executed_identity_fields": [
+          "executed_identity",
+          "attestation_digest",
+          "executed_evaluator_sha256",
+          "eid_execution",
+          "oid"
+        ],
+        "oid_field": "oid",
+        "pins_current_report": true
+      },
+      {
+        "kind": "file",
+        "where": "a0/qualification/evidence/a0_1_attested/<runtime>/*.json",
+        "why": "the consumer's own drop box, so a wiring record can be placed by hand if the producer writes somewhere else",
+        "identity_verdict_field": "identity_verdict",
+        "positive": [
+          "IDENTICAL",
+          "PASS",
+          "REALIZED",
+          "ATTESTATION_OK"
+        ],
+        "negative": [
+          "MISMATCH",
+          "NOT_SUBMITTED",
+          "NOT_REALIZED",
+          "FAIL",
+          "MISSING_ATTESTATION",
+          "MISSING_IDENTITY",
+          "MISMATCH_ATTESTATION"
+        ],
+        "executed_identity_fields": [
+          "executed_identity",
+          "attestation_digest",
+          "executed_evaluator_sha256",
+          "eid_execution",
+          "oid"
+        ],
+        "oid_field": "oid",
+        "pins_current_report": true
+      }
+    ],
+    "search_paths": [
+      "a0/conformance/attested/<runtime>/*.json",
+      "a0/envelope/out/attested/<runtime>/*.json",
+      "a0/qualification/evidence/a0_1_attested/<runtime>/*.json"
+    ],
+    "required_fields": [
+      "identity_verdict",
+      "executed_identity",
+      "oid",
+      "runtime"
+    ],
+    "selection_rule": "sources are tried in the order listed and the first one that DECIDES wins. A source may only decide with a positive or negative verdict and all the identity material present; a source that is present but inconclusive (token requirement off, missing metadata, verdict outside the declared domain) is recorded as rejected and the next source is tried. A standalone file record must additionally pin the current a0/conformance/report.json sha256, so the A0.1 re-run invalidates stale attestations instead of letting them outlive the run they describe.",
+    "forbidden_shortcuts": [
+      "inferring identity from behavioural agreement on C* (this is the mutant fixture's whole point)",
+      "an adapter self-report with no harness-owned reference or OID token",
+      "treating a missing attestation as 'the runtime is fine'",
+      "treating a run made with the token requirement OFF as attested: `required=false` is UNPROVEN",
+      "replacing the runtime's own evaluation path with a harness subprocess: the runtime must still evaluate, the harness supplies the reference and the token (see a0/envelope/README.md)"
+    ],
+    "status_now": "LANDED AND DECIDED. The D3 harness issues the tokens (a0/envelope/**) and the conformance runner emits the per-runtime `measurement-attestation` check; the A0.1 report on record is that re-run with the envelope REQUIRED. The resolution now decides for all four runtimes, and the predicted source path (`runtimes.<r>.checks[check_id=measurement-attestation]`) matched the real output with no change to this contract: SimpleLoop = PASS (14/14 rows echo the token and attest the bytes they executed), KAPSO/EvE/Loreley = FAIL (MISSING_ATTESTATION on 14/14 rows, because the requirement was ON and their lanes did not answer). The measurement axis is unaffected -- the numbers agree -- so R_A1^main = ['simpleloop'] and the three others are out on R3_a0_1_attested, not on a measurement rule. Whether they are wired or explicitly excluded is open decision G6 in a0/qualification/freeze.py.",
+    "consumer_check": "python3 a0/qualification/build_qualification.py --check ; python3 a0/qualification/eligibility.py --main-arm ; python3 a0/qualification/freeze.py gates"
   },
   "c_measure_vs_c_adapt": {
     "C_measure": "can the RUNTIME'S evaluator interface faithfully represent E*'s outcome algebra (so that a row is measured, not reconstructed)?",
@@ -27,74 +220,148 @@
   },
   "predicate": {
     "name": "Eligible",
-    "version": "a0.eligibility/v1",
+    "version": "a0.eligibility/v2",
     "signature": "Eligible(r; T) : Q_r x thresholds -> {eligible, not_eligible}",
     "implementation": "a0/qualification/eligibility.py",
-    "default_vector": "T_strict",
+    "default_vector": "T_A1",
+    "main_arm_set": "R_A1^main = {r : Eligible(r; T_A1)}",
     "rules": [
       {
         "id": "R0_coverage",
-        "expr": "a0_1_measured.measured + a0_1_adapted.adapted == a0_1_measured.total and a0_1_measured.state in {'PASS','PARTIAL'}",
-        "what": "every row of C* is accounted for and nothing failed"
+        "component": "a0_1_measured",
+        "field": "state",
+        "expr": "a0_1_measured.total > 0 and a0_1_measured.measured + a0_1_adapted.adapted == a0_1_measured.total and a0_1_measured.state in {'PASS','PARTIAL'}",
+        "what": "every row of C* is accounted for, nothing failed, and the split is not empty",
+        "fail_closed": "a missing row, a zero total, a FAIL state or an absent component is not eligible"
       },
       {
         "id": "R1_measure_floor",
+        "component": "a0_1_measured",
+        "field": "measured",
         "expr": "a0_1_measured.measured >= required_measured(thresholds, a0_1_measured.total)",
-        "what": "enough rows were measured by the RUNTIME'S OWN evaluator interface (C_measure), not merely supplied by the adapter (C_adapt)"
+        "what": "enough rows were measured by the RUNTIME'S OWN evaluator interface (C_measure), not merely supplied by the adapter (C_adapt). `T_A1` requires all of them; an adapted row is evidence for C_adapt and never for C_measure",
+        "fail_closed": "an absent measured/total counts as 0 and fails"
       },
       {
         "id": "R2_adapted_declared",
-        "expr": "a0_1_adapted.adapted == 0 or a0_1_adapted.all_declared_synthetic",
-        "what": "no row was accepted on an undeclared non-fresh number"
+        "component": "a0_1_adapted",
+        "field": "all_declared_synthetic",
+        "expr": "a0_1_adapted.adapted == 0 or a0_1_adapted.all_declared_synthetic == true",
+        "what": "no row was accepted on an undeclared non-fresh number",
+        "fail_closed": "an absent adapted count reads as 0 only when the component itself is present"
       },
       {
-        "id": "R3_a0_2_mechanism",
-        "expr": "a0_2_mechanism.value == 'PASS'",
-        "what": "the runtime consumes scores per its claimed selection semantics (mechanism level)"
+        "id": "R3_a0_1_attested",
+        "component": "a0_1_attested",
+        "field": "value",
+        "expr": "a0_1_attested.value in thresholds.attested_allowed",
+        "what": "the harness that owns the reference value also holds a submitted attestation of the bytes the runtime executed, and the identity check on those bytes passed. This is the clause D3 adds: behaviour alone cannot establish implementation identity, so identity must be a harness measurement and its omission must fail",
+        "fail_closed": "no record, or a record that omits the executed-bytes identity or the identity verdict, reads as UNPROVEN and fails every vector except one that explicitly allows UNPROVEN"
       },
       {
-        "id": "R4_a0_2_e2e",
-        "expr": "a0_2_e2e.value in thresholds.e2e_allowed",
-        "what": "a real model-lane round through the runtime's own loop, where the threshold asks for one"
+        "id": "R4_a0_2_mechanism",
+        "component": "a0_2_mechanism",
+        "field": "value",
+        "expr": "a0_2_mechanism.value in thresholds.mechanism_allowed",
+        "what": "the runtime consumes scores per its claimed selection semantics (mechanism level)",
+        "fail_closed": "UNPROVEN -- and an absent component -- fails"
       },
       {
-        "id": "R5_closure",
+        "id": "R5_a0_2_bridge",
+        "component": "a0_2_bridge",
+        "field": "value",
+        "expr": "a0_2_bridge.value in thresholds.bridge_allowed",
+        "what": "the same score->selection path was exercised inside the runtime's OWN real campaign (not only in a seam scenario): the frozen evaluator's score reached the runtime's selection state and moved the search",
+        "fail_closed": "an attempted-but-uncompleted round is ATTEMPTED, never PASS"
+      },
+      {
+        "id": "R6_closure",
+        "component": "closure",
+        "field": "value",
         "expr": "closure.value in thresholds.closure_allowed",
-        "what": "no autonomous external acquisition in the posture the runtime would run under"
+        "what": "no autonomous external acquisition in the posture the runtime would run under",
+        "fail_closed": "an unreconciled closure record is CONDITIONAL at best and OPEN if no mechanism was probed"
+      },
+      {
+        "id": "R7_mrc",
+        "component": "mrc",
+        "field": "value",
+        "expr": "mrc.value in thresholds.mrc_allowed",
+        "what": "the model route (MRC*) is frozen: the covering declaration validates against the external route registry, so two A1 arms can be asserted to be on the same declared route",
+        "fail_closed": "an unvalidated or absent declaration is ABSENT/PRESENT_UNFROZEN and fails T_A1"
       }
     ],
     "threshold_vectors": {
-      "T_strict": {
+      "T_A1": {
+        "role": "main arm",
+        "scope": "the vector that `Eligible(r)` means. `eligible=true` here is the licence to put this runtime's numbers into an A1 statistic.",
+        "may_be_used_for": [
+          "a1_main_arm",
+          "a0_freeze"
+        ],
         "measured_floor": {
           "kind": "fraction",
           "value": 1.0
         },
-        "e2e_allowed": [
-          "COMPLETE"
+        "attested_allowed": [
+          "PASS"
+        ],
+        "mechanism_allowed": [
+          "PASS"
+        ],
+        "bridge_allowed": [
+          "PASS"
         ],
         "closure_allowed": [
           "CLOSED"
         ],
-        "rationale": "a runtime qualifies only if its own evaluator interface measured every row of C*, it completed a real model-lane round, and its shipped posture is probe-proven closed"
+        "mrc_allowed": [
+          "FROZEN"
+        ],
+        "rationale": "every clause names evidence this study is able to produce, and each was chosen because D2 asks for it: the runtime's OWN evaluator interface must have measured every row of C* (fraction 1.0, so an adapted row is not a measurement); the A0.1 row must carry a HARNESS attestation of the bytes the runtime executed (behaviour alone cannot establish implementation identity -- see the observational-equivalence mutant); A0.2 must be proven at mechanism level AND exercised in the runtime's own real campaign (the bridge); closure must be probe-proven, not reachable-by-a-posture; and the model route must be frozen."
       },
-      "T_literal": {
+      "T_exploratory": {
+        "role": "exploratory",
+        "scope": "integration / pilot / debug ONLY. This is the renamed former `T_literal` and it keeps that vector's leniency on purpose: it exists so a half-instrumented runtime can be driven while its evidence is still being produced. It is NOT a weaker main arm.",
+        "may_be_used_for": [
+          "pilot",
+          "integration",
+          "debug"
+        ],
+        "must_not_be_used_for": [
+          "a1_main_arm",
+          "a0_freeze",
+          "any statistic whose delta is reported as a study result"
+        ],
         "measured_floor": {
           "kind": "rows",
           "value": 1
         },
-        "e2e_allowed": [
-          "COMPLETE",
-          "PLANNING_ONLY",
+        "attested_allowed": [
+          "PASS",
+          "UNPROVEN"
+        ],
+        "mechanism_allowed": [
+          "PASS"
+        ],
+        "bridge_allowed": [
+          "PASS",
           "ATTEMPTED"
         ],
         "closure_allowed": [
           "CLOSED",
           "CONDITIONAL"
         ],
-        "rationale": "the reading under which the study's existing wording is already sufficient: any native measurement counts, a mechanism-level A0.2 counts, a closure that is reachable by a named posture counts"
+        "mrc_allowed": [
+          "FROZEN",
+          "PRESENT_UNFROZEN"
+        ],
+        "fail_is_never_softened": "UNPROVEN is tolerated here (the evidence has not been produced yet); FAIL is not. An axis that was decided AGAINST the runtime -- a contradicting attestation, an open closure, an unproven mechanism -- stays decided under every vector. Leniency is about missing evidence, never about rejected evidence.",
+        "rationale": "any native measurement counts (>= 1 row), the A0.2 mechanism check is still required because a pilot on an unproven selection mechanism measures nothing, an ATTEMPTED round is enough to exercise the plumbing, a closure that is reachable by a named posture is enough to run a pilot in, and the route may still be in flux."
       }
     },
-    "screen_is_a_different_object": "`|R_1| >= 1` (plan:490) is a CANDIDATE SCREEN over runtimes: it answers 'may the study continue at all?'. Eligible(r) answers 'may THIS runtime's numbers be used in an A1 statistic?'. They are not the same object, and `|R_1| >= 1` does not imply that any runtime is Eligible()"
+    "exclusion_is_not_permanent": "r not-in R_A1^main while any component is unmet. It is not a judgement on the runtime: it names missing evidence, and the runtime re-enters the moment the evidence exists",
+    "screen_is_a_different_object": "`|R_1| >= 1` (plan:490) is a CANDIDATE SCREEN over runtimes: it answers 'may the study continue at all?'. Eligible(r) answers 'may THIS runtime's numbers be used in an A1 statistic?'. They are not the same object, and `|R_1| >= 1` does not imply that any runtime is in R_A1^main"
   },
   "runtimes": {
     "simpleloop": {
@@ -103,12 +370,25 @@
         "a0_1_measured": {
           "value": "14/14",
           "evidence": "a0/conformance/report.json#runtimes.simpleloop.qualification.a0_1",
-          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 14 of 14 members of C*; the runner compared them against the frozen E* table",
+          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 14 of 14 members of C*; the runner compared them against the frozen E* table. Measurement state = PASS (runner agreement 14/14). MEASUREMENT ONLY: the runner's acceptance state is 'PASS' and is a separate axis -- see a0_1_attested",
           "provenance": "verified_by_running",
           "measured": 14,
           "total": 14,
           "state": "PASS",
-          "label": "PASS (14/14 measured)",
+          "measurement_state": "PASS",
+          "measurement_axis": {
+            "state": "PASS",
+            "disagreeing_candidates": [],
+            "synthesized_candidates": [],
+            "execution_env_drift_candidates": [],
+            "measurement_agreeing": 14,
+            "measurement_disagreeing_from_runner": [],
+            "axis_basis": "derived from runtimes.<r>.rows[].verdict_before_attestation against the runner's own ACCEPTING_VERDICTS, and corroborated by the E-r-equals-E-star check's `measurement_agreeing` / `measurement_disagreeing_candidates`. It is deliberately NOT the runner's folded qualification state, which since D3 also folds in the attestation axis"
+          },
+          "runner_acceptance_state": "PASS",
+          "runner_label": "PASS (14/14 measured)",
+          "runner_acceptance_reason": null,
+          "axis_note": "`state` here is the MEASUREMENT axis. The runner's folded `state`/`label` also fold in the D3 attestation axis and are recorded as `runner_acceptance_state`; a runtime can measure every row and still not be acceptable evidence, and this component must not report that as a measurement error",
           "measured_candidates": [
             "c01_good_hex",
             "c02_baseline_upstream",
@@ -139,6 +419,40 @@
           "adapted_candidates": [],
           "c_adapt": "can the adapter supply the missing semantics?"
         },
+        "a0_1_attested": {
+          "value": "PASS",
+          "evidence": "a0/conformance/report.json",
+          "justification": "the D3 runner's own `measurement-attestation` check for this runtime is ok: 14 row(s) echo the harness measurement token and attest the evaluator bytes, candidate bytes and behaviour digest they used; harness run a01-reference-20260921T171439, executed identity 5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "provenance": "read_from_source",
+          "record": "a0/conformance/report.json#runtimes.<runtime>.checks[measurement-attestation]",
+          "identity_verdict": "ATTESTATION_OK",
+          "executed_identity": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "oid": "a01-reference-20260921T171439",
+          "harness": "a0/conformance/conformance.py",
+          "report_sha256": null,
+          "attested_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "oid_present_rows": 14,
+          "envelope": {
+            "path": "/home/ebt/rsi-dev/a0/conformance/out/envelope/measurement_tokens.a01-reference-20260921T171439.json",
+            "sha256": "acb67873838a78b3a8faeafed21175ca22066729c49ee7ec4df5dde714a4d96f",
+            "nonce": "d993b2924eba1a6fe1b610d506a54ff9"
+          }
+        },
         "a0_2_mechanism": {
           "value": "PASS",
           "evidence": "a0/runtimes/simpleloop/out/a02/a02_checks.json",
@@ -150,13 +464,14 @@
           "scope": "the adapter's own selection loop over C*: ordering invariance, the frozen tie-break, the claim runs at mechanism level, not end to end (see a0_2_e2e)",
           "caveats": []
         },
-        "a0_2_e2e": {
-          "value": "COMPLETE",
+        "a0_2_bridge": {
+          "value": "PASS",
           "evidence": [
             "a0/runtimes/simpleloop/out/cli-lane/codex-live4/run_meta.json",
-            "a0/runtimes/simpleloop/out/cli-lane-codex-live3.log"
+            "a0/runtimes/simpleloop/out/cli-lane-codex-live3.log",
+            "a0/runtimes/simpleloop/out/cli-lane/codex-live3/run_meta.json"
           ],
-          "justification": "real model lane wrote an agent-authored candidate that E* scored 2.5414213562373096 (best C* member = 2.4519); audited as C7.2 = ACCEPTED",
+          "justification": "SimpleLoop's own loop ran two real model rounds; a real agent-authored candidate was scored by E* (2.5414213562373096, best C* member = 2.4519) and the champion changed on that score; audited as C7.2 = ACCEPTED",
           "provenance": "read_from_source",
           "audited_claim": "C7.2",
           "audited_verdict": "ACCEPTED",
@@ -164,7 +479,8 @@
             "codex-live3",
             "codex-live4"
           ],
-          "detail": "champion_id=codex_i001, champion_scalar=2.5414213562373096"
+          "detail": "champion_id=codex_i001, champion_scalar=2.5414213562373096",
+          "bridge_kind": "real campaign round driven by SimpleLoop's own loop (argv reaches E*)"
         },
         "closure": {
           "value": "CLOSED",
@@ -231,14 +547,42 @@
               "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
             }
           ]
+        },
+        "mrc": {
+          "value": "FROZEN",
+          "evidence": [
+            "a0/mrc/frozen_routes.json",
+            "a0/mrc/declarations/codex-deepseek-responses.mrc.json"
+          ],
+          "justification": "1/1 covering declaration(s) validate against frozen_routes.json (re-derived by `python3 a0/mrc/mrc.py validate`); routes=['codex-deepseek-responses']",
+          "provenance": "verified_by_running",
+          "validated": [
+            {
+              "declaration": "a0/mrc/declarations/codex-deepseek-responses.mrc.json",
+              "route_id": "codex-deepseek-responses",
+              "mrc_star": "6ed87ac44ad13f66a2c7ce419163227b03ad49f093dd8b0e9f779576a0cdf914",
+              "validator_exit": 0,
+              "validator_output": [
+                "valid: route=codex-deepseek-responses MRC* = 6ed87ac44ad13f66a2c7ce419163227b03ad49f093dd8b0e9f779576a0cdf914"
+              ]
+            }
+          ],
+          "failed": [],
+          "route_ids": [
+            "codex-deepseek-responses"
+          ],
+          "frozen_routes_digest_source": "a0/mrc/frozen_routes.json",
+          "caveats": []
         }
       },
       "Q_r_values": {
         "a0_1_measured": "14/14",
         "a0_1_adapted": "0/14",
+        "a0_1_attested": "PASS",
         "a0_2_mechanism": "PASS",
-        "a0_2_e2e": "COMPLETE",
-        "closure": "CLOSED"
+        "a0_2_bridge": "PASS",
+        "closure": "CLOSED",
+        "mrc": "FROZEN"
       }
     },
     "kapso": {
@@ -247,12 +591,25 @@
         "a0_1_measured": {
           "value": "14/14",
           "evidence": "a0/conformance/report.json#runtimes.kapso.qualification.a0_1",
-          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 14 of 14 members of C*; the runner compared them against the frozen E* table",
+          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 14 of 14 members of C*; the runner compared them against the frozen E* table. Measurement state = PASS (runner agreement 14/14). MEASUREMENT ONLY: the runner's acceptance state is 'FAIL' and is a separate axis -- see a0_1_attested",
           "provenance": "verified_by_running",
           "measured": 14,
           "total": 14,
           "state": "PASS",
-          "label": "PASS (14/14 measured)",
+          "measurement_state": "PASS",
+          "measurement_axis": {
+            "state": "PASS",
+            "disagreeing_candidates": [],
+            "synthesized_candidates": [],
+            "execution_env_drift_candidates": [],
+            "measurement_agreeing": 14,
+            "measurement_disagreeing_from_runner": [],
+            "axis_basis": "derived from runtimes.<r>.rows[].verdict_before_attestation against the runner's own ACCEPTING_VERDICTS, and corroborated by the E-r-equals-E-star check's `measurement_agreeing` / `measurement_disagreeing_candidates`. It is deliberately NOT the runner's folded qualification state, which since D3 also folds in the attestation axis"
+          },
+          "runner_acceptance_state": "FAIL",
+          "runner_label": "FAIL",
+          "runner_acceptance_reason": "not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+          "axis_note": "`state` here is the MEASUREMENT axis. The runner's folded `state`/`label` also fold in the D3 attestation axis and are recorded as `runner_acceptance_state`; a runtime can measure every row and still not be acceptable evidence, and this component must not report that as a measurement error",
           "measured_candidates": [
             "c01_good_hex",
             "c02_baseline_upstream",
@@ -283,6 +640,37 @@
           "adapted_candidates": [],
           "c_adapt": "can the adapter supply the missing semantics?"
         },
+        "a0_1_attested": {
+          "value": "FAIL",
+          "evidence": "a0/conformance/report.json",
+          "justification": "the D3 runner's own `measurement-attestation` check for this runtime FAILED: MISSING_ATTESTATION (14 x missing_attestation_candidates). The measurement axis is unaffected -- the numbers agree -- but no row is acceptable evidence in this state, so this is FAIL, not UNPROVEN, and never a pass",
+          "provenance": "read_from_source",
+          "record": "a0/conformance/report.json#runtimes.<runtime>.checks[measurement-attestation]",
+          "identity_verdict": "MISSING_ATTESTATION",
+          "executed_identity": null,
+          "oid": "a01-reference-20260921T171439",
+          "harness": "a0/conformance/conformance.py",
+          "report_sha256": null,
+          "row_attestation_verdicts": [
+            "MISSING_ATTESTATION"
+          ],
+          "missing_attestation_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ]
+        },
         "a0_2_mechanism": {
           "value": "PASS",
           "evidence": "a0/runtimes/kapso/runs/a0-01/a02/a02.json",
@@ -304,14 +692,20 @@
             }
           ]
         },
-        "a0_2_e2e": {
-          "value": "COMPLETE",
-          "evidence": "a0/runtimes/kapso/runs/e2e-real/e2e_verification.json",
-          "justification": "real run_implementation round completed and wrote back; three-way score agreement {'independent_e_star': 2.451820520843313, 'node_score_from_log': 2.451820520843313, 'session_manifest_score': 2.451820520843313}; audited as C7.1 = ACCEPTED",
+        "a0_2_bridge": {
+          "value": "PASS",
+          "evidence": [
+            "a0/runtimes/kapso/runs/bridge-2round/real/verification.json",
+            "a0/runtimes/kapso/BRIDGE-2ROUND.md",
+            "a0/runtimes/kapso/runs/e2e-real/e2e_verification.json"
+          ],
+          "justification": "a two-round real campaign with the runtime's own selection in the chair: E* -> node.score -> node_history -> _select_parent -> parent_branch, resumed from a checkpoint in a new process; verdict=bridge_verified, 12/12 checks true; audited as C7.1 = ACCEPTED",
           "provenance": "read_from_source",
           "audited_claim": "C7.1",
           "audited_verdict": "ACCEPTED",
-          "detail": "verdict=verified_end_to_end"
+          "detail": "verdict=bridge_verified",
+          "bridge_kind": "real KAPSO campaign; KAPSO's own selector picked the deliverable",
+          "scope_note": "the bridge exercises the real path but does not separate 'the score VALUE' from 'recency/existence' as the driver -- that separation is what the A0.2 mechanism scenarios are for (declared by the author, confirmed by the auditor)"
         },
         "closure": {
           "value": "CONDITIONAL",
@@ -398,14 +792,63 @@
               "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
             }
           ]
+        },
+        "mrc": {
+          "value": "FROZEN",
+          "evidence": [
+            "a0/mrc/frozen_routes.json",
+            "a0/mrc/declarations/claude-deepseek-anthropic.mrc.json",
+            "a0/mrc/declarations/codex-deepseek-responses.mrc.json"
+          ],
+          "justification": "2/2 covering declaration(s) validate against frozen_routes.json (re-derived by `python3 a0/mrc/mrc.py validate`); routes=['claude-deepseek-anthropic', 'codex-deepseek-responses']",
+          "provenance": "verified_by_running",
+          "validated": [
+            {
+              "declaration": "a0/mrc/declarations/claude-deepseek-anthropic.mrc.json",
+              "route_id": "claude-deepseek-anthropic",
+              "mrc_star": "b61c3a152ac97f4103b82104561aac56f49cf77e3dd65529967ccb3a42fec029",
+              "validator_exit": 0,
+              "validator_output": [
+                "valid: route=claude-deepseek-anthropic MRC* = b61c3a152ac97f4103b82104561aac56f49cf77e3dd65529967ccb3a42fec029"
+              ]
+            },
+            {
+              "declaration": "a0/mrc/declarations/codex-deepseek-responses.mrc.json",
+              "route_id": "codex-deepseek-responses",
+              "mrc_star": "6ed87ac44ad13f66a2c7ce419163227b03ad49f093dd8b0e9f779576a0cdf914",
+              "validator_exit": 0,
+              "validator_output": [
+                "valid: route=codex-deepseek-responses MRC* = 6ed87ac44ad13f66a2c7ce419163227b03ad49f093dd8b0e9f779576a0cdf914"
+              ]
+            }
+          ],
+          "failed": [],
+          "route_ids": [
+            "claude-deepseek-anthropic",
+            "codex-deepseek-responses"
+          ],
+          "frozen_routes_digest_source": "a0/mrc/frozen_routes.json",
+          "caveats": [
+            {
+              "caveat": "more than one covering route validates; the A1 route CHOICE among them is not frozen here",
+              "status": "OPEN decision (STATUS.md §9 item 2, D4)",
+              "evidence": [
+                "a0/mrc/declarations/claude-deepseek-anthropic.mrc.json",
+                "a0/mrc/declarations/codex-deepseek-responses.mrc.json"
+              ],
+              "to_settle": "record the chosen lane per runtime in the freeze document"
+            }
+          ]
         }
       },
       "Q_r_values": {
         "a0_1_measured": "14/14",
         "a0_1_adapted": "0/14",
+        "a0_1_attested": "FAIL",
         "a0_2_mechanism": "PASS",
-        "a0_2_e2e": "COMPLETE",
-        "closure": "CONDITIONAL"
+        "a0_2_bridge": "PASS",
+        "closure": "CONDITIONAL",
+        "mrc": "FROZEN"
       }
     },
     "eve": {
@@ -414,12 +857,35 @@
         "a0_1_measured": {
           "value": "5/14",
           "evidence": "a0/conformance/report.json#runtimes.eve.qualification.a0_1",
-          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 5 of 14 members of C*; the runner compared them against the frozen E* table",
+          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 5 of 14 members of C*; the runner compared them against the frozen E* table. Measurement state = PARTIAL (runner agreement 14/14). MEASUREMENT ONLY: the runner's acceptance state is 'FAIL' and is a separate axis -- see a0_1_attested",
           "provenance": "verified_by_running",
           "measured": 5,
           "total": 14,
           "state": "PARTIAL",
-          "label": "PARTIAL (5/14 measured)",
+          "measurement_state": "PARTIAL",
+          "measurement_axis": {
+            "state": "PARTIAL",
+            "disagreeing_candidates": [],
+            "synthesized_candidates": [
+              "c05_overlapping",
+              "c06_empty",
+              "c07_single",
+              "c08_out_of_bounds",
+              "c09_malformed_import",
+              "c10_raises",
+              "c11_non_deterministic",
+              "c12_exit_without_artifacts",
+              "c13_slow"
+            ],
+            "execution_env_drift_candidates": [],
+            "measurement_agreeing": 14,
+            "measurement_disagreeing_from_runner": [],
+            "axis_basis": "derived from runtimes.<r>.rows[].verdict_before_attestation against the runner's own ACCEPTING_VERDICTS, and corroborated by the E-r-equals-E-star check's `measurement_agreeing` / `measurement_disagreeing_candidates`. It is deliberately NOT the runner's folded qualification state, which since D3 also folds in the attestation axis"
+          },
+          "runner_acceptance_state": "FAIL",
+          "runner_label": "FAIL",
+          "runner_acceptance_reason": "not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+          "axis_note": "`state` here is the MEASUREMENT axis. The runner's folded `state`/`label` also fold in the D3 attestation axis and are recorded as `runner_acceptance_state`; a runtime can measure every row and still not be acceptable evidence, and this component must not report that as a measurement error",
           "measured_candidates": [
             "c01_good_hex",
             "c02_baseline_upstream",
@@ -451,6 +917,37 @@
           ],
           "c_adapt": "can the adapter supply the missing semantics?"
         },
+        "a0_1_attested": {
+          "value": "FAIL",
+          "evidence": "a0/conformance/report.json",
+          "justification": "the D3 runner's own `measurement-attestation` check for this runtime FAILED: MISSING_ATTESTATION (14 x missing_attestation_candidates). The measurement axis is unaffected -- the numbers agree -- but no row is acceptable evidence in this state, so this is FAIL, not UNPROVEN, and never a pass",
+          "provenance": "read_from_source",
+          "record": "a0/conformance/report.json#runtimes.<runtime>.checks[measurement-attestation]",
+          "identity_verdict": "MISSING_ATTESTATION",
+          "executed_identity": null,
+          "oid": "a01-reference-20260921T171439",
+          "harness": "a0/conformance/conformance.py",
+          "report_sha256": null,
+          "row_attestation_verdicts": [
+            "MISSING_ATTESTATION"
+          ],
+          "missing_attestation_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ]
+        },
         "a0_2_mechanism": {
           "value": "PASS",
           "evidence": "a0/verify/out/eve_a02_replication.json",
@@ -470,14 +967,14 @@
             }
           ]
         },
-        "a0_2_e2e": {
+        "a0_2_bridge": {
           "value": "ATTEMPTED",
           "evidence": [
             "a0/runtimes/eve/out/run002/real_round.json",
             "a0/runtimes/eve/out/run003/real_round.json",
             "a0/runtimes/eve/out/run004/real_round.json"
           ],
-          "justification": "3 real codex-backed rounds reached iteration-complete, but none wrote back an agent-authored solution.py (every post-round solver is the prefill baseline 18bacee4...); audited as C7.3 = ACCEPTED",
+          "justification": "3 real codex-backed rounds reached iteration-complete, but none wrote back an agent-authored solution.py (every post-round solver is the prefill baseline 18bacee4...), so the score never reached EvE's own selection state; audited as C7.3 = ACCEPTED",
           "provenance": "read_from_source",
           "audited_claim": "C7.3",
           "audited_verdict": "ACCEPTED",
@@ -504,6 +1001,7 @@
               "failure": "driver rollout timeout at 660 s (agent_error.txt: 'Codex exec timed out'), so solver/solution.py kept the prefill sha 18bacee4… and the produced candidate scored E* = 0.25 (the untouched baseline)"
             }
           ],
+          "bridge_kind": "no completed campaign round",
           "to_settle": "a completed round: `a0/runtimes/eve/.venv/bin/python a0/runtimes/eve/tools/run_one_eve_iteration.py --run-dir a0/runtimes/eve/out/run006 --turns 14 --turn-timeout 660 --max-seconds 1080` (the documented driver that produced run002-004; NOT executed here), then require real_round.json to show a post-round solver whose e_star_candidate_source_sha256 is not the baseline sha"
         },
         "closure": {
@@ -552,14 +1050,63 @@
               "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
             }
           ]
+        },
+        "mrc": {
+          "value": "FROZEN",
+          "evidence": [
+            "a0/mrc/frozen_routes.json",
+            "a0/mrc/declarations/codex-deepseek-responses.mrc.json",
+            "a0/mrc/declarations/opencode-deepseek-chat.mrc.json"
+          ],
+          "justification": "2/2 covering declaration(s) validate against frozen_routes.json (re-derived by `python3 a0/mrc/mrc.py validate`); routes=['codex-deepseek-responses', 'opencode-deepseek-chat']",
+          "provenance": "verified_by_running",
+          "validated": [
+            {
+              "declaration": "a0/mrc/declarations/codex-deepseek-responses.mrc.json",
+              "route_id": "codex-deepseek-responses",
+              "mrc_star": "6ed87ac44ad13f66a2c7ce419163227b03ad49f093dd8b0e9f779576a0cdf914",
+              "validator_exit": 0,
+              "validator_output": [
+                "valid: route=codex-deepseek-responses MRC* = 6ed87ac44ad13f66a2c7ce419163227b03ad49f093dd8b0e9f779576a0cdf914"
+              ]
+            },
+            {
+              "declaration": "a0/mrc/declarations/opencode-deepseek-chat.mrc.json",
+              "route_id": "opencode-deepseek-chat",
+              "mrc_star": "490f9109c47979246f673b174e68614a5d6f264b9547fb092b651a73ce93d2b8",
+              "validator_exit": 0,
+              "validator_output": [
+                "valid: route=opencode-deepseek-chat MRC* = 490f9109c47979246f673b174e68614a5d6f264b9547fb092b651a73ce93d2b8"
+              ]
+            }
+          ],
+          "failed": [],
+          "route_ids": [
+            "codex-deepseek-responses",
+            "opencode-deepseek-chat"
+          ],
+          "frozen_routes_digest_source": "a0/mrc/frozen_routes.json",
+          "caveats": [
+            {
+              "caveat": "more than one covering route validates; the A1 route CHOICE among them is not frozen here",
+              "status": "OPEN decision (STATUS.md §9 item 2, D4)",
+              "evidence": [
+                "a0/mrc/declarations/codex-deepseek-responses.mrc.json",
+                "a0/mrc/declarations/opencode-deepseek-chat.mrc.json"
+              ],
+              "to_settle": "record the chosen lane per runtime in the freeze document"
+            }
+          ]
         }
       },
       "Q_r_values": {
         "a0_1_measured": "5/14",
         "a0_1_adapted": "9/14",
+        "a0_1_attested": "FAIL",
         "a0_2_mechanism": "PASS",
-        "a0_2_e2e": "ATTEMPTED",
-        "closure": "CONDITIONAL"
+        "a0_2_bridge": "ATTEMPTED",
+        "closure": "CONDITIONAL",
+        "mrc": "FROZEN"
       }
     },
     "loreley": {
@@ -568,12 +1115,25 @@
         "a0_1_measured": {
           "value": "14/14",
           "evidence": "a0/conformance/report.json#runtimes.loreley.qualification.a0_1",
-          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 14 of 14 members of C*; the runner compared them against the frozen E* table",
+          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 14 of 14 members of C*; the runner compared them against the frozen E* table. Measurement state = PASS (runner agreement 14/14). MEASUREMENT ONLY: the runner's acceptance state is 'FAIL' and is a separate axis -- see a0_1_attested",
           "provenance": "verified_by_running",
           "measured": 14,
           "total": 14,
           "state": "PASS",
-          "label": "PASS (14/14 measured)",
+          "measurement_state": "PASS",
+          "measurement_axis": {
+            "state": "PASS",
+            "disagreeing_candidates": [],
+            "synthesized_candidates": [],
+            "execution_env_drift_candidates": [],
+            "measurement_agreeing": 14,
+            "measurement_disagreeing_from_runner": [],
+            "axis_basis": "derived from runtimes.<r>.rows[].verdict_before_attestation against the runner's own ACCEPTING_VERDICTS, and corroborated by the E-r-equals-E-star check's `measurement_agreeing` / `measurement_disagreeing_candidates`. It is deliberately NOT the runner's folded qualification state, which since D3 also folds in the attestation axis"
+          },
+          "runner_acceptance_state": "FAIL",
+          "runner_label": "FAIL",
+          "runner_acceptance_reason": "not accepting: 14 x MISSING_ATTESTATION -- the numbers agree on 14/14 rows, but an A0.1 row must also echo the harness measurement token and attest the bytes it executed (external review D3, fail-closed on omission)",
+          "axis_note": "`state` here is the MEASUREMENT axis. The runner's folded `state`/`label` also fold in the D3 attestation axis and are recorded as `runner_acceptance_state`; a runtime can measure every row and still not be acceptable evidence, and this component must not report that as a measurement error",
           "measured_candidates": [
             "c01_good_hex",
             "c02_baseline_upstream",
@@ -604,6 +1164,37 @@
           "adapted_candidates": [],
           "c_adapt": "can the adapter supply the missing semantics?"
         },
+        "a0_1_attested": {
+          "value": "FAIL",
+          "evidence": "a0/conformance/report.json",
+          "justification": "the D3 runner's own `measurement-attestation` check for this runtime FAILED: MISSING_ATTESTATION (14 x missing_attestation_candidates). The measurement axis is unaffected -- the numbers agree -- but no row is acceptable evidence in this state, so this is FAIL, not UNPROVEN, and never a pass",
+          "provenance": "read_from_source",
+          "record": "a0/conformance/report.json#runtimes.<runtime>.checks[measurement-attestation]",
+          "identity_verdict": "MISSING_ATTESTATION",
+          "executed_identity": null,
+          "oid": "a01-reference-20260921T171439",
+          "harness": "a0/conformance/conformance.py",
+          "report_sha256": null,
+          "row_attestation_verdicts": [
+            "MISSING_ATTESTATION"
+          ],
+          "missing_attestation_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ]
+        },
         "a0_2_mechanism": {
           "value": "PASS",
           "evidence": "a0/runtimes/loreley/out/a02.json",
@@ -615,18 +1206,19 @@
           "scope": "the real MAP-Elites archive/cell machinery on a separate database: same-cell the claim runs at mechanism level, not end to end (see a0_2_e2e)",
           "caveats": []
         },
-        "a0_2_e2e": {
-          "value": "PLANNING_ONLY",
+        "a0_2_bridge": {
+          "value": "ATTEMPTED",
           "evidence": [
             "a0/runtimes/loreley/llm-round/RESULT.md",
             "a0/runtimes/loreley/llm-round/stage_a2_result.json",
             "a0/runtimes/loreley/llm-round/bounded_round.log"
           ],
-          "justification": "a real codex planning call succeeded (144.1 s) but the coding call exceeded its 480 s budget and the round watchdog stopped the job; audited as C7.4 = ACCEPTED",
+          "justification": "a real codex planning call succeeded (144.1 s) but the coding call exceeded its 480 s budget and the round watchdog stopped the job, so no evaluation and no archive write happened; audited as C7.4 = ACCEPTED",
           "provenance": "read_from_source",
           "audited_claim": "C7.4",
           "audited_verdict": "ACCEPTED",
           "detail": "planning real, no evaluation, no archive write, evolution_jobs status=RUNNING",
+          "bridge_kind": "planning reached the real model; the score never entered Loreley's archive",
           "to_settle": "a completed round: `cd a0/runtimes/loreley && timeout 1200 ./llm-round/run_bounded_round.sh` with a coding budget that fits the cap (the 480 s coding attempt timed out; the round needs a smaller task or a larger cap). NOT executed here"
         },
         "closure": {
@@ -682,191 +1274,379 @@
               "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
             }
           ]
+        },
+        "mrc": {
+          "value": "FROZEN",
+          "evidence": [
+            "a0/mrc/frozen_routes.json",
+            "a0/mrc/declarations/codex-deepseek-responses.mrc.json",
+            "a0/mrc/declarations/kilo-deepseek-chat.mrc.json"
+          ],
+          "justification": "2/2 covering declaration(s) validate against frozen_routes.json (re-derived by `python3 a0/mrc/mrc.py validate`); routes=['codex-deepseek-responses', 'kilo-deepseek-chat']",
+          "provenance": "verified_by_running",
+          "validated": [
+            {
+              "declaration": "a0/mrc/declarations/codex-deepseek-responses.mrc.json",
+              "route_id": "codex-deepseek-responses",
+              "mrc_star": "6ed87ac44ad13f66a2c7ce419163227b03ad49f093dd8b0e9f779576a0cdf914",
+              "validator_exit": 0,
+              "validator_output": [
+                "valid: route=codex-deepseek-responses MRC* = 6ed87ac44ad13f66a2c7ce419163227b03ad49f093dd8b0e9f779576a0cdf914"
+              ]
+            },
+            {
+              "declaration": "a0/mrc/declarations/kilo-deepseek-chat.mrc.json",
+              "route_id": "kilo-deepseek-chat",
+              "mrc_star": "8baaa800b2ddb3821ccf536b1f91a49d675ad835177fed07a045f99b26a597c4",
+              "validator_exit": 0,
+              "validator_output": [
+                "valid: route=kilo-deepseek-chat MRC* = 8baaa800b2ddb3821ccf536b1f91a49d675ad835177fed07a045f99b26a597c4"
+              ]
+            }
+          ],
+          "failed": [],
+          "route_ids": [
+            "codex-deepseek-responses",
+            "kilo-deepseek-chat"
+          ],
+          "frozen_routes_digest_source": "a0/mrc/frozen_routes.json",
+          "caveats": [
+            {
+              "caveat": "more than one covering route validates; the A1 route CHOICE among them is not frozen here",
+              "status": "OPEN decision (STATUS.md §9 item 2, D4)",
+              "evidence": [
+                "a0/mrc/declarations/codex-deepseek-responses.mrc.json",
+                "a0/mrc/declarations/kilo-deepseek-chat.mrc.json"
+              ],
+              "to_settle": "record the chosen lane per runtime in the freeze document"
+            }
+          ]
         }
       },
       "Q_r_values": {
         "a0_1_measured": "14/14",
         "a0_1_adapted": "0/14",
+        "a0_1_attested": "FAIL",
         "a0_2_mechanism": "PASS",
-        "a0_2_e2e": "PLANNING_ONLY",
-        "closure": "CONDITIONAL"
+        "a0_2_bridge": "ATTEMPTED",
+        "closure": "CONDITIONAL",
+        "mrc": "FROZEN"
       }
     }
   },
   "evaluation": {
-    "T_strict": {
+    "T_A1": {
       "simpleloop": {
-        "predicate_version": "a0.eligibility/v1",
-        "vector": "T_strict",
+        "predicate_version": "a0.eligibility/v2",
+        "vector": "T_A1",
+        "vector_role": "main arm",
         "eligible": true,
         "rules": {
           "R0_coverage": true,
           "R1_measure_floor": true,
           "R2_adapted_declared": true,
-          "R3_a0_2_mechanism": true,
-          "R4_a0_2_e2e": true,
-          "R5_closure": true
+          "R3_a0_1_attested": true,
+          "R4_a0_2_mechanism": true,
+          "R5_a0_2_bridge": true,
+          "R6_closure": true,
+          "R7_mrc": true
         },
         "failed_rules": [],
         "required_measured": 14,
-        "reason": "all rules satisfied"
+        "measured": 14,
+        "total": 14,
+        "missing_components": [],
+        "reason": "all rules satisfied",
+        "component_values": {
+          "a0_1_measured": "14/14",
+          "a0_1_adapted": "0/14",
+          "a0_1_attested": "PASS",
+          "a0_2_mechanism": "PASS",
+          "a0_2_bridge": "PASS",
+          "closure": "CLOSED",
+          "mrc": "FROZEN"
+        }
       },
       "kapso": {
-        "predicate_version": "a0.eligibility/v1",
-        "vector": "T_strict",
+        "predicate_version": "a0.eligibility/v2",
+        "vector": "T_A1",
+        "vector_role": "main arm",
         "eligible": false,
         "rules": {
           "R0_coverage": true,
           "R1_measure_floor": true,
           "R2_adapted_declared": true,
-          "R3_a0_2_mechanism": true,
-          "R4_a0_2_e2e": true,
-          "R5_closure": false
+          "R3_a0_1_attested": false,
+          "R4_a0_2_mechanism": true,
+          "R5_a0_2_bridge": true,
+          "R6_closure": false,
+          "R7_mrc": true
         },
         "failed_rules": [
-          "R5_closure"
+          "R3_a0_1_attested",
+          "R6_closure"
         ],
         "required_measured": 14,
-        "reason": "not eligible: R5_closure"
+        "measured": 14,
+        "total": 14,
+        "missing_components": [],
+        "reason": "not eligible: R3_a0_1_attested, R6_closure",
+        "component_values": {
+          "a0_1_measured": "14/14",
+          "a0_1_adapted": "0/14",
+          "a0_1_attested": "FAIL",
+          "a0_2_mechanism": "PASS",
+          "a0_2_bridge": "PASS",
+          "closure": "CONDITIONAL",
+          "mrc": "FROZEN"
+        }
       },
       "eve": {
-        "predicate_version": "a0.eligibility/v1",
-        "vector": "T_strict",
+        "predicate_version": "a0.eligibility/v2",
+        "vector": "T_A1",
+        "vector_role": "main arm",
         "eligible": false,
         "rules": {
           "R0_coverage": true,
           "R1_measure_floor": false,
           "R2_adapted_declared": true,
-          "R3_a0_2_mechanism": true,
-          "R4_a0_2_e2e": false,
-          "R5_closure": false
+          "R3_a0_1_attested": false,
+          "R4_a0_2_mechanism": true,
+          "R5_a0_2_bridge": false,
+          "R6_closure": false,
+          "R7_mrc": true
         },
         "failed_rules": [
           "R1_measure_floor",
-          "R4_a0_2_e2e",
-          "R5_closure"
+          "R3_a0_1_attested",
+          "R5_a0_2_bridge",
+          "R6_closure"
         ],
         "required_measured": 14,
-        "reason": "not eligible: R1_measure_floor, R4_a0_2_e2e, R5_closure"
+        "measured": 5,
+        "total": 14,
+        "missing_components": [],
+        "reason": "not eligible: R1_measure_floor, R3_a0_1_attested, R5_a0_2_bridge, R6_closure",
+        "component_values": {
+          "a0_1_measured": "5/14",
+          "a0_1_adapted": "9/14",
+          "a0_1_attested": "FAIL",
+          "a0_2_mechanism": "PASS",
+          "a0_2_bridge": "ATTEMPTED",
+          "closure": "CONDITIONAL",
+          "mrc": "FROZEN"
+        }
       },
       "loreley": {
-        "predicate_version": "a0.eligibility/v1",
-        "vector": "T_strict",
+        "predicate_version": "a0.eligibility/v2",
+        "vector": "T_A1",
+        "vector_role": "main arm",
         "eligible": false,
         "rules": {
           "R0_coverage": true,
           "R1_measure_floor": true,
           "R2_adapted_declared": true,
-          "R3_a0_2_mechanism": true,
-          "R4_a0_2_e2e": false,
-          "R5_closure": false
+          "R3_a0_1_attested": false,
+          "R4_a0_2_mechanism": true,
+          "R5_a0_2_bridge": false,
+          "R6_closure": false,
+          "R7_mrc": true
         },
         "failed_rules": [
-          "R4_a0_2_e2e",
-          "R5_closure"
+          "R3_a0_1_attested",
+          "R5_a0_2_bridge",
+          "R6_closure"
         ],
         "required_measured": 14,
-        "reason": "not eligible: R4_a0_2_e2e, R5_closure"
+        "measured": 14,
+        "total": 14,
+        "missing_components": [],
+        "reason": "not eligible: R3_a0_1_attested, R5_a0_2_bridge, R6_closure",
+        "component_values": {
+          "a0_1_measured": "14/14",
+          "a0_1_adapted": "0/14",
+          "a0_1_attested": "FAIL",
+          "a0_2_mechanism": "PASS",
+          "a0_2_bridge": "ATTEMPTED",
+          "closure": "CONDITIONAL",
+          "mrc": "FROZEN"
+        }
       }
     },
-    "T_literal": {
+    "T_exploratory": {
       "simpleloop": {
-        "predicate_version": "a0.eligibility/v1",
-        "vector": "T_literal",
+        "predicate_version": "a0.eligibility/v2",
+        "vector": "T_exploratory",
+        "vector_role": "exploratory",
         "eligible": true,
         "rules": {
           "R0_coverage": true,
           "R1_measure_floor": true,
           "R2_adapted_declared": true,
-          "R3_a0_2_mechanism": true,
-          "R4_a0_2_e2e": true,
-          "R5_closure": true
+          "R3_a0_1_attested": true,
+          "R4_a0_2_mechanism": true,
+          "R5_a0_2_bridge": true,
+          "R6_closure": true,
+          "R7_mrc": true
         },
         "failed_rules": [],
         "required_measured": 1,
-        "reason": "all rules satisfied"
+        "measured": 14,
+        "total": 14,
+        "missing_components": [],
+        "reason": "all rules satisfied",
+        "component_values": {
+          "a0_1_measured": "14/14",
+          "a0_1_adapted": "0/14",
+          "a0_1_attested": "PASS",
+          "a0_2_mechanism": "PASS",
+          "a0_2_bridge": "PASS",
+          "closure": "CLOSED",
+          "mrc": "FROZEN"
+        }
       },
       "kapso": {
-        "predicate_version": "a0.eligibility/v1",
-        "vector": "T_literal",
-        "eligible": true,
+        "predicate_version": "a0.eligibility/v2",
+        "vector": "T_exploratory",
+        "vector_role": "exploratory",
+        "eligible": false,
         "rules": {
           "R0_coverage": true,
           "R1_measure_floor": true,
           "R2_adapted_declared": true,
-          "R3_a0_2_mechanism": true,
-          "R4_a0_2_e2e": true,
-          "R5_closure": true
+          "R3_a0_1_attested": false,
+          "R4_a0_2_mechanism": true,
+          "R5_a0_2_bridge": true,
+          "R6_closure": true,
+          "R7_mrc": true
         },
-        "failed_rules": [],
+        "failed_rules": [
+          "R3_a0_1_attested"
+        ],
         "required_measured": 1,
-        "reason": "all rules satisfied"
+        "measured": 14,
+        "total": 14,
+        "missing_components": [],
+        "reason": "not eligible: R3_a0_1_attested",
+        "component_values": {
+          "a0_1_measured": "14/14",
+          "a0_1_adapted": "0/14",
+          "a0_1_attested": "FAIL",
+          "a0_2_mechanism": "PASS",
+          "a0_2_bridge": "PASS",
+          "closure": "CONDITIONAL",
+          "mrc": "FROZEN"
+        }
       },
       "eve": {
-        "predicate_version": "a0.eligibility/v1",
-        "vector": "T_literal",
-        "eligible": true,
+        "predicate_version": "a0.eligibility/v2",
+        "vector": "T_exploratory",
+        "vector_role": "exploratory",
+        "eligible": false,
         "rules": {
           "R0_coverage": true,
           "R1_measure_floor": true,
           "R2_adapted_declared": true,
-          "R3_a0_2_mechanism": true,
-          "R4_a0_2_e2e": true,
-          "R5_closure": true
+          "R3_a0_1_attested": false,
+          "R4_a0_2_mechanism": true,
+          "R5_a0_2_bridge": true,
+          "R6_closure": true,
+          "R7_mrc": true
         },
-        "failed_rules": [],
+        "failed_rules": [
+          "R3_a0_1_attested"
+        ],
         "required_measured": 1,
-        "reason": "all rules satisfied"
+        "measured": 5,
+        "total": 14,
+        "missing_components": [],
+        "reason": "not eligible: R3_a0_1_attested",
+        "component_values": {
+          "a0_1_measured": "5/14",
+          "a0_1_adapted": "9/14",
+          "a0_1_attested": "FAIL",
+          "a0_2_mechanism": "PASS",
+          "a0_2_bridge": "ATTEMPTED",
+          "closure": "CONDITIONAL",
+          "mrc": "FROZEN"
+        }
       },
       "loreley": {
-        "predicate_version": "a0.eligibility/v1",
-        "vector": "T_literal",
-        "eligible": true,
+        "predicate_version": "a0.eligibility/v2",
+        "vector": "T_exploratory",
+        "vector_role": "exploratory",
+        "eligible": false,
         "rules": {
           "R0_coverage": true,
           "R1_measure_floor": true,
           "R2_adapted_declared": true,
-          "R3_a0_2_mechanism": true,
-          "R4_a0_2_e2e": true,
-          "R5_closure": true
+          "R3_a0_1_attested": false,
+          "R4_a0_2_mechanism": true,
+          "R5_a0_2_bridge": true,
+          "R6_closure": true,
+          "R7_mrc": true
         },
-        "failed_rules": [],
+        "failed_rules": [
+          "R3_a0_1_attested"
+        ],
         "required_measured": 1,
-        "reason": "all rules satisfied"
+        "measured": 14,
+        "total": 14,
+        "missing_components": [],
+        "reason": "not eligible: R3_a0_1_attested",
+        "component_values": {
+          "a0_1_measured": "14/14",
+          "a0_1_adapted": "0/14",
+          "a0_1_attested": "FAIL",
+          "a0_2_mechanism": "PASS",
+          "a0_2_bridge": "ATTEMPTED",
+          "closure": "CONDITIONAL",
+          "mrc": "FROZEN"
+        }
       }
     }
   },
   "eligible_set": {
-    "T_strict": [
+    "T_A1": [
       "simpleloop"
     ],
-    "T_literal": [
-      "eve",
-      "kapso",
-      "loreley",
+    "T_exploratory": [
+      "simpleloop"
+    ]
+  },
+  "key_metrics": {
+    "R_A1_main": [
+      "simpleloop"
+    ],
+    "R_exploratory": [
       "simpleloop"
     ]
   },
   "screen": {
     "what": "the candidate screen, not the eligibility predicate",
     "r_1_a0_1_only": [
-      "simpleloop",
-      "kapso",
-      "loreley"
+      "simpleloop"
     ],
-    "r_1_a0_1_partial": [
-      "eve"
-    ],
+    "r_1_a0_1_partial": [],
     "screen_source": "a0/conformance/report.json#verdicts (the runner owns the A0.1 half)",
+    "screen_counts": {
+      "n_pass": 1,
+      "n_partial": 0,
+      "n_fail": 3,
+      "n_pending": 0,
+      "n_blocked": 0
+    },
+    "screen_uses": "the runner's ACCEPTANCE state (PASS), so a runtime that measured every row but did not attest it is not in r_1_a0_1_only",
     "r_1_derived_if_a0_2_mechanism_counts": [
+      "eve",
       "kapso",
       "loreley",
       "simpleloop"
     ],
-    "r_1_derived_note": "DERIVED here from `a0_1_measured.state == PASS and a0_2_mechanism == PASS`; the authoritative A0.2 judgement is owned by the A0.2 workstream (a0/acceptance), so treat this as an upper bound on R_1",
+    "r_1_derived_note": "DERIVED here from `a0_1_measured.state in {PASS, PARTIAL} and a0_2_mechanism == PASS`, i.e. from the MEASUREMENT axis, which is deliberately not the screen's axis; the authoritative A0.2 judgement is owned by the A0.2 workstream (a0/acceptance), so treat this as an upper bound on R_1",
     "screen_passes": true,
     "screen_rule": "|R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2",
-    "not_the_same_as_eligibility": "a runtime can be in the screen set and still not Eligible() under T_strict, and the reverse order of dilution is impossible: a PARTIAL runtime is not in r_1_a0_1_only"
+    "not_the_same_as_eligibility": "a runtime can be in the screen set and still not in R_A1^main. In the other direction the axes must not be mixed: a runtime whose MEASUREMENT is complete but whose ACCEPTANCE failed (KAPSO, Eve, Loreley: 14 x MISSING_ATTESTATION) is out of both, and the reason it is out is R3_a0_1_attested, never a measurement rule"
   },
   "unproven": [
     {
@@ -901,30 +1681,21 @@
       "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
     },
     {
-      "runtime": "eve",
-      "component": "closure",
-      "caveat": "these records are dated 2026-09-20",
-      "status": "NOT RECONCILED with the newer lane work",
+      "runtime": "kapso",
+      "component": "mrc",
+      "caveat": "more than one covering route validates; the A1 route CHOICE among them is not frozen here",
+      "status": "OPEN decision (STATUS.md §9 item 2, D4)",
       "evidence": [
-        "a0/notes/exit-closed/proxy-closure/REPORT.md"
+        "a0/mrc/declarations/claude-deepseek-anthropic.mrc.json",
+        "a0/mrc/declarations/codex-deepseek-responses.mrc.json"
       ],
-      "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
-    },
-    {
-      "runtime": "loreley",
-      "component": "closure",
-      "caveat": "these records are dated 2026-09-20",
-      "status": "NOT RECONCILED with the newer lane work",
-      "evidence": [
-        "a0/notes/exit-closed/proxy-closure/REPORT.md"
-      ],
-      "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+      "to_settle": "record the chosen lane per runtime in the freeze document"
     },
     {
       "runtime": "eve",
-      "component": "a0_2_e2e",
+      "component": "a0_2_bridge",
       "value": "ATTEMPTED",
-      "status": "UNPROVEN for a completed end-to-end round",
+      "status": "not established at the level T_A1 requires",
       "evidence": [
         "a0/runtimes/eve/out/run002/real_round.json",
         "a0/runtimes/eve/out/run003/real_round.json",
@@ -933,16 +1704,90 @@
       "to_settle": "a completed round: `a0/runtimes/eve/.venv/bin/python a0/runtimes/eve/tools/run_one_eve_iteration.py --run-dir a0/runtimes/eve/out/run006 --turns 14 --turn-timeout 660 --max-seconds 1080` (the documented driver that produced run002-004; NOT executed here), then require real_round.json to show a post-round solver whose e_star_candidate_source_sha256 is not the baseline sha"
     },
     {
+      "runtime": "eve",
+      "component": "closure",
+      "caveat": "these records are dated 2026-09-20",
+      "status": "NOT RECONCILED with the newer lane work",
+      "evidence": [
+        "a0/notes/exit-closed/proxy-closure/REPORT.md"
+      ],
+      "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+    },
+    {
+      "runtime": "eve",
+      "component": "mrc",
+      "caveat": "more than one covering route validates; the A1 route CHOICE among them is not frozen here",
+      "status": "OPEN decision (STATUS.md §9 item 2, D4)",
+      "evidence": [
+        "a0/mrc/declarations/codex-deepseek-responses.mrc.json",
+        "a0/mrc/declarations/opencode-deepseek-chat.mrc.json"
+      ],
+      "to_settle": "record the chosen lane per runtime in the freeze document"
+    },
+    {
       "runtime": "loreley",
-      "component": "a0_2_e2e",
-      "value": "PLANNING_ONLY",
-      "status": "UNPROVEN for a completed end-to-end round",
+      "component": "a0_2_bridge",
+      "value": "ATTEMPTED",
+      "status": "not established at the level T_A1 requires",
       "evidence": [
         "a0/runtimes/loreley/llm-round/RESULT.md",
         "a0/runtimes/loreley/llm-round/stage_a2_result.json",
         "a0/runtimes/loreley/llm-round/bounded_round.log"
       ],
       "to_settle": "a completed round: `cd a0/runtimes/loreley && timeout 1200 ./llm-round/run_bounded_round.sh` with a coding budget that fits the cap (the 480 s coding attempt timed out; the round needs a smaller task or a larger cap). NOT executed here"
+    },
+    {
+      "runtime": "loreley",
+      "component": "closure",
+      "caveat": "these records are dated 2026-09-20",
+      "status": "NOT RECONCILED with the newer lane work",
+      "evidence": [
+        "a0/notes/exit-closed/proxy-closure/REPORT.md"
+      ],
+      "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+    },
+    {
+      "runtime": "loreley",
+      "component": "mrc",
+      "caveat": "more than one covering route validates; the A1 route CHOICE among them is not frozen here",
+      "status": "OPEN decision (STATUS.md §9 item 2, D4)",
+      "evidence": [
+        "a0/mrc/declarations/codex-deepseek-responses.mrc.json",
+        "a0/mrc/declarations/kilo-deepseek-chat.mrc.json"
+      ],
+      "to_settle": "record the chosen lane per runtime in the freeze document"
+    }
+  ],
+  "rejected": [
+    {
+      "runtime": "kapso",
+      "component": "a0_1_attested",
+      "value": "FAIL",
+      "identity_verdict": "MISSING_ATTESTATION",
+      "status": "FAIL -- an axis was decided against this runtime, not left unproven",
+      "justification": "the D3 runner's own `measurement-attestation` check for this runtime FAILED: MISSING_ATTESTATION (14 x missing_attestation_candidates). The measurement axis is unaffected -- the numbers agree -- but no row is acceptable evidence in this state, so this is FAIL, not UNPROVEN, and never a pass",
+      "evidence": "a0/conformance/report.json",
+      "to_settle": null
+    },
+    {
+      "runtime": "eve",
+      "component": "a0_1_attested",
+      "value": "FAIL",
+      "identity_verdict": "MISSING_ATTESTATION",
+      "status": "FAIL -- an axis was decided against this runtime, not left unproven",
+      "justification": "the D3 runner's own `measurement-attestation` check for this runtime FAILED: MISSING_ATTESTATION (14 x missing_attestation_candidates). The measurement axis is unaffected -- the numbers agree -- but no row is acceptable evidence in this state, so this is FAIL, not UNPROVEN, and never a pass",
+      "evidence": "a0/conformance/report.json",
+      "to_settle": null
+    },
+    {
+      "runtime": "loreley",
+      "component": "a0_1_attested",
+      "value": "FAIL",
+      "identity_verdict": "MISSING_ATTESTATION",
+      "status": "FAIL -- an axis was decided against this runtime, not left unproven",
+      "justification": "the D3 runner's own `measurement-attestation` check for this runtime FAILED: MISSING_ATTESTATION (14 x missing_attestation_candidates). The measurement axis is unaffected -- the numbers agree -- but no row is acceptable evidence in this state, so this is FAIL, not UNPROVEN, and never a pass",
+      "evidence": "a0/conformance/report.json",
+      "to_settle": null
     }
   ]
 }

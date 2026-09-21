@@ -1,0 +1,742 @@
+{
+  "schema": "a0.adapter.conformance/v1",
+  "runtime": "selftest_env_drift",
+  "adapter": "a0/conformance/fixtures/adapters/deviant.py --mode env_drift (FIXTURE, not a runtime)",
+  "mode": "env_drift",
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "eid_r": {
+    "value": "8465c10780e399874bfff52e97284ac363e6e62cdc823d67b2bcc9c6af41983a",
+    "native_scheme": "none",
+    "mapping_mode": "adapter_declared_injection",
+    "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "declarations_verbatim_from": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "declaration": "deviant/env_drift has no native evaluator identity; EID_r is a domain-separated digest over (eid_star, runtime) so that it is a function of EID* alone.",
+    "recomputable": true,
+    "derivation": {
+      "algorithm": "sha256",
+      "domain": "a0/fixture/deviant/env_drift/v1/EID_r",
+      "payload_canonical": "{\"eid_star\":\"664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\",\"runtime\":\"selftest_env_drift\"}"
+    }
+  },
+  "theta_e": {
+    "seed": 1337,
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "timeout_s": 120.0
+  },
+  "epsilon": 1e-09,
+  "primary_field": "sum_radii",
+  "fr": {
+    "name": "F_r = scalar(E*)",
+    "version": "v1",
+    "applies": "scalar",
+    "spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+    "declared_in": "a0/contract/fr/scalar.json"
+  },
+  "candidate_set": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+  "candidates": [
+    {
+      "candidate_id": "c01_good_hex",
+      "source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+      "canonical_digest": "c45d79eeb20c9f551d384d60b33225744f893479e657e99fe43a9538e3cbb83f",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.4519205208433132,
+        "direction": "max"
+      },
+      "objective_value": 2.4519205208433132,
+      "failure_kind": null,
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "4eff82345db02191ce5a85c73fda96b168940aa10ee70641c3285ab300f0ae1b",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+        "behaviour_digest": "65daffac4768d8d15650baf0827308d7649b1d5cc08513dcccc49f4bb6fef123",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c02_baseline_upstream",
+      "source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+      "canonical_digest": "9bb99f39ecbf56c02dad9aa6a27a980232447e21fc0d5379ca988e3cbe97b058",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 0.25,
+        "direction": "max"
+      },
+      "objective_value": 0.25,
+      "failure_kind": null,
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "c1cf69e267642fca58b2aef5365bcf523e565df5229afb513658f9483688971b",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "behaviour_digest": "f01f10f8229f191da93fe8a74a56c58031576ab402f5b5a8a3c7eb9174129207",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c03_mirror",
+      "source_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+      "canonical_digest": "83edc4324f2ffb7ef4785a35b286c21e5de8868d8b07264955181f8bede6c6ad",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.4519205208433132,
+        "direction": "max"
+      },
+      "objective_value": 2.4519205208433132,
+      "failure_kind": null,
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "84dd00145eeb67f0348e1fb483b4adab08178b9461b609b54d80f073aa7898e3",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+        "behaviour_digest": "688d4d7e158d052a97b43e766d6faab625031db0313685596bd41b4b3cf1964b",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c04_near_tie",
+      "source_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+      "canonical_digest": "b6819864f48b50fbd3d1eb5e8b69654d2d0867a175d6cee7b439e2e1eacd400a",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.451820520843313,
+        "direction": "max"
+      },
+      "objective_value": 2.451820520843313,
+      "failure_kind": null,
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "d9a8a21a8de970d6a943034992e4027672068e074ba58dd58612137f19370e3c",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+        "behaviour_digest": "e00d05d50d64675815640a2807aeb1fc14954e7626d9296cdbe542e3845ff7b0",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c05_overlapping",
+      "source_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+      "canonical_digest": "22edb359cf51a01c752f66281eb32c5c7314b59dada2fff2f2ff656e6b8d1131",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "95bfa21ab01ea0b0c1eecce15ef0eaabab8c4cadc7a6017e35dce3d4322f2595",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+        "behaviour_digest": "34fce10674ffe5f2b8b657cc5c713158121fba6f39fddd1053044dcb4c13d547",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c06_empty",
+      "source_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+      "canonical_digest": "5a52436c2f08b7f28bfd9f034cb1e28085b6259c1da589abc657865c5da980e1",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "0e86e49b53db1cbfa6aa100fda0162c59b9066dd100e38130acaadf8b0b9421f",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+        "behaviour_digest": "f410339c4b28814b4d93a2ba38cd3e4b965fff56efb609201ba2079e80c9f3a9",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c07_single",
+      "source_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+      "canonical_digest": "a027fb3f56fec5814e491092331848826e96e8e51ab7916ca925c170b5195465",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "e3bfb9f60186115f22fbf158c1510d36ebb3e40e1424722406a5aa7a02b12550",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+        "behaviour_digest": "730e177705fc429bb7950a15895930cfb2990f1d038f4775ea629beb9b2ffbf6",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c08_out_of_bounds",
+      "source_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+      "canonical_digest": "5b69c559c6c61c3f4b37e186b99cfba487d14f00b820b53cbc5f3dd6de457612",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "04721256d59d1865b4dcf193e923d7164bec953afb50cd9c0b741feddbe71d58",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+        "behaviour_digest": "bb939996a2d19e045c397d5555549c46acf0ceddf2d4b4a893e486e1fc045459",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c09_malformed_import",
+      "source_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+      "canonical_digest": "32c33ad7a945a71ef2f48057a55342a27a95afc1ea0c00498b55b16754b71042",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "candidate_import_failed",
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "77923d0618a420c4e3c78c51104b4f5fa5e646e041d7cf9d3cea69be808109d2",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+        "behaviour_digest": "97886403db96be5c536ffb43c9bd338dba9e977de370771aa13f74b9c04e639e",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c10_raises",
+      "source_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+      "canonical_digest": "d233b0cae521f20a33294be0a9818f98d38b1a61fbddb6d54dc400d68c027194",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "candidate_call_raised",
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "168a648d8758cd6ea21ade7f508657b1abdf5aa35e876a761d40444eedcfe0b8",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+        "behaviour_digest": "ba0c067ef8235e3a418f1068deb45f22836b4d558e30e896f0fc96af2741d17c",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c11_non_deterministic",
+      "source_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+      "canonical_digest": "e5e8c00ade1107fd998d1ba5ca87106716b88323dad3fff978758a2c52589b8c",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "non_deterministic",
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "7057c6d38e77e4b6a5eb6f3d64701498d6ae16c89b444898e11f23bfb429453c",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+        "behaviour_digest": "9c8a16d08cbcde7a97212509c60afd1da9251191ff9f7c3303be8f451f193d0e",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c12_exit_without_artifacts",
+      "source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+      "canonical_digest": "a9532e543c7674a9af1b88f906c6938d3a426adf3c26578e0e84198232230ffc",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "child_terminated_early",
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "4c1fb1269e8ae38ce209dbffa0a0272f4b5ca0269a1888275746c63c579fbb48",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+        "behaviour_digest": "8c03704fadac8a8329f3da135b31edfacb5a04f465e5a7e3aaecc8f01fbc5187",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c13_slow",
+      "source_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+      "canonical_digest": "a5a2596ee3790ff9c94c4974a21b131116e1783a584787a33f3622d79119641b",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": "sum_radii",
+        "value": null,
+        "direction": "max"
+      },
+      "objective_value": null,
+      "failure_kind": "runtime_budget_exceeded",
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "0f3d7fc473519bfb09b20cf8a467d2bf8d12b7280f104bf2d2e50db40d399a5e",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+        "behaviour_digest": "442b460585317e9e292888cd3f037a4bd720b46221264f538e8d270be1b06362",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    },
+    {
+      "candidate_id": "c14_near_zero",
+      "source_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+      "canonical_digest": "65c18e93dadccef072f257ee7e99057ac490a256753551b56e09ada8e96a3215",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.6e-05,
+        "direction": "max"
+      },
+      "objective_value": 2.6e-05,
+      "failure_kind": null,
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "deviant fixture baseline (mode=env_drift)"
+      },
+      "theta_e_attempt": {
+        "evaluator": "E*",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full"
+      },
+      "measurement": {
+        "schema": "a0.envelope.measurement_attestation/v1",
+        "oid": "2d41f79d82fef9eeb3741f12afef557c6c4275722ca1109842d7c324070a4244",
+        "harness_run_id": "a01-reference-20260921T171439",
+        "nonce": "d993b2924eba1a6fe1b610d506a54ff9",
+        "note": "the fixture plays the adapter's side of the measurement-token protocol (external review D3)",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "candidate_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+        "behaviour_digest": "3a90f151499cd9e9c4880ed2ae2f34a55319536847a1ff54bd3e9051ff1c00b2",
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.14.7"
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        }
+      }
+    }
+  ]
+}

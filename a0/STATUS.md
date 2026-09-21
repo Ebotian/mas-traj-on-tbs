@@ -81,6 +81,8 @@ EID* = 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328
 
 ### 3.3 A0.1 / A0.2 判定
 
+> **注（2026-09-21 晚）**：下表描述的是 **D1/D3 收敛之前**的状态。此后 harness 开始签发计量令牌、身份不再接受适配器自述，因此 `kapso`/`eve`/`loreley` 现在是**不接受**（`MISSING_ATTESTATION`，而它们的数字仍 14/14 一致），只有 SimpleLoop 被接受且已接线。`A−1` 结论不变；`EID*` 未变。详见 `a0/CONVERGENCE-2026-09-21.md`。
+
 | runtime | A0.1 | A0.2 | 说明 |
 |---|---|---|---|
 | SimpleLoop | PASS 14/14 | PASS 9/9 | 并列/近并列/顺序不变性均验 |

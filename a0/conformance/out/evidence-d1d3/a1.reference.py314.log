@@ -1,0 +1,19 @@
+A0.1 conformance: fresh E* sweep over 14 candidates of C*
+  c01_good_hex                 exit=0 status=ok      objective=2.4519205208433132     ok 
+  c02_baseline_upstream        exit=0 status=ok      objective=0.25                   ok 
+  c03_mirror                   exit=0 status=ok      objective=2.4519205208433132     ok 
+  c04_near_tie                 exit=0 status=ok      objective=2.451820520843313      ok 
+  c05_overlapping              exit=2 status=invalid objective=None                   n/a
+  c06_empty                    exit=2 status=invalid objective=None                   n/a
+  c07_single                   exit=2 status=invalid objective=None                   n/a
+  c08_out_of_bounds            exit=2 status=invalid objective=None                   n/a
+  c09_malformed_import         exit=3 status=error   objective=None                   n/a
+  c10_raises                   exit=3 status=error   objective=None                   n/a
+  c11_non_deterministic        exit=3 status=error   objective=None                   n/a
+  c12_exit_without_artifacts   exit=3 status=error   objective=None                   n/a
+  c13_slow                     exit=3 status=error   objective=None                   n/a
+  c14_near_zero                exit=0 status=ok      objective=2.6e-05                ok 
+reference table reproduced exactly: True
+execution environment: EXECUTION_ENV_DRIFT (observed {'implementation': 'cpython', 'version': '3.14.7'}, pinned {'implementation': 'cpython', 'version': '3.12.11'}); behaviour reproduced: True
+measurement envelope written: /tmp/evrun/out314/envelope/measurement_tokens.a01-reference-20260921T171421.json (nonce 89eaedec48f0..., 14 tokens)
+written: out/evidence-d1d3/reference.py314.json

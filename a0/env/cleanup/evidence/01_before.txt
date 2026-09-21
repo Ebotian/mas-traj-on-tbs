@@ -1,0 +1,54 @@
+# before-state @ 2026-09-21T16:45:39+08:00
+## docker ps -a
+a0-loreley-postgres	Exited (0) 20 hours ago	postgres:18
+a0-loreley-redis	Exited (0) 20 hours ago	redis:8
+a0pc-cli	Up 6 hours	python:3.12-slim
+a0pc-pg	Up 6 hours	postgres:16
+a0pc-proxy	Up 6 hours	python:3.12-slim
+a0pc-redis	Up 6 hours	redis:8
+a0tl-cli	Up 25 minutes	python:3.12-slim
+a0tl-proxy	Up 25 minutes	python:3.12-slim
+adapdc-catalog-postgres-1	Up 8 hours (healthy)	postgres:16
+adapdc-postgresql-1	Exited (0) 4 days ago	postgres:16
+adapdc-temporal-1	Exited (0) 4 days ago	temporalio/server:1.31.0
+adapdc-temporal-admin-tools-1	Exited (0) 4 days ago	temporalio/admin-tools:1.31.0
+adapdc-temporal-create-namespace-1	Exited (0) 4 days ago	temporalio/admin-tools:1.31.0
+adapdc-temporal-ui-1	Exited (2) 4 days ago	temporalio/ui:2.49.1
+
+## docker network ls
+a0-egress-internal	bridge	local
+a0-loreley-internal	bridge	local
+a0-loreley-net	bridge	local
+a0pc-internal	bridge	local
+a0tl-internal	bridge	local
+adapdc_temporal-network	bridge	local
+bridge	bridge	local
+host	host	local
+none	null	local
+
+## docker volume ls
+013ac4bb969c1d6ef4f36576124aa42ac066f822ad57174e29979d206a0226f9
+0e410533305af7d3cf99d4b733a563cb2fc8de584f3a1068bff2586359ac8ef2
+118f308e9225aafada1874829e1976f7b7f2d1abf392fe8ace6e1d7fb19d0d0e
+1428e39c86dfbbb4d4e1daf657aeb8af221bb232c45240671b432685b4c64315
+1fc31d109b198ddf4b30d5407272cb84d5ea5b80d63964043599d52c7ae448d8
+25e66563329c00163700e3e358fb8eff937cde3c565971387f72835bebfb9150
+2cc3a1354a62deb56575a00da489fe96c8933e75b116fc8ec478f1192d582d49
+2cd3d9c2de055a3bd8dcca6e3e3a359ac93e96d9dc4442df06a6fb323676b149
+39b0aaa7bba427aef08275102e3f5be502d042c17d80dbf23dd502994ca683b5
+3bd30e3288e894f4c55ae2f64fa891649a0d7dfb18a1737cdb67f989da74ce16
+43afd7c57d5880b10c6df6f1405d76870936bca22222d2c9bed809b9268be008
+63cec1cf09acdda4fccb36edac7d4a1dc2d0203e53abe06552f6732aaf9e84ee
+9bb147f1e2bf3f2dd131a6f8e0e464237647d9a92d9bc81bcacfb7e4f1ca52b2
+a52554be7d60492fa47f5a644e2bf3cee1b91c190271d0396389135c0e88c5c5
+a5ed6aa95456428abc3c890f78d0fe0bad69aa8ccd108e9d9df9fe4a487b8b8a
+ad055f30be757e6aa12eba91366e9b3d0aa333a44ebe645a7348d4fbf7124fe3
+adapdc_catalog-pg-data
+adapdc_temporal-pg-data
+ae2a005f370dceda6cbd4f79f40f81a72dbf149893fd7bc8d1488353bcf54758
+badcca7739aab75d1d6f80a78bcc1e4cbb8e4c58c060b9a2349d5e74d48024dc
+c549b58c7cf6e4b232a5b481767a8abd8f72d2435b31f492f5976f4d677ed7a2
+e0fd964a5e72af5e42e0bec6be13d5dedc5a4b58c1beaf819c0eb42465bc581c
+e7b61824d44d7ffedf73787851c818047c031c19f797cae277122e3dc302f35a
+eaef1648839d6f35a3559f06de4cac655b7a70400906e8de0e68acce7f7c3bad
+fd8cabbd8b68060af2b431e9b4ce40ec7121339771e38d1fafd10d9f9087977d

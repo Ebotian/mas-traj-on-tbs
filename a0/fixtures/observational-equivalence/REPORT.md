@@ -83,10 +83,16 @@ distinguishable once the theta grid includes the fast tier. Both facts matter fo
 
 ---
 
-## 2. Direction 1 — the existing behavioural checker accepts `E'`
+## 2. Direction 1 — the behavioural checker, across its three revisions
+
+**Current state (third revision, D1+D3): the seven rows are re-run and every one of them changes —
+the three silent passes are gone (§2.4).** The subsections below are the measured record of the first
+two revisions, which is what the original finding was based on.
 
 The checker is the study's own, unmodified: `a0/conformance/conformance.py run --runtimes … --adapter …`.
-The adapter is `adapters/e_plus_adapter.py` (revision `a6cff4b2…bbbd`), which implements the same
+The adapter is `adapters/e_plus_adapter.py` (revision `a6cff4b2…bbbd` for the rows below;
+`b1955a45…a1e8` once the `--attestation` modes were added, whose default path is unchanged), which
+implements the same
 protocol as the study's honest fixture (`a0/conformance/fixtures/adapters/reference_adapter.py`):
 integrity-check every `C*` member, invoke the evaluator CLI once per candidate at the frozen
 `theta_E`, carry `eid_star` verbatim with a recomputable `eid_r`, declare `evaluator_evidence.status = "ok"`.
@@ -106,11 +112,17 @@ eplus_mut_twin         PASS     all checks passed                       rows={'M
 
 **Re-run after the checker's field rename (added later, measured).** The table above was first
 produced against `conformance.py` `45cc4e90…6edf` and then reproduced **row for row** against the
-current revision `f33659f6…b50c`, whose only relevant change was renaming the recorded adapter claim
-to `adapter_claim__untrusted` (no verdict logic touched). The comparison is mechanical, not visual:
-`python3 compare_probe_reports.py --before out/conformance.pin45cc4e90 --after out/conformance --out
-out/conformance/reprocheck.json` → `identical: True`, exit 0, all 7 runtimes, all 14 rows each (see
-§6 for the pins and the tool's own negative control). New-revision raw output: `out/conformance/probe.log`.
+next revision `f33659f6…b50c`, whose only relevant change was renaming the recorded adapter claim
+to `adapter_claim__untrusted` (no verdict logic touched). The comparison is mechanical, not visual —
+and it is made against the *pinned* copies, because the live `out/conformance/` now holds the third
+revision's reports:
+
+```
+python3 compare_probe_reports.py --before out/conformance.pin45cc4e90 --after out/conformance.pinf33659f6 \
+        --out out/conformance.pinf33659f6/reprocheck.pin1-vs-pin2.json      # identical: True, exit 0
+```
+
+all 7 runtimes, all 14 rows each (see §6 for the three pins and the tool's own negative control).
 
 **The control matters.** `eplus_control` runs the real `E*` through my adapter: `PASS`, 11/11
 checks. So the adapter implementation is faithful and the checker can accept an honest adapter —
@@ -205,7 +217,78 @@ the checker never compares the `interpreter` field (grep over `conformance.py`: 
 lines 730/859/964/970/2500, all about launching the reference sweep and the report's frozen
 block). So the same field is simultaneously too weak (optional, self-reported, free to omit) and
 too strong (fails a byte-identical evaluator on a different interpreter build). The same failure
-mode appears in `a0/attestation/` — see §3.1.
+mode appears in `a0/attestation/` — see §3.1. **Both defects are now addressed by the checker's
+third revision — D1 for the second, D3 for the first — measured in §2.4.**
+
+### 2.4 The third pin (`e40d008d`): D1 and D3, and what each one closes (measured)
+
+The checker now carries two mechanisms from `a0/envelope/` (its README, read-only for me): **D1**,
+which projects `canonical_digest` into a behaviour digest plus a separately compared interpreter
+block, and **D3**, which issues a per-candidate measurement token from the harness's own sweep and
+requires every row to echo it *and* attest the bytes it used, fail-closed on omission. My seven
+rows were re-run twice against it — `--envelope required` (the default) and `--envelope off` — with
+`./run_conformance_probe.sh [--envelope off]`, and mechanically compared against the previous pin
+with `compare_probe_reports.py --scope rows` (the tool now separates the row dimension from the
+check dimension, because a revision legitimately adds checks):
+
+| row | pin 1+2 (pre-D1/D3) | pin 3, `--envelope off` | pin 3, `--envelope required` |
+|---|---|---|---|
+| `eplus_control` (real `E*`) | PASS | PASS (identical) | **FAIL** 14× `MISSING_ATTESTATION` |
+| `eplus_control_py314` | FAIL 14× `MISMATCH_DIGEST` | **PASS** 14× `EXECUTION_ENV_DRIFT` | **FAIL** 14× `MISSING_ATTESTATION` |
+| `eplus_mut_own` (`E'`, honest own digest) | FAIL 14× `MISMATCH_DIGEST` | FAIL 14× `MISMATCH_DIGEST` (reason/notes re-worded by D1) | FAIL 14× `MISMATCH_DIGEST` |
+| `eplus_mut_claim` (`E'`, claims `E*`'s identity) | **PASS** | **PASS** (identical) | **FAIL** 14× `MISSING_ATTESTATION` |
+| `eplus_mut_omit` (`E'`, no identity fields) | **PASS** | **PASS** (identical) | **FAIL** 14× `MISSING_ATTESTATION` |
+| `eplus_mut_twin` (`E'`, c01 answered from c03) | **PASS** | **PASS** (identical) | **FAIL** 14× `MISSING_ATTESTATION` |
+| `eplus_mut_echo` | FAIL `E-star-manifest-echo` | FAIL (identical) | **FAIL** 14× `MISSING_ATTESTATION` |
+
+Evidence: `out/conformance/probe.log` (required), `out/conformance.envelope_off/probe.log` (off),
+`out/conformance/reprocheck.e40-required.json`, `out/conformance.envelope_off/reprocheck.off-vs-pin.json`;
+the pre-D1/D3 reports are kept verbatim in `out/conformance.pinf33659f6/` and `out/conformance.pin45cc4e90/`.
+Both re-runs match the D1+D3 workstream's recorded expectation row for row, with one precision note:
+the author's "其余六行逐字节相同" under `--envelope off` holds for five rows exactly; `eplus_mut_own`
+keeps its verdicts, statuses, values and deltas but its **reason string and per-row notes** were
+re-worded, because D1 now explains the mismatch as "matches the frozen payload under NO interpreter in
+the declared allowed execution set" instead of "a different file was evaluated, or stale state was
+reused" (its row verdict stays `MISMATCH_DIGEST` with `delta = 0.0`). Not a change of verdict, a
+change of wording — but not literal "byte-identical" either.
+
+**D1 and D3 are independent, and the matrix shows it.** With `--envelope off`, D1 alone fixes exactly
+the false red it was aimed at (`eplus_control_py314`: FAIL → PASS, `EXECUTION_ENV_DRIFT`, behaviour
+agreeing) and leaves the claim class exactly as it was: `mut_claim`, `mut_omit` and `mut_twin` still
+PASS. With the envelope required, D3 alone turns those three silent passes into failures
+(`MISSING_ATTESTATION`), including the *control* — which is the honest reading of the design: D3 is
+fail-closed on the *absence* of a token, so a lane that has not been wired is not accepted, whether
+or not it is honest.
+
+**What D3 closes once the lane is wired (measured, `out/conformance.envelope_required_attested/`).**
+I added `--attestation {none,measured,copy}` to my adapter, so the row can echo the harness token and
+say what it did:
+
+| row | echo | attests | checker verdict |
+|---|---|---|---|
+| `eplus_d3_control` — real `E*` | token | what it executed | **PASS**, 14/14, `measurement-attestation` ok |
+| `eplus_d3_claim_measured` — `E'`, honest | token | `E'`'s own evaluator digest `c42963b0…`, its candidate bytes, its behaviour digest | **FAIL** 14× `MISMATCH_ATTESTATION` — the checker's message names it the "claim attack" |
+| `eplus_d3_twin_measured` — `E'`, c01 from c03 | token | the bytes it really read (c03's) | **FAIL** 14× `MISMATCH_ATTESTATION`; the c01 record names all three contradictions at once (evaluator bytes `c42963b0…`, candidate bytes `893d0aa4…` vs the harness's `bca4286e…`, behaviour digest) |
+| `eplus_d3_fulltheta_measured` — sibling `E''` | token | its own evaluator digest | **FAIL** 14× `MISMATCH_ATTESTATION` |
+| `eplus_d3_claim_copy` — `E'` | token | **the token's own binding values, verbatim**, while running `E'` | **PASS**, 14/14, all checks ok |
+| `eplus_d3_fulltheta_copy` — `E''` | token | the token's binding, verbatim | **PASS**, 14/14, all checks ok |
+
+So the honest statement of the new state — and it is **stronger than before, in a precise sense** —
+is: the three evidence rows that used to be *silent* passes are now failures, and the only way a lane
+that executes something else passes is to **copy the harness's binding into its own attestation**,
+i.e. to forge actively. Before this revision an adapter could pass by saying nothing; now it must
+obtain the current per-run envelope and re-state the harness's own identity fields as its own. That
+is the residual that `a0/envelope/README.md` §5 states in prose ("Not proof that the attested bytes
+ran … A lying producer can still lie consistently — the fixture's R5"); the two `…_copy` rows are that
+sentence, executed. The token therefore closes the *honest* lane and the *omission* lane — the two
+that A0.1 can actually enforce — and leaves the *forging* lane to harness-owned measurement, which is
+§4 R5 and §5.
+
+Two further measured points for the D1+D3 owners: the harness now issues its envelope from a fresh
+`E*` sweep into its own tree (`a0/conformance/out/envelope/measurement_tokens.*.json`, disclosed in
+`README.md`), and the `measurement-attestation` check's own detail string is the clearest statement of
+the split I have seen in the artifacts (`0/14 rows carry no harness measurement token … 14/14
+contradict the harness's own measurement`).
 
 ---
 
@@ -435,6 +518,21 @@ frozen fast tier to the A0.1 comparison **at the value/verdict level** — cheap
 false-red cost, and it closes the decimation/sampling sub-class — *in addition to*, not instead of,
 the identity change below.
 
+**Aligned with the third pin (§2.4): the token, not the fast tier, is now the cheapest mechanism
+that closes the claim class.** The measurements re-rank them. D3's token is cheaper in the sense that
+matters — it needs no new oracle (the harness's own `E*` sweep issues it) and it closes *the whole
+honest lane*, in both dimensions at once: `eplus_d3_claim_measured` and `eplus_d3_twin_measured` fail
+on evaluator identity and on candidate identity respectively, and — the point the fast tier cannot
+reach — `eplus_d3_fulltheta_measured` fails the sibling mutant `E''` that agrees at *both* frozen
+theta classes (14× `MISMATCH_ATTESTATION`), while `verify_fast_tier.py` shows the frozen fast rows are
+equal for `E''` on 14/14. The fast tier remains a legitimate cheap *behavioural* supplement — it is
+already frozen, it costs one extra evaluator invocation per candidate, and it catches the
+decimation/sampling sub-class — but it is no longer the cheapest thing that closes the class, and
+quoting it as closure would be wrong for the reason §5 already gives: `E''` passes it. What the token
+does *not* close is the lane that copies the binding it was handed (`eplus_d3_claim_copy` and
+`eplus_d3_fulltheta_copy`: PASS, 14/14, every check ok while executing `E'`/`E''`), which is why the
+harness-owned measurement below is still the only closure, not an optional upgrade.
+
 ### 5.2 What to change
 
 Grounded in the measurements above, the highest yield per unit of effort is **not** to extend `C*`
@@ -456,12 +554,16 @@ digest. Cost: the extra
 `E*` invocations are the ones the runner already performs, plus roughly a reader/adapter-contract
 change; benefit: the `E'` class flips from free to FAIL, the `delta = 0.0`/`MISMATCH_DIGEST` false
 red disappears because identity is compared on the measured evaluator source instead of on an
-outcome digest that embeds the interpreter build, and R2/R3/R4 acquire a join key. If only an hour
-is available, take the three cheap halves first — fail-closed on the missing fields, require the
-`interpreter` block to match (or drop it from the digest payload and compare it explicitly), and add
-the frozen `fast_tier` rows to the comparison at the value/verdict level (§5.1) — and accept that
-they close omission, interpreter drift and the sampling sub-class but not a runtime that simply
-asserts `E*`.
+outcome digest that embeds the interpreter build, and R2/R3/R4 acquire a join key. **D1 and D3 already
+delivered the first three items of that programme** (§2.4: the false red is now `EXECUTION_ENV_DRIFT`
+and accepting; the omitted-identity lane is now `MISSING_ATTESTATION` and non-accepting; the token is
+the harness's own sweep). What is still missing is the last step and only that step: the token is
+*handed to* the lane and *re-stated by* it, so a lane that copies the binding still passes
+(`eplus_d3_claim_copy`). Closing that requires the number to be produced where the identity is
+measured — the harness running the evaluator and the runtime consuming that measurement — which is
+R5, and remains a decision rather than a fixture result. If only an hour is available, add the frozen
+`fast_tier` rows at the value/verdict level (§5.1); they are free and they catch the sampling
+sub-class, but they are a supplement to the token, not a substitute for it.
 
 ---
 
@@ -470,31 +572,49 @@ asserts `E*`.
 - **`a0/STATUS.md` was not edited** (coordinator-owned) and no other workstream's files were
   modified. The runner's own artifacts written under `a0/conformance/out/` are listed in
   `README.md`.
-- **Revision pins.** The seven checker rows in §2 have now been produced against **two** revisions of
-  `a0/conformance/conformance.py`, and are identical under both:
+- **Revision pins.** The seven checker rows in §2 have now been produced against **three** revisions of
+  `a0/conformance/conformance.py`:
 
   | revision | sha256 | when | rows |
   |---|---|---|---|
-  | before the rename | `45cc4e90b9c65c0a0139c336ed1d23288fa242512ba7a8970190a9f1f72f6edf` | 15:19:04–15:19:19 | §2 table |
-  | current | `f33659f605f6a6892e9d0f766961a13eeb55ddc4225776ad34fb974cdecfb50c` | 16:30:03–16:30:19 (file mtime 16:24:53, unchanged before and after) | identical, row for row |
+  | 1 — before the rename | `45cc4e90b9c65c0a0139c336ed1d23288fa242512ba7a8970190a9f1f72f6edf` | 15:19:04–15:19:19 | §2 table |
+  | 2 — renamed claim field | `f33659f605f6a6892e9d0f766961a13eeb55ddc4225776ad34fb974cdecfb50c` | 16:30:03–16:30:19 | identical, row for row |
+  | 3 — D1 + D3 (`a0/envelope/`) | `e40d008d9ad0874b0241143c7b436df7640f1e9a7e4af55b443d88469f0978ce` | 17:19:00–17:22:12: `required` 17:19, `--envelope off` 17:19:55, the attested rows 17:20:48–17:22:12 | §2.4 (all seven rows change; see the matrix) |
 
-  The rename (`adapter_declared_verdict` → `adapter_claim__untrusted`, so that no machine-readable
-  field can be misread as a verdict) touched no verdict logic, and that is now measured rather than
-  assumed: `python3 compare_probe_reports.py --before out/conformance.pin45cc4e90 --after out/conformance
-  --out out/conformance/reprocheck.json` returns `identical: True` (exit 0) for all 7 runtimes —
-  same `state`, same `reason`, same per-check `ok` flags, same 14 row verdicts/values/deltas, same
-  finding ids — and reports `adapter_declared_verdict` present only in the old set and
-  `adapter_claim__untrusted` only in the new one, with value `null` in both. The tool's own negative
-  control: perturbing one earlier row's `e_r_value` by one ULP makes it report that row and exit 3.
-  Old-revision reports are kept verbatim in `out/conformance.pin45cc4e90/`.
+  Revision 2's re-run was measured rather than assumed: `compare_probe_reports.py --before
+  out/conformance.pin45cc4e90 --after out/conformance --out out/conformance/reprocheck.json` returned
+  `identical: True` (exit 0) for all 7 runtimes — same `state`, `reason`, per-check `ok` flags, 14 row
+  verdicts/values/deltas and finding ids — and reported `adapter_declared_verdict` present only in the
+  old set and `adapter_claim__untrusted` only in the new one, value `null` in both. Revision 3 is a
+  *substantive* change, so the comparison is a change report by design:
+  `out/conformance/reprocheck.e40-required.json` (all seven rows differ: two new checks
+  `behaviour-vs-execution-env` and `measurement-attestation`, `MISSING_ATTESTATION` findings on six
+  rows) and `out/conformance.envelope_off/reprocheck.off-vs-pin.json` (only `eplus_control_py314`
+  changes state; five rows byte-identical; `eplus_mut_own` identical in verdict/values, reason string
+  and notes re-worded by D1 — the one precision correction to the change author's summary).
+  The tool's own negative control: perturbing one earlier row's `e_r_value` by one ULP makes it report
+  that row and exit 3. Pre-change reports are kept verbatim in `out/conformance.pin45cc4e90/` and
+  `out/conformance.pinf33659f6/`.
   Also pinned: mutant `e_prime/e_star.py` `cfaa6194…7b8c`, sibling mutant `e_prime_fulltheta/e_star.py`
-  `fadb4062…0504`, adapter `adapters/e_plus_adapter.py` `a6cff4b2…bbbd`, `E_STAR.json`
-  (`fast_tier` oracle) and EID* `664115e0…9328`. If any of those move, re-run
-  `run_conformance_probe.sh && python3 compare_probe_reports.py …` before quoting these rows.
+  `fadb4062…0504`, adapter `adapters/e_plus_adapter.py` `b1955a45…a1e8` (the revision carrying the
+  `--attestation` modes; the seven-row runs use its default `--attestation none`, which is unchanged
+  from the earlier `a6cff4b2…bbbd` — comparison (b) confirms it, since five rows are byte-identical
+  across the two adapter revisions), `E_STAR.json` (`fast_tier` oracle) and EID* `664115e0…9328`. If
+  any of those move, re-run `run_conformance_probe.sh [--envelope off] && ./run_envelope_probe.sh &&
+  python3 compare_probe_reports.py --scope rows …` before quoting these rows.
+- **Disclosed side effects now include the envelope.** Revision 3 writes
+  `a0/conformance/out/envelope/measurement_tokens.<run>.json` (one immutable file per sweep, pruned to
+  the newest few) under the checker's own tree, in addition to the `eplus_`-prefixed artifacts already
+  listed in `README.md`. I did not touch that directory.
 - **UNVERIFIED:** whether a Python 3.11 interpreter would change `sum_radii` on `C*` (no 3.11 on
   this host); the candidate-side TOCTOU window at runtime (read from `e_star.py:685-700`, not
   raced); whether any real runtime adapter in this study actually misreports its evaluator identity
   — the mutant is a fixture constructed to show the checker cannot tell, not an accusation.
+- **D3's residual is measured, not hypothetical:** `eplus_d3_claim_copy` and
+  `eplus_d3_fulltheta_copy` PASS 14/14, every check ok, while executing `E'`/`E''`, by copying the
+  binding the harness handed them. Whether to close that with harness-owned measurement (R5) is a
+  design decision for the coordinator, not something this fixture can decide; the same limit is
+  stated in `a0/envelope/README.md` §5.
 - **`a0/attestation/` is another workstream's, still in flight.** Its producer and verifier were
   usable for the two runs in §3.1; if they change, re-run that block. Its 3.14 control failure is
   reported to that workstream, not adjudicated here.

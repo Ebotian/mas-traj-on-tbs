@@ -1,0 +1,22 @@
+# 03_after @ 2026-09-21T16:46:06+08:00
+
+## docker ps -a
+adapdc-catalog-postgres-1	Up 8 hours (healthy)	postgres:16
+adapdc-postgresql-1	Exited (0) 4 days ago	postgres:16
+adapdc-temporal-1	Exited (0) 4 days ago	temporalio/server:1.31.0
+adapdc-temporal-admin-tools-1	Exited (0) 4 days ago	temporalio/admin-tools:1.31.0
+adapdc-temporal-create-namespace-1	Exited (0) 4 days ago	temporalio/admin-tools:1.31.0
+adapdc-temporal-ui-1	Exited (2) 4 days ago	temporalio/ui:2.49.1
+
+## docker network ls
+adapdc_temporal-network	bridge	local
+bridge	bridge	local
+host	host	local
+none	null	local
+
+## any a0-* container/network left?
+   (no a0-* containers)
+   (no a0-* networks)
+
+## adapdc-catalog-postgres-1 identity after
+ID=ec2bbaf149c24317e300ea614110d0b7105daa329e95707148766933ca860a25 STARTED=2026-09-21T01:11:40.508456929Z STATUS=running HEALTH=healthy NETS=adapdc_temporal-network  RESTARTS=0

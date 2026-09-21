@@ -85,6 +85,20 @@ RUNTIMES = ["simpleloop", "kapso", "eve", "loreley"]
 # rows and by selftest.py for its fixtures; fixtures never write inside `a0/conformance/out/`.
 FIXTURE_RUN_ROOT_ENV = "A0_FIXTURE_RUN_ROOT"
 
+# `a0/envelope/` owns the two mechanisms this runner enforces on A0.1 rows (external review D1 and
+# D3): the behaviour/execution-environment projection of E*'s `canonical_digest`, and the per-
+# candidate measurement token the harness issues and every row must echo. It is stdlib-only and
+# imported by path so a runtime adapter can load the identical code without installing anything.
+sys.path.insert(0, str(A0 / "envelope"))
+import envelope as env  # noqa: E402
+
+# The envelope path is handed to every adapter in its environment (and, for adapters that declare
+# the flag, on its command line). `A0_ENVELOPE` is the one mechanism every adapter can read without
+# a CLI change, so the runner uses it: the three unwired runtimes must be *measurably* non-accepting
+# rather than broken by an unknown flag.
+ENVELOPE_ENV = "A0_ENVELOPE"
+ENVELOPE_MODE_REQUIRED, ENVELOPE_MODE_OFF = "required", "off"
+
 # `plan:513-519` theta_E, frozen: the seed the KAPSO registered-evaluation contract uses
 # (evaluation_maintainer.subsample_seed = 1337) plus E*'s own defaults, made explicit.
 THETA_E = {
@@ -130,7 +144,20 @@ PASS, FAIL, PENDING, BLOCKED, PARTIAL = "PASS", "FAIL", "PENDING", "BLOCKED", "P
 # per-candidate verdicts
 MATCH, MATCH_VERDICT = "MATCH", "MATCH_VERDICT"
 SYNTHETIC_DECLARED = "SYNTHETIC_DECLARED"
-ACCEPTING_VERDICTS = (MATCH, MATCH_VERDICT, SYNTHETIC_DECLARED)
+# D1 (external review): behaviour is compared separately from the execution environment it was
+# produced in. `EXECUTION_ENV_DRIFT` is ACCEPTING -- a byte-identical E* under a sanctioned
+# interpreter is not "the evaluator's behaviour disagrees" -- and `MISMATCH_EXECUTION_ENV` is not:
+# the behaviour agreed but the environment is outside the declared allowed set.
+EXECUTION_ENV_DRIFT = env.EXECUTION_ENV_DRIFT
+MISMATCH_EXECUTION_ENV = env.MISMATCH_EXECUTION_ENV
+# D3: a row is acceptable only if it echoes the harness's measurement token for its candidate and
+# attests the evaluator bytes it executed. Omission is non-accepting, never a silent pass.
+MISSING_ATTESTATION = env.MISSING_ATTESTATION
+MISMATCH_ATTESTATION = env.MISMATCH_ATTESTATION
+MISSING_IDENTITY = env.MISSING_IDENTITY
+ACCEPTING_VERDICTS = (MATCH, MATCH_VERDICT, SYNTHETIC_DECLARED, EXECUTION_ENV_DRIFT)
+#: verdicts that mean "the adapter's own evidence contradicts the harness's measurement"
+NON_ACCEPTING_ATTESTATION_VERDICTS = (MISSING_ATTESTATION, MISMATCH_ATTESTATION, MISSING_IDENTITY)
 MISMATCH_VALUE, MISMATCH_STATUS, MISMATCH_NULL = "MISMATCH_VALUE", "MISMATCH_STATUS", "MISMATCH_NULL"
 MISMATCH_DIGEST, MISMATCH_THETA, MISMATCH_EID = "MISMATCH_DIGEST", "MISMATCH_THETA", "MISMATCH_EID"
 MISMATCH_KIND, MISMATCH_STAGE = "MISMATCH_FAILURE_KIND", "MISMATCH_FAILURE_STAGE"
@@ -690,9 +717,10 @@ def check_fr() -> dict:
 # reference: E* applied to C* through the frozen invocation
 
 
-def e_star_argv(candidate_dir: Path, out_json: Path, state_dir: Path, theta: dict) -> list:
+def e_star_argv(candidate_dir: Path, out_json: Path, state_dir: Path, theta: dict,
+                python: Path | None = None) -> list:
     return [
-        str(E_STAR_PYTHON),
+        str(python or E_STAR_PYTHON),
         str(E_STAR_SCRIPT),
         "evaluate",
         "--candidate",
@@ -743,7 +771,14 @@ def check_frozen_toolchain() -> dict:
     return {"items": items, "ok": all(items.values()), "missing": [k for k, v in items.items() if not v]}
 
 
-def reference_rows(theta: dict, out_dir: Path, timeout: float) -> list:
+def reference_rows(theta: dict, out_dir: Path, timeout: float, python: Path | None = None) -> list:
+    """The harness's own `E*` sweep over `C*`: the reference side, and the source of the tokens.
+
+    Every row now carries the two surfaces `canonical_digest` conflates (external review D1):
+    `behaviour_digest` over the Outcome payload minus `canonical_digest`/`interpreter`, and the
+    `interpreter` block itself. `behaviour_digest` is what the measurement token binds (D3), and it
+    is identical for a byte-identical `E*` run under any interpreter.
+    """
     cset = load_candidate_set()
     rows = []
     for cand in cset["candidates"]:
@@ -754,7 +789,7 @@ def reference_rows(theta: dict, out_dir: Path, timeout: float) -> list:
         outcome_path.parent.mkdir(parents=True, exist_ok=True)
         if outcome_path.exists():
             outcome_path.unlink()
-        argv = e_star_argv(cdir, outcome_path, state_dir, theta)
+        argv = e_star_argv(cdir, outcome_path, state_dir, theta, python=python)
         res = run_cmd(argv, cwd=TASK, timeout=timeout)
         outcome = None
         read_error = None
@@ -767,12 +802,15 @@ def reference_rows(theta: dict, out_dir: Path, timeout: float) -> list:
             read_error = "E* wrote no outcome file"
         manifest = parse_e_star_stdout(res["stdout"])
         obj = (outcome or {}).get("objective") or {}
+        measured_source_sha256 = sha256_file(cdir / "solution.py")
         rows.append(
             {
                 "candidate_id": cid,
                 "dir": rel_or_abs(cdir),
-                "source_sha256": sha256_file(cdir / "solution.py"),
+                "source_sha256": measured_source_sha256,
+                "manifest_solution_sha256": cand.get("solution_sha256"),
                 "command": " ".join(shlex.quote(a) if " " in a else a for a in argv),
+                "interpreter_path": str(python or E_STAR_PYTHON),
                 "exit_code": res["exit_code"],
                 "status": (outcome or {}).get("status"),
                 "objective_value": as_float(obj.get("value")),
@@ -780,6 +818,9 @@ def reference_rows(theta: dict, out_dir: Path, timeout: float) -> list:
                 "failure_kind": ((outcome or {}).get("failure") or {}).get("kind"),
                 "failure_message": ((outcome or {}).get("failure") or {}).get("message"),
                 "canonical_digest": (outcome or {}).get("canonical_digest"),
+                "behaviour_digest": env.behaviour_digest(outcome) if outcome else None,
+                "interpreter": env.interpreter_of(outcome) if outcome else None,
+                "evaluator_source_sha256": (outcome or {}).get("evaluator_source_sha256"),
                 "fields": (outcome or {}).get("fields"),
                 "manifest_objective_value": as_float(((manifest or {}).get("objective") or {}).get("value")),
                 "manifest_status": (manifest or {}).get("status"),
@@ -804,10 +845,6 @@ def compare_to_table(rows: list, table: dict) -> dict:
             problems.append(f"exit_code {row['exit_code']} != table {ref.get('exit_code')}")
         if row["status"] != ref.get("status"):
             problems.append(f"status {row['status']} != table {ref.get('status')}")
-        if row["canonical_digest"] != ref.get("canonical_digest"):
-            problems.append(
-                f"canonical_digest {row['canonical_digest']} != table {ref.get('canonical_digest')}"
-            )
         table_value = as_float(ref.get("objective_value"))
         if table_value is None and row["objective_value"] is None:
             pass
@@ -819,9 +856,78 @@ def compare_to_table(rows: list, table: dict) -> dict:
             problems.append(f"failure_kind {row['failure_kind']} != table {ref.get('failure_kind')}")
         if row["outcome_read_error"]:
             problems.append(row["outcome_read_error"])
-        ok_all = ok_all and not problems
-        checks.append({"candidate_id": row["candidate_id"], "reproduces_table": not problems, "problems": problems})
-    return {"reproduces_frozen_table": ok_all, "per_candidate": checks}
+
+        # D1: the digest comparison is split. `behaviour_digest` is over the payload minus
+        # `canonical_digest` and minus `interpreter`, so a byte-identical E* under a different
+        # interpreter agrees on it; the interpreter block is compared separately, as its own verdict.
+        table_outcome = ref.get("outcome") or {}
+        table_behaviour = env.behaviour_digest(table_outcome) if table_outcome else None
+        behaviour_problems = []
+        if row.get("behaviour_digest") is None:
+            behaviour_problems.append("the sweep produced no Outcome for this candidate")
+        elif table_behaviour is None:
+            behaviour_problems.append("the frozen table carries no full Outcome for this candidate")
+        elif row["behaviour_digest"] != table_behaviour:
+            behaviour_problems.append(
+                f"behaviour_digest {row['behaviour_digest']} != table {table_behaviour} "
+                "(the payload minus interpreter and canonical_digest differs: this IS a behaviour difference)"
+            )
+        interpreter_class = env.classify_interpreter(row.get("interpreter"), EXECUTION_SET)
+        env_verdict, env_accepting = env.behaviour_env_verdict(not behaviour_problems, interpreter_class)
+        digest_note = None
+        if row.get("canonical_digest") != ref.get("canonical_digest"):
+            digest_note = (
+                f"canonical_digest {row.get('canonical_digest')} != table {ref.get('canonical_digest')} "
+                f"while the behaviour payload is identical -> {env_verdict} "
+                f"(interpreter {interpreter_class.get('observed')}); this is an execution-environment "
+                "difference, NOT an evaluator behaviour disagreement (external review D1)"
+                if not behaviour_problems
+                else f"canonical_digest {row.get('canonical_digest')} != table {ref.get('canonical_digest')}"
+            )
+        row_problems = problems + behaviour_problems
+        ok_all = ok_all and not row_problems and env_accepting
+        checks.append(
+            {
+                "candidate_id": row["candidate_id"],
+                "reproduces_table": not row_problems,
+                "behaviour_reproduced": not behaviour_problems,
+                "behaviour_digest": row.get("behaviour_digest"),
+                "table_behaviour_digest": table_behaviour,
+                "execution_env_verdict": env_verdict,
+                "interpreter": row.get("interpreter"),
+                "canonical_digest_matches": row.get("canonical_digest") == ref.get("canonical_digest"),
+                "canonical_digest_note": digest_note,
+                "problems": row_problems,
+            }
+        )
+    behaviour_ok = all(c["behaviour_reproduced"] for c in checks)
+    interpreters = {json.dumps(r.get("interpreter"), sort_keys=True) for r in rows if r.get("interpreter")}
+    interpreter_class = env.classify_interpreter(
+        (rows[0].get("interpreter") if rows else None), EXECUTION_SET
+    )
+    env_verdict = (
+        env.ENV_PINNED if interpreter_class["status"] == env.ENV_PINNED
+        else env.EXECUTION_ENV_DRIFT if interpreter_class["status"] == env.ENV_SANCTIONED
+        else env.MISMATCH_EXECUTION_ENV if interpreter_class["status"] == env.ENV_UNSANCTIONED
+        else env.MISMATCH_EXECUTION_ENV
+    )
+    return {
+        # `reproduces_frozen_table` keeps its meaning for every existing reader (behaviour + values +
+        # verdicts reproduce the frozen table); the environment verdict is a separate field, so a
+        # sanctioned interpreter drift can never be read as a behaviour difference.
+        "reproduces_frozen_table": behaviour_ok and ok_all,
+        "behaviour_reproduced": behaviour_ok,
+        "execution_env": {
+            "verdict": env_verdict,
+            "classification": interpreter_class,
+            "interpreters_observed": sorted(interpreters),
+            "note": (
+                "the frozen table was measured under the pinned interpreter; a sanctioned drift "
+                "reproduces every number and is reported here, not as a behaviour mismatch"
+            ),
+        },
+        "per_candidate": checks,
+    }
 
 
 def apply_manifest_override(args) -> None:
@@ -832,9 +938,190 @@ def apply_manifest_override(args) -> None:
         C_STAR_MANIFEST = Path(override).resolve()
 
 
+# --------------------------------------------------------------------------------------
+# the measurement envelope (external review D3) and the declared execution set (D1)
+
+EXECUTION_SET = env.load_execution_set()
+
+
+def envelope_dir(state_root: Path) -> Path:
+    return Path(state_root) / "envelope"
+
+
+def envelope_path(state_root: Path, run_id: str | None = None) -> Path:
+    """The measurement-token file for one harness sweep.
+
+    Named after the sweep, not a fixed name, for a measured reason: a `reference` run and a `run` run
+    can interleave, and with one fixed filename the second one silently replaces the file the first
+    one's report names -- leaving two artifacts in the tree that disagree about the same path. A
+    per-sweep file is immutable, so every report names bytes that cannot change under it.
+    """
+    name = f"measurement_tokens.{run_id}.json" if run_id else "measurement_tokens.json"
+    return envelope_dir(state_root) / name
+
+
+def prune_envelopes(state_root: Path, keep: int = 3) -> int:
+    """Keep the newest few token files; superseded ones are superseded evidence."""
+    directory = envelope_dir(state_root)
+    if not directory.is_dir():
+        return 0
+    files = sorted(directory.glob("measurement_tokens.*.json"))
+    removed = 0
+    for stale in files[:-keep] if len(files) > keep else []:
+        stale.unlink()
+        removed += 1
+    return removed
+
+
+#: where the per-runtime attested records are written: the path the D2 consumer contract
+#: (`a0/qualification/attested-a0-1.contract.json`) declares for the D3 workstream's own output.
+ATTESTED_ROOT = A0 / "envelope" / "out" / "attested"
+
+
+def write_attested_records(report: dict, report_path: Path, runtimes) -> dict:
+    """One standalone record per runtime, in the shape the D2 contract declares.
+
+    `required=false` (a run made with `--envelope off`) is recorded as inconclusive rather than as a
+    verdict: the contract's rule is that such a run establishes nothing, and a record that said
+    otherwise would be exactly the soft pass D3 exists to prevent.
+    """
+    written = {}
+    report_sha = sha256_file(report_path)
+    run_id = time.strftime("%Y%m%dT%H%M%S")
+    # Only the study's own four-runtime run writes attested records: it is the run whose report is
+    # the shared deliverable. A subset run (one runtime), a fixture run or a control run is a
+    # measurement of something else, and letting it overwrite these records would replace the
+    # A0.1 attestation with a record about a different run -- the pins would still be honest, but
+    # the file a reader finds would no longer be the one that describes `report.json`.
+    if sorted(set(runtimes)) != sorted(RUNTIMES):
+        return written
+    for runtime in RUNTIMES:
+        entry = report["runtimes"].get(runtime) or {}
+        check = next(
+            (c for c in entry.get("checks") or [] if c.get("check_id") == "measurement-attestation"),
+            None,
+        )
+        if check is None:
+            continue
+        attestation = ((entry.get("qualification") or {}).get("a0_1") or {}).get("attestation") or {}
+        if not check.get("required"):
+            verdict = "TOKEN_REQUIREMENT_OFF"
+        elif check.get("ok"):
+            verdict = "ATTESTATION_OK"
+        else:
+            verdict = attestation.get("identity_verdict") or "MISSING_OR_MISMATCHED_ATTESTATION"
+        record = {
+            "schema": "a0.attested-a0-1.record/v1",
+            "runtime": runtime,
+            "identity_verdict": verdict,
+            "required": check.get("required"),
+            "ok": check.get("ok"),
+            "executed_identity": attestation.get("executed_identity"),
+            "oid": check.get("harness_run_id"),
+            "harness_run_id": check.get("harness_run_id"),
+            "nonce": check.get("nonce"),
+            "envelope": check.get("envelope"),
+            "attested_candidates": check.get("attested_candidates") or [],
+            "missing_attestation_candidates": check.get("missing_attestation_candidates") or [],
+            "missing_identity_candidates": check.get("missing_identity_candidates") or [],
+            "mismatch_attestation_candidates": check.get("mismatch_attestation_candidates") or [],
+            "runtime_state": entry.get("state"),
+            "a0_1_label": ((entry.get("qualification") or {}).get("a0_1") or {}).get("label"),
+            "report_path": str(report_path),
+            "report_sha256": report_sha,
+            "generated_at": now_iso(),
+            "producer": "a0/conformance/conformance.py run",
+        }
+        directory = ATTESTED_ROOT / runtime
+        path = directory / f"{run_id}.json"
+        # keep only the newest record per runtime, exactly as the runner prunes its own run dirs: a
+        # superseded record is not evidence (its pin no longer matches the report) and leaving a pile
+        # of them in the tree would make "which one is current" a question a reader has to answer
+        for stale in sorted(directory.glob("*.json")):
+            if stale.name != path.name:
+                stale.unlink()
+        write_json(path, record)
+        written[runtime] = str(path)
+    return written
+
+
+def frozen_evaluator_identity() -> dict:
+    """E*'s own source digest as the *harness* knows it: the frozen table's value, not a claim.
+
+    `E_STAR.json:evaluator.evaluator_source_sha256` is the digest of the evaluator bytes the frozen
+    table was produced with; it is what an adapter's attested digest is compared against, so an
+    adapter that ran different bytes cannot pass by asserting the frozen string alone.
+    """
+    table = load_json(E_STAR_TABLE)
+    evaluator = table.get("evaluator") or {}
+    return {
+        "script": str(E_STAR_SCRIPT.relative_to(A0)),
+        "evaluator_source_sha256": evaluator.get("evaluator_source_sha256"),
+        "e_star_version": evaluator.get("e_star_version"),
+        "interpreter": evaluator.get("interpreter"),
+        "source_files": evaluator.get("source_files"),
+    }
+
+
+def issue_envelope(rows: list, theta: dict, state_root: Path, *, run_id: str, nonce: str,
+                   python: Path | None = None) -> dict:
+    """Write, into the runner's own state root, one measurement token per member of `C*`.
+
+    The token binds what the *harness* measured: the candidate bytes it hashed, EID*, theta_E, the
+    behaviour digest of the Outcome its own `E*` run produced, the (sanctioned or not) interpreter
+    it ran under, and a per-run nonce. It is opaque (`OID`), so a row that echoes it has joined the
+    harness's measurement, and one that does not is non-accepting -- fail-closed, never a silent
+    pass. The document is returned as well as written, so `run` can carry it in `report.json`.
+    """
+    evaluator = frozen_evaluator_identity()
+    evaluator = dict(evaluator, interpreter=(
+        (rows[0].get("interpreter") if rows else None) or evaluator.get("interpreter")
+    ))
+    document = env.issue_envelope(
+        eid_star=BINDING_EID_STAR,
+        theta_e=theta,
+        evaluator=evaluator,
+        execution_set=EXECUTION_SET,
+        harness_run_id=run_id,
+        nonce=nonce,
+        candidates=rows,
+        envelope_path=envelope_path(state_root, run_id),
+        issued_at=now_iso(),
+    )
+    document["interpreter_path"] = str(python or E_STAR_PYTHON)
+    document["state_root"] = str(state_root)
+    path = envelope_path(state_root, run_id)
+    write_json(path, document)
+    document["sha256"] = sha256_file(path)
+    prune_envelopes(state_root)
+    return document
+
+
+def sweep_reference(theta: dict, out_dir: Path, timeout: float, *, python: Path | None = None,
+                    run_id: str | None = None) -> dict:
+    """One fresh `E*` sweep over `C*` plus the measurement envelope it justifies."""
+    before = c_star_digest()
+    rows = reference_rows(theta, out_dir, timeout, python=python)
+    after = c_star_digest()
+    agreement = compare_to_table(rows, load_json(E_STAR_TABLE))
+    envelope = issue_envelope(
+        rows, theta, out_dir,
+        run_id=run_id or f"a01-reference-{time.strftime('%Y%m%dT%H%M%S')}",
+        nonce=os.urandom(16).hex(),
+        python=python,
+    )
+    return {
+        "rows": rows,
+        "agreement": agreement,
+        "envelope": envelope,
+        "c_star_unchanged_after_sweep": {"before": before, "after": after, "unchanged": before == after},
+    }
+
+
 def cmd_reference(args) -> int:
     apply_manifest_override(args)
     out_dir = Path(args.state_root) if args.state_root else HERE / "out"
+    python = Path(getattr(args, "python", None)).resolve() if getattr(args, "python", None) else None
     theta = dict(THETA_E)
     if args.fidelity:
         theta["fidelity"] = args.fidelity
@@ -850,12 +1137,9 @@ def cmd_reference(args) -> int:
         print(f"BLOCKED: frozen toolchain incomplete: {toolchain['missing']}", file=sys.stderr)
         return EXIT_RUNNER["bug"]
 
-    before = c_star_digest()
     print(f"A0.1 conformance: fresh E* sweep over {len(cset['candidates'])} candidates of C*")
-    rows = reference_rows(theta, out_dir, args.timeout)
-    after = c_star_digest()
-    table = load_json(E_STAR_TABLE)
-    agreement = compare_to_table(rows, table)
+    sweep = sweep_reference(theta, out_dir, args.timeout, python=python)
+    rows, agreement, envelope = sweep["rows"], sweep["agreement"], sweep["envelope"]
 
     doc = {
         "schema": "a0.conformance.reference/v1",
@@ -864,6 +1148,7 @@ def cmd_reference(args) -> int:
         "frozen_evaluator": {
             "script": str(E_STAR_SCRIPT.relative_to(A0)),
             "interpreter": str(E_STAR_PYTHON.relative_to(A0)),
+            "interpreter_used_by_this_sweep": str(python or E_STAR_PYTHON),
             "eid_star": BINDING_EID_STAR,
             "table": str(E_STAR_TABLE.relative_to(A0)),
         },
@@ -874,7 +1159,8 @@ def cmd_reference(args) -> int:
         "reference_table_sha256": sha256_file(E_STAR_TABLE),
         "fresh_sweep": {"state_root": str(out_dir), "rows": rows},
         "agreement_with_frozen_table": agreement,
-        "c_star_unchanged_after_sweep": {"before": before, "after": after, "unchanged": before == after},
+        "envelope": envelope,
+        "c_star_unchanged_after_sweep": sweep["c_star_unchanged_after_sweep"],
     }
     path = Path(args.out) if args.out else HERE / "reference.json"
     write_json(path, doc)
@@ -886,8 +1172,23 @@ def cmd_reference(args) -> int:
             f"objective={row['objective_value']!r:<22} {verdict}"
         )
     print(f"reference table reproduced exactly: {agreement['reproduces_frozen_table']}")
+    env_block = agreement["execution_env"]
+    print(
+        f"execution environment: {env_block['verdict']} "
+        f"(observed {env_block['classification'].get('observed')}, pinned "
+        f"{env_block['classification'].get('pinned')}); "
+        f"behaviour reproduced: {agreement['behaviour_reproduced']}"
+    )
+    print(f"measurement envelope written: {envelope['path']} "
+          f"(nonce {envelope['nonce'][:12]}..., {envelope['candidate_count']} tokens)")
     print(f"written: {path}")
-    return 0 if agreement["reproduces_frozen_table"] else 3
+    # A sanctioned interpreter drift reproduces the frozen table's behaviour, so it is exit 0 --
+    # the drift is reported, not turned into a false red. An unsanctioned interpreter is not
+    # acceptable evidence about EID*, whatever the numbers say.
+    accepts = agreement["reproduces_frozen_table"] and env_block["verdict"] in (
+        env.ENV_PINNED, env.EXECUTION_ENV_DRIFT
+    )
+    return 0 if accepts else 3
 
 
 def c_star_digest() -> str:
@@ -1077,11 +1378,138 @@ ROW_IDENTITY_KEYS = ("branch_registered_tree_fingerprint", "registered_tree_fing
                      "manifest_fingerprint", "evaluator_fingerprint", "registered_evaluator_id")
 ATTEMPT_CONTAINERS = ("frame_run", "registered_channel", "attempt", "attempts", "substrate", "runtime")
 
+# D3: the harness measurement token a row must echo, and the identity material it must attest. The
+# containers/keys are tolerant (each runtime spells its own shape), the *requirement* is not: a row
+# with none of them is non-accepting.
+ROW_MEASUREMENT_CONTAINERS = ("measurement", "attestation", "measurement_attestation",
+                              "measurement_token", "envelope_token", "envelope", "token",
+                              "harness_measurement")
+ROW_OID_KEYS = ("oid", "measurement_oid", "token", "measurement_id", "oid_value")
+ROW_IDENTITY_CONTAINERS = ("identity", "evaluator_identity", "measurement", "attestation",
+                           "evaluator", "registered_evaluator")
+ROW_ATTESTED_EVALUATOR_KEYS = ("evaluator_source_sha256", "e_star_source_sha256",
+                               "evaluator_source_digest", "e_star_evaluator_source_sha256")
+ROW_ATTESTED_CANDIDATE_KEYS = ("candidate_sha256", "candidate_source_sha256", "solution_sha256")
+ROW_ATTESTED_BEHAVIOUR_KEYS = ("behaviour_digest", "behavior_digest", "outcome_behaviour_digest")
+ROW_ATTESTED_INTERPRETER_KEYS = ("interpreter", "interpreter_version", "python_version")
+ROW_ATTESTED_EID_KEYS = ("eid_star", "eid", "eidStar")
+# a row may also submit the Outcome payload it produced; the checker then projects it itself
+ROW_OUTCOME_KEYS = ("e_star_outcome", "evaluator_outcome", "outcome_payload", "outcome")
+#: `E*`'s frozen Outcome schema (`e_star.py:66`); the only object that may be read as a payload
+E_STAR_OUTCOME_SCHEMA = "e_star.outcome/v1"
+
 
 def _nested(rec: dict, container_key: str, key: str):
     container = rec.get(container_key)
     if isinstance(container, dict) and container.get(key) is not None:
         return container[key]
+    return None
+
+
+def _attestation_containers(rec: dict) -> list:
+    """Every dict on the row that an adapter might have used for its measurement attestation."""
+    found = []
+    for key in ROW_MEASUREMENT_CONTAINERS + ROW_IDENTITY_CONTAINERS:
+        for candidate in (rec.get(key), _nested(rec, "substrate", key), _nested(rec, "reference", key),
+                          _nested(rec, "frame_run", key), _nested(rec, "registered_channel", key)):
+            if isinstance(candidate, dict):
+                found.append(candidate)
+    # a container may also nest the attestation one level down (`{"measurement": {...}}`)
+    for key in ("measurement", "attestation", "identity", "evaluator_identity", "measurement_token"):
+        for parent in list(found) + [rec]:
+            inner = parent.get(key) if isinstance(parent, dict) else None
+            if isinstance(inner, dict):
+                found.append(inner)
+    return found
+
+
+def row_attestation(rec: dict) -> dict:
+    """What a row attests about the measurement it is reporting, wherever it put it.
+
+    Read tolerantly (each runtime spells its containers its own way) and *required* by the checker:
+    `oid_present` is what makes a row part of the harness's measurement set, and the identity fields
+    are what the row claims about the bytes it executed. Identity material is read only from an
+    attestation-shaped container, never from the row's top level, so a row cannot satisfy the
+    requirement by echoing a field it already publishes for another purpose.
+    """
+    containers = _attestation_containers(rec)
+    identity_scope = containers + [rec]
+
+    def pick(names, scope):
+        for name in names:
+            for container in scope:
+                value = container.get(name) if isinstance(container, dict) else None
+                if value is not None:
+                    return value
+        return None
+
+    oid = pick(ROW_OID_KEYS, identity_scope)
+    if isinstance(oid, dict):  # a nested token object
+        oid = oid.get("oid") or oid.get("value")
+    interpreter = pick(ROW_ATTESTED_INTERPRETER_KEYS, identity_scope)
+    if isinstance(interpreter, str):
+        interpreter = {"implementation": "cpython", "version": interpreter}
+    eid_star = pick(ROW_ATTESTED_EID_KEYS, identity_scope)
+    evaluator_source = pick(ROW_ATTESTED_EVALUATOR_KEYS, identity_scope)
+    candidate_sha = pick(ROW_ATTESTED_CANDIDATE_KEYS, identity_scope)
+    behaviour = pick(ROW_ATTESTED_BEHAVIOUR_KEYS, identity_scope)
+    record = {
+        "oid": oid,
+        "oid_present": oid is not None,
+        "harness_run_id": pick(("harness_run_id", "run_id"), identity_scope),
+        "nonce": pick(("nonce", "envelope_nonce"), identity_scope),
+        "eid_star": eid_star,
+        "evaluator_source_sha256": evaluator_source,
+        "candidate_sha256": candidate_sha,
+        "behaviour_digest": behaviour,
+        "canonical_digest": pick(("canonical_digest", "outcome_canonical_digest"), containers),
+        "interpreter": interpreter,
+        "theta_e": pick(("theta_e", "theta_E", "theta_e_attempt"), identity_scope),
+        "identity_present": any(
+            value is not None for value in (eid_star, evaluator_source, candidate_sha, behaviour)
+        ),
+        "self_attested": True,
+        "containers_found": sorted({key for c in containers for key in c}),
+    }
+    return record
+
+
+def row_interpreter(rec: dict):
+    """The execution environment a row says it ran under, from the attestation or from the row.
+
+    Used by the D1 projection: with a declared interpreter the checker can establish that the row's
+    payload differs from the frozen one *only* in the interpreter block, and then classify that
+    environment against the declared allowed set.
+    """
+    attestation = row_attestation(rec)
+    if attestation.get("interpreter"):
+        return attestation["interpreter"]
+    for scope in (rec, rec.get("evaluator_identity"), rec.get("identity"), rec.get("evaluator"),
+                  rec.get("evaluator_evidence"), rec.get("substrate"), rec.get("runtime")):
+        if not isinstance(scope, dict):
+            continue
+        for key in ("interpreter", "python_version", "interpreter_version"):
+            value = scope.get(key)
+            if isinstance(value, dict) and value.get("version"):
+                return {"implementation": value.get("implementation", "cpython"),
+                        "version": str(value["version"])}
+            if isinstance(value, str) and value:
+                return {"implementation": "cpython", "version": value}
+    return None
+
+
+def row_outcome_payload(rec: dict):
+    """The Outcome payload a row submitted, if it submitted one (the direct-projection path).
+
+    The guard is `E*`'s own frozen schema string, so no other object an adapter happens to call
+    `outcome` (a score-trace event, a `fields` block) can be mistaken for it -- a wrong payload here
+    would be compared as behaviour and produce a false red.
+    """
+    for name in ROW_OUTCOME_KEYS:
+        for candidate in (rec.get(name), _nested(rec, "substrate", name),
+                          _nested(rec, "reference", name), _nested(rec, "evaluator_evidence", name)):
+            if isinstance(candidate, dict) and str(candidate.get("schema") or "") == E_STAR_OUTCOME_SCHEMA:
+                return candidate
     return None
 
 
@@ -1425,6 +1853,12 @@ def normalise_adapter_output(doc: dict, runtime: str) -> dict:
                 "identity_echo": identity_echo,
                 "theta_e_attempt": attempt,
                 "adapter_row_verdict": rec.get("pass") if isinstance(rec.get("pass"), bool) else rec.get("verdict"),
+                # D3: the harness measurement token the row echoes, the identity it attests, and
+                # (when it submits one) the Outcome payload it produced. The *presence* of these is
+                # checked per candidate; nothing here is a verdict.
+                "attestation": row_attestation(rec),
+                "interpreter": row_interpreter(rec),
+                "outcome_payload": row_outcome_payload(rec),
                 "raw": rec,
             }
         )
@@ -1543,6 +1977,14 @@ def score_trace_rows(trace: Path, primary_field: str):
 # the A0.1 comparison itself
 
 
+def verdict_breakdown(rows) -> dict:
+    """`{verdict: count}` over a row list, so a FAIL reason can name the codes instead of guessing."""
+    counts = {}
+    for row in rows:
+        counts[row["verdict"]] = counts.get(row["verdict"], 0) + 1
+    return counts
+
+
 def a0_1_label(state: str, measured: int, total: int) -> str:
     """The single-string A0.1 label.
 
@@ -1554,9 +1996,179 @@ def a0_1_label(state: str, measured: int, total: int) -> str:
     return state
 
 
-def evaluate_runtime_rows(runtime: str, obs_rows: list, ref_rows: list, ref_table: dict, expected_eid: str) -> dict:
+def behaviour_surface(row: dict, obs: dict, table: dict) -> dict:
+    """D1: compare behaviour and execution environment *separately* for one row.
+
+    Two routes, in this order:
+
+    1. **payload** — the row submitted the Outcome it produced (schema `e_star.outcome/v1`). The
+       checker projects it itself: behaviour = payload minus `canonical_digest`/`interpreter`.
+    2. **interpreter substitution** — the row submitted only a `canonical_digest` (every adapter
+       written before this change does). `E*`'s own digest scheme is re-applied to the *frozen*
+       payload with each declared interpreter block substituted; a match proves the payload differs
+       from the frozen one in the interpreter block and nowhere else.
+
+    Returns `behaviour_matches` (None when the row declared no identity surface at all), the method,
+    and whether the row's digest is even the pinned one. A row whose payload genuinely differs is
+    `behaviour_matches = False` under every interpreter in the allowed set: the projection cannot
+    rescue a different evaluator.
+    """
+    table_outcome = table.get("outcome") or {}
+    payload = obs.get("outcome_payload")
+    claimed = obs.get("canonical_digest")
+    declared = obs.get("interpreter")
+    result = {"method": None, "behaviour_matches": None, "matched_interpreter": None,
+              "claimed_canonical_digest": claimed, "pinned_digest": table.get("canonical_digest"),
+              "table_behaviour_digest": env.behaviour_digest(table_outcome) if table_outcome else None,
+              "notes": []}
+    if payload is not None:
+        result["method"] = "submitted_outcome_payload"
+        result["row_behaviour_digest"] = env.behaviour_digest(payload)
+        result["behaviour_matches"] = (
+            result["table_behaviour_digest"] is not None
+            and result["row_behaviour_digest"] == result["table_behaviour_digest"]
+        )
+        result["matched_interpreter"] = env.interpreter_of(payload) or declared
+        result["row_canonical_digest"] = payload.get("canonical_digest")
+        return result
+    if claimed is None or not table_outcome:
+        result["notes"].append(
+            "the row declared no canonical_digest (and no Outcome payload), so the digest surface "
+            "carries no evidence about which evaluator bytes produced this row"
+        )
+        return result
+    if claimed == table.get("canonical_digest"):
+        result["method"] = "interpreter_substitution"
+        result["behaviour_matches"] = True
+        result["matched_interpreter"] = env.interpreter_of(table_outcome)
+        return result
+    candidates = env.interpreter_blocks(EXECUTION_SET)
+    if declared and env.normalise_interpreter(declared) not in candidates:
+        candidates = candidates + [env.normalise_interpreter(declared)]
+    for interpreter in candidates:
+        if interpreter and env.digest_with_interpreter(table_outcome, interpreter) == claimed:
+            result["method"] = "interpreter_substitution"
+            result["behaviour_matches"] = True
+            result["matched_interpreter"] = interpreter
+            result["notes"].append(
+                f"the row's canonical_digest matches the frozen payload recomputed with interpreter "
+                f"{interpreter}: the only difference from the frozen Outcome is the execution "
+                "environment, not the evaluator's behaviour"
+            )
+            return result
+    result["method"] = "interpreter_substitution"
+    result["behaviour_matches"] = False
+    result["notes"].append(
+        "the row's canonical_digest matches the frozen payload under NO interpreter in the declared "
+        f"allowed execution set {candidates}: the behaviour payload itself differs"
+    )
+    return result
+
+
+def attestation_surface(row: dict, obs: dict, envelope, cid: str, frozen_evaluator: dict) -> dict:
+    """D3: does this row join the harness's own measurement, and does it attest the bytes it used?
+
+    Fail-closed by construction: a row with no token is `MISSING_ATTESTATION`; a token with no
+    identity material is `MISSING_IDENTITY`; a token whose attested identity contradicts the
+    harness's own measurement is `MISMATCH_ATTESTATION`. None of these is ever a pass, and none of
+    them is inferred from the numbers agreeing.
+    """
+    attestation = obs.get("attestation") or {}
+    record = {
+        "required": envelope is not None,
+        "oid_echoed": attestation.get("oid"),
+        "oid_present": bool(attestation.get("oid_present")),
+        "identity_present": bool(attestation.get("identity_present")),
+        "attested": {k: attestation.get(k) for k in
+                     ("eid_star", "evaluator_source_sha256", "candidate_sha256", "behaviour_digest",
+                      "interpreter", "nonce", "harness_run_id")},
+        "self_attested": True,
+        "verdict": env.ATTESTATION_OK,
+        "reasons": [],
+    }
+    if envelope is None:
+        record["verdict"] = "ENVELOPE_NOT_REQUIRED"
+        record["reasons"].append(
+            "no measurement envelope was issued for this run (--envelope off), so the row's token and "
+            "identity fields were not required; this run's acceptances are exploratory, not the A0.1 "
+            "acceptance the token makes measurable"
+        )
+        return record
+    token = env.token_for(envelope, cid)
+    if token is None:
+        record["verdict"] = env.MISMATCH_ATTESTATION
+        record["reasons"].append(
+            f"the harness issued no measurement token for {cid}; this row cannot be joined to any "
+            "reference measurement"
+        )
+        return record
+    binding = token["binding"]
+    record["expected_oid"] = token["oid"]
+    record["expected_binding"] = binding
+    record["nonce"] = envelope.get("nonce")
+    record["harness_run_id"] = envelope.get("harness_run_id")
+    if not record["oid_present"]:
+        record["verdict"] = env.MISSING_ATTESTATION
+        record["reasons"].append(
+            "the row echoes no harness measurement token: it declares a number but not that this "
+            "number came from a run the harness can identify (D3 is fail-closed on omission)"
+        )
+        return record
+    if record["oid_echoed"] != token["oid"]:
+        record["verdict"] = env.MISMATCH_ATTESTATION
+        record["reasons"].append(
+            f"the row echoes OID {record['oid_echoed']!r}, which is not the token the harness issued "
+            f"for {cid} ({token['oid']!r}): a foreign, stale or invented measurement id"
+        )
+        return record
+    required = ("evaluator_source_sha256", "candidate_sha256", "behaviour_digest")
+    missing = [key for key in required if record["attested"].get(key) is None]
+    if missing:
+        record["verdict"] = env.MISSING_IDENTITY
+        record["reasons"].append(
+            f"the row echoes the harness token but attests no {', '.join(missing)}: the token proves "
+            "which measurement is claimed, the identity fields are what the runtime says it executed, "
+            "and omitting them is not acceptable"
+        )
+        return record
+    problems = []
+    if record["attested"]["evaluator_source_sha256"] != binding["evaluator_source_sha256"]:
+        problems.append(
+            f"attested evaluator_source_sha256 {record['attested']['evaluator_source_sha256']} != the "
+            f"frozen E* {binding['evaluator_source_sha256']}: the row asserts a measurement token "
+            "issued for E* while attesting different evaluator bytes (the 'claim' attack)"
+        )
+    if record["attested"]["candidate_sha256"] != binding["candidate_sha256"]:
+        problems.append(
+            f"attested candidate_sha256 {record['attested']['candidate_sha256']} != the candidate bytes "
+            f"the harness measured for {cid} ({binding['candidate_sha256']}): the row was produced from "
+            "a different file (a swap, or a twin whose value happens to be identical)"
+        )
+    if record["attested"]["behaviour_digest"] != binding["behaviour_digest"]:
+        problems.append(
+            f"attested behaviour_digest {record['attested']['behaviour_digest']} != the behaviour digest "
+            f"the harness measured for {cid} ({binding['behaviour_digest']}): the runtime's own "
+            "measurement does not agree with the reference it claims to have consumed"
+        )
+    if record["attested"]["eid_star"] and record["attested"]["eid_star"] != binding["eid_star"]:
+        problems.append(
+            f"attested eid_star {record['attested']['eid_star']} != {binding['eid_star']}"
+        )
+    if problems:
+        record["verdict"] = env.MISMATCH_ATTESTATION
+        record["reasons"].extend(problems)
+        return record
+    # an interpreter difference is *not* an attestation contradiction: it is D1's subject, reported
+    # there as EXECUTION_ENV_DRIFT / MISMATCH_EXECUTION_ENV with the declared allowed set.
+    record["verdict"] = env.ATTESTATION_OK
+    return record
+
+
+def evaluate_runtime_rows(runtime: str, obs_rows: list, ref_rows: list, ref_table: dict, expected_eid: str,
+                          envelope=None) -> dict:
     ref_by_id = {r["candidate_id"]: r for r in ref_rows}
     table_by_id = {c["candidate_id"]: c for c in ref_table["candidates"]}
+    frozen_evaluator = frozen_evaluator_identity()
     roles = candidate_roles()
     obs_by_id = {}
     duplicates = []
@@ -1590,6 +2202,11 @@ def evaluate_runtime_rows(runtime: str, obs_rows: list, ref_rows: list, ref_tabl
             "e_r_exit_code": None,
             "evaluator_evidence_status": None,
             "verdict": MISSING,
+            # D1 / D3 surfaces, always present so a consumer never has to infer them from absence
+            "behaviour": None,
+            "behaviour_verdict": None,
+            "execution_env_verdict": None,
+            "attestation": None,
             "notes": [],
         }
         if obs is None:
@@ -1617,14 +2234,37 @@ def evaluate_runtime_rows(runtime: str, obs_rows: list, ref_rows: list, ref_tabl
         row["e_r_failure_stage"] = obs.get("failure_stage")
         row["failure_kind_declared"] = obs.get("failure_kind") is not None
 
-        # 1. identity of the thing evaluated: the adapter must not have swapped candidates
-        if obs.get("canonical_digest") and table.get("canonical_digest"):
-            if obs["canonical_digest"] != table["canonical_digest"]:
-                row["verdict"] = MISMATCH_DIGEST
-                row["notes"].append(
-                    f"canonical_digest {obs['canonical_digest']} != E*'s {table['canonical_digest']} "
-                    "(a different file was evaluated, or stale state was reused)"
-                )
+        # 1. behaviour vs execution environment (external review D1), and the harness measurement
+        # attestation (D3). Both are computed *before* the verdict branches so that a row which takes
+        # the declared-synthetic path still carries its behaviour and attestation surfaces, and both
+        # are applied to the final verdict after the branches (see the post-pass at the end).
+        row["behaviour"] = behaviour_surface(row, obs, table)
+        behaviour_class = env.classify_interpreter(
+            row["behaviour"].get("matched_interpreter") or obs.get("interpreter"), EXECUTION_SET
+        )
+        row["behaviour"]["interpreter_class"] = behaviour_class
+        env_verdict, env_accepting = env.behaviour_env_verdict(
+            bool(row["behaviour"]["behaviour_matches"]), behaviour_class
+        ) if row["behaviour"]["behaviour_matches"] is not None else (None, True)
+        row["behaviour_verdict"] = row["behaviour"]["behaviour_matches"]
+        row["execution_env_verdict"] = env_verdict
+        row["attestation"] = attestation_surface(row, obs, envelope, cid, frozen_evaluator)
+        row["attestation_verdict"] = row["attestation"]["verdict"]
+        if row["behaviour"]["behaviour_matches"] is False:
+            # the projection never rescues a different evaluator: the payload itself differs
+            row["verdict"] = MISMATCH_DIGEST
+            row["notes"].append(
+                "behaviour mismatch: " + "; ".join(row["behaviour"]["notes"] or [])
+                + f" (canonical_digest {obs.get('canonical_digest')} vs E*'s "
+                f"{table.get('canonical_digest')})"
+            )
+        elif env_verdict == EXECUTION_ENV_DRIFT:
+            row["notes"].append(
+                "behaviour agrees; the execution environment differs from the pinned interpreter "
+                f"({behaviour_class.get('observed')} vs {behaviour_class.get('pinned')}) and is in the "
+                "declared allowed execution set -> EXECUTION_ENV_DRIFT, not a behaviour disagreement "
+                "(external review D1)"
+            )
         if obs.get("source_sha256") and table.get("source_sha256"):
             if obs["source_sha256"] != table["source_sha256"]:
                 row["verdict"] = MISMATCH_DIGEST
@@ -1766,7 +2406,49 @@ def evaluate_runtime_rows(runtime: str, obs_rows: list, ref_rows: list, ref_tabl
                     f"> epsilon {EPSILON!r}"
                 )
         out_rows.append(row)
-    return {"rows": out_rows, "findings": findings, "duplicate_rows": duplicates}
+
+    # D1 / D3 post-pass. The number/verdict comparison above decides whether the *measurement*
+    # agrees; these two surfaces decide whether the row is evidence about E* at all. Precedence,
+    # stated so a reader can predict it: a non-accepting behaviour verdict (MISMATCH_DIGEST) is never
+    # overwritten; an unsanctioned execution environment outranks a missing attestation; a missing or
+    # contradicted attestation outranks a sanctioned environment drift.
+    rows_agreeing_before_attestation = sum(1 for r in out_rows if r["verdict"] in ACCEPTING_VERDICTS)
+    for row in out_rows:
+        # Keep the measurement verdict (the number/verdict comparison + D1) separately from the
+        # attestation verdict: the measured/adapted split is a property of the runtime's evaluator
+        # INTERFACE (review point 2) and must survive a row being non-accepting for want of a token.
+        # Without this, an unattested runtime would report measured=0/adapted=0 and EvE's
+        # "5/14 measured, never PASS" evidence would be erased by the attestation failure.
+        row["verdict_before_attestation"] = row["verdict"]
+        if row["verdict"] not in ACCEPTING_VERDICTS:
+            continue
+        env_verdict = row.get("execution_env_verdict")
+        attestation_verdict = row.get("attestation_verdict")
+        if env_verdict == MISMATCH_EXECUTION_ENV:
+            row["verdict"] = MISMATCH_EXECUTION_ENV
+            row["notes"].append(
+                "the row's behaviour agrees but the interpreter it ran under is outside the declared "
+                "allowed execution set, so its agreement is not evidence about EID*"
+            )
+        elif attestation_verdict not in (env.ATTESTATION_OK, "ENVELOPE_NOT_REQUIRED", None):
+            row["verdict"] = attestation_verdict
+            row["notes"].append(
+                "the row's numbers agree but " + "; ".join(row["attestation"]["reasons"])
+            )
+            findings.append(
+                {
+                    "finding_id": attestation_verdict,
+                    "candidate_id": row["candidate_id"],
+                    "verdict": row["verdict"],
+                    "fatal": True,
+                    "detail": "; ".join(row["attestation"]["reasons"]),
+                    "protocol": "external review D3 (measurement token, fail-closed on omission)",
+                }
+            )
+        elif env_verdict == EXECUTION_ENV_DRIFT:
+            row["verdict"] = EXECUTION_ENV_DRIFT
+    return {"rows": out_rows, "findings": findings, "duplicate_rows": duplicates,
+            "rows_agreeing_before_attestation": rows_agreeing_before_attestation}
 
 
 def evidence_verdict(ev_status: str) -> str:
@@ -2146,7 +2828,8 @@ def check_manifest_echoes(echo_by_candidate: dict, ref_table: dict) -> dict:
 
 
 def evaluate_runtime(runtime: str, adapter_doc: dict, ref_rows: list, ref_table: dict, eid_star: str,
-                     epsilon: float, source_note: str, trace_doc_paths=None, strict_duplicates=True) -> dict:
+                     epsilon: float, source_note: str, trace_doc_paths=None, strict_duplicates=True,
+                     envelope=None) -> dict:
     checks = []
     checks.extend(check_adapter_identity(adapter_doc, eid_star, runtime))
 
@@ -2240,9 +2923,103 @@ def evaluate_runtime(runtime: str, adapter_doc: dict, ref_rows: list, ref_table:
         }
     )
 
-    cmp_result = evaluate_runtime_rows(runtime, adapter_doc["rows"], ref_rows, ref_table, eid_star)
+    cmp_result = evaluate_runtime_rows(runtime, adapter_doc["rows"], ref_rows, ref_table, eid_star,
+                                       envelope=envelope)
     rows = cmp_result["rows"]
     findings = cmp_result["findings"]
+
+    # --- D1: behaviour is not the execution environment (external review D1) ---------------------
+    behaviour_mismatches = [r for r in rows if r.get("behaviour", {}) and r["behaviour"].get("behaviour_matches") is False]
+    env_drift = [r for r in rows if r.get("execution_env_verdict") == EXECUTION_ENV_DRIFT]
+    env_unsanctioned = [r for r in rows if r.get("execution_env_verdict") == MISMATCH_EXECUTION_ENV]
+    digests_declared = [r for r in rows if r.get("behaviour", {}) and r["behaviour"].get("method")]
+    checks.append(
+        {
+            "check_id": "behaviour-vs-execution-env",
+            "ok": not behaviour_mismatches and not env_unsanctioned,
+            "detail": (
+                f"{len(rows) - len(behaviour_mismatches)}/{len(rows)} rows agree with E*'s behaviour payload "
+                f"(the Outcome minus `canonical_digest` and `interpreter`), {len(digests_declared)}/{len(rows)} "
+                "rows declared a digest surface to compare; execution environment: "
+                + (f"{len(env_drift)} row(s) EXECUTION_ENV_DRIFT (sanctioned, "
+                   f"not a behaviour disagreement: {', '.join(r['candidate_id'] for r in env_drift)})"
+                   if env_drift else "every row ran under the pinned interpreter")
+                + (f"; {len(env_unsanctioned)} row(s) MISMATCH_EXECUTION_ENV outside the declared allowed "
+                   f"set ({', '.join(r['candidate_id'] for r in env_unsanctioned)})" if env_unsanctioned else "")
+                + (f"; {len(behaviour_mismatches)} row(s) disagree on behaviour itself: "
+                   f"{', '.join(r['candidate_id'] for r in behaviour_mismatches)}" if behaviour_mismatches else "")
+            ),
+            "pinned_interpreter": EXECUTION_SET.get("pinned"),
+            "allowed_execution_set": {
+                "path": EXECUTION_SET.get("_path"),
+                "sanctioned": EXECUTION_SET.get("sanctioned"),
+                "coupling_question": "documented as UNDECIDED in a0/envelope/execution-set.json "
+                                     "(folding this set into EID*'s Config would be a re-freeze)",
+            },
+            "rows_with_digest_evidence": len(digests_declared),
+            "behaviour_mismatch_candidates": [r["candidate_id"] for r in behaviour_mismatches],
+            "execution_env_drift_candidates": [r["candidate_id"] for r in env_drift],
+            "execution_env_unsanctioned_candidates": [r["candidate_id"] for r in env_unsanctioned],
+        }
+    )
+
+    # --- D3: is this row joined to a measurement the harness made (external review D3) ------------
+    att = [r.get("attestation") or {} for r in rows]
+    attestation_required = envelope is not None
+    missing_token = [r for r in rows if (r.get("attestation_verdict") == MISSING_ATTESTATION)]
+    missing_identity = [r for r in rows if r.get("attestation_verdict") == MISSING_IDENTITY]
+    mismatch_attestation = [r for r in rows if r.get("attestation_verdict") == MISMATCH_ATTESTATION]
+    attested_ok = [r for r in rows if (r.get("attestation") or {}).get("verdict") == env.ATTESTATION_OK]
+    checks.append(
+        {
+            "check_id": "measurement-attestation",
+            "ok": (not attestation_required) or (
+                not missing_token and not missing_identity and not mismatch_attestation
+            ),
+            "detail": (
+                "no measurement envelope was issued for this run (--envelope off): the token requirement "
+                "is off, so this run's acceptances are exploratory -- a row's identity material is still "
+                "recorded, but nothing required it to be there"
+                if not attestation_required
+                else (
+                    f"{len(attested_ok)}/{len(rows)} rows echo the harness measurement token and attest the "
+                    f"evaluator bytes, candidate bytes and behaviour digest they used (envelope nonce "
+                    f"{str((envelope or {}).get('nonce'))[:12]}..., run "
+                    f"{(envelope or {}).get('harness_run_id')})"
+                    if not (missing_token or missing_identity or mismatch_attestation)
+                    else (
+                        f"{len(missing_token)}/{len(rows)} rows carry no harness measurement token "
+                        f"(MISSING_ATTESTATION, fail-closed), {len(missing_identity)}/{len(rows)} echo a token "
+                        f"but attest no identity (MISSING_IDENTITY), {len(mismatch_attestation)}/{len(rows)} "
+                        "contradict the harness's own measurement (MISMATCH_ATTESTATION)"
+                    )
+                )
+            ),
+            "required": attestation_required,
+            "envelope": {
+                "path": (envelope or {}).get("path"),
+                "sha256": (envelope or {}).get("sha256"),
+                "nonce": (envelope or {}).get("nonce"),
+                "harness_run_id": (envelope or {}).get("harness_run_id"),
+                "tokens": len((envelope or {}).get("candidates") or {}),
+            } if envelope else None,
+            # top-level copies: the D2 consumer contract (a0/qualification/attested-a0-1.contract.json)
+            # reads `envelope.harness_run_id` and falls back to a top-level `harness_run_id`.
+            "harness_run_id": (envelope or {}).get("harness_run_id"),
+            "nonce": (envelope or {}).get("nonce"),
+            "attested_candidates": [r["candidate_id"] for r in attested_ok],
+            "missing_attestation_candidates": [r["candidate_id"] for r in missing_token],
+            "missing_identity_candidates": [r["candidate_id"] for r in missing_identity],
+            "mismatch_attestation_candidates": [r["candidate_id"] for r in mismatch_attestation],
+            "rows_with_oid": sum(1 for r in rows if (r.get("attestation") or {}).get("oid_present")),
+            "limit": (
+                "the attestation is submitted BY the runtime lane, so it establishes that the row names the "
+                "harness's measurement and the bytes it claims to have executed; it is not proof that those "
+                "bytes were executed (a lying producer, R5). Producing it inside the runtime's own session "
+                "(a0/attestation) is the next step, not something this check can do for it."
+            ),
+        }
+    )
 
     expected_ids = [c["candidate_id"] for c in ref_table["candidates"]]
     covered = [r["candidate_id"] for r in rows if r["verdict"] != MISSING]
@@ -2257,13 +3034,34 @@ def evaluate_runtime(runtime: str, adapter_doc: dict, ref_rows: list, ref_table:
     )
 
     bad = [r for r in rows if r["verdict"] not in ACCEPTING_VERDICTS]
+    # Rows can be non-accepting for a reason that is not a disagreement about the number: no harness
+    # measurement token (D3), or an execution environment outside the declared allowed set (D1). The
+    # check says both counts, so "0/14 agree" can never be read as "the numbers disagreed".
+    measurement_bad = [
+        r for r in rows if r.get("verdict_before_attestation", r["verdict"]) not in ACCEPTING_VERDICTS
+    ]
     checks.append(
         {
             "check_id": "E-r-equals-E-star",
             "ok": not bad,
-            "detail": f"{len(rows) - len(bad)}/{len(rows)} candidates agree with E*(c) within epsilon={epsilon:g} "
-            f"(or compare equal as verdicts); disagreeing: "
-            f"{', '.join(r['candidate_id'] + ':' + r['verdict'] for r in bad) or 'none'}",
+            "detail": (
+                f"{len(rows) - len(bad)}/{len(rows)} candidates are ACCEPTING (their row agrees with E*(c) "
+                f"within epsilon={epsilon:g} or compares equal as a verdict, AND carries the harness "
+                f"attestation); agreeing on the measurement surface alone: "
+                f"{len(rows) - len(measurement_bad)}/{len(rows)}. "
+                + (
+                    "not accepting: "
+                    + ", ".join(f"{r['candidate_id']}:{r['verdict']}" for r in bad)
+                    if bad else "no row disagrees"
+                )
+                + (
+                    "; disagreeing on the measurement surface: "
+                    + ", ".join(r["candidate_id"] for r in measurement_bad)
+                    if measurement_bad else ""
+                )
+            ),
+            "measurement_agreeing": len(rows) - len(measurement_bad),
+            "measurement_disagreeing_candidates": [r["candidate_id"] for r in measurement_bad],
         }
     )
 
@@ -2375,15 +3173,19 @@ def evaluate_runtime(runtime: str, adapter_doc: dict, ref_rows: list, ref_table:
     # the runtime's OWN lane produced a fresh verdict/number for; `adapted` counts the rows that
     # agree only because the adapter supplied the semantics the interface cannot represent
     # (`SYNTHETIC_DECLARED`, i.e. a non-fresh evidence status on an otherwise accepting row).
+    # The split is computed from `verdict_before_attestation`, not from the final verdict: whether a
+    # runtime measured a row is a fact about its evaluator interface, and a missing measurement token
+    # must not overwrite it (it makes the runtime non-accepting via the checks, not unmeasured).
     measured_rows = [
         r for r in rows
-        if r["verdict"] in (MATCH, MATCH_VERDICT)
+        if r.get("verdict_before_attestation", r["verdict"]) in (MATCH, MATCH_VERDICT, EXECUTION_ENV_DRIFT)
         and r.get("evaluator_evidence_status") not in NON_FRESH_EVIDENCE
     ]
     measured_ids = {r["candidate_id"] for r in measured_rows}
     adapted_rows = [
         r for r in rows
-        if r["verdict"] in ACCEPTING_VERDICTS and r["candidate_id"] not in measured_ids
+        if r.get("verdict_before_attestation", r["verdict"]) in ACCEPTING_VERDICTS
+        and r["candidate_id"] not in measured_ids
     ]
     qualification = {
         "state": None,  # set below, after the FAIL/PARTIAL branches
@@ -2393,26 +3195,96 @@ def evaluate_runtime(runtime: str, adapter_doc: dict, ref_rows: list, ref_table:
         "total": len(rows),
         "measured_candidates": [r["candidate_id"] for r in measured_rows],
         "adapted_candidates": [r["candidate_id"] for r in adapted_rows],
-        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's "
-                 "lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees "
-                 "only on semantics the adapter supplied for an interface that cannot represent them",
+        "basis": "row.verdict_before_attestation + row.evaluator_evidence_status: a row is `measured` "
+                 "when the runtime's lane returned a fresh value/verdict the runner compared, and "
+                 "`adapted` when it agrees only on semantics the adapter supplied for an interface that "
+                 "cannot represent them. The attestation verdict is a separate axis: it decides whether "
+                 "the row is acceptable evidence, never whether the runtime measured it",
         "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
         "c_adapt": "can the adapter supply the missing semantics?",
         "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is "
                 "in the loop: all four runtimes run through an adapter. An adapted row is evidence for "
                 "C_adapt, never for C_measure.",
+        # D1 / D3: these are properties of the *evidence*, not of the number, so they are reported
+        # next to the measured/adapted split rather than folded into it.
+        "measurement_attestation": {
+            "required": attestation_required,
+            "attested": [r["candidate_id"] for r in attested_ok],
+            "missing_attestation": [r["candidate_id"] for r in missing_token],
+            "missing_identity": [r["candidate_id"] for r in missing_identity],
+            "mismatch_attestation": [r["candidate_id"] for r in mismatch_attestation],
+        },
+        "execution_env": {
+            "pinned": EXECUTION_SET.get("pinned"),
+            "drift_candidates": [r["candidate_id"] for r in env_drift],
+            "unsanctioned_candidates": [r["candidate_id"] for r in env_unsanctioned],
+            "verdicts": sorted({r.get("execution_env_verdict") for r in rows if r.get("execution_env_verdict")}),
+        },
+        # The same facts in the shape `a0/qualification/attested-a0-1.contract.json` declares for its
+        # second source (`runtimes.<r>.qualification.a0_1.attestation`), so the D2 consumer can read
+        # this report directly. Its `identity_verdict` vocabulary is the contract's, not the runner's
+        # row-level code: ATTESTATION_OK when every row attested, the row-level code when it did not,
+        # and `TOKEN_REQUIREMENT_OFF` (inconclusive by the contract's rule) when no envelope was issued.
+        "attestation": {
+            "identity_verdict": (
+                "TOKEN_REQUIREMENT_OFF" if not attestation_required
+                else "ATTESTATION_OK" if not (missing_token or missing_identity or mismatch_attestation)
+                else (missing_token or missing_identity or mismatch_attestation)[0]["attestation_verdict"]
+            ),
+            "required": attestation_required,
+            "oid": ((envelope or {}).get("harness_run_id")),
+            "executed_identity": sorted({
+                (r.get("attestation") or {}).get("attested", {}).get("evaluator_source_sha256")
+                for r in attested_ok
+            })[0] if attested_ok else None,
+            "harness_run_id": (envelope or {}).get("harness_run_id"),
+            "nonce": (envelope or {}).get("nonce"),
+            "envelope_path": (envelope or {}).get("path"),
+            "envelope_sha256": (envelope or {}).get("sha256"),
+            "attested_candidates": [r["candidate_id"] for r in attested_ok],
+            "missing_attestation_candidates": [r["candidate_id"] for r in missing_token],
+            "missing_identity_candidates": [r["candidate_id"] for r in missing_identity],
+            "mismatch_attestation_candidates": [r["candidate_id"] for r in mismatch_attestation],
+            "note": (
+                "submitted by the runtime's own lane and compared by the harness against its own "
+                "measurement; it establishes what the row claims and joins, not that the claimed bytes "
+                "were executed (a lying producer, R5). Producing it inside the runtime's session is the "
+                "next step."
+            ),
+        },
     }
 
     state = PASS
     reason = None
     if bad or fatal_non_fresh or not coverage_ok:
         state = FAIL
-        if fatal_non_fresh:
-            reason = "false-green finding(s): " + ", ".join(sorted({f["finding_id"] for f in fatal_non_fresh}))
-        elif not coverage_ok:
+        breakdown = verdict_breakdown(bad) if bad else {}
+        accepting_count = cmp_result.get("rows_agreeing_before_attestation", 0)
+        finding_ids = sorted({f["finding_id"] for f in fatal_non_fresh})
+        attestation_only = bool(finding_ids) and all(
+            fid in NON_ACCEPTING_ATTESTATION_VERDICTS for fid in finding_ids
+        ) and all(r["verdict"] in NON_ACCEPTING_ATTESTATION_VERDICTS for r in bad)
+        if not coverage_ok:
             reason = "incomplete coverage of C*"
+        elif attestation_only:
+            agreement = (
+                f"the numbers agree on {accepting_count}/{len(rows)} rows"
+                if accepting_count else "no row's numbers were compared"
+            )
+            reason = (
+                "not accepting: " + ", ".join(f"{n} x {code}" for code, n in sorted(breakdown.items()))
+                + f" -- {agreement}, but an A0.1 row must also echo the harness measurement token and "
+                "attest the bytes it executed (external review D3, fail-closed on omission)"
+            )
+        elif fatal_non_fresh:
+            reason = "false-green finding(s): " + ", ".join(finding_ids)
+        elif bad:
+            reason = (
+                "E_r(c) disagrees with E*(c): "
+                + ", ".join(f"{n} x {code}" for code, n in sorted(breakdown.items()))
+            )
         else:
-            reason = "E_r(c) disagrees with E*(c)"
+            reason = "no usable row compared"
     elif not all(c["ok"] for c in checks):
         state = FAIL
         reason = "adapter check(s) failed: " + ", ".join(c["check_id"] for c in checks if not c["ok"])
@@ -2425,6 +3297,14 @@ def evaluate_runtime(runtime: str, adapter_doc: dict, ref_rows: list, ref_table:
             f"{len(adapted_rows)}/{len(rows)} accepted only on adapter-supplied semantics "
             f"({', '.join(r['candidate_id'] for r in adapted_rows)}). No check failed, but this runtime "
             "cannot represent E*'s outcome algebra on those rows"
+        )
+    if state in (PASS, PARTIAL) and env_drift:
+        # a sanctioned drift is not a conformance failure, but a PASS that silently hides it would be
+        # a report a reader could mistake for "measured in the frozen environment"
+        reason = (reason + "; " if reason else "") + (
+            f"{len(env_drift)}/{len(rows)} rows are EXECUTION_ENV_DRIFT: the behaviour agrees, the "
+            "interpreter does not match the pinned one (sanctioned set), so this runtime's rows are not "
+            "measurements in the frozen execution environment"
         )
     qualification["state"] = state
     qualification["label"] = a0_1_label(state, len(measured_rows), len(rows))
@@ -2616,6 +3496,40 @@ def cmd_run(args) -> int:
     ref_doc = load_reference_document(args, report)
     ref_rows = ref_doc["fresh_sweep"]["rows"] if ref_doc else []
     ref_table = load_json(E_STAR_TABLE)
+    envelope_mode = getattr(args, "envelope", ENVELOPE_MODE_REQUIRED)
+    envelope = ref_doc.get("envelope") if envelope_mode == ENVELOPE_MODE_REQUIRED else None
+    report["envelope"] = {
+        "schema": env.SCHEMA_ENVELOPE,
+        "mode": envelope_mode,
+        "required": envelope_mode == ENVELOPE_MODE_REQUIRED,
+        "why": (
+            "the harness issues one OID-style measurement token per member of C* from its own E* sweep, "
+            "and every adapter row must echo it and attest the evaluator bytes, candidate bytes and "
+            "behaviour digest it used; a row that omits them is non-accepting (external review D3)"
+            if envelope_mode == ENVELOPE_MODE_REQUIRED
+            else "--envelope off was requested: the token requirement is off, so this run's acceptances "
+            "are exploratory and do not carry the A0.1 measurement-attestation evidence"
+        ),
+        "handed_to_adapters_as": {"env": f"{ENVELOPE_ENV}=<path>", "cli_flag": "--envelope (optional)"},
+        "path": (ref_doc or {}).get("envelope", {}).get("path") if ref_doc else None,
+        "sha256": (ref_doc or {}).get("envelope", {}).get("sha256") if ref_doc else None,
+        "nonce": envelope.get("nonce") if envelope else None,
+        "harness_run_id": envelope.get("harness_run_id") if envelope else None,
+        "tokens": len((envelope or {}).get("candidates") or {}),
+        "harness_execution_env": envelope.get("harness_execution_env") if envelope else None,
+        "complete": (ref_doc or {}).get("_envelope_complete"),
+        "note": (ref_doc or {}).get("_envelope_note"),
+    }
+    report["execution_set"] = {
+        "path": EXECUTION_SET.get("_path"),
+        "pinned": EXECUTION_SET.get("pinned"),
+        "sanctioned": EXECUTION_SET.get("sanctioned"),
+        "coupling_question": (
+            "UNDECIDED and documented, not decided: folding this allowed execution set into EID*'s Config "
+            "would make broadening it a re-freeze of EID* = 664115e0...9328. See "
+            "a0/envelope/execution-set.json:coupling_question_UNDECIDED and a0/envelope/README.md."
+        ),
+    }
     report["reference"] = {
         "document": ref_doc.get("path") if ref_doc else None,
         "source": "a0/conformance/reference.json (fresh E* sweep) cross-checked against E_STAR.json",
@@ -2623,7 +3537,8 @@ def cmd_run(args) -> int:
         "c_star_unchanged_after_sweep": (ref_doc or {}).get("c_star_unchanged_after_sweep"),
         "theta_e": (ref_doc or {}).get("theta_e"),
         "rows": [
-            {k: r[k] for k in ("candidate_id", "exit_code", "status", "objective_value", "failure_kind", "canonical_digest")}
+            {k: r[k] for k in ("candidate_id", "exit_code", "status", "objective_value", "failure_kind",
+                               "canonical_digest", "behaviour_digest", "interpreter")}
             for r in ref_rows
         ],
     }
@@ -2638,7 +3553,8 @@ def cmd_run(args) -> int:
         print(f"--- {runtime} ---")
         try:
             entry = run_one_runtime(
-                runtime, adapter_root, overrides, registry_error, ref_rows, ref_table, expected_eid, eid_document, args
+                runtime, adapter_root, overrides, registry_error, ref_rows, ref_table, expected_eid,
+                eid_document, args, envelope
             )
         except Exception as exc:  # noqa: BLE001  -- one runtime must never abort the others
             import traceback
@@ -2662,7 +3578,8 @@ def cmd_run(args) -> int:
             cmd = [sys.executable] + parts
             try:
                 entry = run_one_runtime(
-                    name, adapter_root, {name: cmd}, None, ref_rows, ref_table, expected_eid, eid_document, args
+                    name, adapter_root, {name: cmd}, None, ref_rows, ref_table, expected_eid,
+                    eid_document, args, envelope
                 )
             except Exception as exc:  # noqa: BLE001
                 import traceback
@@ -2727,10 +3644,20 @@ def cmd_run(args) -> int:
         "runner": str(Path(__file__).resolve()),
         "selftest": str(HERE / "selftest.py"),
         "reference": str(HERE / "reference.json"),
+        "envelope": str(envelope_dir(HERE / "out") / "measurement_tokens.<run>.json"),
+        "attested_records": str(ATTESTED_ROOT / "<runtime>" / "<run>.json"),
         "frozen_toolchain": check_frozen_toolchain(),
     }
     write_json(report_path, report)
     write_table(report, table_path)
+    # D3: a per-runtime attested record next to the runner, pinned to the sha256 of the report it
+    # belongs to -- the path `a0/qualification/attested-a0-1.contract.json` declares as the D3
+    # producer's own output. Written after the report so the pin is to the final bytes (the report is
+    # not rewritten afterwards; a record is invalid the moment the report is regenerated, which is
+    # the point of the pin).
+    attested = write_attested_records(report, report_path, runtimes)
+    for runtime, path in attested.items():
+        print(f"    attested record: {path}")
     pruned = prune_run_dirs()
     if pruned:
         print(f"pruned {pruned} superseded run director{'y' if pruned == 1 else 'ies'}")
@@ -2740,32 +3667,63 @@ def cmd_run(args) -> int:
     return report["exit_code"]
 
 
+def envelope_is_complete(envelope: dict | None) -> tuple:
+    """Is the envelope in a reference document present, current on disk, and well-formed?
+
+    A reference document may predate the envelope (any report written before this change), and the
+    token file may have been overwritten or removed since. Either case is reported, never silently
+    tolerated: a `run` that requires the envelope refreshes the reference instead of running with a
+    stale one.
+    """
+    if not isinstance(envelope, dict) or not envelope.get("candidates"):
+        return False, "the reference document carries no measurement envelope"
+    path = envelope.get("path") or envelope.get("_path")
+    if not path or not Path(path).exists():
+        return False, f"the envelope file {path!r} named by the reference document does not exist"
+    actual = sha256_file(path)
+    if envelope.get("sha256") and actual != envelope["sha256"]:
+        return False, (
+            f"the envelope file {path} changed since the reference document was written "
+            f"(sha256 {actual} != {envelope['sha256']})"
+        )
+    return True, f"{len(envelope['candidates'])} tokens at {path} (sha256 {actual[:16]}...)"
+
+
 def load_reference_document(args, report):
     path = Path(args.reference) if args.reference else HERE / "reference.json"
-    if not path.exists() or args.refresh_reference:
+    mode = getattr(args, "envelope", ENVELOPE_MODE_REQUIRED)
+    doc = load_json(path) if path.exists() else None
+    complete, why = envelope_is_complete((doc or {}).get("envelope"))
+    if doc is None or args.refresh_reference or (mode == ENVELOPE_MODE_REQUIRED and not complete):
+        reason = (
+            "no reference document yet" if doc is None
+            else "--refresh-reference was given" if args.refresh_reference
+            else f"envelope incomplete ({why})"
+        )
+        print(f"refreshing the reference sweep and its measurement envelope: {reason}")
         theta = dict(THETA_E)
-        before = c_star_digest()
-        rows = reference_rows(theta, HERE / "out", args.reference_timeout)
-        after = c_star_digest()
+        sweep = sweep_reference(theta, HERE / "out", args.reference_timeout)
         doc = {
             "schema": "a0.conformance.reference/v1",
             "generated_at": now_iso(),
             "generated_by": "a0/conformance/conformance.py run (inline refresh)",
             "theta_e": theta,
-            "fresh_sweep": {"state_root": str(HERE / "out"), "rows": rows},
-            "agreement_with_frozen_table": compare_to_table(rows, load_json(E_STAR_TABLE)),
-            "c_star_unchanged_after_sweep": {"before": before, "after": after, "unchanged": before == after},
+            "fresh_sweep": {"state_root": str(HERE / "out"), "rows": sweep["rows"]},
+            "agreement_with_frozen_table": sweep["agreement"],
+            "envelope": sweep["envelope"],
+            "c_star_unchanged_after_sweep": sweep["c_star_unchanged_after_sweep"],
             "frozen_evaluator": {"eid_star": BINDING_EID_STAR},
         }
         write_json(path, doc)
-    else:
-        doc = load_json(path)
     doc["path"] = str(path)
+    complete, why = envelope_is_complete(doc.get("envelope"))
+    doc["_envelope_complete"] = complete
+    doc["_envelope_note"] = why
     return doc
 
 
 def run_one_runtime(runtime, adapter_root, overrides, registry_error, ref_rows, ref_table,
-                    expected_eid, eid_document, args) -> dict:
+                    expected_eid, eid_document, args, envelope=None) -> dict:
     rerun = (
         f"cd {HERE} && python3 conformance.py run --runtimes {runtime} --out report.{runtime}.json"
     )
@@ -2818,6 +3776,23 @@ def run_one_runtime(runtime, adapter_root, overrides, registry_error, ref_rows, 
     else:
         cwd, env = HERE, None
     entry["launch"] = {"cwd": str(cwd), "pythonpath": (env or {}).get("PYTHONPATH")}
+
+    # D3: hand the measurement envelope to the adapter. The environment variable is the mechanism,
+    # not a flag, for a measured reason: an adapter whose subcommand parser rejects an unknown flag
+    # would fail to launcher before it could produce rows, and "the runner broke it" is not the same
+    # finding as "this runtime is not wired". `--envelope` is offered as well, so an adapter that
+    # declares the flag can take it on the command line.
+    env = dict(env or {})
+    # the path from the envelope document itself: a report must hand over the bytes it recorded,
+    # not a path recomputed from a default
+    env[ENVELOPE_ENV] = str((envelope or {}).get("path") or "") if envelope else ""
+    envelope_handed_over = {
+        "env": {ENVELOPE_ENV: env[ENVELOPE_ENV]},
+        "nonce": (envelope or {}).get("nonce"),
+        "harness_run_id": (envelope or {}).get("harness_run_id"),
+        "tokens": len((envelope or {}).get("candidates") or {}),
+    }
+    entry["envelope_handed_over"] = envelope_handed_over
 
     conformance_cmd = base + [
         "conformance",
@@ -2953,6 +3928,7 @@ def run_one_runtime(runtime, adapter_root, overrides, registry_error, ref_rows, 
     result = evaluate_runtime(
         runtime, adapter_doc, ref_rows, ref_table, expected_eid, EPSILON, source_note,
         trace_doc_paths=discover_traces(run_dir, runtime, run_id), strict_duplicates=not fallback,
+        envelope=envelope,
     )
     if fallback:
         result["fallback"] = {
@@ -3275,6 +4251,54 @@ def write_table(report: dict, path: Path) -> None:
         lines.append(v["screen_vs_qualification"])
         lines.append("")
 
+    # D1 / D3: the two mechanisms that decide whether a row is evidence *about EID*, as opposed to a
+    # number that happens to agree. Reported before the per-runtime detail so it cannot be missed.
+    env_report = report.get("envelope") or {}
+    eset = report.get("execution_set") or {}
+    lines.append("## Measurement envelope (D3) and declared execution set (D1)")
+    lines.append("")
+    lines.append(
+        f"Envelope mode **{env_report.get('mode')}** (required = {env_report.get('required')}): "
+        f"{env_report.get('why')}"
+    )
+    lines.append("")
+    if env_report.get("path"):
+        lines.append(
+            f"The harness issued `{env_report.get('tokens')}` measurement tokens into its own state root "
+            f"`{env_report.get('path')}` (sha256 `{str(env_report.get('sha256'))[:16]}...`, nonce "
+            f"`{env_report.get('nonce')}`, run `{env_report.get('harness_run_id')}`), handed to every adapter "
+            f"as `{json.dumps(env_report.get('handed_to_adapters_as'))}`."
+        )
+        lines.append("")
+        he = env_report.get("harness_execution_env") or {}
+        lines.append(
+            f"The harness's own sweep ran under {json.dumps(he.get('observed'))} "
+            f"(classification `{he.get('status')}` against the declared set)."
+        )
+        lines.append("")
+    lines.append(
+        "Declared allowed execution set: pinned "
+        f"`{json.dumps(eset.get('pinned'))}`, sanctioned "
+        f"`{json.dumps([{k: e.get(k) for k in ('implementation', 'version')} for e in (eset.get('sanctioned') or [])])}` "
+        f"(`{eset.get('path')}`)."
+    )
+    lines.append("")
+    lines.append(f"> {eset.get('coupling_question')}")
+    lines.append("")
+    lines.append("| runtime | attestation required | rows attesting | MISSING_ATTESTATION | MISSING_IDENTITY | MISMATCH_ATTESTATION | EXECUTION_ENV_DRIFT | MISMATCH_EXECUTION_ENV |")
+    lines.append("|---|---|---|---|---|---|---|---|")
+    for runtime, entry in report["runtimes"].items():
+        q = (entry.get("qualification") or {}).get("a0_1") or {}
+        att = q.get("measurement_attestation") or {}
+        envq = q.get("execution_env") or {}
+        lines.append(
+            f"| {runtime} | {att.get('required')} | {len(att.get('attested') or [])} | "
+            f"{len(att.get('missing_attestation') or [])} | {len(att.get('missing_identity') or [])} | "
+            f"{len(att.get('mismatch_attestation') or [])} | "
+            f"{len(envq.get('drift_candidates') or [])} | {len(envq.get('unsanctioned_candidates') or [])} |"
+        )
+    lines.append("")
+
     lines.append("## Reference table reproducibility")
     lines.append("")
     ref = report.get("reference") or {}
@@ -3284,6 +4308,16 @@ def write_table(report: dict, path: Path) -> None:
         f"**{agree.get('reproduces_frozen_table')}**; `C*` unchanged by the sweep: "
         f"**{(ref.get('c_star_unchanged_after_sweep') or {}).get('unchanged')}**."
     )
+    env_agreement = agree.get("execution_env") or {}
+    if env_agreement:
+        lines.append("")
+        lines.append(
+            f"Execution environment of that sweep: **{env_agreement.get('verdict')}** "
+            f"(observed `{json.dumps((env_agreement.get('classification') or {}).get('observed'))}`, pinned "
+            f"`{json.dumps((env_agreement.get('classification') or {}).get('pinned'))}`). "
+            "A sanctioned interpreter drift reproduces every number and is reported here as an environment "
+            "verdict, never as a behaviour mismatch (external review D1)."
+        )
     if ref.get("warning"):
         lines.append("")
         lines.append(f"> WARNING: {ref['warning']}")
@@ -3307,6 +4341,21 @@ def write_table(report: dict, path: Path) -> None:
         "where E* has no number -- acceptable, but its 0.0 is never a measurement, and a runtime with such a "
         "row is `PARTIAL`, not `PASS`), `FALSE_GREEN_*` "
         "(a number where none exists, or a non-fresh number), `MISMATCH_*`, `MISSING`."
+    )
+    lines.append("")
+    lines.append(
+        "Two further verdicts split out of `MISMATCH_DIGEST` by external review D1 and D3, because folding "
+        "them into it made two different things look like the same one:\n\n"
+        "- `EXECUTION_ENV_DRIFT` -- the behaviour payload agrees with `E*`'s (the Outcome minus "
+        "`canonical_digest` and `interpreter`), and the row ran under an interpreter that is in the declared "
+        "allowed execution set but is not the pinned one. **Accepting**: this is an environment difference, "
+        "never \"the evaluator's behaviour disagrees\". `MISMATCH_EXECUTION_ENV` is the same situation with an "
+        "interpreter *outside* that set: non-accepting.\n"
+        "- `MISSING_ATTESTATION` / `MISSING_IDENTITY` / `MISMATCH_ATTESTATION` -- the row does not carry the "
+        "harness's measurement token, or echoes it without attesting the evaluator bytes / candidate bytes / "
+        "behaviour digest it used, or contradicts what the harness itself measured. Fail-closed: an omission "
+        "is non-accepting even when every number agrees. The attestation is submitted by the runtime lane, so "
+        "it establishes what the row *claims and joins*, not that the claimed bytes were executed."
     )
     lines.append("")
     for runtime, entry in report["runtimes"].items():
@@ -3343,14 +4392,26 @@ def write_table(report: dict, path: Path) -> None:
             )
             lines.append("")
             continue
-        lines.append("| candidate | E*(c) | E_r(c) | delta | E* verdict | E* failure.kind | E_r failure.kind | E_r status | evidence | verdict | notes |")
-        lines.append("|---|---|---|---|---|---|---|---|---|---|---|")
+        lines.append("| candidate | E*(c) | E_r(c) | delta | E* verdict | E* failure.kind | E_r failure.kind | E_r status | evidence | behaviour | execution env | attestation | verdict | notes |")
+        lines.append("|---|---|---|---|---|---|---|---|---|---|---|---|---|---|")
         for row in rows:
+            behaviour = row.get("behaviour") or {}
+            matched = behaviour.get("behaviour_matches")
+            behaviour_cell = (
+                "not declared" if behaviour.get("method") is None
+                else ("agrees" if matched else "DIFFERS")
+                + (f" ({behaviour.get('method')})" if behaviour.get("method") else "")
+            )
+            env_cell = f"{row.get('execution_env_verdict') or '-'}"
+            if (behaviour.get("interpreter_class") or {}).get("observed"):
+                env_cell += f" {json.dumps(behaviour['interpreter_class']['observed'])}"
+            att_cell = (row.get("attestation") or {}).get("verdict") or "-"
             lines.append(
                 f"| {row['candidate_id']} | {fmt_value(row.get('e_star_value'))} | {fmt_value(row.get('e_r_value'))} | "
                 f"{'-' if row.get('delta') is None else format(row['delta'], '.3e')} | {row.get('e_star_status')} | "
                 f"{row.get('e_star_failure_kind') or '-'} | {row.get('e_r_failure_kind') or '-'} | "
-                f"{row.get('e_r_status')} | {row.get('evaluator_evidence_status') or '-'} | {row['verdict']} | "
+                f"{row.get('e_r_status')} | {row.get('evaluator_evidence_status') or '-'} | {behaviour_cell} | "
+                f"{env_cell} | {att_cell} | {row['verdict']} | "
                 f"{'; '.join(row.get('notes') or []) or '-'} |"
             )
         lines.append("")
@@ -3500,6 +4561,12 @@ def main(argv=None) -> int:
     ref.add_argument("--fidelity", choices=("full", "fast"), default=None)
     ref.add_argument("--timeout", type=float, default=300.0)
     ref.add_argument("--manifest", default=None, help="override the C* manifest (integrity-abort tests)")
+    ref.add_argument(
+        "--python", default=None, metavar="PATH",
+        help="interpreter to run E* under (default: the pinned .venv/bin/python). The behaviour/"
+             "execution-environment split (D1) means a sanctioned interpreter reproduces the frozen "
+             "table and is reported as EXECUTION_ENV_DRIFT -- never as a behaviour mismatch",
+    )
     ref.set_defaults(func=cmd_reference)
 
     run = sub.add_parser("run", help="drive every adapter and write report.json + report.md")
@@ -3515,6 +4582,13 @@ def main(argv=None) -> int:
                      help="also drive the fixture adapters as control rows (default on)")
     run.add_argument("--no-controls", dest="controls", action="store_false")
     run.add_argument("--manifest", default=None, help="override the C* manifest (integrity-abort tests)")
+    run.add_argument(
+        "--envelope", choices=(ENVELOPE_MODE_REQUIRED, ENVELOPE_MODE_OFF), default=ENVELOPE_MODE_REQUIRED,
+        help="required (default): issue a measurement token per candidate from the harness's own E* "
+             "sweep and require every adapter row to echo it and attest the bytes it used, failing "
+             "closed on omission (external review D3); off: run without that requirement, so this "
+             "run's acceptances are exploratory and are reported as such",
+    )
     run.add_argument(
         "--eid-document", default=EID_DOCUMENT_DEFAULT, metavar="LABEL|PATH",
         help="which EID* document to hand the adapters: 'canonical' (default) = "

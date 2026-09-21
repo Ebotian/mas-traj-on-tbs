@@ -1,0 +1,88 @@
+# 07 codex probe -- does a plain `codex` invocation fail?  @ 2026-09-21T17:00 +0800
+#
+# Host: codex-cli 0.155.1 (/usr/bin/codex).  No CODEX_HOME env var is set, so the
+# active config is ~/.codex/config.toml.
+#
+# SUMMARY (measured):
+#   * plain `codex exec` DID fail before the fix: HTTP 404 on POST /responses.
+#   * the failing URL came from base_url = "https://zjapi.com" (no /v1), NOT from
+#     a local relay.  Nothing listens on 127.0.0.1:15722 (or :15721) on this host.
+#   * `codex doctor` called that same broken endpoint "reachable (HTTP 200)":
+#     a FALSE GREEN -- its reachability check accepts any HTTP status.
+#   * adding "/v1" fixes it end-to-end (two successful calls, 14,425 tokens each).
+
+## 1. BEFORE the fix (config.toml mtime 2026-09-21 09:34, base_url = "https://zjapi.com")
+
+  $ codex doctor          # 16:55, before any change
+  Connectivity
+    ✓ reachability active provider endpoints are reachable over HTTP
+        reachability mode        API key auth
+        custom API inference URL https://zjapi.com/responses reachable (HTTP 200)
+        custom API route probe   https://zjapi.com/models route exists (HTTP 200)
+  ...
+  18 ok · 1 idle · 1 notes · 1 warn · 0 fail degraded
+
+  $ cd /tmp/a0d5_codexcheck && codex exec --skip-git-repo-check --sandbox read-only \
+        -c model_reasoning_effort='"low"' "Reply with exactly the two characters: OK"
+  ...
+  model: gpt-5.6-terra
+  provider: custom
+  ERROR: Reconnecting... 1/5  ...  ERROR: Reconnecting... 5/5
+  ERROR: unexpected status 404 Not Found: Invalid URL (POST /responses),
+         url: https://zjapi.com/responses, cf-ray: a3e7d9eaaedfc4d5-LAX
+  ERROR: unexpected status 404 Not Found: Invalid URL (POST /responses), ...
+  exit=1
+
+  $ ss -ltnp | grep -E '1572[12]'   ->  (no listener)
+
+## 2. Candidate fix verified with a command-line override ONLY (config.toml untouched)
+
+  $ codex exec --skip-git-repo-check --sandbox read-only \
+        -c model_providers.custom.base_url='"https://zjapi.com/v1"' \
+        -c model_reasoning_effort='"low"' "Reply with exactly the two characters: OK"
+  codex
+  OK
+  tokens used
+  14,425
+  exit=0
+
+## 3. AFTER the file fix (one line in ~/.codex/config.toml; see 05_config_hygiene.txt)
+
+  $ codex exec --skip-git-repo-check --sandbox read-only \
+        -c model_reasoning_effort='"low"' "Reply with exactly the two characters: OK"
+  codex
+  OK
+  tokens used
+  14,425
+  exit=0
+
+  $ codex doctor          # 17:00, after the change
+  Connectivity
+    ✓ reachability active provider endpoints are reachable over HTTP
+        reachability mode        API key auth
+        custom API inference URL https://zjapi.com/v1/<redacted> reachable (HTTP 404)
+        custom API route probe   https://zjapi.com/v1/<redacted> route exists (HTTP 401)
+
+  NOTE: doctor still prints its "✓ ... reachable" line -- now next to an HTTP 404.
+  The ✓/label carries no information; only the HTTP code does, and doctor's check
+  does not distinguish 2xx from 4xx. Do not use `codex doctor` reachability as a
+  functional probe (this is why the earlier "endpoint is reachable" reading of the
+  broken config was a false green).
+
+## 4. Reproduce from scratch
+
+  # broken (404) -- restore the pre-fix line, then:
+  cp ~/.codex/config.toml.a0d5-bak-20260921T165606 ~/.codex/config.toml
+  cd /tmp/a0d5_codexcheck && codex exec --skip-git-repo-check --sandbox read-only \
+      -c model_reasoning_effort='"low"' "Reply with exactly the two characters: OK"
+  # working (exit 0, "OK", 14,425 tokens):
+  cp ~/.codex/config.toml /tmp/cfg.bak && \
+    sed -i 's|base_url = "https://zjapi.com"|base_url = "https://zjapi.com/v1"|' ~/.codex/config.toml
+  # (or see the diff recorded in 05_config_hygiene.txt)
+
+## 5. Model spend for this workstream
+
+  zjapi / gpt-5.6-terra: 2 successful calls x 14,425 tokens = 28,850 tokens total.
+  The pre-fix call billed nothing observable (404 before inference).
+  DeepSeek api.deepseek.com: 1 x GET /models, 1 x GET /anthropic/v1/models (404),
+  3 x POST /anthropic/v1/messages with max_tokens=4 (~4 output tokens each).

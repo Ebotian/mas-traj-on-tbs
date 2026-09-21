@@ -1,0 +1,101 @@
+# 06 key hygiene search @ 2026-09-21T17:00:10+08:00
+
+## A. repo working tree (tracked + untracked), literal match per key
+### KEY: chagpt (len=164)
+-- repo working tree (tracked+untracked, excluding .git):
+   ~matches(paths): 0
+-- git object history (git grep over all refs):
+-- /home/ebt/rsi-archive:
+   ~matches(paths): 0
+### KEY: deepseek (len=35)
+-- repo working tree (tracked+untracked, excluding .git):
+   ~matches(paths): 0
+-- git object history (git grep over all refs):
+-- /home/ebt/rsi-archive:
+   ~matches(paths): 0
+### KEY: openrouter_openai_compatible (len=73)
+-- repo working tree (tracked+untracked, excluding .git):
+   ~matches(paths): 0
+-- git object history (git grep over all refs):
+-- /home/ebt/rsi-archive:
+   ~matches(paths): 0
+### KEY: gmi-cloud-key (len=252)
+-- repo working tree (tracked+untracked, excluding .git):
+   ~matches(paths): 0
+-- git object history (git grep over all refs):
+-- /home/ebt/rsi-archive:
+   ~matches(paths): 0
+
+## B. git history (all 16 commits of rsi-dev), literal match per key
+### KEY: chagpt (len=164)
+   total path-hits across all 16 commits: 0
+   raw pack grep hits: /home/ebt/rsi-dev/.git/objects/pack/pack-3f668226d77f6401213c16261417b28eebfc8f4e.pack:0,/home/ebt/rsi-dev/.git/objects/pack/pack-a270dd0cd4720a40b6eb71c90cf54964d113b666.pack:0
+### KEY: deepseek (len=35)
+   total path-hits across all 16 commits: 0
+   raw pack grep hits: /home/ebt/rsi-dev/.git/objects/pack/pack-3f668226d77f6401213c16261417b28eebfc8f4e.pack:0,/home/ebt/rsi-dev/.git/objects/pack/pack-a270dd0cd4720a40b6eb71c90cf54964d113b666.pack:0
+### KEY: openrouter_openai_compatible (len=73)
+   total path-hits across all 16 commits: 0
+   raw pack grep hits: /home/ebt/rsi-dev/.git/objects/pack/pack-3f668226d77f6401213c16261417b28eebfc8f4e.pack:0,/home/ebt/rsi-dev/.git/objects/pack/pack-a270dd0cd4720a40b6eb71c90cf54964d113b666.pack:0
+### KEY: gmi-cloud-key (len=252)
+   total path-hits across all 16 commits: 0
+   raw pack grep hits: /home/ebt/rsi-dev/.git/objects/pack/pack-3f668226d77f6401213c16261417b28eebfc8f4e.pack:0,/home/ebt/rsi-dev/.git/objects/pack/pack-a270dd0cd4720a40b6eb71c90cf54964d113b666.pack:0
+
+## C. /home/ebt/rsi-archive decompressed tars
+### KEY: chagpt (len=164)
+   circle-packing.tar.zst: hits=0
+   eve.tar.zst: hits=0
+   kapso.tar.zst: hits=0
+   loreley.tar.zst: hits=0
+   rsi-dev-a0-audited.tar.zst: hits=0
+   rsi-dev-head.tar.zst: hits=0
+### KEY: deepseek (len=35)
+   circle-packing.tar.zst: hits=0
+   eve.tar.zst: hits=0
+   kapso.tar.zst: hits=0
+   loreley.tar.zst: hits=0
+   rsi-dev-a0-audited.tar.zst: hits=0
+   rsi-dev-head.tar.zst: hits=0
+### KEY: openrouter_openai_compatible (len=73)
+   circle-packing.tar.zst: hits=0
+   eve.tar.zst: hits=0
+   kapso.tar.zst: hits=0
+   loreley.tar.zst: hits=0
+   rsi-dev-a0-audited.tar.zst: hits=0
+   rsi-dev-head.tar.zst: hits=0
+### KEY: gmi-cloud-key (len=252)
+   circle-packing.tar.zst: hits=0
+   eve.tar.zst: hits=0
+   kapso.tar.zst: hits=0
+   loreley.tar.zst: hits=0
+   rsi-dev-a0-audited.tar.zst: hits=0
+   rsi-dev-head.tar.zst: hits=0
+
+## D. /home/ebt/rsi-archive git bundles, git grep over every commit of every bundle
+### KEY: chagpt (len=164)
+   circle-packing.bundle: path-hits=0
+   eve.bundle: path-hits=0
+   kapso.bundle: path-hits=0
+   loreley.bundle: path-hits=0
+   rsi-dev-a0-audited.bundle: path-hits=0
+   rsi-dev-head.bundle: path-hits=0
+### KEY: deepseek (len=35)
+   circle-packing.bundle: path-hits=0
+   eve.bundle: path-hits=0
+   kapso.bundle: path-hits=0
+   loreley.bundle: path-hits=0
+   rsi-dev-a0-audited.bundle: path-hits=0
+   rsi-dev-head.bundle: path-hits=0
+### KEY: openrouter_openai_compatible (len=73)
+   circle-packing.bundle: path-hits=0
+   eve.bundle: path-hits=0
+   kapso.bundle: path-hits=0
+   loreley.bundle: path-hits=0
+   rsi-dev-a0-audited.bundle: path-hits=0
+   rsi-dev-head.bundle: path-hits=0
+### KEY: gmi-cloud-key (len=252)
+   circle-packing.bundle: path-hits=0
+   eve.bundle: path-hits=0
+   kapso.bundle: path-hits=0
+   loreley.bundle: path-hits=0
+   rsi-dev-a0-audited.bundle: path-hits=0
+   rsi-dev-head.bundle: path-hits=0

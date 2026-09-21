@@ -1,0 +1,38 @@
+# 02_teardown @ 2026-09-21T16:45:51+08:00
+
+## step 0: explicit stop of running a0 probe containers (recorded teardown.sh uses rm -f)
+a0pc-cli
+a0pc-pg
+a0pc-proxy
+a0pc-redis
+a0tl-cli
+a0tl-proxy
+
+## step 1: a0/closure/tool-loop/teardown.sh
+== teardown: containers named a0tl-*
+   removed container 49a03864a085
+   removed container 3a8357534d4e
+== teardown: networks named a0tl-*
+   removed network a0tl-internal
+== teardown: untouched neighbours (must still be listed)
+adapdc-catalog-postgres-1 Up 8 hours (healthy)
+== teardown: remaining a0tl-* state (should be empty)
+   (none)
+
+## step 2: a0/notes/exit-closed/proxy-closure/teardown.sh
+== teardown: containers named a0pc-*
+   removed container 8cc4ae3d2350
+   removed container 590aabf7d3f3
+   removed container a4b69faaa0f7
+   removed container 624a850d6d53
+== teardown: networks named a0pc-*
+   removed network a0pc-internal
+== teardown: verifying the pre-existing container is untouched
+adapdc-catalog-postgres-1 Up 8 hours (healthy)
+== teardown: remaining a0pc-* state (should be empty)
+   (none)
+## step 3: a0/runtimes/loreley/infra/net.sh down --networks
+down: containers removed (networks with --networks)
+
+## step 4: a0-egress-internal (created on demand by a0/env/checks/probe_egress.sh; no teardown script)
+a0-egress-internal

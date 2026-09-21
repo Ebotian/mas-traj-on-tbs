@@ -1,0 +1,98 @@
+{
+  "schema": "a0.attested-a0-1/v1",
+  "owner": "a0/qualification/** is the CONSUMER of these records. The producer is the D3 workstream (a0/envelope/** + a0/conformance/**); this file declares the interface so the consumer can be checked before the producer exists.",
+  "why": "Decision D3: behavioural agreement over C* cannot establish implementation identity. The mutant fixture in a0/fixtures/observational-equivalence/ reproduces an E' that agrees with E* bit-for-bit on all 14 candidates and is accepted by the behavioural checker, including when it omits the identity fields entirely. Identity must therefore become a HARNESS measurement: the harness owns the reference value and issues an OID measurement token (a0/envelope/envelope.py), the runtime still evaluates through its own evaluator path, it must submit an attestation of the bytes it executed, and the A0.1 row is accepted only when the harness compares its reference against the runtime-attested outcome AND the attestation's identity fields are present AND the identity check passes. Omission must fail.",
+  "in_one_line": "absent record, or a record that omits the executed-bytes identity or the identity verdict, is UNPROVEN -- never PASS, never inferred from behaviour",
+  "component": "a0_1_attested",
+  "component_domain": ["PASS", "FAIL", "UNPROVEN"],
+  "domain_rule": {
+    "PASS": "a source decided, every declared field is present and non-empty, and the verdict is positive",
+    "FAIL": "a source decided and the verdict is negative. NOT_SUBMITTED / MISSING_ATTESTATION / MISSING_IDENTITY / MISMATCH_ATTESTATION are all FAIL: the runtime was asked and did not answer with a usable identity. FAIL is never a soft pass either",
+    "UNPROVEN": "no source decided for this runtime, or a source was present but did not establish anything (e.g. the run was made with the token requirement off). UNPROVEN fails T_A1"
+  },
+  "record_sources": [
+    {
+      "kind": "runtime_check",
+      "where": "a0/conformance/report.json#runtimes.<runtime>.checks[check_id=measurement-attestation]",
+      "why": "PREFERRED, and the form the D3 runner actually produces (a0/conformance/conformance.py, check_id `measurement-attestation`, emitted by evaluate_runtime). `required` says whether the token requirement was ON for the run; `ok` is the runner's own per-runtime verdict; `envelope` names the harness run and nonce; the candidate lists name exactly which rows failed closed. A record carried by the run that produced the A0.1 report needs no separate report pin.",
+      "check_id": "measurement-attestation",
+      "required_field": "required",
+      "ok_field": "ok",
+      "envelope_field": "envelope",
+      "harness_run_field": "harness_run_id",
+      "positive_candidates_field": "attested_candidates",
+      "negative_candidate_fields": [
+        "missing_attestation_candidates",
+        "missing_identity_candidates",
+        "mismatch_attestation_candidates"
+      ],
+      "pins_current_report": true
+    },
+    {
+      "kind": "report_block",
+      "where": "a0/conformance/report.json#runtimes.<runtime>.qualification.a0_1.attestation",
+      "why": "a per-runtime attestation block, if the runner is wired to carry one there instead of as a check",
+      "block_path": ["qualification", "a0_1", "attestation"],
+      "identity_verdict_field": "identity_verdict",
+      "positive": ["IDENTICAL", "PASS", "REALIZED", "ATTESTATION_OK"],
+      "negative": ["MISMATCH", "NOT_SUBMITTED", "NOT_REALIZED", "FAIL", "MISSING_ATTESTATION", "MISSING_IDENTITY", "MISMATCH_ATTESTATION"],
+      "executed_identity_fields": ["executed_identity", "attestation_digest", "executed_evaluator_sha256", "eid_execution", "oid"],
+      "oid_field": "oid",
+      "pins_current_report": true
+    },
+    {
+      "kind": "file",
+      "where": "a0/conformance/attested/<runtime>/*.json",
+      "why": "a standalone per-runtime record next to the runner, for a harness that cannot write inside report.json",
+      "identity_verdict_field": "identity_verdict",
+      "positive": ["IDENTICAL", "PASS", "REALIZED", "ATTESTATION_OK"],
+      "negative": ["MISMATCH", "NOT_SUBMITTED", "NOT_REALIZED", "FAIL", "MISSING_ATTESTATION", "MISSING_IDENTITY", "MISMATCH_ATTESTATION"],
+      "executed_identity_fields": ["executed_identity", "attestation_digest", "executed_evaluator_sha256", "eid_execution", "oid"],
+      "oid_field": "oid",
+      "pins_current_report": true
+    },
+    {
+      "kind": "file",
+      "where": "a0/envelope/out/attested/<runtime>/*.json",
+      "why": "the D3 envelope workstream's own output directory",
+      "identity_verdict_field": "identity_verdict",
+      "positive": ["IDENTICAL", "PASS", "REALIZED", "ATTESTATION_OK"],
+      "negative": ["MISMATCH", "NOT_SUBMITTED", "NOT_REALIZED", "FAIL", "MISSING_ATTESTATION", "MISSING_IDENTITY", "MISMATCH_ATTESTATION"],
+      "executed_identity_fields": ["executed_identity", "attestation_digest", "executed_evaluator_sha256", "eid_execution", "oid"],
+      "oid_field": "oid",
+      "pins_current_report": true
+    },
+    {
+      "kind": "file",
+      "where": "a0/qualification/evidence/a0_1_attested/<runtime>/*.json",
+      "why": "the consumer's own drop box, so a wiring record can be placed by hand if the producer writes somewhere else",
+      "identity_verdict_field": "identity_verdict",
+      "positive": ["IDENTICAL", "PASS", "REALIZED", "ATTESTATION_OK"],
+      "negative": ["MISMATCH", "NOT_SUBMITTED", "NOT_REALIZED", "FAIL", "MISSING_ATTESTATION", "MISSING_IDENTITY", "MISMATCH_ATTESTATION"],
+      "executed_identity_fields": ["executed_identity", "attestation_digest", "executed_evaluator_sha256", "eid_execution", "oid"],
+      "oid_field": "oid",
+      "pins_current_report": true
+    }
+  ],
+  "search_paths": [
+    "a0/conformance/attested/<runtime>/*.json",
+    "a0/envelope/out/attested/<runtime>/*.json",
+    "a0/qualification/evidence/a0_1_attested/<runtime>/*.json"
+  ],
+  "required_fields": [
+    "identity_verdict",
+    "executed_identity",
+    "oid",
+    "runtime"
+  ],
+  "selection_rule": "sources are tried in the order listed and the first one that DECIDES wins. A source may only decide with a positive or negative verdict and all the identity material present; a source that is present but inconclusive (token requirement off, missing metadata, verdict outside the declared domain) is recorded as rejected and the next source is tried. A standalone file record must additionally pin the current a0/conformance/report.json sha256, so the A0.1 re-run invalidates stale attestations instead of letting them outlive the run they describe.",
+  "forbidden_shortcuts": [
+    "inferring identity from behavioural agreement on C* (this is the mutant fixture's whole point)",
+    "an adapter self-report with no harness-owned reference or OID token",
+    "treating a missing attestation as 'the runtime is fine'",
+    "treating a run made with the token requirement OFF as attested: `required=false` is UNPROVEN",
+    "replacing the runtime's own evaluation path with a harness subprocess: the runtime must still evaluate, the harness supplies the reference and the token (see a0/envelope/README.md)"
+  ],
+  "status_now": "LANDED AND DECIDED. The D3 harness issues the tokens (a0/envelope/**) and the conformance runner emits the per-runtime `measurement-attestation` check; the A0.1 report on record is that re-run with the envelope REQUIRED. The resolution now decides for all four runtimes, and the predicted source path (`runtimes.<r>.checks[check_id=measurement-attestation]`) matched the real output with no change to this contract: SimpleLoop = PASS (14/14 rows echo the token and attest the bytes they executed), KAPSO/EvE/Loreley = FAIL (MISSING_ATTESTATION on 14/14 rows, because the requirement was ON and their lanes did not answer). The measurement axis is unaffected -- the numbers agree -- so R_A1^main = ['simpleloop'] and the three others are out on R3_a0_1_attested, not on a measurement rule. Whether they are wired or explicitly excluded is open decision G6 in a0/qualification/freeze.py.",
+  "consumer_check": "python3 a0/qualification/build_qualification.py --check ; python3 a0/qualification/eligibility.py --main-arm ; python3 a0/qualification/freeze.py gates"
+}
