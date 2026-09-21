@@ -16,7 +16,7 @@ Nothing stronger. In particular, not "same model weights" — that is frozen as 
   "iteration": 0,
   "runtime": "kapso|eve|loreley|simpleloop",
   "lane": "claude_code",
-  "mrc_star": "dfb9316f60d44d2c3363d755f777f65e0b0a6938fa864518ad077bcc2aa1f78c",
+  "mrc_star": "b61c3a152ac97f4103b82104561aac56f49cf77e3dd65529967ccb3a42fec029",
   "model_identity": {
     "declared_route_model": "deepseek-flash",
     "requested_model_id": "deepseek-flash",

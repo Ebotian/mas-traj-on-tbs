@@ -9,7 +9,7 @@
     "Prompt": "29fcc2802819ab379f1a1e48c3246d7dbd6ce6c588ebc20fe1c596e18b7c03c1",
     "Provider": "ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f",
     "RequestedModel": "7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced",
-    "RuntimeAdapters": "78de87f88a0ccbe8a9f37e2a578f744dec996cae6a514f9d43b236b35fc487c8",
+    "RuntimeAdapters": "ebde84f1889e2778e7efb997f7652c895add61071e5f797c310c418e627b940f",
     "TaskSnapshot": "480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac",
     "Tools": "f7381ee837365ab815eddca5eeaab0fc9a9e9bf2267e268032bff1340a77f708"
   },
@@ -158,7 +158,7 @@
     "RuntimeAdapters": {
       "adapters": [
         {
-          "adapter_commit": "39e978b8",
+          "adapter_commit": "5d96967f",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/kapso/a0_adapter/__init__.py",
@@ -213,7 +213,7 @@
           "upstream_pin": "7d99b152"
         },
         {
-          "adapter_commit": "39e978b8",
+          "adapter_commit": "5d96967f",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/eve/a0_adapter/__init__.py",
@@ -272,7 +272,7 @@
           "upstream_pin": "979065fd"
         },
         {
-          "adapter_commit": "39e978b8",
+          "adapter_commit": "5d96967f",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/loreley/src/a0_adapter/__init__.py",
@@ -339,7 +339,7 @@
           "upstream_pin": "4c375920"
         },
         {
-          "adapter_commit": "39e978b8",
+          "adapter_commit": "5d96967f",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/__init__.py",
@@ -359,7 +359,7 @@
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/cli.py",
-              "sha256": "7ad0750df392b4b4f43c3037f37493ea241d3060172ce9c536a69db08d95073e"
+              "sha256": "1969c9d2c8aae6af386dbf2fe68b5a4b5b11795bff12fd96703d4c55575be0f3"
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/closure.py",
@@ -367,7 +367,7 @@
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/conformance.py",
-              "sha256": "455a5cd937e88fbfa78bb5d85dc714d1db4df05204c9789a14e74e0e70636713"
+              "sha256": "247909e3efcb9e31d6404094323c4b681a60bb477cc10e89f6cc4884d26ee241"
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/eidmap.py",
@@ -387,7 +387,7 @@
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/runner.py",
-              "sha256": "26831abcc1f4966ad02dfc0e53450dabe94c089865b3edeebdeab5f8c939af2c"
+              "sha256": "61f34a19a05b8343eb19f14bb483997363130ddbbc466e48364a8e733022ac17"
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/solvers.py",
@@ -400,7 +400,7 @@
           ],
           "adapter_source_root": "a0/runtimes/simpleloop/a0_adapter",
           "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
-          "adapter_source_sha256": "167fe070911bb7a4767690e387e6fa2d138ec61cf31b3f6c7014814b1d5bcc89",
+          "adapter_source_sha256": "c2eb87e78681e47ccbf4c61ef6ce6c7a0e78e61cbce74e366bb8855764409010",
           "lane": "codex",
           "runtime": "simpleloop",
           "upstream_pin": "self_built"
@@ -590,11 +590,11 @@
     "permitted_secondary": [],
     "primary": "deepseek-v4-pro"
   },
-  "mrc_star": "9becc39c0fea3db8ff456b7d68d42198523a43074249d93faad4a8a7c06cfd01",
+  "mrc_star": "6ed87ac44ad13f66a2c7ce419163227b03ad49f093dd8b0e9f779576a0cdf914",
   "mrc_star_derivation": {
     "algorithm": "sha256",
     "domain": "a0/mrc/v1/MRC*",
-    "payload_canonical": "{\"ApiSurface\":\"f20a468bfd04cd0a89e64a99fc228c9f87247813d302c6eb096c38f275a9a34e\",\"Cli\":\"e9ae79871ac96f382634d138a91156a0867c7e3d88c48653e7b25b9ea999d3f5\",\"Endpoint\":\"ce199e075a11cfad42102db3c040a4a0e82494ae6768977a039b1d121ecfdbb4\",\"Network\":\"b0459be785df988d8ccf6584e6d0617804d6d2b70f3d27210b7b37981d230c1f\",\"Params\":\"0cf3463fa300dc107292329bd07f86609685f17a26abc0e90cce6197cabdfebb\",\"Permissions\":\"9fd813c25202bdcfa13a970cfe768eb4a03b2f2ecb7c420a1bc94f3e5d66c674\",\"Prompt\":\"29fcc2802819ab379f1a1e48c3246d7dbd6ce6c588ebc20fe1c596e18b7c03c1\",\"Provider\":\"ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f\",\"RequestedModel\":\"7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced\",\"RuntimeAdapters\":\"78de87f88a0ccbe8a9f37e2a578f744dec996cae6a514f9d43b236b35fc487c8\",\"TaskSnapshot\":\"480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac\",\"Tools\":\"f7381ee837365ab815eddca5eeaab0fc9a9e9bf2267e268032bff1340a77f708\"}"
+    "payload_canonical": "{\"ApiSurface\":\"f20a468bfd04cd0a89e64a99fc228c9f87247813d302c6eb096c38f275a9a34e\",\"Cli\":\"e9ae79871ac96f382634d138a91156a0867c7e3d88c48653e7b25b9ea999d3f5\",\"Endpoint\":\"ce199e075a11cfad42102db3c040a4a0e82494ae6768977a039b1d121ecfdbb4\",\"Network\":\"b0459be785df988d8ccf6584e6d0617804d6d2b70f3d27210b7b37981d230c1f\",\"Params\":\"0cf3463fa300dc107292329bd07f86609685f17a26abc0e90cce6197cabdfebb\",\"Permissions\":\"9fd813c25202bdcfa13a970cfe768eb4a03b2f2ecb7c420a1bc94f3e5d66c674\",\"Prompt\":\"29fcc2802819ab379f1a1e48c3246d7dbd6ce6c588ebc20fe1c596e18b7c03c1\",\"Provider\":\"ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f\",\"RequestedModel\":\"7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced\",\"RuntimeAdapters\":\"ebde84f1889e2778e7efb997f7652c895add61071e5f797c310c418e627b940f\",\"TaskSnapshot\":\"480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac\",\"Tools\":\"f7381ee837365ab815eddca5eeaab0fc9a9e9bf2267e268032bff1340a77f708\"}"
   },
   "notes": [
     "EvE codex_exec hardcodes --dangerously-bypass-approvals-and-sandbox; codex_tmux can be closed. Same route, different Permissions: the two are NOT interchangeable A1 conditions."

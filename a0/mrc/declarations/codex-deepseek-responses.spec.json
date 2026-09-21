@@ -144,7 +144,7 @@
     "RuntimeAdapters": {
       "adapters": [
         {
-          "adapter_commit": "39e978b8",
+          "adapter_commit": "5d96967f",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/kapso/a0_adapter/__init__.py",
@@ -199,7 +199,7 @@
           "upstream_pin": "7d99b152"
         },
         {
-          "adapter_commit": "39e978b8",
+          "adapter_commit": "5d96967f",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/eve/a0_adapter/__init__.py",
@@ -258,7 +258,7 @@
           "upstream_pin": "979065fd"
         },
         {
-          "adapter_commit": "39e978b8",
+          "adapter_commit": "5d96967f",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/loreley/src/a0_adapter/__init__.py",
@@ -325,7 +325,7 @@
           "upstream_pin": "4c375920"
         },
         {
-          "adapter_commit": "39e978b8",
+          "adapter_commit": "5d96967f",
           "adapter_source_files": [
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/__init__.py",
@@ -345,7 +345,7 @@
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/cli.py",
-              "sha256": "7ad0750df392b4b4f43c3037f37493ea241d3060172ce9c536a69db08d95073e"
+              "sha256": "1969c9d2c8aae6af386dbf2fe68b5a4b5b11795bff12fd96703d4c55575be0f3"
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/closure.py",
@@ -353,7 +353,7 @@
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/conformance.py",
-              "sha256": "455a5cd937e88fbfa78bb5d85dc714d1db4df05204c9789a14e74e0e70636713"
+              "sha256": "247909e3efcb9e31d6404094323c4b681a60bb477cc10e89f6cc4884d26ee241"
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/eidmap.py",
@@ -373,7 +373,7 @@
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/runner.py",
-              "sha256": "26831abcc1f4966ad02dfc0e53450dabe94c089865b3edeebdeab5f8c939af2c"
+              "sha256": "61f34a19a05b8343eb19f14bb483997363130ddbbc466e48364a8e733022ac17"
             },
             {
               "path": "a0/runtimes/simpleloop/a0_adapter/solvers.py",
@@ -386,7 +386,7 @@
           ],
           "adapter_source_root": "a0/runtimes/simpleloop/a0_adapter",
           "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
-          "adapter_source_sha256": "167fe070911bb7a4767690e387e6fa2d138ec61cf31b3f6c7014814b1d5bcc89",
+          "adapter_source_sha256": "c2eb87e78681e47ccbf4c61ef6ce6c7a0e78e61cbce74e366bb8855764409010",
           "lane": "codex",
           "runtime": "simpleloop",
           "upstream_pin": "self_built"

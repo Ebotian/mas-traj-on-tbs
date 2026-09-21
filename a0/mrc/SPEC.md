@@ -103,15 +103,16 @@ for the commands and their output.
 
 | route_id | CLI (version) | surface | base URL | MRC* |
 |---|---|---|---|---|
-| `codex-deepseek-responses` | codex 0.155.1 | `/v1/responses` | `https://api.deepseek.com/v1` | `9becc39c…` |
-| `claude-deepseek-anthropic` | claude 2.1.278 | `/anthropic/v1/messages` | `https://api.deepseek.com/anthropic` | `dfb9316f…` |
-| `kilo-deepseek-chat` | kilo 7.7.5 | `/v1/chat/completions` | `https://api.deepseek.com/v1` | `6688c0d4…` |
-| `opencode-deepseek-chat` | opencode v2.0.11 | `/v1/chat/completions` | `https://api.deepseek.com/v1` | `d04a4159…` |
+| `codex-deepseek-responses` | codex 0.155.1 | `/v1/responses` | `https://api.deepseek.com/v1` | `6ed87ac4…` |
+| `claude-deepseek-anthropic` | claude 2.1.278 | `/anthropic/v1/messages` | `https://api.deepseek.com/anthropic` | `b61c3a15…` |
+| `kilo-deepseek-chat` | kilo 7.7.5 | `/v1/chat/completions` | `https://api.deepseek.com/v1` | `8baaa800…` |
+| `opencode-deepseek-chat` | opencode v2.0.11 | `/v1/chat/completions` | `https://api.deepseek.com/v1` | `490f9109…` |
 
 These four values were last recomputed on 2026-09-21 when the adapter path-independence fix moved the
-adapter source digests (§6.1, `REPORT.md` §7); the earlier values (`2c5272b8…`, `6630264f…`,
-`821bfd38…`, `b17b21e8…`, then `0d98045b…`, `f31802ac…`, `e80a3530…`, `046ca78c…`) are superseded and
-must not be quoted.
+adapter source digests for all four runtimes (§6.1, `REPORT.md` §7); the earlier values
+(`2c5272b8…`, `6630264f…`, `821bfd38…`, `b17b21e8…`, then `0d98045b…`, `f31802ac…`, `e80a3530…`,
+`046ca78c…`, then `9becc39c…`, `dfb9316f…`, `6688c0d4…`, `d04a4159…`) are superseded and must not be
+quoted.
 
 Encoded user decisions (`model_policy`, validated): **`deepseek-flash` primary**;
 **mixed use of `deepseek-v4-pro` permitted** (`permitted_secondary`); **OpenRouter excluded**
@@ -289,12 +290,12 @@ counted budget"* — which is exactly the estimand in §1, and the strongest one
   rule, three preimage checks (manifest→digest, rule identity, preimage-vs-repo), four positive
   controls, and **14 negative cases** each failing with its expected code.
 - All four declarations validate clean against `frozen_routes.json` and `mrc_schema.json`.
-- **Adapter source digests** recomputed from the repo at `39e978b8` (the path-independence fix; the
-  values before it were taken at `261f0c9`): each of the four values is
+- **Adapter source digests** recomputed from the repo at `5d96967f` (the path-independence fix; the
+  values before it were taken at `261f0c9`, then `39e978b8`): each of the four values is
   reproduced from its recorded preimage by `verify_adapter_preimage.py` (no code shared with
   `mrc.py`) and by `make_declarations.py --verify`, and the working tree matches the pinned commit
-  for all 51 preimage files (§6.1, `REPORT.md` §7). The simpleloop package was not changed by this
-  workstream, so its digest is the same value it carried at `261f0c9`.
+  for all 51 preimage files (§6.1, `REPORT.md` §7). Only simpleloop's digest moved at `5d96967f`;
+  kapso, eve and loreley are the same values they carried at `39e978b8`.
 
 **Read from source / prior measurements**
 - **Upstream pins** (`7d99b152`, `979065fd`, `4c375920`, `self_built`) and the closure topology are
@@ -312,4 +313,5 @@ counted budget"* — which is exactly the estimand in §1, and the strongest one
 - Sampling parameters on all four routes are provider defaults (`null` + reason): not set, not
   measured, and a hidden degree of freedom.
 - The repo head moved to `261f0c9` during the adapter work; the path-independence fix committed the
-  adapters at `39e978b8`, and the adapter commits are recorded at `39e978b8`.
+  loreley/eve/kapso adapters at `39e978b8` and the simpleloop adapter at `5d96967f`, which is the
+  adapter commit now recorded.
