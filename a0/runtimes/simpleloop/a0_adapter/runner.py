@@ -54,6 +54,10 @@ class Settings:
     max_iterations: int = 64
     reference_table: Path | None = None
     evalcontract_py: Path | None = None
+    #: the harness measurement envelope (external review D3), handed over by the runner as
+    #: `A0_ENVELOPE` or `--envelope`. When it is absent the A0.1 rows still report their identity,
+    #: but they cannot echo a measurement token -- which the checker treats as non-accepting.
+    envelope_path: Path | None = None
 
     @property
     def primary_field(self) -> str:

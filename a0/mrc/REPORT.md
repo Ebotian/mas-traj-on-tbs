@@ -455,63 +455,102 @@ instrument digest, which is registered as an open item rather than silently impl
 
 ### The adapter path-independence fix (why these digests changed) **[verified by running it]**
 
-The four adapter packages above were edited to stop resolving the repository from a hard-coded host
-root (`contracts.py:13` in loreley was `A0_ROOT = Path("/home/ebt/rsi-dev/a0")`; kapso read absolute
-paths straight out of `config/adapter.json`; loreley's closure probe bind-mounted `/home/ebt`). Each
-now resolves the repo root from its own location, with `$A0_REPO_ROOT` as an explicit override:
+All four adapter packages were edited to stop resolving the repository from a hard-coded host root
+(`contracts.py:13` in loreley was `A0_ROOT = Path("/home/ebt/rsi-dev/a0")`; kapso read absolute
+paths straight out of `config/adapter.json`; loreley's closure probe bind-mounted `/home/ebt`;
+simpleloop's `cli.py:35` was `DEFAULT_WORK_ROOT = "/home/ebt/rsi-dev"`). Each now resolves the repo
+root from its own location, with `$A0_REPO_ROOT` as an explicit override:
 
 | adapter | change |
 |---|---|
 | loreley `src/a0_adapter/contracts.py` | `REPO_ROOT = $A0_REPO_ROOT or Path(__file__).resolve().parents[5]`; `A0_ROOT = REPO_ROOT / "a0"` |
 | loreley `src/a0_adapter/closure.py:130` | bind-mount `{REPO_ROOT}:{REPO_ROOT}` instead of `/home/ebt:/home/ebt` |
+| loreley `adapter.json` | `cmd ["bin/a0-loreley"]`, `pythonpath "src"`, `interpreter "checkout/.venv/bin/python"` — relative to the manifest's own directory |
 | eve `a0_adapter/common.py` | same resolution; `A0_ROOT`/`REPO_ROOT` derived from `$A0_REPO_ROOT` or `ADAPTER_DIR` |
 | kapso `a0_adapter/common.py` | `AdapterConfig.load` re-roots every config path recorded under the declared repo root onto this checkout's root; `$A0_KAPSO_SRC` overrides the upstream path |
+| kapso `adapter.json` | `cmd [".venv/bin/python", "-m", "a0_adapter"]`, `pythonpath "."` — relative to the manifest's own directory |
+| simpleloop `a0_adapter/cli.py:35` | `DEFAULT_WORK_ROOT = str(resolve_repo_root())`, i.e. `$A0_REPO_ROOT` or `Path(__file__).resolve().parents[4]` |
 
-Demonstration (copy the tree, run the copy's adapter, show nothing lands back in the original):
+Only **kapso and loreley ship an `adapter.json` entry-point manifest**; eve and simpleloop have none
+and the conformance runner discovers them by package layout, deriving the interpreter and pythonpath
+from `<adapter_dir>/.venv` (so their discovery was already copy-relative). The two manifests declared
+`/home/ebt/rsi-dev/...` absolute `cmd`/`interpreter`/`pythonpath`; they are now relative to the
+manifest's directory, which is the runner's documented launch cwd
+(`a0/conformance/conformance.py:3773-3776` launches with `cwd = <adapter_dir>` and PYTHONPATH =
+`<adapter_dir>` unless the manifest overrides it). No generator writes these manifests — they are
+authored JSON — so the files themselves are the fix.
+
+**Demonstration.** Copy the tree, then run the copy's adapters from an unrelated cwd and launch
+through the copy's own conformance-runner discovery:
 
 ```bash
-rm -rf /tmp/a0path && mkdir -p /tmp/a0path/copy && cp -a /home/ebt/rsi-dev/a0 /tmp/a0path/copy/a0
-# PRE-FIX (before the edits) the copy's adapter still resolves the ORIGINAL:
-#   cd /tmp/a0path/copy/a0/runtimes/kapso && .venv/bin/python -c \
-#     "import sys;sys.path.insert(0,'.');from a0_adapter.common import AdapterConfig;\
-#      c=AdapterConfig.load();print(c.a0_root) "
-#   -> /home/ebt/rsi-dev/a0
-# POST-FIX the copy resolves the copy:
-cd /tmp/a0path/copy/a0/runtimes/loreley && ./checkout/.venv/bin/python -c \
+rm -rf /tmp/a0fin && mkdir -p /tmp/a0fin/copy && cp -a /home/ebt/rsi-dev/a0 /tmp/a0fin/copy/a0
+# A. every copy-side adapter resolves the COPY (post-fix); pre-fix all of these printed /home/ebt/rsi-dev
+cd /tmp/a0fin/copy/a0/runtimes/simpleloop && .venv/bin/python -c \
+  "import sys;sys.path.insert(0,'.');from a0_adapter.cli import DEFAULT_WORK_ROOT;print(DEFAULT_WORK_ROOT)"
+cd /tmp/a0fin/copy/a0/runtimes/kapso && .venv/bin/python -c \
+  "import sys;sys.path.insert(0,'.');from a0_adapter.common import AdapterConfig;print(AdapterConfig.load().a0_root)"
+cd /tmp/a0fin/copy/a0/runtimes/loreley && ./checkout/.venv/bin/python -c \
   "import sys;sys.path.insert(0,'src');from a0_adapter.contracts import A0_ROOT;print(A0_ROOT)"
-# -> /tmp/a0path/copy/a0
-touch /tmp/a0path/marker
-cd /tmp && /tmp/a0path/copy/a0/runtimes/loreley/bin/a0-loreley eidr-recompute \
-  --run-dir /tmp/a0path/copy/a0/runtimes/loreley/out/pathindep
-find /home/ebt/rsi-dev/a0/runtimes -newer /tmp/a0path/marker -type f | wc -l   # -> 0
-find /home/ebt/rsi-dev/a0/contract -newer /tmp/a0path/marker -type f | wc -l   # -> 0
+cd /tmp/a0fin/copy/a0/runtimes/eve && .venv/bin/python -c \
+  "import sys;sys.path.insert(0,'.');from a0_adapter import common;print(common.A0_ROOT)"
+# B. run the copy's adapters for real, from cwd=/tmp
+cd /tmp && /tmp/a0fin/copy/a0/runtimes/loreley/bin/a0-loreley eidr-recompute \
+  --run-dir /tmp/a0fin/copy/a0/runtimes/loreley/out/pathindep          # exit 0
+cd /tmp/a0fin/copy/a0/runtimes/simpleloop && .venv/bin/python -m a0_adapter conformance \
+  --runtime simpleloop --out /tmp/a0fin/copy/a0/runtimes/simpleloop/out/pathindep/conformance.json  # exit 0, 14/14 rows
+# C. control: hide the COPY's EID -> the copy's adapter MUST fail (it reads the copy, not the original)
+mv /tmp/a0fin/copy/a0/tasks/circle-packing/plumbing.EID.proposed.json /tmp/a0fin/eid.hidden
+cd /tmp/a0fin/copy/a0/runtimes/simpleloop && .venv/bin/python -m a0_adapter eidr   # exit 3
+mv /tmp/a0fin/eid.hidden /tmp/a0fin/copy/a0/tasks/circle-packing/plumbing.EID.proposed.json
+# D. nothing landed back in the original
+find /home/ebt/rsi-dev/a0/runtimes -newer /tmp/a0fin/marker -type f | wc -l   # -> 0
+find /home/ebt/rsi-dev/a0/contract -newer /tmp/a0fin/marker -type f | wc -l   # -> 0
 ```
 
-(The `find` is scoped to `a0/runtimes` and `a0/contract`, the trees an adapter can reach; other
-workstreams were editing `a0/qualification`, `a0/conformance` and `a0/envelope` concurrently, so a
-whole-`a0` scan is not a clean control while parallel workers are active.)
+Real output: `simpleloop DEFAULT_WORK_ROOT = /tmp/a0fin/copy`; `kapso a0_root = /tmp/a0fin/copy/a0`
+(and `state_root = /tmp/a0fin/copy/a0/runtimes/kapso/state`); `loreley A0_ROOT = /tmp/a0fin/copy/a0`;
+`eve A0_ROOT = /tmp/a0fin/copy/a0`; the loreley and simpleloop runs both exit 0 and write under the
+copy; the control fails with
+`adapter: contract mismatch: EID document not found: /tmp/a0fin/copy/a0/tasks/circle-packing/plumbing.EID.proposed.json`
+— **the copy's path, not the original's**, which is the isolation property measured rather than
+asserted; and both `find` commands report **0**. In-place resolution is unchanged
+(`/home/ebt/rsi-dev` for all four; `$A0_KAPSO_SRC` still `/home/ebt/kapso_ck/kapso/src`), and
+`A0_REPO_ROOT=/tmp/a0fin/copy ...` overrides from either tree.
 
-Real output: in-place resolution is unchanged (`/home/ebt/rsi-dev` for all three; `$A0_KAPSO_SRC`
-still `/home/ebt/kapso_ck/kapso/src`); the copied loreley adapter resolves `A0_ROOT` to the copy and
-writes `loreley.program.md` under the copy; `find` reports **0** files under the original `a0`
-touched by the run. The copy's kapso adapter, run for real (`python -m a0_adapter conformance
---runtime kapso`, 14 candidates, `pass: true`), likewise writes only under the copy; the registered
-tree destination is `config.state_root / "registered-eval"` (`runtime.py:135`), which is now the
-copy. An explicit override works from either tree:
-`A0_REPO_ROOT=/tmp/a0path/copy ... -> REPO_ROOT /tmp/a0path/copy`.
+**Launching through the manifests.** The copy's own runner discovery, with the copy's `adapter.json`
+files in place, returns copy-local argv; before the fix it returned the original's:
 
-One residual, handed off rather than fixed: the per-runtime `adapter.json` manifests still declare an
-**absolute** `cmd`/`interpreter`/`pythonpath` (`a0/runtimes/loreley/adapter.json` →
-`/home/ebt/rsi-dev/a0/runtimes/loreley/bin/a0-loreley`; `a0/runtimes/kapso/adapter.json` →
-`/home/ebt/rsi-dev/.../python -m a0_adapter`). A harness that *discovers* adapters through those
-manifests therefore still launches the original tree's adapter from a copy — the mechanism an
-independent verifier observed writing run artifacts into the original `out/`. Those files are outside
-this workstream's ownership; the adapter code is now path-independent, the manifests are not.
+```bash
+# the copy's conformance runner, discovery only
+python3 -c '
+import importlib.util
+from pathlib import Path
+s = importlib.util.spec_from_file_location("c", "/tmp/a0fin/copy/a0/conformance/conformance.py")
+m = importlib.util.module_from_spec(s); s.loader.exec_module(m)
+for rt in ("kapso","eve","loreley","simpleloop"):
+    base, info = m.discover_adapter(rt, m.ADAPTER_ROOT, {}, None)
+    print(rt, info.get("source"), base)
+'
+```
 
-The **simpleloop** adapter has the same defect and belongs to another workstream, so it was not
-edited here: `a0/runtimes/simpleloop/a0_adapter/cli.py:34` is still
-`DEFAULT_WORK_ROOT = "/home/ebt/rsi-dev"`, and all of its other defaults (`DEFAULT_CANDIDATE_SET`,
-`DEFAULT_EID`, …) are repo-relative strings resolved against that root. It is handed off.
+Real output (post-fix): `kapso adapter.json ['.venv/bin/python', '-m', 'a0_adapter']`;
+`eve a0_adapter package ['/tmp/a0fin/copy/.../eve/.venv/bin/python', '-m', 'a0_adapter']`;
+`loreley adapter.json ['bin/a0-loreley']`;
+`simpleloop a0_adapter package ['/tmp/a0fin/copy/.../simpleloop/.venv/bin/python', '-m', 'a0_adapter']`.
+Launching the discovered argv with the runner's cwd/PYTHONPATH showed the child importing the copy's
+module — `module /tmp/a0fin/copy/a0/runtimes/kapso/a0_adapter/__init__.py`,
+`python /tmp/a0fin/copy/a0/runtimes/kapso/.venv/bin/python` — and the loreley launcher
+`bin/a0-loreley` resolved to `/tmp/a0fin/copy/a0/runtimes/loreley/bin/a0-loreley`. The same discovery
+with the **pre-fix** manifests (restored from `39e978b8`) returned
+`['/home/ebt/rsi-dev/a0/runtimes/kapso/.venv/bin/python', '-m', 'a0_adapter']` and
+`['/home/ebt/rsi-dev/a0/runtimes/loreley/bin/a0-loreley']` — the copy launching the original, which is
+the isolation channel this fix closes.
+
+(The `find` comparison is scoped to `a0/runtimes` and `a0/contract`, the trees an adapter can reach;
+other workstreams were editing `a0/qualification`, `a0/conformance`, `a0/envelope` and the simpleloop
+D3 wiring concurrently, so a whole-`a0` scan is not a clean control while parallel workers are
+active.)
 
 ### Recomputed values, by preimage
 

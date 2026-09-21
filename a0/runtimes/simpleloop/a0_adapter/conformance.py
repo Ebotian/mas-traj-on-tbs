@@ -25,6 +25,7 @@ substrate records `scalar = null` for it and the check fails if a number appears
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 from . import traces as trace_mod
@@ -33,6 +34,83 @@ from .estareval import sha256_file
 from .runner import Settings, build_evaluator, validate_run_dir, validate_trace_paths
 
 CHECK_POINT = "A0.1 conformance: E_r(c) vs E*(c) for every c in C* (plan:513)"
+
+
+def _envelope_module(work_root: Path):
+    """The harness's own envelope code (`a0/envelope/envelope.py`), imported by path.
+
+    The A0.1 checker and this adapter must compute the same behaviour digest and the same OID, so
+    they use the same module rather than two implementations of the same formula.
+    """
+    directory = Path(work_root) / "a0" / "envelope"
+    if str(directory) not in sys.path:
+        sys.path.insert(0, str(directory))
+    import envelope as envelope_mod  # noqa: PLC0415
+
+    return envelope_mod
+
+
+def load_envelope(settings: Settings):
+    """The measurement envelope handed over by the runner, or None when none was.
+
+    Absence is not an error here: the adapter reports rows that carry their identity but no token,
+    and the checker turns that into `MISSING_ATTESTATION`. Silently inventing a token would be the
+    one thing that must not happen -- the token is the harness's, and its whole value is that the
+    runtime cannot mint it.
+    """
+    if not settings.envelope_path:
+        return None
+    path = Path(settings.envelope_path)
+    if not path.is_file():
+        return None
+    with path.open("r", encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def measurement_attestation(settings: Settings, env_mod, envelope, candidate, outcome, *,
+                            candidate_sha256: str) -> dict:
+    """What this lane attests about the measurement it is reporting (external review D3).
+
+    It echoes the harness's measurement token for this candidate and attests the bytes it actually
+    used: the evaluator source digest recomputed from the files this lane executes, the candidate
+    bytes it read, the interpreter, and the behaviour digest of the Outcome the run produced. It
+    also states, honestly, whether its own measurement agrees with the one the harness made -- a
+    disagreement is reported rather than smoothed over.
+    """
+    token = env_mod.token_for(envelope, candidate.candidate_id) if envelope else None
+    binding = (token or {}).get("binding") or {}
+    measured_behaviour = env_mod.behaviour_digest(outcome) if outcome else None
+    measured_evaluator_digest = env_mod.evaluator_source_digest(settings.e_star_script.parent)
+    return {
+        "schema": env_mod.SCHEMA_ATTESTATION,
+        "oid": (token or {}).get("oid"),
+        "harness_run_id": (envelope or {}).get("harness_run_id"),
+        "nonce": (envelope or {}).get("nonce"),
+        "eid_star": settings.eid.eid_star,
+        "evaluator_source_sha256": measured_evaluator_digest,
+        "evaluator_script": settings.rel(settings.e_star_script),
+        "candidate_sha256": candidate_sha256,
+        "behaviour_digest": measured_behaviour,
+        "interpreter": (outcome or {}).get("interpreter"),
+        "theta_e": (outcome or {}).get("theta_e"),
+        "source": (
+            "measured by this lane: the evaluator files and the candidate bytes were hashed by the "
+            "process that executed E* as a subprocess, and the behaviour digest is over the Outcome "
+            "that subprocess wrote"
+        ),
+        "harness_binding": {
+            "behaviour_digest": binding.get("behaviour_digest"),
+            "candidate_sha256": binding.get("candidate_sha256"),
+            "evaluator_source_sha256": binding.get("evaluator_source_sha256"),
+            "interpreter": binding.get("interpreter"),
+        },
+        "agrees_with_harness_measurement": bool(
+            token
+            and measured_behaviour == binding.get("behaviour_digest")
+            and candidate_sha256 == binding.get("candidate_sha256")
+            and measured_evaluator_digest == binding.get("evaluator_source_sha256")
+        ),
+    }
 
 
 def _reference_entries(path: Path) -> dict:
@@ -83,6 +161,9 @@ def run_conformance(settings: Settings) -> dict:
     from .policy import fr_for_events, scalar_of
 
     fr = fr_for_events(settings.policy)
+    env_mod = _envelope_module(settings.work_root)
+    envelope = load_envelope(settings)
+    envelope_tokens_exchanged = 0
 
     rows = []
     for iteration, candidate in enumerate(settings.candidate_set.candidates):
@@ -161,11 +242,24 @@ def run_conformance(settings: Settings) -> dict:
             and (result.manifest or {}).get("candidate_source_sha256") == candidate.solution_sha256
         )
 
+        attestation = measurement_attestation(
+            settings, env_mod, envelope, candidate, result.outcome,
+            candidate_sha256=candidate.solution_sha256,
+        )
+        if attestation["oid"]:
+            envelope_tokens_exchanged += 1
+
         rows.append({
             "candidate_id": candidate.candidate_id,
             "candidate_role": candidate.role,
             "candidate_expected_verdict": candidate.expected_status,
             "solution_sha256": candidate.solution_sha256,
+            # D3 / D1: the harness measurement this row joins (the token), the identity this lane
+            # attests, and the Outcome payload itself -- so the checker projects the payload with its
+            # own code instead of taking a digest on trust, and can tell a behaviour difference from
+            # an execution-environment one.
+            "measurement": attestation,
+            "e_star_outcome": result.outcome,
             # Freshness of *this* row's number, and the raw material a third party
             # needs to attest it without trusting this adapter: E*'s own
             # `E_STAR_MANIFEST` line (it carries the evaluator source digest, the
@@ -306,6 +400,22 @@ def run_conformance(settings: Settings) -> dict:
             ),
         },
         "evaluator_calls": evaluator.calls,
+        "measurement_envelope": {
+            "handed_over": envelope is not None,
+            "path": settings.rel(settings.envelope_path) if settings.envelope_path else None,
+            "nonce": (envelope or {}).get("nonce"),
+            "harness_run_id": (envelope or {}).get("harness_run_id"),
+            "tokens_echoed_on_rows": envelope_tokens_exchanged,
+            "note": (
+                "every row echoes the per-candidate measurement token from this envelope and attests "
+                "the evaluator source digest, the candidate bytes, the interpreter and the behaviour "
+                "digest of the Outcome it produced (external review D3)"
+                if envelope else
+                "no envelope was handed over (A0_ENVELOPE / --envelope), so the rows carry identity "
+                "material but no measurement token; the checker reports them non-accepting "
+                "(MISSING_ATTESTATION) rather than accepting them without it"
+            ),
+        },
     }
 
 
@@ -327,6 +437,10 @@ def summarise(result: dict) -> dict:
         "epsilon": result["epsilon"],
         "eid_star": result["eid_star"],
         "theta_E": {k: result["theta_E"][k] for k in ("seed", "fidelity", "fraction")},
+        "measurement_envelope": {
+            k: result.get("measurement_envelope", {}).get(k)
+            for k in ("handed_over", "nonce", "tokens_echoed_on_rows")
+        },
         "verdicts_seen": {
             row["candidate_id"]: f"{row['substrate']['status']}/exit{row['substrate']['exit_code']}"
             for row in result["candidates"]

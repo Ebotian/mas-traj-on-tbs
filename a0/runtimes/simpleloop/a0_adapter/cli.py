@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -31,7 +32,25 @@ from .solvers import SolverError
 class UsageError(RuntimeError):
     """Bad flags / unreadable inputs. Adapter exit 2 (adapter_contract.md §3.1)."""
 
-DEFAULT_WORK_ROOT = "/home/ebt/rsi-dev"
+
+def resolve_repo_root() -> Path:
+    """The checkout this adapter runs from: ``$A0_REPO_ROOT`` or this file's location.
+
+    A hard-coded host root makes a copy of the tree read and write the *original*
+    contract, candidate and run directories; resolving from ``__file__`` (with an
+    explicit environment override) keeps the adapter inside whichever tree it was
+    copied to.
+    """
+
+    override = os.environ.get("A0_REPO_ROOT")
+    if override:
+        return Path(override).expanduser().resolve()
+    # <repo>/a0/runtimes/simpleloop/a0_adapter/cli.py -> parents[4] is <repo>
+    return Path(__file__).resolve().parents[4]
+
+
+#: The repo root every relative default below is joined with (`--work-root`).
+DEFAULT_WORK_ROOT = str(resolve_repo_root())
 DEFAULT_CANDIDATE_SET = "a0/tasks/circle-packing/C_STAR/manifest.json"
 DEFAULT_EID = "a0/tasks/circle-packing/plumbing.EID.proposed.json"
 DEFAULT_EID_SPEC = "a0/tasks/circle-packing/plumbing.contract.proposed.json"
@@ -61,6 +80,26 @@ def add_common(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--validator-python", default=DEFAULT_VALIDATOR_PYTHON)
     parser.add_argument("--budget", default="T_wall_sec=3600,N_evaluatorCalls=200,concurrency=1")
     parser.add_argument("--traces", default="score,selection,resource")
+    parser.add_argument(
+        "--envelope", default=None,
+        help="the harness measurement envelope to join A0.1 to (external review D3): the path the "
+             "runner hands over as A0_ENVELOPE. Every conformance row echoes the per-candidate "
+             "measurement token it finds there and attests the bytes it executed; without it the "
+             "rows carry no token and the checker reports them non-accepting (fail-closed)",
+    )
+
+
+def envelope_path_of(args) -> Path | None:
+    """The measurement envelope to use: `--envelope`, else `A0_ENVELOPE`, else none.
+
+    The environment variable is the interface the runner uses (a flag would break adapters whose
+    subcommand parser rejects it); the flag exists so a run can be reproduced by hand.
+    """
+    value = getattr(args, "envelope", None) or os.environ.get("A0_ENVELOPE") or None
+    if not value:
+        return None
+    path = Path(value)
+    return path if path.is_absolute() else path.resolve()
 
 
 def build_settings(args) -> Settings:
@@ -147,6 +186,7 @@ def build_settings(args) -> Settings:
         max_iterations=getattr(args, "max_iterations", 64),
         reference_table=abs_of(args.reference_table) if getattr(args, "reference_table", None) else None,
         evalcontract_py=abs_of(args.evalcontract),
+        envelope_path=envelope_path_of(args),
     )
 
 

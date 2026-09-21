@@ -1,12 +1,13 @@
 {
   "schema": "a0.adapter.entrypoint/v1",
   "runtime": "loreley",
-  "cmd": ["/home/ebt/rsi-dev/a0/runtimes/loreley/bin/a0-loreley"],
-  "pythonpath": "/home/ebt/rsi-dev/a0/runtimes/loreley/src",
-  "interpreter": "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/bin/python",
+  "cmd": ["bin/a0-loreley"],
+  "pythonpath": "src",
+  "interpreter": "checkout/.venv/bin/python",
   "why": [
     "The adapter executes the pinned Loreley checkout's own code, which needs that checkout's dependencies (pydantic, SQLAlchemy, psycopg, numpy). Those are installed into a copy of the pinned checkout at checkout/.venv; a harness that discovers '/usr/bin/python3 -m a0_adapter' cannot import 'loreley'.",
-    "bin/a0-loreley pins that interpreter absolutely and resolves its own paths relative to the file, so it works from any cwd and without PYTHONPATH.",
+    "Every path here is relative to this manifest's own directory, which is the conformance runner's launch cwd (a0/conformance/conformance.py:3773-3776 launches with cwd = the adapter directory). An absolute host root here would make a copy of the tree launch and write into the original.",
+    "bin/a0-loreley resolves its own location (BASH_SOURCE) and pins the interpreter as $HERE/../checkout/.venv/bin/python, so it works from any cwd and without PYTHONPATH; the interpreter field above is the same relative path, kept for readers.",
     "A0_LORELEY_PYTHON overrides the interpreter; A0_LORELEY_REEXECUTED=1 suppresses the adapter's own re-exec fallback inside cli.main."
   ],
   "subcommands": ["run", "conformance", "a02", "traps", "closure-probe", "eidr", "eidr-recompute", "plan"]

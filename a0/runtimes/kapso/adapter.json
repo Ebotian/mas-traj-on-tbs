@@ -1,9 +1,9 @@
 {
   "schema": "a0.kapso.adapter_entrypoint/v1",
-  "cmd": ["/home/ebt/rsi-dev/a0/runtimes/kapso/.venv/bin/python", "-m", "a0_adapter"],
-  "pythonpath": "/home/ebt/rsi-dev/a0/runtimes/kapso",
+  "cmd": [".venv/bin/python", "-m", "a0_adapter"],
+  "pythonpath": ".",
   "runtime": "kapso",
   "subcommands": ["run", "conformance", "closure-probe"],
-  "note": "Entry point declared for a0/conformance/conformance.py (its discovery order is adapters.json, then this file, then heuristics). The adapter imports the pinned KAPSO checkout from PYTHONPATH (config/adapter.json: kapso_src); it never installs into it.",
+  "note": "Entry point declared for a0/conformance/conformance.py (its discovery order is adapters.json, then this file, then heuristics). Every path here is relative to this manifest's directory, which is the runner's launch cwd (a0/conformance/conformance.py:3773-3776), so a copy of the tree launches the copy's adapter; an absolute host root would launch the original. The adapter imports the pinned KAPSO checkout from PYTHONPATH (config/adapter.json: kapso_src, overridable with A0_KAPSO_SRC); it never installs into it.",
   "paths_config": "config/adapter.json"
 }
