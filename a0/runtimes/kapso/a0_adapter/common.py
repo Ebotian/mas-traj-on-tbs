@@ -62,6 +62,39 @@ def write_json(path: Path, payload: Any) -> None:
 DEFAULT_CONFIG_PATH = Path(__file__).resolve().parent.parent / "config" / "adapter.json"
 
 
+def resolve_repo_root() -> Path:
+    """The checkout this adapter runs from: ``$A0_REPO_ROOT`` or this file's location."""
+
+    override = os.environ.get("A0_REPO_ROOT")
+    if override:
+        return Path(override).expanduser().resolve()
+    # <repo>/a0/runtimes/kapso/a0_adapter/common.py -> parents[4] is <repo>
+    return Path(__file__).resolve().parents[4]
+
+
+REPO_ROOT = resolve_repo_root()
+
+
+def _rebase(recorded: Any, declared_repo_root: Path) -> Path:
+    """Point a config-recorded path at *this* checkout.
+
+    ``config/adapter.json`` records absolute paths written for the tree the adapter
+    was authored in.  A copy of the tree must not read or write that original, so a
+    path the config places under the declared repo root is re-rooted at the repo root
+    this file actually lives in (or ``$A0_REPO_ROOT``).  A path outside the declared
+    repo (the pinned upstream checkout) is left exactly as recorded.
+    """
+
+    recorded = Path(recorded)
+    if not recorded.is_absolute():
+        return (REPO_ROOT / recorded).resolve()
+    try:
+        relative = recorded.relative_to(declared_repo_root)
+    except ValueError:
+        return recorded
+    return (REPO_ROOT / relative).resolve()
+
+
 @dataclass
 class AdapterConfig:
     a0_root: Path
@@ -80,19 +113,25 @@ class AdapterConfig:
     @classmethod
     def load(cls, path: Optional[Path] = None) -> "AdapterConfig":
         raw = json.loads(Path(path or DEFAULT_CONFIG_PATH).read_text("utf-8"))
+        declared_repo_root = Path(raw["a0_root"]).parent
+
+        def rebased(key: str) -> Path:
+            return _rebase(raw[key], declared_repo_root)
+
+        kapso_src = Path(os.environ.get("A0_KAPSO_SRC", raw["kapso_src"]))
         return cls(
-            a0_root=Path(raw["a0_root"]),
-            e_star_dir=Path(raw["e_star_dir"]),
-            e_star_python=Path(raw["e_star_python"]),
-            kapso_src=Path(raw["kapso_src"]),
-            candidate_set=Path(raw["candidate_set"]),
-            eid_star_file=Path(raw["eid_star_file"]),
-            evalcontract=Path(raw["evalcontract"]),
-            trace_validate=Path(raw["trace_validate"]),
-            fr_spec=Path(raw["fr_spec"]),
-            mode_config=Path(raw["mode_config"]),
-            state_root=Path(raw["state_root"]),
-            registered_tree=Path(raw["registered_tree"]),
+            a0_root=rebased("a0_root"),
+            e_star_dir=rebased("e_star_dir"),
+            e_star_python=rebased("e_star_python"),
+            kapso_src=kapso_src,
+            candidate_set=rebased("candidate_set"),
+            eid_star_file=rebased("eid_star_file"),
+            evalcontract=rebased("evalcontract"),
+            trace_validate=rebased("trace_validate"),
+            fr_spec=rebased("fr_spec"),
+            mode_config=rebased("mode_config"),
+            state_root=rebased("state_root"),
+            registered_tree=rebased("registered_tree"),
         )
 
     def kapso_pythonpath(self) -> str:

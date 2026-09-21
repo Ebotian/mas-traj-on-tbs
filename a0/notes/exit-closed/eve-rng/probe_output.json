@@ -1,0 +1,96 @@
+{
+  "attempt_A_config_injection": {
+    "config_block_with_injection": {
+      "_target_": "scaling_evolve.algorithms.eve.populations.samplers.uniform.UniformSampler",
+      "replacement_mode": "no_replacement",
+      "rng": 1234,
+      "seed": 1234
+    },
+    "deterministic_across_instances": false,
+    "deterministic_within_instance": false,
+    "instance_attributes": [
+      "replacement_mode"
+    ],
+    "instance_has_rng_attribute": false,
+    "instantiated_type": "scaling_evolve.algorithms.eve.populations.samplers.uniform.UniformSampler",
+    "samples_fresh_instance_same_config": [
+      20,
+      8,
+      19,
+      10
+    ],
+    "samples_same_instance_a": [
+      15,
+      6,
+      5,
+      19
+    ],
+    "samples_same_instance_b": [
+      10,
+      4,
+      20,
+      15
+    ],
+    "why_the_key_is_swallowed": "UniformSampler.__init__ signature is `(*, replacement_mode, **_ignored_kwargs)`: any extra config key lands in **_ignored_kwargs and is discarded. `rng` is not a constructor parameter at all -- it is a call-time argument of `.sample`"
+  },
+  "attempt_B_call_site_injection": {
+    "call_site": "The rng is handed in by the caller: workflow/phase2.py:566-633 calls `self.<pop>_sampler.sample(..., rng=self.<pop>._rng)`, and that population rng is `rng or random.Random()` (populations/base.py:40). No caller passes a seeded rng, so every campaign draws a fresh unseeded stream.",
+    "seeded_a": [
+      20,
+      9,
+      1,
+      18
+    ],
+    "seeded_b": [
+      20,
+      9,
+      1,
+      18
+    ],
+    "seeded_reproduces": true,
+    "unseeded_a": [
+      18,
+      15,
+      11,
+      2
+    ],
+    "unseeded_b": [
+      10,
+      11,
+      6,
+      19
+    ],
+    "unseeded_reproduces": false
+  },
+  "attempt_C_target_override": {
+    "class_is_selectable": true,
+    "instantiated_type": "scaling_evolve.algorithms.eve.populations.samplers.rank_softmax.RankSoftmaxSampler",
+    "rng_reachable_via_target": false,
+    "target_swapped_to": "scaling_evolve.algorithms.eve.populations.samplers.rank_softmax.RankSoftmaxSampler",
+    "why": "`_target_` is a dotted import path resolved by Hydra; it cannot define code. Any named sampler still receives its rng from phase2's call site, so overriding `_target_` changes which sampler runs, never its stream"
+  },
+  "checkout": "/tmp/eve",
+  "checkout_head": "979065fd2cf1b3be9caf70596478fe27df7815ad",
+  "source_evidence": {
+    "anchors": {
+      "population_constructed_without_rng": "src/scaling_evolve/algorithms/eve/factory.py:308-314",
+      "population_rng_fallback": "src/scaling_evolve/algorithms/eve/populations/base.py:33,40",
+      "sampler_call_sites_use_population_rng": "src/scaling_evolve/algorithms/eve/workflow/phase2.py:566-633",
+      "samplers_built_by_hydra": "src/scaling_evolve/algorithms/eve/factory.py:296-297",
+      "uniform_sampler_call_time_rng": "src/scaling_evolve/algorithms/eve/populations/samplers/uniform.py:32,35",
+      "uniform_sampler_init_swallows_kwargs": "src/scaling_evolve/algorithms/eve/populations/samplers/uniform.py:19-25",
+      "workspace_builder_constructed_without_rng": "src/scaling_evolve/algorithms/eve/factory.py:321-328",
+      "workspace_builder_rng_fallback": "src/scaling_evolve/algorithms/eve/workspace/solver_workspace.py:61,91"
+    },
+    "anchors_resolve": {
+      "population_constructed_without_rng": true,
+      "population_rng_fallback": true,
+      "sampler_call_sites_use_population_rng": true,
+      "samplers_built_by_hydra": true,
+      "uniform_sampler_call_time_rng": true,
+      "uniform_sampler_init_swallows_kwargs": true,
+      "workspace_builder_constructed_without_rng": true,
+      "workspace_builder_rng_fallback": true
+    }
+  }
+}

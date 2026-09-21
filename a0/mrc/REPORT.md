@@ -382,6 +382,130 @@ checkouts (`loreley/checkout`, `kapso_ck`), `__pycache__`, or anything under `ou
 instruments too; if an A1 arm changes one of them, `adapter_source_sha256` will not move. They are
 outside this field's claim, and the field's claim is now exactly what it says.
 
+### The complete enumeration of what the preimage does not cover **[verified by running it]**
+
+An earlier revision of this section named only the launcher, the `adapter.json` manifests, the
+upstream checkouts and `out/`, and a review list added a few directories. That list was
+**incomplete and is superseded by the enumeration below**, which is read from the repository rather
+than written down. It is produced by `git ls-files` on each runtime and split at the declared
+preimage root:
+
+```bash
+cd /home/ebt/rsi-dev
+for r in kapso eve loreley simpleloop; do
+  case $r in
+    kapso)      root=a0/runtimes/kapso/a0_adapter ;;
+    eve)        root=a0/runtimes/eve/a0_adapter ;;
+    loreley)    root=a0/runtimes/loreley/src/a0_adapter ;;
+    simpleloop) root=a0/runtimes/simpleloop/a0_adapter ;;
+  esac
+  echo "== $r preimage=$(git ls-files "$root" | wc -l) outside=$(git ls-files "a0/runtimes/$r" | grep -vc "^$root/")"
+  git ls-files "a0/runtimes/$r" | grep -v "^$root/" | sed -E "s|^a0/runtimes/$r/||" \
+    | grep -vE '^(out|runs|state)/' | sort
+done
+```
+
+Outside the preimage, tracked and (excluding run output) **instrument-shaped**:
+
+| runtime | preimage | outside | instrument-shaped outside the preimage |
+|---|---|---|---|
+| kapso | 11 | 3344 | `config/` (4: `adapter.json`, `kapso-core-reqs.txt`, `mode.circle-packing.yaml`, `mode.circle-packing.codex.yaml`), `contract/` (1: `selection/kapso.selection.json`), `bin/` (3: `e2e_round.py`, `e2e_verify.py`, `smoke.py`), top level (4: `ADAPTER.md`, `BRIDGE-2ROUND.md`, `README.md`, `adapter.json`); run output: `runs/` (3037), `state/` (295) |
+| eve | 12 | 1167 | `tools/` (5: `run_one_eve_iteration.py`, `replicate_a02.py`, `selection_adoption_check.py`, `eid_r_mutation_check.py`, `recompute-eid-r`), `steps/` (1: `eve_evaluator_step.sh.tmpl`), `selection/` (1: `eve.selection.json`), top level (2: `DECLARATIONS.md`, `README.md`); run output: `out/` (1158) |
+| loreley | 14 | 5278 | `src/` plugin modules (3: `loreley_a0_plugin.py`, `loreley_a0_plugin_metrics_heavy.py`, `loreley_a0_plugin_metrics_mapping.py`), `policy/` (1), `probe/` (1), `infra/` (1: `net.sh`), `bin/` (2: `a0-loreley`, `a0_loreley.py`), `llm-round/` (21), `scratch/` (1: `smoke_evaluator.py`), `tools/` (1: `verify_eidr.py`), top level (3: `README.md`, `VERIFICATION.md`, `adapter.json`); run output: `out/` (5244) |
+| simpleloop | 14 | 5463 | `policy/` (3: `simpleloop.policy.json`, `simpleloop.inject.json`, `proposed.a0.contract.simpleloop.selection.json`), `solvers/` (1: `main_run.json`), `tools/` (2: `check-frozen-conventions`, `recompute-eid-r`), `tests/` (2), top level (5: `A0_REPORT.md`, `HANDOFF_to_contract_owner.md`, `README.md`, `conftest.py`, `pytest.ini`); run output: `out/` (5450) |
+
+Two corrections to the review list, both verified: loreley's `llm-round/` is **21 tracked files
+including logs, worktrees and result JSON** (only 7 are scripts/documents), and the top-level
+`README.md`/`adapter.json`/`DECLARATIONS.md`/`VERIFICATION.md` files are tracked instruments too.
+
+### Which of these can change an A1 result while MRC* stays identical **[verified by running it]**
+
+This is the property the enumeration exists to expose, so it is answered by locating the exact line
+at which each file enters a run, not by category. Files the **adapter or evaluator reads at run
+time** change a number while `MRC*` (and `adapter_source_sha256`) do not move:
+
+| file (outside the preimage) | how it enters the run |
+|---|---|
+| eve `steps/eve_evaluator_step.sh.tmpl` | the **evaluation step script the runtime executes**, read at `eve_runtime.py:87`; its digest is recorded at `eve_runtime.py:172` but is not frozen by any contract |
+| loreley `src/loreley_a0_plugin.py`, `..._metrics_heavy.py`, `..._metrics_mapping.py` | the **worker-evaluator plugin the runtime calls** (`WORKER_EVALUATOR_PLUGIN`), `runtime.py:37`; EID_r hashes the plugin source, but EID_r is a runtime self-report (see D3 in `a0/STATUS.md`) |
+| kapso `config/adapter.json` | the adapter's own path config: E*, C*, EID*, mode config, state root (`common.py:62`) |
+| kapso `config/mode.circle-packing.yaml` (+ `.codex.yaml`) | the KAPSO **mode config**: fidelity mode, `subsample_seed`, `parent_policy`, budget, coding agent (`runtime.py:103`) |
+| kapso `contract/selection/kapso.selection.json` | KAPSO's selection declaration + failure-stage map (`common.py:398`); the adapter only *reports* a mismatch against the frozen copy (`_frozen_canonical_compare`), it does not refuse |
+| simpleloop `policy/simpleloop.policy.json`, `policy/simpleloop.inject.json` | the SimpleLoop **policy** (scalarization, tie-break) and injection config, read at `policy.py:22-23` |
+| simpleloop `solvers/main_run.json` | the solver roster the campaign consumes |
+| loreley `probe/egress_candidate/solution.py` | the closure-probe candidate (`closure.py:43`) |
+| loreley `infra/net.sh` | the network setup for the declared closed topology |
+| eve `selection/eve.selection.json`, loreley `policy/loreley.selection.json` | the per-runtime selection declarations (`selectionmap.py`; `failure_stage.py:80`) |
+| loreley `bin/a0-loreley`, `a0_loreley.py`, `adapter.json`; kapso `bin/*.py`; eve `tools/run_one_eve_iteration.py`; loreley `llm-round/*.sh`/`*.py` | the launchers and campaign drivers an A1 arm would reuse |
+
+Files that do **not** change a score but do change what a green verdict means — the checkers and
+tests — are the same class of uncovered instrument: `eve/tools/eid_r_mutation_check.py`,
+`eve/tools/selection_adoption_check.py`, `eve/tools/recompute-eid-r`, loreley `tools/verify_eidr.py`,
+simpleloop `tools/check-frozen-conventions`, simpleloop `tools/recompute-eid-r`,
+simpleloop `tests/`, `conftest.py`, `pytest.ini`.
+
+The sharper statement: **the evaluator step (`eve/steps/`), the evaluator plugin
+(`loreley/src/loreley_a0_plugin*.py`), the runtime policy files and the mode config are instruments
+that decide every score, and none of them is inside any frozen digest.** An A1 arm can change the
+evaluator EvE executes — or the plugin Loreley calls — and `MRC*` will not move. `adapter_source_sha256`
+covers the adapter *package* only, and its claim is exactly that; closing this gap needs a wider
+instrument digest, which is registered as an open item rather than silently implied.
+
+### The adapter path-independence fix (why these digests changed) **[verified by running it]**
+
+The four adapter packages above were edited to stop resolving the repository from a hard-coded host
+root (`contracts.py:13` in loreley was `A0_ROOT = Path("/home/ebt/rsi-dev/a0")`; kapso read absolute
+paths straight out of `config/adapter.json`; loreley's closure probe bind-mounted `/home/ebt`). Each
+now resolves the repo root from its own location, with `$A0_REPO_ROOT` as an explicit override:
+
+| adapter | change |
+|---|---|
+| loreley `src/a0_adapter/contracts.py` | `REPO_ROOT = $A0_REPO_ROOT or Path(__file__).resolve().parents[5]`; `A0_ROOT = REPO_ROOT / "a0"` |
+| loreley `src/a0_adapter/closure.py:130` | bind-mount `{REPO_ROOT}:{REPO_ROOT}` instead of `/home/ebt:/home/ebt` |
+| eve `a0_adapter/common.py` | same resolution; `A0_ROOT`/`REPO_ROOT` derived from `$A0_REPO_ROOT` or `ADAPTER_DIR` |
+| kapso `a0_adapter/common.py` | `AdapterConfig.load` re-roots every config path recorded under the declared repo root onto this checkout's root; `$A0_KAPSO_SRC` overrides the upstream path |
+
+Demonstration (copy the tree, run the copy's adapter, show nothing lands back in the original):
+
+```bash
+rm -rf /tmp/a0path && mkdir -p /tmp/a0path/copy && cp -a /home/ebt/rsi-dev/a0 /tmp/a0path/copy/a0
+# PRE-FIX (before the edits) the copy's adapter still resolves the ORIGINAL:
+#   cd /tmp/a0path/copy/a0/runtimes/kapso && .venv/bin/python -c \
+#     "import sys;sys.path.insert(0,'.');from a0_adapter.common import AdapterConfig;\
+#      c=AdapterConfig.load();print(c.a0_root) "
+#   -> /home/ebt/rsi-dev/a0
+# POST-FIX the copy resolves the copy:
+cd /tmp/a0path/copy/a0/runtimes/loreley && ./checkout/.venv/bin/python -c \
+  "import sys;sys.path.insert(0,'src');from a0_adapter.contracts import A0_ROOT;print(A0_ROOT)"
+# -> /tmp/a0path/copy/a0
+touch /tmp/a0path/marker
+cd /tmp && /tmp/a0path/copy/a0/runtimes/loreley/bin/a0-loreley eidr-recompute \
+  --run-dir /tmp/a0path/copy/a0/runtimes/loreley/out/pathindep
+find /home/ebt/rsi-dev/a0/runtimes -newer /tmp/a0path/marker -type f | wc -l   # -> 0
+find /home/ebt/rsi-dev/a0/contract -newer /tmp/a0path/marker -type f | wc -l   # -> 0
+```
+
+(The `find` is scoped to `a0/runtimes` and `a0/contract`, the trees an adapter can reach; other
+workstreams were editing `a0/qualification`, `a0/conformance` and `a0/envelope` concurrently, so a
+whole-`a0` scan is not a clean control while parallel workers are active.)
+
+Real output: in-place resolution is unchanged (`/home/ebt/rsi-dev` for all three; `$A0_KAPSO_SRC`
+still `/home/ebt/kapso_ck/kapso/src`); the copied loreley adapter resolves `A0_ROOT` to the copy and
+writes `loreley.program.md` under the copy; `find` reports **0** files under the original `a0`
+touched by the run. The copy's kapso adapter, run for real (`python -m a0_adapter conformance
+--runtime kapso`, 14 candidates, `pass: true`), likewise writes only under the copy; the registered
+tree destination is `config.state_root / "registered-eval"` (`runtime.py:135`), which is now the
+copy. An explicit override works from either tree:
+`A0_REPO_ROOT=/tmp/a0path/copy ... -> REPO_ROOT /tmp/a0path/copy`.
+
+One residual, handed off rather than fixed: the per-runtime `adapter.json` manifests still declare an
+**absolute** `cmd`/`interpreter`/`pythonpath` (`a0/runtimes/loreley/adapter.json` →
+`/home/ebt/rsi-dev/a0/runtimes/loreley/bin/a0-loreley`; `a0/runtimes/kapso/adapter.json` →
+`/home/ebt/rsi-dev/.../python -m a0_adapter`). A harness that *discovers* adapters through those
+manifests therefore still launches the original tree's adapter from a copy — the mechanism an
+independent verifier observed writing run artifacts into the original `out/`. Those files are outside
+this workstream's ownership; the adapter code is now path-independent, the manifests are not.
+
 ### Recomputed values, by preimage
 
 `python3 verify_adapter_preimage.py` (shares no code with `mrc.py`, reads the declarations, asks

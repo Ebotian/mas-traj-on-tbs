@@ -4,13 +4,31 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-A0_ROOT = Path("/home/ebt/rsi-dev/a0")
+
+def resolve_repo_root() -> Path:
+    """The checkout this adapter runs from: ``$A0_REPO_ROOT`` or this file's location.
+
+    A hard-coded host root makes a copy of the tree read and write the *original*
+    contract and run directories; resolving from ``__file__`` (with an explicit
+    environment override) keeps the adapter inside whichever tree it was copied to.
+    """
+
+    override = os.environ.get("A0_REPO_ROOT")
+    if override:
+        return Path(override).expanduser().resolve()
+    # <repo>/a0/runtimes/loreley/src/a0_adapter/contracts.py -> parents[5] is <repo>
+    return Path(__file__).resolve().parents[5]
+
+
+REPO_ROOT = resolve_repo_root()
+A0_ROOT = REPO_ROOT / "a0"
 
 # Exit codes, adapter_contract.md §3.1.
 EXIT_OK = 0

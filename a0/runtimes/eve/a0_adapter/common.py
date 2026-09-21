@@ -18,8 +18,24 @@ from pathlib import Path
 from typing import Any
 
 ADAPTER_DIR = Path(__file__).resolve().parent.parent
-A0_ROOT = ADAPTER_DIR.parent.parent  # a0/
-REPO_ROOT = A0_ROOT.parent  # rsi-dev/
+
+
+def resolve_repo_root() -> Path:
+    """The checkout this adapter runs from: ``$A0_REPO_ROOT`` or this file's location.
+
+    ``ADAPTER_DIR`` is ``<repo>/a0/runtimes/eve``; walking two levels up from it was
+    already location-derived, but an explicit override keeps the resolution honest when
+    the tree is copied or relocated.
+    """
+
+    override = os.environ.get("A0_REPO_ROOT")
+    if override:
+        return Path(override).expanduser().resolve()
+    return ADAPTER_DIR.parent.parent.parent  # a0/runtimes/eve -> a0 -> <repo>
+
+
+REPO_ROOT = resolve_repo_root()  # rsi-dev/
+A0_ROOT = REPO_ROOT / "a0"
 
 CONTRACT_DIR = A0_ROOT / "contract"
 TASK_DIR = A0_ROOT / "tasks" / "circle-packing"

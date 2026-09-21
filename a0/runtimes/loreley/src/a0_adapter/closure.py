@@ -33,7 +33,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
-from .contracts import A0_ROOT, EXIT_CLOSURE, EXIT_OK
+from .contracts import A0_ROOT, EXIT_CLOSURE, EXIT_OK, REPO_ROOT
 from .runtime import E_STAR_PY, E_STAR_SCRIPT
 
 PROBE_SCRIPT = A0_ROOT / "env" / "checks" / "probe_egress.sh"
@@ -127,7 +127,7 @@ def _run_candidate_channel(network: str, result_dir: Path, *, label: str,
     command = [
         "docker", "run", "--rm",
         "--network", network,
-        "-v", "/home/ebt:/home/ebt",
+        "-v", f"{REPO_ROOT}:{REPO_ROOT}",
         "-v", f"{result_dir}:/probe-egress",
         "-e", f"A0_EGRESS_RESULT={result_path}",
         "-w", "/tmp",
