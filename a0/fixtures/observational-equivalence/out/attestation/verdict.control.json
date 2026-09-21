@@ -1,0 +1,25 @@
+{
+  "schema": "a0.fixture.observational-equivalence.attestation-verdict/v1",
+  "attestation_record": "out/attestation/e_star.json",
+  "adapter_doc": "out/adapter-doc/e_plus_control.json",
+  "attested_evaluator_identity_ok": true,
+  "attested_evaluator": {
+    "measured_records": [
+      {
+        "name": "e_star.py",
+        "sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+        "bytes": 34860
+      },
+      {
+        "name": "e_star_child.py",
+        "sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca",
+        "bytes": 4704
+      }
+    ],
+    "measured_component_digest": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29",
+    "expected_component_digest": "a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29"
+  },
+  "adapter_claim_matches_attested_execution": true,
+  "problems": [],
+  "verdict": "ACCEPT"
+}

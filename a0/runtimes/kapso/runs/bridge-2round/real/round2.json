@@ -1,0 +1,178 @@
+{
+  "branch_tree": {
+    "files": {
+      "a0_locator.json": "ec22ca55ac5c420c4bf769e929c3dfcdaa6b1a35be39d83f9baf2160662b4365",
+      "kapso_eval.py": "781f54ee7674164d2b71e78d42640f985f3907a76542b8d5a84a3b5220d9e5ba"
+    },
+    "fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962"
+  },
+  "cap_enforced_by": "the launching shell (`timeout <cap>` on this process)",
+  "checkout_to_best_experiment_branch": {
+    "active_after": "generic_exp_1",
+    "active_before": "main",
+    "returned": "generic_exp_1"
+  },
+  "checks": {
+    "branch_tree_is_registered_head": true,
+    "independent_e_star_matches_node_score": true,
+    "manifest_triple_matches_grant": true,
+    "parent_is_the_only_restored_node": true,
+    "session_score_is_the_frozen_candidate": true
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "evaluator_calls": 0,
+  "git": {
+    "ancestry": {
+      "generic_exp_0->generic_exp_1": true,
+      "generic_exp_0->main": false,
+      "generic_exp_1->generic_exp_0": false,
+      "generic_exp_1->main": false,
+      "main->generic_exp_0": true,
+      "main->generic_exp_1": true
+    },
+    "commits": {
+      "generic_exp_0": [
+        "04970f4820333974a6c57032053e22f1d9ba2bf3 12852de882555b87c6582f72642360d9b7763d6f chore: final session commit",
+        "12852de882555b87c6582f72642360d9b7763d6f a478ad59410c1b5b974d122386607fe2f01bd84e chore(kapso): baseline c02_baseline_upstream",
+        "a478ad59410c1b5b974d122386607fe2f01bd84e 93c3bb17aa1d6ed23654523d952a9b3b191488e5 chore(kapso): add baseline repo memory",
+        "93c3bb17aa1d6ed23654523d952a9b3b191488e5 a3d81e373b1d21cce99eb337e9049bc77b3e3025 chore(kapso): setup evaluation and data directories",
+        "a3d81e373b1d21cce99eb337e9049bc77b3e3025  chore(kapso): ignore experiment sessions"
+      ],
+      "generic_exp_1": [
+        "4cd292d4ef37cbef1d6037cdc5c7ea223c6d7300 04970f4820333974a6c57032053e22f1d9ba2bf3 chore: final session commit",
+        "04970f4820333974a6c57032053e22f1d9ba2bf3 12852de882555b87c6582f72642360d9b7763d6f chore: final session commit",
+        "12852de882555b87c6582f72642360d9b7763d6f a478ad59410c1b5b974d122386607fe2f01bd84e chore(kapso): baseline c02_baseline_upstream",
+        "a478ad59410c1b5b974d122386607fe2f01bd84e 93c3bb17aa1d6ed23654523d952a9b3b191488e5 chore(kapso): add baseline repo memory",
+        "93c3bb17aa1d6ed23654523d952a9b3b191488e5 a3d81e373b1d21cce99eb337e9049bc77b3e3025 chore(kapso): setup evaluation and data directories",
+        "a3d81e373b1d21cce99eb337e9049bc77b3e3025  chore(kapso): ignore experiment sessions"
+      ],
+      "main": [
+        "12852de882555b87c6582f72642360d9b7763d6f a478ad59410c1b5b974d122386607fe2f01bd84e chore(kapso): baseline c02_baseline_upstream",
+        "a478ad59410c1b5b974d122386607fe2f01bd84e 93c3bb17aa1d6ed23654523d952a9b3b191488e5 chore(kapso): add baseline repo memory",
+        "93c3bb17aa1d6ed23654523d952a9b3b191488e5 a3d81e373b1d21cce99eb337e9049bc77b3e3025 chore(kapso): setup evaluation and data directories",
+        "a3d81e373b1d21cce99eb337e9049bc77b3e3025  chore(kapso): ignore experiment sessions"
+      ]
+    },
+    "heads": {
+      "generic_exp_0": "04970f4820333974a6c57032053e22f1d9ba2bf3",
+      "generic_exp_1": "4cd292d4ef37cbef1d6037cdc5c7ea223c6d7300",
+      "main": "12852de882555b87c6582f72642360d9b7763d6f"
+    },
+    "merge_base": {
+      "generic_exp_0|generic_exp_1": "04970f4820333974a6c57032053e22f1d9ba2bf3",
+      "generic_exp_0|main": "12852de882555b87c6582f72642360d9b7763d6f",
+      "generic_exp_1|generic_exp_0": "04970f4820333974a6c57032053e22f1d9ba2bf3",
+      "generic_exp_1|main": "12852de882555b87c6582f72642360d9b7763d6f",
+      "main|generic_exp_0": "12852de882555b87c6582f72642360d9b7763d6f",
+      "main|generic_exp_1": "12852de882555b87c6582f72642360d9b7763d6f"
+    }
+  },
+  "independent_reference": {
+    "branch": "generic_exp_1",
+    "reference": {
+      "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/runtimes/kapso/runs/bridge-2round/real/independent/round2-generic_exp_1 --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/runtimes/kapso/runs/bridge-2round/real/state/reference/round2-generic_exp_1.full.json --state-dir /home/ebt/rsi-dev/a0/runtimes/kapso/runs/bridge-2round/real/state/e_star_state",
+      "exit_code": 0,
+      "failure_kind": null,
+      "objective": 2.4519205208433132,
+      "status": "ok"
+    },
+    "solution_present": true,
+    "solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+  },
+  "lane": "real run_implementation (strategy.py:1036) over a codex/deepseek-flash session; ideation and judge seamed",
+  "mode_config": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/bridge-2round/mode.bridge.yaml",
+  "mode_name": "BRIDGE_2ROUND",
+  "node": {
+    "agent_output_tail": ": \"1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8\", \"e_star_evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"e_star_exit_code\": 0, \"e_star_items_audited\": 26, \"e_star_objective_value\": 2.4519205208433132, \"e_star_outcome\": \"outcomes/bca4286ed3b15035.full.1.1337.json\", \"e_star_status\": \"ok\", \"eid_star\": \"664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\", \"eid_star_evaluator_source\": \"a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"metric_name\": \"sum_radii\", \"score\": 2.4519205208433132, \"seed\": 1337, \"theta_e_canonical_match\": true, \"total_items\": 26}\nEXIT=0\n</evaluation_output>\n\n<score>\n2.4519205208433132\n</score>\n\n<technical_difficulties>\nnone \u2014 the solution was written exactly as provided (heredoc write, MD5 2817e5ede89ea6064c3fe6901b24cac2, syntax check passed), and the registered evaluation ran to completion on the first attempt in the foreground with exit code 0 and score 2.4519205208433132, matching the expected value. No crashes, retries, background jobs, or shared-cache artifacts were involved. One instruction tension worth noting for the next implementor: the task harness asks for an evaluation script at `kapso_evaluation/evaluate.py`, but the solution explicitly forbids creating any file inside `kapso_evaluation/`, so the existing registered `kapso_evaluation/kapso_eval.py` was used unmodified.\n</technical_difficulties>",
+    "attempts": [
+      {
+        "commit_sha": "4cd292d4ef37cbef1d6037cdc5c7ea223c6d7300",
+        "duration_seconds": 16.50468662200001,
+        "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "metrics": {},
+        "score": 2.4519205208433132,
+        "seed": 1337
+      }
+    ],
+    "branch_name": "generic_exp_1",
+    "build_fidelity": "full",
+    "code_changes_summary": "Overwrote `solution.py` byte-for-byte with the specified frozen 26-circle packing candidate: a `TABLE_26` of 26 equal-radius (r=0.0943046354170505) circle triples, the generic `_fallback(n)` baseline construction, and the `pack_circles(n=26)` entrypoint that returns the frozen table for n=26 and the fallback otherwise. No other files were created or modified; nothing was written inside `kapso_evaluation/`. Ran the registered evaluation in the foreground and captured its full stdout and KAPSO_EVAL_MANIFEST line.",
+    "code_diff": "diff --git a/changes.log b/changes.log\nindex 82184ee..7c137ba 100644\n--- a/changes.log\n+++ b/changes.log\n@@ -32,3 +32,12 @@ Notes\n - No background jobs launched; no artifacts written to the shared cache.\n \n RepoMemory sections consulted: none\n+\n+[generic_exp_1 / iteration 2]\n+Action: Overwrote solution.py byte-for-byte with the frozen 26-circle packing\n+table (equal radii r=0.0943046354170505) plus the _fallback baseline and\n+pack_circles(n) entrypoint, exactly as specified by the solution.\n+Evaluation: python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337\n+Result: score = 2.4519205208433132 (metric sum_radii, 26/26 items audited,\n+e_star_status=ok, theta_e_canonical_match=true). Matches expected value.\n+RepoMemory sections consulted: none\ndiff --git a/solution.py b/solution.py\nindex 70dec61..afc1ec8 100644\n--- a/solution.py\n+++ b/solution.py\n@@ -1,7 +1,8 @@\n-\"\"\"Near-tie variant of c01_good_hex: one radius shrunk by 1e-4.\n+\"\"\"Frozen good packing candidate for the plumbing task.\n \n-Shrinking a radius can neither break the square bounds nor create an\n-overlap, so the configuration stays valid and only the objective moves.\"\"\"\n+26 equal-radius circles packed in the unit square, produced offline by\n+tools/make_good_packing.py (jammed max-min packing, r* ~ 0.0943).\n+Deterministic, no imports beyond typing, well under the 250 ms budget.\"\"\"\n \n from __future__ import annotations\n \n@@ -10,7 +11,7 @@ from typing import Iterable, List, Tuple\n # 26 equal circles of radius 0.0943046354170505, centres frozen by\n # tools/make_good_packing.py (see tools/good_packing_26.json).\n TABLE_26: List[Tuple[float, float, float]] = [\n-    (0.09430473541705074, 0.36625249268324267, 0.0942046354170505),\n+    (0.09430473541705074, 0.36625249268324267, 0.0943046354170505),\n     (0.09430473541705074, 0.09430473541705074, 0.0943046354170505),\n     (0.5943049859758841, 0.23747737851250464, 0.0943046354170505),\n     (0.2629791171396117, 0.2818576738918528, 0.0943046354170505),",
+    "code_diff_stat": {
+      "branch": "generic_exp_1",
+      "parent_branch": "generic_exp_0",
+      "recorded_in_node": true
+    },
+    "eval_fidelity": "full",
+    "evaluation_integrity_error": "",
+    "evaluation_valid": true,
+    "had_error": false,
+    "iteration_duration_seconds": 16.540719941000134,
+    "manifest_lines": [
+      "KAPSO_EVAL_MANIFEST {\"candidate_identity\": {\"candidate_id\": \"c01_good_hex\", \"in_frozen_set\": true, \"solution_sha256\": \"bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d\"}, \"e_star_canonical_digest\": \"1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8\", \"e_star_evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"e_star_exit_code\": 0, \"e_star_items_audited\": 26, \"e_star_objective_value\": 2.4519205208433132, \"e_star_outcome\": \"outcomes/bca4286ed3b15035.full.1.1337.json\", \"e_star_status\": \"ok\", \"eid_star\": \"664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\", \"eid_star_evaluator_source\": \"a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"metric_name\": \"sum_radii\", \"score\": 2.4519205208433132, \"seed\": 1337, \"theta_e_canonical_match\": true, \"total_items\": 26}"
+    ],
+    "node_id": 1,
+    "parent_branch_name": "generic_exp_0",
+    "parent_node_id": 0,
+    "score": 2.4519205208433132,
+    "should_stop": false,
+    "technical_difficulties": "pected value. No crashes, retries, background jobs, or shared-cache artifacts were involved. One instruction tension worth noting for the next implementor: the task harness asks for an evaluation script at `kapso_evaluation/evaluate.py`, but the solution explicitly forbids creating any file inside `kapso_evaluation/`, so the existing registered `kapso_evaluation/kapso_eval.py` was used unmodified."
+  },
+  "parent_selection_observed": [
+    {
+      "branch_name": "generic_exp_0",
+      "node_id": 0,
+      "phase": "inside_run"
+    }
+  ],
+  "parent_selection_on_restored_state": {
+    "branch_name": "generic_exp_0",
+    "node_id": 0
+  },
+  "plan": {
+    "candidate_id": "c01_good_hex",
+    "expected_score": 2.4519205208433132,
+    "role": "round 2: a decidable improvement over round 1's winner",
+    "solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+  },
+  "resume": {
+    "adopted_registered_head": {
+      "command_full": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+      "data_manifest_entries": 0,
+      "head_evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "head_version": 1,
+      "live_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "setup_called": false,
+      "subsample_seed": 1337
+    },
+    "restored_iteration_count": 2,
+    "restored_node_ids": [
+      0,
+      1
+    ],
+    "state_file": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/bridge-2round/real/campaign-state-round1.json",
+    "state_file_sha256": "87736f993a297458ab42b7d3d13d5343da8209c91f050e4af4b0571fa8adceeb"
+  },
+  "round": 2,
+  "round_ok": true,
+  "run_sec": 16.541,
+  "schema": "a0.kapso.bridge_2round.round/v1",
+  "selection_after_round": {
+    "get_best_experiment": {
+      "branch_name": "generic_exp_1",
+      "node_id": 1,
+      "score": 2.4519205208433132
+    },
+    "get_deliverable_experiment": {
+      "branch_name": "generic_exp_1",
+      "node_id": 1,
+      "score": 2.4519205208433132
+    },
+    "get_deliverable_score": 2.4519205208433132,
+    "parent_policy": "best",
+    "registered_evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962"
+  },
+  "wall_clock_cap_sec": 1500.0
+}

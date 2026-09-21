@@ -1,0 +1,948 @@
+{
+  "schema": "a0.qualification/v1",
+  "generated_at": "2026-09-21T15:20:24+0800",
+  "generated_by": "a0/qualification/build_qualification.py",
+  "purpose": "a per-runtime qualification vector Q_r and an explicit eligibility predicate, so a partial result can never be diluted by siblings that passed (external review point 8); and the corrected EvE A0.1 label PARTIAL -- 5/14 measured, never PASS (point 2)",
+  "review_basis": {
+    "point_2": "A0.1 for EvE must read `PARTIAL -- 5/14 measured`, never `PASS`",
+    "point_8": "a single global A0 PASS is the wrong output; Q_r = (A0.1_measured, A0.1_adapted, A0.2_mechanism, A0.2_E2E, Closure) and Eligible(r) = f(Q_r)"
+  },
+  "provenance_classes": {
+    "verified_by_running": "this workstream executed the thing that produced the evidence",
+    "read_from_source": "the value is read out of a stored artifact produced by another workstream",
+    "inferred": "derived by rule from other components, not directly observed"
+  },
+  "component_domains": {
+    "a0_1_measured": "`<measured>/<total>`; `state` in PASS | PARTIAL | FAIL | PENDING | BLOCKED",
+    "a0_1_adapted": "`<adapted>/<total>`; `all_declared_synthetic` must be true for acceptance",
+    "a0_2_mechanism": "PASS | FAIL | UNPROVEN",
+    "a0_2_e2e": "COMPLETE | PLANNING_ONLY | ATTEMPTED | NONE | UNPROVEN",
+    "closure": "CLOSED | CONDITIONAL | OPEN | UNPROVEN"
+  },
+  "c_measure_vs_c_adapt": {
+    "C_measure": "can the RUNTIME'S evaluator interface faithfully represent E*'s outcome algebra (so that a row is measured, not reconstructed)?",
+    "C_adapt": "can the ADAPTER supply the semantics that interface cannot represent?",
+    "not_about_adapters_in_the_loop": "this distinction is about a semantic gap in the runtime's interface -- all four runtimes run through an adapter, so 'the adapter is in the loop' is not the point. An adapted row is evidence for C_adapt and never for C_measure",
+    "a1_consequence": "EvE's native numbers must not be used in any statistic that has to distinguish `invalid`/`error` from a genuine zero: on those rows EvE's interface returns a synthetic 0.0 and only the adapter's side-channel reading restores the verdict"
+  },
+  "predicate": {
+    "name": "Eligible",
+    "version": "a0.eligibility/v1",
+    "signature": "Eligible(r; T) : Q_r x thresholds -> {eligible, not_eligible}",
+    "implementation": "a0/qualification/eligibility.py",
+    "default_vector": "T_strict",
+    "rules": [
+      {
+        "id": "R0_coverage",
+        "expr": "a0_1_measured.measured + a0_1_adapted.adapted == a0_1_measured.total and a0_1_measured.state in {'PASS','PARTIAL'}",
+        "what": "every row of C* is accounted for and nothing failed"
+      },
+      {
+        "id": "R1_measure_floor",
+        "expr": "a0_1_measured.measured >= required_measured(thresholds, a0_1_measured.total)",
+        "what": "enough rows were measured by the RUNTIME'S OWN evaluator interface (C_measure), not merely supplied by the adapter (C_adapt)"
+      },
+      {
+        "id": "R2_adapted_declared",
+        "expr": "a0_1_adapted.adapted == 0 or a0_1_adapted.all_declared_synthetic",
+        "what": "no row was accepted on an undeclared non-fresh number"
+      },
+      {
+        "id": "R3_a0_2_mechanism",
+        "expr": "a0_2_mechanism.value == 'PASS'",
+        "what": "the runtime consumes scores per its claimed selection semantics (mechanism level)"
+      },
+      {
+        "id": "R4_a0_2_e2e",
+        "expr": "a0_2_e2e.value in thresholds.e2e_allowed",
+        "what": "a real model-lane round through the runtime's own loop, where the threshold asks for one"
+      },
+      {
+        "id": "R5_closure",
+        "expr": "closure.value in thresholds.closure_allowed",
+        "what": "no autonomous external acquisition in the posture the runtime would run under"
+      }
+    ],
+    "threshold_vectors": {
+      "T_strict": {
+        "measured_floor": {
+          "kind": "fraction",
+          "value": 1.0
+        },
+        "e2e_allowed": [
+          "COMPLETE"
+        ],
+        "closure_allowed": [
+          "CLOSED"
+        ],
+        "rationale": "a runtime qualifies only if its own evaluator interface measured every row of C*, it completed a real model-lane round, and its shipped posture is probe-proven closed"
+      },
+      "T_literal": {
+        "measured_floor": {
+          "kind": "rows",
+          "value": 1
+        },
+        "e2e_allowed": [
+          "COMPLETE",
+          "PLANNING_ONLY",
+          "ATTEMPTED"
+        ],
+        "closure_allowed": [
+          "CLOSED",
+          "CONDITIONAL"
+        ],
+        "rationale": "the reading under which the study's existing wording is already sufficient: any native measurement counts, a mechanism-level A0.2 counts, a closure that is reachable by a named posture counts"
+      }
+    },
+    "screen_is_a_different_object": "`|R_1| >= 1` (plan:490) is a CANDIDATE SCREEN over runtimes: it answers 'may the study continue at all?'. Eligible(r) answers 'may THIS runtime's numbers be used in an A1 statistic?'. They are not the same object, and `|R_1| >= 1` does not imply that any runtime is Eligible()"
+  },
+  "runtimes": {
+    "simpleloop": {
+      "runtime": "simpleloop",
+      "Q_r": {
+        "a0_1_measured": {
+          "value": "14/14",
+          "evidence": "a0/conformance/report.json#runtimes.simpleloop.qualification.a0_1",
+          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 14 of 14 members of C*; the runner compared them against the frozen E* table",
+          "provenance": "verified_by_running",
+          "measured": 14,
+          "total": 14,
+          "state": "PASS",
+          "label": "PASS (14/14 measured)",
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?"
+        },
+        "a0_1_adapted": {
+          "value": "0/14",
+          "evidence": "a0/conformance/report.json#runtimes.simpleloop.qualification.a0_1",
+          "justification": "no row needed adapter-supplied semantics: every accepting row is a fresh measurement",
+          "provenance": "verified_by_running",
+          "adapted": 0,
+          "total": 14,
+          "accepted": 0,
+          "all_declared_synthetic": true,
+          "adapted_candidates": [],
+          "c_adapt": "can the adapter supply the missing semantics?"
+        },
+        "a0_2_mechanism": {
+          "value": "PASS",
+          "evidence": "a0/runtimes/simpleloop/out/a02/a02_checks.json",
+          "justification": "verdict=pass, 9/9 checks pass, failed=[]; independently audited as claim C4.4 = ACCEPTED",
+          "provenance": "read_from_source",
+          "audited_claim": "C4.4",
+          "audited_verdict": "ACCEPTED",
+          "detail": "verdict=pass, 9/9 checks pass, failed=[]",
+          "scope": "the adapter's own selection loop over C*: ordering invariance, the frozen tie-break, the claim runs at mechanism level, not end to end (see a0_2_e2e)",
+          "caveats": []
+        },
+        "a0_2_e2e": {
+          "value": "COMPLETE",
+          "evidence": [
+            "a0/runtimes/simpleloop/out/cli-lane/codex-live4/run_meta.json",
+            "a0/runtimes/simpleloop/out/cli-lane-codex-live3.log"
+          ],
+          "justification": "real model lane wrote an agent-authored candidate that E* scored 2.5414213562373096 (best C* member = 2.4519); audited as C7.2 = ACCEPTED",
+          "provenance": "read_from_source",
+          "audited_claim": "C7.2",
+          "audited_verdict": "ACCEPTED",
+          "rounds": [
+            "codex-live3",
+            "codex-live4"
+          ],
+          "detail": "champion_id=codex_i001, champion_scalar=2.5414213562373096"
+        },
+        "closure": {
+          "value": "CLOSED",
+          "evidence": [
+            "a0/closure/closure.simpleloop.json",
+            "a0/closure/closure.reconciliation.json"
+          ],
+          "justification": "a0/closure record verdict=closed, study_verdict=CLOSED; mechanism(s) with an executed two-control probe = ['solver-is-codex-workspace-write', 'solver-is-unsandboxed-or-claude'] (of which the study calls CLOSED outright: ['solver-is-codex-workspace-write']); lane e2e on the real model lane (in-lane canary persisted): ['closed', 'egress_detected']",
+          "provenance": "read_from_source",
+          "verdict": "closed",
+          "study_verdict": "CLOSED",
+          "probe_proven_closed_mechanisms": [
+            "solver-is-codex-workspace-write",
+            "solver-is-unsandboxed-or-claude"
+          ],
+          "fully_closed_mechanisms": [
+            "solver-is-codex-workspace-write"
+          ],
+          "not_closed_mechanisms": [],
+          "mechanisms": [
+            {
+              "mechanism": "solver-is-codex-workspace-write",
+              "schema_verdict": "closed",
+              "study_verdict": "CLOSED"
+            },
+            {
+              "mechanism": "solver-is-unsandboxed-or-claude",
+              "schema_verdict": "closed",
+              "study_verdict": "CONDITIONAL (claude branch or any unsandboxed shell)"
+            }
+          ],
+          "lane_e2e": [
+            {
+              "runtime": "simpleloop",
+              "posture": "closed (its shipped CliSolver argv: codex exec --sandbox workspace-write)",
+              "verdict": "closed",
+              "model_call_completed": true,
+              "returncode": 0,
+              "tool_ran": true,
+              "canary": "LANE_PROBE dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED",
+              "elapsed_sec": 68.6,
+              "evidence": "a0/closure/evidence/13_simpleloop_lane_closed.json"
+            },
+            {
+              "runtime": "simpleloop",
+              "posture": "open (control: same machinery, danger-full-access)",
+              "verdict": "egress_detected",
+              "model_call_completed": true,
+              "returncode": 0,
+              "tool_ran": true,
+              "canary": "LANE_PROBE ... egress=OPEN",
+              "elapsed_sec": 37.2,
+              "evidence": "a0/closure/evidence/13b_simpleloop_lane_open.json"
+            }
+          ],
+          "verdict_scope": "Closed for the shipped codex solver lane, measured end to end. The injected-solver channel is separately recorded as closed under external isolation by the SimpleLoop workstream's own record; the two are complementary, not alternatives.",
+          "caveats": [
+            {
+              "caveat": "these records are dated 2026-09-20",
+              "status": "NOT RECONCILED with the newer lane work",
+              "evidence": [
+                "a0/notes/exit-closed/proxy-closure/REPORT.md"
+              ],
+              "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+            }
+          ]
+        }
+      },
+      "Q_r_values": {
+        "a0_1_measured": "14/14",
+        "a0_1_adapted": "0/14",
+        "a0_2_mechanism": "PASS",
+        "a0_2_e2e": "COMPLETE",
+        "closure": "CLOSED"
+      }
+    },
+    "kapso": {
+      "runtime": "kapso",
+      "Q_r": {
+        "a0_1_measured": {
+          "value": "14/14",
+          "evidence": "a0/conformance/report.json#runtimes.kapso.qualification.a0_1",
+          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 14 of 14 members of C*; the runner compared them against the frozen E* table",
+          "provenance": "verified_by_running",
+          "measured": 14,
+          "total": 14,
+          "state": "PASS",
+          "label": "PASS (14/14 measured)",
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?"
+        },
+        "a0_1_adapted": {
+          "value": "0/14",
+          "evidence": "a0/conformance/report.json#runtimes.kapso.qualification.a0_1",
+          "justification": "no row needed adapter-supplied semantics: every accepting row is a fresh measurement",
+          "provenance": "verified_by_running",
+          "adapted": 0,
+          "total": 14,
+          "accepted": 0,
+          "all_declared_synthetic": true,
+          "adapted_candidates": [],
+          "c_adapt": "can the adapter supply the missing semantics?"
+        },
+        "a0_2_mechanism": {
+          "value": "PASS",
+          "evidence": "a0/runtimes/kapso/runs/a0-01/a02/a02.json",
+          "justification": "pass=True, 14/14 checks pass, 5 scenarios, failures=[]; independently audited as claim C4.1 = ACCEPTED",
+          "provenance": "read_from_source",
+          "audited_claim": "C4.1",
+          "audited_verdict": "ACCEPTED",
+          "detail": "pass=True, 14/14 checks pass, 5 scenarios, failures=[]",
+          "scope": "real KAPSO selection code (_select_parent / get_deliverable_experiment / the claim runs at mechanism level, not end to end (see a0_2_e2e)",
+          "caveats": [
+            {
+              "caveat": "tie-break divergence from the A0-wide frozen rule",
+              "status": "MEASURED DIVERGENCE; the frozen tie-break is UNPROVEN for KAPSO",
+              "evidence": [
+                "a0/contract/selection/kapso.selection.json",
+                "a0/runtimes/kapso/runs/tie-order-probe/outcome.json"
+              ],
+              "to_settle": "none by measurement -- the divergence is already measured in BOTH proposal orders (tie-order-probe/outcome.json: diverges_from_frozen_tie_break=true). What is undecided is whether the A0-wide frozen tie-break is a requirement KAPSO must satisfy; that is a contract decision, not an experiment"
+            }
+          ]
+        },
+        "a0_2_e2e": {
+          "value": "COMPLETE",
+          "evidence": "a0/runtimes/kapso/runs/e2e-real/e2e_verification.json",
+          "justification": "real run_implementation round completed and wrote back; three-way score agreement {'independent_e_star': 2.451820520843313, 'node_score_from_log': 2.451820520843313, 'session_manifest_score': 2.451820520843313}; audited as C7.1 = ACCEPTED",
+          "provenance": "read_from_source",
+          "audited_claim": "C7.1",
+          "audited_verdict": "ACCEPTED",
+          "detail": "verdict=verified_end_to_end"
+        },
+        "closure": {
+          "value": "CONDITIONAL",
+          "evidence": [
+            "a0/closure/closure.kapso.json",
+            "a0/closure/closure.reconciliation.json"
+          ],
+          "justification": "a0/closure record verdict=inconclusive, study_verdict=CONDITIONAL; mechanism(s) with an executed two-control probe = ['codex-lane-bash-side-door']; not probe-proven closed: ['front-doors-config', 'claude-lane-bash-side-door', 'research-inference-lane']; lane e2e on the real model lane (in-lane canary persisted): ['closed', 'egress_detected']",
+          "provenance": "read_from_source",
+          "verdict": "inconclusive",
+          "study_verdict": "CONDITIONAL",
+          "probe_proven_closed_mechanisms": [
+            "codex-lane-bash-side-door"
+          ],
+          "fully_closed_mechanisms": [],
+          "not_closed_mechanisms": [
+            {
+              "mechanism": "front-doors-config",
+              "study_verdict": "CONDITIONAL"
+            },
+            {
+              "mechanism": "claude-lane-bash-side-door",
+              "study_verdict": "CONDITIONAL (external cut or lane switch)"
+            },
+            {
+              "mechanism": "research-inference-lane",
+              "study_verdict": "CONDITIONAL"
+            }
+          ],
+          "mechanisms": [
+            {
+              "mechanism": "front-doors-config",
+              "schema_verdict": "inconclusive",
+              "study_verdict": "CONDITIONAL"
+            },
+            {
+              "mechanism": "codex-lane-bash-side-door",
+              "schema_verdict": "closed",
+              "study_verdict": "OPEN as shipped; CLOSED by one config key (agent_specific.sandbox=workspace-write, web_search=false)"
+            },
+            {
+              "mechanism": "claude-lane-bash-side-door",
+              "schema_verdict": "inconclusive",
+              "study_verdict": "CONDITIONAL (external cut or lane switch)"
+            },
+            {
+              "mechanism": "research-inference-lane",
+              "schema_verdict": "inconclusive",
+              "study_verdict": "CONDITIONAL"
+            }
+          ],
+          "lane_e2e": [
+            {
+              "runtime": "kapso",
+              "posture": "closed (agent_specific.sandbox=workspace-write, web_search=false)",
+              "verdict": "closed",
+              "model_call_completed": true,
+              "returncode": 0,
+              "tool_ran": true,
+              "canary": "LANE_PROBE dns=fail:gaierror tcp=fail tcpvia=none https=fail:URLError local=ok egress=BLOCKED",
+              "elapsed_sec": 34.8,
+              "evidence": "a0/closure/evidence/11_kapso_lane_closed.json"
+            },
+            {
+              "runtime": "kapso",
+              "posture": "open (shipped default: --sandbox danger-full-access + --search)",
+              "verdict": "egress_detected",
+              "model_call_completed": true,
+              "returncode": 0,
+              "tool_ran": true,
+              "canary": "LANE_PROBE ... egress=OPEN",
+              "elapsed_sec": 102.0,
+              "evidence": "a0/closure/evidence/11b_kapso_lane_open.json"
+            }
+          ],
+          "verdict_scope": "The Bash side door was not driven end to end by a live model turn through KAPSO's own campaign loop; what is proven is the argv of the lane commands KAPSO launches (real adapter code) plus the CLI sandbox behaviour they select.",
+          "caveats": [
+            {
+              "caveat": "these records are dated 2026-09-20",
+              "status": "NOT RECONCILED with the newer lane work",
+              "evidence": [
+                "a0/notes/exit-closed/proxy-closure/REPORT.md"
+              ],
+              "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+            }
+          ]
+        }
+      },
+      "Q_r_values": {
+        "a0_1_measured": "14/14",
+        "a0_1_adapted": "0/14",
+        "a0_2_mechanism": "PASS",
+        "a0_2_e2e": "COMPLETE",
+        "closure": "CONDITIONAL"
+      }
+    },
+    "eve": {
+      "runtime": "eve",
+      "Q_r": {
+        "a0_1_measured": {
+          "value": "5/14",
+          "evidence": "a0/conformance/report.json#runtimes.eve.qualification.a0_1",
+          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 5 of 14 members of C*; the runner compared them against the frozen E* table",
+          "provenance": "verified_by_running",
+          "measured": 5,
+          "total": 14,
+          "state": "PARTIAL",
+          "label": "PARTIAL (5/14 measured)",
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c14_near_zero"
+          ],
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?"
+        },
+        "a0_1_adapted": {
+          "value": "9/14",
+          "evidence": "a0/conformance/report.json#runtimes.eve.qualification.a0_1",
+          "justification": "9 of 14 rows agree only because the adapter supplied semantics the runtime's interface cannot represent (declared synthetic failure); they are evidence for C_adapt, never for C_measure",
+          "provenance": "verified_by_running",
+          "adapted": 9,
+          "total": 14,
+          "accepted": 9,
+          "all_declared_synthetic": true,
+          "adapted_candidates": [
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow"
+          ],
+          "c_adapt": "can the adapter supply the missing semantics?"
+        },
+        "a0_2_mechanism": {
+          "value": "PASS",
+          "evidence": "a0/verify/out/eve_a02_replication.json",
+          "justification": "auditor's own 3000-draw re-run: {\"E1_within_ci_of_closed_form\": true, \"control_moved\": true, \"one_call_per_draw\": true}, score-dependence z=37.207966965744454; independently audited as claim C4.2 = ACCEPTED",
+          "provenance": "read_from_source",
+          "audited_claim": "C4.2",
+          "audited_verdict": "ACCEPTED",
+          "detail": "auditor's own 3000-draw re-run: {\"E1_within_ci_of_closed_form\": true, \"control_moved\": true, \"one_call_per_draw\": true}, score-dependence z=37.207966965744454",
+          "scope": "EvE's sampler (solver_examples) only -- EvE has no argmax over an evaluated pool, so the claim runs at mechanism level, not end to end (see a0_2_e2e)",
+          "caveats": [
+            {
+              "caveat": "the PASS covers the sampler, not EvE's shipped loop",
+              "status": "SCOPE LIMIT (declared by the EvE workstream), not a failure",
+              "evidence": [
+                "a0/runtimes/eve/selection/eve.selection.json#selection.not_claimed"
+              ]
+            }
+          ]
+        },
+        "a0_2_e2e": {
+          "value": "ATTEMPTED",
+          "evidence": [
+            "a0/runtimes/eve/out/run002/real_round.json",
+            "a0/runtimes/eve/out/run003/real_round.json",
+            "a0/runtimes/eve/out/run004/real_round.json"
+          ],
+          "justification": "3 real codex-backed rounds reached iteration-complete, but none wrote back an agent-authored solution.py (every post-round solver is the prefill baseline 18bacee4...); audited as C7.3 = ACCEPTED",
+          "provenance": "read_from_source",
+          "audited_claim": "C7.3",
+          "audited_verdict": "ACCEPTED",
+          "rounds": [
+            {
+              "round": "run002",
+              "iterations_completed": 1,
+              "agent_authored_solver_written_back": false,
+              "wall_seconds": 103.54,
+              "failure": null
+            },
+            {
+              "round": "run003",
+              "iterations_completed": 1,
+              "agent_authored_solver_written_back": false,
+              "wall_seconds": 303.62,
+              "failure": null
+            },
+            {
+              "round": "run004",
+              "iterations_completed": 1,
+              "agent_authored_solver_written_back": false,
+              "wall_seconds": 662.11,
+              "failure": "driver rollout timeout at 660 s (agent_error.txt: 'Codex exec timed out'), so solver/solution.py kept the prefill sha 18bacee4… and the produced candidate scored E* = 0.25 (the untouched baseline)"
+            }
+          ],
+          "to_settle": "a completed round: `a0/runtimes/eve/.venv/bin/python a0/runtimes/eve/tools/run_one_eve_iteration.py --run-dir a0/runtimes/eve/out/run006 --turns 14 --turn-timeout 660 --max-seconds 1080` (the documented driver that produced run002-004; NOT executed here), then require real_round.json to show a post-round solver whose e_star_candidate_source_sha256 is not the baseline sha"
+        },
+        "closure": {
+          "value": "CONDITIONAL",
+          "evidence": [
+            "a0/closure/closure.eve.json",
+            "a0/closure/closure.reconciliation.json"
+          ],
+          "justification": "a0/closure record verdict=closed, study_verdict=CONDITIONAL; mechanism(s) with an executed two-control probe = ['codex-tmux-config'] (of which the study calls CLOSED outright: ['codex-tmux-config']); not probe-proven closed: ['codex-exec-config']",
+          "provenance": "read_from_source",
+          "verdict": "closed",
+          "study_verdict": "CONDITIONAL",
+          "probe_proven_closed_mechanisms": [
+            "codex-tmux-config"
+          ],
+          "fully_closed_mechanisms": [
+            "codex-tmux-config"
+          ],
+          "not_closed_mechanisms": [
+            {
+              "mechanism": "codex-exec-config",
+              "study_verdict": "OPEN"
+            }
+          ],
+          "mechanisms": [
+            {
+              "mechanism": "codex-tmux-config",
+              "schema_verdict": "closed",
+              "study_verdict": "CLOSED"
+            },
+            {
+              "mechanism": "codex-exec-config",
+              "schema_verdict": "egress_detected",
+              "study_verdict": "OPEN"
+            }
+          ],
+          "lane_e2e": [],
+          "verdict_scope": "This verdict covers the CANDIDATE-EXECUTION (shell) channel of the codex_tmux driver and is backed by an executed probe. It does not cover the provider-side web_search tool, for which no probe is possible on this machine (codex cannot complete a model call). See residual_channels.",
+          "caveats": [
+            {
+              "caveat": "these records are dated 2026-09-20",
+              "status": "NOT RECONCILED with the newer lane work",
+              "evidence": [
+                "a0/notes/exit-closed/proxy-closure/REPORT.md"
+              ],
+              "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+            }
+          ]
+        }
+      },
+      "Q_r_values": {
+        "a0_1_measured": "5/14",
+        "a0_1_adapted": "9/14",
+        "a0_2_mechanism": "PASS",
+        "a0_2_e2e": "ATTEMPTED",
+        "closure": "CONDITIONAL"
+      }
+    },
+    "loreley": {
+      "runtime": "loreley",
+      "Q_r": {
+        "a0_1_measured": {
+          "value": "14/14",
+          "evidence": "a0/conformance/report.json#runtimes.loreley.qualification.a0_1",
+          "justification": "the runtime's own evaluator interface produced a fresh E_r verdict for 14 of 14 members of C*; the runner compared them against the frozen E* table",
+          "provenance": "verified_by_running",
+          "measured": 14,
+          "total": 14,
+          "state": "PASS",
+          "label": "PASS (14/14 measured)",
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?"
+        },
+        "a0_1_adapted": {
+          "value": "0/14",
+          "evidence": "a0/conformance/report.json#runtimes.loreley.qualification.a0_1",
+          "justification": "no row needed adapter-supplied semantics: every accepting row is a fresh measurement",
+          "provenance": "verified_by_running",
+          "adapted": 0,
+          "total": 14,
+          "accepted": 0,
+          "all_declared_synthetic": true,
+          "adapted_candidates": [],
+          "c_adapt": "can the adapter supply the missing semantics?"
+        },
+        "a0_2_mechanism": {
+          "value": "PASS",
+          "evidence": "a0/runtimes/loreley/out/a02.json",
+          "justification": "verdict=pass, 7/7 checks pass, failed_checks=[]; independently audited as claim C4.3 = ACCEPTED",
+          "provenance": "read_from_source",
+          "audited_claim": "C4.3",
+          "audited_verdict": "ACCEPTED",
+          "detail": "verdict=pass, 7/7 checks pass, failed_checks=[]",
+          "scope": "the real MAP-Elites archive/cell machinery on a separate database: same-cell the claim runs at mechanism level, not end to end (see a0_2_e2e)",
+          "caveats": []
+        },
+        "a0_2_e2e": {
+          "value": "PLANNING_ONLY",
+          "evidence": [
+            "a0/runtimes/loreley/llm-round/RESULT.md",
+            "a0/runtimes/loreley/llm-round/stage_a2_result.json",
+            "a0/runtimes/loreley/llm-round/bounded_round.log"
+          ],
+          "justification": "a real codex planning call succeeded (144.1 s) but the coding call exceeded its 480 s budget and the round watchdog stopped the job; audited as C7.4 = ACCEPTED",
+          "provenance": "read_from_source",
+          "audited_claim": "C7.4",
+          "audited_verdict": "ACCEPTED",
+          "detail": "planning real, no evaluation, no archive write, evolution_jobs status=RUNNING",
+          "to_settle": "a completed round: `cd a0/runtimes/loreley && timeout 1200 ./llm-round/run_bounded_round.sh` with a coding budget that fits the cap (the 480 s coding attempt timed out; the round needs a smaller task or a larger cap). NOT executed here"
+        },
+        "closure": {
+          "value": "CONDITIONAL",
+          "evidence": [
+            "a0/closure/closure.loreley.json",
+            "a0/closure/closure.reconciliation.json"
+          ],
+          "justification": "a0/closure record verdict=inconclusive, study_verdict=CONDITIONAL; mechanism(s) with an executed two-control probe = ['codex-backend']; not probe-proven closed: ['default-kilocode-backend', 'cursor-backend']",
+          "provenance": "read_from_source",
+          "verdict": "inconclusive",
+          "study_verdict": "CONDITIONAL",
+          "probe_proven_closed_mechanisms": [
+            "codex-backend"
+          ],
+          "fully_closed_mechanisms": [],
+          "not_closed_mechanisms": [
+            {
+              "mechanism": "default-kilocode-backend",
+              "study_verdict": "OPEN"
+            },
+            {
+              "mechanism": "cursor-backend",
+              "study_verdict": "OPEN"
+            }
+          ],
+          "mechanisms": [
+            {
+              "mechanism": "default-kilocode-backend",
+              "schema_verdict": "inconclusive",
+              "study_verdict": "OPEN"
+            },
+            {
+              "mechanism": "codex-backend",
+              "schema_verdict": "closed",
+              "study_verdict": "CLOSED (shell channel)"
+            },
+            {
+              "mechanism": "cursor-backend",
+              "schema_verdict": "inconclusive",
+              "study_verdict": "OPEN"
+            }
+          ],
+          "lane_e2e": [],
+          "verdict_scope": "Nothing dynamic was observed on the default path: the `kilo` binary is not installed on this host, so the default lane cannot be run, let alone probed. `inconclusive` must be treated as not-closed.",
+          "caveats": [
+            {
+              "caveat": "these records are dated 2026-09-20",
+              "status": "NOT RECONCILED with the newer lane work",
+              "evidence": [
+                "a0/notes/exit-closed/proxy-closure/REPORT.md"
+              ],
+              "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+            }
+          ]
+        }
+      },
+      "Q_r_values": {
+        "a0_1_measured": "14/14",
+        "a0_1_adapted": "0/14",
+        "a0_2_mechanism": "PASS",
+        "a0_2_e2e": "PLANNING_ONLY",
+        "closure": "CONDITIONAL"
+      }
+    }
+  },
+  "evaluation": {
+    "T_strict": {
+      "simpleloop": {
+        "predicate_version": "a0.eligibility/v1",
+        "vector": "T_strict",
+        "eligible": true,
+        "rules": {
+          "R0_coverage": true,
+          "R1_measure_floor": true,
+          "R2_adapted_declared": true,
+          "R3_a0_2_mechanism": true,
+          "R4_a0_2_e2e": true,
+          "R5_closure": true
+        },
+        "failed_rules": [],
+        "required_measured": 14,
+        "reason": "all rules satisfied"
+      },
+      "kapso": {
+        "predicate_version": "a0.eligibility/v1",
+        "vector": "T_strict",
+        "eligible": false,
+        "rules": {
+          "R0_coverage": true,
+          "R1_measure_floor": true,
+          "R2_adapted_declared": true,
+          "R3_a0_2_mechanism": true,
+          "R4_a0_2_e2e": true,
+          "R5_closure": false
+        },
+        "failed_rules": [
+          "R5_closure"
+        ],
+        "required_measured": 14,
+        "reason": "not eligible: R5_closure"
+      },
+      "eve": {
+        "predicate_version": "a0.eligibility/v1",
+        "vector": "T_strict",
+        "eligible": false,
+        "rules": {
+          "R0_coverage": true,
+          "R1_measure_floor": false,
+          "R2_adapted_declared": true,
+          "R3_a0_2_mechanism": true,
+          "R4_a0_2_e2e": false,
+          "R5_closure": false
+        },
+        "failed_rules": [
+          "R1_measure_floor",
+          "R4_a0_2_e2e",
+          "R5_closure"
+        ],
+        "required_measured": 14,
+        "reason": "not eligible: R1_measure_floor, R4_a0_2_e2e, R5_closure"
+      },
+      "loreley": {
+        "predicate_version": "a0.eligibility/v1",
+        "vector": "T_strict",
+        "eligible": false,
+        "rules": {
+          "R0_coverage": true,
+          "R1_measure_floor": true,
+          "R2_adapted_declared": true,
+          "R3_a0_2_mechanism": true,
+          "R4_a0_2_e2e": false,
+          "R5_closure": false
+        },
+        "failed_rules": [
+          "R4_a0_2_e2e",
+          "R5_closure"
+        ],
+        "required_measured": 14,
+        "reason": "not eligible: R4_a0_2_e2e, R5_closure"
+      }
+    },
+    "T_literal": {
+      "simpleloop": {
+        "predicate_version": "a0.eligibility/v1",
+        "vector": "T_literal",
+        "eligible": true,
+        "rules": {
+          "R0_coverage": true,
+          "R1_measure_floor": true,
+          "R2_adapted_declared": true,
+          "R3_a0_2_mechanism": true,
+          "R4_a0_2_e2e": true,
+          "R5_closure": true
+        },
+        "failed_rules": [],
+        "required_measured": 1,
+        "reason": "all rules satisfied"
+      },
+      "kapso": {
+        "predicate_version": "a0.eligibility/v1",
+        "vector": "T_literal",
+        "eligible": true,
+        "rules": {
+          "R0_coverage": true,
+          "R1_measure_floor": true,
+          "R2_adapted_declared": true,
+          "R3_a0_2_mechanism": true,
+          "R4_a0_2_e2e": true,
+          "R5_closure": true
+        },
+        "failed_rules": [],
+        "required_measured": 1,
+        "reason": "all rules satisfied"
+      },
+      "eve": {
+        "predicate_version": "a0.eligibility/v1",
+        "vector": "T_literal",
+        "eligible": true,
+        "rules": {
+          "R0_coverage": true,
+          "R1_measure_floor": true,
+          "R2_adapted_declared": true,
+          "R3_a0_2_mechanism": true,
+          "R4_a0_2_e2e": true,
+          "R5_closure": true
+        },
+        "failed_rules": [],
+        "required_measured": 1,
+        "reason": "all rules satisfied"
+      },
+      "loreley": {
+        "predicate_version": "a0.eligibility/v1",
+        "vector": "T_literal",
+        "eligible": true,
+        "rules": {
+          "R0_coverage": true,
+          "R1_measure_floor": true,
+          "R2_adapted_declared": true,
+          "R3_a0_2_mechanism": true,
+          "R4_a0_2_e2e": true,
+          "R5_closure": true
+        },
+        "failed_rules": [],
+        "required_measured": 1,
+        "reason": "all rules satisfied"
+      }
+    }
+  },
+  "eligible_set": {
+    "T_strict": [
+      "simpleloop"
+    ],
+    "T_literal": [
+      "eve",
+      "kapso",
+      "loreley",
+      "simpleloop"
+    ]
+  },
+  "screen": {
+    "what": "the candidate screen, not the eligibility predicate",
+    "r_1_a0_1_only": [
+      "simpleloop",
+      "kapso",
+      "loreley"
+    ],
+    "r_1_a0_1_partial": [
+      "eve"
+    ],
+    "screen_source": "a0/conformance/report.json#verdicts (the runner owns the A0.1 half)",
+    "r_1_derived_if_a0_2_mechanism_counts": [
+      "kapso",
+      "loreley",
+      "simpleloop"
+    ],
+    "r_1_derived_note": "DERIVED here from `a0_1_measured.state == PASS and a0_2_mechanism == PASS`; the authoritative A0.2 judgement is owned by the A0.2 workstream (a0/acceptance), so treat this as an upper bound on R_1",
+    "screen_passes": true,
+    "screen_rule": "|R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2",
+    "not_the_same_as_eligibility": "a runtime can be in the screen set and still not Eligible() under T_strict, and the reverse order of dilution is impossible: a PARTIAL runtime is not in r_1_a0_1_only"
+  },
+  "unproven": [
+    {
+      "runtime": "simpleloop",
+      "component": "closure",
+      "caveat": "these records are dated 2026-09-20",
+      "status": "NOT RECONCILED with the newer lane work",
+      "evidence": [
+        "a0/notes/exit-closed/proxy-closure/REPORT.md"
+      ],
+      "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+    },
+    {
+      "runtime": "kapso",
+      "component": "a0_2_mechanism",
+      "caveat": "tie-break divergence from the A0-wide frozen rule",
+      "status": "MEASURED DIVERGENCE; the frozen tie-break is UNPROVEN for KAPSO",
+      "evidence": [
+        "a0/contract/selection/kapso.selection.json",
+        "a0/runtimes/kapso/runs/tie-order-probe/outcome.json"
+      ],
+      "to_settle": "none by measurement -- the divergence is already measured in BOTH proposal orders (tie-order-probe/outcome.json: diverges_from_frozen_tie_break=true). What is undecided is whether the A0-wide frozen tie-break is a requirement KAPSO must satisfy; that is a contract decision, not an experiment"
+    },
+    {
+      "runtime": "kapso",
+      "component": "closure",
+      "caveat": "these records are dated 2026-09-20",
+      "status": "NOT RECONCILED with the newer lane work",
+      "evidence": [
+        "a0/notes/exit-closed/proxy-closure/REPORT.md"
+      ],
+      "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+    },
+    {
+      "runtime": "eve",
+      "component": "closure",
+      "caveat": "these records are dated 2026-09-20",
+      "status": "NOT RECONCILED with the newer lane work",
+      "evidence": [
+        "a0/notes/exit-closed/proxy-closure/REPORT.md"
+      ],
+      "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+    },
+    {
+      "runtime": "loreley",
+      "component": "closure",
+      "caveat": "these records are dated 2026-09-20",
+      "status": "NOT RECONCILED with the newer lane work",
+      "evidence": [
+        "a0/notes/exit-closed/proxy-closure/REPORT.md"
+      ],
+      "to_settle": "re-run the per-runtime closure verdicts against the docker --internal + dual-homed-allowlist-proxy topology and update a0/closure/*.json; the newer workstream has no per-runtime closure record yet, so these values stand"
+    },
+    {
+      "runtime": "eve",
+      "component": "a0_2_e2e",
+      "value": "ATTEMPTED",
+      "status": "UNPROVEN for a completed end-to-end round",
+      "evidence": [
+        "a0/runtimes/eve/out/run002/real_round.json",
+        "a0/runtimes/eve/out/run003/real_round.json",
+        "a0/runtimes/eve/out/run004/real_round.json"
+      ],
+      "to_settle": "a completed round: `a0/runtimes/eve/.venv/bin/python a0/runtimes/eve/tools/run_one_eve_iteration.py --run-dir a0/runtimes/eve/out/run006 --turns 14 --turn-timeout 660 --max-seconds 1080` (the documented driver that produced run002-004; NOT executed here), then require real_round.json to show a post-round solver whose e_star_candidate_source_sha256 is not the baseline sha"
+    },
+    {
+      "runtime": "loreley",
+      "component": "a0_2_e2e",
+      "value": "PLANNING_ONLY",
+      "status": "UNPROVEN for a completed end-to-end round",
+      "evidence": [
+        "a0/runtimes/loreley/llm-round/RESULT.md",
+        "a0/runtimes/loreley/llm-round/stage_a2_result.json",
+        "a0/runtimes/loreley/llm-round/bounded_round.log"
+      ],
+      "to_settle": "a completed round: `cd a0/runtimes/loreley && timeout 1200 ./llm-round/run_bounded_round.sh` with a coding budget that fits the cap (the 480 s coding attempt timed out; the round needs a smaller task or a larger cap). NOT executed here"
+    }
+  ]
+}

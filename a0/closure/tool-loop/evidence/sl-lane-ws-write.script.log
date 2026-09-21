@@ -1,0 +1,28 @@
+== SimpleLoop solver lane: tag=sl-lane-ws-write (shipped argv, workspace-write)
+== started 2026-09-21T15:16:12+0800
+SHIPPED_ARGV ['codex', 'exec', '--sandbox', 'workspace-write', '--skip-git-repo-check']
+LANE_EXIT rc=0 timed_out=False wall_sec=17.0
+I can't complete steps 1–4: every shell invocation in this environment dies before running, so I never obtained any of the requested outputs and could not create `SUMMARY.md`.
+
+**Blocking failure (identical for all attempts)**
+```text
+thread 'main' (285) panicked at linux-sandbox/src/launcher.rs:51:13:
+bubblewrap is unavailable: no system bwrap was found on PATH and no bundled codex-resources/bwrap binary was found next to the Codex executable
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+```
+- Exit code `101`, wall time `0.0000s`, empty stdout — the sandbox launcher panics before the shell starts.
+- Reproduced with `login=true/false`, `tty=true`, `shell=/bin/sh`, and with a bare `echo hello`, so it is not command-specific.
+- No `apply_patch` tool is exposed in this session either, so I could not hand-write `SUMMARY.md`.
+
+**Per-item status**
+- `1` closure probe (`inlane_probe.py --out .../inlane_probe.json`): never executed; no JSON produced.
+- `2a` `getent hosts example.com`: never executed; no raw output.
+- `2b` direct HTTP: never executed; no raw output.
+- `2c` proxied HTTP: never executed; no raw output.
+- `2d` candidate subprocess: never executed; no raw output, no copy to `wd/cand/`.
+- `3` `SUMMARY.md`: not written.
+
+I'm withholding the `SOLVER-LANE-COMPLETE` token because reporting it would misrepresent the probe results, which are unknown (not "blocked-by-network", just "not run"). To unblock, the runner needs `bwrap` on `PATH` (or a bundled `codex-resources/bwrap` next to the Codex binary), or the lane must run with an unsandboxed/`danger-full-access` profile — with either in place I can re-run all four commands and write the summary verbatim.
+
+== finished 2026-09-21T15:16:29+0800
+== lane exit code: 0

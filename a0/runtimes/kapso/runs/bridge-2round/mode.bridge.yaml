@@ -1,0 +1,83 @@
+# KAPSO mode config for the two-round E2E bridge (circle-packing).
+#
+# Same A0-relevant settings as ../../../config/mode.circle-packing.codex.yaml —
+# parent_policy best, fidelity.mode off, max_change_requests 0, front doors
+# closed, codex implementation lane — with three deliberate differences:
+#
+#   1. the model is DeepSeek `deepseek-flash` (the model lane is now DeepSeek;
+#      see runs/bridge-2round/codex-home/config.toml and the verified recipe in
+#      a0/notes/exit-closed/codex-0.155.1/REPORT.md §7).  The committed
+#      mode.circle-packing.codex.yaml keeps the placeholder model name and is
+#      NOT modified by this workstream.
+#   2. implementation_timeout = 1200 s, below the round's hard wall-clock cap
+#      (1500 s, imposed by the launching `timeout`), so a stalled session is
+#      killed by KAPSO's own deadline and the round still finalizes a node
+#      (score=None) instead of the harness killing the process mid-round.
+#   3. the mode name is BRIDGE_2ROUND so the run's artifacts are attributable.
+#
+# `sandbox: danger-full-access` is KAPSO's own codex default (codex_agent.py:117)
+# and is what lets the session run the registered evaluation.  `web_search: false`
+# closes the codex --search tool.  The ideation phase stays seamed (the bridge
+# supplies which frozen C* candidate to install); the implementation phase is the
+# runtime's own run_implementation over a genuine codex session.
+
+default_mode: BRIDGE_2ROUND
+
+modes:
+  BRIDGE_2ROUND:
+    search_strategy:
+      type: "generic"
+      params:
+        parent_policy: "best"
+        web_search: false
+        implementation_web: false
+        ideation_gates: []
+        implementation_gates: []
+        design_axes: [
+          "geometry / parametrisation — the circle layout representation and coordinate parameterisation",
+          "optimisation procedure — local refinement, seeding, perturbation and constraint-repair strategy",
+          "numerical robustness — determinism, p50 runtime under the 250 ms gate, overlap and bounds margins",
+        ]
+        idea_generation_model: "deepseek-flash"
+        implementation_model: "deepseek-flash"
+        implementation_cli: "codex"
+        gate_failure_policy: "warn"
+        repo_memory_failure_policy: "warn"
+        node_expansion_value: 1
+        implementation_timeout: 1200
+        ideation_timeout: 900
+
+    coding_agent:
+      type: "codex"
+      model: "deepseek-flash"
+      agent_specific:
+        sandbox: "danger-full-access"
+        web_search: false
+        timeout: 1200
+
+    feedback_generator:
+      type: "codex"
+      model: "deepseek-flash"
+      agent_specific:
+        sandbox: "read-only"
+        web_search: false
+        timeout: 600
+
+    evaluation_maintainer:
+      type: "codex"
+      model: "deepseek-flash"
+      agent_specific:
+        sandbox: "read-only"
+        web_search: false
+        timeout: 600
+      subsample_seed: 1337
+      calibration_fraction: 0.03
+      calibration_timeout_seconds: 120
+      fast_variant_threshold_minutes: 20
+      overhead_factor: 1.25
+      max_change_requests: 0
+      transition_freeze_fraction: 0.85
+
+    budget:
+      fidelity:
+        mode: "off"

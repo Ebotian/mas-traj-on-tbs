@@ -1,0 +1,10 @@
+2026-09-21T08:14:02+0000 event=connect peer=172.31.78.2:56556 target=example.com:443 decision=DENY
+2026-09-21T08:14:02+0000 event=connect peer=172.31.78.2:56564 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T08:14:02+0000 event=req peer=172.31.78.2:56532 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=164908
+2026-09-21T08:14:03+0000 event=connect peer=172.31.78.2:56564 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T08:14:03+0000 event=deny proto=http peer=172.31.78.2:56568 method=GET path=/https://example.com/ reason=no_route
+2026-09-21T08:14:03+0000 event=req peer=172.31.78.2:56574 method=GET path=/v1/models upstream=https://api.deepseek.com/v1/models status=401 resp_bytes=31
+2026-09-21T08:14:05+0000 event=connect peer=172.31.78.2:56584 target=example.com:443 decision=DENY
+2026-09-21T08:14:05+0000 event=req peer=172.31.78.2:56578 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=179272
+2026-09-21T08:14:19+0000 event=req peer=172.31.78.2:56596 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=1092321
+2026-09-21T08:14:20+0000 event=req peer=172.31.78.2:48768 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=110567

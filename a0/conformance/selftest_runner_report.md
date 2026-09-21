@@ -1,37 +1,41 @@
 # A0.1 cross-adapter conformance report
 
-Generated 2026-09-20T19:52:00+0800 by `a0/conformance/conformance.py run`.
+Generated 2026-09-21T16:25:52+0800 by `a0/conformance/conformance.py run`.
 
 Frozen coordinates: `E* = tasks/circle-packing/e_star.py` (`EID* = 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328`), `EID* document = /home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json [canonical]` (sha256 `50af0aeb42dbc5a7...`), `C* = /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json` (sha256 `8d9b953877beb1b0...`), `theta_E = {"seed": 1337, "fidelity": "full", "fraction": 1.0, "n": 26, "runs": 5, "runtime_budget_ms": 250.0, "timeout_s": 120.0}`, `epsilon = 1e-09`, `F_r: F_r(E*) = scalar(E*) = outcome.objective.sum_radii, maximize (plan:528)`.
 
-Protocol: `plan:513-519` (the acceptance formula), `plan:490` (candidate screen, `|R_1| >= 1`), `plan:551-552` (the two false-green traps). The runner compares the adapter's numbers against the frozen table `E_STAR.json` itself; an adapter's own verdict is recorded but never trusted.
+Protocol: `plan:513-519` (the acceptance formula), `plan:490` (candidate screen, `|R_1| >= 1`), `plan:551-552` (the two false-green traps). The runner compares the adapter's numbers against the frozen table `E_STAR.json` itself; an adapter's own claim about its A0.1 outcome is recorded only under a key named `__untrusted` (see `adapter_claim__untrusted` / `adapter_self_declaration__untrusted`), so it can never be read as a verdict.
 
 ## Verdicts
 
-| runtime | A0.1 | acceptable / 14 | false-green findings | A0.2 (other workstream) | reason |
-|---|---|---|---|---|---|
-| selftest_honest | PASS | 14/14 | - | not judged here | all checks passed |
-| selftest_clean | PASS | 14/14 | - | not judged here | all checks passed |
-| selftest_zero_on_error | FAIL | 5/14 (9 FALSE_GREEN_SYNTHETIC_ZERO) | FG-EVE-SYNTH | not judged here | false-green finding(s): FG-EVE-SYNTH |
-| selftest_cache_hit | FAIL | 0/14 (14 FALSE_GREEN_CACHE_REUSE) | FG-LORELEY-CACHE | not judged here | false-green finding(s): FG-LORELEY-CACHE |
-| selftest_timeout | FAIL | 0/14 (14 FALSE_GREEN_TIMEOUT_SYNTHESIS) | FG-LORELEY-TIMEOUT | not judged here | false-green finding(s): FG-LORELEY-TIMEOUT |
-| selftest_truncated | FAIL | 0/14 (14 FALSE_GREEN_TRUNCATED_METRICS) | FG-LORELEY-CAP, FG-LORELEY-TRUNCATED | not judged here | false-green finding(s): FG-LORELEY-CAP, FG-LORELEY-TRUNCATED |
-| selftest_drift_1e_6 | FAIL | 9/14 (5 MISMATCH_VALUE) | - | not judged here | E_r(c) disagrees with E*(c) |
-| selftest_drift_1e_10 | PASS | 14/14 | - | not judged here | all checks passed |
-| selftest_swap_near_tie | FAIL | 13/14 (1 MISMATCH_VALUE) | - | not judged here | E_r(c) disagrees with E*(c) |
-| selftest_digest_swap | FAIL | 13/14 (1 MISMATCH_DIGEST) | - | not judged here | E_r(c) disagrees with E*(c) |
-| selftest_partial | FAIL | 5/14 (9 MISSING) | FG-FAILURE-KIND-UNDECLARED | not judged here | false-green finding(s): FG-FAILURE-KIND-UNDECLARED |
-| selftest_manifest_triple | FAIL | 0/14 (14 FALSE_GREEN_MANIFEST_TRIPLE) | FG-MANIFEST-TRIPLE | not judged here | false-green finding(s): FG-MANIFEST-TRIPLE |
-| selftest_attempt_theta_drift | FAIL | 0/14 (14 FALSE_GREEN_MANIFEST_TRIPLE) | FG-ATTEMPT-THETA-DRIFT | not judged here | false-green finding(s): FG-ATTEMPT-THETA-DRIFT |
-| selftest_stale_eid | FAIL | 14/14 | - | not judged here | adapter check(s) failed: EID-star-verbatim, EID-r-derives-from-EID-star |
-| selftest_native_theta | FAIL | 14/14 | - | not judged here | adapter check(s) failed: theta-E-identical |
-| selftest_synthetic_declared | PASS | 14/14 (9 SYNTHETIC_DECLARED) | TRAP-SYNTHETIC-DECLARED | not judged here | all checks passed |
-| selftest_synthetic_mislabeled | FAIL | 5/14 (9 FALSE_GREEN_SYNTHETIC_ZERO) | FG-EVE-SYNTH | not judged here | false-green finding(s): FG-EVE-SYNTH |
-| selftest_wrong_failure_kind | FAIL | 5/14 (9 MISMATCH_FAILURE_KIND) | FG-FAILURE-KIND | not judged here | false-green finding(s): FG-FAILURE-KIND |
-| selftest_wrong_failure_stage | FAIL | 5/14 (9 MISMATCH_FAILURE_STAGE) | FG-FAILURE-STAGE | not judged here | false-green finding(s): FG-FAILURE-STAGE |
-| selftest_omit_failure_kind | FAIL | 5/14 (9 UNDECLARED_FAILURE_KIND) | FG-FAILURE-KIND-UNDECLARED | not judged here | false-green finding(s): FG-FAILURE-KIND-UNDECLARED |
+| runtime | A0.1 | measured / 14 | adapted (declared, NOT measured) | acceptable / 14 | false-green findings | A0.2 (other workstream) | reason |
+|---|---|---|---|---|---|---|---|
+| selftest_honest | PASS (14/14 measured) | 14/14 | 0/14 | 14/14 | - | not judged here | all checks passed |
+| selftest_clean | PASS (14/14 measured) | 14/14 | 0/14 | 14/14 | - | not judged here | all checks passed |
+| selftest_zero_on_error | FAIL | 5/14 | 0/14 | 5/14 (9 FALSE_GREEN_SYNTHETIC_ZERO) | FG-EVE-SYNTH | not judged here | false-green finding(s): FG-EVE-SYNTH |
+| selftest_cache_hit | FAIL | 0/14 | 0/14 | 0/14 (14 FALSE_GREEN_CACHE_REUSE) | FG-LORELEY-CACHE | not judged here | false-green finding(s): FG-LORELEY-CACHE |
+| selftest_timeout | FAIL | 0/14 | 0/14 | 0/14 (14 FALSE_GREEN_TIMEOUT_SYNTHESIS) | FG-LORELEY-TIMEOUT | not judged here | false-green finding(s): FG-LORELEY-TIMEOUT |
+| selftest_truncated | FAIL | 0/14 | 0/14 | 0/14 (14 FALSE_GREEN_TRUNCATED_METRICS) | FG-LORELEY-CAP, FG-LORELEY-TRUNCATED | not judged here | false-green finding(s): FG-LORELEY-CAP, FG-LORELEY-TRUNCATED |
+| selftest_drift_1e_6 | FAIL | 9/14 | 0/14 | 9/14 (5 MISMATCH_VALUE) | - | not judged here | E_r(c) disagrees with E*(c) |
+| selftest_drift_1e_10 | PASS (14/14 measured) | 14/14 | 0/14 | 14/14 | - | not judged here | all checks passed |
+| selftest_swap_near_tie | FAIL | 13/14 | 0/14 | 13/14 (1 MISMATCH_VALUE) | - | not judged here | E_r(c) disagrees with E*(c) |
+| selftest_digest_swap | FAIL | 13/14 | 0/14 | 13/14 (1 MISMATCH_DIGEST) | - | not judged here | E_r(c) disagrees with E*(c) |
+| selftest_partial | FAIL | 5/14 | 0/14 | 5/14 (9 MISSING) | FG-FAILURE-KIND-UNDECLARED | not judged here | false-green finding(s): FG-FAILURE-KIND-UNDECLARED |
+| selftest_manifest_triple | FAIL | 0/14 | 0/14 | 0/14 (14 FALSE_GREEN_MANIFEST_TRIPLE) | FG-MANIFEST-TRIPLE | not judged here | false-green finding(s): FG-MANIFEST-TRIPLE |
+| selftest_attempt_theta_drift | FAIL | 0/14 | 0/14 | 0/14 (14 FALSE_GREEN_MANIFEST_TRIPLE) | FG-ATTEMPT-THETA-DRIFT | not judged here | false-green finding(s): FG-ATTEMPT-THETA-DRIFT |
+| selftest_stale_eid | FAIL | 14/14 | 0/14 | 14/14 | - | not judged here | adapter check(s) failed: EID-star-verbatim, EID-r-derives-from-EID-star |
+| selftest_native_theta | FAIL | 14/14 | 0/14 | 14/14 | - | not judged here | adapter check(s) failed: theta-E-identical |
+| selftest_synthetic_declared | PARTIAL (5/14 measured) | 5/14 | 9/14 (c05_overlapping, c06_empty, c07_single, c08_out_of_bounds, c09_malformed_import, c10_raises, c11_non_deterministic, c12_exit_without_artifacts, c13_slow) | 14/14 (9 SYNTHETIC_DECLARED) | TRAP-SYNTHETIC-DECLARED | not judged here | 5/14 rows measured by the runtime's own evaluator interface; 9/14 accepted only on adapter-supplied semantics (c05_overlapping, c06_empty, c07_single, c08_ou... |
+| selftest_synthetic_mislabeled | FAIL | 5/14 | 0/14 | 5/14 (9 FALSE_GREEN_SYNTHETIC_ZERO) | FG-EVE-SYNTH | not judged here | false-green finding(s): FG-EVE-SYNTH |
+| selftest_wrong_failure_kind | FAIL | 5/14 | 0/14 | 5/14 (9 MISMATCH_FAILURE_KIND) | FG-FAILURE-KIND | not judged here | false-green finding(s): FG-FAILURE-KIND |
+| selftest_wrong_failure_stage | FAIL | 5/14 | 0/14 | 5/14 (9 MISMATCH_FAILURE_STAGE) | FG-FAILURE-STAGE | not judged here | false-green finding(s): FG-FAILURE-STAGE |
+| selftest_omit_failure_kind | FAIL | 5/14 | 0/14 | 5/14 (9 UNDECLARED_FAILURE_KIND) | FG-FAILURE-KIND-UNDECLARED | not judged here | false-green finding(s): FG-FAILURE-KIND-UNDECLARED |
 
-A0.1-only set: `R_1(A0.1) = ['selftest_honest', 'selftest_clean', 'selftest_drift_1e_10', 'selftest_synthetic_declared']` (n_pass=4, n_fail=16, n_pending=0, n_blocked=0). |R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2
+A0.1-only screen: `r_1_a0_1_only = ['selftest_honest', 'selftest_clean', 'selftest_drift_1e_10']` (n_pass=3, n_partial=1, n_fail=16, n_pending=0, n_blocked=0). |R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2
+
+PARTIAL A0.1 (every row agrees, but at least one only on adapter-supplied semantics), deliberately excluded from the screen set: `r_1_a0_1_partial = ['selftest_synthetic_declared']`.
+
+`|R_1| >= 1` is a CANDIDATE SCREEN over runtimes and is a different object from per-runtime qualification. The screen asks whether the study may continue (at least one substrate survives A0); qualification asks whether a given runtime's A0.1 answer is measured or merely adapted. `r_1_a0_1_only` lists runtimes whose A0.1 is PASS (every row measured) and `r_1_a0_1_partial` lists runtimes whose A0.1 is PARTIAL (some rows accepted only on adapter-supplied semantics). A PARTIAL runtime is deliberately NOT in `r_1_a0_1_only`, so a partial result can never be diluted by siblings that passed. Per-runtime eligibility for A1 is declared separately and explicitly by the `Eligible(r)` predicate in `a0/qualification/qualification.json` (see `a0/qualification/QUALIFICATION.md`); the screen can pass while no runtime is Eligible().
 
 ## Reference table reproducibility
 
@@ -56,13 +60,13 @@ Fresh sweep of `E*` over `C*` with the frozen invocation reproduces `E_STAR.json
 
 ## Per-runtime detail
 
-Row verdicts: `MATCH` (number agrees within epsilon), `MATCH_VERDICT` (no number on either side, verdicts compared), `SYNTHETIC_DECLARED` (the runtime's lane returned a declared synthetic failure where E* has no number -- acceptable, but its 0.0 is never a measurement), `FALSE_GREEN_*` (a number where none exists, or a non-fresh number), `MISMATCH_*`, `MISSING`.
+Row verdicts: `MATCH` (number agrees within epsilon), `MATCH_VERDICT` (no number on either side, verdicts compared), `SYNTHETIC_DECLARED` (the runtime's lane returned a declared synthetic failure where E* has no number -- acceptable, but its 0.0 is never a measurement, and a runtime with such a row is `PARTIAL`, not `PASS`), `FALSE_GREEN_*` (a number where none exists, or a non-fresh number), `MISMATCH_*`, `MISSING`.
 
-### selftest_honest — PASS
+### selftest_honest — PASS (14/14 measured)
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_honest --out report.selftest_honest.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -95,7 +99,8 @@ Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapt
 
 Handoff:
 
-- A0.1 verdict: **PASS**
+- A0.1 verdict: **PASS (14/14 measured)**
+- A0.1 qualification: state `PASS`, measured 14/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c05_overlapping', 'c06_empty', 'c07_single', 'c08_out_of_bounds', 'c09_malformed_import', 'c10_raises', 'c11_non_deterministic', 'c12_exit_without_artifacts', 'c13_slow', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -103,11 +108,11 @@ Handoff:
 - adapter revision covered by this verdict: digest `None` over None source file(s), newest mtime None, unchanged during the run: True
 - FailureStage accounting vs the frozen `adapter_contract.md` §5.3 map over C*: declared null (comparable=False, matches_frozen_map=None); expected {"none": 5, "verify_failed": 5, "resolve_failed": 1, "evaluator_failed": 2, "timeout": 1}. the adapter declared no FailureStage counts, so nothing could be compared
 
-### selftest_clean — PASS
+### selftest_clean — PASS (14/14 measured)
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_clean --out report.selftest_clean.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -140,7 +145,8 @@ Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapt
 
 Handoff:
 
-- A0.1 verdict: **PASS**
+- A0.1 verdict: **PASS (14/14 measured)**
+- A0.1 qualification: state `PASS`, measured 14/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c05_overlapping', 'c06_empty', 'c07_single', 'c08_out_of_bounds', 'c09_malformed_import', 'c10_raises', 'c11_non_deterministic', 'c12_exit_without_artifacts', 'c13_slow', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -154,7 +160,7 @@ Reason: false-green finding(s): FG-EVE-SYNTH
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_zero_on_error --out report.selftest_zero_on_error.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -192,6 +198,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-EVE-SYNTH)
+- A0.1 qualification: state `FAIL`, measured 5/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -205,7 +212,7 @@ Reason: false-green finding(s): FG-LORELEY-CACHE
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_cache_hit --out report.selftest_cache_hit.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -243,6 +250,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-LORELEY-CACHE)
+- A0.1 qualification: state `FAIL`, measured 0/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=[], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -256,7 +264,7 @@ Reason: false-green finding(s): FG-LORELEY-TIMEOUT
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_timeout --out report.selftest_timeout.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -294,6 +302,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-LORELEY-TIMEOUT)
+- A0.1 qualification: state `FAIL`, measured 0/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=[], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -307,7 +316,7 @@ Reason: false-green finding(s): FG-LORELEY-CAP, FG-LORELEY-TRUNCATED
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_truncated --out report.selftest_truncated.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -346,6 +355,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-LORELEY-CAP, FG-LORELEY-TRUNCATED)
+- A0.1 qualification: state `FAIL`, measured 0/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=[], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -359,7 +369,7 @@ Reason: E_r(c) disagrees with E*(c)
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_drift_1e_6 --out report.selftest_drift_1e_6.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -393,6 +403,7 @@ Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapt
 Handoff:
 
 - A0.1 verdict: **FAIL** (E_r(c) disagrees with E*(c))
+- A0.1 qualification: state `FAIL`, measured 9/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c05_overlapping', 'c06_empty', 'c07_single', 'c08_out_of_bounds', 'c09_malformed_import', 'c10_raises', 'c11_non_deterministic', 'c12_exit_without_artifacts', 'c13_slow'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -400,11 +411,11 @@ Handoff:
 - adapter revision covered by this verdict: digest `None` over None source file(s), newest mtime None, unchanged during the run: True
 - FailureStage accounting vs the frozen `adapter_contract.md` §5.3 map over C*: declared null (comparable=False, matches_frozen_map=None); expected {"none": 5, "verify_failed": 5, "resolve_failed": 1, "evaluator_failed": 2, "timeout": 1}. the adapter declared no FailureStage counts, so nothing could be compared
 
-### selftest_drift_1e_10 — PASS
+### selftest_drift_1e_10 — PASS (14/14 measured)
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_drift_1e_10 --out report.selftest_drift_1e_10.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -437,7 +448,8 @@ Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapt
 
 Handoff:
 
-- A0.1 verdict: **PASS**
+- A0.1 verdict: **PASS (14/14 measured)**
+- A0.1 qualification: state `PASS`, measured 14/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c05_overlapping', 'c06_empty', 'c07_single', 'c08_out_of_bounds', 'c09_malformed_import', 'c10_raises', 'c11_non_deterministic', 'c12_exit_without_artifacts', 'c13_slow', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -451,7 +463,7 @@ Reason: E_r(c) disagrees with E*(c)
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_swap_near_tie --out report.selftest_swap_near_tie.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -485,6 +497,7 @@ Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapt
 Handoff:
 
 - A0.1 verdict: **FAIL** (E_r(c) disagrees with E*(c))
+- A0.1 qualification: state `FAIL`, measured 13/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c05_overlapping', 'c06_empty', 'c07_single', 'c08_out_of_bounds', 'c09_malformed_import', 'c10_raises', 'c11_non_deterministic', 'c12_exit_without_artifacts', 'c13_slow', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -498,7 +511,7 @@ Reason: E_r(c) disagrees with E*(c)
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_digest_swap --out report.selftest_digest_swap.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -532,6 +545,7 @@ Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapt
 Handoff:
 
 - A0.1 verdict: **FAIL** (E_r(c) disagrees with E*(c))
+- A0.1 qualification: state `FAIL`, measured 13/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c05_overlapping', 'c06_empty', 'c07_single', 'c08_out_of_bounds', 'c09_malformed_import', 'c10_raises', 'c11_non_deterministic', 'c12_exit_without_artifacts', 'c13_slow', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -545,7 +559,7 @@ Reason: false-green finding(s): FG-FAILURE-KIND-UNDECLARED
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_partial --out report.selftest_partial.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -583,6 +597,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-FAILURE-KIND-UNDECLARED)
+- A0.1 qualification: state `FAIL`, measured 5/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c05_overlapping'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -596,7 +611,7 @@ Reason: false-green finding(s): FG-MANIFEST-TRIPLE
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_manifest_triple --out report.selftest_manifest_triple.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -634,6 +649,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-MANIFEST-TRIPLE)
+- A0.1 qualification: state `FAIL`, measured 0/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=[], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -647,7 +663,7 @@ Reason: false-green finding(s): FG-ATTEMPT-THETA-DRIFT
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_attempt_theta_drift --out report.selftest_attempt_theta_drift.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -685,6 +701,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-ATTEMPT-THETA-DRIFT)
+- A0.1 qualification: state `FAIL`, measured 0/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=[], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -698,7 +715,7 @@ Reason: adapter check(s) failed: EID-star-verbatim, EID-r-derives-from-EID-star
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_stale_eid --out report.selftest_stale_eid.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `FAIL` EID-star-verbatim: adapter carried eid_star='fac50fc4a5c52556b6d4f35c5a68edbfa076cfde813f336346e1e083ffb24b2d'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `FAIL` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='fac50fc4a5c52556b6d4f35c5a68edbfa076cfde813f336346e1e083ffb24b2d'
@@ -732,6 +749,7 @@ Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapt
 Handoff:
 
 - A0.1 verdict: **FAIL** (adapter check(s) failed: EID-star-verbatim, EID-r-derives-from-EID-star)
+- A0.1 qualification: state `FAIL`, measured 14/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c05_overlapping', 'c06_empty', 'c07_single', 'c08_out_of_bounds', 'c09_malformed_import', 'c10_raises', 'c11_non_deterministic', 'c12_exit_without_artifacts', 'c13_slow', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='fac50fc4a5c52556b6d4f35c5a68edbfa076cfde813f336346e1e083ffb24b2d'
 - traces: none reported
@@ -745,7 +763,7 @@ Reason: adapter check(s) failed: theta-E-identical
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_native_theta --out report.selftest_native_theta.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -779,6 +797,7 @@ Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapt
 Handoff:
 
 - A0.1 verdict: **FAIL** (adapter check(s) failed: theta-E-identical)
+- A0.1 qualification: state `FAIL`, measured 14/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c05_overlapping', 'c06_empty', 'c07_single', 'c08_out_of_bounds', 'c09_malformed_import', 'c10_raises', 'c11_non_deterministic', 'c12_exit_without_artifacts', 'c13_slow', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -786,11 +805,13 @@ Handoff:
 - adapter revision covered by this verdict: digest `None` over None source file(s), newest mtime None, unchanged during the run: True
 - FailureStage accounting vs the frozen `adapter_contract.md` §5.3 map over C*: declared null (comparable=False, matches_frozen_map=None); expected {"none": 5, "verify_failed": 5, "resolve_failed": 1, "evaluator_failed": 2, "timeout": 1}. the adapter declared no FailureStage counts, so nothing could be compared
 
-### selftest_synthetic_declared — PASS
+### selftest_synthetic_declared — PARTIAL (5/14 measured)
+
+Reason: 5/14 rows measured by the runtime's own evaluator interface; 9/14 accepted only on adapter-supplied semantics (c05_overlapping, c06_empty, c07_single, c08_out_of_bounds, c09_malformed_import, c10_raises, c11_non_deterministic, c12_exit_without_artifacts, c13_slow). No check failed, but this runtime cannot represent E*'s outcome algebra on those rows
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_synthetic_declared --out report.selftest_synthetic_declared.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -827,7 +848,8 @@ Findings (false-green traps and attempt invariants):
 
 Handoff:
 
-- A0.1 verdict: **PASS**
+- A0.1 verdict: **PARTIAL (5/14 measured)** (5/14 rows measured by the runtime's own evaluator interface; 9/14 accepted only on adapter-supplied semantics (c05_overlapping, c06_empty, c07_single, c08_out_of_bounds, c09_malformed_import, c10_raises, c11_non_deterministic, c12_exit_without_artifacts, c13_slow). No check failed, but this runtime cannot represent E*'s outcome algebra on those rows)
+- A0.1 qualification: state `PARTIAL`, measured 5/14 by the runtime's own evaluator interface, adapted 9/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c14_near_zero'], adapted=['c05_overlapping', 'c06_empty', 'c07_single', 'c08_out_of_bounds', 'c09_malformed_import', 'c10_raises', 'c11_non_deterministic', 'c12_exit_without_artifacts', 'c13_slow']
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -842,7 +864,7 @@ Reason: false-green finding(s): FG-EVE-SYNTH
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_synthetic_mislabeled --out report.selftest_synthetic_mislabeled.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -880,6 +902,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-EVE-SYNTH)
+- A0.1 qualification: state `FAIL`, measured 5/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -893,7 +916,7 @@ Reason: false-green finding(s): FG-FAILURE-KIND
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_wrong_failure_kind --out report.selftest_wrong_failure_kind.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -931,6 +954,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-FAILURE-KIND)
+- A0.1 qualification: state `FAIL`, measured 5/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -944,7 +968,7 @@ Reason: false-green finding(s): FG-FAILURE-STAGE
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_wrong_failure_stage --out report.selftest_wrong_failure_stage.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -982,6 +1006,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-FAILURE-STAGE)
+- A0.1 qualification: state `FAIL`, measured 5/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported
@@ -995,7 +1020,7 @@ Reason: false-green finding(s): FG-FAILURE-KIND-UNDECLARED
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes selftest_omit_failure_kind --out report.selftest_omit_failure_kind.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `None` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `None` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -1033,6 +1058,7 @@ Findings (false-green traps and attempt invariants):
 Handoff:
 
 - A0.1 verdict: **FAIL** (false-green finding(s): FG-FAILURE-KIND-UNDECLARED)
+- A0.1 qualification: state `FAIL`, measured 5/14 by the runtime's own evaluator interface, adapted 0/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c14_near_zero'], adapted=none
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: none reported

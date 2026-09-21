@@ -1,0 +1,553 @@
+{
+  "schema": "a0.adapter.conformance/v1",
+  "runtime": "fixture_omit",
+  "adapter": "a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py (FIXTURE, not a runtime)",
+  "fixture": {
+    "evaluator_dir": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime",
+    "evaluator_script_sha256": "cfaa619410b2862b1555db41cf5a5d61aa58cb2d82e32dd457711067f00c7b8c",
+    "identity_mode": "omit",
+    "twin_swap": false,
+    "echo_manifest": false
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "eid_r": {
+    "value": "bc943204e737dd7bc930f1874d92034843edc8903962b50b5251a4b5c095f414",
+    "native_scheme": "none",
+    "mapping_mode": "adapter_declared_injection",
+    "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "declarations_verbatim_from": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "declaration": "e_plus fixture has no native evaluator identity; EID_r is a domain-separated digest over (eid_star, runtime) so that it is a function of EID* alone.",
+    "recomputable": true,
+    "derivation": {
+      "algorithm": "sha256",
+      "domain": "a0/fixture/e_plus/v1/EID_r",
+      "payload_canonical": "{\"eid_star\":\"664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\",\"runtime\":\"fixture_omit\"}"
+    }
+  },
+  "theta_e": {
+    "seed": 1337,
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "timeout_s": 120.0
+  },
+  "epsilon": 1e-09,
+  "primary_field": "sum_radii",
+  "fr": {
+    "name": "F_r = scalar(E*)",
+    "version": "v1",
+    "applies": "scalar",
+    "spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+    "declared_in": "a0/contract/fr/scalar.json"
+  },
+  "candidate_set": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+  "run_dir": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650",
+  "candidates": [
+    {
+      "candidate_id": "c01_good_hex",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.4519205208433132,
+        "direction": "max"
+      },
+      "objective_value": 2.4519205208433132,
+      "failure_kind": null,
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 0"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c01_good_hex --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c01_good_hex.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c02_baseline_upstream",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 0.25,
+        "direction": "max"
+      },
+      "objective_value": 0.25,
+      "failure_kind": null,
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 0.0,
+        "min_gap": 0.036249916677713497,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.007551905417283158,
+        "pairs_audited": 325,
+        "sum_radii": 0.25
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 0"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c02_baseline_upstream --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c02_baseline_upstream.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c03_mirror",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.4519205208433132,
+        "direction": "max"
+      },
+      "objective_value": 2.4519205208433132,
+      "failure_kind": null,
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 0"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c03_mirror --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c03_mirror.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c04_near_tie",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.451820520843313,
+        "direction": "max"
+      },
+      "objective_value": 2.451820520843313,
+      "failure_kind": null,
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.726363301607073,
+        "pairs_audited": 325,
+        "sum_radii": 2.451820520843313
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 0"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c04_near_tie --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c04_near_tie.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c05_overlapping",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 2"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c05_overlapping --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c05_overlapping.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c06_empty",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 2"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c06_empty --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c06_empty.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c07_single",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 2"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c07_single --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c07_single.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c08_out_of_bounds",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 2"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c08_out_of_bounds --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c08_out_of_bounds.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c09_malformed_import",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "candidate_import_failed",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 3"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c09_malformed_import --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c09_malformed_import.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c10_raises",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "candidate_call_raised",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 3"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c10_raises --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c10_raises.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c11_non_deterministic",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "non_deterministic",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 3"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c11_non_deterministic --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c11_non_deterministic.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c12_exit_without_artifacts",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "child_terminated_early",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 3"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c12_exit_without_artifacts --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c12_exit_without_artifacts.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c13_slow",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "runtime_budget_exceeded",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 3"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c13_slow --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c13_slow.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    },
+    {
+      "candidate_id": "c14_near_zero",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.6e-05,
+        "direction": "max"
+      },
+      "objective_value": 2.6e-05,
+      "failure_kind": null,
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 0.499939,
+        "min_gap": 7.99999999995449e-06,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 8.168140899333462e-11,
+        "pairs_audited": 325,
+        "sum_radii": 2.6e-05
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 0"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c14_near_zero --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/outcomes/c14_near_zero.json --state-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/adapter-runs/fixture_omit-20260921T151650/state"
+      }
+    }
+  ]
+}

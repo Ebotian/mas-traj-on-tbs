@@ -18,7 +18,10 @@ binding decisions recorded in `a0/tasks/circle-packing/README.md`:
 The runner never trusts an adapter's own verdict. It reads the adapter's per-candidate numbers
 and verdicts, then compares them itself against the frozen table `E_STAR.json` (and against its
 own fresh `E*` sweep) -- an adapter that reports "A0.1 ok" for a crash recorded as `0.0` is
-caught by the comparison, not by the adapter's self-assessment.
+caught by the comparison, not by the adapter's self-assessment. The adapter's own claim is written
+to `report.json` only under keys named `__untrusted` (`adapter_claim__untrusted`,
+`adapter_self_declaration__untrusted`), never under a verdict-shaped name, so a consumer joining
+on `state` / `verdict` / `verdicts` cannot reach it.
 
 Usage:
     python3 conformance.py reference [--force]      # fresh E* sweep over C*, vs E_STAR.json
@@ -118,8 +121,12 @@ ADAPTER_EXIT_USAGE, ADAPTER_EXIT_EID, ADAPTER_EXIT_INTEGRITY = 2, 3, 4
 ADAPTER_EXIT_CONFORMANCE, ADAPTER_EXIT_CLOSURE, ADAPTER_EXIT_BUDGET = 5, 6, 7
 ADAPTER_EXIT_NO_CANDIDATE, ADAPTER_EXIT_INTERNAL = 8, 10
 
-# runtime state
-PASS, FAIL, PENDING, BLOCKED = "PASS", "FAIL", "PENDING", "BLOCKED"
+# runtime state. A0.1 is a qualification, not a boolean: PARTIAL means every compared row agrees but
+# at least one agrees only because the ADAPTER supplied semantics the runtime's own evaluator
+# interface cannot represent (EvE's `failure_score(0.0)`), so that row was not measured. A partial
+# runtime must never be reported as a bare PASS -- a sibling's full PASS must not dilute it
+# (external review, points 2 and 8).
+PASS, FAIL, PENDING, BLOCKED, PARTIAL = "PASS", "FAIL", "PENDING", "BLOCKED", "PARTIAL"
 # per-candidate verdicts
 MATCH, MATCH_VERDICT = "MATCH", "MATCH_VERDICT"
 SYNTHETIC_DECLARED = "SYNTHETIC_DECLARED"
@@ -1228,7 +1235,8 @@ def normalise_adapter_output(doc: dict, runtime: str) -> dict:
 
     Aliases exist so that a partly finished adapter is still *measurable* rather than silently
     skipped. They never relax the comparison: the adapter's numbers are still checked against
-    `E_STAR.json`, and the adapter's own verdict field is recorded but never used.
+    `E_STAR.json`, and the adapter's own verdict field is recorded under
+    `adapter_claim__untrusted` but never read back by any verdict branch.
     """
     section_key = None
     section = doc
@@ -1533,6 +1541,17 @@ def score_trace_rows(trace: Path, primary_field: str):
 
 # --------------------------------------------------------------------------------------
 # the A0.1 comparison itself
+
+
+def a0_1_label(state: str, measured: int, total: int) -> str:
+    """The single-string A0.1 label.
+
+    It always carries the measured split, so no downstream consumer can read a bare `PASS` for a
+    runtime that is only partially measured: `PASS (14/14 measured)` vs `PARTIAL (5/14 measured)`.
+    """
+    if state in (PASS, PARTIAL):
+        return f"{state} ({measured}/{total} measured)"
+    return state
 
 
 def evaluate_runtime_rows(runtime: str, obs_rows: list, ref_rows: list, ref_table: dict, expected_eid: str) -> dict:
@@ -2352,6 +2371,38 @@ def evaluate_runtime(runtime: str, adapter_doc: dict, ref_rows: list, ref_table:
         }
     )
 
+    # A0.1 qualification, per runtime and never diluted across runtimes. `measured` counts the rows
+    # the runtime's OWN lane produced a fresh verdict/number for; `adapted` counts the rows that
+    # agree only because the adapter supplied the semantics the interface cannot represent
+    # (`SYNTHETIC_DECLARED`, i.e. a non-fresh evidence status on an otherwise accepting row).
+    measured_rows = [
+        r for r in rows
+        if r["verdict"] in (MATCH, MATCH_VERDICT)
+        and r.get("evaluator_evidence_status") not in NON_FRESH_EVIDENCE
+    ]
+    measured_ids = {r["candidate_id"] for r in measured_rows}
+    adapted_rows = [
+        r for r in rows
+        if r["verdict"] in ACCEPTING_VERDICTS and r["candidate_id"] not in measured_ids
+    ]
+    qualification = {
+        "state": None,  # set below, after the FAIL/PARTIAL branches
+        "label": None,
+        "measured": len(measured_rows),
+        "adapted": len(adapted_rows),
+        "total": len(rows),
+        "measured_candidates": [r["candidate_id"] for r in measured_rows],
+        "adapted_candidates": [r["candidate_id"] for r in adapted_rows],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's "
+                 "lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees "
+                 "only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is "
+                "in the loop: all four runtimes run through an adapter. An adapted row is evidence for "
+                "C_adapt, never for C_measure.",
+    }
+
     state = PASS
     reason = None
     if bad or fatal_non_fresh or not coverage_ok:
@@ -2365,10 +2416,23 @@ def evaluate_runtime(runtime: str, adapter_doc: dict, ref_rows: list, ref_table:
     elif not all(c["ok"] for c in checks):
         state = FAIL
         reason = "adapter check(s) failed: " + ", ".join(c["check_id"] for c in checks if not c["ok"])
+    elif adapted_rows:
+        # Every compared row agrees, but some agree only because the adapter supplied the semantics:
+        # those rows are not measurements of E*, so this is PARTIAL, never a bare PASS.
+        state = PARTIAL
+        reason = (
+            f"{len(measured_rows)}/{len(rows)} rows measured by the runtime's own evaluator interface; "
+            f"{len(adapted_rows)}/{len(rows)} accepted only on adapter-supplied semantics "
+            f"({', '.join(r['candidate_id'] for r in adapted_rows)}). No check failed, but this runtime "
+            "cannot represent E*'s outcome algebra on those rows"
+        )
+    qualification["state"] = state
+    qualification["label"] = a0_1_label(state, len(measured_rows), len(rows))
 
     return {
         "state": state,
         "reason": reason,
+        "qualification": {"a0_1": qualification},
         "checks": checks,
         "rows": rows,
         "false_green_findings": findings,
@@ -2377,7 +2441,10 @@ def evaluate_runtime(runtime: str, adapter_doc: dict, ref_rows: list, ref_table:
         "traces": adapter_doc.get("traces") or trace_doc_paths,
         "adapter_run_dir": adapter_doc.get("run_dir"),
         "failure_stage_counts": adapter_doc.get("failure_stage_counts"),
-        "adapter_declared_verdict": adapter_doc.get("adapter_verdict"),
+        # The adapter's own claim about its A0.1 verdict. It is NEVER the runner's verdict, and the
+        # `__untrusted` suffix is the machine-readable statement of that: no key in this report that
+        # carries a bare `PASS`/`FAIL` under a verdict-shaped name is an adapter self-claim.
+        "adapter_claim__untrusted": adapter_doc.get("adapter_verdict"),
         "adapter_schema": adapter_doc.get("schema"),
         "adapter_rows_section": adapter_doc.get("section_key") or "top level",
         "adapter_unverified_notes": adapter_doc.get("unverified"),
@@ -2474,6 +2541,14 @@ def cmd_run(args) -> int:
         "protocol": {
             "formula": "for every r in R and every c in C*: E_r(c; theta_E) = E*(c; theta_E) +- epsilon, and EID_r derived from EID* (plan:513-519)",
             "screen": "A0 is a candidate screen, not a collective gate: R_1 = {r : A0.1_r and A0.2_r}, |R_1| >= 1 to continue (plan:490)",
+            "qualification": (
+                "A0.1 is reported per runtime as (state, measured, adapted, total), never as a single "
+                "global verdict: PASS = every row of C* measured by the runtime's own evaluator interface; "
+                "PARTIAL = every row agrees but at least one agrees only on semantics the ADAPTER supplied "
+                "(declared synthetic failure), so it was not measured; FAIL = a row disagrees, coverage is "
+                "incomplete, or a check failed. `verdicts.a0_1` carries the label with the measured split "
+                "(e.g. `PARTIAL (5/14 measured)`), so a bare PASS cannot be read for a partial runtime"
+            ),
             "f_r": "round one freezes F_r(E*) = scalar(E*) (plan:528)",
             "false_green": "plan:551-552",
         },
@@ -2603,15 +2678,40 @@ def cmd_run(args) -> int:
             print(f"    {name}: {entry['state']} (expected {entry['expectation']})")
 
     states = [e["state"] for e in report["runtimes"].values()]
+    qualification = {
+        r: ((e.get("qualification") or {}).get("a0_1") or {"state": e["state"], "label": e["state"]})
+        for r, e in report["runtimes"].items()
+    }
     report["verdicts"] = {
-        "a0_1": {r: e["state"] for r, e in report["runtimes"].items()},
+        # Never a bare PASS: the value is the label, which carries the measured split
+        # ("PASS (14/14 measured)" / "PARTIAL (5/14 measured)"). Use `a0_1_state` for the enum and
+        # `a0_1_qualification` for the machine-readable split.
+        "a0_1": {r: qualification[r].get("label") or e["state"] for r, e in report["runtimes"].items()},
+        "a0_1_state": {r: e["state"] for r, e in report["runtimes"].items()},
+        "a0_1_measured": {r: qualification[r].get("measured") for r in report["runtimes"]},
+        "a0_1_adapted": {r: qualification[r].get("adapted") for r in report["runtimes"]},
+        "a0_1_qualification": qualification,
         "n_pass": states.count(PASS),
+        "n_partial": states.count(PARTIAL),
         "n_fail": states.count(FAIL),
         "n_pending": states.count(PENDING),
         "n_blocked": states.count(BLOCKED),
-        "r_1_a0_1_only": [r for r, s in report["runtimes"].items() if s.get("state") == PASS],
+        "r_1_a0_1_only": [r for r, e in report["runtimes"].items() if e["state"] == PASS],
+        "r_1_a0_1_partial": [r for r, e in report["runtimes"].items() if e["state"] == PARTIAL],
         "gate": "|R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2",
         "screen_semantics": "each runtime is evaluated independently; no runtime's failure aborted another's run",
+        "screen_vs_qualification": (
+            "`|R_1| >= 1` is a CANDIDATE SCREEN over runtimes and is a different object from per-runtime "
+            "qualification. The screen asks whether the study may continue (at least one substrate survives "
+            "A0); qualification asks whether a given runtime's A0.1 answer is measured or merely adapted. "
+            "`r_1_a0_1_only` lists runtimes whose A0.1 is PASS (every row measured) and "
+            "`r_1_a0_1_partial` lists runtimes whose A0.1 is PARTIAL (some rows accepted only on "
+            "adapter-supplied semantics). A PARTIAL runtime is deliberately NOT in `r_1_a0_1_only`, so a "
+            "partial result can never be diluted by siblings that passed. Per-runtime eligibility for A1 is "
+            "declared separately and explicitly by the `Eligible(r)` predicate in "
+            "`a0/qualification/qualification.json` (see `a0/qualification/QUALIFICATION.md`); the screen can "
+            "pass while no runtime is Eligible()."
+        ),
     }
     report["exit_code"] = (
         EXIT_RUNNER["fail"]
@@ -2636,7 +2736,7 @@ def cmd_run(args) -> int:
         print(f"pruned {pruned} superseded run director{'y' if pruned == 1 else 'ies'}")
     print(f"written: {report_path}")
     print(f"written: {table_path}")
-    print(f"verdicts (A0.1 only): {json.dumps(report['verdicts']['a0_1'], ensure_ascii=False)}")
+    print(f"A0.1 labels (measured split always shown): {json.dumps(report['verdicts']['a0_1'], ensure_ascii=False)}")
     return report["exit_code"]
 
 
@@ -2833,11 +2933,14 @@ def run_one_runtime(runtime, adapter_root, overrides, registry_error, ref_rows, 
 
     adapter_doc = normalise_adapter_output(doc, runtime)
     fallback = str(adapter_doc.get("schema") or "").startswith("derived-from-score-trace")
-    entry["adapter_declared"] = {
+    # Everything an adapter says about itself lives under a key that cannot be read as a verdict
+    # (`__untrusted`, and no `verdict`/`state` leaf name). The runner's own verdicts are `state`,
+    # `qualification.a0_1` and the top-level `verdicts` block; nothing here may shadow them.
+    entry["adapter_self_declaration__untrusted"] = {
         "schema": adapter_doc["schema"],
-        "state": adapter_doc["declared_state"],
+        "declared_outcome": adapter_doc["declared_state"],
         "blocked_reason": adapter_doc["blocked_reason"],
-        "verdict": adapter_doc["adapter_verdict"],
+        "claim__untrusted": adapter_doc["adapter_verdict"],
         "row_count": len(adapter_doc["rows"]),
     }
     if adapter_doc["declared_state"] in ("blocked", BLOCKED):
@@ -2914,7 +3017,7 @@ def run_one_runtime(runtime, adapter_root, overrides, registry_error, ref_rows, 
     result["conformance_invocation"] = entry.get("conformance_invocation")
     result["run_invocation"] = entry.get("run_invocation")
     result["raw"] = entry.get("raw")
-    result["adapter_declared"] = entry["adapter_declared"]
+    result["adapter_self_declaration__untrusted"] = entry["adapter_self_declaration__untrusted"]
     result["exit_code_semantics"] = explain_exit(res["exit_code"])
     return result
 
@@ -3121,13 +3224,15 @@ def write_table(report: dict, path: Path) -> None:
     lines.append(
         "Protocol: `plan:513-519` (the acceptance formula), `plan:490` (candidate screen, `|R_1| >= 1`), "
         "`plan:551-552` (the two false-green traps). The runner compares the adapter's numbers against the "
-        "frozen table `E_STAR.json` itself; an adapter's own verdict is recorded but never trusted."
+        "frozen table `E_STAR.json` itself; an adapter's own claim about its A0.1 outcome is recorded "
+        "only under a key named `__untrusted` (see `adapter_claim__untrusted` / "
+        "`adapter_self_declaration__untrusted`), so it can never be read as a verdict."
     )
     lines.append("")
     lines.append("## Verdicts")
     lines.append("")
-    lines.append("| runtime | A0.1 | acceptable / 14 | false-green findings | A0.2 (other workstream) | reason |")
-    lines.append("|---|---|---|---|---|---|")
+    lines.append("| runtime | A0.1 | measured / 14 | adapted (declared, NOT measured) | acceptable / 14 | false-green findings | A0.2 (other workstream) | reason |")
+    lines.append("|---|---|---|---|---|---|---|---|")
     for runtime, entry in report["runtimes"].items():
         rows = entry.get("rows") or []
         accept = sum(1 for r in rows if r["verdict"] in ACCEPTING_VERDICTS)
@@ -3142,17 +3247,33 @@ def write_table(report: dict, path: Path) -> None:
         reason = (entry.get("reason") or "all checks passed").replace("|", "/")
         if len(reason) > 160:
             reason = reason[:157] + "..."
+        q = (entry.get("qualification") or {}).get("a0_1") or {}
+        label = q.get("label") or entry["state"]
+        measured = f"{q.get('measured')}/{q.get('total')}" if q else "-"
+        adapted = f"{q.get('adapted')}/{q.get('total')}" if q else "-"
+        if q.get("adapted_candidates"):
+            adapted += f" ({', '.join(q['adapted_candidates'])})"
         lines.append(
-            f"| {runtime} | {entry['state']} | {accept}/{total}{f' ({detail})' if detail else ''} | "
+            f"| {runtime} | {label} | {measured} | {adapted} | {accept}/{total}"
+            f"{f' ({detail})' if detail else ''} | "
             f"{', '.join(fg) or '-'} | not judged here | {reason} |"
         )
     lines.append("")
     v = report.get("verdicts", {})
     lines.append(
-        f"A0.1-only set: `R_1(A0.1) = {v.get('r_1_a0_1_only')}` (n_pass={v.get('n_pass')}, n_fail={v.get('n_fail')}, "
+        f"A0.1-only screen: `r_1_a0_1_only = {v.get('r_1_a0_1_only')}` (n_pass={v.get('n_pass')}, "
+        f"n_partial={v.get('n_partial')}, n_fail={v.get('n_fail')}, "
         f"n_pending={v.get('n_pending')}, n_blocked={v.get('n_blocked')}). {v.get('gate','')}"
     )
     lines.append("")
+    lines.append(
+        f"PARTIAL A0.1 (every row agrees, but at least one only on adapter-supplied semantics), "
+        f"deliberately excluded from the screen set: `r_1_a0_1_partial = {v.get('r_1_a0_1_partial')}`."
+    )
+    lines.append("")
+    if v.get("screen_vs_qualification"):
+        lines.append(v["screen_vs_qualification"])
+        lines.append("")
 
     lines.append("## Reference table reproducibility")
     lines.append("")
@@ -3183,12 +3304,15 @@ def write_table(report: dict, path: Path) -> None:
     lines.append(
         "Row verdicts: `MATCH` (number agrees within epsilon), `MATCH_VERDICT` (no number on either side, "
         "verdicts compared), `SYNTHETIC_DECLARED` (the runtime's lane returned a declared synthetic failure "
-        "where E* has no number -- acceptable, but its 0.0 is never a measurement), `FALSE_GREEN_*` "
+        "where E* has no number -- acceptable, but its 0.0 is never a measurement, and a runtime with such a "
+        "row is `PARTIAL`, not `PASS`), `FALSE_GREEN_*` "
         "(a number where none exists, or a non-fresh number), `MISMATCH_*`, `MISSING`."
     )
     lines.append("")
     for runtime, entry in report["runtimes"].items():
-        lines.append(f"### {runtime} — {entry['state']}")
+        _q = (entry.get("qualification") or {}).get("a0_1") or {}
+        _label = _q.get("label") or entry["state"]
+        lines.append(f"### {runtime} — {_label}")
         lines.append("")
         if entry.get("reason"):
             lines.append(f"Reason: {entry['reason']}")
@@ -3199,8 +3323,9 @@ def write_table(report: dict, path: Path) -> None:
         if entry.get("adapter_schema"):
             lines.append(
                 f"Adapter output: schema `{entry['adapter_schema']}`, rows from "
-                f"`{entry.get('adapter_rows_section')}`, adapter's own verdict "
-                f"`{entry.get('adapter_declared_verdict')}` (recorded, never trusted), numbers read from "
+                f"`{entry.get('adapter_rows_section')}`, adapter's own claim "
+                f"`{entry.get('adapter_claim__untrusted')}` (recorded under `adapter_claim__untrusted`, "
+                f"never a verdict, never trusted), numbers read from "
                 f"`{entry.get('evidence_source')}`."
             )
             lines.append("")
@@ -3253,7 +3378,16 @@ def write_table(report: dict, path: Path) -> None:
         )
         lines.append("Handoff:")
         lines.append("")
-        lines.append(f"- A0.1 verdict: **{entry['state']}**" + (f" ({entry['reason']})" if entry.get("reason") else ""))
+        lines.append(f"- A0.1 verdict: **{_label}**" + (f" ({entry['reason']})" if entry.get("reason") else ""))
+        if _q:
+            lines.append(
+                f"- A0.1 qualification: state `{_q.get('state')}`, measured "
+                f"{_q.get('measured')}/{_q.get('total')} by the runtime's own evaluator interface, "
+                f"adapted {_q.get('adapted')}/{_q.get('total')} on adapter-supplied semantics "
+                f"(never used as a measurement): "
+                f"measured={_q.get('measured_candidates')}, "
+                f"adapted={_q.get('adapted_candidates') or 'none'}"
+            )
         lines.append(
             "- A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the "
             "adapter can carry the identity and the numbers"

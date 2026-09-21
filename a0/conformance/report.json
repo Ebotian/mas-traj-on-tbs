@@ -1,11 +1,12 @@
 {
   "schema": "a0.conformance.report/v1",
-  "generated_at": "2026-09-20T19:52:26+0800",
+  "generated_at": "2026-09-21T16:25:11+0800",
   "generated_by": "a0/conformance/conformance.py run",
   "step": "A0.1 evaluator integration conformance",
   "protocol": {
     "formula": "for every r in R and every c in C*: E_r(c; theta_E) = E*(c; theta_E) +- epsilon, and EID_r derived from EID* (plan:513-519)",
     "screen": "A0 is a candidate screen, not a collective gate: R_1 = {r : A0.1_r and A0.2_r}, |R_1| >= 1 to continue (plan:490)",
+    "qualification": "A0.1 is reported per runtime as (state, measured, adapted, total), never as a single global verdict: PASS = every row of C* measured by the runtime's own evaluator interface; PARTIAL = every row agrees but at least one agrees only on semantics the ADAPTER supplied (declared synthetic failure), so it was not measured; FAIL = a row disagrees, coverage is incomplete, or a check failed. `verdicts.a0_1` carries the label with the measured split (e.g. `PARTIAL (5/14 measured)`), so a bare PASS cannot be read for a partial runtime",
     "f_r": "round one freezes F_r(E*) = scalar(E*) (plan:528)",
     "false_green": "plan:551-552"
   },
@@ -300,6 +301,36 @@
     "simpleloop": {
       "state": "PASS",
       "reason": null,
+      "qualification": {
+        "a0_1": {
+          "state": "PASS",
+          "label": "PASS (14/14 measured)",
+          "measured": 14,
+          "adapted": 0,
+          "total": 14,
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "adapted_candidates": [],
+          "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+          "c_adapt": "can the adapter supply the missing semantics?",
+          "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        }
+      },
       "checks": [
         {
           "check_id": "EID-star-verbatim",
@@ -740,7 +771,7 @@
         "note": "declared by the adapter from its own score trace, one unit per (run_id, iteration, candidate_id) so a failure reported on two traces is counted once (plan:577, plan:628); identical to trace_validate.py's rule",
         "source": "a0/runtimes/simpleloop/out/default-run/traces/simpleloop.default-run.score.jsonl"
       },
-      "adapter_declared_verdict": "pass",
+      "adapter_claim__untrusted": "pass",
       "adapter_schema": "a0.simpleloop.conformance/v1",
       "adapter_rows_section": "top level",
       "adapter_unverified_notes": null,
@@ -934,7 +965,7 @@
         ],
         "cwd": "/home/ebt/rsi-dev/a0/runtimes/simpleloop",
         "exit_code": 0,
-        "duration_sec": 2.81,
+        "duration_sec": 2.838,
         "timed_out": false,
         "stdout_tail": " },\n \"trace_paths\": {\n  \"combined\": \"a0/runtimes/simpleloop/out/default-run/traces/simpleloop.default-run.all.jsonl\",\n  \"resource\": \"a0/runtimes/simpleloop/out/default-run/traces/simpleloop.default-run.resource.jsonl\",\n  \"score\": \"a0/runtimes/simpleloop/out/default-run/traces/simpleloop.default-run.score.jsonl\"\n },\n \"verdict\": \"pass\",\n \"verdicts_seen\": {\n  \"c01_good_hex\": \"ok/exit0\",\n  \"c02_baseline_upstream\": \"ok/exit0\",\n  \"c03_mirror\": \"ok/exit0\",\n  \"c04_near_tie\": \"ok/exit0\",\n  \"c05_overlapping\": \"invalid/exit2\",\n  \"c06_empty\": \"invalid/exit2\",\n  \"c07_single\": \"invalid/exit2\",\n  \"c08_out_of_bounds\": \"invalid/exit2\",\n  \"c09_malformed_import\": \"error/exit3\",\n  \"c10_raises\": \"error/exit3\",\n  \"c11_non_deterministic\": \"error/exit3\",\n  \"c12_exit_without_artifacts\": \"error/exit3\",\n  \"c13_slow\": \"error/exit3\",\n  \"c14_near_zero\": \"ok/exit0\"\n }\n}\nwritten: a0/conformance/out/adapters/simpleloop.conformance.json",
         "stderr_tail": "",
@@ -948,11 +979,11 @@
         "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/simpleloop.conformance.exit",
         "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/simpleloop.conformance.json"
       },
-      "adapter_declared": {
+      "adapter_self_declaration__untrusted": {
         "schema": "a0.simpleloop.conformance/v1",
-        "state": null,
+        "declared_outcome": null,
         "blocked_reason": null,
-        "verdict": "pass",
+        "claim__untrusted": "pass",
         "row_count": 14
       },
       "exit_code_semantics": {
@@ -971,6 +1002,36 @@
     "kapso": {
       "state": "PASS",
       "reason": null,
+      "qualification": {
+        "a0_1": {
+          "state": "PASS",
+          "label": "PASS (14/14 measured)",
+          "measured": 14,
+          "adapted": 0,
+          "total": 14,
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "adapted_candidates": [],
+          "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+          "c_adapt": "can the adapter supply the missing semantics?",
+          "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        }
+      },
       "checks": [
         {
           "check_id": "EID-star-verbatim",
@@ -1419,7 +1480,7 @@
         "note": "declared by the adapter from its own emitted events, one unit per (iteration, candidate_id, stage) so a failure reported on both the score and the resource event of a unit is counted once (plan:577, plan:628, trace_validate.py count_failure_stages). `counts` is over the run's merged stream (the validation unit); `counts_score_trace_only` is the same rule over the score trace alone, which is what a0/conformance/conformance.py counts when an adapter declares nothing. The mapping is the A0-wide table in contract/selection/kapso.selection.json",
         "source": "/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.score.jsonl"
       },
-      "adapter_declared_verdict": "pass",
+      "adapter_claim__untrusted": "pass",
       "adapter_schema": "a0.kapso.conformance/v1",
       "adapter_rows_section": "top level",
       "adapter_unverified_notes": null,
@@ -1598,7 +1659,7 @@
         ],
         "cwd": "/home/ebt/rsi-dev/a0/runtimes/kapso",
         "exit_code": 0,
-        "duration_sec": 17.394,
+        "duration_sec": 17.645,
         "timed_out": false,
         "stdout_tail": "\n[GenericSearch] Registered evaluation failed (exit 3): kapso_eval: E* verdict error — no score of record (exit 3)\n\n[GenericSearch] Registered evaluation failed (exit 3): kapso_eval: E* verdict error — no score of record (exit 3)\n\n[GenericSearch] Registered evaluation failed (exit 3): kapso_eval: E* verdict error — no score of record (exit 3)\n\n[GenericSearch] Registered evaluation failed (exit 3): kapso_eval: E* verdict error — no score of record (exit 3)\n\n[GenericSearch] Manifest class mismatch: granted full/1.0/1337, session ran fast/0.15/1337 — no mechanical score of record\n{\n \"run_id\": \"kapso-a01-adapters\",\n \"candidates\": 14,\n \"pass\": true,\n \"mismatches\": [],\n \"trace_paths\": {\n  \"score\": \"/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.score.jsonl\",\n  \"resource\": \"/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.resource.jsonl\",\n  \"all\": \"/home/ebt/rsi-dev/a0/conformance/out/adapters/traces/kapso.kapso-a01-adapters.all.jsonl\"\n },\n \"trace_validation\": {\n  \"unit\": \"run\",\n  \"returncode\": 0\n }\n}",
         "stderr_tail": "",
@@ -1612,11 +1673,11 @@
         "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/kapso.conformance.exit",
         "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/kapso.conformance.json"
       },
-      "adapter_declared": {
+      "adapter_self_declaration__untrusted": {
         "schema": "a0.kapso.conformance/v1",
-        "state": null,
+        "declared_outcome": null,
         "blocked_reason": null,
-        "verdict": "pass",
+        "claim__untrusted": "pass",
         "row_count": 14
       },
       "exit_code_semantics": {
@@ -1633,8 +1694,39 @@
       }
     },
     "eve": {
-      "state": "PASS",
-      "reason": null,
+      "state": "PARTIAL",
+      "reason": "5/14 rows measured by the runtime's own evaluator interface; 9/14 accepted only on adapter-supplied semantics (c05_overlapping, c06_empty, c07_single, c08_out_of_bounds, c09_malformed_import, c10_raises, c11_non_deterministic, c12_exit_without_artifacts, c13_slow). No check failed, but this runtime cannot represent E*'s outcome algebra on those rows",
+      "qualification": {
+        "a0_1": {
+          "state": "PARTIAL",
+          "label": "PARTIAL (5/14 measured)",
+          "measured": 5,
+          "adapted": 9,
+          "total": 14,
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c14_near_zero"
+          ],
+          "adapted_candidates": [
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow"
+          ],
+          "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+          "c_adapt": "can the adapter supply the missing semantics?",
+          "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        }
+      },
       "checks": [
         {
           "check_id": "EID-star-verbatim",
@@ -2168,7 +2260,7 @@
         "timeout": 1,
         "verify_failed": 5
       },
-      "adapter_declared_verdict": "PASS",
+      "adapter_claim__untrusted": "PASS",
       "adapter_schema": "a0.adapter.conformance/v1",
       "adapter_rows_section": "top level",
       "adapter_unverified_notes": "the agent lane is not exercised by this subcommand: A0.1 needs only the evaluator lane, which runs here through EvE's own evaluate() path. The LLM-driven end-to-end EvE round is a separate experiment (see out/run002/ if present).",
@@ -2351,7 +2443,7 @@
         ],
         "cwd": "/home/ebt/rsi-dev/a0/runtimes/eve",
         "exit_code": 0,
-        "duration_sec": 9.384,
+        "duration_sec": 7.182,
         "timed_out": false,
         "stdout_tail": "[a01] c06_empty\n[a01] c07_single\n[a01] c08_out_of_bounds\n[a01] c09_malformed_import\n[a01] c10_raises\n[a01] c11_non_deterministic\n[a01] c12_exit_without_artifacts\n[a01] c13_slow\n[a01] c14_near_zero\n{\n \"verdict\": \"PASS\",\n \"counters\": {\n  \"candidates\": 14,\n  \"reference_ok\": 5,\n  \"reference_non_ok\": 9,\n  \"match\": 5,\n  \"mismatch\": 0,\n  \"synthesized_failure\": 9,\n  \"value_mismatch\": 0,\n  \"runtime_failed_a_measurable_candidate\": 0,\n  \"runtime_reported_ok_where_e_star_did_not\": 0\n },\n \"out\": \"/home/ebt/rsi-dev/a0/conformance/out/adapters/eve.conformance.json\",\n \"traces_ok\": true\n}",
         "stderr_tail": "Evaluation: shell step 01 `eve_evaluator_step.sh` failed with return code 2 after 0.1s\nEvaluation: shell step 01 `eve_evaluator_step.sh` failed with return code 2 after 0.1s\nEvaluation: shell step 01 `eve_evaluator_step.sh` failed with return code 2 after 0.1s\nEvaluation: shell step 01 `eve_evaluator_step.sh` failed with return code 2 after 0.1s\nEvaluation: shell step 01 `eve_evaluator_step.sh` failed with return code 3 after 0.0s\nEvaluation: shell step 01 `eve_evaluator_step.sh` failed with return code 3 after 0.1s\nEvaluation: shell step 01 `eve_evaluator_step.sh` failed with return code 3 after 0.1s\nEvaluation: shell step 01 `eve_evaluator_step.sh` failed with return code 3 after 0.0s\nEvaluation: shell step 01 `eve_evaluator_step.sh` failed with return code 3 after 1.6s",
@@ -2365,11 +2457,11 @@
         "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/eve.conformance.exit",
         "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/eve.conformance.json"
       },
-      "adapter_declared": {
+      "adapter_self_declaration__untrusted": {
         "schema": "a0.adapter.conformance/v1",
-        "state": null,
+        "declared_outcome": null,
         "blocked_reason": null,
-        "verdict": "PASS",
+        "claim__untrusted": "PASS",
         "row_count": 14
       },
       "exit_code_semantics": {
@@ -2388,6 +2480,36 @@
     "loreley": {
       "state": "PASS",
       "reason": null,
+      "qualification": {
+        "a0_1": {
+          "state": "PASS",
+          "label": "PASS (14/14 measured)",
+          "measured": 14,
+          "adapted": 0,
+          "total": 14,
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "adapted_candidates": [],
+          "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+          "c_adapt": "can the adapter supply the missing semantics?",
+          "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        }
+      },
       "checks": [
         {
           "check_id": "EID-star-verbatim",
@@ -2828,7 +2950,7 @@
         "timeout": 1,
         "verify_failed": 5
       },
-      "adapter_declared_verdict": "pass",
+      "adapter_claim__untrusted": "pass",
       "adapter_schema": "a0.adapter.conformance/v1",
       "adapter_rows_section": "top level",
       "adapter_unverified_notes": [
@@ -3051,10 +3173,10 @@
         ],
         "cwd": "/home/ebt/rsi-dev/a0/runtimes/loreley",
         "exit_code": 0,
-        "duration_sec": 8.287,
+        "duration_sec": 8.304,
         "timed_out": false,
-        "stdout_tail": "           (job=a0-c01_good_hex                                                 \n           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     \n           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528\n           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495\n           (job=a0-c01_good_hex                                                 \n           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     \n[19:53:06] Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528\n           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495\n           (job=a0-c01_good_hex                                                 \n           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     \n           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528\n{\n \"verdict\": \"pass\",\n \"failure_count\": 0,\n \"failed_candidates\": [],\n \"epsilon\": 1e-09,\n \"candidates\": 14,\n \"traces\": {\n  \"score\": \"/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.score.jsonl\",\n  \"selection\": \"/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.selection.jsonl\",\n  \"resource\": \"/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.resource.jsonl\",\n  \"combined\": \"/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.all.jsonl\"\n },\n \"out\": \"/home/ebt/rsi-dev/a0/conformance/out/adapters/loreley.conformance.json\"\n}",
-        "stderr_tail": "2026-09-20 19:52:58.806 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7\n2026-09-20 19:52:59.011 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c02_baseline_upstream commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7\n2026-09-20 19:52:59.222 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c03_mirror commit=893d0aa439433d523e2666d62de9b60caacdbab7 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7\n2026-09-20 19:52:59.430 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c04_near_tie commit=3bf7bf310c976e9a488fadad81e27ea4dfef47e5 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7\n2026-09-20 19:52:59.635 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c05_overlapping commit=1054b613063beeb62feb2a91d93a190e750eac8d outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0\n2026-09-20 19:52:59.837 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c06_empty commit=245b052ae21568853348257d5fb739c82c498ec4 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0\n2026-09-20 19:53:00.040 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c07_single commit=06fd7c81ea1b82c72ff95655c01f09a4bc511389 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0\n2026-09-20 19:53:00.244 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c08_out_of_bounds commit=8724d76ce22c6675addb04a0bf42937e13855437 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0\n2026-09-20 19:53:00.439 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c09_malformed_import commit=8f3cc2c8e62dec779227f80623ebed8e5e5a15fb outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0\n2026-09-20 19:53:00.644 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c10_raises commit=8739f824fab190ec43f684df215f7e02eb480b8e outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0\n2026-09-20 19:53:00.849 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c11_non_deterministic commit=f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18e outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0\n2026-09-20 19:53:01.039 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c12_exit_without_artifacts commit=f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4b outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0\n2026-09-20 19:53:04.295 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c13_slow commit=f085fe77acc30b3dd50a990b5aeedde0bee6c7a7 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0\n2026-09-20 19:53:04.548 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c14_near_zero commit=b8412ada1bb33483d7845b144e7ea6dcbeeed752 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7\n2026-09-20 19:53:05.371 | INFO     | loreley.config:get_settings:1491 - Settings initialised: {'app_name': 'loreley-a0', 'environment': 'development', 'log_level': 'INFO', 'profile': 'default', 'logs_base_dir': None, 'loreley_agent_api_token': None, 'loreley_api_write_token': None, 'openai_api_spec': 'responses', 'openai_base_url': None, 'openai_api_key': None, 'openai_dynamic_api_key_provider': None, 'openai_dynamic_api_key_ttl_seconds': None, 'openai_dynamic_api_key_refresh_skew_seconds': None, 'llm_usage_tracking_enabled': True, 'llm_usage_pricing_path': None, 'llm_usage_pricing_json_configured': False, 'mapelites_experiment_root_commit': 'b91c0906c9f676eb661990d881144909d99f2d72', 'database_dsn': 'postgresql+psycopg://127.0.0.1:5432/loreley', 'db_scheme': 'postgresql+psycopg', 'db_host': 'localhost', 'db_port': 5432, 'db_name': 'loreley', 'db_password': '***', 'db_pool_size': 10, 'db_max_overflow': 20, 'db_pool_timeout': 30, 'db_echo': False, 'db_auto_migrate': True, 'db_migration_lock_timeout_seconds': 30, 'tasks_redis_url': 'redis://127.0.0.1:6379/0', 'tasks_redis_host': 'localhost', 'tasks_redis_port': 6379, 'tasks_redis_db': 0, 'tasks_redis_password': None, 'tasks_redis_namespace': 'loreley.a0-loreley-loreley-26cc4549', 'tasks_queue_name': 'loreley.evolution.a0-loreley-loreley-26cc4549', 'tasks_queue_prefetch': 1, 'tasks_delay_queue_prefetch': 1, 'tasks_worker_max_retries': 0, 'tasks_worker_time_limit_seconds': 3600, 'experiment_id': 'a0-loreley-loreley', 'effective_routes': {'seed_portfolio': {'backend': 'kilo', 'provider_mode': 'config', 'provider': 'loreley-openai-responses', 'model': 'openai/gpt-5.6-sol', 'variant': 'high', 'reasoning': 'high', 'api_surface': 'responses', 'base_url_host': None}, 'planning': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'coding': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'trajectory_summary': {'enabled': True, 'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': None, 'api_surface': 'responses', 'thinking': 'provider_default', 'reasoning_effort': 'provider_default', 'base_url_host': None}, 'embedding': {'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': 'text-embedding-3-small', 'dimensions': None, 'api_surface': 'embeddings', 'base_url_host': None, 'local_hash_acknowledged': None}, 'commit_summary': {'enabled': True, 'model_call': False, 'source': 'coding.report.summary', 'fallback_source': 'plan.summary'}}, 'scheduler_repo_root': None, 'scheduler_poll_interval_seconds': 30.0, 'worker_repo_worktree': '/home/ebt/.cache/loreley/worker-repo', 'worker_repo_remote_url': None, 'worker_repo_branch': 'main', 'worker_repo_fetch_depth': None, 'worker_scope_gate_cleanup_paths': '', 'worker_repo_enable_lfs': True, 'worker_repo_job_branch_ttl_hours': 168, 'worker_job_lease_ttl_seconds': 1800, 'worker_job_heartbeat_interval_seconds': 60, 'worker_processes': 1, 'worker_planning_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_planning_backend', 'worker_planning_codex_model': None, 'worker_planning_max_attempts': 2, 'worker_planning_timeout_seconds': 900, 'worker_seed_portfolio_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_seed_portfolio_backend', 'worker_seed_portfolio_model': 'openai/gpt-5.6-sol', 'worker_seed_portfolio_reasoning_effort': 'high', 'worker_seed_portfolio_max_attempts': 2, 'worker_seed_portfolio_timeout_seconds': 1800, 'worker_coding_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_coding_backend', 'worker_coding_codex_model': None, 'worker_coding_max_attempts': 2, 'worker_coding_timeout_seconds': 1800, 'worker_cursor_model': 'gpt-5.2-high', 'worker_kilocode_mode': None, 'worker_kilocode_agent': None, 'worker_kilocode_model': None, 'worker_kilocode_planning_model': None, 'worker_kilocode_coding_model': None, 'worker_kilocode_variant': None, 'worker_kilocode_pure': False, 'worker_kilocode_json_output': False, 'worker_kilocode_usage_db_path': None, 'worker_kilocode_state_root': None, 'worker_kilocode_provider_config_mode': 'auto', 'worker_kilocode_openai_api_spec': None, 'worker_kilocode_openai_base_url': None, 'worker_kilocode_openai_api_key': None, 'worker_kilocode_openai_model': None, 'worker_evaluator_plugin': 'loreley_a0_plugin:plugin', 'worker_evaluator_version': None, 'worker_evaluator_timeout_seconds': 900, 'worker_evaluator_max_metrics': 64, 'worker_evaluator_max_concurrency': None, 'worker_evaluator_slot_poll_seconds': 0.25, 'worker_evaluator_measurement_max_json_bytes': 8388608, 'worker_evolution_global_goal': 'Continuously improve the repository while keeping tests passing, maintaining code quality, and respecting project conventions.', 'worker_evolution_commit_author': 'Loreley Worker', 'worker_evolution_commit_email': 'worker@loreley.local', 'worker_planning_trajectory_summary_provider_mode': 'global_openai', 'worker_planning_trajectory_summary_api_key': None, 'worker_planning_trajectory_summary_base_url': None, 'worker_planning_trajectory_summary_api_spec': 'responses', 'worker_planning_trajectory_summary_thinking': 'provider_default', 'worker_planning_trajectory_summary_reasoning_effort': 'provider_default', 'worker_planning_trajectory_summary_model': None, 'mapelites_code_embedding_model': 'text-embedding-3-small', 'mapelites_code_embedding_dimensions': None, 'mapelites_code_embedding_provider_only': [], 'mapelites_code_embedding_allow_fallbacks': True, 'mapelites_code_embedding_require_parameters': False, 'mapelites_code_embedding_data_collection': 'allow', 'mapelites_local_hash_embedding_acknowledged': False, 'mapelites_repo_state_embedding_max_line_chars': 16000, 'mapelites_repo_state_embedding_max_chunk_chars': 65536, 'mapelites_dimensionality_target_dims': 4, 'mapelites_archive_cells_per_dim': 32, 'mapelites_islands': ['circle_packing_alpha'], 'mapelites_objectives': [{'name': 'composite_score', 'direction': 'max'}], 'mapelites_pareto_front_max_size': 8, 'mapelites_pareto_epsilon': 1e-09, 'mapelites_admission_policy': 'pareto', 'mapelites_comparison_confidence': 0.95, 'mapelites_migration_interval_jobs': 50, 'mapelites_sampler_inspiration_count': 3, 'mapelites_sampler_seed': 0, 'mapelites_sampler_recipe_cooldown_jobs': 64, 'mapelites_sampler_max_resample_attempts': 32, 'mapelites_sampler_neighbor_radius': 1, 'mapelites_sampler_neighbor_max_radius': 3, 'mapelites_sampler_fallback_sample_size': 8, 'mapelites_sampler_default_priority': 0, 'mapelites_seed_population_size': 16, 'mapelites_seed_portfolio_enabled': False, 'mapelites_seed_portfolio_direction_count': 8, 'mapelites_seed_portfolio_max_pairwise_overlap': 0.65, 'mapelites_seed_direction_max_unsuccessful_attempts': 2, 'mapelites_seed_immediate_min_improvement_fraction': 0.0, 'scheduler_max_unfinished_jobs': 4, 'scheduler_dispatch_batch_size': 4, 'scheduler_schedule_batch_size': 2, 'scheduler_ingest_batch_size': 2, 'scheduler_max_total_jobs': None, 'scheduler_max_unique_evaluation_identities': None, 'scheduler_startup_approve': False, 'scheduler_stale_running_reclaim_batch_size': 32, 'scheduler_stale_running_max_recovery_attempts': 3, 'campaign_program_change_policy': 'locked', 'baseline_bootstrap_policy': 'required', 'failed_candidate_repair_enabled': False, 'failed_candidate_repair_mode': 'rebase_from_nearest_viable', 'failed_candidate_repair_max_depth': 1, 'failed_candidate_repair_max_attempts': 1, 'failed_candidate_repair_normal_jobs_per_token': 9, 'failed_candidate_repair_max_tokens': 3, 'failed_candidate_repair_max_active_jobs': 1, 'failed_candidate_repair_max_jobs_per_tick': 1, 'failed_candidate_repair_failure_kinds': 'validation_failed,test_failed,typecheck_failed,lint_failed', 'failed_candidate_repair_agent_feedback_mode': 'diagnostic_capsule', 'failed_candidate_repair_max_diff_bytes': 65536, 'failed_candidate_repair_max_diagnostic_bytes': 16384, 'worker_evaluator_rework_enabled': True, 'worker_evaluator_rework_max_attempts': 1, 'worker_evaluator_rework_failure_kinds': 'compile,typecheck,lint,test,validation', 'worker_evaluator_rework_max_seconds': 1800}\n2026-09-20 19:53:05.393 | INFO     | loreley.db.base:get_engine:122 - SQLAlchemy engine initialised for postgresql+psycopg://127.0.0.1:5432/loreley\n2026-09-20 19:53:05.422 | INFO     | loreley.db.base:ensure_database_schema:207 - Database schema ensured for postgresql+psycopg://127.0.0.1:5432/loreley\n2026-09-20 19:53:05.885 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7\n2026-09-20 19:53:06.084 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7\n2026-09-20 19:53:06.285 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7",
+        "stdout_tail": "           (job=a0-c01_good_hex                                                 \n           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     \n           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528\n           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495\n           (job=a0-c01_good_hex                                                 \n           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     \n           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528\n           Evaluator running plugin loreley_a0_plugin:plugin   evaluator.py:1495\n           (job=a0-c01_good_hex                                                 \n           commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649)                     \n           Evaluator finished in 0.2s outcome=passed metrics=7 evaluator.py:1528\n{\n \"verdict\": \"pass\",\n \"failure_count\": 0,\n \"failed_candidates\": [],\n \"epsilon\": 1e-09,\n \"candidates\": 14,\n \"traces\": {\n  \"score\": \"/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.score.jsonl\",\n  \"selection\": \"/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.selection.jsonl\",\n  \"resource\": \"/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.resource.jsonl\",\n  \"combined\": \"/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance/traces/loreley.lor-a0.all.jsonl\"\n },\n \"out\": \"/home/ebt/rsi-dev/a0/conformance/out/adapters/loreley.conformance.json\"\n}",
+        "stderr_tail": "    └ <sqlalchemy.pool.base._ConnectionRecord object at 0x7efe4d186330>\n  File \"/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py\", line 667, in connect\n    return dialect.connect(*cargs_tup, **cparams)\n           │       │        │            └ immutabledict({'host': '127.0.0.1', 'dbname': 'loreley', 'user': 'loreley', 'password': 'loreley', 'port': 5432, 'context': <...\n           │       │        └ []\n           │       └ <function DefaultDialect.connect at 0x7efe748e9260>\n           └ <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x7efe4e49af90>\n  File \"/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py\", line 630, in connect\n    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501\n           │    │            │        │        └ {'host': '127.0.0.1', 'dbname': 'loreley', 'user': 'loreley', 'password': 'loreley', 'port': 5432, 'context': <psycopg.adapt....\n           │    │            │        └ ()\n           │    │            └ <bound method Connection.connect of <class 'psycopg.Connection'>>\n           │    └ <module 'psycopg' from '/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/psycopg/__init__.py'>\n           └ <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x7efe4e49af90>\n  File \"/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/psycopg/connection.py\", line 126, in connect\n    raise last_ex.with_traceback(None)\n          │       └ <method 'with_traceback' of 'BaseException' objects>\n          └ OperationalError('connection failed: connection to server at \"127.0.0.1\", port 5432 failed: Connection refused\\n\\tIs the serv...\n\nsqlalchemy.exc.OperationalError: (psycopg.OperationalError) connection failed: connection to server at \"127.0.0.1\", port 5432 failed: Connection refused\n\tIs the server running on that host and accepting TCP/IP connections?\n(Background on this error at: https://sqlalche.me/e/20/e3q8)\n2026-09-21 16:25:49.227 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7\n2026-09-21 16:25:49.432 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7\n2026-09-21 16:25:49.641 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7",
         "out_path": "/home/ebt/rsi-dev/a0/conformance/out/adapters/loreley.conformance.json",
         "out_exists": true
       },
@@ -3065,11 +3187,11 @@
         "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/loreley.conformance.exit",
         "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/loreley.conformance.json"
       },
-      "adapter_declared": {
+      "adapter_self_declaration__untrusted": {
         "schema": "a0.adapter.conformance/v1",
-        "state": null,
+        "declared_outcome": null,
         "blocked_reason": null,
-        "verdict": "pass",
+        "claim__untrusted": "pass",
         "row_count": 14
       },
       "exit_code_semantics": {
@@ -3090,6 +3212,36 @@
     "control_honest": {
       "state": "PASS",
       "reason": null,
+      "qualification": {
+        "a0_1": {
+          "state": "PASS",
+          "label": "PASS (14/14 measured)",
+          "measured": 14,
+          "adapted": 0,
+          "total": 14,
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c05_overlapping",
+            "c06_empty",
+            "c07_single",
+            "c08_out_of_bounds",
+            "c09_malformed_import",
+            "c10_raises",
+            "c11_non_deterministic",
+            "c12_exit_without_artifacts",
+            "c13_slow",
+            "c14_near_zero"
+          ],
+          "adapted_candidates": [],
+          "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+          "c_adapt": "can the adapter supply the missing semantics?",
+          "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        }
+      },
       "checks": [
         {
           "check_id": "EID-star-verbatim",
@@ -3492,9 +3644,9 @@
       "synthetic_declared_candidates": [],
       "evidence_source": "adapter conformance subcommand",
       "traces": null,
-      "adapter_run_dir": "/tmp/a0-conformance-controls-jm09sjyq/control_honest",
+      "adapter_run_dir": "/tmp/a0-conformance-controls-pe8m01ro/control_honest",
       "failure_stage_counts": null,
-      "adapter_declared_verdict": null,
+      "adapter_claim__untrusted": null,
       "adapter_schema": "a0.adapter.conformance/v1",
       "adapter_rows_section": "top level",
       "adapter_unverified_notes": null,
@@ -3550,7 +3702,7 @@
         ],
         "cwd": "/home/ebt/rsi-dev/a0/conformance",
         "exit_code": 0,
-        "duration_sec": 2.052,
+        "duration_sec": 2.072,
         "timed_out": false,
         "stdout_tail": "",
         "stderr_tail": "",
@@ -3564,11 +3716,11 @@
         "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_honest.conformance.exit",
         "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_honest.conformance.json"
       },
-      "adapter_declared": {
+      "adapter_self_declaration__untrusted": {
         "schema": "a0.adapter.conformance/v1",
-        "state": null,
+        "declared_outcome": null,
         "blocked_reason": null,
-        "verdict": null,
+        "claim__untrusted": null,
         "row_count": 14
       },
       "exit_code_semantics": {
@@ -3590,6 +3742,27 @@
     "control_zero_on_error": {
       "state": "FAIL",
       "reason": "false-green finding(s): FG-EVE-SYNTH",
+      "qualification": {
+        "a0_1": {
+          "state": "FAIL",
+          "label": "FAIL",
+          "measured": 5,
+          "adapted": 0,
+          "total": 14,
+          "measured_candidates": [
+            "c01_good_hex",
+            "c02_baseline_upstream",
+            "c03_mirror",
+            "c04_near_tie",
+            "c14_near_zero"
+          ],
+          "adapted_candidates": [],
+          "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+          "c_adapt": "can the adapter supply the missing semantics?",
+          "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        }
+      },
       "checks": [
         {
           "check_id": "EID-star-verbatim",
@@ -4049,7 +4222,7 @@
       "traces": null,
       "adapter_run_dir": null,
       "failure_stage_counts": null,
-      "adapter_declared_verdict": null,
+      "adapter_claim__untrusted": null,
       "adapter_schema": "a0.adapter.conformance/v1",
       "adapter_rows_section": "top level",
       "adapter_unverified_notes": null,
@@ -4109,7 +4282,7 @@
         ],
         "cwd": "/home/ebt/rsi-dev/a0/conformance",
         "exit_code": 0,
-        "duration_sec": 0.023,
+        "duration_sec": 0.025,
         "timed_out": false,
         "stdout_tail": "",
         "stderr_tail": "",
@@ -4123,11 +4296,11 @@
         "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_zero_on_error.conformance.exit",
         "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_zero_on_error.conformance.json"
       },
-      "adapter_declared": {
+      "adapter_self_declaration__untrusted": {
         "schema": "a0.adapter.conformance/v1",
-        "state": null,
+        "declared_outcome": null,
         "blocked_reason": null,
-        "verdict": null,
+        "claim__untrusted": null,
         "row_count": 14
       },
       "exit_code_semantics": {
@@ -4149,6 +4322,21 @@
     "control_cache_hit": {
       "state": "FAIL",
       "reason": "false-green finding(s): FG-LORELEY-CACHE",
+      "qualification": {
+        "a0_1": {
+          "state": "FAIL",
+          "label": "FAIL",
+          "measured": 0,
+          "adapted": 0,
+          "total": 14,
+          "measured_candidates": [],
+          "adapted_candidates": [],
+          "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+          "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+          "c_adapt": "can the adapter supply the missing semantics?",
+          "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+        }
+      },
       "checks": [
         {
           "check_id": "EID-star-verbatim",
@@ -4648,7 +4836,7 @@
       "traces": null,
       "adapter_run_dir": null,
       "failure_stage_counts": null,
-      "adapter_declared_verdict": null,
+      "adapter_claim__untrusted": null,
       "adapter_schema": "a0.adapter.conformance/v1",
       "adapter_rows_section": "top level",
       "adapter_unverified_notes": null,
@@ -4708,7 +4896,7 @@
         ],
         "cwd": "/home/ebt/rsi-dev/a0/conformance",
         "exit_code": 0,
-        "duration_sec": 0.023,
+        "duration_sec": 0.024,
         "timed_out": false,
         "stdout_tail": "",
         "stderr_tail": "",
@@ -4722,11 +4910,11 @@
         "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_cache_hit.conformance.exit",
         "output_json": "/home/ebt/rsi-dev/a0/conformance/out/adapters/control_cache_hit.conformance.json"
       },
-      "adapter_declared": {
+      "adapter_self_declaration__untrusted": {
         "schema": "a0.adapter.conformance/v1",
-        "state": null,
+        "declared_outcome": null,
         "blocked_reason": null,
-        "verdict": null,
+        "claim__untrusted": null,
         "row_count": 14
       },
       "exit_code_semantics": {
@@ -4753,7 +4941,7 @@
       "run"
     ],
     "python": "3.14.7",
-    "fixture_run_root": "/tmp/a0-conformance-controls-jm09sjyq",
+    "fixture_run_root": "/tmp/a0-conformance-controls-pe8m01ro",
     "fixture_run_root_source": "created by the runner for the control rows and removed at exit"
   },
   "runtimes_requested": [
@@ -4971,26 +5159,163 @@
   },
   "verdicts": {
     "a0_1": {
+      "simpleloop": "PASS (14/14 measured)",
+      "kapso": "PASS (14/14 measured)",
+      "eve": "PARTIAL (5/14 measured)",
+      "loreley": "PASS (14/14 measured)"
+    },
+    "a0_1_state": {
       "simpleloop": "PASS",
       "kapso": "PASS",
-      "eve": "PASS",
+      "eve": "PARTIAL",
       "loreley": "PASS"
     },
-    "n_pass": 4,
+    "a0_1_measured": {
+      "simpleloop": 14,
+      "kapso": 14,
+      "eve": 5,
+      "loreley": 14
+    },
+    "a0_1_adapted": {
+      "simpleloop": 0,
+      "kapso": 0,
+      "eve": 9,
+      "loreley": 0
+    },
+    "a0_1_qualification": {
+      "simpleloop": {
+        "state": "PASS",
+        "label": "PASS (14/14 measured)",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
+      "kapso": {
+        "state": "PASS",
+        "label": "PASS (14/14 measured)",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
+      "eve": {
+        "state": "PARTIAL",
+        "label": "PARTIAL (5/14 measured)",
+        "measured": 5,
+        "adapted": 9,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow"
+        ],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
+      "loreley": {
+        "state": "PASS",
+        "label": "PASS (14/14 measured)",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      }
+    },
+    "n_pass": 3,
+    "n_partial": 1,
     "n_fail": 0,
     "n_pending": 0,
     "n_blocked": 0,
     "r_1_a0_1_only": [
       "simpleloop",
       "kapso",
-      "eve",
       "loreley"
     ],
+    "r_1_a0_1_partial": [
+      "eve"
+    ],
     "gate": "|R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2",
-    "screen_semantics": "each runtime is evaluated independently; no runtime's failure aborted another's run"
+    "screen_semantics": "each runtime is evaluated independently; no runtime's failure aborted another's run",
+    "screen_vs_qualification": "`|R_1| >= 1` is a CANDIDATE SCREEN over runtimes and is a different object from per-runtime qualification. The screen asks whether the study may continue (at least one substrate survives A0); qualification asks whether a given runtime's A0.1 answer is measured or merely adapted. `r_1_a0_1_only` lists runtimes whose A0.1 is PASS (every row measured) and `r_1_a0_1_partial` lists runtimes whose A0.1 is PARTIAL (some rows accepted only on adapter-supplied semantics). A PARTIAL runtime is deliberately NOT in `r_1_a0_1_only`, so a partial result can never be diluted by siblings that passed. Per-runtime eligibility for A1 is declared separately and explicitly by the `Eligible(r)` predicate in `a0/qualification/qualification.json` (see `a0/qualification/QUALIFICATION.md`); the screen can pass while no runtime is Eligible()."
   },
   "exit_code": 0,
-  "duration_sec": 42.827,
+  "duration_sec": 41.042,
   "report_path": "/home/ebt/rsi-dev/a0/conformance/report.json",
   "table_path": "/home/ebt/rsi-dev/a0/conformance/report.md",
   "tools": {

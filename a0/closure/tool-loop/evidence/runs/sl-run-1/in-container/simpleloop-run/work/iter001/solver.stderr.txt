@@ -1,0 +1,1150 @@
+TimeoutExpired after 420.0s (child killed)
+Reading additional input from stdin...
+OpenAI Codex v0.155.1
+--------
+workdir: /work/runs/sl-run-1/simpleloop-run/work/iter001
+model: deepseek-flash
+provider: ds
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: none
+session id: 01a0c2d4-faa3-7a60-a024-51d6aec2a0e7
+--------
+user
+You are improving a solution to the circle-packing task.
+
+The task: write `solution.py` exposing `pack_circles(n)` that returns up to n
+circles `(x, y, r)` inside the unit square [0,1]^2, non-overlapping and inside
+bounds. The score is the sum of the radii; higher is better. n = 26.
+
+The current best solution file is `solution.py` in this directory; its score is
+0.25.
+
+Write an improved `solution.py` in this directory. Reply only when the file is
+written.
+
+warning: Model metadata for `deepseek-flash` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+codex
+I'll start by inspecting the current solution and any task scaffolding.
+exec
+/bin/bash -lc 'ls -la; echo ---; cat solution.py' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+total 20
+drwxr-xr-x 5 root root 4096 Sep 21 07:18 .
+drwxr-xr-x 4 root root 4096 Sep 21 07:18 ..
+dr-xr-xr-x 2 root root   40 Sep 21 07:18 .agents
+dr-xr-xr-x 2 root root   40 Sep 21 07:18 .codex
+dr-xr-xr-x 2 root root   40 Sep 21 07:18 .git
+-rw-r--r-- 1 root root   64 Sep 21 07:18 .seed_sha256
+-rw-r--r-- 1 root root 1441 Sep 21 07:18 solution.py
+-rw-r--r-- 1 root root 1015 Sep 21 07:18 solver.stderr.txt
+-rw-r--r-- 1 root root    0 Sep 21 07:18 solver.stdout.txt
+---
+from __future__ import annotations
+
+from typing import Iterable, List, Tuple
+
+
+def pack_circles(n: int = 26) -> Iterable[Tuple[float, float, float]]:
+    """
+    Construct a very simple packing of n disjoint circles in the unit square.
+
+    - For n == 1 this returns a single circle of radius 0.5 centred at (0.5, 0.5).
+    - For n >= 2 this returns n equal-radius circles placed along the main diagonal
+      of the square, from the bottom-left corner towards the top-right corner.
+
+    The construction is deliberately simple and only aims to produce a valid
+    configuration; it is not intended to be close to optimal for the objective that
+    maximises the sum of all radii.
+    """
+    if n <= 0:
+        raise ValueError("n must be a positive integer.")
+
+    if n == 1:
+        # One circle touching all four sides of the square.
+        return [(0.5, 0.5, 0.5)]
+
+    # For n >= 2, choose a small radius that guarantees non-overlap and that all circles
+    # remain inside the unit square. The factor 4 * n keeps centres well separated along
+    # the diagonal.
+    r = 1.0 / (4.0 * n)
+
+    # Place n centres evenly along the main diagonal segment from (r, r) to (1 - r, 1 - r).
+    positions = [i / (n - 1) for i in range(n)]
+
+    step = 1.0 - 2.0 * r
+    circles: List[Tuple[float, float, float]] = []
+    for t in positions:
+        x = r + t * step
+        y = r + t * step
+        circles.append((x, y, r))
+
+    return circles
+
+
+exec
+/bin/bash -lc "ls -la .git 2>/dev/null | head -20; echo ---; find . -maxdepth 2 -name '*.md' -not -path './.git/*' | head -20" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+total 4
+dr-xr-xr-x 2 root root   40 Sep 21 07:18 .
+drwxr-xr-x 5 root root 4096 Sep 21 07:18 ..
+---
+
+exec
+/bin/bash -lc 'cat solver.stderr.txt; echo ---; cat .seed_sha256' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+Reading additional input from stdin...
+OpenAI Codex v0.155.1
+--------
+workdir: /work/runs/sl-run-1/simpleloop-run/work/iter001
+model: deepseek-flash
+provider: ds
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: none
+reasoning summaries: none
+session id: 01a0c2d4-faa3-7a60-a024-51d6aec2a0e7
+--------
+user
+You are improving a solution to the circle-packing task.
+
+The task: write `solution.py` exposing `pack_circles(n)` that returns up to n
+circles `(x, y, r)` inside the unit square [0,1]^2, non-overlapping and inside
+bounds. The score is the sum of the radii; higher is better. n = 26.
+
+The current best solution file is `solution.py` in this directory; its score is
+0.25.
+
+Write an improved `solution.py` in this directory. Reply only when the file is
+written.
+
+warning: Model metadata for `deepseek-flash` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+codex
+I'll start by inspecting the current solution and any task scaffolding.
+exec
+/bin/bash -lc 'ls -la; echo ---; cat solution.py' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+total 20
+drwxr-xr-x 5 root root 4096 Sep 21 07:18 .
+drwxr-xr-x 4 root root 4096 Sep 21 07:18 ..
+dr-xr-xr-x 2 root root   40 Sep 21 07:18 .agents
+dr-xr-xr-x 2 root root   40 Sep 21 07:18 .codex
+dr-xr-xr-x 2 root root   40 Sep 21 07:18 .git
+-rw-r--r-- 1 root root   64 Sep 21 07:18 .seed_sha256
+-rw-r--r-- 1 root root 1441 Sep 21 07:18 solution.py
+-rw-r--r-- 1 root root 1015 Sep 21 07:18 solver.stderr.txt
+-rw-r--r-- 1 root root    0 Sep 21 07:18 solver.stdout.txt
+---
+from __future__ import annotations
+
+from typing import Iterable, List, Tuple
+
+
+def pack_circles(n: int = 26) -> Iterable[Tuple[float, float, float]]:
+    """
+    Construct a very simple packing of n disjoint circles in the unit square.
+
+    - For n == 1 this returns a single circle of radius 0.5 centred at (0.5, 0.5).
+    - For n >= 2 this returns n equal-radius circles placed along the main diagonal
+      of the square, from the bottom-left corner towards the top-right corner.
+
+    The construction is deliberately simple and only aims to produce a valid
+    configuration; it is not intended to be close to optimal for the objective that
+    maximises the sum of all radii.
+    """
+    if n <= 0:
+        raise ValueError("n must be a positive integer.")
+
+    if n == 1:
+        # One circle touching all four sides of the square.
+        return [(0.5, 0.5, 0.5)]
+
+    # For n >= 2, choose a small radius that guarantees non-overlap and that all circles
+    # remain inside the unit square. The factor 4 * n keeps centres well separated along
+    # the diagonal.
+    r = 1.0 / (4.0 * n)
+
+    # Place n centres evenly along the main diagonal segment from (r, r) to (1 - r, 1 - r).
+    positions = [i / (n - 1) for i in range(n)]
+
+    step = 1.0 - 2.0 * r
+    circles: List[Tuple[float, float, float]] = []
+    for t in positions:
+        x = r + t * step
+        y = r + t * step
+        circles.append((x, y, r))
+
+    return circles
+
+
+exec
+/bin/bash -lc "ls -la .git 2>/dev/null | head -20; echo ---; find . -maxdepth 2 -name '*.md' -not -path './.git/*' | head -20" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+total 4
+dr-xr-xr-x 2 root root   40 Sep 21 07:18 .
+drwxr-xr-x 5 root root 4096 Sep 21 07:18 ..
+---
+
+---
+18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f
+exec
+/bin/bash -lc "python3 -c \"import sys, numpy, scipy; print(sys.version); print('numpy', numpy.__version__); print('scipy', scipy.__version__)\"" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ exited 1 in 0ms:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'numpy'
+
+codex
+No numpy available, so I'll need a pure-Python optimizer. Let me build one and search for a strong packing.
+exec
+/bin/bash -lc "python3 -c \"import sys; print(sys.version); import random, math, itertools; print('ok')\"; pip list 2>/dev/null | head -30; nproc" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 223ms:
+Package Version
+------- -------
+pip     25.0.1
+12
+
+exec
+/bin/bash -lc "mkdir -p /tmp/cp && cat > /tmp/cp/opt.py << 'EOF'
+import math, random, itertools, sys, time
+
+def relax(xs, ys, rs, iters, factor=1.0, jit=None):
+    n = len(xs)
+    for _ in range(iters):
+        ax = [0.0]*n; ay = [0.0]*n
+        for i in range(n):
+            xi = xs[i]; yi = ys[i]; ri = rs[i]
+            for j in range(i+1, n):
+                dx = xs[j]-xi; dy = ys[j]-yi
+                s = ri + rs[j]
+                d2 = dx*dx + dy*dy
+                if d2 < s*s:
+                    if d2 < 1e-24:
+                        a = random.random()*6.283185307179586
+                        dx = math.cos(a)*1e-6; dy = math.sin(a)*1e-6
+                        d2 = 1e-12
+                    d = math.sqrt(d2)
+                    ov = (s-d) * factor * 0.5
+                    ux = dx/d; uy = dy/d
+                    ax[i] -= ux*ov; ay[i] -= uy*ov
+                    ax[j] += ux*ov; ay[j] += uy*ov
+        for i in range(n):
+            xs[i] += ax[i]; ys[i] += ay[i]
+            ri = rs[i]
+            if xs[i] < ri: xs[i] = ri
+            elif xs[i] > 1.0-ri: xs[i] = 1.0-ri
+            if ys[i] < ri: ys[i] = ri
+            elif ys[i] > 1.0-ri: ys[i] = 1.0-ri
+
+def inflate(xs, ys, rs, steps, grow, iters=2, factor=1.0):
+    n = len(xs)
+    for t in range(steps):
+        g = 1.0 + grow
+        for i in range(n):
+            rs[i] *= g
+            if rs[i] > 0.5: rs[i] = 0.5
+        relax(xs, ys, rs, iters, factor)
+    return xs, ys, rs
+
+def spread_points(n, steps=400):
+    xs = [random.random() for _ in range(n)]
+    ys = [random.random() for _ in range(n)]
+    for _ in range(steps):
+        ax = [0.0]*n; ay = [0.0]*n
+        for i in range(n):
+            xi = xs[i]; yi = ys[i]
+            for j in range(i+1, n):
+                dx = xs[j]-xi; dy = ys[j]-yi
+                d2 = dx*dx+dy*dy
+                if d2 < 1e-12:
+                    a = random.random()*6.283185307179586
+                    dx = math.cos(a)*0.01; dy = math.sin(a)*0.01; d2 = 1e-4
+                inv = 1.0/d2
+                ax[i] -= dx*inv*0.001; ay[i] -= dy*inv*0.001
+                ax[j] += dx*inv*0.001; ay[j] += dy*inv*0.001
+        for i in range(n):
+            xs[i] += ax[i]; ys[i] += ay[i]
+            xs[i] = min(max(xs[i], 1e-9), 1-1e-9)
+            ys[i] = min(max(ys[i], 1e-9), 1-1e-9)
+    return xs, ys
+
+def wall(x, y, r):
+    return min(x-r, 1-x-r, y-r, 1-y-r)
+
+def init_radii(xs, ys):
+    n = len(xs)
+    rs = [0.0]*n
+    for i in range(n):
+        w = wall(xs[i], ys[i], 0.0)
+        for j in range(n):
+            if j == i: continue
+            d = math.hypot(xs[i]-xs[j], ys[i]-ys[j])
+            if 0.5*d < w: w = 0.5*d
+        rs[i] = max(w*0.5, 1e-4)
+    return rs
+
+def score(xs, ys, rs):
+    return sum(rs)
+
+def one_run(n, seed, grow=0.0015, steps=2500, iters=2, spread_items=300):
+    random.seed(seed)
+    xs, ys = spread_points(n, spread_items)
+    rs = init_radii(xs, ys)
+    inflate(xs, ys, rs, steps, grow, iters)
+    return score(xs, ys, rs), xs, ys, rs
+
+if __name__ == \"__main__\":
+    n = 26
+    t0 = time.time()
+    s, xs, ys, rs = one_run(n, 1)
+    print(\"score\", s, \"time\", time.time()-t0)
+EOF
+python3 /tmp/cp/opt.py" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 25ms:
+score 0.11024462434550819 time 0.14821505546569824
+
+exec
+/bin/bash -lc 'cd /tmp/cp && python3 -c "
+import random, math
+import opt
+random.seed(1)
+xs, ys = opt.spread_points(26, 300)
+ds = sorted(min(math.hypot(xs[i]-xs[j], ys[i]-ys[j]) for j in range(26) if j!=i) for i in range(26))
+print([round(d,4) for d in ds])
+rs = opt.init_radii(xs, ys)
+print(sum(rs))
+"' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+[0.0552, 0.0552, 0.0553, 0.0553, 0.0656, 0.0656, 0.0671, 0.0671, 0.1008, 0.1031, 0.1214, 0.1227, 0.1406, 0.1408, 0.1548, 0.1561, 0.1744, 0.1756, 0.1849, 0.1852, 0.1865, 0.1865, 0.1935, 0.1936, 0.2057, 0.2059]
+0.0026000000000000003
+
+exec
+/bin/bash -lc 'cd /tmp/cp && python3 -c "
+import random, math, opt
+random.seed(1)
+xs, ys = opt.spread_points(26, 300)
+n=26
+for i in range(3):
+    w = opt.wall(xs[i], ys[i], 0.0)
+    for j in range(n):
+        if j==i: continue
+        d = math.hypot(xs[i]-xs[j], ys[i]-ys[j])
+        if 0.5*d < w: w = 0.5*d
+    print(i, xs[i], ys[i], w, opt.wall(xs[i],ys[i],0.0))
+"' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+0 0.10075962071220752 1e-09 1e-09 1e-09
+1 0.999999999 1e-09 9.999999717180685e-10 9.999999717180685e-10
+2 0.999999999 0.38252524653648096 9.999999717180685e-10 9.999999717180685e-10
+
+exec
+/bin/bash -lc 'cd /tmp/cp && python3 -c "
+import random, math, time, opt
+n=26
+for seed in range(3):
+    random.seed(seed)
+    xs=[random.random() for _ in range(n)]; ys=[random.random() for _ in range(n)]
+    rs=[0.005]*n
+    t0=time.time()
+    opt.inflate(xs,ys,rs,4000,0.001,2)
+    print(seed, round(sum(rs),5), round(time.time()-t0,2))
+"' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 560ms:
+0 7.08359 0.23
+1 7.08359 0.23
+2 7.08359 0.23
+
+codex
+The relaxation needs proper wall handling and feasibility checks. Rewriting the core:
+exec
+/bin/bash -lc "cat > /tmp/cp/opt2.py << 'EOF'
+import math, random, time, itertools
+
+def wall_gap(x, y, r):
+    return min(x-r, 1-x-r, y-r, 1-y-r)
+
+def max_overlap(xs, ys, rs):
+    n = len(xs); m = 0.0
+    for i in range(n):
+        g = wall_gap(xs[i], ys[i], rs[i])
+        if -g > m: m = -g
+        for j in range(i+1, n):
+            d = math.hypot(xs[i]-xs[j], ys[i]-ys[j])
+            ov = rs[i]+rs[j]-d
+            if ov > m: m = ov
+    return m
+
+def project(xs, ys, rs, iters=4, factor=0.8):
+    n = len(xs)
+    for _ in range(iters):
+        ax = [0.0]*n; ay = [0.0]*n
+        for i in range(n):
+            xi = xs[i]; yi = ys[i]; ri = rs[i]
+            for j in range(i+1, n):
+                dx = xs[j]-xi; dy = ys[j]-yi
+                s = ri + rs[j]
+                d2 = dx*dx+dy*dy
+                if d2 < s*s:
+                    if d2 < 1e-24:
+                        a = random.random()*6.283185307179586
+                        dx = math.cos(a)*1e-5; dy = math.sin(a)*1e-5; d2 = 1e-10
+                    d = math.sqrt(d2); ov = (s-d)*0.5*factor
+                    ux = dx/d; uy = dy/d
+                    ax[i] -= ux*ov; ay[i] -= uy*ov
+                    ax[j] += ux*ov; ay[j] += uy*ov
+        for i in range(n):
+            xi = xs[i]+ax[i]; yi = ys[i]+ay[i]; ri = rs[i]
+            if xi < ri:
+                ax[i] += (ri-xi)*factor
+            elif xi > 1-ri:
+                ax[i] -= (xi-(1-ri))*factor
+            if yi < ri:
+                ay[i] += (ri-yi)*factor
+            elif yi > 1-ri:
+                ay[i] -= (yi-(1-ri))*factor
+        for i in range(n):
+            xs[i] += ax[i]; ys[i] += ay[i]
+            r = rs[i]
+            xs[i] = min(max(xs[i], r), 1-r)
+            ys[i] = min(max(ys[i], r), 1-r)
+
+def jam(xs, ys, rs, steps=6000, rate=0.0008, tol=1e-9, iters=3, verbose=False):
+    n = len(xs)
+    for t in range(steps):
+        r = rate
+        ok = False
+        for attempt in range(40):
+            g = 1.0 + r
+            for i in range(n):
+                rs[i] *= g
+                if rs[i] > 0.5: rs[i] = 0.5
+            project(xs, ys, rs, iters, 0.8)
+            if max_overlap(xs, ys, rs) <= tol:
+                ok = True; break
+            for i in range(n):
+                rs[i] /= g
+            r *= 0.5
+            if r < 1e-13: break
+        if not ok:
+            if verbose: print(\"stuck at\", t, sum(rs))
+            break
+        if r < rate*1e-6 and t > steps*0.5:
+            break
+    return xs, ys, rs
+
+def run(n, seed, steps=4000, rate=0.001, init='random'):
+    random.seed(seed)
+    xs = [random.random() for _ in range(n)]
+    ys = [random.random() for _ in range(n)]
+    rs = [0.002]*n
+    jam(xs, ys, rs, steps, rate)
+    return sum(rs), xs, ys, rs
+
+if __name__ == \"__main__\":
+    for seed in range(3):
+        t0 = time.time()
+        s, xs, ys, rs = run(26, seed, 4000, 0.001)
+        print(seed, round(s,5), \"ov\", max_overlap(xs,ys,rs), round(time.time()-t0,2))
+EOF
+cd /tmp/cp && python3 opt2.py" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 2346ms:
+0 0.54647 ov 0.0 0.95
+1 1.10098 ov 0.0 0.77
+2 1.14702 ov 0.0 0.75
+
+exec
+/bin/bash -lc "cat > /tmp/cp/opt3.py << 'EOF'
+import math, random, time
+
+def max_overlap(xs, ys, rs):
+    n = len(xs); m = 0.0; worst=None
+    for i in range(n):
+        g = min(xs[i]-rs[i], 1-xs[i]-rs[i], ys[i]-rs[i], 1-ys[i]-rs[i])
+        if -g > m: m = -g; worst=('wall',i)
+        for j in range(i+1, n):
+            d = math.hypot(xs[i]-xs[j], ys[i]-ys[j])
+            ov = rs[i]+rs[j]-d
+            if ov > m: m = ov; worst=(i,j)
+    return m, worst
+
+def project(xs, ys, rs, sweeps=40, factor=1.0, tol=1e-12):
+    n = len(xs)
+    for s in range(sweeps):
+        damp = factor if s < 5 else factor*0.9
+        for i in range(n):
+            xi = xs[i]; yi = ys[i]; ri = rs[i]
+            for j in range(i+1, n):
+                dx = xs[j]-xi; dy = ys[j]-yi
+                ssum = ri + rs[j]
+                d2 = dx*dx+dy*dy
+                if d2 < ssum*ssum:
+                    if d2 < 1e-24:
+                        a = random.random()*6.283185307179586
+                        dx = math.cos(a)*1e-5; dy = math.sin(a)*1e-5; d2 = 1e-10
+                    d = math.sqrt(d2)
+                    ov = (ssum-d)*0.5*damp
+                    ux = dx/d; uy = dy/d
+                    xi -= ux*ov; yi -= uy*ov
+                    xs[j] += ux*ov; ys[j] += uy*ov
+            xs[i] = xi; ys[i] = yi
+        for i in range(n):
+            r = rs[i]
+            if xs[i] < r: xs[i] = r
+            elif xs[i] > 1-r: xs[i] = 1-r
+            if ys[i] < r: ys[i] = r
+            elif ys[i] > 1-r: ys[i] = 1-r
+        m, _ = max_overlap(xs, ys, rs)
+        if m <= tol: return m, s+1
+    return m, sweeps
+
+def jam(xs, ys, rs, steps=20000, rate=0.0005, tol=1e-10, sweeps=60):
+    n = len(xs); hist=[]
+    for t in range(steps):
+        r = rate
+        g_used = None
+        for attempt in range(50):
+            g = 1.0 + r
+            for i in range(n):
+                rs[i] *= g
+            ov, ns = project(xs, ys, rs, sweeps)
+            if ov <= tol:
+                g_used = g; break
+            for i in range(n):
+                rs[i] /= g
+            r *= 0.5
+            if r < 1e-14: break
+        if g_used is None:
+            hist.append((t, sum(rs), 'stuck'))
+            break
+    return xs, ys, rs, hist
+
+if __name__ == \"__main__\":
+    n = 26
+    random.seed(0)
+    xs=[random.random() for _ in range(n)]; ys=[random.random() for _ in range(n)]; rs=[0.002]*n
+    t0=time.time()
+    xs,ys,rs,hist = jam(xs,ys,rs,300,0.001)
+    print(\"steps300 ->\", sum(rs), hist, round(time.time()-t0,2))
+    xs,ys,rs,hist = jam(xs,ys,rs,3000,0.001)
+    print(\"more ->\", sum(rs), hist[:3], round(time.time()-t0,2))
+EOF
+cd /tmp/cp && python3 opt3.py" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 1257ms:
+steps300 -> 0.07018213689783254 [] 0.02
+more -> 1.4075344246940678 [] 1.38
+
+exec
+/bin/bash -lc "cat > /tmp/cp/opt4.py << 'EOF'
+import math, random, time
+
+def max_overlap(xs, ys, rs, full=True):
+    n = len(xs); m = 0.0
+    for i in range(n):
+        g = min(xs[i]-rs[i], 1-xs[i]-rs[i], ys[i]-rs[i], 1-ys[i]-rs[i])
+        if -g > m: m = -g
+        if not full: continue
+        for j in range(i+1, n):
+            d = math.hypot(xs[i]-xs[j], ys[i]-ys[j])
+            ov = rs[i]+rs[j]-d
+            if ov > m: m = ov
+    return m
+
+def project(xs, ys, rs, sweeps=6, factor=1.0):
+    n = len(xs)
+    for s in range(sweeps):
+        damp = factor
+        for i in range(n):
+            xi = xs[i]; yi = ys[i]; ri = rs[i]
+            for j in range(i+1, n):
+                dx = xs[j]-xi; dy = ys[j]-yi
+                ssum = ri + rs[j]
+                d2 = dx*dx+dy*dy
+                if d2 < ssum*ssum:
+                    if d2 < 1e-24:
+                        a = random.random()*6.283185307179586
+                        dx = math.cos(a)*1e-5; dy = math.sin(a)*1e-5; d2 = 1e-10
+                    d = math.sqrt(d2)
+                    ov = (ssum-d)*0.5*damp
+                    ux = dx/d; uy = dy/d
+                    xi -= ux*ov; yi -= uy*ov
+                    xs[j] += ux*ov; ys[j] += uy*ov
+            xs[i] = xi; ys[i] = yi
+        for i in range(n):
+            r = rs[i]
+            if xs[i] < r: xs[i] = r
+            elif xs[i] > 1-r: xs[i] = 1-r
+            if ys[i] < r: ys[i] = r
+            elif ys[i] > 1-r: ys[i] = 1-r
+        if max_overlap(xs, ys, rs) <= 1e-12:
+            return True
+    return False
+
+def jam(xs, ys, rs, rate0=0.02, rate_min=1e-9, max_steps=30000, tol=1e-12):
+    n = len(xs); rate = rate0; steps = 0
+    while rate > rate_min and steps < max_steps:
+        steps += 1
+        g = 1.0 + rate
+        for i in range(n): rs[i] *= g
+        if project(xs, ys, rs, 5):
+            rate = min(rate*1.05, rate0)
+        else:
+            if not project(xs, ys, rs, 90):
+                for i in range(n): rs[i] /= g
+                rate *= 0.45
+            else:
+                rate = min(rate*1.05, rate0)
+    return rate, steps
+
+if __name__ == \"__main__\":
+    n = 26
+    for seed in range(4):
+        random.seed(seed)
+        xs=[random.random() for _ in range(n)]; ys=[random.random() for _ in range(n)]; rs=[0.002]*n
+        t0=time.time()
+        r, st = jam(xs,ys,rs)
+        print(seed, \"sum\", round(sum(rs),5), \"rate\", r, \"steps\", st, \"t\", round(time.time()-t0,2), \"ov\", max_overlap(xs,ys,rs))
+EOF
+cd /tmp/cp && timeout 600 python3 opt4.py" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+2026-09-21T07:21:35.790901Z ERROR codex_core::tools::router: error=write_stdin failed: stdin is closed for this session; rerun exec_command with tty=true to keep stdin open
+exec
+/bin/bash -lc 'pkill -f opt4.py; sleep 1; echo killed' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 863ms:
+killed
+
+exec
+/bin/bash -lc 'ps aux | grep -c opt4; for p in $(ps -eo pid,args | grep '"'opt4.py' | grep -v grep | awk '{print "'$1}'"'); do kill -9 "'$p; done; sleep 1; ps -eo pid,args | grep opt4 | grep -v grep | wc -l' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 865ms:
+/bin/bash: line 1: ps: command not found
+0
+
+exec
+/bin/bash -lc 'for d in /proc/[0-9]*; do c=$(tr '"'\\0' ' ' < "'$d/cmdline 2>/dev/null); case "$c" in *opt4*) echo "$d $c";; esac; done' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+/proc/1 codex-linux-sandbox --sandbox-policy-cwd /work/runs/sl-run-1/simpleloop-run/work/iter001 --command-cwd /work/runs/sl-run-1/simpleloop-run/work/iter001 --permission-profile {"type":"managed","file_system":{"type":"restricted","entries":[{"path":{"type":"special","value":{"kind":"root"}},"access":"read"},{"path":{"type":"path","path":"/work/runs/sl-run-1/simpleloop-run/work/iter001"},"access":"write"},{"path":{"type":"special","value":{"kind":"slash_tmp"}},"access":"write"},{"path":{"type":"special","value":{"kind":"tmpdir"}},"access":"write"},{"path":{"type":"path","path":"/work/runs/sl-run-1/simpleloop-run/work/iter001/.git"},"access":"read","missing_path_behavior":"skip"},{"path":{"type":"path","path":"/work/runs/sl-run-1/simpleloop-run/work/iter001/.agents"},"access":"read","missing_path_behavior":"skip"},{"path":{"type":"path","path":"/work/runs/sl-run-1/simpleloop-run/work/iter001/.codex"},"access":"read","missing_path_behavior":"skip"}]},"network":"restricted"} --apply-seccomp-then-exec -- /bin/bash -c __CODEX_SNAPSHOT_OVERRIDE_SET_0="${CODEX_APPLY_PATCH_PRESERVE_LINE_ENDINGS+x}"
+__CODEX_SNAPSHOT_OVERRIDE_0="${CODEX_APPLY_PATCH_PRESERVE_LINE_ENDINGS-}"
+__CODEX_SNAPSHOT_OVERRIDE_SET_1="${CODEX_PERMISSION_PROFILE+x}"
+__CODEX_SNAPSHOT_OVERRIDE_1="${CODEX_PERMISSION_PROFILE-}"
+__CODEX_SNAPSHOT_OVERRIDE_SET_2="${CODEX_PLUGIN_METRICS_OUTPUT+x}"
+__CODEX_SNAPSHOT_OVERRIDE_2="${CODEX_PLUGIN_METRICS_OUTPUT-}"
+__CODEX_SNAPSHOT_OVERRIDE_SET_3="${CODEX_SESSION_ID+x}"
+__CODEX_SNAPSHOT_OVERRIDE_3="${CODEX_SESSION_ID-}"
+__CODEX_SNAPSHOT_OVERRIDE_SET_4="${CODEX_THREAD_ID+x}"
+__CODEX_SNAPSHOT_OVERRIDE_4="${CODEX_THREAD_ID-}"
+__CODEX_SNAPSHOT_OVERRIDE_SET_5="${CODEX_VERSION+x}"
+__CODEX_SNAPSHOT_OVERRIDE_5="${CODEX_VERSION-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_0="${ALL_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_0="${ALL_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_1="${BUNDLE_HTTPS_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_1="${BUNDLE_HTTPS_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_2="${BUNDLE_HTTP_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_2="${BUNDLE_HTTP_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_3="${BUNDLE_NO_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_3="${BUNDLE_NO_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_4="${BUNDLE_SSL_CA_CERT+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_4="${BUNDLE_SSL_CA_CERT-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_5="${CARGO_HTTP_CAINFO+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_5="${CARGO_HTTP_CAINFO-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_6="${CODEX_CA_CERTIFICATE+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_6="${CODEX_CA_CERTIFICATE-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_7="${CODEX_NETWORK_ALLOW_LOCAL_BINDING+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_7="${CODEX_NETWORK_ALLOW_LOCAL_BINDING-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_8="${CODEX_NETWORK_PROXY_ACTIVE+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_8="${CODEX_NETWORK_PROXY_ACTIVE-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_9="${CODEX_NETWORK_PROXY_ATTRIBUTION+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_9="${CODEX_NETWORK_PROXY_ATTRIBUTION-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_10="${CODEX_NETWORK_PROXY_BROKERED_CREDENTIALS+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_10="${CODEX_NETWORK_PROXY_BROKERED_CREDENTIALS-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_11="${CODEX_NETWORK_PROXY_CREDENTIAL_BROKER_ACTIVE+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_11="${CODEX_NETWORK_PROXY_CREDENTIAL_BROKER_ACTIVE-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_12="${CURL_CA_BUNDLE+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_12="${CURL_CA_BUNDLE-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_13="${DOCKER_HTTPS_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_13="${DOCKER_HTTPS_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_14="${DOCKER_HTTP_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_14="${DOCKER_HTTP_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_15="${ELECTRON_GET_USE_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_15="${ELECTRON_GET_USE_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_16="${FTP_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_16="${FTP_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_17="${GIT_SSL_CAINFO+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_17="${GIT_SSL_CAINFO-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_18="${HTTPS_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_18="${HTTPS_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_19="${HTTP_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_19="${HTTP_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_20="${NODE_EXTRA_CA_CERTS+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_20="${NODE_EXTRA_CA_CERTS-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_21="${NODE_USE_ENV_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_21="${NODE_USE_ENV_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_22="${NO_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_22="${NO_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_23="${NPM_CONFIG_CAFILE+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_23="${NPM_CONFIG_CAFILE-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_24="${NPM_CONFIG_HTTPS_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_24="${NPM_CONFIG_HTTPS_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_25="${NPM_CONFIG_HTTP_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_25="${NPM_CONFIG_HTTP_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_26="${NPM_CONFIG_NOPROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_26="${NPM_CONFIG_NOPROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_27="${NPM_CONFIG_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_27="${NPM_CONFIG_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_28="${PIP_CERT+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_28="${PIP_CERT-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_29="${PIP_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_29="${PIP_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_30="${REQUESTS_CA_BUNDLE+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_30="${REQUESTS_CA_BUNDLE-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_31="${SSL_CERT_FILE+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_31="${SSL_CERT_FILE-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_32="${WSS_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_32="${WSS_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_33="${WS_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_33="${WS_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_34="${YARN_HTTPS_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_34="${YARN_HTTPS_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_35="${YARN_HTTP_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_35="${YARN_HTTP_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_36="${YARN_NO_PROXY+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_36="${YARN_NO_PROXY-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_37="${all_proxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_37="${all_proxy-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_38="${ftp_proxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_38="${ftp_proxy-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_39="${http_proxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_39="${http_proxy-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_40="${https_proxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_40="${https_proxy-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_41="${no_proxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_41="${no_proxy-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_42="${npm_config_cafile+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_42="${npm_config_cafile-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_43="${npm_config_http_proxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_43="${npm_config_http_proxy-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_44="${npm_config_https_proxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_44="${npm_config_https_proxy-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_45="${npm_config_noproxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_45="${npm_config_noproxy-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_46="${npm_config_proxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_46="${npm_config_proxy-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_47="${ws_proxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_47="${ws_proxy-}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_48="${wss_proxy+x}"
+__CODEX_SNAPSHOT_PROXY_OVERRIDE_48="${wss_proxy-}"
+__CODEX_SNAPSHOT_PROXY_ENV_SET="${CODEX_NETWORK_PROXY_ACTIVE+x}"
+
+if . '/work/runs/sl-run-1/codex-home/shell_snapshots/01a0c2d4-faa3-7a60-a024-51d6aec2a0e7.1789975132836166657.sh' >/dev/null 2>&1; then :; fi
+
+if [ -n "${__CODEX_SNAPSHOT_OVERRIDE_SET_0}" ]; then
+  if [ -z "${CODEX_APPLY_PATCH_PRESERVE_LINE_ENDINGS+x}" ] || [ "${CODEX_APPLY_PATCH_PRESERVE_LINE_ENDINGS-}" != "${__CODEX_SNAPSHOT_OVERRIDE_0}" ]; then export CODEX_APPLY_PATCH_PRESERVE_LINE_ENDINGS="${__CODEX_SNAPSHOT_OVERRIDE_0}"; else export CODEX_APPLY_PATCH_PRESERVE_LINE_ENDINGS; fi
+else builtin unset CODEX_APPLY_PATCH_PRESERVE_LINE_ENDINGS 2>/dev/null || command unset CODEX_APPLY_PATCH_PRESERVE_LINE_ENDINGS; fi
+builtin unset __CODEX_SNAPSHOT_OVERRIDE_SET_0 __CODEX_SNAPSHOT_OVERRIDE_0 2>/dev/null || command unset __CODEX_SNAPSHOT_OVERRIDE_SET_0 __CODEX_SNAPSHOT_OVERRIDE_0
+if [ -n "${__CODEX_SNAPSHOT_OVERRIDE_SET_1}" ]; then
+  if [ -z "${CODEX_PERMISSION_PROFILE+x}" ] || [ "${CODEX_PERMISSION_PROFILE-}" != "${__CODEX_SNAPSHOT_OVERRIDE_1}" ]; then export CODEX_PERMISSION_PROFILE="${__CODEX_SNAPSHOT_OVERRIDE_1}"; else export CODEX_PERMISSION_PROFILE; fi
+else builtin unset CODEX_PERMISSION_PROFILE 2>/dev/null || command unset CODEX_PERMISSION_PROFILE; fi
+builtin unset __CODEX_SNAPSHOT_OVERRIDE_SET_1 __CODEX_SNAPSHOT_OVERRIDE_1 2>/dev/null || command unset __CODEX_SNAPSHOT_OVERRIDE_SET_1 __CODEX_SNAPSHOT_OVERRIDE_1
+if [ -n "${__CODEX_SNAPSHOT_OVERRIDE_SET_2}" ]; then
+  if [ -z "${CODEX_PLUGIN_METRICS_OUTPUT+x}" ] || [ "${CODEX_PLUGIN_METRICS_OUTPUT-}" != "${__CODEX_SNAPSHOT_OVERRIDE_2}" ]; then export CODEX_PLUGIN_METRICS_OUTPUT="${__CODEX_SNAPSHOT_OVERRIDE_2}"; else export CODEX_PLUGIN_METRICS_OUTPUT; fi
+else builtin unset CODEX_PLUGIN_METRICS_OUTPUT 2>/dev/null || command unset CODEX_PLUGIN_METRICS_OUTPUT; fi
+builtin unset __CODEX_SNAPSHOT_OVERRIDE_SET_2 __CODEX_SNAPSHOT_OVERRIDE_2 2>/dev/null || command unset __CODEX_SNAPSHOT_OVERRIDE_SET_2 __CODEX_SNAPSHOT_OVERRIDE_2
+if [ -n "${__CODEX_SNAPSHOT_OVERRIDE_SET_3}" ]; then
+  if [ -z "${CODEX_SESSION_ID+x}" ] || [ "${CODEX_SESSION_ID-}" != "${__CODEX_SNAPSHOT_OVERRIDE_3}" ]; then export CODEX_SESSION_ID="${__CODEX_SNAPSHOT_OVERRIDE_3}"; else export CODEX_SESSION_ID; fi
+else builtin unset CODEX_SESSION_ID 2>/dev/null || command unset CODEX_SESSION_ID; fi
+builtin unset __CODEX_SNAPSHOT_OVERRIDE_SET_3 __CODEX_SNAPSHOT_OVERRIDE_3 2>/dev/null || command unset __CODEX_SNAPSHOT_OVERRIDE_SET_3 __CODEX_SNAPSHOT_OVERRIDE_3
+if [ -n "${__CODEX_SNAPSHOT_OVERRIDE_SET_4}" ]; then
+  if [ -z "${CODEX_THREAD_ID+x}" ] || [ "${CODEX_THREAD_ID-}" != "${__CODEX_SNAPSHOT_OVERRIDE_4}" ]; then export CODEX_THREAD_ID="${__CODEX_SNAPSHOT_OVERRIDE_4}"; else export CODEX_THREAD_ID; fi
+else builtin unset CODEX_THREAD_ID 2>/dev/null || command unset CODEX_THREAD_ID; fi
+builtin unset __CODEX_SNAPSHOT_OVERRIDE_SET_4 __CODEX_SNAPSHOT_OVERRIDE_4 2>/dev/null || command unset __CODEX_SNAPSHOT_OVERRIDE_SET_4 __CODEX_SNAPSHOT_OVERRIDE_4
+if [ -n "${__CODEX_SNAPSHOT_OVERRIDE_SET_5}" ]; then
+  if [ -z "${CODEX_VERSION+x}" ] || [ "${CODEX_VERSION-}" != "${__CODEX_SNAPSHOT_OVERRIDE_5}" ]; then export CODEX_VERSION="${__CODEX_SNAPSHOT_OVERRIDE_5}"; else export CODEX_VERSION; fi
+else builtin unset CODEX_VERSION 2>/dev/null || command unset CODEX_VERSION; fi
+builtin unset __CODEX_SNAPSHOT_OVERRIDE_SET_5 __CODEX_SNAPSHOT_OVERRIDE_5 2>/dev/null || command unset __CODEX_SNAPSHOT_OVERRIDE_SET_5 __CODEX_SNAPSHOT_OVERRIDE_5
+if [ -n "$__CODEX_SNAPSHOT_PROXY_ENV_SET" ] || [ -n "${CODEX_NETWORK_PROXY_ACTIVE+x}" ]; then
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_0}" ]; then
+  if [ -z "${ALL_PROXY+x}" ] || [ "${ALL_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_0}" ]; then export ALL_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_0}"; else export ALL_PROXY; fi
+else builtin unset ALL_PROXY 2>/dev/null || command unset ALL_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_0 __CODEX_SNAPSHOT_PROXY_OVERRIDE_0 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_0 __CODEX_SNAPSHOT_PROXY_OVERRIDE_0
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_1}" ]; then
+  if [ -z "${BUNDLE_HTTPS_PROXY+x}" ] || [ "${BUNDLE_HTTPS_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_1}" ]; then export BUNDLE_HTTPS_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_1}"; else export BUNDLE_HTTPS_PROXY; fi
+else builtin unset BUNDLE_HTTPS_PROXY 2>/dev/null || command unset BUNDLE_HTTPS_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_1 __CODEX_SNAPSHOT_PROXY_OVERRIDE_1 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_1 __CODEX_SNAPSHOT_PROXY_OVERRIDE_1
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_2}" ]; then
+  if [ -z "${BUNDLE_HTTP_PROXY+x}" ] || [ "${BUNDLE_HTTP_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_2}" ]; then export BUNDLE_HTTP_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_2}"; else export BUNDLE_HTTP_PROXY; fi
+else builtin unset BUNDLE_HTTP_PROXY 2>/dev/null || command unset BUNDLE_HTTP_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_2 __CODEX_SNAPSHOT_PROXY_OVERRIDE_2 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_2 __CODEX_SNAPSHOT_PROXY_OVERRIDE_2
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_3}" ]; then
+  if [ -z "${BUNDLE_NO_PROXY+x}" ] || [ "${BUNDLE_NO_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_3}" ]; then export BUNDLE_NO_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_3}"; else export BUNDLE_NO_PROXY; fi
+else builtin unset BUNDLE_NO_PROXY 2>/dev/null || command unset BUNDLE_NO_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_3 __CODEX_SNAPSHOT_PROXY_OVERRIDE_3 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_3 __CODEX_SNAPSHOT_PROXY_OVERRIDE_3
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_4}" ]; then
+  if [ -z "${BUNDLE_SSL_CA_CERT+x}" ] || [ "${BUNDLE_SSL_CA_CERT-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_4}" ]; then export BUNDLE_SSL_CA_CERT="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_4}"; else export BUNDLE_SSL_CA_CERT; fi
+else builtin unset BUNDLE_SSL_CA_CERT 2>/dev/null || command unset BUNDLE_SSL_CA_CERT; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_4 __CODEX_SNAPSHOT_PROXY_OVERRIDE_4 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_4 __CODEX_SNAPSHOT_PROXY_OVERRIDE_4
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_5}" ]; then
+  if [ -z "${CARGO_HTTP_CAINFO+x}" ] || [ "${CARGO_HTTP_CAINFO-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_5}" ]; then export CARGO_HTTP_CAINFO="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_5}"; else export CARGO_HTTP_CAINFO; fi
+else builtin unset CARGO_HTTP_CAINFO 2>/dev/null || command unset CARGO_HTTP_CAINFO; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_5 __CODEX_SNAPSHOT_PROXY_OVERRIDE_5 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_5 __CODEX_SNAPSHOT_PROXY_OVERRIDE_5
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_6}" ]; then
+  if [ -z "${CODEX_CA_CERTIFICATE+x}" ] || [ "${CODEX_CA_CERTIFICATE-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_6}" ]; then export CODEX_CA_CERTIFICATE="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_6}"; else export CODEX_CA_CERTIFICATE; fi
+else builtin unset CODEX_CA_CERTIFICATE 2>/dev/null || command unset CODEX_CA_CERTIFICATE; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_6 __CODEX_SNAPSHOT_PROXY_OVERRIDE_6 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_6 __CODEX_SNAPSHOT_PROXY_OVERRIDE_6
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_7}" ]; then
+  if [ -z "${CODEX_NETWORK_ALLOW_LOCAL_BINDING+x}" ] || [ "${CODEX_NETWORK_ALLOW_LOCAL_BINDING-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_7}" ]; then export CODEX_NETWORK_ALLOW_LOCAL_BINDING="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_7}"; else export CODEX_NETWORK_ALLOW_LOCAL_BINDING; fi
+else builtin unset CODEX_NETWORK_ALLOW_LOCAL_BINDING 2>/dev/null || command unset CODEX_NETWORK_ALLOW_LOCAL_BINDING; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_7 __CODEX_SNAPSHOT_PROXY_OVERRIDE_7 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_7 __CODEX_SNAPSHOT_PROXY_OVERRIDE_7
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_8}" ]; then
+  if [ -z "${CODEX_NETWORK_PROXY_ACTIVE+x}" ] || [ "${CODEX_NETWORK_PROXY_ACTIVE-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_8}" ]; then export CODEX_NETWORK_PROXY_ACTIVE="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_8}"; else export CODEX_NETWORK_PROXY_ACTIVE; fi
+else builtin unset CODEX_NETWORK_PROXY_ACTIVE 2>/dev/null || command unset CODEX_NETWORK_PROXY_ACTIVE; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_8 __CODEX_SNAPSHOT_PROXY_OVERRIDE_8 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_8 __CODEX_SNAPSHOT_PROXY_OVERRIDE_8
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_9}" ]; then
+  if [ -z "${CODEX_NETWORK_PROXY_ATTRIBUTION+x}" ] || [ "${CODEX_NETWORK_PROXY_ATTRIBUTION-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_9}" ]; then export CODEX_NETWORK_PROXY_ATTRIBUTION="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_9}"; else export CODEX_NETWORK_PROXY_ATTRIBUTION; fi
+else builtin unset CODEX_NETWORK_PROXY_ATTRIBUTION 2>/dev/null || command unset CODEX_NETWORK_PROXY_ATTRIBUTION; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_9 __CODEX_SNAPSHOT_PROXY_OVERRIDE_9 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_9 __CODEX_SNAPSHOT_PROXY_OVERRIDE_9
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_10}" ]; then
+  if [ -z "${CODEX_NETWORK_PROXY_BROKERED_CREDENTIALS+x}" ] || [ "${CODEX_NETWORK_PROXY_BROKERED_CREDENTIALS-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_10}" ]; then export CODEX_NETWORK_PROXY_BROKERED_CREDENTIALS="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_10}"; else export CODEX_NETWORK_PROXY_BROKERED_CREDENTIALS; fi
+else builtin unset CODEX_NETWORK_PROXY_BROKERED_CREDENTIALS 2>/dev/null || command unset CODEX_NETWORK_PROXY_BROKERED_CREDENTIALS; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_10 __CODEX_SNAPSHOT_PROXY_OVERRIDE_10 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_10 __CODEX_SNAPSHOT_PROXY_OVERRIDE_10
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_11}" ]; then
+  if [ -z "${CODEX_NETWORK_PROXY_CREDENTIAL_BROKER_ACTIVE+x}" ] || [ "${CODEX_NETWORK_PROXY_CREDENTIAL_BROKER_ACTIVE-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_11}" ]; then export CODEX_NETWORK_PROXY_CREDENTIAL_BROKER_ACTIVE="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_11}"; else export CODEX_NETWORK_PROXY_CREDENTIAL_BROKER_ACTIVE; fi
+else builtin unset CODEX_NETWORK_PROXY_CREDENTIAL_BROKER_ACTIVE 2>/dev/null || command unset CODEX_NETWORK_PROXY_CREDENTIAL_BROKER_ACTIVE; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_11 __CODEX_SNAPSHOT_PROXY_OVERRIDE_11 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_11 __CODEX_SNAPSHOT_PROXY_OVERRIDE_11
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_12}" ]; then
+  if [ -z "${CURL_CA_BUNDLE+x}" ] || [ "${CURL_CA_BUNDLE-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_12}" ]; then export CURL_CA_BUNDLE="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_12}"; else export CURL_CA_BUNDLE; fi
+else builtin unset CURL_CA_BUNDLE 2>/dev/null || command unset CURL_CA_BUNDLE; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_12 __CODEX_SNAPSHOT_PROXY_OVERRIDE_12 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_12 __CODEX_SNAPSHOT_PROXY_OVERRIDE_12
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_13}" ]; then
+  if [ -z "${DOCKER_HTTPS_PROXY+x}" ] || [ "${DOCKER_HTTPS_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_13}" ]; then export DOCKER_HTTPS_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_13}"; else export DOCKER_HTTPS_PROXY; fi
+else builtin unset DOCKER_HTTPS_PROXY 2>/dev/null || command unset DOCKER_HTTPS_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_13 __CODEX_SNAPSHOT_PROXY_OVERRIDE_13 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_13 __CODEX_SNAPSHOT_PROXY_OVERRIDE_13
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_14}" ]; then
+  if [ -z "${DOCKER_HTTP_PROXY+x}" ] || [ "${DOCKER_HTTP_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_14}" ]; then export DOCKER_HTTP_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_14}"; else export DOCKER_HTTP_PROXY; fi
+else builtin unset DOCKER_HTTP_PROXY 2>/dev/null || command unset DOCKER_HTTP_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_14 __CODEX_SNAPSHOT_PROXY_OVERRIDE_14 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_14 __CODEX_SNAPSHOT_PROXY_OVERRIDE_14
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_15}" ]; then
+  if [ -z "${ELECTRON_GET_USE_PROXY+x}" ] || [ "${ELECTRON_GET_USE_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_15}" ]; then export ELECTRON_GET_USE_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_15}"; else export ELECTRON_GET_USE_PROXY; fi
+else builtin unset ELECTRON_GET_USE_PROXY 2>/dev/null || command unset ELECTRON_GET_USE_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_15 __CODEX_SNAPSHOT_PROXY_OVERRIDE_15 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_15 __CODEX_SNAPSHOT_PROXY_OVERRIDE_15
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_16}" ]; then
+  if [ -z "${FTP_PROXY+x}" ] || [ "${FTP_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_16}" ]; then export FTP_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_16}"; else export FTP_PROXY; fi
+else builtin unset FTP_PROXY 2>/dev/null || command unset FTP_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_16 __CODEX_SNAPSHOT_PROXY_OVERRIDE_16 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_16 __CODEX_SNAPSHOT_PROXY_OVERRIDE_16
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_17}" ]; then
+  if [ -z "${GIT_SSL_CAINFO+x}" ] || [ "${GIT_SSL_CAINFO-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_17}" ]; then export GIT_SSL_CAINFO="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_17}"; else export GIT_SSL_CAINFO; fi
+else builtin unset GIT_SSL_CAINFO 2>/dev/null || command unset GIT_SSL_CAINFO; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_17 __CODEX_SNAPSHOT_PROXY_OVERRIDE_17 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_17 __CODEX_SNAPSHOT_PROXY_OVERRIDE_17
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_18}" ]; then
+  if [ -z "${HTTPS_PROXY+x}" ] || [ "${HTTPS_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_18}" ]; then export HTTPS_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_18}"; else export HTTPS_PROXY; fi
+else builtin unset HTTPS_PROXY 2>/dev/null || command unset HTTPS_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_18 __CODEX_SNAPSHOT_PROXY_OVERRIDE_18 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_18 __CODEX_SNAPSHOT_PROXY_OVERRIDE_18
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_19}" ]; then
+  if [ -z "${HTTP_PROXY+x}" ] || [ "${HTTP_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_19}" ]; then export HTTP_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_19}"; else export HTTP_PROXY; fi
+else builtin unset HTTP_PROXY 2>/dev/null || command unset HTTP_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_19 __CODEX_SNAPSHOT_PROXY_OVERRIDE_19 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_19 __CODEX_SNAPSHOT_PROXY_OVERRIDE_19
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_20}" ]; then
+  if [ -z "${NODE_EXTRA_CA_CERTS+x}" ] || [ "${NODE_EXTRA_CA_CERTS-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_20}" ]; then export NODE_EXTRA_CA_CERTS="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_20}"; else export NODE_EXTRA_CA_CERTS; fi
+else builtin unset NODE_EXTRA_CA_CERTS 2>/dev/null || command unset NODE_EXTRA_CA_CERTS; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_20 __CODEX_SNAPSHOT_PROXY_OVERRIDE_20 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_20 __CODEX_SNAPSHOT_PROXY_OVERRIDE_20
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_21}" ]; then
+  if [ -z "${NODE_USE_ENV_PROXY+x}" ] || [ "${NODE_USE_ENV_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_21}" ]; then export NODE_USE_ENV_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_21}"; else export NODE_USE_ENV_PROXY; fi
+else builtin unset NODE_USE_ENV_PROXY 2>/dev/null || command unset NODE_USE_ENV_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_21 __CODEX_SNAPSHOT_PROXY_OVERRIDE_21 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_21 __CODEX_SNAPSHOT_PROXY_OVERRIDE_21
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_22}" ]; then
+  if [ -z "${NO_PROXY+x}" ] || [ "${NO_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_22}" ]; then export NO_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_22}"; else export NO_PROXY; fi
+else builtin unset NO_PROXY 2>/dev/null || command unset NO_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_22 __CODEX_SNAPSHOT_PROXY_OVERRIDE_22 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_22 __CODEX_SNAPSHOT_PROXY_OVERRIDE_22
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_23}" ]; then
+  if [ -z "${NPM_CONFIG_CAFILE+x}" ] || [ "${NPM_CONFIG_CAFILE-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_23}" ]; then export NPM_CONFIG_CAFILE="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_23}"; else export NPM_CONFIG_CAFILE; fi
+else builtin unset NPM_CONFIG_CAFILE 2>/dev/null || command unset NPM_CONFIG_CAFILE; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_23 __CODEX_SNAPSHOT_PROXY_OVERRIDE_23 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_23 __CODEX_SNAPSHOT_PROXY_OVERRIDE_23
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_24}" ]; then
+  if [ -z "${NPM_CONFIG_HTTPS_PROXY+x}" ] || [ "${NPM_CONFIG_HTTPS_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_24}" ]; then export NPM_CONFIG_HTTPS_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_24}"; else export NPM_CONFIG_HTTPS_PROXY; fi
+else builtin unset NPM_CONFIG_HTTPS_PROXY 2>/dev/null || command unset NPM_CONFIG_HTTPS_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_24 __CODEX_SNAPSHOT_PROXY_OVERRIDE_24 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_24 __CODEX_SNAPSHOT_PROXY_OVERRIDE_24
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_25}" ]; then
+  if [ -z "${NPM_CONFIG_HTTP_PROXY+x}" ] || [ "${NPM_CONFIG_HTTP_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_25}" ]; then export NPM_CONFIG_HTTP_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_25}"; else export NPM_CONFIG_HTTP_PROXY; fi
+else builtin unset NPM_CONFIG_HTTP_PROXY 2>/dev/null || command unset NPM_CONFIG_HTTP_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_25 __CODEX_SNAPSHOT_PROXY_OVERRIDE_25 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_25 __CODEX_SNAPSHOT_PROXY_OVERRIDE_25
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_26}" ]; then
+  if [ -z "${NPM_CONFIG_NOPROXY+x}" ] || [ "${NPM_CONFIG_NOPROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_26}" ]; then export NPM_CONFIG_NOPROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_26}"; else export NPM_CONFIG_NOPROXY; fi
+else builtin unset NPM_CONFIG_NOPROXY 2>/dev/null || command unset NPM_CONFIG_NOPROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_26 __CODEX_SNAPSHOT_PROXY_OVERRIDE_26 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_26 __CODEX_SNAPSHOT_PROXY_OVERRIDE_26
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_27}" ]; then
+  if [ -z "${NPM_CONFIG_PROXY+x}" ] || [ "${NPM_CONFIG_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_27}" ]; then export NPM_CONFIG_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_27}"; else export NPM_CONFIG_PROXY; fi
+else builtin unset NPM_CONFIG_PROXY 2>/dev/null || command unset NPM_CONFIG_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_27 __CODEX_SNAPSHOT_PROXY_OVERRIDE_27 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_27 __CODEX_SNAPSHOT_PROXY_OVERRIDE_27
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_28}" ]; then
+  if [ -z "${PIP_CERT+x}" ] || [ "${PIP_CERT-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_28}" ]; then export PIP_CERT="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_28}"; else export PIP_CERT; fi
+else builtin unset PIP_CERT 2>/dev/null || command unset PIP_CERT; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_28 __CODEX_SNAPSHOT_PROXY_OVERRIDE_28 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_28 __CODEX_SNAPSHOT_PROXY_OVERRIDE_28
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_29}" ]; then
+  if [ -z "${PIP_PROXY+x}" ] || [ "${PIP_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_29}" ]; then export PIP_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_29}"; else export PIP_PROXY; fi
+else builtin unset PIP_PROXY 2>/dev/null || command unset PIP_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_29 __CODEX_SNAPSHOT_PROXY_OVERRIDE_29 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_29 __CODEX_SNAPSHOT_PROXY_OVERRIDE_29
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_30}" ]; then
+  if [ -z "${REQUESTS_CA_BUNDLE+x}" ] || [ "${REQUESTS_CA_BUNDLE-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_30}" ]; then export REQUESTS_CA_BUNDLE="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_30}"; else export REQUESTS_CA_BUNDLE; fi
+else builtin unset REQUESTS_CA_BUNDLE 2>/dev/null || command unset REQUESTS_CA_BUNDLE; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_30 __CODEX_SNAPSHOT_PROXY_OVERRIDE_30 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_30 __CODEX_SNAPSHOT_PROXY_OVERRIDE_30
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_31}" ]; then
+  if [ -z "${SSL_CERT_FILE+x}" ] || [ "${SSL_CERT_FILE-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_31}" ]; then export SSL_CERT_FILE="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_31}"; else export SSL_CERT_FILE; fi
+else builtin unset SSL_CERT_FILE 2>/dev/null || command unset SSL_CERT_FILE; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_31 __CODEX_SNAPSHOT_PROXY_OVERRIDE_31 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_31 __CODEX_SNAPSHOT_PROXY_OVERRIDE_31
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_32}" ]; then
+  if [ -z "${WSS_PROXY+x}" ] || [ "${WSS_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_32}" ]; then export WSS_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_32}"; else export WSS_PROXY; fi
+else builtin unset WSS_PROXY 2>/dev/null || command unset WSS_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_32 __CODEX_SNAPSHOT_PROXY_OVERRIDE_32 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_32 __CODEX_SNAPSHOT_PROXY_OVERRIDE_32
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_33}" ]; then
+  if [ -z "${WS_PROXY+x}" ] || [ "${WS_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_33}" ]; then export WS_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_33}"; else export WS_PROXY; fi
+else builtin unset WS_PROXY 2>/dev/null || command unset WS_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_33 __CODEX_SNAPSHOT_PROXY_OVERRIDE_33 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_33 __CODEX_SNAPSHOT_PROXY_OVERRIDE_33
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_34}" ]; then
+  if [ -z "${YARN_HTTPS_PROXY+x}" ] || [ "${YARN_HTTPS_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_34}" ]; then export YARN_HTTPS_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_34}"; else export YARN_HTTPS_PROXY; fi
+else builtin unset YARN_HTTPS_PROXY 2>/dev/null || command unset YARN_HTTPS_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_34 __CODEX_SNAPSHOT_PROXY_OVERRIDE_34 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_34 __CODEX_SNAPSHOT_PROXY_OVERRIDE_34
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_35}" ]; then
+  if [ -z "${YARN_HTTP_PROXY+x}" ] || [ "${YARN_HTTP_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_35}" ]; then export YARN_HTTP_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_35}"; else export YARN_HTTP_PROXY; fi
+else builtin unset YARN_HTTP_PROXY 2>/dev/null || command unset YARN_HTTP_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_35 __CODEX_SNAPSHOT_PROXY_OVERRIDE_35 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_35 __CODEX_SNAPSHOT_PROXY_OVERRIDE_35
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_36}" ]; then
+  if [ -z "${YARN_NO_PROXY+x}" ] || [ "${YARN_NO_PROXY-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_36}" ]; then export YARN_NO_PROXY="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_36}"; else export YARN_NO_PROXY; fi
+else builtin unset YARN_NO_PROXY 2>/dev/null || command unset YARN_NO_PROXY; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_36 __CODEX_SNAPSHOT_PROXY_OVERRIDE_36 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_36 __CODEX_SNAPSHOT_PROXY_OVERRIDE_36
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_37}" ]; then
+  if [ -z "${all_proxy+x}" ] || [ "${all_proxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_37}" ]; then export all_proxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_37}"; else export all_proxy; fi
+else builtin unset all_proxy 2>/dev/null || command unset all_proxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_37 __CODEX_SNAPSHOT_PROXY_OVERRIDE_37 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_37 __CODEX_SNAPSHOT_PROXY_OVERRIDE_37
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_38}" ]; then
+  if [ -z "${ftp_proxy+x}" ] || [ "${ftp_proxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_38}" ]; then export ftp_proxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_38}"; else export ftp_proxy; fi
+else builtin unset ftp_proxy 2>/dev/null || command unset ftp_proxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_38 __CODEX_SNAPSHOT_PROXY_OVERRIDE_38 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_38 __CODEX_SNAPSHOT_PROXY_OVERRIDE_38
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_39}" ]; then
+  if [ -z "${http_proxy+x}" ] || [ "${http_proxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_39}" ]; then export http_proxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_39}"; else export http_proxy; fi
+else builtin unset http_proxy 2>/dev/null || command unset http_proxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_39 __CODEX_SNAPSHOT_PROXY_OVERRIDE_39 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_39 __CODEX_SNAPSHOT_PROXY_OVERRIDE_39
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_40}" ]; then
+  if [ -z "${https_proxy+x}" ] || [ "${https_proxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_40}" ]; then export https_proxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_40}"; else export https_proxy; fi
+else builtin unset https_proxy 2>/dev/null || command unset https_proxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_40 __CODEX_SNAPSHOT_PROXY_OVERRIDE_40 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_40 __CODEX_SNAPSHOT_PROXY_OVERRIDE_40
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_41}" ]; then
+  if [ -z "${no_proxy+x}" ] || [ "${no_proxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_41}" ]; then export no_proxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_41}"; else export no_proxy; fi
+else builtin unset no_proxy 2>/dev/null || command unset no_proxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_41 __CODEX_SNAPSHOT_PROXY_OVERRIDE_41 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_41 __CODEX_SNAPSHOT_PROXY_OVERRIDE_41
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_42}" ]; then
+  if [ -z "${npm_config_cafile+x}" ] || [ "${npm_config_cafile-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_42}" ]; then export npm_config_cafile="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_42}"; else export npm_config_cafile; fi
+else builtin unset npm_config_cafile 2>/dev/null || command unset npm_config_cafile; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_42 __CODEX_SNAPSHOT_PROXY_OVERRIDE_42 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_42 __CODEX_SNAPSHOT_PROXY_OVERRIDE_42
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_43}" ]; then
+  if [ -z "${npm_config_http_proxy+x}" ] || [ "${npm_config_http_proxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_43}" ]; then export npm_config_http_proxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_43}"; else export npm_config_http_proxy; fi
+else builtin unset npm_config_http_proxy 2>/dev/null || command unset npm_config_http_proxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_43 __CODEX_SNAPSHOT_PROXY_OVERRIDE_43 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_43 __CODEX_SNAPSHOT_PROXY_OVERRIDE_43
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_44}" ]; then
+  if [ -z "${npm_config_https_proxy+x}" ] || [ "${npm_config_https_proxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_44}" ]; then export npm_config_https_proxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_44}"; else export npm_config_https_proxy; fi
+else builtin unset npm_config_https_proxy 2>/dev/null || command unset npm_config_https_proxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_44 __CODEX_SNAPSHOT_PROXY_OVERRIDE_44 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_44 __CODEX_SNAPSHOT_PROXY_OVERRIDE_44
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_45}" ]; then
+  if [ -z "${npm_config_noproxy+x}" ] || [ "${npm_config_noproxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_45}" ]; then export npm_config_noproxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_45}"; else export npm_config_noproxy; fi
+else builtin unset npm_config_noproxy 2>/dev/null || command unset npm_config_noproxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_45 __CODEX_SNAPSHOT_PROXY_OVERRIDE_45 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_45 __CODEX_SNAPSHOT_PROXY_OVERRIDE_45
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_46}" ]; then
+  if [ -z "${npm_config_proxy+x}" ] || [ "${npm_config_proxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_46}" ]; then export npm_config_proxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_46}"; else export npm_config_proxy; fi
+else builtin unset npm_config_proxy 2>/dev/null || command unset npm_config_proxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_46 __CODEX_SNAPSHOT_PROXY_OVERRIDE_46 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_46 __CODEX_SNAPSHOT_PROXY_OVERRIDE_46
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_47}" ]; then
+  if [ -z "${ws_proxy+x}" ] || [ "${ws_proxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_47}" ]; then export ws_proxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_47}"; else export ws_proxy; fi
+else builtin unset ws_proxy 2>/dev/null || command unset ws_proxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_47 __CODEX_SNAPSHOT_PROXY_OVERRIDE_47 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_47 __CODEX_SNAPSHOT_PROXY_OVERRIDE_47
+if [ -n "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_48}" ]; then
+  if [ -z "${wss_proxy+x}" ] || [ "${wss_proxy-}" != "${__CODEX_SNAPSHOT_PROXY_OVERRIDE_48}" ]; then export wss_proxy="${__CODEX_SNAPSHOT_PROXY_OVERRIDE_48}"; else export wss_proxy; fi
+else builtin unset wss_proxy 2>/dev/null || command unset wss_proxy; fi
+builtin unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_48 __CODEX_SNAPSHOT_PROXY_OVERRIDE_48 2>/dev/null || command unset __CODEX_SNAPSHOT_PROXY_OVERRIDE_SET_48 __CODEX_SNAPSHOT_PROXY_OVERRIDE_48
+fi
+
+exec '/bin/bash' -c 'for d in /proc/[0-9]*; do c=$(tr '"'"'\0'"'"' '"'"' '"'"' < $d/cmdline 2>/dev/null); case "$c" in *opt4*) echo "$d $c";; esac; done' 
+/proc/2 /bin/bash -c for d in /proc/[0-9]*; do c=$(tr '\0' ' ' < $d/cmdline 2>/dev/null); case "$c" in *opt4*) echo "$d $c";; esac; done 
+
+exec
+/bin/bash -lc "cat > /tmp/cp/exp1.py << 'EOF'
+import math, random, time
+
+def maxov(xs, ys, rs):
+    n=len(xs); m=0.0
+    for i in range(n):
+        g=xs[i]-rs[i]
+        if -g>m: m=-g
+        g=1-xs[i]-rs[i]
+        if -g>m: m=-g
+        g=ys[i]-rs[i]
+        if -g>m: m=-g
+        g=1-ys[i]-rs[i]
+        if -g>m: m=-g
+        for j in range(i+1,n):
+            ov=rs[i]+rs[j]-math.hypot(xs[i]-xs[j],ys[i]-ys[j])
+            if ov>m: m=ov
+    return m
+
+def sweep(xs, ys, rs):
+    n=len(xs)
+    for i in range(n):
+        xi=xs[i]; yi=ys[i]; ri=rs[i]
+        for j in range(i+1,n):
+            dx=xs[j]-xi; dy=ys[j]-yi
+            s=ri+rs[j]
+            d2=dx*dx+dy*dy
+            if d2 < s*s:
+                if d2<1e-24:
+                    a=random.random()*6.283185307179586
+                    dx=math.cos(a)*1e-5; dy=math.sin(a)*1e-5; d2=1e-10
+                d=math.sqrt(d2); ov=(s-d)*0.5
+                ux=dx/d; uy=dy/d
+                xi-=ux*ov; yi-=uy*ov
+                xs[j]+=ux*ov; ys[j]+=uy*ov
+        xs[i]=xi; ys[i]=yi
+        if xi<ri: xs[i]=ri
+        elif xi>1-ri: xs[i]=1-ri
+        if yi<ri: ys[i]=ri
+        elif yi>1-ri: ys[i]=1-ri
+
+n=26
+random.seed(0)
+xs=[random.random() for _ in range(n)]; ys=[random.random() for _ in range(n)]; rs=[0.01]*n
+t0=time.time()
+for it in range(4000):
+    for i in range(n): rs[i]*=1.001
+    for s in range(4): sweep(xs,ys,rs)
+print(\"t\",round(time.time()-t0,2),\"sum\",round(sum(rs),5),\"maxov\",round(maxov(xs,ys,rs),8))
+# projection convergence test
+for i in range(n): rs[i]*=1.01
+for k in [1,2,4,8,16,32,64]:
+    for s in range(k if k==1 else 1): pass
+EOF
+cd /tmp/cp && timeout 120 python3 exp1.py" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 363ms:
+t 0.49 sum 14.16718 maxov 1.08978271
+
+exec
+/bin/bash -lc "cd /tmp/cp && python3 -c \"
+import random, math, exp1
+n=26
+random.seed(0)
+xs=[random.random() for _ in range(n)]; ys=[random.random() for _ in range(n)]; rs=[0.06]*n
+print('start', round(exp1.maxov(xs,ys,rs),6))
+for k in range(1,11):
+    exp1.sweep(xs,ys,rs)
+    print(k, round(exp1.maxov(xs,ys,rs),6))
+\"" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 364ms:
+t 0.49 sum 14.16718 maxov 1.08978271
+start 0.111895
+1 0.06045
+2 0.033989
+3 0.024057
+4 0.01678
+5 0.011503
+6 0.007771
+7 0.005191
+8 0.00344
+9 0.002266
+10 0.001487
+
+exec
+/bin/bash -lc "cat > /tmp/cp/jam2.py << 'EOF'
+import math, random, time
+
+def maxov(xs, ys, rs, extra=True):
+    n=len(xs); m=0.0
+    for i in range(n):
+        ri=rs[i]
+        g=xs[i]-ri
+        if -g>m: m=-g
+        g=1-xs[i]-ri
+        if -g>m: m=-g
+        g=ys[i]-ri
+        if -g>m: m=-g
+        g=1-ys[i]-ri
+        if -g>m: m=-g
+        if extra:
+            for j in range(i+1,n):
+                ov=rs[i]+rs[j]-math.hypot(xs[i]-xs[j],ys[i]-ys[j])
+                if ov>m: m=ov
+    return m
+
+def sweep(xs, ys, rs):
+    n=len(xs)
+    for i in range(n):
+        xi=xs[i]; yi=ys[i]; ri=rs[i]
+        for j in range(i+1,n):
+            dx=xs[j]-xi; dy=ys[j]-yi
+            s=ri+rs[j]
+            d2=dx*dx+dy*dy
+            if d2 < s*s:
+                if d2<1e-24:
+                    a=random.random()*6.283185307179586
+                    dx=math.cos(a)*1e-5; dy=math.sin(a)*1e-5; d2=1e-10
+                d=math.sqrt(d2); ov=(s-d)*0.5
+                ux=dx/d; uy=dy/d
+                xi-=ux*ov; yi-=uy*ov
+                xs[j]+=ux*ov; ys[j]+=uy*ov
+        if xi<ri: xi=ri
+        elif xi>1-ri: xi=1-ri
+        if yi<ri: yi=ri
+        elif yi>1-ri: yi=1-ri
+        xs[i]=xi; ys[i]=yi
+
+def project(xs, ys, rs, sweeps):
+    for s in range(sweeps):
+        sweep(xs,ys,rs)
+        if maxov(xs,ys,rs) <= 1e-12:
+            return True
+    return False
+
+def jam(xs, ys, rs, rate0=0.02, rate_min=3e-7, tol=1e-11, cap=None):
+    n=len(xs); rate=rate0; steps=0; accepted=0
+    while rate>rate_min:
+        steps+=1
+        g=1.0+rate
+        for i in range(n): rs[i]*=g
+        if project(xs,ys,rs,3) or project(xs,ys,rs,60):
+            accepted+=1
+            rate=min(rate*1.04, rate0)
+        else:
+            for i in range(n): rs[i]/=g
+            rate*=0.5
+    return steps, accepted
+
+def run(n=26, seed=0, rate0=0.02):
+    random.seed(seed)
+    xs=[random.random() for _ in range(n)]
+    ys=[random.random() for _ in range(n)]
+    rs=[0.005]*n
+    t0=time.time()
+    st, acc = jam(xs,ys,rs,rate0)
+    dt=time.time()-t0
+    return sum(rs), maxov(xs,ys,rs), dt, st, acc
+
+if __name__==\"__main__\":
+    for seed in range(5):
+        s,ov,dt,st,acc = run(26,seed)
+        print(seed, round(s,5), \"ov=%.2e\"%ov, \"t=%.2f\"%dt, \"steps\",st,\"acc\",acc)
+EOF
+cd /tmp/cp && timeout 900 python3 jam2.py" in /work/runs/sl-run-1/simpleloop-run/work/iter001
+exec
+/bin/bash -lc 'cat /proc/loadavg; for d in /proc/[0-9]*; do c=$(tr '"'\\0' ' ' < "'$d/cmdline 2>/dev/null | cut -c1-60); case "$c" in *python3*) echo "$d|$c";; esac; done' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+2.20 1.54 0.86 3/1163 3
+
+exec
+/bin/bash -lc 'for d in /proc/[0-9]*; do c=$(tr '"'\\0' ' ' < "'$d/cmdline 2>/dev/null); case "$c" in *jam2*|*opt4*|*exp1*) p=${d#/proc/}; echo "killing $p"; kill -9 $p 2>/dev/null;; esac; done; sleep 1; cat /proc/loadavg' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ exited 137 in 0ms:
+killing 1
+killing 2
+
+exec
+/bin/bash -lc 'echo alive; cat /proc/loadavg' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+alive
+2.27 1.56 0.87 5/1166 2
+
+exec
+/bin/bash -lc 'for d in /proc/[0-9]*; do cm=$(cat $d/comm 2>/dev/null); case "$cm" in python*) echo "$d $cm  $(tr '"'\\0' ' ' < "'$d/cmdline | cut -c1-80)";; esac; done' in /work/runs/sl-run-1/simpleloop-run/work/iter001
+ succeeded in 0ms:
+exec
+/bin/bash -lc 'cd /tmp/cp && timeout 300 python3 -u jam2.py 2>&1 | head -20' in /work/runs/sl-run-1/simpleloop-run/work/iter001

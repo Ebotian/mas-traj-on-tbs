@@ -1,0 +1,185 @@
+{
+  "candidate": {
+    "entry": "pack_circles",
+    "source_bytes": 703,
+    "source_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41"
+  },
+  "canonical_digest": "46769871eb044b9417c6f7bf37b6ddcbdae50582f356b226a6aa1bd42c5ce343",
+  "e_star_version": "1.0.0",
+  "evaluator_source_sha256": "c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796",
+  "failure": {
+    "kind": "invalid_configuration",
+    "message": "count_equals_n failed: {'num_circles': 0, 'expected': 26}"
+  },
+  "fields": {
+    "audit_coverage": 1.0,
+    "items_audited": 26,
+    "min_boundary_margin": null,
+    "min_gap": null,
+    "num_circles": null,
+    "overlap_count": null,
+    "packing_density": null,
+    "pairs_audited": 325,
+    "sum_radii": null
+  },
+  "interpreter": {
+    "implementation": "cpython",
+    "version": "3.12.11"
+  },
+  "objective": null,
+  "resources": null,
+  "schema": "e_star.outcome/v1",
+  "scored": false,
+  "status": "invalid",
+  "structure": {
+    "min_boundary_margin": null,
+    "min_gap": null,
+    "num_circles": 0,
+    "num_circles_expected": 26,
+    "overlap_count": 0,
+    "packing_density": 0,
+    "pairs_audited": 0,
+    "sum_radii": 0
+  },
+  "theta_e": {
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "seed": 1337,
+    "timeout_s": 120.0
+  },
+  "validity": {
+    "audit": {
+      "coverage": 1.0,
+      "fidelity": "full",
+      "items_audited": 26,
+      "items_total": 26,
+      "pairs_audited": 325,
+      "pairs_total": 325,
+      "sample": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+      "seed": 1337
+    },
+    "checks": [
+      {
+        "detail": {
+          "returncode": 0,
+          "runs_requested": 5,
+          "runs_written": 5,
+          "timed_out": false
+        },
+        "name": "child_artifacts_complete",
+        "passed": true
+      },
+      {
+        "detail": null,
+        "name": "candidate_module_imports",
+        "passed": true
+      },
+      {
+        "detail": "function",
+        "name": "candidate_defines_entrypoint",
+        "passed": true
+      },
+      {
+        "detail": {
+          "expected": 5,
+          "recorded": 5
+        },
+        "name": "all_runs_recorded",
+        "passed": true
+      },
+      {
+        "detail": null,
+        "name": "candidate_call_succeeds",
+        "passed": true
+      },
+      {
+        "detail": null,
+        "name": "output_parses_as_triples",
+        "passed": true
+      },
+      {
+        "detail": {
+          "expected": 26,
+          "num_circles": 0
+        },
+        "name": "count_equals_n",
+        "passed": false
+      },
+      {
+        "detail": {
+          "items_audited": 0,
+          "min_radius": null
+        },
+        "name": "radius_positive_check",
+        "passed": true
+      },
+      {
+        "detail": {
+          "items_audited": 0,
+          "min_boundary_margin": null
+        },
+        "name": "bounds_check",
+        "passed": true
+      },
+      {
+        "detail": {
+          "min_gap": null,
+          "overlap_count": 0,
+          "pairs_audited": 0
+        },
+        "name": "overlap_check",
+        "passed": true
+      },
+      {
+        "detail": {
+          "checked": true,
+          "runs": 5
+        },
+        "name": "determinism_check",
+        "passed": true
+      },
+      {
+        "detail": {
+          "budget_ms": 250.0,
+          "enabled": true,
+          "measurement": "resources.json",
+          "runs": 5
+        },
+        "name": "runtime_budget_check",
+        "passed": true
+      }
+    ],
+    "ok": false
+  }
+}

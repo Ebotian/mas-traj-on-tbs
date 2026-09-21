@@ -8,6 +8,11 @@ cache hit / timeout / truncation, a value drift just above epsilon (and to accep
 below), a candidate swap, a digest swap, silent skipping, a manifest-class mismatch, an
 undeclared native `theta_E`, and a stale `EID*`.
 
+It also pins the A0.1 qualification split (`measured` / `adapted` / `total` and the label that
+carries it): `selftest_synthetic_declared` -- an adapter that hits the EvE trap, declares it and
+does not present the 0.0 as a match -- must come back `PARTIAL (5/14 measured)`, never a bare
+`PASS`. The honest control and the no-fault fixture must come back `PASS (14/14 measured)`.
+
 `selftest_honest` is the control: `fixtures/adapters/reference_adapter.py`, which really executes
 `E*` on all 14 members of `C*` through the frozen CLI. If the control failed, a PASS anywhere else
 would mean nothing.
@@ -46,11 +51,13 @@ EXPECTATIONS = {
     "selftest_honest": {
         "state": "PASS",
         "cmd": HONEST,
+        "qualification": {"measured": 14, "adapted": 0, "total": 14},
         "why": "control: a real E* invocation on all 14 members of C* must pass",
     },
     "selftest_clean": {
         "state": "PASS",
         "cmd": deviant("pass"),
+        "qualification": {"measured": 14, "adapted": 0, "total": 14},
         "why": "no fault injected; a checker that fails this is over-strict",
     },
     "selftest_zero_on_error": {
@@ -137,13 +144,15 @@ EXPECTATIONS = {
         "why": "a missing theta_E parameter must be declared with the fixed equivalent value (plan:518)",
     },
     "selftest_synthetic_declared": {
-        "state": "PASS",
+        "state": "PARTIAL",
         "cmd": deviant("synthetic_declared"),
+        "qualification": {"measured": 5, "adapted": 9, "total": 14},
         "rows": {cid: "SYNTHETIC_DECLARED" for cid in
                  ("c05_overlapping", "c06_empty", "c07_single", "c08_out_of_bounds", "c09_malformed_import",
                   "c10_raises", "c11_non_deterministic", "c12_exit_without_artifacts", "c13_slow")},
-        "why": "an adapter that hits the EvE trap, declares it and does not count it as a match must PASS "
-               "-- being honest about the trap is not a conformance failure",
+        "why": "an adapter that hits the EvE trap, declares it and does not count it as a match must be "
+               "reported PARTIAL (5/14 measured), never PASS -- being honest about the trap is not a "
+               "conformance failure, but it is also not a measurement (review point 2)",
     },
     "selftest_synthetic_mislabeled": {
         "state": "FAIL",
@@ -250,8 +259,22 @@ def check_expectation(entry: dict, expec: dict):
     for want in expec.get("failed_checks", []):
         if want not in failed:
             problems.append(f"check {want} was not reported as failed (failed: {sorted(failed) or 'none'})")
-    if expec["state"] == "PASS" and entry.get("checks") and failed:
+    if expec["state"] in ("PASS", "PARTIAL") and entry.get("checks") and failed:
         problems.append(f"expected no failed checks, saw {sorted(failed)}")
+    # the measured/adapted split is part of the verdict, not decoration: assert it exactly.
+    want_q = expec.get("qualification")
+    if want_q is not None:
+        q = (entry.get("qualification") or {}).get("a0_1") or {}
+        for key in ("measured", "adapted", "total"):
+            if q.get(key) != want_q.get(key):
+                problems.append(f"qualification.{key} {q.get(key)!r} != expected {want_q.get(key)!r}")
+        n = q.get("measured") or 0
+        total = q.get("total") or 0
+        label = q.get("label")
+        if label is None or (expec["state"] == "PARTIAL" and "PARTIAL" not in str(label)):
+            problems.append(f"qualification.label {label!r} does not carry the PARTIAL state")
+        if total and f"{n}/{total} measured" not in str(label):
+            problems.append(f"qualification.label {label!r} does not carry the measured split {n}/{total}")
     return problems
 
 
@@ -316,6 +339,7 @@ def _run(args, scratch: Path) -> int:
                 "findings": [f["finding_id"] for f in entry.get("false_green_findings") or []],
                 "failed_checks": [c["check_id"] for c in entry.get("checks") or [] if not c["ok"]],
                 "row_verdicts": {r["candidate_id"]: r["verdict"] for r in entry.get("rows") or []},
+                "a0_1_qualification": (entry.get("qualification") or {}).get("a0_1"),
                 "behaved_as_expected": not problems,
                 "problems": problems,
             }

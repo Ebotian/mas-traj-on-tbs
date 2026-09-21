@@ -1,0 +1,28 @@
+# Isolated CODEX_HOME for the two-round bridge.
+#
+# The recipe is the one verified in a0/notes/exit-closed/codex-0.155.1/REPORT.md
+# §5/§7: codex 0.155.1 is Responses-only, and DeepSeek serves a real Responses
+# API at https://api.deepseek.com/v1, so codex drives DeepSeek end to end.
+#
+# `env_key` names the environment variable the CLI reads the bearer token from;
+# the value is never written here. It is exported by the launching shell out of
+# ~/gptapi.md and inherited by the codex child (KAPSO's codex adapter copies
+# os.environ and strips nothing by default).
+#
+# Nothing global is touched: codex is pointed here through CODEX_HOME, so the
+# user's ~/.codex/config.toml is untouched.
+
+model = "deepseek-flash"
+model_provider = "ds"
+
+[model_providers.ds]
+name = "DeepSeek"
+base_url = "https://api.deepseek.com/v1"
+env_key = "DS_KEY"
+wire_api = "responses"
+
+[projects."/home/ebt/rsi-dev/a0/runtimes/kapso/runs/bridge-2round/real/workspace/sessions/generic_exp_0"]
+trust_level = "trusted"
+
+[projects."/home/ebt/rsi-dev/a0/runtimes/kapso/runs/bridge-2round/real/workspace/sessions/generic_exp_1"]
+trust_level = "trusted"

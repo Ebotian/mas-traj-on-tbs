@@ -1,0 +1,305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "a0.mrc/schema/v1",
+  "title": "Model Route Contract (MRC*) declaration",
+  "description": "A frozen declaration of the model route a runtime's turns take. MRC* = H(Provider, Endpoint, RequestedModel, ApiSurface, Params, Cli, Prompt, Tools, Permissions, Network, RuntimeAdapters, TaskSnapshot). The A1 estimand is Delta | same declared model route; weight-level identity is NOT frozen because no surface here attests it. See a0/mrc/SPEC.md.",
+  "type": "object",
+  "required": [
+    "schema", "route_id", "model_policy", "components", "component_digests",
+    "mrc_star", "identity_evidence"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "a0.mrc/v1"},
+    "route_id": {"type": "string", "minLength": 1, "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "model_policy": {"$ref": "#/$defs/modelPolicy"},
+    "components": {"$ref": "#/$defs/components"},
+    "component_digests": {
+      "type": "object",
+      "required": ["Provider", "Endpoint", "RequestedModel", "ApiSurface", "Params", "Cli",
+                   "Prompt", "Tools", "Permissions", "Network", "RuntimeAdapters", "TaskSnapshot"],
+      "additionalProperties": {"$ref": "#/$defs/sha256"}
+    },
+    "mrc_star": {"$ref": "#/$defs/sha256"},
+    "mrc_star_derivation": {
+      "type": "object",
+      "properties": {
+        "algorithm": {"const": "sha256"},
+        "domain": {"const": "a0/mrc/v1/MRC*"},
+        "payload_canonical": {"type": "string"}
+      },
+      "required": ["algorithm", "domain", "payload_canonical"],
+      "additionalProperties": false
+    },
+    "identity_evidence": {"$ref": "#/$defs/identityEvidence"},
+    "identity_evidence_digest": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+    "notes": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "nullReasoned": {
+      "description": "A digest-typed field may be null only if a sibling <name>_null_reason states why it is unfrozen.",
+      "type": ["object", "null"]
+    },
+    "modelPolicy": {
+      "description": "The user's decisions, frozen: deepseek-flash primary, deepseek-v4-pro permitted as a mixed secondary, OpenRouter excluded.",
+      "type": "object",
+      "required": ["primary", "mixed_secondary_allowed", "permitted_secondary", "excluded_providers"],
+      "additionalProperties": true,
+      "properties": {
+        "primary": {"const": "deepseek-flash"},
+        "mixed_secondary_allowed": {"const": true},
+        "permitted_secondary": {"type": "array", "items": {"enum": ["deepseek-v4-pro"]}},
+        "excluded_providers": {"type": "array", "items": {"type": "string"}, "contains": {"const": "openrouter"}},
+        "decided_by": {"type": "string"},
+        "decided_utc": {"type": "string"}
+      }
+    },
+    "components": {
+      "type": "object",
+      "required": ["Provider", "Endpoint", "RequestedModel", "ApiSurface", "Params", "Cli",
+                   "Prompt", "Tools", "Permissions", "Network", "RuntimeAdapters", "TaskSnapshot"],
+      "additionalProperties": false,
+      "properties": {
+        "Provider": {
+          "type": "object",
+          "required": ["provider_id", "upstream_hosts", "model_catalog_endpoint", "openrouter_used"],
+          "properties": {
+            "provider_id": {"type": "string", "minLength": 1},
+            "org": {"type": "string"},
+            "upstream_hosts": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+            "model_catalog_endpoint": {"type": "string"},
+            "catalog_observed": {"type": "array", "items": {"type": "string"}},
+            "catalog_observed_utc": {"type": "string"},
+            "openrouter_used": {"const": false}
+          }
+        },
+        "Endpoint": {
+          "type": "object",
+          "required": ["scheme", "host", "port", "base_url", "tls_verify"],
+          "properties": {
+            "scheme": {"enum": ["https", "http"]},
+            "host": {"type": "string", "minLength": 1},
+            "port": {"type": "integer", "minimum": 1, "maximum": 65535},
+            "base_path": {"type": ["string", "null"]},
+            "base_url": {"type": "string", "minLength": 1},
+            "declared_in": {"type": "string"},
+            "tls_verify": {"type": "boolean"}
+          }
+        },
+        "RequestedModel": {
+          "type": "object",
+          "required": ["requested_model_id", "alias_policy", "weights_identity"],
+          "properties": {
+            "requested_model_id": {"type": "string", "minLength": 1},
+            "canonical_id_claimed": {"type": ["string", "null"]},
+            "role": {"enum": ["primary", "calibration", "control"]},
+            "alias_policy": {"enum": ["canonical_ids_only", "aliases_permitted"]},
+            "fallback_chain": {"type": "array", "items": {"type": "string"}},
+            "permitted_secondary": {"type": "array", "items": {"type": "string"}},
+            "weights_identity": {
+              "description": "The frozen non-claim that weight-level identity is not independently verifiable on this route.",
+              "type": "object",
+              "required": ["verifiable", "surface_echo_is_not_proof", "reason"],
+              "properties": {
+                "verifiable": {"const": false},
+                "surface_echo_is_not_proof": {"const": true},
+                "reason": {"type": "string", "minLength": 1}
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "ApiSurface": {
+          "type": "object",
+          "required": ["wire_protocol", "surface_path", "streaming"],
+          "properties": {
+            "wire_protocol": {"enum": ["openai_chat_completions", "openai_responses", "anthropic_messages"]},
+            "surface_path": {"type": "string", "minLength": 1},
+            "streaming": {"type": "boolean"},
+            "request_envelope": {"type": "string"},
+            "response_envelope": {"type": "string"},
+            "protocol_markers": {"type": "array", "items": {"type": "string"}},
+            "wire_api_knob": {"type": "string"},
+            "provider_package": {"type": "string"},
+            "beta_header_note": {"type": "string"}
+          }
+        },
+        "Params": {
+          "type": "object",
+          "required": ["max_tokens_per_turn", "stream", "tool_choice", "retry"],
+          "additionalProperties": true
+        },
+        "Cli": {
+          "type": "object",
+          "required": ["name", "version", "binary_sha256", "command_name", "config_isolation", "argv_template"],
+          "properties": {
+            "name": {"type": "string", "minLength": 1},
+            "version": {"type": "string", "minLength": 1},
+            "binary_sha256": {"$ref": "#/$defs/sha256"},
+            "command_name": {"type": "string", "minLength": 1},
+            "config_isolation": {"type": "string"},
+            "config_files": {"type": "array", "items": {"type": "string"}},
+            "env_var_names": {
+              "description": "Environment-variable NAMES only. Values are secrets and must never appear in a declaration.",
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "argv_template": {"type": "string"},
+            "invocation_mode": {"type": "string"},
+            "model_selection": {"type": "string"},
+            "credential_header": {"type": "string"},
+            "warnings": {"type": "array", "items": {"type": "string"}},
+            "caveats": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "Prompt": {
+          "type": "object",
+          "required": ["prompt_source", "per_run_recording_required"],
+          "properties": {
+            "protocol_prompt_ref": {"type": "string"},
+            "system_prompt_sha256": {"oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+            "system_prompt_null_reason": {"type": "string"},
+            "prompt_source": {"enum": ["a1_provided_task_instruction", "runtime_built", "adapter_built"]},
+            "context_budget_tokens": {"type": ["object", "null"]},
+            "per_run_recording_required": {"type": "boolean"}
+          }
+        },
+        "Tools": {
+          "type": "object",
+          "required": ["toolset_ref", "tool_choice"],
+          "additionalProperties": true
+        },
+        "Permissions": {
+          "type": "object",
+          "required": ["approval_policy", "sandbox_mode", "filesystem_scope", "exec_scope", "network_scope"],
+          "additionalProperties": true
+        },
+        "Network": {
+          "type": "object",
+          "required": ["topology", "egress_policy", "allowlist_hosts", "host_bypass_risk"],
+          "properties": {
+            "topology": {"type": "string"},
+            "egress_policy": {"type": "string"},
+            "allowlist_hosts": {"type": "array", "items": {"type": "string"}},
+            "internal_network": {"type": "string"},
+            "proxy_id": {"type": "string"},
+            "proxy_transparency": {"type": "string"},
+            "dns_mode": {"type": "string"},
+            "client_placement": {"type": "string"},
+            "host_bypass_risk": {"type": "boolean"},
+            "host_bypass_note": {"type": "string"},
+            "a0_verification_egress": {"type": "string"},
+            "a0_verification_note": {"type": "string"}
+          }
+        },
+        "RuntimeAdapters": {
+          "type": "object",
+          "required": ["adapters"],
+          "properties": {
+            "adapters": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["runtime", "lane", "adapter_commit"],
+                "properties": {
+                  "runtime": {"enum": ["kapso", "eve", "loreley", "simpleloop"]},
+                  "lane": {"type": "string", "minLength": 1},
+                  "adapter_commit": {"type": "string", "minLength": 1},
+                  "adapter_source_root": {
+                    "description": "Repo-relative directory the preimage was taken from.",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "adapter_source_files": {
+                    "description": "The preimage: (repo-relative path, sha256 of that file's bytes) for every blob under adapter_source_root at adapter_commit, in ascending path order. A digest with no preimage is rejected (MRC-ADAPTER-PREIMAGE).",
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": ["path", "sha256"],
+                      "additionalProperties": false,
+                      "properties": {
+                        "path": {"type": "string", "minLength": 1},
+                        "sha256": {"$ref": "#/$defs/sha256"}
+                      }
+                    }
+                  },
+                  "adapter_source_rule": {
+                    "description": "The canonicalization that maps adapter_source_files to adapter_source_sha256, recorded per adapter so the value is recomputable from the declaration alone.",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "adapter_source_sha256": {
+                    "description": "Digest of adapter_source_files under adapter_source_rule. May be null only with adapter_source_null_reason, matching the validator's rule for every *_sha256 field.",
+                    "oneOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]
+                  },
+                  "adapter_source_null_reason": {"type": "string"},
+                  "upstream_pin": {"type": "string"}
+                },
+                "allOf": [
+                  {
+                    "if": {
+                      "required": ["adapter_source_sha256"],
+                      "properties": {"adapter_source_sha256": {"type": "string"}}
+                    },
+                    "then": {"required": ["adapter_source_root", "adapter_source_files",
+                                          "adapter_source_rule"]}
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "TaskSnapshot": {
+          "type": "object",
+          "required": ["task_id", "eid_star", "c_star_digest", "c_star_candidate_count"],
+          "properties": {
+            "task_id": {"type": "string", "minLength": 1},
+            "eid_star": {"$ref": "#/$defs/sha256"},
+            "eid_scheme_ref": {"type": "string"},
+            "e_star_sha256": {"$ref": "#/$defs/sha256"},
+            "c_star_manifest_sha256": {"$ref": "#/$defs/sha256"},
+            "c_star_digest": {"$ref": "#/$defs/sha256"},
+            "c_star_candidate_count": {"type": "integer", "minimum": 1},
+            "paired_at_repo_head": {"type": "string"}
+          }
+        }
+      }
+    },
+    "identityEvidence": {
+      "description": "What was actually observed about model identity. An echo is never proof of which weights served.",
+      "type": "object",
+      "required": ["weights_identity_verifiable", "echo_is_not_proof", "observations", "last_observed_utc"],
+      "properties": {
+        "weights_identity_verifiable": {"const": false},
+        "echo_is_not_proof": {"const": true},
+        "surfaces_observed": {"type": "array", "items": {"type": "string"}},
+        "route_surface": {"type": "string"},
+        "observations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["surface", "requested_model_id", "echoed_model_id", "http_status"],
+            "properties": {
+              "surface": {"type": "string", "minLength": 1},
+              "requested_model_id": {"type": "string", "minLength": 1},
+              "echoed_model_id": {"type": ["string", "null"]},
+              "http_status": {"type": "integer"},
+              "error_text": {"type": "string"},
+              "echo_is_verbatim": {"type": "boolean"},
+              "proves_weights": {"const": false}
+            }
+          }
+        },
+        "cross_surface_divergence": {"type": "object"},
+        "cli_side_observation": {"type": "string"},
+        "live_turn_observed": {"type": "object"},
+        "last_observed_utc": {"type": "string"},
+        "reproduce": {"type": "string"}
+      }
+    }
+  }
+}

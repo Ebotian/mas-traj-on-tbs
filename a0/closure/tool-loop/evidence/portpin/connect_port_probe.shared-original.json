@@ -1,0 +1,143 @@
+{
+ "connect": {
+  "c1_allow_443": {
+   "headers": [],
+   "sec": 0.146,
+   "status_line": "HTTP/1.1 200 Connection Established",
+   "target": "api.deepseek.com:443"
+  },
+  "c2_port_25": {
+   "headers": [],
+   "sec": 0.074,
+   "status_line": "HTTP/1.1 200 Connection Established",
+   "target": "api.deepseek.com:25"
+  },
+  "c3_port_22": {
+   "error": "TimeoutError: timed out",
+   "sec": 6.006,
+   "status_line": null,
+   "target": "api.deepseek.com:22"
+  },
+  "c4_port_80": {
+   "headers": [],
+   "sec": 0.046,
+   "status_line": "HTTP/1.1 200 Connection Established",
+   "target": "api.deepseek.com:80"
+  },
+  "c5_port_8443": {
+   "headers": [],
+   "sec": 0.033,
+   "status_line": "HTTP/1.1 200 Connection Established",
+   "target": "api.deepseek.com:8443"
+  },
+  "c6_no_port": {
+   "headers": [],
+   "sec": 0.0,
+   "status_line": "<no response>",
+   "target": "api.deepseek.com"
+  },
+  "c7_blocked_host_443": {
+   "headers": [
+    "Content-Length: 41",
+    "Content-Type: text/plain",
+    "Connection: close"
+   ],
+   "sec": 0.0,
+   "status_line": "HTTP/1.1 403 Forbidden",
+   "target": "example.com:443"
+  }
+ },
+ "container_hostname": "9cad7ecdc3b5",
+ "plaintext_routes": {
+  "c10_get_nope": {
+   "body_head": "a0pc-proxy: path not on allowlist",
+   "headers": [
+    "Content-Length: 34",
+    "Content-Type: text/plain",
+    "Connection: close"
+   ],
+   "status_line": "HTTP/1.1 403 Forbidden"
+  },
+  "c8_get_v1_models": {
+   "body_head": "",
+   "headers": [
+    "Server: openresty",
+    "vary: origin, access-control-request-method, access-control-request-headers",
+    "access-control-allow-credentials: true",
+    "x-ds-trace-id: 8a730a250bf006b5ccd3b0ff42af16e8",
+    "Strict-Transport-Security: max-age=31536000; includeSubDomains; preload",
+    "X-Content-Type-Options: nosniff",
+    "Content-Length: 31",
+    "Date: Mon, 21 Sep 2026 08:20:07 GMT",
+    "EO-LOG-UUID: 3263015279599772625",
+    "EO-Cache-Status: MISS",
+    "Connection: close"
+   ],
+   "status_line": "HTTP/1.1 401 Authorization Required"
+  },
+  "c9_get_v1_responses": {
+   "body_head": "a0pc-proxy: path not on allowlist",
+   "headers": [
+    "Content-Length: 34",
+    "Content-Type: text/plain",
+    "Connection: close"
+   ],
+   "status_line": "HTTP/1.1 403 Forbidden"
+  }
+ },
+ "proxy": "a0tl-proxy:8787",
+ "raw_through_connect": [
+  {
+   "payload_head": "GET / HTTP/1.1\r\nHost: api.deepseek.com\r\n",
+   "reply_head": "HTTP/1.1 302 Found\r\nLocation: https://api.deepseek.com/\r\nContent-Length: 0\r\nConnection: close\r\nServer: TencentEdgeOne\r\nDate: Mon, 21 Sep 2026 08:20:07 GMT\r\nEO-LOG-UUID: 655545804612575711\r\n\r\n",
+   "status_line": "HTTP/1.1 200 Connection Established",
+   "target": "api.deepseek.com:80"
+  }
+ ],
+ "schema": "a0.ttoolloop.connect_port_probe/v1",
+ "tls_through_connect": [
+  {
+   "peer_subject": [
+    [
+     [
+      "commonName",
+      "api.deepseek.com"
+     ]
+    ]
+   ],
+   "peer_subjectAltName": [
+    [
+     "DNS",
+     "api.deepseek.com"
+    ]
+   ],
+   "servername": "api.deepseek.com",
+   "status_line": "HTTP/1.1 200 Connection Established",
+   "target": "api.deepseek.com:443",
+   "tls_handshake": "ok",
+   "tls_version": "TLSv1.3"
+  },
+  {
+   "peer_subject": [
+    [
+     [
+      "commonName",
+      "api.deepseek.com"
+     ]
+    ]
+   ],
+   "peer_subjectAltName": [
+    [
+     "DNS",
+     "api.deepseek.com"
+    ]
+   ],
+   "servername": "api.deepseek.com",
+   "status_line": "HTTP/1.1 200 Connection Established",
+   "target": "api.deepseek.com:25",
+   "tls_handshake": "ok",
+   "tls_version": "TLSv1.3"
+  }
+ ],
+ "when": "2026-09-21T08:20:00+0000"
+}

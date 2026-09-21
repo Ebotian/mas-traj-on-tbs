@@ -1,0 +1,609 @@
+{
+  "schema": "a0.adapter.conformance/v1",
+  "runtime": "eplus_mut_echo",
+  "adapter": "a0/fixtures/observational-equivalence/adapters/e_plus_adapter.py (FIXTURE, not a runtime)",
+  "fixture": {
+    "evaluator_dir": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime",
+    "evaluator_script_sha256": "cfaa619410b2862b1555db41cf5a5d61aa58cb2d82e32dd457711067f00c7b8c",
+    "identity_mode": "claim-e-star",
+    "twin_swap": false,
+    "echo_manifest": true
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "eid_r": {
+    "value": "3b491bec626f8d0ca0244c5fb9ebb0f59b70118d51d47b779502495a7f41f865",
+    "native_scheme": "none",
+    "mapping_mode": "adapter_declared_injection",
+    "derives_from_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "declarations_verbatim_from": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "declaration": "e_plus fixture has no native evaluator identity; EID_r is a domain-separated digest over (eid_star, runtime) so that it is a function of EID* alone.",
+    "recomputable": true,
+    "derivation": {
+      "algorithm": "sha256",
+      "domain": "a0/fixture/e_plus/v1/EID_r",
+      "payload_canonical": "{\"eid_star\":\"664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\",\"runtime\":\"eplus_mut_echo\"}"
+    }
+  },
+  "theta_e": {
+    "seed": 1337,
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "timeout_s": 120.0
+  },
+  "epsilon": 1e-09,
+  "primary_field": "sum_radii",
+  "fr": {
+    "name": "F_r = scalar(E*)",
+    "version": "v1",
+    "applies": "scalar",
+    "spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+    "declared_in": "a0/contract/fr/scalar.json"
+  },
+  "candidate_set": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+  "run_dir": "/tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017",
+  "candidates": [
+    {
+      "candidate_id": "c01_good_hex",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.4519205208433132,
+        "direction": "max"
+      },
+      "objective_value": 2.4519205208433132,
+      "failure_kind": null,
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 0"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c01_good_hex --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c01_good_hex.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+      "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d\", \"canonical_digest\": \"831d818c891b75257fc91d2a3aa5453b472c26157c6660d9c469e51a2d8d3ce0\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 2.4519205208433132}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c02_baseline_upstream",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 0.25,
+        "direction": "max"
+      },
+      "objective_value": 0.25,
+      "failure_kind": null,
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 0.0,
+        "min_gap": 0.036249916677713497,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.007551905417283158,
+        "pairs_audited": 325,
+        "sum_radii": 0.25
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 0"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c02_baseline_upstream --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c02_baseline_upstream.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+      "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f\", \"canonical_digest\": \"3bf1f7c311650f46ff0e74622a4484e1eada1522f71f1fba765f51f98516ced3\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 0.25}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c03_mirror",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.4519205208433132,
+        "direction": "max"
+      },
+      "objective_value": 2.4519205208433132,
+      "failure_kind": null,
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 0"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c03_mirror --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c03_mirror.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+      "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf\", \"canonical_digest\": \"ba4155fc9a78d9c3c35e0d89bc8157b4d221caffdbd79ad68288ace911c43eed\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 2.4519205208433132}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c04_near_tie",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.451820520843313,
+        "direction": "max"
+      },
+      "objective_value": 2.451820520843313,
+      "failure_kind": null,
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 0.726363301607073,
+        "pairs_audited": 325,
+        "sum_radii": 2.451820520843313
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 0"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c04_near_tie --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c04_near_tie.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+      "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418\", \"canonical_digest\": \"6653d66662c749c923e3bb1fee04c70b2e2570fdfa94bb6ad50617bb7db6a1c3\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 2.451820520843313}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c05_overlapping",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 2"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c05_overlapping --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c05_overlapping.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+      "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c\", \"canonical_digest\": \"06d41d52c7eb2c8a3412a5e0de2a56e2919ffd61539993eb2c6ee37ce55c6633\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"invalid\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c06_empty",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 2"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c06_empty --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c06_empty.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+      "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41\", \"canonical_digest\": \"46769871eb044b9417c6f7bf37b6ddcbdae50582f356b226a6aa1bd42c5ce343\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"invalid\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c07_single",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 2"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c07_single --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c07_single.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+      "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90\", \"canonical_digest\": \"18bac026844cc866290f9b89192509fc3b37bbd383021ebafb65f526e74cf824\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"invalid\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c08_out_of_bounds",
+      "status": "invalid",
+      "exit_code": 2,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "invalid_configuration",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 2"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c08_out_of_bounds --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c08_out_of_bounds.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+      "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143\", \"canonical_digest\": \"21ba5fd0051a42e612f7bc962e539ed35c7c491035072aadc016802ccaaff588\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"invalid\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c09_malformed_import",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "candidate_import_failed",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 3"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c09_malformed_import --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c09_malformed_import.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+      "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17\", \"canonical_digest\": \"af1a539ccc74ce317dc5c6415ba9bb5ab6914337b3ebb38850754761e856bf83\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"error\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c10_raises",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "candidate_call_raised",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 3"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c10_raises --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c10_raises.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+      "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206\", \"canonical_digest\": \"530c7a0567d8210f854456c9389e34cc11ba6d8e5edc4dbc22427cae234457cb\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"error\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c11_non_deterministic",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "non_deterministic",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 3"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c11_non_deterministic --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c11_non_deterministic.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+      "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044\", \"canonical_digest\": \"e6633feb08442e9ba158bc76b929c58a5d1490e1701cc5344ee0b98f14a92555\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"error\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c12_exit_without_artifacts",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "child_terminated_early",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 3"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c12_exit_without_artifacts --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c12_exit_without_artifacts.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+      "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d\", \"canonical_digest\": \"2b29ddf42c9b6bea35db4199da89c40e40cdf35e0f92a885e8821e3384426c35\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"error\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c13_slow",
+      "status": "error",
+      "exit_code": 3,
+      "objective": {
+        "name": null,
+        "value": null,
+        "direction": null
+      },
+      "objective_value": null,
+      "failure_kind": "runtime_budget_exceeded",
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": null,
+        "overlap_count": null,
+        "packing_density": null,
+        "pairs_audited": 325,
+        "sum_radii": null
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 3"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c13_slow --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c13_slow.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+      "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14\", \"canonical_digest\": \"44f7eb83d5228fa2bca4a76d5955aa433df439170c4509535c932765b5bdbf62\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": null, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"error\", \"total_items\": 26}"
+    },
+    {
+      "candidate_id": "c14_near_zero",
+      "status": "ok",
+      "exit_code": 0,
+      "objective": {
+        "name": "sum_radii",
+        "value": 2.6e-05,
+        "direction": "max"
+      },
+      "objective_value": 2.6e-05,
+      "failure_kind": null,
+      "fields": {
+        "audit_coverage": 1.0,
+        "items_audited": 26,
+        "min_boundary_margin": 0.499939,
+        "min_gap": 7.99999999995449e-06,
+        "num_circles": 26,
+        "overlap_count": 0,
+        "packing_density": 8.168140899333462e-11,
+        "pairs_audited": 325,
+        "sum_radii": 2.6e-05
+      },
+      "evaluator_evidence": {
+        "status": "ok",
+        "detail": "fresh subprocess run of /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py, exit 0"
+      },
+      "theta_e_attempt": {
+        "evaluator": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py",
+        "fidelity": "full",
+        "fraction": 1.0,
+        "seed": 1337,
+        "granted_class": "full",
+        "commanded_class": "full",
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c14_near_zero --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/outcomes/c14_near_zero.json --state-dir /tmp/a0-conformance-controls-m477k2gx/eplus_mut_echo-20260921T163017/state"
+      },
+      "source_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+      "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "raw_manifest_line": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113\", \"canonical_digest\": \"882f2b2bd65f9d548410cb611c3ab825b3ab0151c1f0fc3f5622e9a1b3ed1538\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 2.6e-05}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}"
+    }
+  ]
+}

@@ -1,0 +1,1731 @@
+{
+  "schema": "a0.fixture.observational-equivalence.fast-tier-check/v1",
+  "label": "fast-tier check",
+  "frozen_table": {
+    "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/E_STAR.json",
+    "sha256": "f5ac1abfa61872541ea92a6a09fcc6178c244d914234211dcc633bac0ea66f5f",
+    "fast_theta_e": {
+      "fidelity": "fast",
+      "fraction": 0.15,
+      "n": 26,
+      "runs": 5,
+      "runtime_budget_ms": 250.0,
+      "seed": 1337,
+      "timeout_s": 120.0
+    },
+    "candidates_with_fast_tier": 14
+  },
+  "checker_scan": {
+    "path": "/home/ebt/rsi-dev/a0/conformance/conformance.py",
+    "sha256": "f33659f605f6a6892e9d0f766961a13eeb55ddc4225776ad34fb974cdecfb50c",
+    "fast_tier_occurrences": 0,
+    "fast_theta_e_occurrences": 0
+  },
+  "results": {
+    "e_star_full": {
+      "sweep": "out/e_star/sweep.json",
+      "evaluator_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing",
+      "theta_e": {
+        "seed": 1337,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "n": 26,
+        "runs": 5,
+        "runtime_budget_ms": 250.0,
+        "timeout_s": 120.0
+      },
+      "against": "E_STAR.json full rows",
+      "candidates": 14,
+      "equal_on_exit_status_kind_objective": true,
+      "differing_candidates": [],
+      "digest_equal_everywhere": true,
+      "digest_differing_candidates": [],
+      "rows": [
+        {
+          "candidate_id": "c01_good_hex",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c02_baseline_upstream",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          }
+        },
+        {
+          "candidate_id": "c03_mirror",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c04_near_tie",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          }
+        },
+        {
+          "candidate_id": "c05_overlapping",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c06_empty",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c07_single",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c08_out_of_bounds",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c09_malformed_import",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c10_raises",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c11_non_deterministic",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c12_exit_without_artifacts",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c13_slow",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c14_near_zero",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          }
+        }
+      ]
+    },
+    "e_star_fast": {
+      "sweep": "out/e_star.fast/sweep.json",
+      "evaluator_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing",
+      "theta_e": {
+        "seed": 1337,
+        "fidelity": "fast",
+        "fraction": 0.15,
+        "n": 26,
+        "runs": 5,
+        "runtime_budget_ms": 250.0,
+        "timeout_s": 120.0
+      },
+      "against": "E_STAR.json fast_tier rows",
+      "candidates": 14,
+      "equal_on_exit_status_kind_objective": true,
+      "differing_candidates": [],
+      "digest_equal_everywhere": true,
+      "digest_differing_candidates": [],
+      "rows": [
+        {
+          "candidate_id": "c01_good_hex",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c02_baseline_upstream",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          }
+        },
+        {
+          "candidate_id": "c03_mirror",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c04_near_tie",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          }
+        },
+        {
+          "candidate_id": "c05_overlapping",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c06_empty",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c07_single",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c08_out_of_bounds",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c09_malformed_import",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c10_raises",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c11_non_deterministic",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c12_exit_without_artifacts",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c13_slow",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c14_near_zero",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": true,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          }
+        }
+      ]
+    },
+    "e_prime_full": {
+      "sweep": "out/e_prime/sweep.json",
+      "evaluator_dir": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime",
+      "theta_e": {
+        "seed": 1337,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "n": 26,
+        "runs": 5,
+        "runtime_budget_ms": 250.0,
+        "timeout_s": 120.0
+      },
+      "against": "E_STAR.json full rows",
+      "candidates": 14,
+      "equal_on_exit_status_kind_objective": true,
+      "differing_candidates": [],
+      "digest_equal_everywhere": false,
+      "digest_differing_candidates": [
+        "c01_good_hex",
+        "c02_baseline_upstream",
+        "c03_mirror",
+        "c04_near_tie",
+        "c05_overlapping",
+        "c06_empty",
+        "c07_single",
+        "c08_out_of_bounds",
+        "c09_malformed_import",
+        "c10_raises",
+        "c11_non_deterministic",
+        "c12_exit_without_artifacts",
+        "c13_slow",
+        "c14_near_zero"
+      ],
+      "rows": [
+        {
+          "candidate_id": "c01_good_hex",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c02_baseline_upstream",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          }
+        },
+        {
+          "candidate_id": "c03_mirror",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c04_near_tie",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          }
+        },
+        {
+          "candidate_id": "c05_overlapping",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c06_empty",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c07_single",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c08_out_of_bounds",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c09_malformed_import",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c10_raises",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c11_non_deterministic",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c12_exit_without_artifacts",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c13_slow",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c14_near_zero",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          }
+        }
+      ]
+    },
+    "e_prime_fast": {
+      "sweep": "out/e_prime.fast/sweep.json",
+      "evaluator_dir": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime",
+      "theta_e": {
+        "seed": 1337,
+        "fidelity": "fast",
+        "fraction": 0.15,
+        "n": 26,
+        "runs": 5,
+        "runtime_budget_ms": 250.0,
+        "timeout_s": 120.0
+      },
+      "against": "E_STAR.json fast_tier rows",
+      "candidates": 14,
+      "equal_on_exit_status_kind_objective": false,
+      "differing_candidates": [
+        "c05_overlapping"
+      ],
+      "digest_equal_everywhere": false,
+      "digest_differing_candidates": [
+        "c01_good_hex",
+        "c02_baseline_upstream",
+        "c03_mirror",
+        "c04_near_tie",
+        "c05_overlapping",
+        "c06_empty",
+        "c07_single",
+        "c08_out_of_bounds",
+        "c09_malformed_import",
+        "c10_raises",
+        "c11_non_deterministic",
+        "c12_exit_without_artifacts",
+        "c13_slow",
+        "c14_near_zero"
+      ],
+      "rows": [
+        {
+          "candidate_id": "c01_good_hex",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c02_baseline_upstream",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          }
+        },
+        {
+          "candidate_id": "c03_mirror",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c04_near_tie",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          }
+        },
+        {
+          "candidate_id": "c05_overlapping",
+          "equal_on_exit_code_status_failure_kind_objective_value": false,
+          "differing_fields": [
+            "exit_code",
+            "status",
+            "failure_kind",
+            "objective_value"
+          ],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c06_empty",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c07_single",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c08_out_of_bounds",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c09_malformed_import",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c10_raises",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c11_non_deterministic",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c12_exit_without_artifacts",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c13_slow",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c14_near_zero",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          }
+        }
+      ]
+    },
+    "e_prime_fulltheta_full": {
+      "sweep": "out/e_prime_fulltheta/sweep.json",
+      "evaluator_dir": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta",
+      "theta_e": {
+        "seed": 1337,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "n": 26,
+        "runs": 5,
+        "runtime_budget_ms": 250.0,
+        "timeout_s": 120.0
+      },
+      "against": "E_STAR.json full rows",
+      "candidates": 14,
+      "equal_on_exit_status_kind_objective": true,
+      "differing_candidates": [],
+      "digest_equal_everywhere": false,
+      "digest_differing_candidates": [
+        "c01_good_hex",
+        "c02_baseline_upstream",
+        "c03_mirror",
+        "c04_near_tie",
+        "c05_overlapping",
+        "c06_empty",
+        "c07_single",
+        "c08_out_of_bounds",
+        "c09_malformed_import",
+        "c10_raises",
+        "c11_non_deterministic",
+        "c12_exit_without_artifacts",
+        "c13_slow",
+        "c14_near_zero"
+      ],
+      "rows": [
+        {
+          "candidate_id": "c01_good_hex",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c02_baseline_upstream",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          }
+        },
+        {
+          "candidate_id": "c03_mirror",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c04_near_tie",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          }
+        },
+        {
+          "candidate_id": "c05_overlapping",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c06_empty",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c07_single",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c08_out_of_bounds",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c09_malformed_import",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c10_raises",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c11_non_deterministic",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c12_exit_without_artifacts",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c13_slow",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c14_near_zero",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          }
+        }
+      ]
+    },
+    "e_prime_fulltheta_fast": {
+      "sweep": "out/e_prime_fulltheta.fast/sweep.json",
+      "evaluator_dir": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta",
+      "theta_e": {
+        "seed": 1337,
+        "fidelity": "fast",
+        "fraction": 0.15,
+        "n": 26,
+        "runs": 5,
+        "runtime_budget_ms": 250.0,
+        "timeout_s": 120.0
+      },
+      "against": "E_STAR.json fast_tier rows",
+      "candidates": 14,
+      "equal_on_exit_status_kind_objective": true,
+      "differing_candidates": [],
+      "digest_equal_everywhere": false,
+      "digest_differing_candidates": [
+        "c01_good_hex",
+        "c02_baseline_upstream",
+        "c03_mirror",
+        "c04_near_tie",
+        "c05_overlapping",
+        "c06_empty",
+        "c07_single",
+        "c08_out_of_bounds",
+        "c09_malformed_import",
+        "c10_raises",
+        "c11_non_deterministic",
+        "c12_exit_without_artifacts",
+        "c13_slow",
+        "c14_near_zero"
+      ],
+      "rows": [
+        {
+          "candidate_id": "c01_good_hex",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c02_baseline_upstream",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 0.25
+          }
+        },
+        {
+          "candidate_id": "c03_mirror",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c04_near_tie",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.451820520843313
+          }
+        },
+        {
+          "candidate_id": "c05_overlapping",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.4519205208433132
+          }
+        },
+        {
+          "candidate_id": "c06_empty",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c07_single",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c08_out_of_bounds",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 2,
+            "status": "invalid",
+            "failure_kind": "invalid_configuration",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c09_malformed_import",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_import_failed",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c10_raises",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "candidate_call_raised",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c11_non_deterministic",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "non_deterministic",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c12_exit_without_artifacts",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "child_terminated_early",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c13_slow",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          },
+          "frozen": {
+            "exit_code": 3,
+            "status": "error",
+            "failure_kind": "runtime_budget_exceeded",
+            "objective_value": null
+          }
+        },
+        {
+          "candidate_id": "c14_near_zero",
+          "equal_on_exit_code_status_failure_kind_objective_value": true,
+          "differing_fields": [],
+          "digest_equal": false,
+          "sweep": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          },
+          "frozen": {
+            "exit_code": 0,
+            "status": "ok",
+            "failure_kind": null,
+            "objective_value": 2.6e-05
+          }
+        }
+      ]
+    }
+  }
+}

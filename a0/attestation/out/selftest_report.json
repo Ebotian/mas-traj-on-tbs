@@ -1,0 +1,63 @@
+{
+  "all_checks_passed": true,
+  "checks": [
+    {
+      "detail": null,
+      "name": "the two canonicalizers agree on all payloads",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "name": "EID_execution recomputes deterministically",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "name": "EID_execution matches the document",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "name": "the verifier's recomputation matches the producer's",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "name": "the verifier reproduces E*'s self-reported source digest",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "name": "the verifier reproduces the frozen EID* from the components",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "name": "Q1 rejects a payload edited after the fact",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "name": "Q2 rejects a semantic component that is not the frozen value",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "name": "Q3 rejects a module loaded from outside the declared sources",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "name": "Q3 rejects bytecode that is not a compilation of the declared source",
+      "passed": true
+    },
+    {
+      "detail": null,
+      "name": "the untouched attestation passes all three verdicts",
+      "passed": true
+    }
+  ],
+  "fixture": "a0/attestation/out/attestation.c05_overlapping.full.json",
+  "generated_by": "a0/attestation/selftest.py",
+  "schema": "a0.attestation.selftest/v1"
+}

@@ -1,0 +1,359 @@
+{
+  "component_digests": {
+    "ApiSurface": "f20a468bfd04cd0a89e64a99fc228c9f87247813d302c6eb096c38f275a9a34e",
+    "Cli": "e9ae79871ac96f382634d138a91156a0867c7e3d88c48653e7b25b9ea999d3f5",
+    "Endpoint": "ce199e075a11cfad42102db3c040a4a0e82494ae6768977a039b1d121ecfdbb4",
+    "Network": "b0459be785df988d8ccf6584e6d0617804d6d2b70f3d27210b7b37981d230c1f",
+    "Params": "0cf3463fa300dc107292329bd07f86609685f17a26abc0e90cce6197cabdfebb",
+    "Permissions": "9fd813c25202bdcfa13a970cfe768eb4a03b2f2ecb7c420a1bc94f3e5d66c674",
+    "Prompt": "29fcc2802819ab379f1a1e48c3246d7dbd6ce6c588ebc20fe1c596e18b7c03c1",
+    "Provider": "ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f",
+    "RequestedModel": "7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced",
+    "RuntimeAdapters": "d6c676e06ecdd14543107bcf91a8c4062e5985dfab9b1e82d85f7aaa2baca20b",
+    "TaskSnapshot": "480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac",
+    "Tools": "f7381ee837365ab815eddca5eeaab0fc9a9e9bf2267e268032bff1340a77f708"
+  },
+  "components": {
+    "ApiSurface": {
+      "protocol_markers": [
+        "object:response",
+        "status:completed",
+        "output[]"
+      ],
+      "request_envelope": "openai_responses",
+      "response_envelope": "openai_responses",
+      "streaming": true,
+      "surface_path": "/v1/responses",
+      "wire_api_knob": "model_providers.ds.wire_api=\"responses\" (the only accepted value in 0.155.1)",
+      "wire_protocol": "openai_responses"
+    },
+    "Cli": {
+      "argv_template": "codex exec --skip-git-repo-check --sandbox <read-only|workspace-write|danger-full-access> <prompt>",
+      "binary_sha256": "b085116f223ba6c0d3fda29d84f86f8e147194f3ec3f81821523e73b4dd533fb",
+      "command_name": "codex",
+      "config_files": [
+        "config.toml"
+      ],
+      "config_isolation": "CODEX_HOME",
+      "env_var_names": [
+        "DS_KEY"
+      ],
+      "invocation_mode": "exec_non_interactive",
+      "model_selection": "config model or -c model=...",
+      "name": "codex",
+      "version": "0.155.1",
+      "warnings": [
+        "Model metadata for `deepseek-flash` not found; fallback metadata applies"
+      ]
+    },
+    "Endpoint": {
+      "base_path": "/v1",
+      "base_url": "https://api.deepseek.com/v1",
+      "declared_in": "CODEX_HOME/config.toml [model_providers.ds].base_url",
+      "host": "api.deepseek.com",
+      "port": 443,
+      "scheme": "https",
+      "tls_verify": true
+    },
+    "Network": {
+      "a0_verification_egress": "host_direct",
+      "a0_verification_note": "the verification turns in this contract ran on the host with direct egress; the closed topology above is the intended A1 route and is what makes Network load-bearing",
+      "allowlist_hosts": [
+        "api.deepseek.com"
+      ],
+      "client_placement": "internal_side",
+      "dns_mode": "docker_embedded",
+      "egress_policy": "deny_by_default_hostname_allowlist",
+      "host_bypass_note": "the barrier is one-way: the host may dial internal container IPs directly, so the proxy is a trusted component and tooling-side bypass is a stated residual risk",
+      "host_bypass_risk": true,
+      "internal_network": "a0pc-internal",
+      "proxy_id": "a0pc-proxy:8787",
+      "proxy_transparency": "connect_tunnel_no_mitm_plus_origin_form_plaintext_routing",
+      "topology": "docker_internal_plus_dual_homed_allowlist_proxy"
+    },
+    "Params": {
+      "max_tokens_per_turn": {
+        "reason": "codex does not expose a lane-set max_tokens; its fallback model metadata applies",
+        "value": null
+      },
+      "parallel_tool_calls": {
+        "reason": "not set by the lane at A0",
+        "value": null
+      },
+      "retry": {
+        "max_attempts": 1,
+        "retry_on": [
+          "transport_error"
+        ]
+      },
+      "sampling_seed": {
+        "reason": "no seeding path observed; sampling is provider-side",
+        "value": null
+      },
+      "stream": true,
+      "temperature": {
+        "reason": "not set by the lane at A0; provider default",
+        "value": null
+      },
+      "thinking": {
+        "reason": "not set by the lane at A0",
+        "value": null
+      },
+      "timeout_s": 120,
+      "tool_choice": "auto",
+      "top_p": {
+        "reason": "not set by the lane at A0; provider default",
+        "value": null
+      }
+    },
+    "Permissions": {
+      "approval_policy": "never (approval: never)",
+      "exec_scope": "shell tool available; socket() blocked under read-only and workspace-write",
+      "filesystem_scope": "workspace-write = {workdir, /tmp, $TMPDIR}",
+      "network_scope": "blocked by CLI sandbox (socket() EPERM) unless proxied",
+      "sandbox_mode": "read-only for the verification turn; workspace-write for the tool loop"
+    },
+    "Prompt": {
+      "context_budget_tokens": {
+        "reason": "not measured for this lane; codex sizes context from fallback metadata",
+        "value": null
+      },
+      "per_run_recording_required": true,
+      "prompt_source": "a1_provided_task_instruction",
+      "protocol_prompt_ref": "a0/contract/adapter_contract.md",
+      "system_prompt_null_reason": "the CLI assembles the system prompt at runtime; it is not frozen by this contract at A0 and must be recorded per run in A1",
+      "system_prompt_sha256": null,
+      "tool_schema_null_reason": "tool schemas are CLI-internal and not exported",
+      "tool_schema_sha256": null
+    },
+    "Provider": {
+      "catalog_observed": [
+        "deepseek-flash",
+        "deepseek-v4-pro"
+      ],
+      "catalog_observed_utc": "2026-09-21",
+      "model_catalog_endpoint": "https://api.deepseek.com/models",
+      "openrouter_used": false,
+      "org": "DeepSeek",
+      "provider_id": "deepseek",
+      "upstream_hosts": [
+        "api.deepseek.com"
+      ]
+    },
+    "RequestedModel": {
+      "alias_policy": "canonical_ids_only",
+      "canonical_id_claimed": "deepseek-flash",
+      "fallback_chain": [],
+      "permitted_secondary": [
+        "deepseek-v4-pro"
+      ],
+      "requested_model_id": "deepseek-flash",
+      "role": "primary",
+      "weights_identity": {
+        "reason": "No surface on these routes carries a weights digest, checkpoint id, revision, or signed serving attestation. The response `model` field is server-written metadata: on the Anthropic-compatible surface it echoes the requested id verbatim, including retired aliases, while the OpenAI-compatible surfaces rewrite a retired alias to its canonical id. The same alias request therefore reports a different id depending on the surface, so no response field can be read as proof of which weights served the request.",
+        "surface_echo_is_not_proof": true,
+        "verifiable": false
+      }
+    },
+    "RuntimeAdapters": {
+      "adapters": []
+    },
+    "TaskSnapshot": {
+      "c_star_candidate_count": 14,
+      "c_star_digest": "cfeac41728f7dec17ad8414cdb23c2931898dba38a76c23b51091766fd60611c",
+      "c_star_manifest_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+      "e_star_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+      "eid_scheme_ref": "a0/contract/evalcontract.py",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "paired_at_repo_head": "261f0c9",
+      "task_id": "circle-packing"
+    },
+    "Tools": {
+      "denied_tools": [],
+      "extra_tool_sources": [],
+      "tool_choice": "auto",
+      "tool_names_observed": [
+        "shell",
+        "apply_patch"
+      ],
+      "tool_names_provenance": "observed in a live apply_patch + shell tool loop (codex report 5.2)",
+      "toolset_ref": "codex_builtin"
+    }
+  },
+  "identity_evidence": {
+    "cli_side_observation": "live turn via codex exec against /v1/responses: exit 0, tokens used 830, reply OK",
+    "cross_surface_divergence": {
+      "demonstrated_by": [
+        "deepseek-v4-flash",
+        "deepseek-v4-flash-vision-exp"
+      ],
+      "finding": "The same requested id reports different `model` strings on different surfaces: a retired alias is rewritten to `deepseek-flash` on the OpenAI-compatible surfaces but echoed verbatim on the Anthropic-compatible surface.",
+      "means": "the field is surface-local metadata, not a serving attestation"
+    },
+    "echo_is_not_proof": true,
+    "last_observed_utc": "2026-09-21",
+    "live_turn_observed": {
+      "cli": "codex 0.155.1",
+      "exit_code": 0,
+      "reply": "OK",
+      "tokens_used": 830
+    },
+    "observations": [
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-flash-vision-exp",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "openai_responses"
+      }
+    ],
+    "reproduce": "DS_KEY=$(sed -n 's/^deepseek://p' ~/gptapi.md|head -1); curl -s https://api.deepseek.com/anthropic/v1/messages -H \"Authorization: Bearer $DS_KEY\" -H 'Content-Type: application/json' -d '{\"model\":\"deepseek-v4-flash\",\"max_tokens\":4,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}'  # -> model=deepseek-v4-flash",
+    "route_surface": "openai_responses",
+    "surfaces_observed": [
+      "openai_chat_completions",
+      "anthropic_messages",
+      "openai_responses"
+    ],
+    "weights_identity_verifiable": false
+  },
+  "identity_evidence_digest": "aab0208d582315d4208685a89c3f0f2190b7342a4777cc7be5dc41fe55136590",
+  "model_policy": {
+    "decided_by": "user",
+    "decided_utc": "2026-09-21",
+    "excluded_providers": [
+      "openrouter"
+    ],
+    "mixed_secondary_allowed": true,
+    "permitted_secondary": [
+      "deepseek-v4-pro"
+    ],
+    "primary": "deepseek-flash"
+  },
+  "mrc_star": "d34496d1bd1c0b13a2e6cb27420a4b0377e8f46d33ae449b144ee26d0d0fc39b",
+  "mrc_star_derivation": {
+    "algorithm": "sha256",
+    "domain": "a0/mrc/v1/MRC*",
+    "payload_canonical": "{\"ApiSurface\":\"f20a468bfd04cd0a89e64a99fc228c9f87247813d302c6eb096c38f275a9a34e\",\"Cli\":\"e9ae79871ac96f382634d138a91156a0867c7e3d88c48653e7b25b9ea999d3f5\",\"Endpoint\":\"ce199e075a11cfad42102db3c040a4a0e82494ae6768977a039b1d121ecfdbb4\",\"Network\":\"b0459be785df988d8ccf6584e6d0617804d6d2b70f3d27210b7b37981d230c1f\",\"Params\":\"0cf3463fa300dc107292329bd07f86609685f17a26abc0e90cce6197cabdfebb\",\"Permissions\":\"9fd813c25202bdcfa13a970cfe768eb4a03b2f2ecb7c420a1bc94f3e5d66c674\",\"Prompt\":\"29fcc2802819ab379f1a1e48c3246d7dbd6ce6c588ebc20fe1c596e18b7c03c1\",\"Provider\":\"ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f\",\"RequestedModel\":\"7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced\",\"RuntimeAdapters\":\"f161603b69a72a823e9bbe2be44179cf8535354c1578430d107b00de3a53faf2\",\"TaskSnapshot\":\"480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac\",\"Tools\":\"f7381ee837365ab815eddca5eeaab0fc9a9e9bf2267e268032bff1340a77f708\"}"
+  },
+  "notes": [
+    "EvE codex_exec hardcodes --dangerously-bypass-approvals-and-sandbox; codex_tmux can be closed. Same route, different Permissions: the two are NOT interchangeable A1 conditions."
+  ],
+  "route_id": "codex-deepseek-responses",
+  "schema": "a0.mrc/v1"
+}

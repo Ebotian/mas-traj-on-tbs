@@ -1,0 +1,431 @@
+{
+  "component_digests": {
+    "ApiSurface": "4b40298a04f06b55bb94e2164918ceb92a1419bd7498f0061266e3f9763a3bb5",
+    "Cli": "aee0973c392aaa7728de264944e99fee3f77ceff8d9fe6e3dc71da1791d293d3",
+    "Endpoint": "027f5fae21563aff638d6d3c298ce9e5c467483b7625c99a09f5dbbf0a04220f",
+    "Network": "b0459be785df988d8ccf6584e6d0617804d6d2b70f3d27210b7b37981d230c1f",
+    "Params": "ae3c7bd5b14aa568e49a9480a864ac40b3b1904f0f4d35f339e9eb6009670c94",
+    "Permissions": "18a44b609936020766d4f550d16d5e141ecb02b9471bbb9aeb0002024c300c68",
+    "Prompt": "ae845dc54a1e344814b0382d1d82c362b8086470d92fd886a45357ced2a6af48",
+    "Provider": "ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f",
+    "RequestedModel": "7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced",
+    "RuntimeAdapters": "bf49e76ed31bddc54d2cdd1b1ae4496dab1d76113a548b2317ca8beaa48bea9e",
+    "TaskSnapshot": "480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac",
+    "Tools": "ade1fe1e0e41c20594dbfdb076210b37fd60e7da1792566dfbf8b65be80bcec7"
+  },
+  "components": {
+    "ApiSurface": {
+      "protocol_markers": [
+        "object:chat.completion",
+        "choices[]",
+        "usage.prompt_cache_hit_tokens"
+      ],
+      "provider_package": "@ai-sdk/openai-compatible (bundled in the 7.7.5 binary)",
+      "request_envelope": "openai_chat_completions",
+      "response_envelope": "openai_chat_completions",
+      "streaming": true,
+      "surface_path": "/v1/chat/completions",
+      "wire_protocol": "openai_chat_completions"
+    },
+    "Cli": {
+      "argv_template": "kilo run --auto --pure --dir <wt> --format json -m deepseek/deepseek-flash <prompt>",
+      "binary_sha256": "b21e6ec743f2c63bdf1e586bf7a8ba9e26f3cfa273002c8810eb37d089ba791d",
+      "caveats": [
+        "does not fail fast on an unreachable endpoint: it waits for network indefinitely",
+        "kilo debug config prints the resolved key in cleartext; evidence collectors must redact"
+      ],
+      "command_name": "kilo",
+      "config_files": [
+        "KILO_CONFIG_CONTENT (env)"
+      ],
+      "config_isolation": "XDG_* homes + KILO_CONFIG_CONTENT",
+      "env_var_names": [
+        "DEEPSEEK_API_KEY",
+        "DEEPSEEK_BASE_URL"
+      ],
+      "invocation_mode": "run_non_interactive",
+      "model_selection": "-m provider/model",
+      "name": "kilo",
+      "version": "7.7.5"
+    },
+    "Endpoint": {
+      "base_path": "/v1",
+      "base_url": "https://api.deepseek.com/v1",
+      "declared_in": "provider.<id>.options.baseURL in KILO_CONFIG_CONTENT",
+      "host": "api.deepseek.com",
+      "port": 443,
+      "scheme": "https",
+      "tls_verify": true
+    },
+    "Network": {
+      "a0_verification_egress": "host_direct",
+      "a0_verification_note": "the verification turns in this contract ran on the host with direct egress; the closed topology above is the intended A1 route and is what makes Network load-bearing",
+      "allowlist_hosts": [
+        "api.deepseek.com"
+      ],
+      "client_placement": "internal_side",
+      "dns_mode": "docker_embedded",
+      "egress_policy": "deny_by_default_hostname_allowlist",
+      "host_bypass_note": "the barrier is one-way: the host may dial internal container IPs directly, so the proxy is a trusted component and tooling-side bypass is a stated residual risk",
+      "host_bypass_risk": true,
+      "internal_network": "a0pc-internal",
+      "proxy_id": "a0pc-proxy:8787",
+      "proxy_transparency": "connect_tunnel_no_mitm_plus_origin_form_plaintext_routing",
+      "topology": "docker_internal_plus_dual_homed_allowlist_proxy"
+    },
+    "Params": {
+      "max_tokens_per_turn": {
+        "reason": "kilo does not expose a lane-set max_tokens for a custom provider",
+        "value": null
+      },
+      "parallel_tool_calls": {
+        "reason": "not set by the lane at A0",
+        "value": null
+      },
+      "retry": {
+        "max_attempts": 1,
+        "retry_on": [
+          "transport_error"
+        ]
+      },
+      "sampling_seed": {
+        "reason": "no seeding path observed; sampling is provider-side",
+        "value": null
+      },
+      "stream": true,
+      "temperature": {
+        "reason": "not set by the lane at A0; provider default",
+        "value": null
+      },
+      "thinking": {
+        "reason": "not set by the lane at A0",
+        "value": null
+      },
+      "timeout_s": 120,
+      "tool_choice": "auto",
+      "top_p": {
+        "reason": "not set by the lane at A0; provider default",
+        "value": null
+      }
+    },
+    "Permissions": {
+      "approval_policy": "--auto (auto-approve what is not explicitly denied)",
+      "exec_scope": "bash tool executes arbitrary commands",
+      "filesystem_scope": "unrestricted unless contained by the runtime's working directory",
+      "network_scope": "open by default; closed only under the a0pc topology",
+      "sandbox_mode": "none (CLI-level)"
+    },
+    "Prompt": {
+      "context_budget_tokens": {
+        "reason": "not measured for this lane",
+        "value": null
+      },
+      "per_run_recording_required": true,
+      "prompt_source": "a1_provided_task_instruction",
+      "protocol_prompt_ref": "a0/contract/adapter_contract.md",
+      "system_prompt_null_reason": "the CLI assembles the system prompt at runtime; it is not frozen by this contract at A0 and must be recorded per run in A1",
+      "system_prompt_sha256": null,
+      "tool_schema_null_reason": "tool schemas are CLI-internal and not exported",
+      "tool_schema_sha256": null
+    },
+    "Provider": {
+      "catalog_observed": [
+        "deepseek-flash",
+        "deepseek-v4-pro"
+      ],
+      "catalog_observed_utc": "2026-09-21",
+      "model_catalog_endpoint": "https://api.deepseek.com/models",
+      "openrouter_used": false,
+      "org": "DeepSeek",
+      "provider_id": "deepseek",
+      "upstream_hosts": [
+        "api.deepseek.com"
+      ]
+    },
+    "RequestedModel": {
+      "alias_policy": "canonical_ids_only",
+      "canonical_id_claimed": "deepseek-flash",
+      "fallback_chain": [],
+      "permitted_secondary": [
+        "deepseek-v4-pro"
+      ],
+      "requested_model_id": "deepseek-flash",
+      "role": "primary",
+      "weights_identity": {
+        "reason": "No surface on these routes carries a weights digest, checkpoint id, revision, or signed serving attestation. The response `model` field is server-written metadata: on the Anthropic-compatible surface it echoes the requested id verbatim, including retired aliases, while the OpenAI-compatible surfaces rewrite a retired alias to its canonical id. The same alias request therefore reports a different id depending on the surface, so no response field can be read as proof of which weights served the request.",
+        "surface_echo_is_not_proof": true,
+        "verifiable": false
+      }
+    },
+    "RuntimeAdapters": {
+      "adapters": [
+        {
+          "adapter_commit": "261f0c9",
+          "adapter_source_files": [
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/__init__.py",
+              "sha256": "218b1cde8ec8241cbb265831e8208eecd961ba8cdc2a61886cc9138c016d77e4"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/__main__.py",
+              "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/archive_check.py",
+              "sha256": "04a7b4bc20d7214d488683463d1690ffbab420028f4f7b4e06dc05d6e66cf769"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/cli.py",
+              "sha256": "b1950a405fa547b25d0d89786a1c3a3d39c592e1f7b3ae83845ffd7dbea6781b"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/closure.py",
+              "sha256": "e294e3035e2a196478d5085adb4e6884a9a22921cb704d177f5c21b5df78d000"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/conformance.py",
+              "sha256": "97adead7b53d6921ad1e3f720786df176a44561d6bcf46c9e3dfdecf328c749e"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/contracts.py",
+              "sha256": "c52275156c1a5ebed131bbd73051a93404cec1a04bb086a5ed6040ae6c7f622a"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/eidr.py",
+              "sha256": "70680b3778004345c9337cde69447d998f64ac476d6d687d81cfe10b07452209"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/evidence.py",
+              "sha256": "8262fbc1fdbf7e61b69aab7f89a1f9479f3f27b0d764af180a373aa42818159b"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/failure_stage.py",
+              "sha256": "d385be61baa548548eff7974d07572060c930646ee9e17e627a94c7f81518cb3"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/report_branch.py",
+              "sha256": "7e5c0c3034df3b73182142d9a0e1af47d79bae14787cb659efdfa55bb877c751"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/runtime.py",
+              "sha256": "6550eb75c5b6a3eb8f9262a8e153ef6df0333b6055e2dd0aac9da893b278f10d"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/traces.py",
+              "sha256": "ba0f7523e2845e11193a02a3821babce4ec0c47ef7f153305d60d65530327c82"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/traps.py",
+              "sha256": "c5190b07e1403d5b8ccf981705d78f9ac0361db158f9b04d155a788241e97703"
+            }
+          ],
+          "adapter_source_root": "a0/runtimes/loreley/src/a0_adapter",
+          "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
+          "adapter_source_sha256": "3ab1436fe69cb7cb29b780e4c160b69009fb04403ddd5d90e350e9b048c165df",
+          "lane": "kilo",
+          "runtime": "loreley",
+          "upstream_pin": "4c375920"
+        }
+      ]
+    },
+    "TaskSnapshot": {
+      "c_star_candidate_count": 14,
+      "c_star_digest": "cfeac41728f7dec17ad8414cdb23c2931898dba38a76c23b51091766fd60611c",
+      "c_star_manifest_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+      "e_star_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+      "eid_scheme_ref": "a0/contract/evalcontract.py",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "paired_at_repo_head": "261f0c9",
+      "task_id": "circle-packing"
+    },
+    "Tools": {
+      "denied_tools": [],
+      "extra_tool_sources": [],
+      "tool_choice": "auto",
+      "tool_names_observed": [
+        "write",
+        "read",
+        "bash"
+      ],
+      "tool_names_provenance": "observed in a live tool loop (kilo report 2.2)",
+      "toolset_ref": "kilo_builtin"
+    }
+  },
+  "identity_evidence": {
+    "cli_side_observation": "live turn via kilo run: exit 0, reply OK, tokens total 12003 (9891 in / 2 out / 62 reasoning / 2048 cache read), kilo-reported cost 0.001528194",
+    "cross_surface_divergence": {
+      "demonstrated_by": [
+        "deepseek-v4-flash",
+        "deepseek-v4-flash-vision-exp"
+      ],
+      "finding": "The same requested id reports different `model` strings on different surfaces: a retired alias is rewritten to `deepseek-flash` on the OpenAI-compatible surfaces but echoed verbatim on the Anthropic-compatible surface.",
+      "means": "the field is surface-local metadata, not a serving attestation"
+    },
+    "echo_is_not_proof": true,
+    "last_observed_utc": "2026-09-21",
+    "live_turn_observed": {
+      "cli": "kilo 7.7.5",
+      "exit_code": 0,
+      "reply": "OK",
+      "total_tokens": 12003
+    },
+    "observations": [
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-flash-vision-exp",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "openai_responses"
+      }
+    ],
+    "reproduce": "DS_KEY=$(sed -n 's/^deepseek://p' ~/gptapi.md|head -1); curl -s https://api.deepseek.com/anthropic/v1/messages -H \"Authorization: Bearer $DS_KEY\" -H 'Content-Type: application/json' -d '{\"model\":\"deepseek-v4-flash\",\"max_tokens\":4,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}'  # -> model=deepseek-v4-flash",
+    "route_surface": "openai_chat_completions",
+    "surfaces_observed": [
+      "openai_chat_completions",
+      "anthropic_messages",
+      "openai_responses"
+    ],
+    "weights_identity_verifiable": false
+  },
+  "identity_evidence_digest": "840c43a4857cb77d6ed08a7981fa7af0916561e9fa31275a9cedc7c956d8d48b",
+  "model_policy": {
+    "decided_by": "user",
+    "decided_utc": "2026-09-21",
+    "excluded_providers": [
+      "openrouter"
+    ],
+    "mixed_secondary_allowed": true,
+    "permitted_secondary": [
+      "deepseek-v4-pro"
+    ],
+    "primary": "deepseek-flash"
+  },
+  "mrc_star": "e80a353054dd157ac35e988d7dbcc01c4a37538c90ddcbe4a1ed81f62a645773",
+  "mrc_star_derivation": {
+    "algorithm": "sha256",
+    "domain": "a0/mrc/v1/MRC*",
+    "payload_canonical": "{\"ApiSurface\":\"4b40298a04f06b55bb94e2164918ceb92a1419bd7498f0061266e3f9763a3bb5\",\"Cli\":\"aee0973c392aaa7728de264944e99fee3f77ceff8d9fe6e3dc71da1791d293d3\",\"Endpoint\":\"027f5fae21563aff638d6d3c298ce9e5c467483b7625c99a09f5dbbf0a04220f\",\"Network\":\"b0459be785df988d8ccf6584e6d0617804d6d2b70f3d27210b7b37981d230c1f\",\"Params\":\"ae3c7bd5b14aa568e49a9480a864ac40b3b1904f0f4d35f339e9eb6009670c94\",\"Permissions\":\"18a44b609936020766d4f550d16d5e141ecb02b9471bbb9aeb0002024c300c68\",\"Prompt\":\"ae845dc54a1e344814b0382d1d82c362b8086470d92fd886a45357ced2a6af48\",\"Provider\":\"ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f\",\"RequestedModel\":\"7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced\",\"RuntimeAdapters\":\"bf49e76ed31bddc54d2cdd1b1ae4496dab1d76113a548b2317ca8beaa48bea9e\",\"TaskSnapshot\":\"480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac\",\"Tools\":\"ade1fe1e0e41c20594dbfdb076210b37fd60e7da1792566dfbf8b65be80bcec7\"}"
+  },
+  "notes": [
+    "Loreley's seed-portfolio pin needs a two-site patch (preflight.py:397 and scheduler/seed_portfolios.py:147); patching one site only makes a campaign die mid-run.",
+    "Loreley prices kilo events as `unpriced` before consulting any pricing table (pricing.py:64-74)."
+  ],
+  "route_id": "kilo-deepseek-chat",
+  "schema": "a0.mrc/v1"
+}

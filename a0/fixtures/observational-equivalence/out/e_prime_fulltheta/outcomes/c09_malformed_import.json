@@ -1,0 +1,102 @@
+{
+  "candidate": {
+    "entry": "pack_circles",
+    "source_bytes": 206,
+    "source_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17"
+  },
+  "canonical_digest": "18eb6bccd428a1dcfdc1e32661f2e6be99a1320149c16b47868eee1c9096911c",
+  "e_star_version": "1.0.0",
+  "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+  "failure": {
+    "kind": "candidate_import_failed",
+    "message": "SyntaxError: expected ':' (solution.py, line 6)"
+  },
+  "fields": {
+    "audit_coverage": 1.0,
+    "items_audited": 26,
+    "min_boundary_margin": null,
+    "min_gap": null,
+    "num_circles": null,
+    "overlap_count": null,
+    "packing_density": null,
+    "pairs_audited": 325,
+    "sum_radii": null
+  },
+  "interpreter": {
+    "implementation": "cpython",
+    "version": "3.12.11"
+  },
+  "objective": null,
+  "resources": null,
+  "schema": "e_star.outcome/v1",
+  "scored": false,
+  "status": "error",
+  "structure": null,
+  "theta_e": {
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "seed": 1337,
+    "timeout_s": 120.0
+  },
+  "validity": {
+    "audit": {
+      "coverage": 1.0,
+      "fidelity": "full",
+      "items_audited": 26,
+      "items_total": 26,
+      "pairs_audited": 325,
+      "pairs_total": 325,
+      "sample": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+      "seed": 1337
+    },
+    "checks": [
+      {
+        "detail": {
+          "returncode": 0,
+          "runs_requested": 5,
+          "runs_written": 0,
+          "timed_out": false
+        },
+        "name": "child_artifacts_complete",
+        "passed": true
+      },
+      {
+        "detail": "SyntaxError: expected ':' (solution.py, line 6)",
+        "name": "candidate_module_imports",
+        "passed": false
+      }
+    ],
+    "ok": false
+  }
+}

@@ -37,8 +37,9 @@ python3 conformance.py run --eid-document proposed --out report.proposed.json   
 python3 selftest.py                                                       # prove the checker rejects each fault
 ```
 
-Exit codes: `0` = all four runtimes PASS; `2` = no FAIL but at least one PENDING/BLOCKED;
-`3` = at least one FAIL; `4` = candidate-set integrity abort; `10` = runner bug.
+Exit codes: `0` = no FAIL (runtimes may be `PASS` or `PARTIAL`); `2` = no FAIL but at least one
+PENDING/BLOCKED; `3` = at least one FAIL; `4` = candidate-set integrity abort; `10` = runner bug.
+A `PARTIAL` runtime is a qualification, not a failure, so it does not change the exit code.
 
 ## What the runner does
 
@@ -55,14 +56,20 @@ Exit codes: `0` = all four runtimes PASS; `2` = no FAIL but at least one PENDING
 3. **EID\* checks.** `evalcontract.py recompute` (filesystem-free), `evalcontract.py verify`
    (`--base a0/`), and a check that every EID document on disk carries the binding `EID*`.
 4. **Drives each adapter** through the frozen CLI, then compares the adapter's numbers against
-   `E_STAR.json` **itself**. The adapter's own verdict is recorded (`adapter_declared_verdict`) but
-   is never the runner's verdict — an adapter that reports "A0.1 ok" for a crash recorded as `0.0`
+   `E_STAR.json` **itself**. Everything the adapter says about itself is recorded under a key whose
+   name states it is untrusted — `adapter_claim__untrusted` (its own A0.1 "verdict" string) and
+   `adapter_self_declaration__untrusted` (its declared outcome, blocked reason, row count) — and is
+   never the runner's verdict. The `__untrusted` suffix is deliberate: an adapter's self-claim must
+   not be mistakable for a verdict in the machine-readable document, so no key that carries a bare
+   `PASS`/`FAIL` under a verdict-shaped name belongs to the adapter. An adapter that reports
+   "A0.1 ok" for a crash recorded as `0.0`
    fails on the comparison. For a candidate `E*` did not accept, the compared surface is the
    **verdict and `failure.kind`** (`adapter_contract.md` §4.3.5), so a runtime cannot pass by
    repeating `invalid`/`error` truthfully while lying about *why* it failed.
-5. **Per-runtime PASS / FAIL / PENDING / BLOCKED**, each runtime in its own try/except and its own
-   subprocess: one runtime's failure can never abort another's run (`plan:490`). A runtime that was
-   never driven is `PENDING`, never "passing".
+5. **Per-runtime PASS / PARTIAL / FAIL / PENDING / BLOCKED**, each runtime in its own try/except and
+   its own subprocess: one runtime's failure can never abort another's run (`plan:490`). A runtime
+   that was never driven is `PENDING`, never "passing"; a runtime whose rows agree only on
+   adapter-supplied semantics is `PARTIAL`, never "passing".
 
 ### The adapter invocation (exactly what the runner sends)
 
@@ -131,7 +138,8 @@ silently skipped. Accepted today:
   `score.e_star_canonical_digest`.
 
 Aliases never relax the comparison: the numbers are still checked against `E_STAR.json`, and the
-adapter's own verdict is never used as the runner's.
+adapter's own verdict is recorded only as `adapter_claim__untrusted` — never used as the runner's,
+and never under a name a consumer could join on as a verdict.
 
 ```jsonc
 {
@@ -194,8 +202,43 @@ Per candidate:
 | the row declares a `failure_stage` that is not the one the frozen §5.3 table maps `E*`'s kind to | `MISMATCH_FAILURE_STAGE` |
 | no row for a member of `C*` | `MISSING` → coverage FAIL |
 
-Only `MATCH`, `MATCH_VERDICT` and `SYNTHETIC_DECLARED` count as agreeing. A runtime is `PASS`
-only when every candidate agrees **and** every check passes.
+Only `MATCH`, `MATCH_VERDICT` and `SYNTHETIC_DECLARED` count as agreeing. But *agreeing* is not the
+same as *measuring*, so the runtime state is a qualification, not a boolean:
+
+| state | condition |
+|---|---|
+| `PASS` | every candidate agrees **and** every check passes **and** every row was measured by the runtime's own evaluator interface (`evaluator_evidence.status` is fresh) |
+| `PARTIAL` | every candidate agrees and every check passes, but at least one row agrees only on semantics the **adapter supplied** (`SYNTHETIC_DECLARED`: a declared synthetic failure where `E*` has no number) — that row was not measured |
+| `FAIL` | a candidate disagrees, coverage of `C*` is incomplete, or a check fails |
+| `PENDING` / `BLOCKED` | nothing was run / the adapter declared itself unable to run |
+
+`PARTIAL` exists because a single global `PASS` is the wrong output: EvE's lane maps every
+evaluation exception to `failure_score(0.0)` and cannot represent `invalid`/`error` at all, so its
+`A0.1` is `5/14 measured` and must never be reported as a bare `PASS`. The runner therefore labels
+every runtime with the measured split and records it machine-readably:
+
+```
+verdicts.a0_1                  {"simpleloop": "PASS (14/14 measured)", ..., "eve": "PARTIAL (5/14 measured)"}
+verdicts.a0_1_state            {"eve": "PARTIAL"}                  # the enum
+verdicts.a0_1_measured         {"eve": 5}                          # rows measured natively
+verdicts.a0_1_adapted          {"eve": 9}                          # rows accepted on adapter-supplied semantics
+verdicts.a0_1_qualification    {"eve": {"measured": 5, "adapted": 9, "total": 14,
+                                        "measured_candidates": [...], "adapted_candidates": [...]}}
+verdicts.r_1_a0_1_only         runtimes whose A0.1 is PASS          -> the A0.1 half of the SCREEN
+verdicts.r_1_a0_1_partial      runtimes whose A0.1 is PARTIAL       -> deliberately excluded from it
+```
+
+A partial runtime is deliberately **not** in `r_1_a0_1_only`, so a sibling's full `PASS` cannot
+dilute it. `|R_1| >= 1` is a *candidate screen* ("may the study continue?"); per-runtime
+qualification is a different object, declared explicitly by the `Eligible(r)` predicate in
+`a0/qualification/qualification.json` (see `a0/qualification/QUALIFICATION.md`). The screen can
+pass while no runtime is `Eligible()`.
+
+The distinction behind `qualified` vs `adapted` is `C_measure` vs `C_adapt`: whether the
+**runtime's evaluator interface** can faithfully represent `E*`'s outcome algebra, versus whether
+the **adapter** can supply the missing semantics. It is a semantic gap in the runtime's interface,
+*not* a statement about whether an adapter is in the loop — all four runtimes run through an
+adapter. An adapted row is evidence for `C_adapt` and never for `C_measure`.
 
 Findings (`plan:551-552`; `fatal: false` findings inform, they do not fail a runtime):
 
@@ -253,14 +296,17 @@ verdicts in the same report are not trustworthy.
 
 `selftest.py` runs 20 fixtures (19 injected faults + the honest control) covering: an honest
 adapter, a no-fault adapter, undeclared
-synthetic zero, declared synthetic zero (must PASS), a mislabeled synthetic zero (must FAIL),
+synthetic zero, declared synthetic zero (must be `PARTIAL (5/14 measured)`, never `PASS`),
+a mislabeled synthetic zero (must FAIL),
 cache reuse, timeout synthesis, metric truncation, a value drift just above epsilon and just below,
 the 1e-4 near-tie swap, a digest swap, partial coverage, a manifest-class mismatch, an attempt
 theta drift, a stale `EID*`, an undeclared native `theta_E`, a truthful `status` with a lying
 `failure.kind` (must FAIL — audit R1), a truthful kind with a mis-staged `failure_stage` (must
 FAIL), and the honest fixture with `failure.kind` omitted altogether (must FAIL — the second half of
-R1: a vacuous PASS is a hole) — plus the candidate-set integrity abort (exit 4). All of it is run
-`python3 selftest.py` in ~10 s.
+R1: a vacuous PASS is a hole) — plus the candidate-set integrity abort (exit 4). The two `PASS`
+fixtures also pin the split (`qualification.measured == 14`, `adapted == 0`) and the label
+(`PASS (14/14 measured)`), so the measured/adapted accounting cannot silently regress. All of it is
+run `python3 selftest.py` in ~10 s.
 
 **Fixtures never write into the study tree.** A fixture is a test double: `fixture_common.
 scratch_root()` sends its run artifacts to `$A0_FIXTURE_RUN_ROOT`, which `selftest.py` sets to a
@@ -273,7 +319,9 @@ directories to the deliverable's artifact area (audit F6). Verify with
 
 ## Handoff fields for the study's final report
 
-Per runtime, `report.json` → `runtimes.<r>` carries: `state` (A0.1), `checks`, `rows`
+Per runtime, `report.json` → `runtimes.<r>` carries: `state` (A0.1: `PASS` / `PARTIAL` / `FAIL` /
+`PENDING` / `BLOCKED`), `qualification.a0_1` (the machine-readable measured/adapted split with the
+candidate ids on each side and the `C_measure` / `C_adapt` framing), `checks`, `rows`
 (runtime × candidate with `e_star_value`, `e_r_value`, `delta`, both statuses, both
 `failure.kind`s, the E\* `failure_stage`, evidence and verdict), `false_green_findings`,
 `synthetic_declared_candidates`, `eid_r` (via
@@ -286,6 +334,15 @@ while the runtime was being driven — so a stored verdict names the revision it
 `adapter_unverified_notes` (the adapter's own UNVERIFIED statement) and `adapter_seams` (the
 injection seams it declares, with `path:line`). `report.md` prints the same as a "Handoff" block.
 
+**Adapter self-claims are namespaced `__untrusted`.** A runtime's own assertion about its A0.1
+outcome is never a verdict and never appears under a verdict-shaped name. It is recorded in
+`adapter_claim__untrusted` (the raw string the adapter declared) and, with its surrounding metadata,
+in `adapter_self_declaration__untrusted` (`schema`, `declared_outcome`, `blocked_reason`,
+`claim__untrusted`, `row_count`). The authoritative verdict keys are only `state`,
+`qualification.a0_1`, and the top-level `verdicts` block; a consumer that joins on any of those
+cannot reach an adapter claim. Verify with the grep in "Current state" below — no key containing
+`verdict` in `report.json` may hold an adapter's self-declared string.
+
 `a0_2` is deliberately `null`: A0.2 (selection semantics) is owned by the A0.2 workstream
 (`a0/acceptance`), and this runner does not judge it. The study's `R_1` needs both.
 
@@ -294,7 +351,10 @@ injection seams it declares, with `path:line`). `report.md` prints the same as a
 See `report.json` → `runtimes.<r>` for the verdict and `.rerun` for the exact command to re-run
 one runtime alone. `PENDING` means **not driven** — neither passing nor failing — and always comes
 with the reason and the raw stderr. `BLOCKED` is reserved for an adapter that declares itself
-unable to run (e.g. a missing model backend).
+unable to run (e.g. a missing model backend). `PARTIAL` means the runtime was driven and every row
+agrees, but some rows agree only on semantics the adapter supplied, so they are not measurements:
+read `qualification.a0_1.measured` / `.adapted` alongside the state, and never quote a `PARTIAL`
+runtime's number for a statistic that has to distinguish `invalid`/`error` from a genuine zero.
 
 `report.json` is a single shared artifact written by whatever `run` invocation ran last, so a
 per-runtime re-run **must** use `--out report.<runtime>.json`; a bare `--runtimes <r>` no longer
@@ -305,3 +365,30 @@ document it handed to each adapter (`frozen.eid_document_name` / `eid_document_s
 `runtimes.<r>.eid_document_supplied`) so a reader can tell whether two reports measured the same
 inputs. The adapters were still changing during the last full re-run; check each adapter's source
 mtimes against `report.json` → `generated_at` before quoting a number.
+
+**Confirm no bare `PASS` for EvE survives in the machine-readable output** (any bare `PASS` in
+`report.json` must belong to a runtime whose authoritative `state` is `PASS`, or to the honest
+control; an adapter self-claim never does):
+
+```bash
+cd /home/ebt/rsi-dev/a0/conformance
+python3 -c "
+import json
+d = json.load(open('report.json'))
+def leaves(o, p=''):
+    if isinstance(o, dict):
+        for k, v in o.items(): yield from leaves(v, p+'.'+k)
+    elif isinstance(o, list):
+        for i, v in enumerate(o): yield from leaves(v, p+'[%d]'%i)
+    else: yield p, o
+rows = list(leaves(d))
+auth = {p: v for p, v in rows if p in ('.runtimes.eve.state', '.runtimes.eve.qualification.a0_1.state', '.verdicts.a0_1_state.eve')}
+hits = [(p, v) for p, v in rows if 'eve' in p and isinstance(v, str) and v.strip() in ('PASS', 'FAIL')]
+assert auth == {'.runtimes.eve.state': 'PARTIAL', '.runtimes.eve.qualification.a0_1.state': 'PARTIAL', '.verdicts.a0_1_state.eve': 'PARTIAL'}, auth
+assert all('__untrusted' in p for p, _ in hits), hits
+print('authoritative eve keys        :', auth)
+print('exact PASS/FAIL on an eve path:', hits)
+print('NO BARE PASS FOR EVE OUTSIDE AN __untrusted KEY: ok')
+"
+```
+

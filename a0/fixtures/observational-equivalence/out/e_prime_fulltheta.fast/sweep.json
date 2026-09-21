@@ -1,0 +1,2777 @@
+{
+  "schema": "a0.fixture.observational-equivalence.sweep/v1",
+  "label": "e_prime_fulltheta_fast",
+  "evaluator_dir": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta",
+  "evaluator_script": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+  "python": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+  "theta_e": {
+    "seed": 1337,
+    "fidelity": "fast",
+    "fraction": 0.15,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "timeout_s": 120.0
+  },
+  "candidates": [
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c01_good_hex",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c01_good_hex.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.052,
+      "objective_value": 2.4519205208433132,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "2e67f3faa91ca48250e703aefc4b3af1e93c281447e8320480b403535f86f5ed",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000036657362e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 6,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/bca4286ed3b15035-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c01_good_hex.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2867,
+          "source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+        },
+        "canonical_digest": "2e67f3faa91ca48250e703aefc4b3af1e93c281447e8320480b403535f86f5ed",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000036657362e-07,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 6,
+          "sum_radii": 2.4519205208433132
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.4519205208433132
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000036657362e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 6,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000036657362e-07,
+                "overlap_count": 0,
+                "pairs_audited": 6
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c01_good_hex",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c01_good_hex",
+      "source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c02_baseline_upstream",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c02_baseline_upstream.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.053,
+      "objective_value": 0.25,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "e25b926ee5ae0334db98e97c4469b086d6d3ee13885a3149fd1f3b6360cab738",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 0.0,
+        "min_gap": 0.14721128849467963,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.007551905417283158,
+        "pairs_audited": 6,
+        "sum_radii": 0.25
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/18bacee43b713e5a-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c02_baseline_upstream.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 1441,
+          "source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+        },
+        "canonical_digest": "e25b926ee5ae0334db98e97c4469b086d6d3ee13885a3149fd1f3b6360cab738",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": 0.0,
+          "min_gap": 0.14721128849467963,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.007551905417283158,
+          "pairs_audited": 6,
+          "sum_radii": 0.25
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 0.25
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 0.0,
+          "min_gap": 0.14721128849467963,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.007551905417283158,
+          "pairs_audited": 6,
+          "sum_radii": 0.25
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_radius": 0.009615384615384616
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_boundary_margin": 0.0
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 0.14721128849467963,
+                "overlap_count": 0,
+                "pairs_audited": 6
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c02_baseline_upstream",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c02_baseline_upstream",
+      "source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c03_mirror",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c03_mirror.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.054,
+      "objective_value": 2.4519205208433132,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "56b2f871143ee219f0eabffbc2ebee222512f38e2b7da32a4e405069e333b565",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000036657362e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 6,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/893d0aa439433d52-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c03_mirror.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2849,
+          "source_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf"
+        },
+        "canonical_digest": "56b2f871143ee219f0eabffbc2ebee222512f38e2b7da32a4e405069e333b565",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000036657362e-07,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 6,
+          "sum_radii": 2.4519205208433132
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.4519205208433132
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000036657362e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 6,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000036657362e-07,
+                "overlap_count": 0,
+                "pairs_audited": 6
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c03_mirror",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c03_mirror",
+      "source_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c04_near_tie",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c04_near_tie.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.049,
+      "objective_value": 2.451820520843313,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "55270cbbc9b95f1112f7d78dfc580e9b8edc58426290e38ce9ee576c83bef4f2",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 0.00010020000000035556,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.726363301607073,
+        "pairs_audited": 6,
+        "sum_radii": 2.451820520843313
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/3bf7bf310c976e9a-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c04_near_tie.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2808,
+          "source_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418"
+        },
+        "canonical_digest": "55270cbbc9b95f1112f7d78dfc580e9b8edc58426290e38ce9ee576c83bef4f2",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 0.00010020000000035556,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.726363301607073,
+          "pairs_audited": 6,
+          "sum_radii": 2.451820520843313
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.451820520843313
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 0.00010020000000035556,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.726363301607073,
+          "pairs_audited": 6,
+          "sum_radii": 2.451820520843313
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_radius": 0.0942046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 0.00010020000000035556,
+                "overlap_count": 0,
+                "pairs_audited": 6
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c04_near_tie",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c04_near_tie",
+      "source_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c05_overlapping",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c05_overlapping.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.043,
+      "objective_value": 2.4519205208433132,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "0319bbabd8758a0e154186cd886167fd935268ef5915b83c5e6785d730880658",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000036657362e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 6,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/1054b613063beeb6-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c05_overlapping.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2854,
+          "source_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c"
+        },
+        "canonical_digest": "0319bbabd8758a0e154186cd886167fd935268ef5915b83c5e6785d730880658",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000036657362e-07,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 6,
+          "sum_radii": 2.4519205208433132
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.4519205208433132
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000036657362e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 6,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000036657362e-07,
+                "overlap_count": 0,
+                "pairs_audited": 6
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c05_overlapping",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c05_overlapping",
+      "source_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c06_empty",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c06_empty.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 2,
+      "duration_s": 0.04,
+      "objective_value": null,
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "canonical_digest": "8e652ef4ad999107eb3db70264c65ddefc620fdc52cf29aad76a465d99593e55",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": 0,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0,
+        "pairs_audited": 0,
+        "sum_radii": 0
+      },
+      "stderr_tail": "e_star: status=invalid state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/245b052ae2156885-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c06_empty.json\ne_star: failure=invalid_configuration: count_equals_n failed: {'num_circles': 0, 'expected': 26}",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 703,
+          "source_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41"
+        },
+        "canonical_digest": "8e652ef4ad999107eb3db70264c65ddefc620fdc52cf29aad76a465d99593e55",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": {
+          "kind": "invalid_configuration",
+          "message": "count_equals_n failed: {'num_circles': 0, 'expected': 26}"
+        },
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 6,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "invalid",
+        "structure": {
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": 0,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0,
+          "pairs_audited": 0,
+          "sum_radii": 0
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 0
+              },
+              "name": "count_equals_n",
+              "passed": false
+            },
+            {
+              "detail": {
+                "items_audited": 0,
+                "min_radius": null
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 0,
+                "min_boundary_margin": null
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": null,
+                "overlap_count": 0,
+                "pairs_audited": 0
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c06_empty",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c06_empty",
+      "source_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c07_single",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c07_single.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 2,
+      "duration_s": 0.041,
+      "objective_value": null,
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "canonical_digest": "2b36e063175a37c421ac08da6ff53240fbb208a66ea23930f685e2c8b45ae61f",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 0.0,
+        "min_gap": null,
+        "num_circles": 1,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7853981633974483,
+        "pairs_audited": 0,
+        "sum_radii": 0.5
+      },
+      "stderr_tail": "e_star: status=invalid state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/06fd7c81ea1b82c7-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c07_single.json\ne_star: failure=invalid_configuration: count_equals_n failed: {'num_circles': 1, 'expected': 26}",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 776,
+          "source_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90"
+        },
+        "canonical_digest": "2b36e063175a37c421ac08da6ff53240fbb208a66ea23930f685e2c8b45ae61f",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": {
+          "kind": "invalid_configuration",
+          "message": "count_equals_n failed: {'num_circles': 1, 'expected': 26}"
+        },
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 6,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "invalid",
+        "structure": {
+          "min_boundary_margin": 0.0,
+          "min_gap": null,
+          "num_circles": 1,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7853981633974483,
+          "pairs_audited": 0,
+          "sum_radii": 0.5
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 1
+              },
+              "name": "count_equals_n",
+              "passed": false
+            },
+            {
+              "detail": {
+                "items_audited": 1,
+                "min_radius": 0.5
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 1,
+                "min_boundary_margin": 0.0
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": null,
+                "overlap_count": 0,
+                "pairs_audited": 0
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c07_single",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c07_single",
+      "source_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c08_out_of_bounds",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c08_out_of_bounds.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 2,
+      "duration_s": 0.043,
+      "objective_value": null,
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "canonical_digest": "64b463ae6b6994c8f7fff7f76332dd4238289e4019310644fbab0225f2aaf6f8",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": -0.049999899999999764,
+        "min_gap": 2.000000003943292e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 6,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=invalid state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/8724d76ce22c6675-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c08_out_of_bounds.json\ne_star: failure=invalid_configuration: bounds_check failed: {'items_audited': 4, 'min_boundary_margin': -0.049999899999999764}",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2780,
+          "source_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143"
+        },
+        "canonical_digest": "64b463ae6b6994c8f7fff7f76332dd4238289e4019310644fbab0225f2aaf6f8",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": {
+          "kind": "invalid_configuration",
+          "message": "bounds_check failed: {'items_audited': 4, 'min_boundary_margin': -0.049999899999999764}"
+        },
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 6,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "invalid",
+        "structure": {
+          "min_boundary_margin": -0.049999899999999764,
+          "min_gap": 2.000000003943292e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 6,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_boundary_margin": -0.049999899999999764
+              },
+              "name": "bounds_check",
+              "passed": false
+            },
+            {
+              "detail": {
+                "min_gap": 2.000000003943292e-07,
+                "overlap_count": 0,
+                "pairs_audited": 6
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c08_out_of_bounds",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c08_out_of_bounds",
+      "source_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c09_malformed_import",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c09_malformed_import.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 3,
+      "duration_s": 0.036,
+      "objective_value": null,
+      "status": "error",
+      "failure_kind": "candidate_import_failed",
+      "canonical_digest": "5f32c5248af53510b51d83fe22b94a80bb211f3b09c9fcfd324d21e854418496",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": null,
+      "stderr_tail": "e_star: status=error state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/8f3cc2c8e62dec77-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c09_malformed_import.json\ne_star: failure=candidate_import_failed: SyntaxError: expected ':' (solution.py, line 6)",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 206,
+          "source_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17"
+        },
+        "canonical_digest": "5f32c5248af53510b51d83fe22b94a80bb211f3b09c9fcfd324d21e854418496",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": {
+          "kind": "candidate_import_failed",
+          "message": "SyntaxError: expected ':' (solution.py, line 6)"
+        },
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 6,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "error",
+        "structure": null,
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 0,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": "SyntaxError: expected ':' (solution.py, line 6)",
+              "name": "candidate_module_imports",
+              "passed": false
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c09_malformed_import",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c09_malformed_import",
+      "source_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c10_raises",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c10_raises.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 3,
+      "duration_s": 0.041,
+      "objective_value": null,
+      "status": "error",
+      "failure_kind": "candidate_call_raised",
+      "canonical_digest": "fe4895de61ead7adce0c80f60469cb7ff58ba3286314a56ce39b445af40f73bd",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": null,
+      "stderr_tail": "e_star: status=error state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/8739f824fab190ec-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c10_raises.json\ne_star: failure=candidate_call_raised: RuntimeError: this candidate never returns a configuration",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 865,
+          "source_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206"
+        },
+        "canonical_digest": "fe4895de61ead7adce0c80f60469cb7ff58ba3286314a56ce39b445af40f73bd",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": {
+          "kind": "candidate_call_raised",
+          "message": "RuntimeError: this candidate never returns a configuration"
+        },
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 6,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "error",
+        "structure": null,
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": "RuntimeError: this candidate never returns a configuration",
+              "name": "candidate_call_succeeds",
+              "passed": false
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c10_raises",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c10_raises",
+      "source_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c11_non_deterministic",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c11_non_deterministic.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 3,
+      "duration_s": 0.041,
+      "objective_value": null,
+      "status": "error",
+      "failure_kind": "non_deterministic",
+      "canonical_digest": "d740e58c357934c3bc5026df2de11f52c854e1583136072436e1c3cbdb48bad3",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000036657362e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 6,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=error state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/f4e7d12ecf5cf50f-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c11_non_deterministic.json\ne_star: failure=non_deterministic: repeated calls returned different circle sets",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2908,
+          "source_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044"
+        },
+        "canonical_digest": "d740e58c357934c3bc5026df2de11f52c854e1583136072436e1c3cbdb48bad3",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": {
+          "kind": "non_deterministic",
+          "message": "repeated calls returned different circle sets"
+        },
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 6,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "error",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000036657362e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 6,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000036657362e-07,
+                "overlap_count": 0,
+                "pairs_audited": 6
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": false
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c11_non_deterministic",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c11_non_deterministic",
+      "source_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c12_exit_without_artifacts",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c12_exit_without_artifacts.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 3,
+      "duration_s": 0.036,
+      "objective_value": null,
+      "status": "error",
+      "failure_kind": "child_terminated_early",
+      "canonical_digest": "f0142fcba152c019c5454f1eeeaa9d2a8a48c51bb061b855f075dca9c61f6af3",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": null,
+      "stderr_tail": "e_star: status=error state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/f8dcd5c14eafc57a-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c12_exit_without_artifacts.json\ne_star: failure=child_terminated_early: the isolated runner did not write its done marker; no measurement exists",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 909,
+          "source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d"
+        },
+        "canonical_digest": "f0142fcba152c019c5454f1eeeaa9d2a8a48c51bb061b855f075dca9c61f6af3",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": {
+          "kind": "child_terminated_early",
+          "message": "the isolated runner did not write its done marker; no measurement exists"
+        },
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 6,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "error",
+        "structure": null,
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": null,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": false
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c12_exit_without_artifacts",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c12_exit_without_artifacts",
+      "source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c13_slow",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c13_slow.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 3,
+      "duration_s": 1.547,
+      "objective_value": null,
+      "status": "error",
+      "failure_kind": "runtime_budget_exceeded",
+      "canonical_digest": "ead30ee4127cf8ed37fc1b6fb5a719317a282cd405e66338433f216a7f599fa4",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000036657362e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 6,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=error state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/f085fe77acc30b3d-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c13_slow.json\ne_star: failure=runtime_budget_exceeded: measured p50 runtime exceeds the 250.000 ms budget (measurement in resources.json)",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2787,
+          "source_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14"
+        },
+        "canonical_digest": "ead30ee4127cf8ed37fc1b6fb5a719317a282cd405e66338433f216a7f599fa4",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": {
+          "kind": "runtime_budget_exceeded",
+          "message": "measured p50 runtime exceeds the 250.000 ms budget (measurement in resources.json)"
+        },
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 6,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "error",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000036657362e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 6,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000036657362e-07,
+                "overlap_count": 0,
+                "pairs_audited": 6
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": false
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c13_slow",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c13_slow",
+      "source_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime_fulltheta/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c14_near_zero",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "fast",
+        "--fraction",
+        "0.15",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c14_near_zero.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.052,
+      "objective_value": 2.6e-05,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "ad36635c791511a35ea71c8874b6543688503fc44117c904287b4afe1b104ae4",
+      "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 0.499939,
+        "min_gap": 2.799999999997449e-05,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 8.168140899333462e-11,
+        "pairs_audited": 6,
+        "sum_radii": 2.6e-05
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/state/b8412ada1bb33483-a8bd1ec499c2647e out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_prime_fulltheta.fast/outcomes/c14_near_zero.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 1188,
+          "source_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113"
+        },
+        "canonical_digest": "ad36635c791511a35ea71c8874b6543688503fc44117c904287b4afe1b104ae4",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "518944ef229482f1434860b43a430ff9bf06d39e5294e64b0dd50b73b214bfa4",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 0.018461538461538463,
+          "items_audited": 4,
+          "min_boundary_margin": 0.499939,
+          "min_gap": 2.799999999997449e-05,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 8.168140899333462e-11,
+          "pairs_audited": 6,
+          "sum_radii": 2.6e-05
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.6e-05
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 0.499939,
+          "min_gap": 2.799999999997449e-05,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 8.168140899333462e-11,
+          "pairs_audited": 6,
+          "sum_radii": 2.6e-05
+        },
+        "theta_e": {
+          "fidelity": "fast",
+          "fraction": 0.15,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 0.018461538461538463,
+            "fidelity": "fast",
+            "items_audited": 4,
+            "items_total": 26,
+            "pairs_audited": 6,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              3,
+              12,
+              22
+            ],
+            "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_radius": 1e-06
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 4,
+                "min_boundary_margin": 0.499939
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.799999999997449e-05,
+                "overlap_count": 0,
+                "pairs_audited": 6
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c14_near_zero",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c14_near_zero",
+      "source_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113"
+    }
+  ]
+}

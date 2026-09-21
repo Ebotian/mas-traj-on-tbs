@@ -1,0 +1,52 @@
+{
+  "schema": "a0.mrc.frozen_routes/v1",
+  "frozen_utc": "2026-09-21",
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "comment": "The four model routes we may actually use, as measured on this host. A declaration whose provider, endpoint, surface path, or requested model drifts from these values must fail validation: those four fields are exactly the ones that decide whether two A1 arms are on the same route.",
+  "routes": [
+    {
+      "route_id": "codex-deepseek-responses",
+      "provider_id": "deepseek",
+      "base_url": "https://api.deepseek.com/v1",
+      "surface_path": "/v1/responses",
+      "wire_protocol": "openai_responses",
+      "requested_model_id": "deepseek-flash",
+      "cli": "codex",
+      "cli_version": "0.155.1",
+      "config_knob": "model_providers.ds.wire_api=responses; base_url=https://api.deepseek.com/v1"
+    },
+    {
+      "route_id": "claude-deepseek-anthropic",
+      "provider_id": "deepseek",
+      "base_url": "https://api.deepseek.com/anthropic",
+      "surface_path": "/anthropic/v1/messages",
+      "wire_protocol": "anthropic_messages",
+      "requested_model_id": "deepseek-flash",
+      "cli": "claude",
+      "cli_version": "2.1.278",
+      "config_knob": "ANTHROPIC_BASE_URL + ANTHROPIC_AUTH_TOKEN, CLAUDE_CONFIG_DIR isolation"
+    },
+    {
+      "route_id": "kilo-deepseek-chat",
+      "provider_id": "deepseek",
+      "base_url": "https://api.deepseek.com/v1",
+      "surface_path": "/v1/chat/completions",
+      "wire_protocol": "openai_chat_completions",
+      "requested_model_id": "deepseek-flash",
+      "cli": "kilo",
+      "cli_version": "7.7.5",
+      "config_knob": "@ai-sdk/openai-compatible provider, baseURL=https://api.deepseek.com/v1"
+    },
+    {
+      "route_id": "opencode-deepseek-chat",
+      "provider_id": "deepseek",
+      "base_url": "https://api.deepseek.com/v1",
+      "surface_path": "/v1/chat/completions",
+      "wire_protocol": "openai_chat_completions",
+      "requested_model_id": "deepseek-flash",
+      "cli": "opencode",
+      "cli_version": "v2.0.11",
+      "config_knob": "@ai-sdk/openai-compatible provider, OPENCODE_CONFIG file, --standalone"
+    }
+  ]
+}

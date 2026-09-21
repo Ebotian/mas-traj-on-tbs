@@ -1,0 +1,8 @@
+model = "deepseek-flash"
+model_provider = "ds"
+
+[model_providers.ds]
+name = "DeepSeek"
+base_url = "http://a0tl-proxy:8787/v1"
+env_key = "DEEPSEEK_API_KEY"
+wire_api = "responses"

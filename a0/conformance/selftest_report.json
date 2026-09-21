@@ -89,6 +89,34 @@
         "c13_slow": "MATCH_VERDICT",
         "c14_near_zero": "MATCH"
       },
+      "a0_1_qualification": {
+        "state": "PASS",
+        "label": "PASS (14/14 measured)",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
@@ -116,6 +144,34 @@
         "c12_exit_without_artifacts": "MATCH_VERDICT",
         "c13_slow": "MATCH_VERDICT",
         "c14_near_zero": "MATCH"
+      },
+      "a0_1_qualification": {
+        "state": "PASS",
+        "label": "PASS (14/14 measured)",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
       },
       "behaved_as_expected": true,
       "problems": []
@@ -157,6 +213,25 @@
         "c12_exit_without_artifacts": "FALSE_GREEN_SYNTHETIC_ZERO",
         "c13_slow": "FALSE_GREEN_SYNTHETIC_ZERO",
         "c14_near_zero": "MATCH"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 5,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
       },
       "behaved_as_expected": true,
       "problems": []
@@ -204,6 +279,19 @@
         "c13_slow": "FALSE_GREEN_CACHE_REUSE",
         "c14_near_zero": "FALSE_GREEN_CACHE_REUSE"
       },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 0,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
@@ -249,6 +337,19 @@
         "c12_exit_without_artifacts": "FALSE_GREEN_TIMEOUT_SYNTHESIS",
         "c13_slow": "FALSE_GREEN_TIMEOUT_SYNTHESIS",
         "c14_near_zero": "FALSE_GREEN_TIMEOUT_SYNTHESIS"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 0,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
       },
       "behaved_as_expected": true,
       "problems": []
@@ -310,6 +411,19 @@
         "c13_slow": "FALSE_GREEN_TRUNCATED_METRICS",
         "c14_near_zero": "FALSE_GREEN_TRUNCATED_METRICS"
       },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 0,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
@@ -340,6 +454,29 @@
         "c13_slow": "MATCH_VERDICT",
         "c14_near_zero": "MISMATCH_VALUE"
       },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 9,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
@@ -367,6 +504,34 @@
         "c12_exit_without_artifacts": "MATCH_VERDICT",
         "c13_slow": "MATCH_VERDICT",
         "c14_near_zero": "MATCH"
+      },
+      "a0_1_qualification": {
+        "state": "PASS",
+        "label": "PASS (14/14 measured)",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
       },
       "behaved_as_expected": true,
       "problems": []
@@ -398,6 +563,33 @@
         "c13_slow": "MATCH_VERDICT",
         "c14_near_zero": "MATCH"
       },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 13,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
@@ -427,6 +619,33 @@
         "c12_exit_without_artifacts": "MATCH_VERDICT",
         "c13_slow": "MATCH_VERDICT",
         "c14_near_zero": "MATCH"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 13,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
       },
       "behaved_as_expected": true,
       "problems": []
@@ -468,6 +687,25 @@
         "c12_exit_without_artifacts": "MISSING",
         "c13_slow": "MISSING",
         "c14_near_zero": "MISSING"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 5,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
       },
       "behaved_as_expected": true,
       "problems": []
@@ -514,6 +752,19 @@
         "c13_slow": "FALSE_GREEN_MANIFEST_TRIPLE",
         "c14_near_zero": "FALSE_GREEN_MANIFEST_TRIPLE"
       },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 0,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
@@ -559,6 +810,19 @@
         "c13_slow": "FALSE_GREEN_MANIFEST_TRIPLE",
         "c14_near_zero": "FALSE_GREEN_MANIFEST_TRIPLE"
       },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 0,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
@@ -590,6 +854,34 @@
         "c13_slow": "MATCH_VERDICT",
         "c14_near_zero": "MATCH"
       },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
@@ -620,16 +912,44 @@
         "c13_slow": "MATCH_VERDICT",
         "c14_near_zero": "MATCH"
       },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 14,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
     {
       "fixture": "selftest_synthetic_declared",
-      "why": "an adapter that hits the EvE trap, declares it and does not count it as a match must PASS -- being honest about the trap is not a conformance failure",
+      "why": "an adapter that hits the EvE trap, declares it and does not count it as a match must be reported PARTIAL (5/14 measured), never PASS -- being honest about the trap is not a conformance failure, but it is also not a measurement (review point 2)",
       "injected_fault": "synthetic_declared",
-      "expected_state": "PASS",
-      "actual_state": "PASS",
-      "actual_reason": null,
+      "expected_state": "PARTIAL",
+      "actual_state": "PARTIAL",
+      "actual_reason": "5/14 rows measured by the runtime's own evaluator interface; 9/14 accepted only on adapter-supplied semantics (c05_overlapping, c06_empty, c07_single, c08_out_of_bounds, c09_malformed_import, c10_raises, c11_non_deterministic, c12_exit_without_artifacts, c13_slow). No check failed, but this runtime cannot represent E*'s outcome algebra on those rows",
       "findings": [
         "TRAP-SYNTHETIC-DECLARED",
         "TRAP-SYNTHETIC-DECLARED",
@@ -657,6 +977,35 @@
         "c12_exit_without_artifacts": "SYNTHETIC_DECLARED",
         "c13_slow": "SYNTHETIC_DECLARED",
         "c14_near_zero": "MATCH"
+      },
+      "a0_1_qualification": {
+        "state": "PARTIAL",
+        "label": "PARTIAL (5/14 measured)",
+        "measured": 5,
+        "adapted": 9,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [
+          "c05_overlapping",
+          "c06_empty",
+          "c07_single",
+          "c08_out_of_bounds",
+          "c09_malformed_import",
+          "c10_raises",
+          "c11_non_deterministic",
+          "c12_exit_without_artifacts",
+          "c13_slow"
+        ],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
       },
       "behaved_as_expected": true,
       "problems": []
@@ -699,6 +1048,25 @@
         "c13_slow": "FALSE_GREEN_SYNTHETIC_ZERO",
         "c14_near_zero": "MATCH"
       },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 5,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
@@ -739,6 +1107,25 @@
         "c12_exit_without_artifacts": "MISMATCH_FAILURE_KIND",
         "c13_slow": "MISMATCH_FAILURE_KIND",
         "c14_near_zero": "MATCH"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 5,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
       },
       "behaved_as_expected": true,
       "problems": []
@@ -781,6 +1168,25 @@
         "c13_slow": "MISMATCH_FAILURE_STAGE",
         "c14_near_zero": "MATCH"
       },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 5,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
+      },
       "behaved_as_expected": true,
       "problems": []
     },
@@ -821,6 +1227,25 @@
         "c12_exit_without_artifacts": "UNDECLARED_FAILURE_KIND",
         "c13_slow": "UNDECLARED_FAILURE_KIND",
         "c14_near_zero": "MATCH"
+      },
+      "a0_1_qualification": {
+        "state": "FAIL",
+        "label": "FAIL",
+        "measured": 5,
+        "adapted": 0,
+        "total": 14,
+        "measured_candidates": [
+          "c01_good_hex",
+          "c02_baseline_upstream",
+          "c03_mirror",
+          "c04_near_tie",
+          "c14_near_zero"
+        ],
+        "adapted_candidates": [],
+        "basis": "row.verdict + row.evaluator_evidence_status: a row is `measured` when the runtime's lane returned a fresh value/verdict the runner compared, and `adapted` when it agrees only on semantics the adapter supplied for an interface that cannot represent them",
+        "c_measure": "can the runtime's evaluator interface faithfully represent E*'s outcome algebra?",
+        "c_adapt": "can the adapter supply the missing semantics?",
+        "note": "C_measure is a semantic gap in the RUNTIME'S INTERFACE, not a claim that no adapter is in the loop: all four runtimes run through an adapter. An adapted row is evidence for C_adapt, never for C_measure."
       },
       "behaved_as_expected": true,
       "problems": []

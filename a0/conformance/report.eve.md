@@ -1,18 +1,22 @@
 # A0.1 cross-adapter conformance report
 
-Generated 2026-09-20T19:46:07+0800 by `a0/conformance/conformance.py run`.
+Generated 2026-09-21T16:25:57+0800 by `a0/conformance/conformance.py run`.
 
 Frozen coordinates: `E* = tasks/circle-packing/e_star.py` (`EID* = 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328`), `EID* document = /home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json [canonical]` (sha256 `50af0aeb42dbc5a7...`), `C* = /home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json` (sha256 `8d9b953877beb1b0...`), `theta_E = {"seed": 1337, "fidelity": "full", "fraction": 1.0, "n": 26, "runs": 5, "runtime_budget_ms": 250.0, "timeout_s": 120.0}`, `epsilon = 1e-09`, `F_r: F_r(E*) = scalar(E*) = outcome.objective.sum_radii, maximize (plan:528)`.
 
-Protocol: `plan:513-519` (the acceptance formula), `plan:490` (candidate screen, `|R_1| >= 1`), `plan:551-552` (the two false-green traps). The runner compares the adapter's numbers against the frozen table `E_STAR.json` itself; an adapter's own verdict is recorded but never trusted.
+Protocol: `plan:513-519` (the acceptance formula), `plan:490` (candidate screen, `|R_1| >= 1`), `plan:551-552` (the two false-green traps). The runner compares the adapter's numbers against the frozen table `E_STAR.json` itself; an adapter's own claim about its A0.1 outcome is recorded only under a key named `__untrusted` (see `adapter_claim__untrusted` / `adapter_self_declaration__untrusted`), so it can never be read as a verdict.
 
 ## Verdicts
 
-| runtime | A0.1 | acceptable / 14 | false-green findings | A0.2 (other workstream) | reason |
-|---|---|---|---|---|---|
-| eve | PASS | 14/14 (9 SYNTHETIC_DECLARED) | TRAP-SYNTHETIC-DECLARED | not judged here | all checks passed |
+| runtime | A0.1 | measured / 14 | adapted (declared, NOT measured) | acceptable / 14 | false-green findings | A0.2 (other workstream) | reason |
+|---|---|---|---|---|---|---|---|
+| eve | PARTIAL (5/14 measured) | 5/14 | 9/14 (c05_overlapping, c06_empty, c07_single, c08_out_of_bounds, c09_malformed_import, c10_raises, c11_non_deterministic, c12_exit_without_artifacts, c13_slow) | 14/14 (9 SYNTHETIC_DECLARED) | TRAP-SYNTHETIC-DECLARED | not judged here | 5/14 rows measured by the runtime's own evaluator interface; 9/14 accepted only on adapter-supplied semantics (c05_overlapping, c06_empty, c07_single, c08_ou... |
 
-A0.1-only set: `R_1(A0.1) = ['eve']` (n_pass=1, n_fail=0, n_pending=0, n_blocked=0). |R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2
+A0.1-only screen: `r_1_a0_1_only = []` (n_pass=0, n_partial=1, n_fail=0, n_pending=0, n_blocked=0). |R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2
+
+PARTIAL A0.1 (every row agrees, but at least one only on adapter-supplied semantics), deliberately excluded from the screen set: `r_1_a0_1_partial = ['eve']`.
+
+`|R_1| >= 1` is a CANDIDATE SCREEN over runtimes and is a different object from per-runtime qualification. The screen asks whether the study may continue (at least one substrate survives A0); qualification asks whether a given runtime's A0.1 answer is measured or merely adapted. `r_1_a0_1_only` lists runtimes whose A0.1 is PASS (every row measured) and `r_1_a0_1_partial` lists runtimes whose A0.1 is PARTIAL (some rows accepted only on adapter-supplied semantics). A PARTIAL runtime is deliberately NOT in `r_1_a0_1_only`, so a partial result can never be diluted by siblings that passed. Per-runtime eligibility for A1 is declared separately and explicitly by the `Eligible(r)` predicate in `a0/qualification/qualification.json` (see `a0/qualification/QUALIFICATION.md`); the screen can pass while no runtime is Eligible().
 
 ## Reference table reproducibility
 
@@ -37,13 +41,15 @@ Fresh sweep of `E*` over `C*` with the frozen invocation reproduces `E_STAR.json
 
 ## Per-runtime detail
 
-Row verdicts: `MATCH` (number agrees within epsilon), `MATCH_VERDICT` (no number on either side, verdicts compared), `SYNTHETIC_DECLARED` (the runtime's lane returned a declared synthetic failure where E* has no number -- acceptable, but its 0.0 is never a measurement), `FALSE_GREEN_*` (a number where none exists, or a non-fresh number), `MISMATCH_*`, `MISSING`.
+Row verdicts: `MATCH` (number agrees within epsilon), `MATCH_VERDICT` (no number on either side, verdicts compared), `SYNTHETIC_DECLARED` (the runtime's lane returned a declared synthetic failure where E* has no number -- acceptable, but its 0.0 is never a measurement, and a runtime with such a row is `PARTIAL`, not `PASS`), `FALSE_GREEN_*` (a number where none exists, or a non-fresh number), `MISMATCH_*`, `MISSING`.
 
-### eve — PASS
+### eve — PARTIAL (5/14 measured)
+
+Reason: 5/14 rows measured by the runtime's own evaluator interface; 9/14 accepted only on adapter-supplied semantics (c05_overlapping, c06_empty, c07_single, c08_out_of_bounds, c09_malformed_import, c10_raises, c11_non_deterministic, c12_exit_without_artifacts, c13_slow). No check failed, but this runtime cannot represent E*'s outcome algebra on those rows
 
 Re-run this runtime with: `cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eve --out report.eve.json`
 
-Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own verdict `PASS` (recorded, never trusted), numbers read from `adapter conformance subcommand`.
+Adapter output: schema `a0.adapter.conformance/v1`, rows from `top level`, adapter's own claim `PASS` (recorded under `adapter_claim__untrusted`, never a verdict, never trusted), numbers read from `adapter conformance subcommand`.
 
 - `PASS` EID-star-verbatim: adapter carried eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'; expected '664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328' (verbatim copy required)
 - `PASS` EID-r-derives-from-EID-star: eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
@@ -80,11 +86,13 @@ Findings (false-green traps and attempt invariants):
 
 Handoff:
 
-- A0.1 verdict: **PASS**
+- A0.1 verdict: **PARTIAL (5/14 measured)** (5/14 rows measured by the runtime's own evaluator interface; 9/14 accepted only on adapter-supplied semantics (c05_overlapping, c06_empty, c07_single, c08_out_of_bounds, c09_malformed_import, c10_raises, c11_non_deterministic, c12_exit_without_artifacts, c13_slow). No check failed, but this runtime cannot represent E*'s outcome algebra on those rows)
+- A0.1 qualification: state `PARTIAL`, measured 5/14 by the runtime's own evaluator interface, adapted 9/14 on adapter-supplied semantics (never used as a measurement): measured=['c01_good_hex', 'c02_baseline_upstream', 'c03_mirror', 'c04_near_tie', 'c14_near_zero'], adapted=['c05_overlapping', 'c06_empty', 'c07_single', 'c08_out_of_bounds', 'c09_malformed_import', 'c10_raises', 'c11_non_deterministic', 'c12_exit_without_artifacts', 'c13_slow']
 - A0.2 verdict: not judged here (owned by `a0/acceptance`); this runner only reports whether the adapter can carry the identity and the numbers
 - EID_r -> EID* : eid_r.derives_from_eid_star='664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328'
 - traces: {"all": "/home/ebt/rsi-dev/a0/runtimes/eve/out/conf-a0-eve-run001/traces/eve.a0-eve-run001.all.jsonl", "resource": "/home/ebt/rsi-dev/a0/runtimes/eve/out/conf-a0-eve-run001/traces/eve.a0-eve-run001.resource.jsonl", "score": "/home/ebt/rsi-dev/a0/runtimes/eve/out/conf-a0-eve-run001/traces/eve.a0-eve-run001.score.jsonl", "selection": "/home/ebt/rsi-dev/a0/runtimes/eve/out/conf-a0-eve-run001/traces/eve.a0-eve-run001.selection.jsonl"} (reported by the adapter)
 - FailureStage counts: {"evaluator_failed": 2, "none": 5, "resolve_failed": 1, "timeout": 1, "verify_failed": 5}
+- adapter revision covered by this verdict: digest `41d49211756c1c0dc71fd98ff975fce77cb486126264f8c9c6e8e5da25fcef0f` over 17 source file(s), newest mtime 2026-09-20T19:46:04+0800, unchanged during the run: True
 - FailureStage accounting vs the frozen `adapter_contract.md` §5.3 map over C*: declared {"evaluator_failed": 2, "none": 5, "resolve_failed": 1, "timeout": 1, "verify_failed": 5} (comparable=True, matches_frozen_map=True); expected {"none": 5, "verify_failed": 5, "resolve_failed": 1, "evaluator_failed": 2, "timeout": 1}. the declared counts equal the frozen §5.3 mapping applied to C*'s E* verdicts
 - declared synthetic failures (never a measurement): c05_overlapping, c06_empty, c07_single, c08_out_of_bounds, c09_malformed_import, c10_raises, c11_non_deterministic, c12_exit_without_artifacts, c13_slow
 - adapter's own UNVERIFIED note: the agent lane is not exercised by this subcommand: A0.1 needs only the evaluator lane, which runs here through EvE's own evaluate() path. The LLM-driven end-to-end EvE round is a separate experiment (see out/run002/ if present).

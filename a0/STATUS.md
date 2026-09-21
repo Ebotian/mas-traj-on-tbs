@@ -85,7 +85,7 @@ EID* = 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328
 |---|---|---|---|
 | SimpleLoop | PASS 14/14 | PASS 9/9 | 并列/近并列/顺序不变性均验 |
 | KAPSO | PASS 14/14 | PASS 14/14（5 场景） | 含 `fast_only` tier 对照 |
-| EvE | **PASS 5/14 measured** + 9 声明合成 | PASS（频率检验） | 见下 |
+| EvE | **PARTIAL（5/14 measured）+ 9 声明合成** | PASS（频率检验） | 2026-09-21 起 conformance 报告在机器可读层面也不再给出裸 `PASS`；见 `a0/SPRINT-2026-09-21.md` |
 | Loreley | PASS 14/14 | PASS 7/7 | 同 cell 替换 + 跨 cell 负对照 |
 
 **A0.1 记成三元组 `(passed, measured, total)`，不是布尔。** EvE 的 lane 把任何评测异常静默映射为 `failure_score 0.0`，**根本无法表达 `invalid`/`error`**；那 9 行是适配层**声明**的合成失败（runner 标签 `SYNTHETIC_DECLARED`），不是复现。正确引法是 `A0.1 = 5/14 measured`，写成"14/14 一致"就是夸大。

@@ -1,0 +1,3083 @@
+{
+  "schema": "a0.fixture.observational-equivalence.sweep/v1",
+  "label": "e_star",
+  "evaluator_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing",
+  "evaluator_script": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+  "python": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+  "theta_e": {
+    "seed": 1337,
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "timeout_s": 120.0
+  },
+  "candidates": [
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c01_good_hex",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c01_good_hex.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.061,
+      "objective_value": 2.4519205208433132,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/bca4286ed3b15035-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c01_good_hex.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2867,
+          "source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+        },
+        "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 325,
+          "sum_radii": 2.4519205208433132
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.4519205208433132
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 325,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000000575113e-07,
+                "overlap_count": 0,
+                "pairs_audited": 325
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c01_good_hex",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c01_good_hex",
+      "source_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c02_baseline_upstream",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c02_baseline_upstream.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.045,
+      "objective_value": 0.25,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 0.0,
+        "min_gap": 0.036249916677713497,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.007551905417283158,
+        "pairs_audited": 325,
+        "sum_radii": 0.25
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/18bacee43b713e5a-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c02_baseline_upstream.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 1441,
+          "source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+        },
+        "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": 0.0,
+          "min_gap": 0.036249916677713497,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.007551905417283158,
+          "pairs_audited": 325,
+          "sum_radii": 0.25
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 0.25
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 0.0,
+          "min_gap": 0.036249916677713497,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.007551905417283158,
+          "pairs_audited": 325,
+          "sum_radii": 0.25
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_radius": 0.009615384615384616
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_boundary_margin": 0.0
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 0.036249916677713497,
+                "overlap_count": 0,
+                "pairs_audited": 325
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c02_baseline_upstream",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c02_baseline_upstream",
+      "source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c03_mirror",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c03_mirror.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.049,
+      "objective_value": 2.4519205208433132,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/893d0aa439433d52-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c03_mirror.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2849,
+          "source_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf"
+        },
+        "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 325,
+          "sum_radii": 2.4519205208433132
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.4519205208433132
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 325,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000000575113e-07,
+                "overlap_count": 0,
+                "pairs_audited": 325
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c03_mirror",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c03_mirror",
+      "source_sha256": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c04_near_tie",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c04_near_tie.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.046,
+      "objective_value": 2.451820520843313,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.726363301607073,
+        "pairs_audited": 325,
+        "sum_radii": 2.451820520843313
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/3bf7bf310c976e9a-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c04_near_tie.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2808,
+          "source_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418"
+        },
+        "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 0.726363301607073,
+          "pairs_audited": 325,
+          "sum_radii": 2.451820520843313
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.451820520843313
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.726363301607073,
+          "pairs_audited": 325,
+          "sum_radii": 2.451820520843313
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_radius": 0.0942046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000000575113e-07,
+                "overlap_count": 0,
+                "pairs_audited": 325
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c04_near_tie",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c04_near_tie",
+      "source_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c05_overlapping",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c05_overlapping.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 2,
+      "duration_s": 0.048,
+      "objective_value": null,
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": -0.188609270834101,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 1,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=invalid state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/1054b613063beeb6-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c05_overlapping.json\ne_star: failure=invalid_configuration: overlap_check failed: {'pairs_audited': 325, 'overlap_count': 1, 'min_gap': -0.188609270834101}",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2854,
+          "source_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c"
+        },
+        "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": {
+          "kind": "invalid_configuration",
+          "message": "overlap_check failed: {'pairs_audited': 325, 'overlap_count': 1, 'min_gap': -0.188609270834101}"
+        },
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "invalid",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": -0.188609270834101,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 1,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 325,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": -0.188609270834101,
+                "overlap_count": 1,
+                "pairs_audited": 325
+              },
+              "name": "overlap_check",
+              "passed": false
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c05_overlapping",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c05_overlapping",
+      "source_sha256": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c06_empty",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c06_empty.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 2,
+      "duration_s": 0.047,
+      "objective_value": null,
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": 0,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0,
+        "pairs_audited": 0,
+        "sum_radii": 0
+      },
+      "stderr_tail": "e_star: status=invalid state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/245b052ae2156885-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c06_empty.json\ne_star: failure=invalid_configuration: count_equals_n failed: {'num_circles': 0, 'expected': 26}",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 703,
+          "source_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41"
+        },
+        "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": {
+          "kind": "invalid_configuration",
+          "message": "count_equals_n failed: {'num_circles': 0, 'expected': 26}"
+        },
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "invalid",
+        "structure": {
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": 0,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0,
+          "pairs_audited": 0,
+          "sum_radii": 0
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 0
+              },
+              "name": "count_equals_n",
+              "passed": false
+            },
+            {
+              "detail": {
+                "items_audited": 0,
+                "min_radius": null
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 0,
+                "min_boundary_margin": null
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": null,
+                "overlap_count": 0,
+                "pairs_audited": 0
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c06_empty",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c06_empty",
+      "source_sha256": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c07_single",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c07_single.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 2,
+      "duration_s": 0.041,
+      "objective_value": null,
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 0.0,
+        "min_gap": null,
+        "num_circles": 1,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7853981633974483,
+        "pairs_audited": 0,
+        "sum_radii": 0.5
+      },
+      "stderr_tail": "e_star: status=invalid state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/06fd7c81ea1b82c7-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c07_single.json\ne_star: failure=invalid_configuration: count_equals_n failed: {'num_circles': 1, 'expected': 26}",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 776,
+          "source_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90"
+        },
+        "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": {
+          "kind": "invalid_configuration",
+          "message": "count_equals_n failed: {'num_circles': 1, 'expected': 26}"
+        },
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "invalid",
+        "structure": {
+          "min_boundary_margin": 0.0,
+          "min_gap": null,
+          "num_circles": 1,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7853981633974483,
+          "pairs_audited": 0,
+          "sum_radii": 0.5
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 1
+              },
+              "name": "count_equals_n",
+              "passed": false
+            },
+            {
+              "detail": {
+                "items_audited": 1,
+                "min_radius": 0.5
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 1,
+                "min_boundary_margin": 0.0
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": null,
+                "overlap_count": 0,
+                "pairs_audited": 0
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c07_single",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c07_single",
+      "source_sha256": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c08_out_of_bounds",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c08_out_of_bounds.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 2,
+      "duration_s": 0.04,
+      "objective_value": null,
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": -0.049999899999999764,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=invalid state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/8724d76ce22c6675-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c08_out_of_bounds.json\ne_star: failure=invalid_configuration: bounds_check failed: {'items_audited': 26, 'min_boundary_margin': -0.049999899999999764}",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2780,
+          "source_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143"
+        },
+        "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": {
+          "kind": "invalid_configuration",
+          "message": "bounds_check failed: {'items_audited': 26, 'min_boundary_margin': -0.049999899999999764}"
+        },
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "invalid",
+        "structure": {
+          "min_boundary_margin": -0.049999899999999764,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 325,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_boundary_margin": -0.049999899999999764
+              },
+              "name": "bounds_check",
+              "passed": false
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000000575113e-07,
+                "overlap_count": 0,
+                "pairs_audited": 325
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c08_out_of_bounds",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c08_out_of_bounds",
+      "source_sha256": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c09_malformed_import",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c09_malformed_import.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 3,
+      "duration_s": 0.034,
+      "objective_value": null,
+      "status": "error",
+      "failure_kind": "candidate_import_failed",
+      "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": null,
+      "stderr_tail": "e_star: status=error state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/8f3cc2c8e62dec77-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c09_malformed_import.json\ne_star: failure=candidate_import_failed: SyntaxError: expected ':' (solution.py, line 6)",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 206,
+          "source_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17"
+        },
+        "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": {
+          "kind": "candidate_import_failed",
+          "message": "SyntaxError: expected ':' (solution.py, line 6)"
+        },
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "error",
+        "structure": null,
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 0,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": "SyntaxError: expected ':' (solution.py, line 6)",
+              "name": "candidate_module_imports",
+              "passed": false
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c09_malformed_import",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c09_malformed_import",
+      "source_sha256": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c10_raises",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c10_raises.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 3,
+      "duration_s": 0.038,
+      "objective_value": null,
+      "status": "error",
+      "failure_kind": "candidate_call_raised",
+      "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": null,
+      "stderr_tail": "e_star: status=error state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/8739f824fab190ec-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c10_raises.json\ne_star: failure=candidate_call_raised: RuntimeError: this candidate never returns a configuration",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 865,
+          "source_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206"
+        },
+        "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": {
+          "kind": "candidate_call_raised",
+          "message": "RuntimeError: this candidate never returns a configuration"
+        },
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "error",
+        "structure": null,
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": "RuntimeError: this candidate never returns a configuration",
+              "name": "candidate_call_succeeds",
+              "passed": false
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c10_raises",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c10_raises",
+      "source_sha256": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c11_non_deterministic",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c11_non_deterministic.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 3,
+      "duration_s": 0.041,
+      "objective_value": null,
+      "status": "error",
+      "failure_kind": "non_deterministic",
+      "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=error state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/f4e7d12ecf5cf50f-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c11_non_deterministic.json\ne_star: failure=non_deterministic: repeated calls returned different circle sets",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2908,
+          "source_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044"
+        },
+        "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": {
+          "kind": "non_deterministic",
+          "message": "repeated calls returned different circle sets"
+        },
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "error",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 325,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000000575113e-07,
+                "overlap_count": 0,
+                "pairs_audited": 325
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": false
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c11_non_deterministic",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c11_non_deterministic",
+      "source_sha256": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c12_exit_without_artifacts",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c12_exit_without_artifacts.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 3,
+      "duration_s": 0.034,
+      "objective_value": null,
+      "status": "error",
+      "failure_kind": "child_terminated_early",
+      "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": null,
+      "stderr_tail": "e_star: status=error state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/f8dcd5c14eafc57a-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c12_exit_without_artifacts.json\ne_star: failure=child_terminated_early: the isolated runner did not write its done marker; no measurement exists",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 909,
+          "source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d"
+        },
+        "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": {
+          "kind": "child_terminated_early",
+          "message": "the isolated runner did not write its done marker; no measurement exists"
+        },
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "error",
+        "structure": null,
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": null,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": false
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c12_exit_without_artifacts",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c12_exit_without_artifacts",
+      "source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c13_slow",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c13_slow.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 3,
+      "duration_s": 1.546,
+      "objective_value": null,
+      "status": "error",
+      "failure_kind": "runtime_budget_exceeded",
+      "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "stderr_tail": "e_star: status=error state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/f085fe77acc30b3d-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c13_slow.json\ne_star: failure=runtime_budget_exceeded: measured p50 runtime exceeds the 250.000 ms budget (measurement in resources.json)",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 2787,
+          "source_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14"
+        },
+        "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": {
+          "kind": "runtime_budget_exceeded",
+          "message": "measured p50 runtime exceeds the 250.000 ms budget (measurement in resources.json)"
+        },
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": null,
+          "min_gap": null,
+          "num_circles": null,
+          "overlap_count": null,
+          "packing_density": null,
+          "pairs_audited": 325,
+          "sum_radii": null
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": null,
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": false,
+        "status": "error",
+        "structure": {
+          "min_boundary_margin": 1.0000000023879796e-07,
+          "min_gap": 2.0000000000575113e-07,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 0.7264225235411115,
+          "pairs_audited": 325,
+          "sum_radii": 2.4519205208433132
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_radius": 0.0943046354170505
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_boundary_margin": 1.0000000023879796e-07
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 2.0000000000575113e-07,
+                "overlap_count": 0,
+                "pairs_audited": 325
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": false
+            }
+          ],
+          "ok": false
+        }
+      },
+      "candidate_id": "c13_slow",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c13_slow",
+      "source_sha256": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14"
+    },
+    {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+        "evaluate",
+        "--candidate",
+        "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c14_near_zero",
+        "--seed",
+        "1337",
+        "--fidelity",
+        "full",
+        "--fraction",
+        "1.0",
+        "--n",
+        "26",
+        "--runs",
+        "5",
+        "--runtime-budget-ms",
+        "250.0",
+        "--timeout-s",
+        "120.0",
+        "--out",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c14_near_zero.json",
+        "--state-dir",
+        "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.041,
+      "objective_value": 2.6e-05,
+      "status": "ok",
+      "failure_kind": null,
+      "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+      "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+      "interpreter": {
+        "implementation": "cpython",
+        "version": "3.12.11"
+      },
+      "structure": {
+        "min_boundary_margin": 0.499939,
+        "min_gap": 7.99999999995449e-06,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 8.168140899333462e-11,
+        "pairs_audited": 325,
+        "sum_radii": 2.6e-05
+      },
+      "stderr_tail": "e_star: status=ok state_dir=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/state/b8412ada1bb33483-8c9da155eb13c73b out=/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/out/e_star/outcomes/c14_near_zero.json",
+      "outcome": {
+        "candidate": {
+          "entry": "pack_circles",
+          "source_bytes": 1188,
+          "source_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113"
+        },
+        "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe",
+        "e_star_version": "1.0.0",
+        "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "failure": null,
+        "fields": {
+          "audit_coverage": 1.0,
+          "items_audited": 26,
+          "min_boundary_margin": 0.499939,
+          "min_gap": 7.99999999995449e-06,
+          "num_circles": 26,
+          "overlap_count": 0,
+          "packing_density": 8.168140899333462e-11,
+          "pairs_audited": 325,
+          "sum_radii": 2.6e-05
+        },
+        "interpreter": {
+          "implementation": "cpython",
+          "version": "3.12.11"
+        },
+        "objective": {
+          "direction": "max",
+          "name": "sum_radii",
+          "unit": "radius_sum",
+          "value": 2.6e-05
+        },
+        "resources": null,
+        "schema": "e_star.outcome/v1",
+        "scored": true,
+        "status": "ok",
+        "structure": {
+          "min_boundary_margin": 0.499939,
+          "min_gap": 7.99999999995449e-06,
+          "num_circles": 26,
+          "num_circles_expected": 26,
+          "overlap_count": 0,
+          "packing_density": 8.168140899333462e-11,
+          "pairs_audited": 325,
+          "sum_radii": 2.6e-05
+        },
+        "theta_e": {
+          "fidelity": "full",
+          "fraction": 1.0,
+          "n": 26,
+          "runs": 5,
+          "runtime_budget_ms": 250.0,
+          "seed": 1337,
+          "timeout_s": 120.0
+        },
+        "validity": {
+          "audit": {
+            "coverage": 1.0,
+            "fidelity": "full",
+            "items_audited": 26,
+            "items_total": 26,
+            "pairs_audited": 325,
+            "pairs_total": 325,
+            "sample": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25
+            ],
+            "sample_sha256": "5e1689eb3d3be6e935e5859da7f60a27971675900d23ac42ae4d2de8a84c07d8",
+            "seed": 1337
+          },
+          "checks": [
+            {
+              "detail": {
+                "returncode": 0,
+                "runs_requested": 5,
+                "runs_written": 5,
+                "timed_out": false
+              },
+              "name": "child_artifacts_complete",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_module_imports",
+              "passed": true
+            },
+            {
+              "detail": "function",
+              "name": "candidate_defines_entrypoint",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 5,
+                "recorded": 5
+              },
+              "name": "all_runs_recorded",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "candidate_call_succeeds",
+              "passed": true
+            },
+            {
+              "detail": null,
+              "name": "output_parses_as_triples",
+              "passed": true
+            },
+            {
+              "detail": {
+                "expected": 26,
+                "num_circles": 26
+              },
+              "name": "count_equals_n",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_radius": 1e-06
+              },
+              "name": "radius_positive_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "items_audited": 26,
+                "min_boundary_margin": 0.499939
+              },
+              "name": "bounds_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "min_gap": 7.99999999995449e-06,
+                "overlap_count": 0,
+                "pairs_audited": 325
+              },
+              "name": "overlap_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "checked": true,
+                "runs": 5
+              },
+              "name": "determinism_check",
+              "passed": true
+            },
+            {
+              "detail": {
+                "budget_ms": 250.0,
+                "enabled": true,
+                "measurement": "resources.json",
+                "runs": 5
+              },
+              "name": "runtime_budget_check",
+              "passed": true
+            }
+          ],
+          "ok": true
+        }
+      },
+      "candidate_id": "c14_near_zero",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c14_near_zero",
+      "source_sha256": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113"
+    }
+  ]
+}

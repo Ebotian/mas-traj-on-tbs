@@ -1,0 +1,321 @@
+{
+  "checks": {
+    "deliverable_descends_from_round1_winner": true,
+    "restored_history_is_contiguous": true,
+    "round1_branch_bytes_are_the_frozen_candidate": true,
+    "round1_decidable_improvement_over_baseline": true,
+    "round1_report_round_ok": true,
+    "round1_score_reproduced_by_fresh_e_star": true,
+    "round2_branch_bytes_are_the_frozen_candidate": true,
+    "round2_branch_descends_from_round1_branch": true,
+    "round2_parent_is_round1_winner": false,
+    "round2_report_round_ok": true,
+    "round2_score_reproduced_by_fresh_e_star": true,
+    "round2_session_started_from_round1_artifact": true
+  },
+  "derivation": {
+    "ancestry": {
+      "generic_exp_0->generic_exp_1": true,
+      "generic_exp_0->main": false,
+      "generic_exp_1->generic_exp_0": false,
+      "generic_exp_1->main": false,
+      "main->generic_exp_0": true,
+      "main->generic_exp_1": true
+    },
+    "checkout_to_best_experiment_branch": {
+      "active_after": "generic_exp_1",
+      "active_before": "main",
+      "returned": "generic_exp_1"
+    },
+    "commit_parents": {
+      "generic_exp_0": [
+        "04970f4820333974a6c57032053e22f1d9ba2bf3 12852de882555b87c6582f72642360d9b7763d6f chore: final session commit",
+        "12852de882555b87c6582f72642360d9b7763d6f a478ad59410c1b5b974d122386607fe2f01bd84e chore(kapso): baseline c02_baseline_upstream",
+        "a478ad59410c1b5b974d122386607fe2f01bd84e 93c3bb17aa1d6ed23654523d952a9b3b191488e5 chore(kapso): add baseline repo memory",
+        "93c3bb17aa1d6ed23654523d952a9b3b191488e5 a3d81e373b1d21cce99eb337e9049bc77b3e3025 chore(kapso): setup evaluation and data directories",
+        "a3d81e373b1d21cce99eb337e9049bc77b3e3025  chore(kapso): ignore experiment sessions"
+      ],
+      "generic_exp_1": [
+        "4cd292d4ef37cbef1d6037cdc5c7ea223c6d7300 04970f4820333974a6c57032053e22f1d9ba2bf3 chore: final session commit",
+        "04970f4820333974a6c57032053e22f1d9ba2bf3 12852de882555b87c6582f72642360d9b7763d6f chore: final session commit",
+        "12852de882555b87c6582f72642360d9b7763d6f a478ad59410c1b5b974d122386607fe2f01bd84e chore(kapso): baseline c02_baseline_upstream",
+        "a478ad59410c1b5b974d122386607fe2f01bd84e 93c3bb17aa1d6ed23654523d952a9b3b191488e5 chore(kapso): add baseline repo memory",
+        "93c3bb17aa1d6ed23654523d952a9b3b191488e5 a3d81e373b1d21cce99eb337e9049bc77b3e3025 chore(kapso): setup evaluation and data directories",
+        "a3d81e373b1d21cce99eb337e9049bc77b3e3025  chore(kapso): ignore experiment sessions"
+      ],
+      "main": [
+        "12852de882555b87c6582f72642360d9b7763d6f a478ad59410c1b5b974d122386607fe2f01bd84e chore(kapso): baseline c02_baseline_upstream",
+        "a478ad59410c1b5b974d122386607fe2f01bd84e 93c3bb17aa1d6ed23654523d952a9b3b191488e5 chore(kapso): add baseline repo memory",
+        "93c3bb17aa1d6ed23654523d952a9b3b191488e5 a3d81e373b1d21cce99eb337e9049bc77b3e3025 chore(kapso): setup evaluation and data directories",
+        "a3d81e373b1d21cce99eb337e9049bc77b3e3025  chore(kapso): ignore experiment sessions"
+      ]
+    },
+    "deliverable": {
+      "branch_name": "generic_exp_1",
+      "node_id": 1,
+      "score": 2.4519205208433132
+    },
+    "deliverable_branch": "generic_exp_1",
+    "deliverable_descends_from_round1_branch": true,
+    "git_diff_solution_round1_round2_tail": "diff --git a/solution.py b/solution.py\nindex 70dec61..afc1ec8 100644\n--- a/solution.py\n+++ b/solution.py\n@@ -1,7 +1,8 @@\n-\"\"\"Near-tie variant of c01_good_hex: one radius shrunk by 1e-4.\n+\"\"\"Frozen good packing candidate for the plumbing task.\n \n-Shrinking a radius can neither break the square bounds nor create an\n-overlap, so the configuration stays valid and only the objective moves.\"\"\"\n+26 equal-radius circles packed in the unit square, produced offline by\n+tools/make_good_packing.py (jammed max-min packing, r* ~ 0.0943).\n+Deterministic, no imports beyond typing, well under the 250 ms budget.\"\"\"\n \n from __future__ import annotations\n \n@@ -10,7 +11,7 @@ from typing import Iterable, List, Tuple\n # 26 equal circles of radius 0.0943046354170505, centres frozen by\n # tools/make_good_packing.py (see tools/good_packing_26.json).\n TABLE_26: List[Tuple[float, float, float]] = [\n-    (0.09430473541705074, 0.36625249268324267, 0.0942046354170505),\n+    (0.09430473541705074, 0.36625249268324267, 0.0943046354170505),\n     (0.09430473541705074, 0.09430473541705074, 0.0943046354170505),\n     (0.5943049859758841, 0.23747737851250464, 0.0943046354170505),\n     (0.2629791171396117, 0.2818576738918528, 0.0943046354170505),",
+    "git_diff_stat_round1_round2": "changes.log | 9 +++++++++\n solution.py | 9 +++++----\n 2 files changed, 14 insertions(+), 4 deletions(-)",
+    "merge_base": {
+      "generic_exp_0|generic_exp_1": "04970f4820333974a6c57032053e22f1d9ba2bf3",
+      "generic_exp_0|main": "12852de882555b87c6582f72642360d9b7763d6f",
+      "generic_exp_1|generic_exp_0": "04970f4820333974a6c57032053e22f1d9ba2bf3",
+      "generic_exp_1|main": "12852de882555b87c6582f72642360d9b7763d6f",
+      "main|generic_exp_0": "12852de882555b87c6582f72642360d9b7763d6f",
+      "main|generic_exp_1": "12852de882555b87c6582f72642360d9b7763d6f"
+    },
+    "merge_base_round1_round2": "04970f4820333974a6c57032053e22f1d9ba2bf3",
+    "parent_used_in_round2_run": {
+      "branch_name": "generic_exp_0",
+      "node_id": 0,
+      "phase": "inside_run"
+    },
+    "round1_branch": "generic_exp_0",
+    "round1_branch_tip": "04970f4820333974a6c57032053e22f1d9ba2bf3",
+    "round1_expected_solution_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+    "round1_solution_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+    "round2_branch": "generic_exp_1",
+    "round2_branch_head_commits": [
+      "4cd292d4ef37cbef1d6037cdc5c7ea223c6d7300 04970f4820333974a6c57032053e22f1d9ba2bf3 chore: final session commit",
+      "04970f4820333974a6c57032053e22f1d9ba2bf3 12852de882555b87c6582f72642360d9b7763d6f chore: final session commit",
+      "12852de882555b87c6582f72642360d9b7763d6f a478ad59410c1b5b974d122386607fe2f01bd84e chore(kapso): baseline c02_baseline_upstream",
+      "a478ad59410c1b5b974d122386607fe2f01bd84e 93c3bb17aa1d6ed23654523d952a9b3b191488e5 chore(kapso): add baseline repo memory",
+      "93c3bb17aa1d6ed23654523d952a9b3b191488e5 a3d81e373b1d21cce99eb337e9049bc77b3e3025 chore(kapso): setup evaluation and data directories",
+      "a3d81e373b1d21cce99eb337e9049bc77b3e3025  chore(kapso): ignore experiment sessions"
+    ],
+    "round2_commit_parent_line": "a3d81e373b1d21cce99eb337e9049bc77b3e3025  chore(kapso): ignore experiment sessions",
+    "round2_expected_solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+    "round2_node_code_diff_present": true,
+    "round2_solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+  },
+  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+  "epsilon": 1e-09,
+  "fresh_independent_e_star": {
+    "baseline_candidate_id": "c02_baseline_upstream",
+    "baseline_candidate_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+    "baseline_main": {
+      "branch": "main",
+      "reference": {
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/independent/verify-main --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/state/reference/verify-main.full.json --state-dir /home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/state/e_star_state",
+        "exit_code": 0,
+        "failure_kind": null,
+        "objective": 0.25,
+        "status": "ok"
+      },
+      "solution_present": true,
+      "solution_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+    },
+    "round1_branch": {
+      "branch": "generic_exp_0",
+      "reference": {
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/independent/verify-generic_exp_0 --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/state/reference/verify-generic_exp_0.full.json --state-dir /home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/state/e_star_state",
+        "exit_code": 0,
+        "failure_kind": null,
+        "objective": 2.451820520843313,
+        "status": "ok"
+      },
+      "solution_present": true,
+      "solution_sha256": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418"
+    },
+    "round2_branch": {
+      "branch": "generic_exp_1",
+      "reference": {
+        "command": "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py evaluate --candidate /home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/independent/verify-generic_exp_1 --seed 1337 --fidelity full --fraction 1.0 --out /home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/state/reference/verify-generic_exp_1.full.json --state-dir /home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/state/e_star_state",
+        "exit_code": 0,
+        "failure_kind": null,
+        "objective": 2.4519205208433132,
+        "status": "ok"
+      },
+      "solution_present": true,
+      "solution_sha256": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d"
+    }
+  },
+  "improvements": {
+    "round1_over_baseline": {
+      "decidable": true,
+      "epsilon": 1e-09,
+      "high": 2.451820520843313,
+      "low": 0.25,
+      "margin": 2.201820520843313,
+      "rule": "margin > EID*'s conformance epsilon"
+    },
+    "round2_over_round1": {
+      "decidable": true,
+      "epsilon": 1e-09,
+      "high": 2.4519205208433132,
+      "low": 2.451820520843313,
+      "margin": 0.00010000000000021103,
+      "rule": "margin > EID*'s conformance epsilon"
+    }
+  },
+  "lane": "real run_implementation (strategy.py:1036) over a codex/deepseek-flash session; ideation and judge seamed",
+  "mode_name": "BRIDGE_2ROUND",
+  "model_lane": {
+    "note": "codex reports no billing telemetry to KAPSO; the token counts are the ones the CLI itself printed into the session transcript",
+    "tokens": {
+      "generic_exp_0": {
+        "final_tokens_used": 11017,
+        "tokens_used_lines": [
+          11017
+        ],
+        "transcript": "/home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/workspace/.kapso/sessions/generic_exp_0/stream.jsonl",
+        "transcript_bytes": 36126
+      },
+      "generic_exp_1": {
+        "final_tokens_used": 10531,
+        "tokens_used_lines": [
+          10531
+        ],
+        "transcript": "/home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered/workspace/.kapso/sessions/generic_exp_1/stream.jsonl",
+        "transcript_bytes": 35393
+      }
+    }
+  },
+  "restored_state": {
+    "adopted_registered_head": {
+      "command_full": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+      "data_manifest_entries": 0,
+      "head_evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "head_version": 1,
+      "live_tree_fingerprint": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+      "setup_called": false,
+      "subsample_seed": 1337
+    },
+    "node_summary": [
+      {
+        "attempts": [
+          {
+            "commit_sha": "04970f4820333974a6c57032053e22f1d9ba2bf3",
+            "duration_seconds": 20.505431328998384,
+            "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 2.451820520843313,
+            "seed": 1337
+          }
+        ],
+        "branch_name": "generic_exp_0",
+        "build_fidelity": "full",
+        "eval_fidelity": "full",
+        "evaluation_valid": true,
+        "had_error": false,
+        "node_id": 0,
+        "parent_branch_name": "main",
+        "parent_node_id": null,
+        "score": 2.451820520843313
+      },
+      {
+        "attempts": [
+          {
+            "commit_sha": "4cd292d4ef37cbef1d6037cdc5c7ea223c6d7300",
+            "duration_seconds": 16.50468662200001,
+            "evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 2.4519205208433132,
+            "seed": 1337
+          }
+        ],
+        "branch_name": "generic_exp_1",
+        "build_fidelity": "full",
+        "eval_fidelity": "full",
+        "evaluation_valid": true,
+        "had_error": false,
+        "node_id": 1,
+        "parent_branch_name": "generic_exp_0",
+        "parent_node_id": 0,
+        "score": 2.4519205208433132
+      }
+    ],
+    "nodes_after_final_state": [
+      0,
+      1
+    ],
+    "nodes_after_round1_state": [
+      0
+    ],
+    "parent_selection_after_round1_state": {
+      "branch_name": "generic_exp_0",
+      "node_id": 0
+    },
+    "parent_selection_on_final_state": {
+      "branch_name": "generic_exp_1",
+      "node_id": 1
+    },
+    "selection_after_round1_state": {
+      "get_best_experiment": {
+        "branch_name": "generic_exp_0",
+        "node_id": 0,
+        "score": 2.451820520843313
+      },
+      "get_deliverable_experiment": {
+        "branch_name": "generic_exp_0",
+        "node_id": 0,
+        "score": 2.451820520843313
+      },
+      "get_deliverable_score": 2.451820520843313,
+      "parent_policy": "best",
+      "registered_evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962"
+    },
+    "selection_on_final_state": {
+      "get_best_experiment": {
+        "branch_name": "generic_exp_1",
+        "node_id": 1,
+        "score": 2.4519205208433132
+      },
+      "get_deliverable_experiment": {
+        "branch_name": "generic_exp_1",
+        "node_id": 1,
+        "score": 2.4519205208433132
+      },
+      "get_deliverable_score": 2.4519205208433132,
+      "parent_policy": "best",
+      "registered_evaluator_id": "1c6cdec3d71c01124249e00a8723c6b4ea7442ed479edcfc249b937d7125e962"
+    }
+  },
+  "rounds": {
+    "round1": {
+      "branch": "generic_exp_0",
+      "candidate_id": "c04_near_tie",
+      "node_id": 0,
+      "parent_branch": "main",
+      "prepared_sec": 2.499,
+      "round_ok": true,
+      "run_sec": 20.541,
+      "score": 2.451820520843313
+    },
+    "round2": {
+      "branch": "generic_exp_1",
+      "candidate_id": "c01_good_hex",
+      "node_id": 1,
+      "parent_branch": "main",
+      "parent_node_id": null,
+      "round_ok": true,
+      "run_sec": 16.541,
+      "score": 2.4519205208433132
+    }
+  },
+  "run_dir": "/home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-tampered",
+  "runtime": "kapso",
+  "schema": "a0.kapso.bridge_2round.verification/v1",
+  "scores": {
+    "baseline_main": 0.25,
+    "round1_generic_exp_0": 2.451820520843313,
+    "round1_node_score": 2.451820520843313,
+    "round1_plan_expected": 2.451820520843313,
+    "round2_generic_exp_1": 2.4519205208433132,
+    "round2_node_score": 2.4519205208433132,
+    "round2_plan_expected": 2.4519205208433132
+  },
+  "verdict": "bridge_unproven",
+  "wall_clock_caps_sec": {
+    "enforced_by": "the launching shell (`timeout <cap>` on this process)",
+    "round1": 1500.0,
+    "round2": 1500.0
+  }
+}

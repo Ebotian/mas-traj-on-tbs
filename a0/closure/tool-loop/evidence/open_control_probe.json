@@ -1,0 +1,193 @@
+{
+ "container_hostname": "662cf9e71c79",
+ "p1_shell": {
+  "file_read_back_matches": true,
+  "file_write": "ok",
+  "file_written": "/work/inlane_shell_marker.txt",
+  "hostname": "662cf9e71c79",
+  "id": {
+   "command": [
+    "id"
+   ],
+   "returncode": 0,
+   "stderr": "",
+   "stdout": "uid=0(root) gid=0(root) groups=0(root)"
+  },
+  "pwd": "/",
+  "python": "3.12.14",
+  "sh_echo": {
+   "command": [
+    "sh",
+    "-c",
+    "echo INLANE-SHELL-OK"
+   ],
+   "returncode": 0,
+   "stderr": "",
+   "stdout": "INLANE-SHELL-OK"
+  },
+  "uname": "Linux 662cf9e71c79 7.2.4-arch1-2 #1 SMP PREEMPT_DYNAMIC Tue, 08 Sep 2026 10:22:31 +0000 x86_64"
+ },
+ "p2_dns": {
+  "blocked_host": {
+   "addresses": [
+    "104.20.23.154",
+    "172.66.147.243",
+    "2606:4700:10::6814:179a",
+    "2606:4700:10::ac42:93f3"
+   ],
+   "name": "example.com",
+   "ok": true,
+   "sec": 0.082
+  },
+  "getent_blocked_host": {
+   "command": [
+    "getent",
+    "hosts",
+    "example.com"
+   ],
+   "returncode": 0,
+   "stderr": "",
+   "stdout": "2606:4700:10::ac42:93f3 example.com\n2606:4700:10::6814:179a example.com"
+  },
+  "getent_proxy": {
+   "command": [
+    "getent",
+    "hosts",
+    "a0tl-proxy"
+   ],
+   "returncode": 2,
+   "stderr": "",
+   "stdout": ""
+  },
+  "model_host": {
+   "addresses": [
+    "101.71.73.135",
+    "123.148.116.184"
+   ],
+   "name": "api.deepseek.com",
+   "ok": true,
+   "sec": 0.104
+  },
+  "proxy_by_container_name": {
+   "error": "gaierror: [Errno -2] Name or service not known",
+   "name": "a0tl-proxy",
+   "ok": false,
+   "sec": 0.079
+  },
+  "resolv_conf_nameservers": [
+   "10.54.46.250"
+  ]
+ },
+ "p3_http": {
+  "direct_http_blocked_host": {
+   "error": "URLError: <urlopen error timed out>",
+   "sec": 20.02,
+   "status": null,
+   "url": "http://93.184.216.34/",
+   "via_proxy": null
+  },
+  "direct_tcp_1.1.1.1_443": {
+   "error": "TimeoutError: timed out",
+   "ok": false,
+   "sec": 5.005,
+   "target": "1.1.1.1:443"
+  },
+  "direct_tcp_literal_443": {
+   "error": "TimeoutError: timed out",
+   "ok": false,
+   "sec": 5.005,
+   "target": "93.184.216.34:443"
+  },
+  "direct_tcp_proxy_8787": {
+   "error": "gaierror: [Errno -2] Name or service not known",
+   "ok": false,
+   "sec": 0.109,
+   "target": "a0tl-proxy:8787"
+  },
+  "proxy_connect_allowlisted_host": {
+   "body_head": "Authentication Fails (governor)",
+   "error": "HTTPError: HTTP Error 401: Authorization Required",
+   "sec": 0.366,
+   "status": 401,
+   "url": "https://api.deepseek.com/",
+   "via_proxy": "http://172.17.0.3:8787"
+  },
+  "proxy_connect_blocked_host": {
+   "error": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>",
+   "sec": 0.001,
+   "status": null,
+   "url": "https://example.com/",
+   "via_proxy": "http://172.17.0.3:8787"
+  },
+  "proxy_origin_form_model_path_no_key": {
+   "body_head": "Authentication Fails (governor)",
+   "error": "HTTPError: HTTP Error 401: Authorization Required",
+   "sec": 0.402,
+   "status": 401,
+   "url": "http://172.17.0.3:8787/v1/models",
+   "via_proxy": null
+  },
+  "proxy_origin_form_open_relay": {
+   "body_head": "a0pc-proxy: path not on allowlist",
+   "error": "HTTPError: HTTP Error 403: Forbidden",
+   "sec": 0.0,
+   "status": 403,
+   "url": "http://172.17.0.3:8787/https://example.com/",
+   "via_proxy": null
+  }
+ },
+ "p4_candidate": {
+  "candidate_dir": "/work/cand_c02",
+  "child_process": {
+   "command": [
+    "/usr/local/bin/python3",
+    "-c",
+    "import sys; sys.path.insert(0, '/work/cand_c02'); import solution; print('CANDIDATE-CHILD-OK', sum(r for _, _, r in solution.pack_circles(26)))"
+   ],
+   "returncode": 0,
+   "stderr": "",
+   "stdout": "CANDIDATE-CHILD-OK 0.25"
+  },
+  "e_star": {
+   "command": [
+    "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+    "/home/ebt/rsi-dev/a0/tasks/circle-packing/e_star.py",
+    "evaluate",
+    "--candidate",
+    "/work/cand_c02",
+    "--seed",
+    "1337",
+    "--fidelity",
+    "full",
+    "--fraction",
+    "1.0",
+    "--n",
+    "26",
+    "--runs",
+    "5",
+    "--out",
+    "/work/cand_c02.outcome.json"
+   ],
+   "returncode": 0,
+   "stderr": "e_star: status=ok state_dir=/tmp/e-star-state/18bacee43b713e5a-8c9da155eb13c73b out=/work/cand_c02.outcome.json",
+   "stdout": "E_STAR_MANIFEST {\"candidate_source_sha256\": \"18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f\", \"canonical_digest\": \"b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc\", \"e_star_version\": \"1.0.0\", \"evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"objective\": {\"direction\": \"max\", \"name\": \"sum_radii\", \"unit\": \"radius_sum\", \"value\": 0.25}, \"schema\": \"e_star.manifest/v1\", \"seed\": 1337, \"status\": \"ok\", \"total_items\": 26}"
+  },
+  "e_star_python": "/home/ebt/rsi-dev/a0/tasks/circle-packing/.venv/bin/python",
+  "outcome_fields": {
+   "audit_coverage": 1.0,
+   "items_audited": 26,
+   "min_boundary_margin": 0.0,
+   "min_gap": 0.036249916677713497,
+   "num_circles": 26,
+   "overlap_count": 0,
+   "packing_density": 0.007551905417283158,
+   "pairs_audited": 325,
+   "sum_radii": 0.25
+  },
+  "outcome_status": "ok"
+ },
+ "proxy_url": "http://172.17.0.3:8787",
+ "schema": "a0.ttoolloop.inlane_probe/v1",
+ "when": "2026-09-21T07:45:53+0000"
+}
+written: /work/open_control_probe.json

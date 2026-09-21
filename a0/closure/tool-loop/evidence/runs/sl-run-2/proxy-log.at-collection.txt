@@ -1,0 +1,48 @@
+2026-09-21T07:18:07+0000 event=start port=8787 allow_connect=['api.deepseek.com', 'openrouter.ai'] routes=['/v1/messages', '/v1/models', '/v1/chat/completions', '/v1/responses']
+2026-09-21T07:18:08+0000 event=connect peer=172.31.78.2:49494 target=example.com:443 decision=DENY
+2026-09-21T07:18:08+0000 event=connect peer=172.31.78.2:49506 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T07:18:08+0000 event=connect peer=172.31.78.2:49506 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T07:18:08+0000 event=deny proto=http peer=172.31.78.2:49516 method=GET path=/https://example.com/ reason=no_route
+2026-09-21T07:18:08+0000 event=req peer=172.31.78.2:49524 method=GET path=/v1/models upstream=https://api.deepseek.com/v1/models status=401 resp_bytes=31
+2026-09-21T07:18:19+0000 event=req peer=172.31.78.2:39354 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=134481
+2026-09-21T07:18:21+0000 event=req peer=172.31.78.2:39364 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=183363
+2026-09-21T07:18:28+0000 event=req peer=172.31.78.2:45974 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=587645
+2026-09-21T07:18:29+0000 event=req peer=172.31.78.2:45984 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=110421
+2026-09-21T07:18:54+0000 event=req peer=172.31.78.2:57362 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=128571
+2026-09-21T07:19:04+0000 event=req peer=172.31.78.2:57374 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=523627
+2026-09-21T07:19:38+0000 event=req peer=172.31.78.2:42998 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=1536567
+2026-09-21T07:19:43+0000 event=req peer=172.31.78.2:43222 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=370685
+2026-09-21T07:19:44+0000 event=connect peer=172.17.0.4:36018 target=example.com:443 decision=DENY
+2026-09-21T07:19:44+0000 event=connect peer=172.17.0.4:36030 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T07:19:44+0000 event=connect peer=172.17.0.4:36030 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T07:19:44+0000 event=deny proto=http peer=172.17.0.4:36042 method=GET path=/https://example.com/ reason=no_route
+2026-09-21T07:19:45+0000 event=req peer=172.17.0.4:36044 method=GET path=/v1/models upstream=https://api.deepseek.com/v1/models status=401 resp_bytes=31
+2026-09-21T07:19:48+0000 event=req peer=172.31.78.2:57578 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=263676
+2026-09-21T07:19:51+0000 event=req peer=172.31.78.2:57594 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=248200
+2026-09-21T07:19:54+0000 event=req peer=172.31.78.2:48618 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=196031
+2026-09-21T07:20:03+0000 event=req peer=172.31.78.2:48626 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=489188
+2026-09-21T07:20:13+0000 event=req peer=172.31.78.2:36074 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=446851
+2026-09-21T07:20:20+0000 event=req peer=172.31.78.2:49894 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=433338
+2026-09-21T07:20:32+0000 event=req peer=172.31.78.2:50862 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=115604
+2026-09-21T07:20:49+0000 event=connect peer=172.17.0.4:60564 target=example.com:443 decision=DENY
+2026-09-21T07:20:49+0000 event=connect peer=172.17.0.4:60578 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T07:20:50+0000 event=connect peer=172.17.0.4:60578 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T07:20:50+0000 event=deny proto=http peer=172.17.0.4:36456 method=GET path=/https://example.com/ reason=no_route
+2026-09-21T07:20:50+0000 event=req peer=172.17.0.4:36460 method=GET path=/v1/models upstream=https://api.deepseek.com/v1/models status=401 resp_bytes=31
+2026-09-21T07:21:35+0000 event=req peer=172.31.78.2:56630 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=208466
+2026-09-21T07:21:37+0000 event=req peer=172.31.78.2:56640 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=112835
+2026-09-21T07:21:40+0000 event=req peer=172.31.78.2:56656 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=132233
+2026-09-21T07:21:43+0000 event=req peer=172.31.78.2:40720 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=133365
+2026-09-21T07:21:49+0000 event=req peer=172.31.78.2:40734 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=366832
+2026-09-21T07:21:52+0000 event=req peer=172.31.78.2:40742 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=211945
+2026-09-21T07:22:01+0000 event=req peer=172.31.78.2:43766 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=532517
+2026-09-21T07:22:13+0000 event=req peer=172.31.78.2:57156 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=112141
+2026-09-21T07:24:17+0000 event=req peer=172.31.78.2:42956 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=209749
+2026-09-21T07:24:19+0000 event=req peer=172.31.78.2:42958 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=179876
+2026-09-21T07:24:21+0000 event=req peer=172.31.78.2:42972 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=151698
+2026-09-21T07:24:23+0000 event=req peer=172.31.78.2:53830 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=130462
+2026-09-21T07:24:25+0000 event=req peer=172.31.78.2:53846 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=148268
+2026-09-21T07:24:57+0000 event=req peer=172.31.78.2:36148 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=112125
+2026-09-21T07:29:18+0000 event=req peer=172.31.78.2:56412 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=129037
+2026-09-21T07:29:23+0000 event=req peer=172.31.78.2:56416 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=280737
+2026-09-21T07:29:51+0000 event=req peer=172.31.78.2:58336 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=1268103

@@ -1,0 +1,43 @@
+# the before/after probe windows, cut from the same 'docker logs a0tl-proxy' stream
+# a0tl-proxy was restarted at 2026-09-21T08:18:43Z onto the hardened variant (same container, same mount).
+
+== BEFORE (port-blind variant, 08:17:47Z .. 08:18:13Z) ==
+2026-09-21T08:18:06+0000 event=connect peer=172.31.78.2:54466 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T08:18:06+0000 event=connect peer=172.31.78.2:54476 target=api.deepseek.com:25 decision=ALLOW tunnel=open
+2026-09-21T08:18:06+0000 event=connect peer=172.31.78.2:54466 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T08:18:06+0000 event=connect peer=172.31.78.2:54476 target=api.deepseek.com:25 tunnel=closed
+2026-09-21T08:18:12+0000 event=connect peer=172.31.78.2:47306 target=api.deepseek.com:80 decision=ALLOW tunnel=open
+2026-09-21T08:18:12+0000 event=connect peer=172.31.78.2:47322 target=api.deepseek.com:8443 decision=ALLOW tunnel=open
+2026-09-21T08:18:12+0000 event=connect peer=172.31.78.2:47306 target=api.deepseek.com:80 tunnel=closed
+2026-09-21T08:18:12+0000 event=error peer=172.31.78.2:47324 stage=accept err=invalid literal for int() with base 10: 'api.deepseek.com'
+2026-09-21T08:18:12+0000 event=connect peer=172.31.78.2:47330 target=example.com:443 decision=DENY
+2026-09-21T08:18:12+0000 event=connect peer=172.31.78.2:47344 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T08:18:12+0000 event=connect peer=172.31.78.2:47322 target=api.deepseek.com:8443 tunnel=closed
+2026-09-21T08:18:12+0000 event=connect peer=172.31.78.2:47344 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T08:18:12+0000 event=connect peer=172.31.78.2:47360 target=api.deepseek.com:25 decision=ALLOW tunnel=open
+2026-09-21T08:18:13+0000 event=connect peer=172.31.78.2:47364 target=api.deepseek.com:80 decision=ALLOW tunnel=open
+2026-09-21T08:18:13+0000 event=connect peer=172.31.78.2:47360 target=api.deepseek.com:25 tunnel=closed
+2026-09-21T08:18:13+0000 event=connect peer=172.31.78.2:47364 target=api.deepseek.com:80 tunnel=closed
+
+== AFTER (hardened variant, 08:18:45Z) ==
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41768 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41782 target=api.deepseek.com:25 decision=DENY
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41790 target=api.deepseek.com:22 decision=DENY
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41792 target=api.deepseek.com:80 decision=DENY
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41808 target=api.deepseek.com:8443 decision=DENY
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41768 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41810 target=api.deepseek.com decision=ALLOW tunnel=open
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41816 target=example.com:443 decision=DENY
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41828 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41810 target=api.deepseek.com tunnel=closed
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41840 target=api.deepseek.com:25 decision=DENY
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41844 target=api.deepseek.com:80 decision=DENY
+2026-09-21T08:18:45+0000 event=connect peer=172.31.78.2:41828 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T08:18:45+0000 event=req peer=172.31.78.2:41858 method=GET path=/v1/models upstream=https://api.deepseek.com/v1/models status=401 resp_bytes=31
+2026-09-21T08:18:45+0000 event=req peer=172.31.78.2:41872 method=GET path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=401 resp_bytes=31
+2026-09-21T08:18:45+0000 event=deny proto=http peer=172.31.78.2:41880 method=GET path=/nope reason=no_route
+2026-09-21T08:18:50+0000 event=connect peer=172.31.78.2:49540 target=example.com:443 decision=DENY
+2026-09-21T08:18:50+0000 event=connect peer=172.31.78.2:49552 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T08:18:50+0000 event=connect peer=172.31.78.2:49552 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T08:18:50+0000 event=deny proto=http peer=172.31.78.2:49558 method=GET path=/https://example.com/ reason=no_route
+2026-09-21T08:18:51+0000 event=req peer=172.31.78.2:49572 method=GET path=/v1/models upstream=https://api.deepseek.com/v1/models status=401 resp_bytes=31

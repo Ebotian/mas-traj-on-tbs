@@ -1,0 +1,20 @@
+# enforcement-point record: the SHARED port-blind original
+# a0/notes/exit-closed/proxy-closure/proxy/allowlist_proxy.py, run as a0tl-proxy via
+#   PROXY_SCRIPT=allowlist_proxy.py ./setup.sh
+# log: docker logs a0tl-proxy  (2026-09-21T08:20Z)
+
+2026-09-21T08:20:00+0000 event=connect peer=172.31.78.2:52774 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T08:20:00+0000 event=connect peer=172.31.78.2:52786 target=api.deepseek.com:25 decision=ALLOW tunnel=open
+2026-09-21T08:20:00+0000 event=connect peer=172.31.78.2:52774 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T08:20:00+0000 event=connect peer=172.31.78.2:52786 target=api.deepseek.com:25 tunnel=closed
+2026-09-21T08:20:06+0000 event=connect peer=172.31.78.2:52816 target=api.deepseek.com:80 decision=ALLOW tunnel=open
+2026-09-21T08:20:06+0000 event=connect peer=172.31.78.2:52824 target=api.deepseek.com:8443 decision=ALLOW tunnel=open
+2026-09-21T08:20:06+0000 event=connect peer=172.31.78.2:52816 target=api.deepseek.com:80 tunnel=closed
+2026-09-21T08:20:06+0000 event=connect peer=172.31.78.2:52836 target=example.com:443 decision=DENY
+2026-09-21T08:20:06+0000 event=connect peer=172.31.78.2:52844 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T08:20:06+0000 event=connect peer=172.31.78.2:52824 target=api.deepseek.com:8443 tunnel=closed
+2026-09-21T08:20:06+0000 event=connect peer=172.31.78.2:52844 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T08:20:06+0000 event=connect peer=172.31.78.2:52852 target=api.deepseek.com:25 decision=ALLOW tunnel=open
+2026-09-21T08:20:07+0000 event=connect peer=172.31.78.2:52852 target=api.deepseek.com:25 tunnel=closed
+2026-09-21T08:20:07+0000 event=connect peer=172.31.78.2:52862 target=api.deepseek.com:80 decision=ALLOW tunnel=open
+2026-09-21T08:20:07+0000 event=connect peer=172.31.78.2:52862 target=api.deepseek.com:80 tunnel=closed

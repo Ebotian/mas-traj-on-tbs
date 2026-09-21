@@ -1,0 +1,58 @@
+SHIPPED_ARGV ['codex', 'exec', '--sandbox', 'workspace-write', '--skip-git-repo-check']
+LANE_EXIT rc=0 timed_out=False wall_sec=16.4
+Every command in this lane fails before the payload runs. Raw output from all attempts:
+
+**1. Closure probe**
+```
+$ mkdir -p /work/runs/sl-lane-ws/wd
+$ python3 /opt/a0tl/inlane/inlane_probe.py --out /work/runs/sl-lane-ws/wd/inlane_probe.json
+bwrap: Can't mount proc on /proc: Operation not permitted
+EXIT:1
+```
+Not succeeded. No `inlane_probe.json` produced.
+
+**2. Independent checks (a–d)**
+```
+$ getent hosts example.com
+bwrap: Can't mount proc on /proc: Operation not permitted
+EXIT:1
+```
+```
+$ python3 -c "import urllib.request;print(urllib.request.urlopen('http://example.com/',timeout=10).status)"
+bwrap: Can't mount proc on /proc: Operation not permitted
+```
+```
+$ python3 -c "import urllib.request as u;op=u.build_opener(u.ProxyHandler({'https':'http://a0tl-proxy:8787'}));print(op.open('https://example.com/',timeout=10).status)"
+bwrap: Can't mount proc on /proc: Operation not permitted
+```
+The `mkdir -p .../cand && cp ... solution.py` + `.venv/bin/python` subprocess command never executed; it returned the same bwrap error.
+
+None of a–d succeeded. None of the four checks produced any network or subprocess result, because the sandbox itself never initialized.
+
+**Controls confirming this is sandbox-level, not per-command**
+```
+$ true
+bwrap: Can't mount proc on /proc: Operation not permitted
+```
+```
+$ echo hello; id          (login=false)
+bwrap: Can't mount proc on /proc: Operation not permitted
+```
+```
+$ true                    (tty=true)
+bwrap: Can't mount proc on /proc: Operation not permitted
+```
+Trials with `shell=/bin/sh`, `tty=true`, `login=false`, and repeated retries all produce the identical `bwrap: Can't mount proc on /proc: Operation not permitted`. Even a bare `true` fails, so no command in this lane can execute.
+
+**3. SUMMARY.md**
+```
+$ apply_patch  (direct exec)
+Failed to write file /work/runs/sl-lane-ws/wd/SUMMARY.md
+```
+Not succeeded. `SUMMARY.md` was not created; writing requires a shell that the sandbox rejects.
+
+**Blocker**
+The run is blocked at environment setup, not by network closure. The bwrap sandbox cannot mount `/proc` (`Operation not permitted`), so every shell invocation aborts before running its command. This forecloses the probe, checks a–d, and the write of `SUMMARY.md`. Approval policy is `never` and I'm instructed not to pass `sandbox_permissions`, so I have no alternate execution path — and I won't fabricate outputs or claim the file was written.
+
+I can't emit `SOLVER-LANE-COMPLETE` honestly, since the lane didn't complete. To unblock: grant the sandbox the privilege to mount `/proc` (or run with a sandbox profile that doesn't require it), then re-issue the four steps and I'll capture the raw output and write `SUMMARY.md`.
+

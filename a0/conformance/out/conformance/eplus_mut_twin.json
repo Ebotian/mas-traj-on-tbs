@@ -1,0 +1,713 @@
+{
+  "schema": "a0.conformance.report/v1",
+  "generated_at": "2026-09-21T15:15:56+0800",
+  "generated_by": "a0/conformance/conformance.py run",
+  "step": "A0.1 evaluator integration conformance",
+  "protocol": {
+    "formula": "for every r in R and every c in C*: E_r(c; theta_E) = E*(c; theta_E) +- epsilon, and EID_r derived from EID* (plan:513-519)",
+    "screen": "A0 is a candidate screen, not a collective gate: R_1 = {r : A0.1_r and A0.2_r}, |R_1| >= 1 to continue (plan:490)",
+    "qualification": "A0.1 is reported per runtime as (state, measured, adapted, total), never as a single global verdict: PASS = every row of C* measured by the runtime's own evaluator interface; PARTIAL = every row agrees but at least one agrees only on semantics the ADAPTER supplied (declared synthetic failure), so it was not measured; FAIL = a row disagrees, coverage is incomplete, or a check failed. `verdicts.a0_1` carries the label with the measured split (e.g. `PARTIAL (5/14 measured)`), so a bare PASS cannot be read for a partial runtime",
+    "f_r": "round one freezes F_r(E*) = scalar(E*) (plan:528)",
+    "false_green": "plan:551-552"
+  },
+  "frozen": {
+    "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_star_binding": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "eid_document": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+    "eid_document_name": "canonical",
+    "eid_document_requested": "canonical",
+    "eid_document_sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+    "eid_document_supplied_to_adapters": {
+      "label": "canonical",
+      "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+      "exists": true,
+      "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "matches_binding": true
+    },
+    "candidate_set": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+    "candidate_set_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+    "candidate_ids": [
+      "c01_good_hex",
+      "c02_baseline_upstream",
+      "c03_mirror",
+      "c04_near_tie",
+      "c05_overlapping",
+      "c06_empty",
+      "c07_single",
+      "c08_out_of_bounds",
+      "c09_malformed_import",
+      "c10_raises",
+      "c11_non_deterministic",
+      "c12_exit_without_artifacts",
+      "c13_slow",
+      "c14_near_zero"
+    ],
+    "reference_table": "/home/ebt/rsi-dev/a0/tasks/circle-packing/E_STAR.json",
+    "reference_table_sha256": "f5ac1abfa61872541ea92a6a09fcc6178c244d914234211dcc633bac0ea66f5f",
+    "epsilon": 1e-09,
+    "primary_field": "sum_radii",
+    "direction": "maximize",
+    "theta_e": {
+      "seed": 1337,
+      "fidelity": "full",
+      "fraction": 1.0,
+      "n": 26,
+      "runs": 5,
+      "runtime_budget_ms": 250.0,
+      "timeout_s": 120.0
+    },
+    "f_star": {
+      "declaration": "/home/ebt/rsi-dev/a0/contract/fr/scalar.json",
+      "spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+      "pinned_spec_hash": "1fa6f941262ac52cc3aab5e5f17d055e9407d01bc558e2b83c409fea1af358d0",
+      "matches_pinned": true,
+      "name": "F_r = scalar(E*)",
+      "applies": "scalar",
+      "primary_field": "sum_radii",
+      "direction": "maximize",
+      "rule": "F_r(E*) = scalar(E*) = outcome.objective.sum_radii, maximize (plan:528)"
+    },
+    "evaluator": {
+      "script": "tasks/circle-packing/e_star.py",
+      "interpreter": "tasks/circle-packing/.venv/bin/python",
+      "argv_template": "tasks/circle-packing/.venv/bin/python tasks/circle-packing/e_star.py evaluate --candidate <C_STAR/<id>> --seed 1337 --fidelity full --fraction 1.0 --n 26 --runs 5 --runtime-budget-ms 250.0 --timeout-s 120.0 --out <out.json> --state-dir <state>"
+    }
+  },
+  "eid": {
+    "expected_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+    "checks": [
+      {
+        "check_id": "EID-inputs-match-binding",
+        "ok": true,
+        "detail": "EID_INPUTS.json eid_star == binding 664115e0... : True"
+      },
+      {
+        "check_id": "EID-document-found",
+        "ok": true,
+        "detail": "an EID*.json with eid_star == 664115e0... was found"
+      },
+      {
+        "check_id": "EID-document-as-requested",
+        "ok": true,
+        "detail": "the document handed to the adapters is the one requested (`--eid-document canonical` -> /home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json)"
+      },
+      {
+        "check_id": "EID-recompute",
+        "ok": true,
+        "detail": "evalcontract.py recompute is filesystem-free and recomputed EID* matching 664115e0d63ad2e1 (exit 0)"
+      },
+      {
+        "check_id": "EID-verify-inputs",
+        "ok": true,
+        "detail": "evalcontract.py verify re-hashed the declared inputs of plumbing.EID.json against /home/ebt/rsi-dev/a0/contract/plumbing.contract.json [the supplied document's own `spec` field (plumbing.EID.json)] (exit 0)"
+      },
+      {
+        "check_id": "EID-documents-agree",
+        "ok": true,
+        "detail": "2 document(s) carry EID* = 664115e0...: ['/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json', '/home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.EID.proposed.json']; the runner hands /home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json to the adapters (sha256 50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b)"
+      }
+    ],
+    "eid_inputs": {
+      "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/EID_INPUTS.json",
+      "sha256": "4f925f62cb1b5ec9fdb43fa98521e964caeed259ca54152e8e8b6e028650868a",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "spec_path": "a0/tasks/circle-packing/plumbing.contract.proposed.json"
+    },
+    "resolution": {
+      "expected_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "requested": "canonical",
+      "requested_path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+      "requested_ok": true,
+      "substituted": false,
+      "documents": [
+        {
+          "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+          "label": "canonical",
+          "requested": true,
+          "exists": true,
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "matches_binding": true
+        },
+        {
+          "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/plumbing.EID.proposed.json",
+          "label": "proposed",
+          "requested": false,
+          "exists": true,
+          "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+          "matches_binding": true
+        }
+      ],
+      "chosen": {
+        "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+        "label": "canonical",
+        "requested": true,
+        "exists": true,
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "matches_binding": true
+      }
+    },
+    "requested": "canonical",
+    "eid_document_supplied": {
+      "label": "canonical",
+      "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+      "exists": true,
+      "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "matches_binding": true
+    },
+    "spec_resolved": "/home/ebt/rsi-dev/a0/contract/plumbing.contract.json",
+    "spec_source": "the supplied document's own `spec` field (plumbing.EID.json)",
+    "recompute": {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/contract/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/contract/evalcontract.py",
+        "recompute",
+        "--eid-file",
+        "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json"
+      ],
+      "exit_code": 0,
+      "stdout": "  [ok ] EvaluatorSource    recorded=a3d6534b4e3bc78f recomputed=a3d6534b4e3bc78f\n  [ok ] DependencyLock     recorded=7b02f1a71288335f recomputed=7b02f1a71288335f\n  [ok ] DataManifest       recorded=b21c975a51ef24cd recomputed=b21c975a51ef24cd\n  [ok ] Config             recorded=550ca3cdd8af04ec recomputed=550ca3cdd8af04ec\n  [ok ] MetricDefinition   recorded=420ab0acf24e1c73 recomputed=420ab0acf24e1c73\n  [ok ] EID*               recorded=664115e0d63ad2e1 recomputed=664115e0d63ad2e1\n",
+      "stderr": ""
+    },
+    "verify": {
+      "argv": [
+        "/home/ebt/rsi-dev/a0/contract/.venv/bin/python",
+        "/home/ebt/rsi-dev/a0/contract/evalcontract.py",
+        "verify",
+        "--eid-file",
+        "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+        "--spec",
+        "/home/ebt/rsi-dev/a0/contract/plumbing.contract.json",
+        "--base",
+        "/home/ebt/rsi-dev/a0"
+      ],
+      "exit_code": 0,
+      "stdout": "clean: all recorded inputs match; EID* = 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\n",
+      "stderr": "",
+      "spec": "/home/ebt/rsi-dev/a0/contract/plumbing.contract.json"
+    },
+    "eid_document": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+    "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328"
+  },
+  "integrity": {
+    "candidate_set": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+    "candidate_set_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+    "checked": 14,
+    "ok": true,
+    "problems": [],
+    "rows": [
+      {
+        "candidate_id": "c01_good_hex",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c01_good_hex/solution.py",
+        "declared": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+        "observed": "bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d",
+        "ok": true
+      },
+      {
+        "candidate_id": "c02_baseline_upstream",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c02_baseline_upstream/solution.py",
+        "declared": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "observed": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "ok": true
+      },
+      {
+        "candidate_id": "c03_mirror",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c03_mirror/solution.py",
+        "declared": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+        "observed": "893d0aa439433d523e2666d62de9b60caacdbab7868134aa83877ee0b03f6fcf",
+        "ok": true
+      },
+      {
+        "candidate_id": "c04_near_tie",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c04_near_tie/solution.py",
+        "declared": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+        "observed": "3bf7bf310c976e9a488fadad81e27ea4dfef47e5e218fc2bdbe861e72f1cf418",
+        "ok": true
+      },
+      {
+        "candidate_id": "c05_overlapping",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c05_overlapping/solution.py",
+        "declared": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+        "observed": "1054b613063beeb62feb2a91d93a190e750eac8de3b913607d2a556a89b88e6c",
+        "ok": true
+      },
+      {
+        "candidate_id": "c06_empty",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c06_empty/solution.py",
+        "declared": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+        "observed": "245b052ae21568853348257d5fb739c82c498ec46ae100709037d0c0c8ee9a41",
+        "ok": true
+      },
+      {
+        "candidate_id": "c07_single",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c07_single/solution.py",
+        "declared": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+        "observed": "06fd7c81ea1b82c72ff95655c01f09a4bc511389e1b1d63fa801f7d7a53f1e90",
+        "ok": true
+      },
+      {
+        "candidate_id": "c08_out_of_bounds",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c08_out_of_bounds/solution.py",
+        "declared": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+        "observed": "8724d76ce22c6675addb04a0bf42937e138554376c5624dc932320ec7a2e6143",
+        "ok": true
+      },
+      {
+        "candidate_id": "c09_malformed_import",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c09_malformed_import/solution.py",
+        "declared": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+        "observed": "8f3cc2c8e62dec779227f80623ebed8e5e5a15fb6f73d7729b3c191db5546c17",
+        "ok": true
+      },
+      {
+        "candidate_id": "c10_raises",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c10_raises/solution.py",
+        "declared": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+        "observed": "8739f824fab190ec43f684df215f7e02eb480b8eb9ccfe952a9d79048e369206",
+        "ok": true
+      },
+      {
+        "candidate_id": "c11_non_deterministic",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c11_non_deterministic/solution.py",
+        "declared": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+        "observed": "f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18eed9469c2223750be1a1c3044",
+        "ok": true
+      },
+      {
+        "candidate_id": "c12_exit_without_artifacts",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c12_exit_without_artifacts/solution.py",
+        "declared": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+        "observed": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d",
+        "ok": true
+      },
+      {
+        "candidate_id": "c13_slow",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c13_slow/solution.py",
+        "declared": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+        "observed": "f085fe77acc30b3dd50a990b5aeedde0bee6c7a716049c5d2136ff220fa6ce14",
+        "ok": true
+      },
+      {
+        "candidate_id": "c14_near_zero",
+        "path": "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/c14_near_zero/solution.py",
+        "declared": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+        "observed": "b8412ada1bb33483d7845b144e7ea6dcbeeed7521bc805061dadeb0df80fd113",
+        "ok": true
+      }
+    ]
+  },
+  "runtimes": {
+    "eplus_mut_twin": {
+      "state": "PENDING",
+      "reason": "adapter is present but produced no usable A0.1 output: conformance exit 2; run exit 2; stderr tail: [\"python3: can't open file '/home/ebt/rsi-dev/a0/conformance/adapters/e_plus_adapter.py': [Errno 2] No such file or directory\"]",
+      "adapter": {
+        "adapter_root": "/home/ebt/rsi-dev/a0/runtimes",
+        "runtime_dir": "/home/ebt/rsi-dev/a0/runtimes/eplus_mut_twin",
+        "source": "cli-override",
+        "cmd": [
+          "python3",
+          "/home/ebt/rsi-dev/a0/conformance/adapters/e_plus_adapter.py",
+          "--evaluator-dir",
+          "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime",
+          "--identity",
+          "omit",
+          "--twin-swap"
+        ]
+      },
+      "adapter_revision": null,
+      "rerun": "cd /home/ebt/rsi-dev/a0/conformance && python3 conformance.py run --runtimes eplus_mut_twin --out report.eplus_mut_twin.json",
+      "eid_document_supplied": {
+        "label": "canonical",
+        "path": "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+        "exists": true,
+        "sha256": "50af0aeb42dbc5a7217de99ffe619f336d6bb9e9e483e1a50dc3be518d03075b",
+        "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "matches_binding": true
+      },
+      "checks": [],
+      "rows": [],
+      "false_green_findings": [],
+      "a0_2": null,
+      "launch": {
+        "cwd": "/home/ebt/rsi-dev/a0/conformance",
+        "pythonpath": null
+      },
+      "conformance_invocation": {
+        "argv": [
+          "python3",
+          "/home/ebt/rsi-dev/a0/conformance/adapters/e_plus_adapter.py",
+          "--evaluator-dir",
+          "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime",
+          "--identity",
+          "omit",
+          "--twin-swap",
+          "conformance",
+          "--runtime",
+          "eplus_mut_twin",
+          "--candidate-set",
+          "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+          "--eid",
+          "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+          "--theta",
+          "seed=1337,fidelity=full,fraction=1.0,n=26,runs=5,runtime_budget_ms=250.0,timeout_s=120.0",
+          "--epsilon",
+          "1e-09",
+          "--out",
+          "/home/ebt/rsi-dev/a0/conformance/out/adapters/eplus_mut_twin.conformance.json"
+        ],
+        "cwd": "/home/ebt/rsi-dev/a0/conformance",
+        "exit_code": 2,
+        "duration_sec": 0.007,
+        "timed_out": false,
+        "stdout_tail": "",
+        "stderr_tail": "python3: can't open file '/home/ebt/rsi-dev/a0/conformance/adapters/e_plus_adapter.py': [Errno 2] No such file or directory",
+        "out_path": "/home/ebt/rsi-dev/a0/conformance/out/adapters/eplus_mut_twin.conformance.json",
+        "out_exists": false
+      },
+      "raw": {
+        "stdout": "/home/ebt/rsi-dev/a0/conformance/out/adapters/eplus_mut_twin.conformance.stdout.txt",
+        "stderr": "/home/ebt/rsi-dev/a0/conformance/out/adapters/eplus_mut_twin.conformance.stderr.txt",
+        "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/eplus_mut_twin.conformance.exit",
+        "output_json": null,
+        "run": {
+          "stdout": "/home/ebt/rsi-dev/a0/conformance/out/adapters/eplus_mut_twin.run.stdout.txt",
+          "stderr": "/home/ebt/rsi-dev/a0/conformance/out/adapters/eplus_mut_twin.run.stderr.txt",
+          "exit_code_file": "/home/ebt/rsi-dev/a0/conformance/out/adapters/eplus_mut_twin.run.exit",
+          "output_json": null
+        }
+      },
+      "run_invocation": {
+        "argv": [
+          "python3",
+          "/home/ebt/rsi-dev/a0/conformance/adapters/e_plus_adapter.py",
+          "--evaluator-dir",
+          "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime",
+          "--identity",
+          "omit",
+          "--twin-swap",
+          "run",
+          "--runtime",
+          "eplus_mut_twin",
+          "--task",
+          "circle-packing",
+          "--candidate-set",
+          "/home/ebt/rsi-dev/a0/tasks/circle-packing/C_STAR/manifest.json",
+          "--eid",
+          "/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json",
+          "--theta",
+          "seed=1337,fidelity=full,fraction=1.0,n=26,runs=5,runtime_budget_ms=250.0,timeout_s=120.0",
+          "--fr",
+          "/home/ebt/rsi-dev/a0/contract/fr/scalar.json",
+          "--run-id",
+          "a01-eplus_mut_twin-20260921T151556",
+          "--run-dir",
+          "/home/ebt/rsi-dev/a0/conformance/out/runs/a01-eplus_mut_twin-20260921T151556",
+          "--budget",
+          "T_wall_sec=3600,N_evaluatorCalls=200,concurrency=1",
+          "--traces",
+          "score,selection,resource"
+        ],
+        "cwd": "/home/ebt/rsi-dev/a0/conformance",
+        "exit_code": 2,
+        "duration_sec": 0.006,
+        "timed_out": false,
+        "stdout_tail": "",
+        "stderr_tail": "python3: can't open file '/home/ebt/rsi-dev/a0/conformance/adapters/e_plus_adapter.py': [Errno 2] No such file or directory"
+      },
+      "detail": {
+        "conformance_exit": 2,
+        "run_exit": 2,
+        "read_error": null,
+        "nested_document": null,
+        "score_trace": "/home/ebt/rsi-dev/a0/conformance/out/runs/a01-eplus_mut_twin-20260921T151556/traces/eplus_mut_twin.a01-eplus_mut_twin-20260921T151556.score.jsonl",
+        "traces_found_by_recursive_search": null,
+        "traces_named_by_run_json": null
+      },
+      "exit_code_semantics": {
+        "exit_code": 2,
+        "meaning": "usage / configuration error"
+      }
+    }
+  },
+  "controls": {},
+  "env": {
+    "cwd": "/home/ebt/rsi-dev/a0/conformance",
+    "argv": [
+      "conformance.py",
+      "run",
+      "--runtimes",
+      "eplus_mut_twin",
+      "--adapter",
+      "eplus_mut_twin=python3 /home/ebt/rsi-dev/a0/conformance/adapters/e_plus_adapter.py --evaluator-dir /home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime --identity omit --twin-swap",
+      "--no-controls",
+      "--out",
+      "out/conformance/eplus_mut_twin.json"
+    ],
+    "python": "3.14.7",
+    "fixture_run_root": null,
+    "fixture_run_root_source": null
+  },
+  "runtimes_requested": [
+    "eplus_mut_twin"
+  ],
+  "note": "this report covers ['eplus_mut_twin'], not the study's four runtimes ['simpleloop', 'kapso', 'eve', 'loreley']; rows are still compared against the frozen E_STAR.json table",
+  "reference": {
+    "document": "/home/ebt/rsi-dev/a0/conformance/reference.json",
+    "source": "a0/conformance/reference.json (fresh E* sweep) cross-checked against E_STAR.json",
+    "agreement_with_frozen_table": {
+      "reproduces_frozen_table": true,
+      "per_candidate": [
+        {
+          "candidate_id": "c01_good_hex",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c02_baseline_upstream",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c03_mirror",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c04_near_tie",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c05_overlapping",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c06_empty",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c07_single",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c08_out_of_bounds",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c09_malformed_import",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c10_raises",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c11_non_deterministic",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c12_exit_without_artifacts",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c13_slow",
+          "reproduces_table": true,
+          "problems": []
+        },
+        {
+          "candidate_id": "c14_near_zero",
+          "reproduces_table": true,
+          "problems": []
+        }
+      ]
+    },
+    "c_star_unchanged_after_sweep": {
+      "before": "ef1cfa38b39a2392b95c4b076e12d524aa9ec890e179d12031cbfbe9c7a48e6b",
+      "after": "ef1cfa38b39a2392b95c4b076e12d524aa9ec890e179d12031cbfbe9c7a48e6b",
+      "unchanged": true
+    },
+    "theta_e": {
+      "seed": 1337,
+      "fidelity": "full",
+      "fraction": 1.0,
+      "n": 26,
+      "runs": 5,
+      "runtime_budget_ms": 250.0,
+      "timeout_s": 120.0
+    },
+    "rows": [
+      {
+        "candidate_id": "c01_good_hex",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.4519205208433132,
+        "failure_kind": null,
+        "canonical_digest": "1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8"
+      },
+      {
+        "candidate_id": "c02_baseline_upstream",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 0.25,
+        "failure_kind": null,
+        "canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc"
+      },
+      {
+        "candidate_id": "c03_mirror",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.4519205208433132,
+        "failure_kind": null,
+        "canonical_digest": "c0b8113c22d5edb385491972b41f62d914660ae0810a969ff53eb078f3bb78aa"
+      },
+      {
+        "candidate_id": "c04_near_tie",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.451820520843313,
+        "failure_kind": null,
+        "canonical_digest": "f2d0d25dcc05a608a0728ffb685a2c459c50aebfa17d3d616c2673a8270caba3"
+      },
+      {
+        "candidate_id": "c05_overlapping",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573"
+      },
+      {
+        "candidate_id": "c06_empty",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "319effe699c1d7e1c789fa2eead12663612fd71b889e30b47d79f92964619fc2"
+      },
+      {
+        "candidate_id": "c07_single",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "a58c002383f8e1278ca36a10309582ddfd0e911f3ebb7090f0f9c099ca69d743"
+      },
+      {
+        "candidate_id": "c08_out_of_bounds",
+        "exit_code": 2,
+        "status": "invalid",
+        "objective_value": null,
+        "failure_kind": "invalid_configuration",
+        "canonical_digest": "1e3f26a7c94f1f5332a79d8eb473340952331b3d59d70025ad409a2a93350376"
+      },
+      {
+        "candidate_id": "c09_malformed_import",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "candidate_import_failed",
+        "canonical_digest": "98e37580fd92861a30102ebd6bce90fc26c265d6dc42782cf10428e1fea61bb9"
+      },
+      {
+        "candidate_id": "c10_raises",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "candidate_call_raised",
+        "canonical_digest": "0d45d41307b93e9b88806e31564b03991881fa2cb3e00cb13509a55e615565b3"
+      },
+      {
+        "candidate_id": "c11_non_deterministic",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "non_deterministic",
+        "canonical_digest": "2800cb425b2cdb04a4a2ed358009eb8c54a68d00102bc96e8a21fca61e515fd8"
+      },
+      {
+        "candidate_id": "c12_exit_without_artifacts",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "child_terminated_early",
+        "canonical_digest": "cb4d9bcc4712dcc4e670f7feea3ccb72a60aa7fb5c09d2a3382b699a894f9a64"
+      },
+      {
+        "candidate_id": "c13_slow",
+        "exit_code": 3,
+        "status": "error",
+        "objective_value": null,
+        "failure_kind": "runtime_budget_exceeded",
+        "canonical_digest": "710d01d9475cfca4bd33479d4279d61b632b801a7e15e173fde7a2a41e237181"
+      },
+      {
+        "candidate_id": "c14_near_zero",
+        "exit_code": 0,
+        "status": "ok",
+        "objective_value": 2.6e-05,
+        "failure_kind": null,
+        "canonical_digest": "cabca3563053dc7d04de0553a8bd62a9980d2ee9fdb0943e64599521d78b9cfe"
+      }
+    ]
+  },
+  "verdicts": {
+    "a0_1": {
+      "eplus_mut_twin": "PENDING"
+    },
+    "a0_1_state": {
+      "eplus_mut_twin": "PENDING"
+    },
+    "a0_1_measured": {
+      "eplus_mut_twin": null
+    },
+    "a0_1_adapted": {
+      "eplus_mut_twin": null
+    },
+    "a0_1_qualification": {
+      "eplus_mut_twin": {
+        "state": "PENDING",
+        "label": "PENDING"
+      }
+    },
+    "n_pass": 0,
+    "n_partial": 0,
+    "n_fail": 0,
+    "n_pending": 1,
+    "n_blocked": 0,
+    "r_1_a0_1_only": [],
+    "r_1_a0_1_partial": [],
+    "gate": "|R_1| >= 1 suffices to continue (plan:490); a0_1_only is not R_1, which also needs A0.2",
+    "screen_semantics": "each runtime is evaluated independently; no runtime's failure aborted another's run",
+    "screen_vs_qualification": "`|R_1| >= 1` is a CANDIDATE SCREEN over runtimes and is a different object from per-runtime qualification. The screen asks whether the study may continue (at least one substrate survives A0); qualification asks whether a given runtime's A0.1 answer is measured or merely adapted. `r_1_a0_1_only` lists runtimes whose A0.1 is PASS (every row measured) and `r_1_a0_1_partial` lists runtimes whose A0.1 is PARTIAL (some rows accepted only on adapter-supplied semantics). A PARTIAL runtime is deliberately NOT in `r_1_a0_1_only`, so a partial result can never be diluted by siblings that passed. Per-runtime eligibility for A1 is declared separately and explicitly by the `Eligible(r)` predicate in `a0/qualification/qualification.json` (see `a0/qualification/QUALIFICATION.md`); the screen can pass while no runtime is Eligible()."
+  },
+  "exit_code": 2,
+  "duration_sec": 0.269,
+  "report_path": "out/conformance/eplus_mut_twin.json",
+  "table_path": "out/conformance/eplus_mut_twin.md",
+  "tools": {
+    "runner": "/home/ebt/rsi-dev/a0/conformance/conformance.py",
+    "selftest": "/home/ebt/rsi-dev/a0/conformance/selftest.py",
+    "reference": "/home/ebt/rsi-dev/a0/conformance/reference.json",
+    "frozen_toolchain": {
+      "items": {
+        "e_star_script": true,
+        "e_star_interpreter": true,
+        "c_star_manifest": true,
+        "e_star_table": true,
+        "fr_declaration": true,
+        "evalcontract": true
+      },
+      "ok": true,
+      "missing": []
+    }
+  }
+}

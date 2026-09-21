@@ -1,0 +1,19 @@
+# run codex-connect-unmod  window 2026-09-21T07:14:42 .. 2026-09-21T07:15:01 (UTC)
+2026-09-21T07:14:42+0000 event=connect peer=172.31.78.2:42476 target=chatgpt.com:443 decision=DENY
+2026-09-21T07:14:42+0000 event=connect peer=172.31.78.2:42492 target=api.github.com:443 decision=DENY
+2026-09-21T07:14:42+0000 event=connect peer=172.31.78.2:42494 target=chatgpt.com:443 decision=DENY
+2026-09-21T07:14:42+0000 event=connect peer=172.31.78.2:42500 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T07:14:43+0000 event=connect peer=172.31.78.2:42500 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T07:14:44+0000 event=connect peer=172.31.78.2:42514 target=example.com:443 decision=DENY
+2026-09-21T07:14:44+0000 event=connect peer=172.31.78.2:42516 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T07:14:44+0000 event=connect peer=172.31.78.2:42516 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T07:14:44+0000 event=deny proto=http peer=172.31.78.2:42520 method=GET path=/https://example.com/ reason=no_route
+2026-09-21T07:14:44+0000 event=req peer=172.31.78.2:42528 method=GET path=/v1/models upstream=https://api.deepseek.com/v1/models status=401 resp_bytes=31
+2026-09-21T07:14:45+0000 event=connect peer=172.31.78.2:42536 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T07:14:46+0000 event=connect peer=172.31.78.2:42540 target=example.com:443 decision=DENY
+2026-09-21T07:14:47+0000 event=connect peer=172.31.78.2:42536 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T07:14:47+0000 event=connect peer=172.31.78.2:42546 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T07:14:59+0000 event=connect peer=172.31.78.2:42546 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T07:14:59+0000 event=connect peer=172.31.78.2:58778 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T07:15:01+0000 event=connect peer=172.31.78.2:58166 target=ab.chatgpt.com:443 decision=DENY
+2026-09-21T07:15:01+0000 event=connect peer=172.31.78.2:58778 target=api.deepseek.com:443 tunnel=closed

@@ -1,0 +1,74 @@
+{
+ "champion_id": "c02_baseline_upstream",
+ "champion_scalar": 0.25,
+ "exit_code": 0,
+ "exit_meaning": "run completed within budget; all three traces written",
+ "failure_counts": {},
+ "iterations": 1,
+ "run_dir": "/work/runs/sl-run-2/simpleloop-run",
+ "run_id": "sl-run-2",
+ "schema": "a0.simpleloop.run_summary/v1",
+ "scored_candidates": 1,
+ "stopped_because": "solver_exhausted",
+ "trace_paths": {
+  "combined": "/work/runs/sl-run-2/simpleloop-run/traces/simpleloop.sl-run-2.all.jsonl",
+  "resource": "/work/runs/sl-run-2/simpleloop-run/traces/simpleloop.sl-run-2.resource.jsonl",
+  "score": "/work/runs/sl-run-2/simpleloop-run/traces/simpleloop.sl-run-2.score.jsonl",
+  "selection": "/work/runs/sl-run-2/simpleloop-run/traces/simpleloop.sl-run-2.selection.jsonl"
+ },
+ "trace_validation_per_file": {
+  "combined": {
+   "stats": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "events              4\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 4"
+   },
+   "validate": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "valid: 4 event(s)"
+   }
+  },
+  "resource": {
+   "stats": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "events              2\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 2"
+   },
+   "validate": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "valid: 2 event(s)"
+   }
+  },
+  "score": {
+   "stats": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "events              1\nschema/semantic errors 0\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 1"
+   },
+   "validate": {
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "valid: 1 event(s)"
+   }
+  },
+  "selection": {
+   "stats": {
+    "returncode": 1,
+    "stderr": "",
+    "stdout": "events              1\nschema/semantic errors 1\n  search_failed          0\n  resolve_failed         0\n  comprehension_failed   0\n  mechanism_mismatch     0\n  other_failures         0\n  events[simpleloop] 1"
+   },
+   "validate": {
+    "returncode": 1,
+    "stderr": "",
+    "stdout": "INVALID event 'sl-run-2.s2.i0.c02_baseline_upstream' (event_seq 2): selection.source_score_event_id 'sl-run-2.s0.i0.c02_baseline_upstream' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\n1 error(s) in 1 event(s)"
+   }
+  }
+ },
+ "trace_validation_run_unit": {
+  "returncode": 0,
+  "stderr": "",
+  "stdout": "[ok ] simpleloop.sl-run-2  events=4  [score=1 selection=1 resource=2]  merged simpleloop.sl-run-2.all.jsonl\nvalid: 1 run(s), 4 event(s)"
+ }
+}

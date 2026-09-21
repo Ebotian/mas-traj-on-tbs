@@ -1,0 +1,165 @@
+{
+  "candidate": {
+    "entry": "pack_circles",
+    "source_bytes": 1441,
+    "source_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f"
+  },
+  "canonical_digest": "3bd7b6da11a19416a3281837fd60322bfee9410a71dae298cba87d498b14587c",
+  "e_star_version": "1.0.0",
+  "evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+  "failure": null,
+  "fields": {
+    "audit_coverage": 0.018461538461538463,
+    "items_audited": 4,
+    "min_boundary_margin": 0.0,
+    "min_gap": 0.14721128849467963,
+    "num_circles": 26,
+    "overlap_count": 0,
+    "packing_density": 0.007551905417283158,
+    "pairs_audited": 6,
+    "sum_radii": 0.25
+  },
+  "interpreter": {
+    "implementation": "cpython",
+    "version": "3.12.11"
+  },
+  "objective": {
+    "direction": "max",
+    "name": "sum_radii",
+    "unit": "radius_sum",
+    "value": 0.25
+  },
+  "resources": null,
+  "schema": "e_star.outcome/v1",
+  "scored": true,
+  "status": "ok",
+  "structure": {
+    "min_boundary_margin": 0.0,
+    "min_gap": 0.14721128849467963,
+    "num_circles": 26,
+    "num_circles_expected": 26,
+    "overlap_count": 0,
+    "packing_density": 0.007551905417283158,
+    "pairs_audited": 6,
+    "sum_radii": 0.25
+  },
+  "theta_e": {
+    "fidelity": "fast",
+    "fraction": 0.15,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "seed": 1337,
+    "timeout_s": 120.0
+  },
+  "validity": {
+    "audit": {
+      "coverage": 0.018461538461538463,
+      "fidelity": "fast",
+      "items_audited": 4,
+      "items_total": 26,
+      "pairs_audited": 6,
+      "pairs_total": 325,
+      "sample": [
+        0,
+        3,
+        12,
+        22
+      ],
+      "sample_sha256": "55b3d5c18af700da93d139b6def0aea3658a6af22643d4f26e1f961717434d6d",
+      "seed": 1337
+    },
+    "checks": [
+      {
+        "detail": {
+          "returncode": 0,
+          "runs_requested": 5,
+          "runs_written": 5,
+          "timed_out": false
+        },
+        "name": "child_artifacts_complete",
+        "passed": true
+      },
+      {
+        "detail": null,
+        "name": "candidate_module_imports",
+        "passed": true
+      },
+      {
+        "detail": "function",
+        "name": "candidate_defines_entrypoint",
+        "passed": true
+      },
+      {
+        "detail": {
+          "expected": 5,
+          "recorded": 5
+        },
+        "name": "all_runs_recorded",
+        "passed": true
+      },
+      {
+        "detail": null,
+        "name": "candidate_call_succeeds",
+        "passed": true
+      },
+      {
+        "detail": null,
+        "name": "output_parses_as_triples",
+        "passed": true
+      },
+      {
+        "detail": {
+          "expected": 26,
+          "num_circles": 26
+        },
+        "name": "count_equals_n",
+        "passed": true
+      },
+      {
+        "detail": {
+          "items_audited": 4,
+          "min_radius": 0.009615384615384616
+        },
+        "name": "radius_positive_check",
+        "passed": true
+      },
+      {
+        "detail": {
+          "items_audited": 4,
+          "min_boundary_margin": 0.0
+        },
+        "name": "bounds_check",
+        "passed": true
+      },
+      {
+        "detail": {
+          "min_gap": 0.14721128849467963,
+          "overlap_count": 0,
+          "pairs_audited": 6
+        },
+        "name": "overlap_check",
+        "passed": true
+      },
+      {
+        "detail": {
+          "checked": true,
+          "runs": 5
+        },
+        "name": "determinism_check",
+        "passed": true
+      },
+      {
+        "detail": {
+          "budget_ms": 250.0,
+          "enabled": true,
+          "measurement": "resources.json",
+          "runs": 5
+        },
+        "name": "runtime_budget_check",
+        "passed": true
+      }
+    ],
+    "ok": true
+  }
+}

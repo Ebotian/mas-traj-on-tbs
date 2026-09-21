@@ -1,0 +1,63 @@
+[GenericSearch] Initialized:
+  - idea_generation_model: deepseek-flash
+  - implementation_model: deepseek-flash
+  - auth: {}
+  - ideation_gates: []
+  - implementation_gates: []
+  - gate_failure_policy: warn
+  - parent_policy: best
+  - experiment_history_path: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item2/real-copy/workspace/.kapso/experiment_history.json
+  - feedback_generator: configured
+{
+ "verdict": "bridge_verified",
+ "checks": {
+  "round1_report_round_ok": true,
+  "round2_report_round_ok": true,
+  "round1_score_reproduced_by_fresh_e_star": true,
+  "round2_score_reproduced_by_fresh_e_star": true,
+  "round1_branch_bytes_are_the_frozen_candidate": true,
+  "round2_branch_bytes_are_the_frozen_candidate": true,
+  "round1_decidable_improvement_over_baseline": true,
+  "round2_parent_is_round1_winner": true,
+  "round2_branch_descends_from_round1_branch": true,
+  "round2_session_started_from_round1_artifact": true,
+  "deliverable_descends_from_round1_winner": true,
+  "restored_history_is_contiguous": true
+ },
+ "scores": {
+  "baseline_main": 0.25,
+  "round1_generic_exp_0": 2.451820520843313,
+  "round2_generic_exp_1": 2.4519205208433132,
+  "round1_node_score": 2.451820520843313,
+  "round2_node_score": 2.4519205208433132,
+  "round1_plan_expected": 2.451820520843313,
+  "round2_plan_expected": 2.4519205208433132
+ },
+ "improvements": {
+  "round1_over_baseline": {
+   "high": 2.451820520843313,
+   "low": 0.25,
+   "margin": 2.201820520843313,
+   "epsilon": 1e-09,
+   "decidable": true,
+   "rule": "margin > EID*'s conformance epsilon"
+  },
+  "round2_over_round1": {
+   "high": 2.4519205208433132,
+   "low": 2.451820520843313,
+   "margin": 0.00010000000000021103,
+   "epsilon": 1e-09,
+   "decidable": true,
+   "rule": "margin > EID*'s conformance epsilon"
+  }
+ },
+ "deliverable": {
+  "node_id": 1,
+  "branch_name": "generic_exp_1",
+  "score": 2.4519205208433132
+ },
+ "restored_parent_final": {
+  "branch_name": "generic_exp_1",
+  "node_id": 1
+ }
+}

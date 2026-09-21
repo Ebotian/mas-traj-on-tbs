@@ -1,0 +1,44 @@
+{
+ "T1_gateway": {
+  "172.31.78.1:22": {
+   "error": "ConnectionRefusedError: [Errno 111] Connection refused",
+   "ok": false
+  },
+  "172.31.78.1:2375": {
+   "error": "ConnectionRefusedError: [Errno 111] Connection refused",
+   "ok": false
+  },
+  "172.31.78.1:2376": {
+   "error": "ConnectionRefusedError: [Errno 111] Connection refused",
+   "ok": false
+  },
+  "172.31.78.1:443": {
+   "error": "ConnectionRefusedError: [Errno 111] Connection refused",
+   "ok": false
+  },
+  "172.31.78.1:80": {
+   "error": "ConnectionRefusedError: [Errno 111] Connection refused",
+   "ok": false
+  },
+  "172.31.78.1:8787": {
+   "error": "ConnectionRefusedError: [Errno 111] Connection refused",
+   "ok": false
+  }
+ },
+ "T2_connect_port22": "TimeoutError: timed out",
+ "T2_connect_port25": "HTTP/1.1 200 Connection Established",
+ "T3_connect_443": "HTTP/1.1 200 Connection Established",
+ "T4_connect_example": "HTTP/1.1 403 Forbidden",
+ "T5_origin_host_spoof": "HTTP/1.1 401 Authorization Required\r\nServer: openresty\r\nvary: origin, access-control-request-method, access-control-request-headers\r\naccess-control-allow-credentials: true\r\nx-ds-trace-id: b8343ed10fee64c91d4a4b08559bde8e\r\nStrict-Transport-Security: max-age=31536000; includeSubDomains; preload\r\nX-Con",
+ "T6_absolute_form": "HTTP/1.1 401 Authorization Required\r\nServer: openresty\r\nvary: origin, access-control-request-method, access-control-request-headers\r\naccess-control-allow-credentials: true\r\nx-ds-trace-id: 502bdce0954f468f172a70a1ed0716a5\r\nStrict-Transport-Security: max-age=31536000; includeSubDomains; preload\r\nX-Con",
+ "T7_tools": {
+  "busybox": "not found",
+  "ip": "not found",
+  "iptables": "not found",
+  "nsenter": {
+   "out": "nsenter from util-linux 2.41.5\n",
+   "rc": 0
+  },
+  "route": "not found"
+ }
+}

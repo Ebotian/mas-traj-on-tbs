@@ -1,0 +1,398 @@
+{
+  "components": {
+    "ApiSurface": {
+      "beta_header_note": "with a non-claude-* id the CLI drops context-1m and fallback-credit betas",
+      "protocol_markers": [
+        "type:message",
+        "content[]",
+        "usage.cache_read_input_tokens"
+      ],
+      "request_envelope": "anthropic_messages",
+      "response_envelope": "anthropic_messages",
+      "streaming": true,
+      "surface_path": "/anthropic/v1/messages",
+      "wire_protocol": "anthropic_messages"
+    },
+    "Cli": {
+      "argv_template": "claude -p --model deepseek-flash --output-format json <prompt>",
+      "binary_sha256": "356673de39ab5e9e4d19314c33b2d0b01fa06519a44c3374aa947bfbd71a4049",
+      "caveats": [
+        "a real ~/.claude/settings.json silently outranks the process env unless CLAUDE_CONFIG_DIR is exported",
+        "the CLI's total_cost_usd is priced from an Anthropic table and is wrong by 10-20x"
+      ],
+      "command_name": "claude",
+      "config_files": [
+        "settings.json"
+      ],
+      "config_isolation": "CLAUDE_CONFIG_DIR",
+      "credential_header": "authorization header carries a token sourced from ANTHROPIC_AUTH_TOKEN",
+      "env_var_names": [
+        "ANTHROPIC_BASE_URL",
+        "ANTHROPIC_AUTH_TOKEN"
+      ],
+      "invocation_mode": "print_non_interactive",
+      "model_selection": "--model argv, authoritative over the settings file",
+      "name": "claude",
+      "version": "2.1.278",
+      "warnings": [
+        "[claude-code:unrecognized_model] deepseek-flash (non-fatal)"
+      ]
+    },
+    "Endpoint": {
+      "base_path": "/anthropic",
+      "base_url": "https://api.deepseek.com/anthropic",
+      "declared_in": "ANTHROPIC_BASE_URL (process env or CLAUDE_CONFIG_DIR/settings.json env block)",
+      "host": "api.deepseek.com",
+      "port": 443,
+      "scheme": "https",
+      "tls_verify": true
+    },
+    "Network": {
+      "a0_verification_egress": "host_direct",
+      "a0_verification_note": "the verification turns in this contract ran on the host with direct egress; the closed topology above is the intended A1 route and is what makes Network load-bearing",
+      "allowlist_hosts": [
+        "api.deepseek.com"
+      ],
+      "client_placement": "internal_side",
+      "dns_mode": "docker_embedded",
+      "egress_policy": "deny_by_default_hostname_allowlist",
+      "host_bypass_note": "the barrier is one-way: the host may dial internal container IPs directly, so the proxy is a trusted component and tooling-side bypass is a stated residual risk",
+      "host_bypass_risk": true,
+      "internal_network": "a0pc-internal",
+      "proxy_id": "a0pc-proxy:8787",
+      "proxy_transparency": "connect_tunnel_no_mitm_plus_origin_form_plaintext_routing",
+      "topology": "docker_internal_plus_dual_homed_allowlist_proxy"
+    },
+    "Params": {
+      "max_tokens_per_turn": {
+        "source": "CLI default max_tokens for a non-claude-* model id",
+        "value": 32000
+      },
+      "parallel_tool_calls": {
+        "reason": "not set by the lane at A0",
+        "value": null
+      },
+      "retry": {
+        "max_attempts": 1,
+        "retry_on": [
+          "transport_error"
+        ]
+      },
+      "sampling_seed": {
+        "reason": "no seeding path observed; sampling is provider-side",
+        "value": null
+      },
+      "stream": true,
+      "temperature": {
+        "reason": "not set by the lane at A0; provider default",
+        "value": null
+      },
+      "thinking": {
+        "reason": "not set by the lane at A0",
+        "value": null
+      },
+      "timeout_s": 120,
+      "tool_choice": "auto",
+      "top_p": {
+        "reason": "not set by the lane at A0; provider default",
+        "value": null
+      }
+    },
+    "Permissions": {
+      "approval_policy": "prompt/--dangerously-skip-permissions depending on the lane",
+      "exec_scope": "Bash tool executes arbitrary commands",
+      "filesystem_scope": "unrestricted unless contained by the runtime's working directory",
+      "network_scope": "open by default; closed only under the a0pc topology",
+      "sandbox_mode": "none (CLI-level; closure comes from the network topology)"
+    },
+    "Prompt": {
+      "context_budget_tokens": {
+        "source": "modelUsage.contextWindow observed in the live turn",
+        "value": 200000
+      },
+      "per_run_recording_required": true,
+      "prompt_source": "a1_provided_task_instruction",
+      "protocol_prompt_ref": "a0/contract/adapter_contract.md",
+      "system_prompt_null_reason": "the CLI assembles the system prompt at runtime; it is not frozen by this contract at A0 and must be recorded per run in A1",
+      "system_prompt_sha256": null,
+      "tool_schema_null_reason": "tool schemas are CLI-internal and not exported",
+      "tool_schema_sha256": null
+    },
+    "Provider": {
+      "catalog_observed": [
+        "deepseek-flash",
+        "deepseek-v4-pro"
+      ],
+      "catalog_observed_utc": "2026-09-21",
+      "model_catalog_endpoint": "https://api.deepseek.com/models",
+      "openrouter_used": false,
+      "org": "DeepSeek",
+      "provider_id": "deepseek",
+      "upstream_hosts": [
+        "api.deepseek.com"
+      ]
+    },
+    "RequestedModel": {
+      "alias_policy": "canonical_ids_only",
+      "canonical_id_claimed": "deepseek-flash",
+      "fallback_chain": [],
+      "permitted_secondary": [
+        "deepseek-v4-pro"
+      ],
+      "requested_model_id": "deepseek-flash",
+      "role": "primary",
+      "weights_identity": {
+        "reason": "No surface on these routes carries a weights digest, checkpoint id, revision, or signed serving attestation. The response `model` field is server-written metadata: on the Anthropic-compatible surface it echoes the requested id verbatim, including retired aliases, while the OpenAI-compatible surfaces rewrite a retired alias to its canonical id. The same alias request therefore reports a different id depending on the surface, so no response field can be read as proof of which weights served the request.",
+        "surface_echo_is_not_proof": true,
+        "verifiable": false
+      }
+    },
+    "RuntimeAdapters": {
+      "adapters": [
+        {
+          "adapter_commit": "261f0c9",
+          "adapter_source_files": [
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/__init__.py",
+              "sha256": "bdc216b9104382378fa588224f33018ea25534e98b121f558a28bf1573cf23ec"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/__main__.py",
+              "sha256": "e36684c2062113cf5391f78b03e739d868b2ce495ad4c92c4cf54d30fe13ed12"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/a01.py",
+              "sha256": "69c731a7ffa1d8be4c30a8ab86bfeedfb2b8ad2cd7d27b51a3a6f8cf1d26c612"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/a02.py",
+              "sha256": "c53223b83073aeba093563faf15ddfc8832573bd0318ca6c4d8a33c381e53b38"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/channels.py",
+              "sha256": "0fd9b34e8b49f4b21dcd66d3b7be90d1287e040092a8247a08484bdfa42a8cd5"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/closure.py",
+              "sha256": "205b7fcfc4b4276d8a3224d789e14b5485c7d7d80fd047ac8611cdabc7587276"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/common.py",
+              "sha256": "d586a96c4925b6a8c929dd0da0e4ece6dbc30678010456bc580a7f46f2329247"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/registered/kapso_eval.py",
+              "sha256": "781f54ee7674164d2b71e78d42640f985f3907a76542b8d5a84a3b5220d9e5ba"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/registered_tree.py",
+              "sha256": "c9f532080ce71b5f45c9566f2691726c58284ca8e262fb10932f8a2c0a0d420c"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/runtime.py",
+              "sha256": "3d632d9b53a3a063f946667b666ec422dc95baae8d8992587e24d7bf00aec5c0"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/seams.py",
+              "sha256": "849d666b3a8baea55012ca341c32541928c0f72bbe479604ab4e8baf0378aa16"
+            }
+          ],
+          "adapter_source_root": "a0/runtimes/kapso/a0_adapter",
+          "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
+          "adapter_source_sha256": "3ab3e139569bc49bf0c21e72521d690673c18ac2533d133ce10a344aa66fa3a4",
+          "lane": "claude_code|oss_claude_code",
+          "runtime": "kapso",
+          "upstream_pin": "7d99b152"
+        }
+      ]
+    },
+    "TaskSnapshot": {
+      "c_star_candidate_count": 14,
+      "c_star_digest": "cfeac41728f7dec17ad8414cdb23c2931898dba38a76c23b51091766fd60611c",
+      "c_star_manifest_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+      "e_star_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+      "eid_scheme_ref": "a0/contract/evalcontract.py",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "paired_at_repo_head": "261f0c9",
+      "task_id": "circle-packing"
+    },
+    "Tools": {
+      "denied_tools": [],
+      "extra_tool_sources": [],
+      "tool_choice": "auto",
+      "tool_names_null_reason": "21 built-in tools in 2.1.278; not enumerated here and not frozen",
+      "tool_names_observed": null,
+      "tool_names_provenance": "TaskOutput was removed between 2.1.260 and 2.1.278 (22 -> 21)",
+      "toolset_ref": "claude_code_builtin"
+    }
+  },
+  "identity_evidence": {
+    "cli_side_observation": "live turn via claude -p: exit 0, modelUsage key deepseek-flash, 17379 in / 2 out, maxOutputTokens 32000, reported total_cost_usd 0.086945 (wrong pricing basis)",
+    "cross_surface_divergence": {
+      "demonstrated_by": [
+        "deepseek-v4-flash",
+        "deepseek-v4-flash-vision-exp"
+      ],
+      "finding": "The same requested id reports different `model` strings on different surfaces: a retired alias is rewritten to `deepseek-flash` on the OpenAI-compatible surfaces but echoed verbatim on the Anthropic-compatible surface.",
+      "means": "the field is surface-local metadata, not a serving attestation"
+    },
+    "echo_is_not_proof": true,
+    "last_observed_utc": "2026-09-21",
+    "live_turn_observed": {
+      "cli": "claude 2.1.278",
+      "exit_code": 0,
+      "input_tokens": 17379,
+      "output_tokens": 2
+    },
+    "observations": [
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-flash-vision-exp",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "openai_responses"
+      }
+    ],
+    "reproduce": "DS_KEY=$(sed -n 's/^deepseek://p' ~/gptapi.md|head -1); curl -s https://api.deepseek.com/anthropic/v1/messages -H \"Authorization: Bearer $DS_KEY\" -H 'Content-Type: application/json' -d '{\"model\":\"deepseek-v4-flash\",\"max_tokens\":4,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}'  # -> model=deepseek-v4-flash",
+    "route_surface": "anthropic_messages",
+    "surfaces_observed": [
+      "openai_chat_completions",
+      "anthropic_messages",
+      "openai_responses"
+    ],
+    "weights_identity_verifiable": false
+  },
+  "model_policy": {
+    "decided_by": "user",
+    "decided_utc": "2026-09-21",
+    "excluded_providers": [
+      "openrouter"
+    ],
+    "mixed_secondary_allowed": true,
+    "permitted_secondary": [
+      "deepseek-v4-pro"
+    ],
+    "primary": "deepseek-flash"
+  },
+  "notes": [
+    "KAPSO must set type: claude_code explicitly on any block whose model is a deepseek id, or preflight.resolve_cli falls back to the codex lane."
+  ],
+  "route_id": "claude-deepseek-anthropic",
+  "schema": "a0.mrc/v1"
+}

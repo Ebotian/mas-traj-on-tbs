@@ -1,0 +1,31 @@
+adapter revision: a6cff4b2f20b2fec9197830900e2ea4baf9c549c996b6e000f24459c8ba6bbbd
+mutant E' revision: cfaa619410b2862b1555db41cf5a5d61aa58cb2d82e32dd457711067f00c7b8c
+conformance.py revision: 45cc4e90b9c65c0a0139c336ed1d23288fa242512ba7a8970190a9f1f72f6edf
+host python3: Python 3.14.7
+frozen E* python: Python 3.12.11
+=== eplus_control ===
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_control.repro.json
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_control.repro.md
+A0.1 labels (measured split always shown): {"eplus_control": "PASS (14/14 measured)"}
+exit=0
+=== eplus_control_py314 ===
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_control_py314.repro.json
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_control_py314.repro.md
+A0.1 labels (measured split always shown): {"eplus_control_py314": "FAIL"}
+exit=3
+=== eplus_mut_own ===
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_mut_own.repro.json
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_mut_own.repro.md
+A0.1 labels (measured split always shown): {"eplus_mut_own": "FAIL"}
+exit=3
+=== eplus_mut_claim ===
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_mut_claim.repro.json
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_mut_claim.repro.md
+A0.1 labels (measured split always shown): {"eplus_mut_claim": "PASS (14/14 measured)"}
+exit=0
+
+=== verdicts ===
+eplus_control          PASS     all checks passed                                       rows={'MATCH': 5, 'MATCH_VERDICT': 9}
+eplus_control_py314    FAIL     E_r(c) disagrees with E*(c)                             rows={'MISMATCH_DIGEST': 14}
+eplus_mut_claim        PASS     all checks passed                                       rows={'MATCH': 5, 'MATCH_VERDICT': 9}
+eplus_mut_own          FAIL     E_r(c) disagrees with E*(c)                             rows={'MISMATCH_DIGEST': 14}

@@ -1,0 +1,318 @@
+{
+  "attestation": "out/attestation_a0/e_star.p312.attestation.json",
+  "checks": [
+    {
+      "detail": {
+        "attested": "98568841fdd7f357c6004ffd7c11c75bbb5f1bc688245b8df9e3d0c24cbe57b3",
+        "recomputed": "98568841fdd7f357c6004ffd7c11c75bbb5f1bc688245b8df9e3d0c24cbe57b3"
+      },
+      "name": "eid_execution recomputes from the payload",
+      "passed": true,
+      "question": "Q1",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "attested": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+        "frozen": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328"
+      },
+      "name": "EID_semantic equals the declared/frozen value",
+      "passed": true,
+      "question": "Q2",
+      "severity": "gate"
+    },
+    {
+      "detail": null,
+      "name": "EID_semantic equals the document's own top-level field",
+      "passed": true,
+      "question": "Q2",
+      "severity": "gate"
+    },
+    {
+      "detail": null,
+      "name": "EID_semantic is the digest of the five components it carries",
+      "passed": true,
+      "question": "Q2",
+      "severity": "gate"
+    },
+    {
+      "detail": {},
+      "name": "the live component digests equal the declared ones",
+      "passed": true,
+      "question": "Q2",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "live": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328"
+      },
+      "name": "live recomputation of EID_semantic agrees with the attestation",
+      "passed": true,
+      "question": "Q2",
+      "severity": "gate"
+    },
+    {
+      "detail": null,
+      "name": "live recomputation of EID_semantic agrees with the frozen value",
+      "passed": true,
+      "question": "Q2",
+      "severity": "gate"
+    },
+    {
+      "detail": {},
+      "name": "every live component digest equals the attested component digest",
+      "passed": true,
+      "question": "Q2",
+      "severity": "gate"
+    },
+    {
+      "detail": [],
+      "name": "no module was loaded from outside the declared sources and the runtime",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": [],
+      "name": "no sys.path entry shadows a stdlib name",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "authoritative": {
+          "objective_value": 0.25,
+          "outcome_canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+          "returncode": 0,
+          "status": "ok"
+        },
+        "captured": {
+          "harness_exit_code": 0,
+          "objective_value": 0.25,
+          "outcome_canonical_digest": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+          "returncode": 0,
+          "status": "ok"
+        }
+      },
+      "name": "the authoritative CLI route and the captured route agree",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "origin": "a0/tasks/circle-packing/e_star.py"
+      },
+      "name": "a0/tasks/circle-packing/e_star.py: loaded from the declared path",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "declared_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+        "file_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567"
+      },
+      "name": "a0/tasks/circle-packing/e_star.py: on-disk bytes match the declared hash",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "fresh_compile_sha256": "a3852642b20dc28ef57608230e6c165d9059991e8f3628ce6e197ee80f7cd82b",
+        "loaded_code_sha256": "a3852642b20dc28ef57608230e6c165d9059991e8f3628ce6e197ee80f7cd82b",
+        "loaded_from_cache_path": true,
+        "pyc_path": "a0/tasks/circle-packing/__pycache__/e_star.cpython-312.pyc"
+      },
+      "name": "a0/tasks/circle-packing/e_star.py: the bytecode that ran matches the declared source",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "origin": "a0/tasks/circle-packing/e_star_child.py"
+      },
+      "name": "a0/tasks/circle-packing/e_star_child.py: loaded from the declared path",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "declared_sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca",
+        "file_sha256": "e189c020ddcd2a598dadb797af0f6b06d5a30b2be4c68e226c775d2217bdf9ca"
+      },
+      "name": "a0/tasks/circle-packing/e_star_child.py: on-disk bytes match the declared hash",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "fresh_compile_sha256": "f746e89d4b32d57301dbef6eaedf24ee26780958c54754e1a65e991e9cbcd6fc",
+        "loaded_code_sha256": "f746e89d4b32d57301dbef6eaedf24ee26780958c54754e1a65e991e9cbcd6fc",
+        "loaded_from_cache_path": true,
+        "pyc_path": "a0/tasks/circle-packing/__pycache__/e_star_child.cpython-312.pyc"
+      },
+      "name": "a0/tasks/circle-packing/e_star_child.py: the bytecode that ran matches the declared source",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "declared_entry": "a0/tasks/circle-packing/e_star.py",
+        "entries_seen": [
+          "a0/tasks/circle-packing/e_star.py",
+          "a0/tasks/circle-packing/e_star_child.py"
+        ]
+      },
+      "name": "the entry module that ran is the declared entry file",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "self_reported": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532"
+      },
+      "name": "the evaluator's self-reported source digest equals E*'s frozen value",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "recomputed": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532"
+      },
+      "name": "the self-reported digest follows from the declared file hashes",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": "a frozen self-reported hash next to bytecode that does not match its source is exactly the declared-vs-executed gap",
+      "name": "the self-report is not contradicted by the bytecode that ran",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": true,
+      "name": "candidate identity check: declared_equals_disk",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": true,
+      "name": "candidate identity check: declared_equals_outcome",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": true,
+      "name": "candidate identity check: disk_equals_executed_copy",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "declared_match": true,
+        "declared_sha256": "0873d20e0bf15632fdcdc67a3c57008fd18e55cb247eaa67bfe6b26e830443cb",
+        "kind": "file",
+        "opened_by_evaluator": false,
+        "path": "a0/tasks/circle-packing/C_STAR/c02_baseline_upstream/candidate.json",
+        "sha256": "0873d20e0bf15632fdcdc67a3c57008fd18e55cb247eaa67bfe6b26e830443cb",
+        "size": 704
+      },
+      "name": "candidate data file a0/tasks/circle-packing/C_STAR/c02_baseline_upstream/candidate.json matches its declared hash",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "declared_match": true,
+        "declared_sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "kind": "file",
+        "opened_by_evaluator": true,
+        "path": "a0/tasks/circle-packing/C_STAR/c02_baseline_upstream/solution.py",
+        "sha256": "18bacee43b713e5a76941f892c5bd7b6b69d08c1327cb87af8a4094a83d9061f",
+        "size": 1441
+      },
+      "name": "candidate data file a0/tasks/circle-packing/C_STAR/c02_baseline_upstream/solution.py matches its declared hash",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": [
+        {
+          "actual": "",
+          "expected": "",
+          "name": "child_environment.PATH",
+          "passed": true
+        },
+        {
+          "actual": "",
+          "expected": "",
+          "name": "child_environment.PYTHONPATH",
+          "passed": true
+        },
+        {
+          "actual": "0",
+          "expected": "0",
+          "name": "child_environment.PYTHONHASHSEED",
+          "passed": true
+        },
+        {
+          "actual": "1",
+          "expected": "1",
+          "name": "child_environment.PYTHONDONTWRITEBYTECODE",
+          "passed": true
+        },
+        {
+          "actual": "1",
+          "expected": "1",
+          "name": "child_environment.PYTHONNOUSERSITE",
+          "passed": true
+        }
+      ],
+      "name": "the child environment matches the frozen environment policy",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": null,
+      "name": "no network events during evaluation",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    },
+    {
+      "detail": {
+        "expected": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+        "expected_status": "ok",
+        "observed": "b4ddfc46f1c745ae11828b80d7c67e460953ee8bd854d94ed4a94ccaea0092fc",
+        "observed_status": "ok"
+      },
+      "name": "the outcome matches the frozen reference table row for this candidate",
+      "passed": true,
+      "question": "Q3",
+      "severity": "gate"
+    }
+  ],
+  "schema": "a0.attestation.verdict/v1",
+  "verdicts": {
+    "Q1_recomputes": "RECOMPUTES",
+    "Q2_semantic": "SEMANTIC_MATCH",
+    "Q3_realization": "REALIZED"
+  }
+}

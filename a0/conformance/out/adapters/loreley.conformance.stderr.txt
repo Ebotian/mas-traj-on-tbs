@@ -1,20 +1,255 @@
-2026-09-20 19:52:58.806 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
-2026-09-20 19:52:59.011 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c02_baseline_upstream commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
-2026-09-20 19:52:59.222 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c03_mirror commit=893d0aa439433d523e2666d62de9b60caacdbab7 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
-2026-09-20 19:52:59.430 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c04_near_tie commit=3bf7bf310c976e9a488fadad81e27ea4dfef47e5 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
-2026-09-20 19:52:59.635 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c05_overlapping commit=1054b613063beeb62feb2a91d93a190e750eac8d outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
-2026-09-20 19:52:59.837 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c06_empty commit=245b052ae21568853348257d5fb739c82c498ec4 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
-2026-09-20 19:53:00.040 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c07_single commit=06fd7c81ea1b82c72ff95655c01f09a4bc511389 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
-2026-09-20 19:53:00.244 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c08_out_of_bounds commit=8724d76ce22c6675addb04a0bf42937e13855437 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
-2026-09-20 19:53:00.439 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c09_malformed_import commit=8f3cc2c8e62dec779227f80623ebed8e5e5a15fb outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
-2026-09-20 19:53:00.644 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c10_raises commit=8739f824fab190ec43f684df215f7e02eb480b8e outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
-2026-09-20 19:53:00.849 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c11_non_deterministic commit=f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18e outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
-2026-09-20 19:53:01.039 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c12_exit_without_artifacts commit=f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4b outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
-2026-09-20 19:53:04.295 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c13_slow commit=f085fe77acc30b3dd50a990b5aeedde0bee6c7a7 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
-2026-09-20 19:53:04.548 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c14_near_zero commit=b8412ada1bb33483d7845b144e7ea6dcbeeed752 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
-2026-09-20 19:53:05.371 | INFO     | loreley.config:get_settings:1491 - Settings initialised: {'app_name': 'loreley-a0', 'environment': 'development', 'log_level': 'INFO', 'profile': 'default', 'logs_base_dir': None, 'loreley_agent_api_token': None, 'loreley_api_write_token': None, 'openai_api_spec': 'responses', 'openai_base_url': None, 'openai_api_key': None, 'openai_dynamic_api_key_provider': None, 'openai_dynamic_api_key_ttl_seconds': None, 'openai_dynamic_api_key_refresh_skew_seconds': None, 'llm_usage_tracking_enabled': True, 'llm_usage_pricing_path': None, 'llm_usage_pricing_json_configured': False, 'mapelites_experiment_root_commit': 'b91c0906c9f676eb661990d881144909d99f2d72', 'database_dsn': 'postgresql+psycopg://127.0.0.1:5432/loreley', 'db_scheme': 'postgresql+psycopg', 'db_host': 'localhost', 'db_port': 5432, 'db_name': 'loreley', 'db_password': '***', 'db_pool_size': 10, 'db_max_overflow': 20, 'db_pool_timeout': 30, 'db_echo': False, 'db_auto_migrate': True, 'db_migration_lock_timeout_seconds': 30, 'tasks_redis_url': 'redis://127.0.0.1:6379/0', 'tasks_redis_host': 'localhost', 'tasks_redis_port': 6379, 'tasks_redis_db': 0, 'tasks_redis_password': None, 'tasks_redis_namespace': 'loreley.a0-loreley-loreley-26cc4549', 'tasks_queue_name': 'loreley.evolution.a0-loreley-loreley-26cc4549', 'tasks_queue_prefetch': 1, 'tasks_delay_queue_prefetch': 1, 'tasks_worker_max_retries': 0, 'tasks_worker_time_limit_seconds': 3600, 'experiment_id': 'a0-loreley-loreley', 'effective_routes': {'seed_portfolio': {'backend': 'kilo', 'provider_mode': 'config', 'provider': 'loreley-openai-responses', 'model': 'openai/gpt-5.6-sol', 'variant': 'high', 'reasoning': 'high', 'api_surface': 'responses', 'base_url_host': None}, 'planning': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'coding': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'trajectory_summary': {'enabled': True, 'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': None, 'api_surface': 'responses', 'thinking': 'provider_default', 'reasoning_effort': 'provider_default', 'base_url_host': None}, 'embedding': {'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': 'text-embedding-3-small', 'dimensions': None, 'api_surface': 'embeddings', 'base_url_host': None, 'local_hash_acknowledged': None}, 'commit_summary': {'enabled': True, 'model_call': False, 'source': 'coding.report.summary', 'fallback_source': 'plan.summary'}}, 'scheduler_repo_root': None, 'scheduler_poll_interval_seconds': 30.0, 'worker_repo_worktree': '/home/ebt/.cache/loreley/worker-repo', 'worker_repo_remote_url': None, 'worker_repo_branch': 'main', 'worker_repo_fetch_depth': None, 'worker_scope_gate_cleanup_paths': '', 'worker_repo_enable_lfs': True, 'worker_repo_job_branch_ttl_hours': 168, 'worker_job_lease_ttl_seconds': 1800, 'worker_job_heartbeat_interval_seconds': 60, 'worker_processes': 1, 'worker_planning_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_planning_backend', 'worker_planning_codex_model': None, 'worker_planning_max_attempts': 2, 'worker_planning_timeout_seconds': 900, 'worker_seed_portfolio_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_seed_portfolio_backend', 'worker_seed_portfolio_model': 'openai/gpt-5.6-sol', 'worker_seed_portfolio_reasoning_effort': 'high', 'worker_seed_portfolio_max_attempts': 2, 'worker_seed_portfolio_timeout_seconds': 1800, 'worker_coding_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_coding_backend', 'worker_coding_codex_model': None, 'worker_coding_max_attempts': 2, 'worker_coding_timeout_seconds': 1800, 'worker_cursor_model': 'gpt-5.2-high', 'worker_kilocode_mode': None, 'worker_kilocode_agent': None, 'worker_kilocode_model': None, 'worker_kilocode_planning_model': None, 'worker_kilocode_coding_model': None, 'worker_kilocode_variant': None, 'worker_kilocode_pure': False, 'worker_kilocode_json_output': False, 'worker_kilocode_usage_db_path': None, 'worker_kilocode_state_root': None, 'worker_kilocode_provider_config_mode': 'auto', 'worker_kilocode_openai_api_spec': None, 'worker_kilocode_openai_base_url': None, 'worker_kilocode_openai_api_key': None, 'worker_kilocode_openai_model': None, 'worker_evaluator_plugin': 'loreley_a0_plugin:plugin', 'worker_evaluator_version': None, 'worker_evaluator_timeout_seconds': 900, 'worker_evaluator_max_metrics': 64, 'worker_evaluator_max_concurrency': None, 'worker_evaluator_slot_poll_seconds': 0.25, 'worker_evaluator_measurement_max_json_bytes': 8388608, 'worker_evolution_global_goal': 'Continuously improve the repository while keeping tests passing, maintaining code quality, and respecting project conventions.', 'worker_evolution_commit_author': 'Loreley Worker', 'worker_evolution_commit_email': 'worker@loreley.local', 'worker_planning_trajectory_summary_provider_mode': 'global_openai', 'worker_planning_trajectory_summary_api_key': None, 'worker_planning_trajectory_summary_base_url': None, 'worker_planning_trajectory_summary_api_spec': 'responses', 'worker_planning_trajectory_summary_thinking': 'provider_default', 'worker_planning_trajectory_summary_reasoning_effort': 'provider_default', 'worker_planning_trajectory_summary_model': None, 'mapelites_code_embedding_model': 'text-embedding-3-small', 'mapelites_code_embedding_dimensions': None, 'mapelites_code_embedding_provider_only': [], 'mapelites_code_embedding_allow_fallbacks': True, 'mapelites_code_embedding_require_parameters': False, 'mapelites_code_embedding_data_collection': 'allow', 'mapelites_local_hash_embedding_acknowledged': False, 'mapelites_repo_state_embedding_max_line_chars': 16000, 'mapelites_repo_state_embedding_max_chunk_chars': 65536, 'mapelites_dimensionality_target_dims': 4, 'mapelites_archive_cells_per_dim': 32, 'mapelites_islands': ['circle_packing_alpha'], 'mapelites_objectives': [{'name': 'composite_score', 'direction': 'max'}], 'mapelites_pareto_front_max_size': 8, 'mapelites_pareto_epsilon': 1e-09, 'mapelites_admission_policy': 'pareto', 'mapelites_comparison_confidence': 0.95, 'mapelites_migration_interval_jobs': 50, 'mapelites_sampler_inspiration_count': 3, 'mapelites_sampler_seed': 0, 'mapelites_sampler_recipe_cooldown_jobs': 64, 'mapelites_sampler_max_resample_attempts': 32, 'mapelites_sampler_neighbor_radius': 1, 'mapelites_sampler_neighbor_max_radius': 3, 'mapelites_sampler_fallback_sample_size': 8, 'mapelites_sampler_default_priority': 0, 'mapelites_seed_population_size': 16, 'mapelites_seed_portfolio_enabled': False, 'mapelites_seed_portfolio_direction_count': 8, 'mapelites_seed_portfolio_max_pairwise_overlap': 0.65, 'mapelites_seed_direction_max_unsuccessful_attempts': 2, 'mapelites_seed_immediate_min_improvement_fraction': 0.0, 'scheduler_max_unfinished_jobs': 4, 'scheduler_dispatch_batch_size': 4, 'scheduler_schedule_batch_size': 2, 'scheduler_ingest_batch_size': 2, 'scheduler_max_total_jobs': None, 'scheduler_max_unique_evaluation_identities': None, 'scheduler_startup_approve': False, 'scheduler_stale_running_reclaim_batch_size': 32, 'scheduler_stale_running_max_recovery_attempts': 3, 'campaign_program_change_policy': 'locked', 'baseline_bootstrap_policy': 'required', 'failed_candidate_repair_enabled': False, 'failed_candidate_repair_mode': 'rebase_from_nearest_viable', 'failed_candidate_repair_max_depth': 1, 'failed_candidate_repair_max_attempts': 1, 'failed_candidate_repair_normal_jobs_per_token': 9, 'failed_candidate_repair_max_tokens': 3, 'failed_candidate_repair_max_active_jobs': 1, 'failed_candidate_repair_max_jobs_per_tick': 1, 'failed_candidate_repair_failure_kinds': 'validation_failed,test_failed,typecheck_failed,lint_failed', 'failed_candidate_repair_agent_feedback_mode': 'diagnostic_capsule', 'failed_candidate_repair_max_diff_bytes': 65536, 'failed_candidate_repair_max_diagnostic_bytes': 16384, 'worker_evaluator_rework_enabled': True, 'worker_evaluator_rework_max_attempts': 1, 'worker_evaluator_rework_failure_kinds': 'compile,typecheck,lint,test,validation', 'worker_evaluator_rework_max_seconds': 1800}
-2026-09-20 19:53:05.393 | INFO     | loreley.db.base:get_engine:122 - SQLAlchemy engine initialised for postgresql+psycopg://127.0.0.1:5432/loreley
-2026-09-20 19:53:05.422 | INFO     | loreley.db.base:ensure_database_schema:207 - Database schema ensured for postgresql+psycopg://127.0.0.1:5432/loreley
-2026-09-20 19:53:05.885 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
-2026-09-20 19:53:06.084 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
-2026-09-20 19:53:06.285 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+2026-09-21 16:25:42.165 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+2026-09-21 16:25:42.371 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c02_baseline_upstream commit=18bacee43b713e5a76941f892c5bd7b6b69d08c1 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+2026-09-21 16:25:42.581 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c03_mirror commit=893d0aa439433d523e2666d62de9b60caacdbab7 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+2026-09-21 16:25:42.790 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c04_near_tie commit=3bf7bf310c976e9a488fadad81e27ea4dfef47e5 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+2026-09-21 16:25:42.996 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c05_overlapping commit=1054b613063beeb62feb2a91d93a190e750eac8d outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+2026-09-21 16:25:43.199 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c06_empty commit=245b052ae21568853348257d5fb739c82c498ec4 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+2026-09-21 16:25:43.405 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c07_single commit=06fd7c81ea1b82c72ff95655c01f09a4bc511389 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+2026-09-21 16:25:43.616 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c08_out_of_bounds commit=8724d76ce22c6675addb04a0bf42937e13855437 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+2026-09-21 16:25:43.820 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c09_malformed_import commit=8f3cc2c8e62dec779227f80623ebed8e5e5a15fb outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+2026-09-21 16:25:44.028 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c10_raises commit=8739f824fab190ec43f684df215f7e02eb480b8e outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+2026-09-21 16:25:44.236 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c11_non_deterministic commit=f4e7d12ecf5cf50f9f2ead6a11cc1ace0019b18e outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+2026-09-21 16:25:44.429 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c12_exit_without_artifacts commit=f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4b outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+2026-09-21 16:25:47.678 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c13_slow commit=f085fe77acc30b3dd50a990b5aeedde0bee6c7a7 outcome_kind=candidate_failed evaluator=loreley_a0_plugin:plugin metrics=0
+2026-09-21 16:25:47.889 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c14_near_zero commit=b8412ada1bb33483d7845b144e7ea6dcbeeed752 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+2026-09-21 16:25:48.741 | INFO     | loreley.config:get_settings:1491 - Settings initialised: {'app_name': 'loreley-a0', 'environment': 'development', 'log_level': 'INFO', 'profile': 'default', 'logs_base_dir': None, 'loreley_agent_api_token': None, 'loreley_api_write_token': None, 'openai_api_spec': 'responses', 'openai_base_url': None, 'openai_api_key': None, 'openai_dynamic_api_key_provider': None, 'openai_dynamic_api_key_ttl_seconds': None, 'openai_dynamic_api_key_refresh_skew_seconds': None, 'llm_usage_tracking_enabled': True, 'llm_usage_pricing_path': None, 'llm_usage_pricing_json_configured': False, 'mapelites_experiment_root_commit': 'b91c0906c9f676eb661990d881144909d99f2d72', 'database_dsn': 'postgresql+psycopg://127.0.0.1:5432/loreley', 'db_scheme': 'postgresql+psycopg', 'db_host': 'localhost', 'db_port': 5432, 'db_name': 'loreley', 'db_password': '***', 'db_pool_size': 10, 'db_max_overflow': 20, 'db_pool_timeout': 30, 'db_echo': False, 'db_auto_migrate': True, 'db_migration_lock_timeout_seconds': 30, 'tasks_redis_url': 'redis://127.0.0.1:6379/0', 'tasks_redis_host': 'localhost', 'tasks_redis_port': 6379, 'tasks_redis_db': 0, 'tasks_redis_password': None, 'tasks_redis_namespace': 'loreley.a0-loreley-loreley-26cc4549', 'tasks_queue_name': 'loreley.evolution.a0-loreley-loreley-26cc4549', 'tasks_queue_prefetch': 1, 'tasks_delay_queue_prefetch': 1, 'tasks_worker_max_retries': 0, 'tasks_worker_time_limit_seconds': 3600, 'experiment_id': 'a0-loreley-loreley', 'effective_routes': {'seed_portfolio': {'backend': 'kilo', 'provider_mode': 'config', 'provider': 'loreley-openai-responses', 'model': 'openai/gpt-5.6-sol', 'variant': 'high', 'reasoning': 'high', 'api_surface': 'responses', 'base_url_host': None}, 'planning': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'coding': {'backend': 'kilo', 'provider_mode': 'native', 'provider': 'unknown', 'model': None, 'variant': None, 'reasoning': 'provider_default', 'api_surface': 'kilo_native', 'base_url_host': None}, 'trajectory_summary': {'enabled': True, 'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': None, 'api_surface': 'responses', 'thinking': 'provider_default', 'reasoning_effort': 'provider_default', 'base_url_host': None}, 'embedding': {'provider_mode': 'global_openai', 'provider': 'openai_compatible', 'model': 'text-embedding-3-small', 'dimensions': None, 'api_surface': 'embeddings', 'base_url_host': None, 'local_hash_acknowledged': None}, 'commit_summary': {'enabled': True, 'model_call': False, 'source': 'coding.report.summary', 'fallback_source': 'plan.summary'}}, 'scheduler_repo_root': None, 'scheduler_poll_interval_seconds': 30.0, 'worker_repo_worktree': '/home/ebt/.cache/loreley/worker-repo', 'worker_repo_remote_url': None, 'worker_repo_branch': 'main', 'worker_repo_fetch_depth': None, 'worker_scope_gate_cleanup_paths': '', 'worker_repo_enable_lfs': True, 'worker_repo_job_branch_ttl_hours': 168, 'worker_job_lease_ttl_seconds': 1800, 'worker_job_heartbeat_interval_seconds': 60, 'worker_processes': 1, 'worker_planning_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_planning_backend', 'worker_planning_codex_model': None, 'worker_planning_max_attempts': 2, 'worker_planning_timeout_seconds': 900, 'worker_seed_portfolio_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_seed_portfolio_backend', 'worker_seed_portfolio_model': 'openai/gpt-5.6-sol', 'worker_seed_portfolio_reasoning_effort': 'high', 'worker_seed_portfolio_max_attempts': 2, 'worker_seed_portfolio_timeout_seconds': 1800, 'worker_coding_backend': 'loreley.core.worker.agent.backends.kilocode_cli:kilocode_coding_backend', 'worker_coding_codex_model': None, 'worker_coding_max_attempts': 2, 'worker_coding_timeout_seconds': 1800, 'worker_cursor_model': 'gpt-5.2-high', 'worker_kilocode_mode': None, 'worker_kilocode_agent': None, 'worker_kilocode_model': None, 'worker_kilocode_planning_model': None, 'worker_kilocode_coding_model': None, 'worker_kilocode_variant': None, 'worker_kilocode_pure': False, 'worker_kilocode_json_output': False, 'worker_kilocode_usage_db_path': None, 'worker_kilocode_state_root': None, 'worker_kilocode_provider_config_mode': 'auto', 'worker_kilocode_openai_api_spec': None, 'worker_kilocode_openai_base_url': None, 'worker_kilocode_openai_api_key': None, 'worker_kilocode_openai_model': None, 'worker_evaluator_plugin': 'loreley_a0_plugin:plugin', 'worker_evaluator_version': None, 'worker_evaluator_timeout_seconds': 900, 'worker_evaluator_max_metrics': 64, 'worker_evaluator_max_concurrency': None, 'worker_evaluator_slot_poll_seconds': 0.25, 'worker_evaluator_measurement_max_json_bytes': 8388608, 'worker_evolution_global_goal': 'Continuously improve the repository while keeping tests passing, maintaining code quality, and respecting project conventions.', 'worker_evolution_commit_author': 'Loreley Worker', 'worker_evolution_commit_email': 'worker@loreley.local', 'worker_planning_trajectory_summary_provider_mode': 'global_openai', 'worker_planning_trajectory_summary_api_key': None, 'worker_planning_trajectory_summary_base_url': None, 'worker_planning_trajectory_summary_api_spec': 'responses', 'worker_planning_trajectory_summary_thinking': 'provider_default', 'worker_planning_trajectory_summary_reasoning_effort': 'provider_default', 'worker_planning_trajectory_summary_model': None, 'mapelites_code_embedding_model': 'text-embedding-3-small', 'mapelites_code_embedding_dimensions': None, 'mapelites_code_embedding_provider_only': [], 'mapelites_code_embedding_allow_fallbacks': True, 'mapelites_code_embedding_require_parameters': False, 'mapelites_code_embedding_data_collection': 'allow', 'mapelites_local_hash_embedding_acknowledged': False, 'mapelites_repo_state_embedding_max_line_chars': 16000, 'mapelites_repo_state_embedding_max_chunk_chars': 65536, 'mapelites_dimensionality_target_dims': 4, 'mapelites_archive_cells_per_dim': 32, 'mapelites_islands': ['circle_packing_alpha'], 'mapelites_objectives': [{'name': 'composite_score', 'direction': 'max'}], 'mapelites_pareto_front_max_size': 8, 'mapelites_pareto_epsilon': 1e-09, 'mapelites_admission_policy': 'pareto', 'mapelites_comparison_confidence': 0.95, 'mapelites_migration_interval_jobs': 50, 'mapelites_sampler_inspiration_count': 3, 'mapelites_sampler_seed': 0, 'mapelites_sampler_recipe_cooldown_jobs': 64, 'mapelites_sampler_max_resample_attempts': 32, 'mapelites_sampler_neighbor_radius': 1, 'mapelites_sampler_neighbor_max_radius': 3, 'mapelites_sampler_fallback_sample_size': 8, 'mapelites_sampler_default_priority': 0, 'mapelites_seed_population_size': 16, 'mapelites_seed_portfolio_enabled': False, 'mapelites_seed_portfolio_direction_count': 8, 'mapelites_seed_portfolio_max_pairwise_overlap': 0.65, 'mapelites_seed_direction_max_unsuccessful_attempts': 2, 'mapelites_seed_immediate_min_improvement_fraction': 0.0, 'scheduler_max_unfinished_jobs': 4, 'scheduler_dispatch_batch_size': 4, 'scheduler_schedule_batch_size': 2, 'scheduler_ingest_batch_size': 2, 'scheduler_max_total_jobs': None, 'scheduler_max_unique_evaluation_identities': None, 'scheduler_startup_approve': False, 'scheduler_stale_running_reclaim_batch_size': 32, 'scheduler_stale_running_max_recovery_attempts': 3, 'campaign_program_change_policy': 'locked', 'baseline_bootstrap_policy': 'required', 'failed_candidate_repair_enabled': False, 'failed_candidate_repair_mode': 'rebase_from_nearest_viable', 'failed_candidate_repair_max_depth': 1, 'failed_candidate_repair_max_attempts': 1, 'failed_candidate_repair_normal_jobs_per_token': 9, 'failed_candidate_repair_max_tokens': 3, 'failed_candidate_repair_max_active_jobs': 1, 'failed_candidate_repair_max_jobs_per_tick': 1, 'failed_candidate_repair_failure_kinds': 'validation_failed,test_failed,typecheck_failed,lint_failed', 'failed_candidate_repair_agent_feedback_mode': 'diagnostic_capsule', 'failed_candidate_repair_max_diff_bytes': 65536, 'failed_candidate_repair_max_diagnostic_bytes': 16384, 'worker_evaluator_rework_enabled': True, 'worker_evaluator_rework_max_attempts': 1, 'worker_evaluator_rework_failure_kinds': 'compile,typecheck,lint,test,validation', 'worker_evaluator_rework_max_seconds': 1800}
+2026-09-21 16:25:48.763 | INFO     | loreley.db.base:get_engine:122 - SQLAlchemy engine initialised for postgresql+psycopg://127.0.0.1:5432/loreley
+2026-09-21 16:25:48.765 | ERROR    | loreley.db.base:ensure_database_schema:212 - Failed to ensure database schema: (psycopg.OperationalError) connection failed: connection to server at "127.0.0.1", port 5432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+Traceback (most recent call last):
+
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+    │                        │      └ <function Engine.raw_connection at 0x7efe748391c0>
+    │                        └ Engine(postgresql+psycopg://loreley:***@127.0.0.1:5432/loreley)
+    └ <sqlalchemy.engine.base.Connection object at 0x7efe4d8b2480>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+           │    │    └ <function Pool.connect at 0x7efe92700220>
+           │    └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+           └ Engine(postgresql+psycopg://loreley:***@127.0.0.1:5432/loreley)
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+           │                │         └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+           │                └ <classmethod(<function _ConnectionFairy._checkout at 0x7efe92702480>)>
+           └ <class 'sqlalchemy.pool.base._ConnectionFairy'>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1290, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            │                 │        └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+            │                 └ <classmethod(<function _ConnectionRecord.checkout at 0x7efe92700ea0>)>
+            └ <class 'sqlalchemy.pool.base._ConnectionRecord'>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          │    └ <function QueuePool._do_get at 0x7efe9270c5e0>
+          └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 178, in _do_get
+    with util.safe_reraise():
+         │    └ <class 'sqlalchemy.util.langhelpers.safe_reraise'>
+         └ <module 'sqlalchemy.util' from '/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/...
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+          │         │              └ <traceback object at 0x7efe4d1c8300>
+          │         └ <method 'with_traceback' of 'BaseException' objects>
+          └ OperationalError('connection failed: connection to server at "127.0.0.1", port 5432 failed: Connection refused\n\tIs the serv...
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+           │    └ <function Pool._create_connection at 0x7efe92ddff60>
+           └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+           │                 └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+           └ <class 'sqlalchemy.pool.base._ConnectionRecord'>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+    └ <sqlalchemy.pool.base._ConnectionRecord object at 0x7efe4d186330>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+         │    └ <class 'sqlalchemy.util.langhelpers.safe_reraise'>
+         └ <module 'sqlalchemy.util' from '/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/...
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+          │         │              └ <traceback object at 0x7efe4d1e7580>
+          │         └ <method 'with_traceback' of 'BaseException' objects>
+          └ OperationalError('connection failed: connection to server at "127.0.0.1", port 5432 failed: Connection refused\n\tIs the serv...
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+    │    │                               │    │               └ <sqlalchemy.pool.base._ConnectionRecord object at 0x7efe4d186330>
+    │    │                               │    └ <function create_engine.<locals>.connect at 0x7efe4d912520>
+    │    │                               └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+    │    └ <member 'dbapi_connection' of '_ConnectionRecord' objects>
+    └ <sqlalchemy.pool.base._ConnectionRecord object at 0x7efe4d186330>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           │       │        │            └ immutabledict({'host': '127.0.0.1', 'dbname': 'loreley', 'user': 'loreley', 'password': 'loreley', 'port': 5432, 'context': <...
+           │       │        └ []
+           │       └ <function DefaultDialect.connect at 0x7efe748e9260>
+           └ <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x7efe4e49af90>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           │    │            │        │        └ {'host': '127.0.0.1', 'dbname': 'loreley', 'user': 'loreley', 'password': 'loreley', 'port': 5432, 'context': <psycopg.adapt....
+           │    │            │        └ ()
+           │    │            └ <bound method Connection.connect of <class 'psycopg.Connection'>>
+           │    └ <module 'psycopg' from '/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/psycopg/__init__.py'>
+           └ <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x7efe4e49af90>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/psycopg/connection.py", line 126, in connect
+    raise last_ex.with_traceback(None)
+          │       └ <method 'with_traceback' of 'BaseException' objects>
+          └ OperationalError('connection failed: connection to server at "127.0.0.1", port 5432 failed: Connection refused\n\tIs the serv...
+
+psycopg.OperationalError: connection failed: connection to server at "127.0.0.1", port 5432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+
+
+The above exception was the direct cause of the following exception:
+
+
+Traceback (most recent call last):
+
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/bin/a0_loreley.py", line 28, in <module>
+    raise SystemExit(main())
+                     └ <function main at 0x7efe96721120>
+
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/src/a0_adapter/cli.py", line 1756, in main
+    return int(args.fn(args))
+               │    │  └ Namespace(command='conformance', runtime='loreley', task='circle-packing', candidate_set='/home/ebt/rsi-dev/a0/tasks/circle-p...
+               │    └ <function cmd_conformance at 0x7efe96720540>
+               └ Namespace(command='conformance', runtime='loreley', task='circle-packing', candidate_set='/home/ebt/rsi-dev/a0/tasks/circle-p...
+
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/src/a0_adapter/cli.py", line 963, in cmd_conformance
+    archive_decisions = _archive_pass(
+                        └ <function _archive_pass at 0x7efe96720400>
+
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/src/a0_adapter/cli.py", line 801, in _archive_pass
+    probe = probe_report_branch(env, island_id=DEFAULT_ISLAND, members=rows)
+            │                   │              │                       └ [{'commit_hash': 'c01_good_hex', 'value': 2.4519205208433132, 'cell_index': 208, 'objective_values': [2.4519205208433132], 'm...
+            │                   │              └ 'circle_packing_alpha'
+            │                   └ FrozenEnvironment(run_dir=PosixPath('/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance'), theta=ThetaE(seed=1337, fidelit...
+            └ <function probe_report_branch at 0x7efe968b7c40>
+
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/src/a0_adapter/report_branch.py", line 108, in probe_report_branch
+    settings, session_scope = _connect(env)
+                              │        └ FrozenEnvironment(run_dir=PosixPath('/home/ebt/rsi-dev/a0/runtimes/loreley/out/conformance'), theta=ThetaE(seed=1337, fidelit...
+                              └ <function _connect at 0x7efe96879620>
+
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/src/a0_adapter/report_branch.py", line 66, in _connect
+    ensure_database_schema(settings=settings, auto_migrate=True)
+    │                               └ Settings(app_name='loreley-a0', environment='development', log_level='INFO', profile='default', logs_base_dir=None, loreley_a...
+    └ <function ensure_database_schema at 0x7efe7421af20>
+
+> File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/loreley/db/base.py", line 188, in ensure_database_schema
+    ensure_schema_current(
+    └ <function ensure_schema_current at 0x7efe4e2cfce0>
+
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/loreley/db/migrations/runner.py", line 166, in ensure_schema_current
+    with engine.begin() as conn:
+         │      └ <function Engine.begin at 0x7efe74838fe0>
+         └ Engine(postgresql+psycopg://loreley:***@127.0.0.1:5432/loreley)
+
+  File "/home/ebt/.local/share/uv/python/cpython-3.12-linux-x86_64-gnu/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+                │    └ <generator object Engine.begin at 0x7efe4d15e2f0>
+                └ <contextlib._GeneratorContextManager object at 0x7efe4ea9e6f0>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3259, in begin
+    with self.connect() as conn:
+         │    └ <function Engine.connect at 0x7efe74839120>
+         └ Engine(postgresql+psycopg://loreley:***@127.0.0.1:5432/loreley)
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3295, in connect
+    return self._connection_cls(self)
+           │    │               └ Engine(postgresql+psycopg://loreley:***@127.0.0.1:5432/loreley)
+           │    └ <class 'sqlalchemy.engine.base.Connection'>
+           └ Engine(postgresql+psycopg://loreley:***@127.0.0.1:5432/loreley)
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+    │          └ <classmethod(<function Connection._handle_dbapi_exception_noconnection at 0x7efe74836980>)>
+    └ <class 'sqlalchemy.engine.base.Connection'>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+          │                    │              │                 └ OperationalError('connection failed: connection to server at "127.0.0.1", port 5432 failed: Connection refused\n\tIs the serv...
+          │                    │              └ (<class 'psycopg.OperationalError'>, OperationalError('connection failed: connection to server at "127.0.0.1", port 5432 fail...
+          │                    └ <method 'with_traceback' of 'BaseException' objects>
+          └ OperationalError('(psycopg.OperationalError) connection failed: connection to server at "127.0.0.1", port 5432 failed: Connec...
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+    │                        │      └ <function Engine.raw_connection at 0x7efe748391c0>
+    │                        └ Engine(postgresql+psycopg://loreley:***@127.0.0.1:5432/loreley)
+    └ <sqlalchemy.engine.base.Connection object at 0x7efe4d8b2480>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/base.py", line 3319, in raw_connection
+    return self.pool.connect()
+           │    │    └ <function Pool.connect at 0x7efe92700220>
+           │    └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+           └ Engine(postgresql+psycopg://loreley:***@127.0.0.1:5432/loreley)
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+           │                │         └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+           │                └ <classmethod(<function _ConnectionFairy._checkout at 0x7efe92702480>)>
+           └ <class 'sqlalchemy.pool.base._ConnectionFairy'>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 1290, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            │                 │        └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+            │                 └ <classmethod(<function _ConnectionRecord.checkout at 0x7efe92700ea0>)>
+            └ <class 'sqlalchemy.pool.base._ConnectionRecord'>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 712, in checkout
+    rec = pool._do_get()
+          │    └ <function QueuePool._do_get at 0x7efe9270c5e0>
+          └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 178, in _do_get
+    with util.safe_reraise():
+         │    └ <class 'sqlalchemy.util.langhelpers.safe_reraise'>
+         └ <module 'sqlalchemy.util' from '/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/...
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+          │         │              └ <traceback object at 0x7efe4d1c8300>
+          │         └ <method 'with_traceback' of 'BaseException' objects>
+          └ OperationalError('connection failed: connection to server at "127.0.0.1", port 5432 failed: Connection refused\n\tIs the serv...
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/impl.py", line 176, in _do_get
+    return self._create_connection()
+           │    └ <function Pool._create_connection at 0x7efe92ddff60>
+           └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 389, in _create_connection
+    return _ConnectionRecord(self)
+           │                 └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+           └ <class 'sqlalchemy.pool.base._ConnectionRecord'>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 674, in __init__
+    self.__connect()
+    └ <sqlalchemy.pool.base._ConnectionRecord object at 0x7efe4d186330>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 900, in __connect
+    with util.safe_reraise():
+         │    └ <class 'sqlalchemy.util.langhelpers.safe_reraise'>
+         └ <module 'sqlalchemy.util' from '/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/...
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/util/langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+          │         │              └ <traceback object at 0x7efe4d1e7580>
+          │         └ <method 'with_traceback' of 'BaseException' objects>
+          └ OperationalError('connection failed: connection to server at "127.0.0.1", port 5432 failed: Connection refused\n\tIs the serv...
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/pool/base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+    │    │                               │    │               └ <sqlalchemy.pool.base._ConnectionRecord object at 0x7efe4d186330>
+    │    │                               │    └ <function create_engine.<locals>.connect at 0x7efe4d912520>
+    │    │                               └ <sqlalchemy.pool.impl.QueuePool object at 0x7efe4d1af530>
+    │    └ <member 'dbapi_connection' of '_ConnectionRecord' objects>
+    └ <sqlalchemy.pool.base._ConnectionRecord object at 0x7efe4d186330>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           │       │        │            └ immutabledict({'host': '127.0.0.1', 'dbname': 'loreley', 'user': 'loreley', 'password': 'loreley', 'port': 5432, 'context': <...
+           │       │        └ []
+           │       └ <function DefaultDialect.connect at 0x7efe748e9260>
+           └ <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x7efe4e49af90>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/sqlalchemy/engine/default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           │    │            │        │        └ {'host': '127.0.0.1', 'dbname': 'loreley', 'user': 'loreley', 'password': 'loreley', 'port': 5432, 'context': <psycopg.adapt....
+           │    │            │        └ ()
+           │    │            └ <bound method Connection.connect of <class 'psycopg.Connection'>>
+           │    └ <module 'psycopg' from '/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/psycopg/__init__.py'>
+           └ <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x7efe4e49af90>
+  File "/home/ebt/rsi-dev/a0/runtimes/loreley/checkout/.venv/lib/python3.12/site-packages/psycopg/connection.py", line 126, in connect
+    raise last_ex.with_traceback(None)
+          │       └ <method 'with_traceback' of 'BaseException' objects>
+          └ OperationalError('connection failed: connection to server at "127.0.0.1", port 5432 failed: Connection refused\n\tIs the serv...
+
+sqlalchemy.exc.OperationalError: (psycopg.OperationalError) connection failed: connection to server at "127.0.0.1", port 5432 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-09-21 16:25:49.227 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+2026-09-21 16:25:49.432 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7
+2026-09-21 16:25:49.641 | INFO     | loreley.core.worker.evaluator:evaluate_outcome:1532 - Evaluation completed job=a0-c01_good_hex commit=bca4286ed3b15035675f3f2bb2ed0ac8b9e53649 outcome_kind=passed evaluator=loreley_a0_plugin:plugin metrics=7

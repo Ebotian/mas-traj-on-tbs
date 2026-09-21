@@ -7,7 +7,7 @@
 
 ## EID* -> EID_r mapping
 
-* `EID*` = `664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328` (from `/home/ebt/rsi-dev/a0/contract/out/plumbing.EID.json`; `evalcontract.py verify` run
+* `EID*` = `664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328` (from `/tmp/sv3/a0/contract/out/plumbing.EID.json`; `evalcontract.py verify` run
   before every command unless `--no-verify` is passed).
 * native scheme: `evaluator_name_version_campaign_program_hash`, mapping mode `native`.
 * `EID_r.value` = `loreley:v1:loreley_a0_plugin:plugin@source-sha256:53e6cfe804d0d1e53414ed1d8694435d085404b88322889ecdcc73280affd9ad#b18efabb4f6a859b71f489ebca799fcbb9339133dcde51f862232bbb60d88fa1`

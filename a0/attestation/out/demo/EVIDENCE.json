@@ -1,0 +1,436 @@
+{
+  "candidate": "a0/tasks/circle-packing/C_STAR/c05_overlapping",
+  "declared_expectation_for_this_candidate": "invalid (its nominal sum_radii ties the best candidate)",
+  "declared_source_invariance": {
+    "path": "a0/tasks/circle-packing/e_star.py",
+    "sha256_after_the_demos": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+    "sha256_before_the_demos": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+    "unchanged": true
+  },
+  "demos": [
+    {
+      "attest": {
+        "attestation": "a0/attestation/out/demo/attestation.d0-baseline-control.json",
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "EID_semantic  664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\nEID_execution 927bfa43cd2825824c398cb783b363890b358fcd8b5d58118b9916540e463274\ndeclared EID* 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328  (frozen 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328)\nsemantic == declared: True | frozen: True\nroutes agree: True | foreign modules: 0 | shadowing hazards: 0\nwrote /home/ebt/rsi-dev/a0/attestation/out/demo/attestation.d0-baseline-control.json\n"
+      },
+      "declared_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "declared_source_unchanged": true,
+      "declared_source_unchanged_after": true,
+      "eid_execution": "927bfa43cd2825824c398cb783b363890b358fcd8b5d58118b9916540e463274",
+      "eid_semantic": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "env": {},
+      "evaluator": "a0/tasks/circle-packing/e_star.py",
+      "expect_verdicts": {
+        "Q1_recomputes": "RECOMPUTES",
+        "Q2_semantic": "SEMANTIC_MATCH",
+        "Q3_realization": "REALIZED"
+      },
+      "failed_checks": [],
+      "id": "d0-baseline-control",
+      "matches_expectation": true,
+      "observed": {
+        "authoritative_route": {
+          "objective_value": null,
+          "outcome_canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+          "returncode": 2,
+          "status": "invalid"
+        },
+        "capture_route": {
+          "harness_exit_code": 2,
+          "objective_value": null,
+          "outcome_canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+          "returncode": 0,
+          "status": "invalid"
+        },
+        "evaluator_sources": [
+          {
+            "bytecode_matches_source": true,
+            "declared_match": true,
+            "declared_path": "a0/tasks/circle-packing/e_star.py",
+            "file_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+            "file_size": 34860,
+            "fresh_compile_sha256": "a3852642b20dc28ef57608230e6c165d9059991e8f3628ce6e197ee80f7cd82b",
+            "is_entry": true,
+            "loaded_code_sha256": "a3852642b20dc28ef57608230e6c165d9059991e8f3628ce6e197ee80f7cd82b",
+            "name": "e_star",
+            "origin": "a0/tasks/circle-packing/e_star.py",
+            "pyc_path": "a0/tasks/circle-packing/__pycache__/e_star.cpython-312.pyc",
+            "pyc_sha256": "13a572babaff00a904a347a8a8eb416231c72183ce49beef7c72976af79f5cc2"
+          }
+        ],
+        "foreign_modules": [],
+        "foreign_origins": {},
+        "outcome_status": "invalid",
+        "reference_comparison_matches": true,
+        "reference_expected_status": "invalid",
+        "routes_agree": true,
+        "self_reported_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "shadowing_hazards": []
+      },
+      "prediction_checks": [
+        {
+          "holds": true,
+          "name": "predicted the evaluator's self-reported identity hash",
+          "observed": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "predicted": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532"
+        }
+      ],
+      "predictions": {
+        "self_reported_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532"
+      },
+      "scenario_dir": ".",
+      "verdict": {
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "",
+        "verdict_file": "a0/attestation/out/demo/verdict.d0-baseline-control.json"
+      },
+      "verdicts": {
+        "Q1_recomputes": "RECOMPUTES",
+        "Q2_semantic": "SEMANTIC_MATCH",
+        "Q3_realization": "REALIZED"
+      },
+      "what": "control: the frozen evaluator, no tampering; every verdict must be good"
+    },
+    {
+      "attest": {
+        "attestation": "a0/attestation/out/demo/attestation.d1-shadow-module.json",
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "EID_semantic  664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\nEID_execution faa77ac2f5374716d944fc1e680913b4a10d7243a5f4a5affda8f182639ffbd1\ndeclared EID* 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328  (frozen 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328)\nsemantic == declared: True | frozen: True\nroutes agree: True | foreign modules: 1 | shadowing hazards: 1\nwrote /home/ebt/rsi-dev/a0/attestation/out/demo/attestation.d1-shadow-module.json\n"
+      },
+      "declared_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "declared_source_unchanged": true,
+      "declared_source_unchanged_after": true,
+      "eid_execution": "faa77ac2f5374716d944fc1e680913b4a10d7243a5f4a5affda8f182639ffbd1",
+      "eid_semantic": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "env": {
+        "PYTHONPATH": "/home/ebt/rsi-dev/a0/attestation/out/demo/d1-shadow-module"
+      },
+      "evaluator": "a0/tasks/circle-packing/e_star.py",
+      "failed_checks": [
+        "no module was loaded from outside the declared sources and the runtime",
+        "no sys.path entry shadows a stdlib name",
+        "the evaluator's self-reported source digest equals E*'s frozen value",
+        "the self-reported digest follows from the declared file hashes",
+        "the outcome matches the frozen reference table row for this candidate"
+      ],
+      "id": "d1-shadow-module",
+      "mechanism": "the shim returns `fake` whenever the hashed bytes are exactly the frozen e_star.py, so only the evaluator's self-reported identity changes",
+      "observed": {
+        "authoritative_route": {
+          "objective_value": null,
+          "outcome_canonical_digest": "5489755f7aeae6bec1f43fb450b35bb5944a47bdcd628c0976e6e105a9cb6e25",
+          "returncode": 2,
+          "status": "invalid"
+        },
+        "capture_route": {
+          "harness_exit_code": 2,
+          "objective_value": null,
+          "outcome_canonical_digest": "5489755f7aeae6bec1f43fb450b35bb5944a47bdcd628c0976e6e105a9cb6e25",
+          "returncode": 0,
+          "status": "invalid"
+        },
+        "evaluator_sources": [
+          {
+            "bytecode_matches_source": true,
+            "declared_match": true,
+            "declared_path": "a0/tasks/circle-packing/e_star.py",
+            "file_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+            "file_size": 34860,
+            "fresh_compile_sha256": "a3852642b20dc28ef57608230e6c165d9059991e8f3628ce6e197ee80f7cd82b",
+            "is_entry": true,
+            "loaded_code_sha256": "a3852642b20dc28ef57608230e6c165d9059991e8f3628ce6e197ee80f7cd82b",
+            "name": "e_star",
+            "origin": "a0/tasks/circle-packing/e_star.py",
+            "pyc_path": "a0/tasks/circle-packing/__pycache__/e_star.cpython-312.pyc",
+            "pyc_sha256": "13a572babaff00a904a347a8a8eb416231c72183ce49beef7c72976af79f5cc2"
+          }
+        ],
+        "foreign_modules": [
+          "hashlib"
+        ],
+        "foreign_origins": {
+          "hashlib": "/home/ebt/rsi-dev/a0/attestation/out/demo/d1-shadow-module/hashlib.py"
+        },
+        "outcome_status": "invalid",
+        "reference_comparison_matches": false,
+        "reference_expected_status": "invalid",
+        "routes_agree": true,
+        "self_reported_evaluator_source_sha256": "6c25b05ab81844e7ba3459105bbd22c00ab835eb158c10d7dd6fd1175a236963",
+        "shadowing_hazards": [
+          "hashlib"
+        ]
+      },
+      "prediction_checks": [
+        {
+          "holds": true,
+          "name": "predicted the evaluator's self-reported identity hash",
+          "observed": "6c25b05ab81844e7ba3459105bbd22c00ab835eb158c10d7dd6fd1175a236963",
+          "predicted": "6c25b05ab81844e7ba3459105bbd22c00ab835eb158c10d7dd6fd1175a236963"
+        },
+        {
+          "frozen": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "holds": true,
+          "name": "the falsified hash differs from the frozen self-report",
+          "predicted": "6c25b05ab81844e7ba3459105bbd22c00ab835eb158c10d7dd6fd1175a236963"
+        }
+      ],
+      "predictions": {
+        "fake_entry_digest": "d5062c4a1a12e13bac110ab7e7ad82738a9f5b62e09dbed696ee183d889b6bc2",
+        "frozen_self_reported_value": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "self_reported_evaluator_source_sha256": "6c25b05ab81844e7ba3459105bbd22c00ab835eb158c10d7dd6fd1175a236963"
+      },
+      "scenario_dir": "a0/attestation/out/demo/d1-shadow-module",
+      "verdict": {
+        "returncode": 3,
+        "stderr": "",
+        "stdout": "",
+        "verdict_file": "a0/attestation/out/demo/verdict.d1-shadow-module.json"
+      },
+      "verdicts": {
+        "Q1_recomputes": "RECOMPUTES",
+        "Q2_semantic": "SEMANTIC_MATCH",
+        "Q3_realization": "NOT_REALIZED"
+      },
+      "what": "a module on PYTHONPATH shadows a stdlib name the evaluator imports"
+    },
+    {
+      "attest": {
+        "attestation": "a0/attestation/out/demo/attestation.d2-stale-bytecode.json",
+        "returncode": 0,
+        "stderr": "WARNING: the authoritative CLI route and the capture route disagree; the attestation is not representative of the invocation\n",
+        "stdout": "EID_semantic  664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\nEID_execution 886265762a9a899ea66e7623c44ac59b2c8e9e75f0a9d5af7f9b84ab7eae0a38\ndeclared EID* 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328  (frozen 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328)\nsemantic == declared: True | frozen: True\nroutes agree: False | foreign modules: 2 | shadowing hazards: 0\nwrote /home/ebt/rsi-dev/a0/attestation/out/demo/attestation.d2-stale-bytecode.json\n"
+      },
+      "declared_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "declared_source_unchanged": true,
+      "declared_source_unchanged_after": true,
+      "eid_execution": "886265762a9a899ea66e7623c44ac59b2c8e9e75f0a9d5af7f9b84ab7eae0a38",
+      "eid_semantic": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "env": {},
+      "evaluator": "a0/attestation/out/demo/d2-stale-bytecode/e_star.py",
+      "failed_checks": [
+        "no module was loaded from outside the declared sources and the runtime",
+        "the authoritative CLI route and the captured route agree",
+        "a0/tasks/circle-packing/e_star.py: loaded from the declared path",
+        "a0/tasks/circle-packing/e_star.py: the bytecode that ran matches the declared source",
+        "a0/tasks/circle-packing/e_star_child.py: loaded from the declared path",
+        "the self-report is not contradicted by the bytecode that ran"
+      ],
+      "forged_bytecode": {
+        "patch": "EPS = 0.5  # DEMO d2/d3: the overlap epsilon is not the frozen one",
+        "path": "a0/attestation/out/demo/d2-stale-bytecode/__pycache__/e_star.cpython-312.pyc",
+        "pyc_header": {
+          "flags": 0,
+          "magic_hex": "cb0d0d0a",
+          "mtime_masked": 1789891561,
+          "size_masked": 34860
+        },
+        "pyc_sha256": "50eaaebc6c926ed45ae933d987955013accc85cdde93f0645baa0fe5d738c03e"
+      },
+      "id": "d2-stale-bytecode",
+      "mechanism": "the copy of e_star.py is byte-identical to the frozen file, and the forged .pyc carries the copy's own mtime and size, so CPython's timestamp validation accepts it and never recompiles",
+      "observed": {
+        "authoritative_route": {
+          "objective_value": null,
+          "outcome_canonical_digest": "6bcd9a1659598d000b894be368603c66ecee0195964fd489f2ab202b5f9a0573",
+          "returncode": 2,
+          "status": "invalid"
+        },
+        "capture_route": {
+          "harness_exit_code": 0,
+          "objective_value": 2.4519205208433132,
+          "outcome_canonical_digest": "7166a18420885142b8ceafc2ee1a57bbdeef43a29c799cbd04152537943767ae",
+          "returncode": 0,
+          "status": "ok"
+        },
+        "evaluator_sources": [
+          {
+            "bytecode_matches_source": false,
+            "declared_match": true,
+            "declared_path": "a0/tasks/circle-packing/e_star.py",
+            "file_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+            "file_size": 34860,
+            "fresh_compile_sha256": "405d424ca7249e90a2c8b2da3ae0d88ea3552dcef8e4f40bb0562edcdfc38407",
+            "is_entry": true,
+            "loaded_code_sha256": "8b4b2fc34441c4c50f2b70597f442720738bc87753a876edc13573a5f1f49467",
+            "name": "e_star",
+            "origin": "a0/attestation/out/demo/d2-stale-bytecode/e_star.py",
+            "pyc_path": "a0/attestation/out/demo/d2-stale-bytecode/__pycache__/e_star.cpython-312.pyc",
+            "pyc_sha256": "50eaaebc6c926ed45ae933d987955013accc85cdde93f0645baa0fe5d738c03e"
+          }
+        ],
+        "foreign_modules": [
+          "e_star",
+          "e_star_child"
+        ],
+        "foreign_origins": {
+          "e_star": "/home/ebt/rsi-dev/a0/attestation/out/demo/d2-stale-bytecode/e_star.py",
+          "e_star_child": "/home/ebt/rsi-dev/a0/attestation/out/demo/d2-stale-bytecode/e_star_child.py"
+        },
+        "outcome_status": "invalid",
+        "reference_comparison_matches": true,
+        "reference_expected_status": "invalid",
+        "routes_agree": false,
+        "self_reported_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+        "shadowing_hazards": []
+      },
+      "prediction_checks": [
+        {
+          "holds": true,
+          "name": "predicted the evaluator's self-reported identity hash",
+          "observed": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532",
+          "predicted": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532"
+        },
+        {
+          "holds": true,
+          "name": "predicted the code object the import route executes",
+          "observed": [
+            "8b4b2fc34441c4c50f2b70597f442720738bc87753a876edc13573a5f1f49467"
+          ],
+          "predicted": "8b4b2fc34441c4c50f2b70597f442720738bc87753a876edc13573a5f1f49467"
+        },
+        {
+          "holds": true,
+          "name": "the executed bytecode is not a compilation of the source on disk",
+          "observed": [
+            {
+              "bytecode_matches_source": false,
+              "fresh_compile_sha256": "405d424ca7249e90a2c8b2da3ae0d88ea3552dcef8e4f40bb0562edcdfc38407",
+              "loaded_code_sha256": "8b4b2fc34441c4c50f2b70597f442720738bc87753a876edc13573a5f1f49467"
+            }
+          ]
+        }
+      ],
+      "predictions": {
+        "copied_source_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+        "frozen_source_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+        "loaded_code_sha256": "8b4b2fc34441c4c50f2b70597f442720738bc87753a876edc13573a5f1f49467",
+        "self_reported_evaluator_source_sha256": "5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532"
+      },
+      "scenario_dir": "a0/attestation/out/demo/d2-stale-bytecode",
+      "verdict": {
+        "returncode": 3,
+        "stderr": "",
+        "stdout": "",
+        "verdict_file": "a0/attestation/out/demo/verdict.d2-stale-bytecode.json"
+      },
+      "verdicts": {
+        "Q1_recomputes": "RECOMPUTES",
+        "Q2_semantic": "SEMANTIC_MATCH",
+        "Q3_realization": "NOT_REALIZED"
+      },
+      "what": "a forged __pycache__ entry: the header validates against the unchanged source, so the interpreter executes bytecode that is not that source"
+    },
+    {
+      "attest": {
+        "attestation": "a0/attestation/out/demo/attestation.d3-other-file.json",
+        "returncode": 0,
+        "stderr": "",
+        "stdout": "EID_semantic  664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\nEID_execution 7a62c1b611df4d70771a159c1d498cab445ea335ee2584faaa5fa1adf8523c3d\ndeclared EID* 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328  (frozen 664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328)\nsemantic == declared: True | frozen: True\nroutes agree: True | foreign modules: 2 | shadowing hazards: 0\nwrote /home/ebt/rsi-dev/a0/attestation/out/demo/attestation.d3-other-file.json\n"
+      },
+      "declared_eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "declared_source_unchanged": true,
+      "declared_source_unchanged_after": true,
+      "eid_execution": "7a62c1b611df4d70771a159c1d498cab445ea335ee2584faaa5fa1adf8523c3d",
+      "eid_semantic": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "env": {},
+      "evaluator": "a0/attestation/out/demo/d3-other-file/e_star.py",
+      "failed_checks": [
+        "no module was loaded from outside the declared sources and the runtime",
+        "a0/tasks/circle-packing/e_star.py: loaded from the declared path",
+        "a0/tasks/circle-packing/e_star.py: on-disk bytes match the declared hash",
+        "a0/tasks/circle-packing/e_star_child.py: loaded from the declared path",
+        "the evaluator's self-reported source digest equals E*'s frozen value",
+        "the outcome matches the frozen reference table row for this candidate"
+      ],
+      "id": "d3-other-file",
+      "mechanism": "one constant is changed (the overlap epsilon), so a candidate whose only defect is an overlap is reported `ok` with the best nominal score",
+      "observed": {
+        "authoritative_route": {
+          "objective_value": 2.4519205208433132,
+          "outcome_canonical_digest": "7333912df2f7440e613731af39eb1437318bf94723b8f76178ee2890a79682aa",
+          "returncode": 0,
+          "status": "ok"
+        },
+        "capture_route": {
+          "harness_exit_code": 0,
+          "objective_value": 2.4519205208433132,
+          "outcome_canonical_digest": "7333912df2f7440e613731af39eb1437318bf94723b8f76178ee2890a79682aa",
+          "returncode": 0,
+          "status": "ok"
+        },
+        "evaluator_sources": [
+          {
+            "bytecode_matches_source": true,
+            "declared_match": false,
+            "declared_path": "a0/tasks/circle-packing/e_star.py",
+            "file_sha256": "34e160fc004a2754e44c7ae925bbd27b818910e80a4be6eeadd720f6df2cb7b3",
+            "file_size": 34898,
+            "fresh_compile_sha256": "508d2b8c499ced1397dd41ce70789af8d2dd718263cf6d0b519c820e556ec522",
+            "is_entry": true,
+            "loaded_code_sha256": "508d2b8c499ced1397dd41ce70789af8d2dd718263cf6d0b519c820e556ec522",
+            "name": "e_star",
+            "origin": "a0/attestation/out/demo/d3-other-file/e_star.py",
+            "pyc_path": "a0/attestation/out/demo/d3-other-file/__pycache__/e_star.cpython-312.pyc",
+            "pyc_sha256": "fbc7d31ce26859e9c4f5e3b5d2feb68047b5f7de1d3ea8e2563c82995b53777b"
+          }
+        ],
+        "foreign_modules": [
+          "e_star",
+          "e_star_child"
+        ],
+        "foreign_origins": {
+          "e_star": "/home/ebt/rsi-dev/a0/attestation/out/demo/d3-other-file/e_star.py",
+          "e_star_child": "/home/ebt/rsi-dev/a0/attestation/out/demo/d3-other-file/e_star_child.py"
+        },
+        "outcome_status": "ok",
+        "reference_comparison_matches": false,
+        "reference_expected_status": "invalid",
+        "routes_agree": true,
+        "self_reported_evaluator_source_sha256": "4d5ebde89572d74dd2cc3206a04e0330c1b2000b019c48661fc2ac78bbf8060c",
+        "shadowing_hazards": []
+      },
+      "patch": "EPS = 0.5  # DEMO d2/d3: the overlap epsilon is not the frozen one",
+      "prediction_checks": [
+        {
+          "holds": true,
+          "name": "predicted the evaluator's self-reported identity hash",
+          "observed": "4d5ebde89572d74dd2cc3206a04e0330c1b2000b019c48661fc2ac78bbf8060c",
+          "predicted": "4d5ebde89572d74dd2cc3206a04e0330c1b2000b019c48661fc2ac78bbf8060c"
+        },
+        {
+          "holds": true,
+          "name": "predicted the source hash of the file that ran",
+          "observed": [
+            "34e160fc004a2754e44c7ae925bbd27b818910e80a4be6eeadd720f6df2cb7b3"
+          ],
+          "predicted": "34e160fc004a2754e44c7ae925bbd27b818910e80a4be6eeadd720f6df2cb7b3"
+        }
+      ],
+      "predictions": {
+        "frozen_source_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+        "patched_source_sha256": "34e160fc004a2754e44c7ae925bbd27b818910e80a4be6eeadd720f6df2cb7b3",
+        "self_reported_evaluator_source_sha256": "4d5ebde89572d74dd2cc3206a04e0330c1b2000b019c48661fc2ac78bbf8060c"
+      },
+      "scenario_dir": "a0/attestation/out/demo/d3-other-file",
+      "verdict": {
+        "returncode": 3,
+        "stderr": "",
+        "stdout": "",
+        "verdict_file": "a0/attestation/out/demo/verdict.d3-other-file.json"
+      },
+      "verdicts": {
+        "Q1_recomputes": "RECOMPUTES",
+        "Q2_semantic": "SEMANTIC_MATCH",
+        "Q3_realization": "NOT_REALIZED"
+      },
+      "what": "the runtime executes a different file under the same name; the declared E* source on disk is untouched"
+    }
+  ],
+  "generated_at_utc": "2026-09-21T07:25:25Z",
+  "generated_by": "a0/attestation/demo.py",
+  "schema": "a0.attestation.demo-evidence/v1"
+}

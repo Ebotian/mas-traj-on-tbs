@@ -1,0 +1,15 @@
+  e_prime_repro c01_good_hex               exit=0 status=ok      objective=2.4519205208433132     kind=None
+  e_prime_repro c02_baseline_upstream      exit=0 status=ok      objective=0.25                   kind=None
+  e_prime_repro c03_mirror                 exit=0 status=ok      objective=2.4519205208433132     kind=None
+  e_prime_repro c04_near_tie               exit=0 status=ok      objective=2.451820520843313      kind=None
+  e_prime_repro c05_overlapping            exit=2 status=invalid objective=None                   kind=invalid_configuration
+  e_prime_repro c06_empty                  exit=2 status=invalid objective=None                   kind=invalid_configuration
+  e_prime_repro c07_single                 exit=2 status=invalid objective=None                   kind=invalid_configuration
+  e_prime_repro c08_out_of_bounds          exit=2 status=invalid objective=None                   kind=invalid_configuration
+  e_prime_repro c09_malformed_import       exit=3 status=error   objective=None                   kind=candidate_import_failed
+  e_prime_repro c10_raises                 exit=3 status=error   objective=None                   kind=candidate_call_raised
+  e_prime_repro c11_non_deterministic      exit=3 status=error   objective=None                   kind=non_deterministic
+  e_prime_repro c12_exit_without_artifacts exit=3 status=error   objective=None                   kind=child_terminated_early
+  e_prime_repro c13_slow                   exit=3 status=error   objective=None                   kind=runtime_budget_exceeded
+  e_prime_repro c14_near_zero              exit=0 status=ok      objective=2.6e-05                kind=None
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/sweep/e_prime/sweep.json

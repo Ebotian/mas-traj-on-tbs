@@ -1,0 +1,22 @@
+=== eplus_mut_omit ===
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_mut_omit.repro.json
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_mut_omit.repro.md
+A0.1 labels (measured split always shown): {"eplus_mut_omit": "PASS (14/14 measured)"}
+exit=0
+=== eplus_mut_twin ===
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_mut_twin.repro.json
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_mut_twin.repro.md
+A0.1 labels (measured split always shown): {"eplus_mut_twin": "PASS (14/14 measured)"}
+exit=0
+=== eplus_mut_echo ===
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_mut_echo.repro.json
+written: /home/ebt/rsi-dev/a0/verify/sprint-evidence/item1/conformance/eplus_mut_echo.repro.md
+A0.1 labels (measured split always shown): {"eplus_mut_echo": "FAIL"}
+exit=3
+eplus_control          PASS     all checks passed                                       rows={'MATCH': 5, 'MATCH_VERDICT': 9}
+eplus_control_py314    FAIL     E_r(c) disagrees with E*(c)                             rows={'MISMATCH_DIGEST': 14}
+eplus_mut_claim        PASS     all checks passed                                       rows={'MATCH': 5, 'MATCH_VERDICT': 9}
+eplus_mut_echo         FAIL     adapter check(s) failed: E-star-manifest-echo           rows={'MATCH': 5, 'MATCH_VERDICT': 9}
+eplus_mut_omit         PASS     all checks passed                                       rows={'MATCH': 5, 'MATCH_VERDICT': 9}
+eplus_mut_own          FAIL     E_r(c) disagrees with E*(c)                             rows={'MISMATCH_DIGEST': 14}
+eplus_mut_twin         PASS     all checks passed                                       rows={'MATCH': 5, 'MATCH_VERDICT': 9}

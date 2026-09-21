@@ -1,0 +1,13 @@
+# run codex-plaintext-variant  window 2026-09-21T07:15:22 .. 2026-09-21T07:15:46 (UTC)
+2026-09-21T07:15:24+0000 event=connect peer=172.31.78.2:33188 target=example.com:443 decision=DENY
+2026-09-21T07:15:24+0000 event=req peer=172.31.78.2:33174 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=201704
+2026-09-21T07:15:24+0000 event=connect peer=172.31.78.2:33204 target=api.deepseek.com:443 decision=ALLOW tunnel=open
+2026-09-21T07:15:25+0000 event=connect peer=172.31.78.2:33204 target=api.deepseek.com:443 tunnel=closed
+2026-09-21T07:15:25+0000 event=deny proto=http peer=172.31.78.2:33206 method=GET path=/https://example.com/ reason=no_route
+2026-09-21T07:15:25+0000 event=req peer=172.31.78.2:33208 method=GET path=/v1/models upstream=https://api.deepseek.com/v1/models status=401 resp_bytes=31
+2026-09-21T07:15:27+0000 event=connect peer=172.31.78.2:33222 target=example.com:443 decision=DENY
+2026-09-21T07:15:27+0000 event=req peer=172.31.78.2:33220 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=206858
+2026-09-21T07:15:31+0000 event=req peer=172.31.78.2:33232 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=229130
+2026-09-21T07:15:42+0000 event=req peer=172.31.78.2:40076 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=1015393
+2026-09-21T07:15:45+0000 event=req peer=172.31.78.2:60080 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=200360
+2026-09-21T07:15:46+0000 event=req peer=172.31.78.2:60088 method=POST path=/v1/responses upstream=https://api.deepseek.com/v1/responses status=200 resp_bytes=110624

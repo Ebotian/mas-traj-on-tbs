@@ -1,0 +1,608 @@
+{
+  "component_digests": {
+    "ApiSurface": "f20a468bfd04cd0a89e64a99fc228c9f87247813d302c6eb096c38f275a9a34e",
+    "Cli": "e9ae79871ac96f382634d138a91156a0867c7e3d88c48653e7b25b9ea999d3f5",
+    "Endpoint": "ce199e075a11cfad42102db3c040a4a0e82494ae6768977a039b1d121ecfdbb4",
+    "Network": "b0459be785df988d8ccf6584e6d0617804d6d2b70f3d27210b7b37981d230c1f",
+    "Params": "0cf3463fa300dc107292329bd07f86609685f17a26abc0e90cce6197cabdfebb",
+    "Permissions": "9fd813c25202bdcfa13a970cfe768eb4a03b2f2ecb7c420a1bc94f3e5d66c674",
+    "Prompt": "29fcc2802819ab379f1a1e48c3246d7dbd6ce6c588ebc20fe1c596e18b7c03c1",
+    "Provider": "ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f",
+    "RequestedModel": "7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced",
+    "RuntimeAdapters": "79bfe1f477ae07d801052673d638bbaca8195168d3a77cdea6a3349fd12b0f09",
+    "TaskSnapshot": "480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac",
+    "Tools": "f7381ee837365ab815eddca5eeaab0fc9a9e9bf2267e268032bff1340a77f708"
+  },
+  "components": {
+    "ApiSurface": {
+      "protocol_markers": [
+        "object:response",
+        "status:completed",
+        "output[]"
+      ],
+      "request_envelope": "openai_responses",
+      "response_envelope": "openai_responses",
+      "streaming": true,
+      "surface_path": "/v1/responses",
+      "wire_api_knob": "model_providers.ds.wire_api=\"responses\" (the only accepted value in 0.155.1)",
+      "wire_protocol": "openai_responses"
+    },
+    "Cli": {
+      "argv_template": "codex exec --skip-git-repo-check --sandbox <read-only|workspace-write|danger-full-access> <prompt>",
+      "binary_sha256": "b085116f223ba6c0d3fda29d84f86f8e147194f3ec3f81821523e73b4dd533fb",
+      "command_name": "codex",
+      "config_files": [
+        "config.toml"
+      ],
+      "config_isolation": "CODEX_HOME",
+      "env_var_names": [
+        "DS_KEY"
+      ],
+      "invocation_mode": "exec_non_interactive",
+      "model_selection": "config model or -c model=...",
+      "name": "codex",
+      "version": "0.155.1",
+      "warnings": [
+        "Model metadata for `deepseek-flash` not found; fallback metadata applies"
+      ]
+    },
+    "Endpoint": {
+      "base_path": "/v1",
+      "base_url": "https://api.deepseek.com/v1",
+      "declared_in": "CODEX_HOME/config.toml [model_providers.ds].base_url",
+      "host": "api.deepseek.com",
+      "port": 443,
+      "scheme": "https",
+      "tls_verify": true
+    },
+    "Network": {
+      "a0_verification_egress": "host_direct",
+      "a0_verification_note": "the verification turns in this contract ran on the host with direct egress; the closed topology above is the intended A1 route and is what makes Network load-bearing",
+      "allowlist_hosts": [
+        "api.deepseek.com"
+      ],
+      "client_placement": "internal_side",
+      "dns_mode": "docker_embedded",
+      "egress_policy": "deny_by_default_hostname_allowlist",
+      "host_bypass_note": "the barrier is one-way: the host may dial internal container IPs directly, so the proxy is a trusted component and tooling-side bypass is a stated residual risk",
+      "host_bypass_risk": true,
+      "internal_network": "a0pc-internal",
+      "proxy_id": "a0pc-proxy:8787",
+      "proxy_transparency": "connect_tunnel_no_mitm_plus_origin_form_plaintext_routing",
+      "topology": "docker_internal_plus_dual_homed_allowlist_proxy"
+    },
+    "Params": {
+      "max_tokens_per_turn": {
+        "reason": "codex does not expose a lane-set max_tokens; its fallback model metadata applies",
+        "value": null
+      },
+      "parallel_tool_calls": {
+        "reason": "not set by the lane at A0",
+        "value": null
+      },
+      "retry": {
+        "max_attempts": 1,
+        "retry_on": [
+          "transport_error"
+        ]
+      },
+      "sampling_seed": {
+        "reason": "no seeding path observed; sampling is provider-side",
+        "value": null
+      },
+      "stream": true,
+      "temperature": {
+        "reason": "not set by the lane at A0; provider default",
+        "value": null
+      },
+      "thinking": {
+        "reason": "not set by the lane at A0",
+        "value": null
+      },
+      "timeout_s": 120,
+      "tool_choice": "auto",
+      "top_p": {
+        "reason": "not set by the lane at A0; provider default",
+        "value": null
+      }
+    },
+    "Permissions": {
+      "approval_policy": "never (approval: never)",
+      "exec_scope": "shell tool available; socket() blocked under read-only and workspace-write",
+      "filesystem_scope": "workspace-write = {workdir, /tmp, $TMPDIR}",
+      "network_scope": "blocked by CLI sandbox (socket() EPERM) unless proxied",
+      "sandbox_mode": "read-only for the verification turn; workspace-write for the tool loop"
+    },
+    "Prompt": {
+      "context_budget_tokens": {
+        "reason": "not measured for this lane; codex sizes context from fallback metadata",
+        "value": null
+      },
+      "per_run_recording_required": true,
+      "prompt_source": "a1_provided_task_instruction",
+      "protocol_prompt_ref": "a0/contract/adapter_contract.md",
+      "system_prompt_null_reason": "the CLI assembles the system prompt at runtime; it is not frozen by this contract at A0 and must be recorded per run in A1",
+      "system_prompt_sha256": null,
+      "tool_schema_null_reason": "tool schemas are CLI-internal and not exported",
+      "tool_schema_sha256": null
+    },
+    "Provider": {
+      "catalog_observed": [
+        "deepseek-flash",
+        "deepseek-v4-pro"
+      ],
+      "catalog_observed_utc": "2026-09-21",
+      "model_catalog_endpoint": "https://api.deepseek.com/models",
+      "openrouter_used": false,
+      "org": "DeepSeek",
+      "provider_id": "deepseek",
+      "upstream_hosts": [
+        "api.deepseek.com"
+      ]
+    },
+    "RequestedModel": {
+      "alias_policy": "canonical_ids_only",
+      "canonical_id_claimed": "deepseek-flash",
+      "fallback_chain": [],
+      "permitted_secondary": [
+        "deepseek-v4-pro"
+      ],
+      "requested_model_id": "deepseek-flash",
+      "role": "primary",
+      "weights_identity": {
+        "reason": "No surface on these routes carries a weights digest, checkpoint id, revision, or signed serving attestation. The response `model` field is server-written metadata: on the Anthropic-compatible surface it echoes the requested id verbatim, including retired aliases, while the OpenAI-compatible surfaces rewrite a retired alias to its canonical id. The same alias request therefore reports a different id depending on the surface, so no response field can be read as proof of which weights served the request.",
+        "surface_echo_is_not_proof": true,
+        "verifiable": false
+      }
+    },
+    "RuntimeAdapters": {
+      "adapters": [
+        {
+          "adapter_commit": "261f0c9",
+          "adapter_source_files": [
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/__init__.py",
+              "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/__main__.py",
+              "sha256": "e36684c2062113cf5391f78b03e739d868b2ce495ad4c92c4cf54d30fe13ed12"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/a01.py",
+              "sha256": "69c731a7ffa1d8be4c30a8ab86bfeedfb2b8ad2cd7d27b51a3a6f8cf1d26c612"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/a02.py",
+              "sha256": "c53223b83073aeba093563faf15ddfc8832573bd0318ca6c4d8a33c381e53b38"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/channels.py",
+              "sha256": "0fd9b34e8b49f4b21dcd66d3b7be90d1287e040092a8247a08484bdfa42a8cd5"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/closure.py",
+              "sha256": "205b7fcfc4b4276d8a3224d789e14b5485c7d7d80fd047ac8611cdabc7587276"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/common.py",
+              "sha256": "d586a96c4925b6a8c929dd0da0e4ece6dbc30678010456bc580a7f46f2329247"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/registered/kapso_eval.py",
+              "sha256": "781f54ee7674164d2b71e78d42640f985f3907a76542b8d5a84a3b5220d9e5ba"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/registered_tree.py",
+              "sha256": "c9f532080ce71b5f45c9566f2691726c58284ca8e262fb10932f8a2c0a0d420c"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/runtime.py",
+              "sha256": "3d632d9b53a3a063f946667b666ec422dc95baae8d8992587e24d7bf00aec5c0"
+            },
+            {
+              "path": "a0/runtimes/kapso/a0_adapter/seams.py",
+              "sha256": "849d666b3a8baea55012ca341c32541928c0f72bbe479604ab4e8baf0378aa16"
+            }
+          ],
+          "adapter_source_root": "a0/runtimes/kapso/a0_adapter",
+          "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
+          "adapter_source_sha256": "3ab3e139569bc49bf0c21e72521d690673c18ac2533d133ce10a344aa66fa3a4",
+          "lane": "codex",
+          "runtime": "kapso",
+          "upstream_pin": "7d99b152"
+        },
+        {
+          "adapter_commit": "261f0c9",
+          "adapter_source_files": [
+            {
+              "path": "a0/runtimes/eve/a0_adapter/__init__.py",
+              "sha256": "ea8e599b50917c34eeb61749ab942b87f2c8de1086601ee53f836b3befa92056"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/__main__.py",
+              "sha256": "e34737246c4338a78411d7cac39a3a03c13fae12bd7c5bfc01896677e9e0b5c2"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/a01.py",
+              "sha256": "498f328bd6626b79b4bda6d0e2235c91fbfd05426682db152fdc58b1787deb27"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/a02.py",
+              "sha256": "be77f4b3a2b2c0af00ae661aa688a10d13745fe018068517d49588e4e46dbee0"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/a02_run.py",
+              "sha256": "7c287534470a4dfa677014149d51b171b19785adde462ad4b1b6f76741b08d38"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/cli.py",
+              "sha256": "4a02c18d2d2ab2733258a663354c6e352fb07945922bff05b13cdfa9228caeeb"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/closure.py",
+              "sha256": "76bd241d2bf0cc8efa39a2840fd388fceaee7ccda70eb4bdc07fe8b60ee56288"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/common.py",
+              "sha256": "1d97376947c03f019e44b216f50b3cecda5405309ec7253c1c706f6f5e085c6f"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/eidmap.py",
+              "sha256": "cdc24bc4debfc3174b5a5472e7f14097aec6520f1e849e19e3508892990da066"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/eve_runtime.py",
+              "sha256": "f9e74e787422f93e64f0c656946e117f780c3c0630f9b9a2395dc6013543d485"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/selectionmap.py",
+              "sha256": "05c7d3249d482da26548024c4e76d592e2478306085ae9c8a893946912d01757"
+            },
+            {
+              "path": "a0/runtimes/eve/a0_adapter/traces.py",
+              "sha256": "6da0d97d7c29c7c096e55148442b9e6accc3db36c8cbed2fbd74869d559e8313"
+            }
+          ],
+          "adapter_source_root": "a0/runtimes/eve/a0_adapter",
+          "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
+          "adapter_source_sha256": "57a5c251416f9b378b90fae078bdf2e57a4c8096410b3beadb349722d7eddb70",
+          "lane": "codex_exec|codex_tmux",
+          "runtime": "eve",
+          "upstream_pin": "979065fd"
+        },
+        {
+          "adapter_commit": "261f0c9",
+          "adapter_source_files": [
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/__init__.py",
+              "sha256": "218b1cde8ec8241cbb265831e8208eecd961ba8cdc2a61886cc9138c016d77e4"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/__main__.py",
+              "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/archive_check.py",
+              "sha256": "04a7b4bc20d7214d488683463d1690ffbab420028f4f7b4e06dc05d6e66cf769"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/cli.py",
+              "sha256": "b1950a405fa547b25d0d89786a1c3a3d39c592e1f7b3ae83845ffd7dbea6781b"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/closure.py",
+              "sha256": "e294e3035e2a196478d5085adb4e6884a9a22921cb704d177f5c21b5df78d000"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/conformance.py",
+              "sha256": "97adead7b53d6921ad1e3f720786df176a44561d6bcf46c9e3dfdecf328c749e"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/contracts.py",
+              "sha256": "c52275156c1a5ebed131bbd73051a93404cec1a04bb086a5ed6040ae6c7f622a"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/eidr.py",
+              "sha256": "70680b3778004345c9337cde69447d998f64ac476d6d687d81cfe10b07452209"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/evidence.py",
+              "sha256": "8262fbc1fdbf7e61b69aab7f89a1f9479f3f27b0d764af180a373aa42818159b"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/failure_stage.py",
+              "sha256": "d385be61baa548548eff7974d07572060c930646ee9e17e627a94c7f81518cb3"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/report_branch.py",
+              "sha256": "7e5c0c3034df3b73182142d9a0e1af47d79bae14787cb659efdfa55bb877c751"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/runtime.py",
+              "sha256": "6550eb75c5b6a3eb8f9262a8e153ef6df0333b6055e2dd0aac9da893b278f10d"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/traces.py",
+              "sha256": "ba0f7523e2845e11193a02a3821babce4ec0c47ef7f153305d60d65530327c82"
+            },
+            {
+              "path": "a0/runtimes/loreley/src/a0_adapter/traps.py",
+              "sha256": "c5190b07e1403d5b8ccf981705d78f9ac0361db158f9b04d155a788241e97703"
+            }
+          ],
+          "adapter_source_root": "a0/runtimes/loreley/src/a0_adapter",
+          "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
+          "adapter_source_sha256": "3ab1436fe69cb7cb29b780e4c160b69009fb04403ddd5d90e350e9b048c165df",
+          "lane": "codex_cli",
+          "runtime": "loreley",
+          "upstream_pin": "4c375920"
+        },
+        {
+          "adapter_commit": "261f0c9",
+          "adapter_source_files": [
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/__init__.py",
+              "sha256": "a3c61c558f7ecf05786e6406eafd961921c94af3cc0aecfc4eda8916ef8cbeed"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/__main__.py",
+              "sha256": "e0930aeba5a3e2e2d94ca6c5fac4f72c0c4eb2be9bba283becf98e909091471c"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/a02check.py",
+              "sha256": "b3510ef82ce806cf4e2d9bdd714cbb8635f7c94cb2d4a2c03bdc35c1d7296373"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/candidates.py",
+              "sha256": "cbd5818eacdfce328a9fb76a98b2d199752e57b9dbf6ba280bacdbc475dcee80"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/cli.py",
+              "sha256": "7ad0750df392b4b4f43c3037f37493ea241d3060172ce9c536a69db08d95073e"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/closure.py",
+              "sha256": "2c8986e8538a1164b8589d1cb8c890338f66e258830117b92fbcd9ad798df700"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/conformance.py",
+              "sha256": "455a5cd937e88fbfa78bb5d85dc714d1db4df05204c9789a14e74e0e70636713"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/eidmap.py",
+              "sha256": "f6e3c9959100e44d1c6a24f5116ef448fdb9fb006af2d2d037cd56f5921f847f"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/estareval.py",
+              "sha256": "cc2f031899c1bba6e7220dbfa591ac7f4fbb10a6ef7f0e31a68149372c23b74e"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/loop.py",
+              "sha256": "5662dc361396145b48d65e0133c3d2bb92fd59630431a778941d08742cf8e238"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/policy.py",
+              "sha256": "061afb0e906a2f1923f20fbdcf27bdb923902cacb65bd66bfbe87412e738d8eb"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/runner.py",
+              "sha256": "26831abcc1f4966ad02dfc0e53450dabe94c089865b3edeebdeab5f8c939af2c"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/solvers.py",
+              "sha256": "9ee910b23da7c5322cc5895b57863163d9d68436e96d117459ce9728aebcf29a"
+            },
+            {
+              "path": "a0/runtimes/simpleloop/a0_adapter/traces.py",
+              "sha256": "1381cf696e1ff6aa272fd603c85c30535274226ef6ce122ba98d366e30acd89e"
+            }
+          ],
+          "adapter_source_root": "a0/runtimes/simpleloop/a0_adapter",
+          "adapter_source_rule": "adapter_source_sha256 = sha256(b'a0/mrc/v1/RuntimeAdapters/adapter_source' + b'\\x00' + canonical_json([[path, sha256(file bytes)], ...])) over the adapter_source_files entries in the order listed, where canonical_json = json.dumps(obj, sort_keys=True, separators=(',',':'), ensure_ascii=True). The list is every blob under adapter_source_root at adapter_commit, taken from `git ls-tree -r <adapter_commit> -- <adapter_source_root>` and ordered by ascending path.",
+          "adapter_source_sha256": "167fe070911bb7a4767690e387e6fa2d138ec61cf31b3f6c7014814b1d5bcc89",
+          "lane": "codex",
+          "runtime": "simpleloop",
+          "upstream_pin": "self_built"
+        }
+      ]
+    },
+    "TaskSnapshot": {
+      "c_star_candidate_count": 14,
+      "c_star_digest": "cfeac41728f7dec17ad8414cdb23c2931898dba38a76c23b51091766fd60611c",
+      "c_star_manifest_sha256": "8d9b953877beb1b09a240302ec4e3ab51590107e715f86a63963cff9255572f2",
+      "e_star_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567",
+      "eid_scheme_ref": "a0/contract/evalcontract.py",
+      "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
+      "paired_at_repo_head": "261f0c9",
+      "task_id": "circle-packing"
+    },
+    "Tools": {
+      "denied_tools": [],
+      "extra_tool_sources": [],
+      "tool_choice": "auto",
+      "tool_names_observed": [
+        "shell",
+        "apply_patch"
+      ],
+      "tool_names_provenance": "observed in a live apply_patch + shell tool loop (codex report 5.2)",
+      "toolset_ref": "codex_builtin"
+    }
+  },
+  "identity_evidence": {
+    "cli_side_observation": "live turn via codex exec against /v1/responses: exit 0, tokens used 830, reply OK",
+    "cross_surface_divergence": {
+      "demonstrated_by": [
+        "deepseek-v4-flash",
+        "deepseek-v4-flash-vision-exp"
+      ],
+      "finding": "The same requested id reports different `model` strings on different surfaces: a retired alias is rewritten to `deepseek-flash` on the OpenAI-compatible surfaces but echoed verbatim on the Anthropic-compatible surface.",
+      "means": "the field is surface-local metadata, not a serving attestation"
+    },
+    "echo_is_not_proof": true,
+    "last_observed_utc": "2026-09-21",
+    "live_turn_observed": {
+      "cli": "codex 0.155.1",
+      "exit_code": 0,
+      "reply": "OK",
+      "tokens_used": 830
+    },
+    "observations": [
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-flash",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-pro",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-pro",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": true,
+        "echoed_model_id": "deepseek-v4-flash-vision-exp",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": "deepseek-flash",
+        "http_status": 200,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-v4-flash-vision-exp",
+        "surface": "openai_responses"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "openai_chat_completions"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "anthropic_messages"
+      },
+      {
+        "echo_is_verbatim": false,
+        "echoed_model_id": null,
+        "error_text": "The supported API model names are deepseek-flash, deepseek-v4-pro",
+        "http_status": 400,
+        "proves_weights": false,
+        "requested_model_id": "deepseek-nope",
+        "surface": "openai_responses"
+      }
+    ],
+    "reproduce": "DS_KEY=$(sed -n 's/^deepseek://p' ~/gptapi.md|head -1); curl -s https://api.deepseek.com/anthropic/v1/messages -H \"Authorization: Bearer $DS_KEY\" -H 'Content-Type: application/json' -d '{\"model\":\"deepseek-v4-flash\",\"max_tokens\":4,\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}'  # -> model=deepseek-v4-flash",
+    "route_surface": "openai_responses",
+    "surfaces_observed": [
+      "openai_chat_completions",
+      "anthropic_messages",
+      "openai_responses"
+    ],
+    "weights_identity_verifiable": false
+  },
+  "identity_evidence_digest": "aab0208d582315d4208685a89c3f0f2190b7342a4777cc7be5dc41fe55136590",
+  "model_policy": {
+    "decided_by": "user",
+    "decided_utc": "2026-09-21",
+    "excluded_providers": [
+      "openrouter"
+    ],
+    "mixed_secondary_allowed": true,
+    "permitted_secondary": [
+      "deepseek-v4-pro"
+    ],
+    "primary": "deepseek-flash"
+  },
+  "mrc_star": "8a1e6afec72bfa0ea881eb68a06ec0ee29c2d6eed9f0fe0093da2e6899ee3899",
+  "mrc_star_derivation": {
+    "algorithm": "sha256",
+    "domain": "a0/mrc/v1/MRC*",
+    "payload_canonical": "{\"ApiSurface\":\"f20a468bfd04cd0a89e64a99fc228c9f87247813d302c6eb096c38f275a9a34e\",\"Cli\":\"e9ae79871ac96f382634d138a91156a0867c7e3d88c48653e7b25b9ea999d3f5\",\"Endpoint\":\"ce199e075a11cfad42102db3c040a4a0e82494ae6768977a039b1d121ecfdbb4\",\"Network\":\"b0459be785df988d8ccf6584e6d0617804d6d2b70f3d27210b7b37981d230c1f\",\"Params\":\"0cf3463fa300dc107292329bd07f86609685f17a26abc0e90cce6197cabdfebb\",\"Permissions\":\"9fd813c25202bdcfa13a970cfe768eb4a03b2f2ecb7c420a1bc94f3e5d66c674\",\"Prompt\":\"29fcc2802819ab379f1a1e48c3246d7dbd6ce6c588ebc20fe1c596e18b7c03c1\",\"Provider\":\"ad78de64fa772a5ab539d8fafdbaa9c50fbd14a74280157d7ff5df8474c6948f\",\"RequestedModel\":\"7a21ce88399f1490efc2e92107cebd66e8bfde8493306086b6e10e8d608cdced\",\"RuntimeAdapters\":\"79bfe1f477ae07d801052673d638bbaca8195168d3a77cdea6a3349fd12b0f09\",\"TaskSnapshot\":\"480236c8afbbcf40c0ce9cdad458cd95c7431ac3adacd321e86527aa707f81ac\",\"Tools\":\"f7381ee837365ab815eddca5eeaab0fc9a9e9bf2267e268032bff1340a77f708\"}"
+  },
+  "notes": [
+    "EvE codex_exec hardcodes --dangerously-bypass-approvals-and-sandbox; codex_tmux can be closed. Same route, different Permissions: the two are NOT interchangeable A1 conditions."
+  ],
+  "route_id": "codex-deepseek-responses",
+  "schema": "a0.mrc/v1"
+}

@@ -1,0 +1,402 @@
+{
+  "schema": "a0.fixture.observational-equivalence.equivalence/v1",
+  "a": {
+    "label": "e_star",
+    "sweep": "out/e_star/sweep.json",
+    "evaluator_dir": "/home/ebt/rsi-dev/a0/tasks/circle-packing",
+    "evaluator_script_sha256": "2abc6ea15c03caee5257899df2f4f45f2b06b94f071fec8217da489cbb045567"
+  },
+  "b": {
+    "label": "e_prime",
+    "sweep": "out/e_prime/sweep.json",
+    "evaluator_dir": "/home/ebt/rsi-dev/a0/fixtures/observational-equivalence/e_prime",
+    "evaluator_script_sha256": "cfaa619410b2862b1555db41cf5a5d61aa58cb2d82e32dd457711067f00c7b8c"
+  },
+  "theta_e": {
+    "seed": 1337,
+    "fidelity": "full",
+    "fraction": 1.0,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "timeout_s": 120.0
+  },
+  "compared_fields": [
+    "exit_code",
+    "status",
+    "failure_kind",
+    "objective_value",
+    "objective_value as float bits"
+  ],
+  "candidates_compared": 14,
+  "agreeing_on_all_compared_fields": true,
+  "disagreeing": [],
+  "rows": [
+    {
+      "candidate_id": "c01_good_hex",
+      "status": "ok",
+      "failure_kind": null,
+      "objective_value": 2.4519205208433132,
+      "objective_bits": "40039d88818b4e79",
+      "structure_a": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_b": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c02_baseline_upstream",
+      "status": "ok",
+      "failure_kind": null,
+      "objective_value": 0.25,
+      "objective_bits": "3fd0000000000000",
+      "structure_a": {
+        "min_boundary_margin": 0.0,
+        "min_gap": 0.036249916677713497,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.007551905417283158,
+        "pairs_audited": 325,
+        "sum_radii": 0.25
+      },
+      "structure_b": {
+        "min_boundary_margin": 0.0,
+        "min_gap": 0.036249916677713497,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.007551905417283158,
+        "pairs_audited": 325,
+        "sum_radii": 0.25
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c03_mirror",
+      "status": "ok",
+      "failure_kind": null,
+      "objective_value": 2.4519205208433132,
+      "objective_bits": "40039d88818b4e79",
+      "structure_a": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_b": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c04_near_tie",
+      "status": "ok",
+      "failure_kind": null,
+      "objective_value": 2.451820520843313,
+      "objective_bits": "40039d5413c57840",
+      "structure_a": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.726363301607073,
+        "pairs_audited": 325,
+        "sum_radii": 2.451820520843313
+      },
+      "structure_b": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.726363301607073,
+        "pairs_audited": 325,
+        "sum_radii": 2.451820520843313
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c05_overlapping",
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "objective_value": null,
+      "objective_bits": null,
+      "structure_a": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": -0.188609270834101,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 1,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_b": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": -0.188609270834101,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 1,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c06_empty",
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "objective_value": null,
+      "objective_bits": null,
+      "structure_a": {
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": 0,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0,
+        "pairs_audited": 0,
+        "sum_radii": 0
+      },
+      "structure_b": {
+        "min_boundary_margin": null,
+        "min_gap": null,
+        "num_circles": 0,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0,
+        "pairs_audited": 0,
+        "sum_radii": 0
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c07_single",
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "objective_value": null,
+      "objective_bits": null,
+      "structure_a": {
+        "min_boundary_margin": 0.0,
+        "min_gap": null,
+        "num_circles": 1,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7853981633974483,
+        "pairs_audited": 0,
+        "sum_radii": 0.5
+      },
+      "structure_b": {
+        "min_boundary_margin": 0.0,
+        "min_gap": null,
+        "num_circles": 1,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7853981633974483,
+        "pairs_audited": 0,
+        "sum_radii": 0.5
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c08_out_of_bounds",
+      "status": "invalid",
+      "failure_kind": "invalid_configuration",
+      "objective_value": null,
+      "objective_bits": null,
+      "structure_a": {
+        "min_boundary_margin": -0.049999899999999764,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_b": {
+        "min_boundary_margin": -0.049999899999999764,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c09_malformed_import",
+      "status": "error",
+      "failure_kind": "candidate_import_failed",
+      "objective_value": null,
+      "objective_bits": null,
+      "structure_a": null,
+      "structure_b": null,
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c10_raises",
+      "status": "error",
+      "failure_kind": "candidate_call_raised",
+      "objective_value": null,
+      "objective_bits": null,
+      "structure_a": null,
+      "structure_b": null,
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c11_non_deterministic",
+      "status": "error",
+      "failure_kind": "non_deterministic",
+      "objective_value": null,
+      "objective_bits": null,
+      "structure_a": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_b": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c12_exit_without_artifacts",
+      "status": "error",
+      "failure_kind": "child_terminated_early",
+      "objective_value": null,
+      "objective_bits": null,
+      "structure_a": null,
+      "structure_b": null,
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c13_slow",
+      "status": "error",
+      "failure_kind": "runtime_budget_exceeded",
+      "objective_value": null,
+      "objective_bits": null,
+      "structure_a": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_b": {
+        "min_boundary_margin": 1.0000000023879796e-07,
+        "min_gap": 2.0000000000575113e-07,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 0.7264225235411115,
+        "pairs_audited": 325,
+        "sum_radii": 2.4519205208433132
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    },
+    {
+      "candidate_id": "c14_near_zero",
+      "status": "ok",
+      "failure_kind": null,
+      "objective_value": 2.6e-05,
+      "objective_bits": "3efb43526527a205",
+      "structure_a": {
+        "min_boundary_margin": 0.499939,
+        "min_gap": 7.99999999995449e-06,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 8.168140899333462e-11,
+        "pairs_audited": 325,
+        "sum_radii": 2.6e-05
+      },
+      "structure_b": {
+        "min_boundary_margin": 0.499939,
+        "min_gap": 7.99999999995449e-06,
+        "num_circles": 26,
+        "num_circles_expected": 26,
+        "overlap_count": 0,
+        "packing_density": 8.168140899333462e-11,
+        "pairs_audited": 325,
+        "sum_radii": 2.6e-05
+      },
+      "structure_identical": true,
+      "agree": true,
+      "problems": []
+    }
+  ]
+}

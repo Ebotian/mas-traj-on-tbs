@@ -1,0 +1,75 @@
+{
+  "candidate": {
+    "entry": "pack_circles",
+    "source_bytes": 909,
+    "source_sha256": "f8dcd5c14eafc57a9b7e82e23cab78583f8e8d4be8d72f90931cb511334ecc6d"
+  },
+  "canonical_digest": "454f9ad54e38d99e95869f2aa43cdde27d6300b7f7ed574d1bbba8043a0a73ff",
+  "e_star_version": "1.0.0",
+  "evaluator_source_sha256": "c42963b08c46420bd90e6f515322cd3975667f66d5880acdb7260d1820c66796",
+  "failure": {
+    "kind": "child_terminated_early",
+    "message": "the isolated runner did not write its done marker; no measurement exists"
+  },
+  "fields": {
+    "audit_coverage": 0.018461538461538463,
+    "items_audited": 4,
+    "min_boundary_margin": null,
+    "min_gap": null,
+    "num_circles": null,
+    "overlap_count": null,
+    "packing_density": null,
+    "pairs_audited": 6,
+    "sum_radii": null
+  },
+  "interpreter": {
+    "implementation": "cpython",
+    "version": "3.12.11"
+  },
+  "objective": null,
+  "resources": null,
+  "schema": "e_star.outcome/v1",
+  "scored": false,
+  "status": "error",
+  "structure": null,
+  "theta_e": {
+    "fidelity": "fast",
+    "fraction": 0.15,
+    "n": 26,
+    "runs": 5,
+    "runtime_budget_ms": 250.0,
+    "seed": 1337,
+    "timeout_s": 120.0
+  },
+  "validity": {
+    "audit": {
+      "coverage": 0.018461538461538463,
+      "fidelity": "fast",
+      "items_audited": 4,
+      "items_total": 26,
+      "pairs_audited": 6,
+      "pairs_total": 325,
+      "sample": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "sample_sha256": "bda4099a0548c5c40e07ccbd35284e55c41ed7003c0ff216f3f0f0532640a846",
+      "seed": 1337
+    },
+    "checks": [
+      {
+        "detail": {
+          "returncode": 0,
+          "runs_requested": 5,
+          "runs_written": null,
+          "timed_out": false
+        },
+        "name": "child_artifacts_complete",
+        "passed": false
+      }
+    ],
+    "ok": false
+  }
+}
