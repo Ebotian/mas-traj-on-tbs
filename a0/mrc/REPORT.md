@@ -508,6 +508,11 @@ manifests therefore still launches the original tree's adapter from a copy — t
 independent verifier observed writing run artifacts into the original `out/`. Those files are outside
 this workstream's ownership; the adapter code is now path-independent, the manifests are not.
 
+The **simpleloop** adapter has the same defect and belongs to another workstream, so it was not
+edited here: `a0/runtimes/simpleloop/a0_adapter/cli.py:34` is still
+`DEFAULT_WORK_ROOT = "/home/ebt/rsi-dev"`, and all of its other defaults (`DEFAULT_CANDIDATE_SET`,
+`DEFAULT_EID`, …) are repo-relative strings resolved against that root. It is handed off.
+
 ### Recomputed values, by preimage
 
 `python3 verify_adapter_preimage.py` (shares no code with `mrc.py`, reads the declarations, asks
