@@ -1,0 +1,59 @@
+### date=2026-09-21T09:51:02+08:00
+### codex version
+codex-cli 0.154.0
+### ~/.codex/config.toml (structure only, secrets stripped)
+model_provider = "custom"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "high"
+disable_response_storage = true
+
+[model_providers.custom]
+name = "zjapi"
+wire_api = "responses"
+requires_openai_auth = true
+base_url = "https://zjapi.com"
+
+[features]
+goals = true
+
+[mcp_servers]
+
+[mcp_servers.zotero]
+type = "stdio"
+command = "zotero-mcp"
+args = ["serve"]
+enabled = false
+
+[mcp_servers.zotero.env]
+UNPAYWALL_EMAIL = "your-email@example.com"
+UNSAFE_OPERATIONS = "all"
+ZOTERO_API_KEY = "<REDACTED>"
+ZOTERO_LIBRARY_ID = "your-library-id"
+ZOTERO_LIBRARY_TYPE = "user"
+### codex exec help: --oss / --local-provider
+      --oss
+          Use open-source provider
+
+      --local-provider <OSS_PROVIDER>
+          Specify which local provider to use (lmstudio or ollama). If not specified with --oss,
+          will use config default or show selection
+
+### codex binary: wire_api strings
+How to fix: replace `ollama-chat` with `ollama`
+How to fix: set `wire_api = "responses"` in your provider config.
+LLocal LM Studio server (default port 1234)
+OllamaLocal Ollama server (Responses API, default port 11434
+`ollama-chat` is no longer supported.
+wire_api = "chat"` is no longer supported.
+### inet socket inside codex workspace-write sandbox (NO model call)
+    _socket.socket.__init__(self, family, type, proto, fileno)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 1] Operation not permitted
+### control: same on host
+socket() OK
+### netns: lo up + routes (no default route expected)
+1: lo    inet 127.0.0.1/8 scope host lo\       valid_lft forever preferred_lft forever
+1: lo    inet6 ::1/128 scope host proto kernel_lo \       valid_lft forever preferred_lft forever
+--- routes ---
+--- host loopback service reachable? (5433, expect ECONNREFUSED=111 not ENETUNREACH=101) ---
+111

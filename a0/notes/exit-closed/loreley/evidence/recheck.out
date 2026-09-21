@@ -1,0 +1,74 @@
+## date
+2026-09-21T09:50:51+08:00
+
+## pinned checkouts (expect 4c375920)
+4c3759208e6b908f90716488ac3eec3dceaaf397  (HEAD -> main, origin/main, origin/HEAD)
+4c3759208e6b908f90716488ac3eec3dceaaf397
+
+## the two copies are identical (modulo __pycache__)
+no differences
+
+## backend package contents
+__init__.py
+codex_cli.py
+cursor_cli.py
+kilocode_cli.py
+
+## binaries on this host
+kilo           -> None
+codex          -> /usr/bin/codex
+claude         -> /usr/bin/claude
+cursor-agent   -> None
+
+## default backend refs (Settings)
+418:    worker_seed_portfolio_backend: str = Field(
+467:    worker_planning_backend: str | None = Field(
+471:    worker_coding_backend: str | None = Field(
+1191:        "worker_planning_backend": settings.worker_planning_backend,
+1195:        "worker_seed_portfolio_backend": settings.worker_seed_portfolio_backend,
+1206:        "worker_coding_backend": settings.worker_coding_backend,
+
+## open-source status, upstream metadata (fetched, not from memory)
+repos/openai/codex           Apache-2.0 | Lightweight coding agent that runs in your terminal
+repos/anthropics/claude-code None | Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.
+repos/Kilo-Org/kilocode      MIT | Kilo is the all-in-one agentic engineering platform. Build, ship, and iterate faster with the most popular open source coding agent.
+npm @openai/codex              latest 0.155.1 | license Apache-2.0
+npm @anthropic-ai/claude-code  latest 2.1.278 | license SEE LICENSE IN README.md
+npm @kilocode/cli              latest 7.7.5 | license MIT
+
+## the npm package named 'cursor-agent' is NOT Cursor's CLI
+{'type': 'git', 'url': 'git+https://github.com/zalab-inc/cursor_agent.git'} | Task sequence creator for Cursor AI agents
+
+## kilocode LICENSE grant (MIT, and it is an opencode fork)
+spdx MIT
+MIT License
+
+Copyright (c) 2026 Kilo Code
+Copyright (c) 2025 opencode
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated 
+
+## Apache/MIT notices embedded in the installed codex binary
+# Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+# Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+
+## codex knows an OSS/local provider (so the CLI is not the closed part)
+oss provider must have a base_url
+No running Ollama server detected
+
+## Loreley has no claude backend at all
+(lines above, if any, are the only 'claude' references in the package)
+
+## only the coding lane enforces a worktree diff (post_check)
+/home/ebt/rsi-dev/a0/tasks/circle-packing/upstream/loreley/loreley/core/worker/coding.py:249:                retryable_exceptions=(CodingError,),
+/home/ebt/rsi-dev/a0/tasks/circle-packing/upstream/loreley/loreley/core/worker/coding.py:259:                post_check=_post_check,
+/home/ebt/rsi-dev/a0/tasks/circle-packing/upstream/loreley/loreley/core/worker/planning.py:1089:            retryable_exceptions=(PlanningError,),
+/home/ebt/rsi-dev/a0/tasks/circle-packing/upstream/loreley/loreley/core/seed_portfolio.py:483:            retryable_exceptions=(SeedPortfolioPlanningError,),
+
+## the CODEX_HOME clobbering and its escape hatch
+252:        if "CODEX_HOME" in (self.extra_env or {}):
+265:                f"[projects.{trusted_worktree}]\ntrust_level = \"trusted\"\n",
+268:        env["CODEX_HOME"] = str(isolated_home)
+500:| **Planning lane (real codex, inside Loreley's worker)** | **verified on real runtime code** | one bounded round (`llm-round/RESULT.md`): the worker checked out `b91c0906…`, called `codex_planning_backend()` and produced a plan in **144.1 s**. Requires `WORKER_PLANNING_EXTRA_ENV={"CODEX_HOME":"~/.codex"}` — the backend's home isolation otherwise discards `[model_providers.custom]` and returns 401 (`codex_cli.py:243-270`). |
+522:Full detail, including the `CODEX_HOME` finding that gates the lane, is in

@@ -1,0 +1,19 @@
+# without credentials
+default_agent = claude_code
+aider              import   FAIL  ModuleNotFoundError: No module named 'aider'
+gemini             build    FAIL  ImportError: google-genai package not installed. Run: pip install google-genai
+claude_code        build    OK    capabilities={'native_git': False, 'sandbox': False, 'planning_mode': True, 'cost_tracking': True, 'streaming': True, 'oauth': True, 'api_key': False, 'bedrock': False, 'mcp': False}
+oss_claude_code    build    FAIL  ValueError: A0_PROBE_TOKEN not set — oss_claude_code needs it to authenticate against https://example.invalid/inference
+openhands          build    FAIL  ModuleNotFoundError: No module named 'openhands'
+openai_compatible  build    FAIL  ValueError: OPENAI_API_KEY not set — openai_compatible needs it
+codex              build    OK    capabilities={'native_git': False, 'sandbox': True, 'planning_mode': False, 'cost_tracking': False, 'streaming': True}
+
+# with dummy A0_PROBE_TOKEN/OPENAI_API_KEY
+default_agent = claude_code
+aider              import   FAIL  ModuleNotFoundError: No module named 'aider'
+gemini             build    FAIL  ImportError: google-genai package not installed. Run: pip install google-genai
+claude_code        build    OK    capabilities={'native_git': False, 'sandbox': False, 'planning_mode': True, 'cost_tracking': True, 'streaming': True, 'oauth': True, 'api_key': False, 'bedrock': False, 'mcp': False}
+oss_claude_code    build    OK    capabilities={'native_git': False, 'sandbox': False, 'planning_mode': True, 'cost_tracking': True, 'streaming': True, 'oauth': False, 'api_key': False, 'bedrock': False, 'mcp': False}
+openhands          build    FAIL  ModuleNotFoundError: No module named 'openhands'
+openai_compatible  build    OK    capabilities={'native_git': False, 'sandbox': False, 'planning_mode': False, 'cost_tracking': False, 'streaming': False}
+codex              build    OK    capabilities={'native_git': False, 'sandbox': True, 'planning_mode': False, 'cost_tracking': False, 'streaming': True}
