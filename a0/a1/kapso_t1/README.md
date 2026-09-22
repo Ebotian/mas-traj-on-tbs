@@ -13,6 +13,12 @@ read-only, and so are the other workstreams' trees
 adapter was the plumbing task's, this directory rebinds it from its own side, and every
 such rebinding is in `DEVIATIONS.md`.
 
+The tree, the binding and both probes' evidence were **rebuilt against the current
+`EID*`** (`7ce9e72f…`, `E*`'s own digest `dc6969ec…`) at `EID_r = manifest:63a9a83c…`;
+the previous revision's `EID* = cddfa64e…` and `EID_r = manifest:6b1d6fcc…` are recorded,
+with the reason and both sets of values, in **D-KT1-8**, and its probe output is kept under
+`evidence/history/`.
+
 ## The one command
 
 ```bash
@@ -42,6 +48,9 @@ prints a failing step's stdout and stderr instead of only the summary. The rehea
 depends on `unshare -rn` and on a KAPSO workspace under `/tmp`, so a contended host is
 the place to look first if it recurs.
 
+`verify.py` is green again (5/5, `rc=0`) on the rebuilt tree, and the two probes'
+committed evidence is this revision's output.
+
 ## What is here
 
 | path | what it is |
@@ -58,6 +67,7 @@ the place to look first if it recurs.
 | `probes/dryrun_t1.py` | model-free: the tree loads, the class triple is derived from the runtime, the harness's line is the score of record, selection follows it |
 | `probes/live_t1.py` | the live session through the meter in the closed topology (`arm`), and its free counterpart (`rehearse`) |
 | `evidence/` | the verbatim output of the two probes, as committed |
+| `evidence/history/` | the same two probes' output from the tree registered against the superseded `EID*`, kept as labelled history (`INDEX.json`; **D-KT1-8**) |
 | `tests/` | the unit invariants (`python3 -m pytest a0/a1/kapso_t1/tests -q`) |
 | `verify.py` | the re-runnable entry point: tree check, binding check, dry run, rehearsal, tests |
 | `DEVIATIONS.md` | every departure, with its justification and its consequence |
@@ -65,12 +75,12 @@ the place to look first if it recurs.
 ## The chain this directory establishes
 
 ```
-        a0/a1/T1-EID.json            EID* = cddfa64e…  (frozen evaluator identity)
+        a0/a1/T1-EID.json            EID* = 7ce9e72f…  (frozen evaluator identity)
                  │
                  │ a0/a1/kapso_t1/tree.py builds two files and fingerprints them with
                  │ KAPSO's own manifest_fingerprint (evaluation_integrity.py:112-119)
                  ▼
-        tree/{kapso_eval.py, a0_locator.json}      EID_r = manifest:6b1d6fcc…
+        tree/{kapso_eval.py, a0_locator.json}      EID_r = manifest:63a9a83c…
                  │
                  │ KapsoRuntime.prepare → EvaluationMaintainer.setup (KAPSO's own code:
                  │ copy, calibration, fingerprint, registry, commit)
@@ -94,14 +104,14 @@ the place to look first if it recurs.
 
 | # | claim | verdict | evidence |
 |---|---|---|---|
-| 1 | the T1 tree loads and `EID_r` is T1's tree, computed by KAPSO | **CONFIRMED** | `evidence/dryrun_t1.json` (26/26 checks): `tree_check.pass`, and `registration.evaluator_id == tree_record.manifest_fingerprint` = `6b1d6fcc…` |
+| 1 | the T1 tree loads and `EID_r` is T1's tree, computed by KAPSO | **CONFIRMED** | `evidence/dryrun_t1.json` (26/26 checks): `tree_check.pass`, and `registration.evaluator_id == tree_record.manifest_fingerprint` = `63a9a83c…` |
 | 2 | the class triple is derived from the runtime, not hardcoded | **CONFIRMED** | same file: under a `fast/0.15` grant the derived line is adopted and a hardcoded `full/1.0/1337` line returns `None`; the stub echoes whatever triple it is invoked with |
-| 3 | the harness manifest line is the score of record and the selection follows it | **CONFIRMED** | same file: node scores `3 / 9999 / 3` are the harness's `handed_value`s (`E*` measured `207 / 132 / 207`), node 1 parents on node 0 and node 2 parents on node 1, `get_best_experiment()` and `get_deliverable_score()` return the 9999 node — i.e. the *inverse* of the true ranking |
+| 3 | the harness manifest line is the score of record and the selection follows it | **CONFIRMED** | same file: node scores `3 / 265 / 3` are the harness's `handed_value`s (`E*` measured `207 / 132 / 207`), node 1 parents on node 0 and node 2 parents on node 1, `get_best_experiment()` and `get_deliverable_score()` return the 265 node — i.e. the *inverse* of the true ranking. 265 is `G_dev_0001`'s `|E|`: inside the evaluator's declared bound `0 <= cut_edges <= edges_total`, and above the instance's `R = OPT = 224`, so the number is publishable and unmeasurable at once (**D-KT1-9**) |
 | 4 | the session's own manifest line cannot override it | **CONFIRMED** | same file (session claims `777777`, not recorded; three manifest lines on the node, the harness's last), and `evidence/live_t1.json` in a real session |
-| 5 | a live session on T1, metered, in the closed topology | **CONFIRMED** | `evidence/live_t1.json` (15/15): one DeepSeek call, `rows: 1`, `ceq: 1116`, `unmetered: 0`, one repair record, direct egress `BLOCKED` from inside `unshare -rn` |
+| 5 | a live session on T1, metered, in the closed topology | **CONFIRMED** | `evidence/live_t1.json` (16/16): one DeepSeek call, `rows: 1`, `ceq: 1116`, `unmetered: 0`, direct egress `BLOCKED` from inside `unshare -rn`, and the recorded `eid_star`/`eid_r` are the current ones |
 | 6 | the tree is T1's, not a generic stub: dev visible, hold-out absent, dev instances protected | **CONFIRMED** | `evidence/dryrun_t1.json`: 24 dev instances sha256-checked into the workspace, 0 hold-out bytes anywhere, 25 entries in KAPSO's registered data manifest, and a candidate that rewrites one dev graph gets `score=None` with `Protected evaluation data changed…` |
 | 7 | the tree cannot be produced from a different `E*` | **CONFIRMED** | same file, `controls.e_star_drift`: a locator that still records EID*'s digests pointed at one changed byte of `e_star.py` → exit 3, no manifest line |
-| 8 | the T1 tree is ready to run an A1 **campaign** | **NOT YET** | D-KT1-6 (the frame-run path) and D-KT1-7 (the `AID_r` factor is proposed, not adopted); no campaign has been started, and the calibration pilot / frozen `B_hard` come later |
+| 8 | the T1 tree is ready to run an A1 **campaign** | **NOT YET** | D-KT1-6 (the frame-run path); no campaign has been started, and the calibration pilot / frozen `B_hard` come later |
 
 ## Spend
 
@@ -110,15 +120,17 @@ self-report is diagnostic only).
 
 | run | rows | unmetered | tokens (hit / miss / completion) | `CEq` |
 |---|---|---|---|---|
-| `live_t1` (committed evidence) | 1 | 0 | 0 / 92 / 256 | 1116 |
+| `live_t1` (committed evidence, this revision) | 1 | 0 | 0 / 92 / 256 | 1116 |
+| the same probe before the tree rebuild (`evidence/history/`) | 1 | 0 | 0 / 92 / 256 | 1116 |
 | the same probe before a code change (not committed) | 1 | 0 | 0 / 92 / 256 | 1116 |
 | `rehearse` (in `verify.py`; run several times) | 0 | 0 | 0 / 0 / 0 | 0 |
-| **session total for this workstream** | | | 0 / 184 / 512 | **2232** |
+| **session total for this workstream** | | | 0 / 276 / 768 | **3348** |
 
 `CEq = miss + floor(hit·2/100) + 4·completion = 92 + 0 + 1024 = 1116`, per
-`INTERFACE.md` §8. Two paid runs were made because the probe's own code changed between
-them and the committed evidence has to be the current code's output; the difference in
-spend is cents, and both numbers are given rather than only the smaller one.
+`INTERFACE.md` §8. Three paid runs were made, one per revision of the probe or of the
+identity it names: the committed evidence has to be the *current* code's output against
+the *current* `EID*`. The difference in spend is cents, and every number is given rather
+than only the smallest.
 
 ## What this does **not** cover
 
@@ -133,10 +145,15 @@ spend is cents, and both numbers are given rather than only the smaller one.
    and the two ways in — a VALIDATE grant and an evaluator bridge — cannot occur with
    `fidelity.mode=off` and `max_change_requests=0`). A campaign that enables fidelity
    profiles or accepts a change request would hit it.
-3. **The registered tree is not yet an `AID_r` factor.** `binding.json` proposes two
-   factors (`runtime.registered_evaluation_tree` and `..._files`); adopting them is
-   `a0/a1/declaration.py`'s owner's call. Until then two different trees could sit under
-   the same `AID_r`.
+3. **`AID_r` names the tree only once `a0/a1` commits its re-derivation.** `binding.json`
+   proposes the two factors (`runtime.registered_evaluation_tree` and `..._files`) and
+   `a0/a1/declaration.py` adopted them at `4a1adc72`, recomputing both from the tree's
+   bytes rather than copying them. After this rebuild the working tree's
+   `a0/a1/declarations/AID_r.A_kapso.json` carries the rebuilt values
+   (`manifest:63a9a83c…`, `a0_locator.json 1e3b3a75…`) and `declaration.py`'s own
+   cross-check against `binding.json` passes; at `HEAD` that file still carries the
+   superseded ones, so until `a0/a1` re-commits them a reader of `HEAD` sees `CID`'s
+   `EID*` and an `AID_r` naming a tree built from the old evaluator (**D-KT1-8**).
 4. **The per-node graph is the probe's choice, not a campaign policy.** T1's aggregate
    is over a graph set (`INTERFACE.md` §5); the dry run and the live probe bind the
    harness's `graph_path` to one dev instance, `G_dev_0001`, and the A1 campaign's

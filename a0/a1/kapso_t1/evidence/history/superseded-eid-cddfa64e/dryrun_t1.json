@@ -1,0 +1,1814 @@
+{
+ "best": {
+  "branch_name": "generic_exp_1",
+  "node_id": 1,
+  "score": 9999.0
+ },
+ "binding": {
+  "candidate_set": {
+   "baseline": "c02_ok_low_baseline",
+   "candidate_count": 21,
+   "manifest": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/manifest.json",
+   "manifest_sha256": "62c147b342ce9500124beaba81ad9fee8efcfb1e81b2702594cdc894cc382356",
+   "members": {
+    "c01_ok_high_pc": {
+     "dir": "c01_ok_high_pc",
+     "kind": "ok",
+     "role": "high",
+     "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
+    },
+    "c02_ok_low_baseline": {
+     "dir": "c02_ok_low_baseline",
+     "kind": "ok",
+     "role": "low",
+     "solution_sha256": "1416e796c67745ba197e5cdf2f07d3629837b4544111f1c9adb6150c17037233"
+    },
+    "c03_ok_zero_all_one_side": {
+     "dir": "c03_ok_zero_all_one_side",
+     "kind": "ok",
+     "role": "edge",
+     "solution_sha256": "1ce08e11a34a857bf77d3df9e7a5b410a115dd76f6ff4e5c3ff33424320f7283"
+    },
+    "c04_tie_a_pc_optimum": {
+     "dir": "c04_tie_a_pc_optimum",
+     "kind": "ok",
+     "role": "tie-a",
+     "solution_sha256": "ac6cdcb1b5b3c24f50acfc202f74545370a435ebdab83d76b3b51144d00679a9"
+    },
+    "c05_tie_b_pc_complement": {
+     "dir": "c05_tie_b_pc_complement",
+     "kind": "ok",
+     "role": "tie-b",
+     "solution_sha256": "8ab8c3d07f3930b9fd1ccb7985e2153a553b28e06ac7e4a69367b5d38ac2b786"
+    },
+    "c06_invalid_length": {
+     "dir": "c06_invalid_length",
+     "kind": "invalid",
+     "role": "malformed",
+     "solution_sha256": "70b701170dd55cff19e369fe5beaf8501700e83e04717683c57bc2e38202f40b"
+    },
+    "c07_invalid_element": {
+     "dir": "c07_invalid_element",
+     "kind": "invalid",
+     "role": "malformed",
+     "solution_sha256": "84cfe9f92b05743006de1d93f628a352cb81a16d8793c96e9b4189ddf36cf3ba"
+    },
+    "c08_invalid_json": {
+     "dir": "c08_invalid_json",
+     "kind": "invalid",
+     "role": "malformed",
+     "solution_sha256": "b90e86aa0d6f809506a3c0e52a5f00a56c4ef5674e1c52a2fc695ecfe9a73ced"
+    },
+    "c09_invalid_missing_file": {
+     "dir": "c09_invalid_missing_file",
+     "kind": "invalid",
+     "role": "malformed",
+     "solution_sha256": "eef1baca2a652c4ee7ad53e2cb6a7b62f2d5fb264bfdaead757ac00b834d4aaa"
+    },
+    "c10_invalid_json_true": {
+     "dir": "c10_invalid_json_true",
+     "kind": "invalid",
+     "role": "malformed",
+     "solution_sha256": "1b9596ecc80bda90ddcb799b6ba5ccb8ed2eeaab8e4f236870cc3ab29eed6483"
+    },
+    "c11_error_raises": {
+     "dir": "c11_error_raises",
+     "kind": "error",
+     "role": "crash",
+     "solution_sha256": "99228aea527a1dd77c3991700475de08ec8dbd70ec9fb296b42780a1f2fa84b1"
+    },
+    "c12_error_exit30": {
+     "dir": "c12_error_exit30",
+     "kind": "error",
+     "role": "internal-error",
+     "solution_sha256": "67549e780ca16976cd93e89f05aed9b4a18ed703ed716cf824ba285927cf09a9"
+    },
+    "c13_error_non_deterministic": {
+     "dir": "c13_error_non_deterministic",
+     "kind": "error",
+     "role": "non-deterministic",
+     "solution_sha256": "c4c799b4b8ee73dea506c9b400b38dd40eae9a913fb276e30566e9dfa5fb4dea"
+    },
+    "c14_error_no_file_nonzero": {
+     "dir": "c14_error_no_file_nonzero",
+     "kind": "error",
+     "role": "missing-artifact",
+     "solution_sha256": "947a2a7024950abc4e6924ad3257a71309afb5ea6e2f667d20155946fc722f83"
+    },
+    "c15_error_network_attempt": {
+     "dir": "c15_error_network_attempt",
+     "kind": "error",
+     "role": "network",
+     "solution_sha256": "fc5a9e34676c88ee8827d78a76e3da8e62bf922c37fde63ed9811e382d3b96c6"
+    },
+    "c16_error_refused": {
+     "dir": "c16_error_refused",
+     "kind": "error",
+     "role": "refused",
+     "solution_sha256": "b647f32e74d14642e66b1f99fed304e96d05d92c446e92543ba9e0ef2439513f"
+    },
+    "c17_error_input_tampered": {
+     "dir": "c17_error_input_tampered",
+     "kind": "error",
+     "role": "tamper",
+     "solution_sha256": "4741af6e669b5ef4d385eead45f196a61a9708237cd76beaf4c532a1b794a193"
+    },
+    "c18_ok_inflation_attempt": {
+     "dir": "c18_ok_inflation_attempt",
+     "kind": "ok",
+     "role": "tamper-restored",
+     "solution_sha256": "e4f472ef495e880603ed3b650f90e7db87560099e904f7e946dcb30b5923a1e6"
+    },
+    "c19_timeout_process_group": {
+     "dir": "c19_timeout_process_group",
+     "kind": "timeout",
+     "role": "timeout",
+     "solution_sha256": "66ae1fcc3d202815ce2dd10f7dbb91577a1dc229e09c26342ef0f7e5522e8067"
+    },
+    "c20_env_probe": {
+     "dir": "c20_env_probe",
+     "kind": "ok",
+     "role": "probe",
+     "solution_sha256": "9188dde5ed7f757458cdd30b5d5b69aff540c1965791ff067da70337e175ba6c"
+    },
+    "c21_ok_parity_probe": {
+     "dir": "c21_ok_parity_probe",
+     "kind": "ok",
+     "role": "arithmetic-probe",
+     "solution_sha256": "a97af2b9a749d1e65e2ab102a76caba8864955befaaa85d6a71d188e9cc00588"
+    }
+   }
+  },
+  "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+  "eid_star_components": {
+   "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
+   "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
+   "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
+   "EvaluatorSource": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+   "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
+  },
+  "eid_star_file": "/home/ebt/rsi-dev/a0/a1/T1-EID.json",
+  "eid_star_task": "maxcut-t1",
+  "evaluator": {
+   "dir": "/home/ebt/rsi-dev/a0/tasks/maxcut",
+   "entry": "e_star.py",
+   "helper": "e_star_child.py",
+   "python": "/usr/bin/python3",
+   "source_records": [
+    {
+     "path": "e_star.py",
+     "sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
+     "size": 43410
+    },
+    {
+     "path": "e_star_child.py",
+     "sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
+     "size": 15128
+    }
+   ]
+  },
+  "metric": {
+   "direction": "maximize",
+   "epsilon": 0.0,
+   "failure_semantics": "invalid/error/timeout carry cut_edges: null \u2014 never 0; a legitimate 0 is reported as 0",
+   "name": "cut_edges",
+   "objective": {
+    "aggregation": "fractions.Fraction over integers",
+    "authoritative": "integer",
+    "direction": "maximize",
+    "display_only": "cut_fraction",
+    "name": "cut_edges",
+    "unit": "edges",
+    "weighted": false
+   }
+  },
+  "mode_config": "/home/ebt/rsi-dev/a0/a1/kapso_t1/config/mode.maxcut.yaml",
+  "registered_tree": "/home/ebt/rsi-dev/a0/a1/kapso_t1/tree",
+  "runtime": "kapso",
+  "schema": "a0.kapso_t1.eid_binding/v1",
+  "task_id": "T1-maxcut",
+  "theta_e_canonical": {
+   "seed": 1337,
+   "timeout_s": 10.0
+  }
+ },
+ "checks": {
+  "a_doctored_registered_tree_scores_nothing": true,
+  "a_drifted_e_star_is_refused_by_the_tree": true,
+  "a_hardcoded_triple_is_discarded_under_a_foreign_grant": true,
+  "a_rewritten_dev_graph_scores_nothing": true,
+  "kapsos_ledger_attributes_it_to_the_registered_evaluator": true,
+  "kapsos_own_registration_equals_the_t1_tree_fingerprint": true,
+  "no_holdout_bytes_are_in_the_workspace": true,
+  "selection_follows_the_harnesss_number_not_the_true_ranking": true,
+  "the_24_dev_instances_are_in_the_workspace_and_sha_checked": true,
+  "the_candidate_abi_declaration_is_one_declaration": true,
+  "the_class_triple_is_derived_from_the_runtime": true,
+  "the_dev_instances_are_kapsos_registered_protected_data": true,
+  "the_harness_ledger_is_keyed_by_the_candidate": true,
+  "the_last_manifest_line_is_the_harness_s": true,
+  "the_maintainer_calibrated_the_t1_stub": true,
+  "the_registered_command_is_kapsos_own_composition": true,
+  "the_registered_tree_in_the_run_is_the_t1_stub": true,
+  "the_score_of_record_is_not_what_e_star_measured": true,
+  "the_score_of_record_is_the_harness_s": true,
+  "the_score_semantics_declaration_is_one_declaration": true,
+  "the_session_printed_its_own_manifest_line": true,
+  "the_stub_alone_carries_no_score_of_record": true,
+  "the_stub_echoes_the_grant_it_is_invoked_with": true,
+  "the_tree_check_passes": true,
+  "the_trees_suite_manifest_is_the_one_eid_star_names": true,
+  "with_the_harness_line_the_score_of_record_is_the_harness_s": true
+ },
+ "class_probe": {
+  "fast_grant": {
+   "derived_line_adopted": true,
+   "derived_line_score": 2.0,
+   "derived_triple": {
+    "fidelity": "fast",
+    "fraction": 0.15,
+    "seed": 1337,
+    "source": {
+     "fidelity": "strategy.fidelity_decision.eval_fidelity",
+     "fraction": "strategy.fidelity_decision.eval_fraction",
+     "seed": "strategy.registered_subsample_seed"
+    }
+   },
+   "grant": {
+    "fidelity": "fast",
+    "fraction": 0.15
+   },
+   "hardcoded_full_1_0_1337_adopted": false,
+   "stub_echoes_the_grant": {
+    "cmd": [
+     "/usr/bin/python3",
+     "/tmp/a1t1/dryrun/campaign/registered_evaluation_source/kapso_eval.py",
+     "--fidelity",
+     "fast",
+     "--fraction",
+     "0.15",
+     "--seed",
+     "1337",
+     "--candidate",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc"
+    ],
+    "exit_code": 0,
+    "manifest": {
+     "candidate_identity": {
+      "candidate_id_if_frozen": "c01_ok_high_pc",
+      "entry": "solution.py",
+      "in_frozen_set": true,
+      "present": true,
+      "root": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
+      "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
+     },
+     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "fidelity": "fast",
+     "fraction": 0.15,
+     "items": 1,
+     "items_measured": 0,
+     "measurement": "none",
+     "metric_name": "cut_edges",
+     "runtime_is_the_author": false,
+     "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+     "seed": 1337,
+     "task": "T1-maxcut",
+     "theta_e_canonical_match": true,
+     "theta_e_canonical_seed": 1337,
+     "theta_e_canonical_timeout_s": 10.0,
+     "total_items": 1,
+     "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+    },
+    "stderr_tail": "",
+    "stdout_lines": 1
+   }
+  },
+  "full_passthrough": {
+   "derived_line_adopted": true,
+   "derived_line_score": 2.0,
+   "derived_triple": {
+    "fidelity": "full",
+    "fraction": 1.0,
+    "seed": 1337,
+    "source": {
+     "fidelity": "strategy.fidelity_decision.eval_fidelity",
+     "fraction": "strategy.fidelity_decision.eval_fraction",
+     "seed": "strategy.registered_subsample_seed"
+    }
+   },
+   "grant": {
+    "fidelity": "full",
+    "fraction": 1.0
+   },
+   "hardcoded_full_1_0_1337_adopted": true,
+   "stub_echoes_the_grant": {
+    "cmd": [
+     "/usr/bin/python3",
+     "/tmp/a1t1/dryrun/campaign/registered_evaluation_source/kapso_eval.py",
+     "--fidelity",
+     "full",
+     "--fraction",
+     "1.0",
+     "--seed",
+     "1337",
+     "--candidate",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc"
+    ],
+    "exit_code": 0,
+    "manifest": {
+     "candidate_identity": {
+      "candidate_id_if_frozen": "c01_ok_high_pc",
+      "entry": "solution.py",
+      "in_frozen_set": true,
+      "present": true,
+      "root": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
+      "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
+     },
+     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "fidelity": "full",
+     "fraction": 1.0,
+     "items": 1,
+     "items_measured": 0,
+     "measurement": "none",
+     "metric_name": "cut_edges",
+     "runtime_is_the_author": false,
+     "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+     "seed": 1337,
+     "task": "T1-maxcut",
+     "theta_e_canonical_match": true,
+     "theta_e_canonical_seed": 1337,
+     "theta_e_canonical_timeout_s": 10.0,
+     "total_items": 1,
+     "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+    },
+    "stderr_tail": "",
+    "stdout_lines": 1
+   }
+  }
+ },
+ "config_evidence": {
+  "effective_config": {
+   "budget": {
+    "checkpoint_heartbeat_seconds": 60,
+    "fidelity": {
+     "mode": "off"
+    }
+   },
+   "coding_agent": {
+    "agent_specific": {
+     "effort": "low",
+     "sandbox": "danger-full-access",
+     "timeout": 900,
+     "web_search": false
+    },
+    "model": "gpt-5.6-terra",
+    "type": "codex"
+   },
+   "evaluation_maintainer": {
+    "agent_specific": {
+     "sandbox": "read-only",
+     "timeout": 600,
+     "web_search": false
+    },
+    "calibration_fraction": 0.03,
+    "calibration_timeout_seconds": 120,
+    "fast_variant_threshold_minutes": 20,
+    "max_change_requests": 0,
+    "model": "gpt-5.6-terra",
+    "overhead_factor": 1.25,
+    "protected_data_paths": [
+     "kapso_datasets/maxcut/dev"
+    ],
+    "subsample_seed": 1337,
+    "transition_freeze_fraction": 0.85,
+    "type": "codex"
+   },
+   "feedback_generator": {
+    "agent_specific": {
+     "effort": "low",
+     "sandbox": "read-only",
+     "timeout": 600,
+     "web_search": false
+    },
+    "model": "gpt-5.6-terra",
+    "type": "codex"
+   },
+   "inbox": {
+    "enabled": true,
+    "registry": "~/.kapso/campaigns.jsonl",
+    "stop_grace_seconds": 120
+   },
+   "models": {
+    "embedding": "text-embedding-3-small"
+   },
+   "retry": {
+    "request_timeout_seconds": 600
+   },
+   "search_strategy": {
+    "params": {
+     "design_axes": [
+      "representation and analysis \u2014 how the heuristic reads graph.json (\u00a72) and represents the partition: adjacency lists, incremental cut accounting, gain arrays, component handling for the sparse and disconnected instances",
+      "search procedure \u2014 the local-search kernel inside the candidate's `--seed` contract: 1-flip steepest ascent, Kernighan-Lin style passes, tabu / annealing / multi-start seeding, and how budget is spent across starts",
+      "determinism and budget \u2014 byte-identical partition.json for the same (graph bytes, seed) as INTERFACE.md \u00a76 rule 4 requires, and p99 wall clock inside tau = 10 s per graph (\u00a77)"
+     ],
+     "gate_failure_policy": "warn",
+     "idea_generation_model": "gpt-5.6-terra",
+     "ideation_gates": [],
+     "ideation_timeout": 900,
+     "implementation_cli": "codex",
+     "implementation_gates": [],
+     "implementation_model": "gpt-5.6-terra",
+     "implementation_timeout": 900,
+     "implementation_web": false,
+     "node_expansion_value": 1,
+     "parent_policy": "best",
+     "repo_memory_failure_policy": "warn",
+     "web_search": false
+    },
+    "type": "generic"
+   }
+  },
+  "fidelity_mode": "off",
+  "max_change_requests": 0,
+  "mode_config_path": "/home/ebt/rsi-dev/a0/a1/kapso_t1/config/mode.maxcut.yaml",
+  "parent_policy_param": "best",
+  "subsample_seed": 1337
+ },
+ "controls": {
+  "e_star_drift": {
+   "cmd": [
+    "/usr/bin/python3",
+    "/tmp/a1t1/dryrun/controls/e_star_drift/tree/kapso_eval.py",
+    "--fidelity",
+    "full",
+    "--fraction",
+    "1.0",
+    "--seed",
+    "1337",
+    "--candidate",
+    "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc"
+   ],
+   "exit_code": 3,
+   "manifest": null,
+   "stderr_tail": "kapso_eval_t1: E* source drifted: e_star.py sha256 6312cb7bdd17468635a42eaa9e569342fa964d1b48dfe16632035888a430ba78 != 670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0 recorded in EID* (cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1)",
+   "stdout_lines": 0,
+   "why": "a0_locator.json still records EID*'s digests while e_star.py's bytes changed: the stub must refuse, because otherwise EID_r would name a tree that can run a different evaluator"
+  },
+  "frame_run": {
+   "because": "budget.fidelity.mode=off grants FULL_PASSTHROUGH only (no VALIDATE), and max_change_requests=0 admits no change request, so no evaluator transition and no bridge evaluation can occur",
+   "note": "recorded as measured, not as desired: a bridge or VALIDATE grant with this tree would raise at float(manifest['score']). Closing it means giving the stub a declared scalar for the frame-run path, which the harness-owned design does not need and this workstream did not do (see DEVIATIONS.md D-KT1-6)",
+   "outcome": {
+    "raised": "KeyError: 'score'",
+    "returned": null
+   },
+   "reachable_in_this_configuration": false
+  },
+  "protected_dev_graph_rewrite": {
+   "branch_name": "generic_exp_2",
+   "evaluation_valid_after": false,
+   "file": "G_dev_0001.json",
+   "integrity_error": "Protected evaluation data changed by the candidate: modified:kapso_datasets/maxcut/dev/G_dev_0001.json",
+   "note": "the dev instances are KAPSO's registered protected data (evaluation_maintainer.protected_data_paths), so a candidate scored on a rewritten graph gets no score at all \u2014 the graph it was scored on would not be T1",
+   "score_after": null,
+   "score_before": 3.0,
+   "valid_after": false,
+   "valid_before": true
+  }
+ },
+ "declaration_agreement": {
+  "candidate_abi": {
+   "identical": true,
+   "locator": {
+    "argv": [
+     "python",
+     "solution.py",
+     "--graph",
+     "<abs path to the \u00a72 graph.json>",
+     "--out",
+     "<abs path to write the \u00a73 partition.json>",
+     "--seed",
+     "<int>"
+    ],
+    "artifact": {
+     "file": "partition.json",
+     "schema": "a0.maxcut.partition/v1"
+    },
+    "determinism": "INTERFACE.md \u00a76 rule 4: canonical partition bytes identical over two runs",
+    "entry": "solution.py",
+    "environment": {
+     "home_cwd": "a private scratch directory",
+     "network": "none",
+     "proxy_variables": "cleared",
+     "python_dont_write_bytecode": "1"
+    },
+    "exit_codes": {
+     "0": "the candidate believes it produced output; the harness still decides",
+     "20": "the candidate declares its own output invalid",
+     "30": "the candidate's internal error",
+     "40": "the candidate refuses to run",
+     "other_non_zero": "recorded as `error` with the original code"
+    },
+    "input": {
+     "read_only": true,
+     "schema": "a0.maxcut.graph/v1"
+    },
+    "self_reported_score": "forbidden and unread (INTERFACE.md \u00a712)",
+    "source": "a0/tasks/maxcut/INTERFACE.md \u00a73-\u00a74, \u00a76",
+    "timeout": "not an exit code: at tau the harness SIGKILLs the process group"
+   },
+   "task_py": {
+    "argv": [
+     "python",
+     "solution.py",
+     "--graph",
+     "<abs path to the \u00a72 graph.json>",
+     "--out",
+     "<abs path to write the \u00a73 partition.json>",
+     "--seed",
+     "<int>"
+    ],
+    "artifact": {
+     "file": "partition.json",
+     "schema": "a0.maxcut.partition/v1"
+    },
+    "determinism": "INTERFACE.md \u00a76 rule 4: canonical partition bytes identical over two runs",
+    "entry": "solution.py",
+    "environment": {
+     "home_cwd": "a private scratch directory",
+     "network": "none",
+     "proxy_variables": "cleared",
+     "python_dont_write_bytecode": "1"
+    },
+    "exit_codes": {
+     "0": "the candidate believes it produced output; the harness still decides",
+     "20": "the candidate declares its own output invalid",
+     "30": "the candidate's internal error",
+     "40": "the candidate refuses to run",
+     "other_non_zero": "recorded as `error` with the original code"
+    },
+    "input": {
+     "read_only": true,
+     "schema": "a0.maxcut.graph/v1"
+    },
+    "self_reported_score": "forbidden and unread (INTERFACE.md \u00a712)",
+    "source": "a0/tasks/maxcut/INTERFACE.md \u00a73-\u00a74, \u00a76",
+    "timeout": "not an exit code: at tau the harness SIGKILLs the process group"
+   }
+  },
+  "score_semantics": {
+   "identical": true,
+   "locator": {
+    "aggregate": "fractions.Fraction over integers; the display field cut_fraction is never compared",
+    "authoritative_field": "cut_edges",
+    "direction": "maximize",
+    "failure_semantics": "invalid/error/timeout carry cut_edges: null \u2014 never 0; a legitimate 0 is 0",
+    "measured_by": "the harness-owned evaluator E* (a0/tasks/maxcut/e_star.py), outside the session",
+    "type": "integer"
+   },
+   "task_py": {
+    "aggregate": "fractions.Fraction over integers; the display field cut_fraction is never compared",
+    "authoritative_field": "cut_edges",
+    "direction": "maximize",
+    "failure_semantics": "invalid/error/timeout carry cut_edges: null \u2014 never 0; a legitimate 0 is 0",
+    "measured_by": "the harness-owned evaluator E* (a0/tasks/maxcut/e_star.py), outside the session",
+    "type": "integer"
+   }
+  },
+  "suite_manifest": {
+   "eid_star_declared_prefixes": {
+    "suite": "47324fcc"
+   },
+   "locator_sha256": "47324fccb6a00c62e1bc6b767fd6591292515d4421d152b5c47f9ad547814d23",
+   "matches_the_eid_declared_prefix": true
+  }
+ },
+ "deliverable_score": 9999.0,
+ "eid_contract_verification": {
+  "recompute": {
+   "cmd": "/home/ebt/rsi-dev/a0/contract/evalcontract.py recompute --eid-file /home/ebt/rsi-dev/a0/a1/T1-EID.json",
+   "returncode": 0,
+   "stderr": "",
+   "stdout": "[ok ] EvaluatorSource    recorded=c095f0c6343069ee recomputed=c095f0c6343069ee\n  [ok ] DependencyLock     recorded=e7ac24763f0ebeed recomputed=e7ac24763f0ebeed\n  [ok ] DataManifest       recorded=042db1cc800e3030 recomputed=042db1cc800e3030\n  [ok ] Config             recorded=178b47c78297dca6 recomputed=178b47c78297dca6\n  [ok ] MetricDefinition   recorded=0ba2145a5e480c31 recomputed=0ba2145a5e480c31\n  [ok ] EID*               recorded=cddfa64ead571bbb recomputed=cddfa64ead571bbb"
+  },
+  "spec": "/home/ebt/rsi-dev/a0/a1/T1.contract.json",
+  "spec_locator": "a0/a1/kapso_t1/t1_binding.py::locate_spec (see DEVIATIONS.md D-KT1-4)",
+  "verify": {
+   "cmd": "/home/ebt/rsi-dev/a0/contract/evalcontract.py verify --eid-file /home/ebt/rsi-dev/a0/a1/T1-EID.json --spec /home/ebt/rsi-dev/a0/a1/T1.contract.json",
+   "returncode": 0,
+   "stderr": "",
+   "stdout": "clean: all recorded inputs match; EID* = cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1"
+  }
+ },
+ "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+ "elapsed_sec": 2.095,
+ "graph": {
+  "graph_id": "G_dev_0001",
+  "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/dev/G_dev_0001.json",
+  "sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6"
+ },
+ "graph_id": "G_dev_0001",
+ "harness_calls": 4,
+ "harness_client": {
+  "class": "a0/a1/kapso_t1/runtime_t1.py::T1HarnessEvalClient",
+  "why": "the adapter's injector labels its request node<N>; the harness's ledger and the --override map are keyed by candidate id, so the probe relabels on its side rather than editing another workstream's adapter"
+ },
+ "harness_ledger": [
+  {
+   "arm_id": "A_kapso",
+   "campaign_id": "C_t1_dryrun",
+   "candidate_id": "c01_ok_high_pc",
+   "candidate_source_sha256": "6ed5116f0d07c5b36eb8de025ea70b0d8d7de17de156d82574fc5f27f397a603",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 3,
+   "harness_run_id": "t1-dryrun-1",
+   "harness_supplied": true,
+   "iteration": null,
+   "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+   "override_applied": true,
+   "request_id": "A_kapso.41017343a22a.0001.c01_ok_high_pc",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 0,
+   "status": "ok",
+   "true_value": 207,
+   "ts": "2026-09-22T17:37:35+0800",
+   "wall_sec": 0.237484
+  },
+  {
+   "arm_id": "A_kapso",
+   "campaign_id": "C_t1_dryrun",
+   "candidate_id": "c02_ok_low_baseline",
+   "candidate_source_sha256": "7247146ff9119791cde5c276f82a74aed4e45e2870527eb56324c12b9d20819e",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 9999,
+   "harness_run_id": "t1-dryrun-1",
+   "harness_supplied": true,
+   "iteration": null,
+   "measurement_oid": "170436e1acc676692c3893eb672ddbfe08786e9b69ac4e68b862099359e8fbfa",
+   "override_applied": true,
+   "request_id": "A_kapso.41017343a22a.0002.c02_ok_low_baseline",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 1,
+   "status": "ok",
+   "true_value": 132,
+   "ts": "2026-09-22T17:37:36+0800",
+   "wall_sec": 0.236213
+  },
+  {
+   "arm_id": "A_kapso",
+   "campaign_id": "C_t1_dryrun",
+   "candidate_id": "c01_ok_high_pc",
+   "candidate_source_sha256": "6ed5116f0d07c5b36eb8de025ea70b0d8d7de17de156d82574fc5f27f397a603",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 3,
+   "harness_run_id": "t1-dryrun-1",
+   "harness_supplied": true,
+   "iteration": null,
+   "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+   "override_applied": true,
+   "request_id": "A_kapso.41017343a22a.0003.c01_ok_high_pc",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 2,
+   "status": "ok",
+   "true_value": 207,
+   "ts": "2026-09-22T17:37:36+0800",
+   "wall_sec": 0.257628
+  },
+  {
+   "arm_id": "A_kapso",
+   "campaign_id": "C_t1_dryrun",
+   "candidate_id": "c03_ok_zero_all_one_side",
+   "candidate_source_sha256": "80286155fc85333267c14ab3f934c13facfb9284aca11f5d824dc6a2221f0985",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 0,
+   "harness_run_id": "t1-dryrun-1",
+   "harness_supplied": true,
+   "iteration": null,
+   "measurement_oid": "b0f19c0e68227fb77fd87ea9ec98f21563ef55a8db60f6d94eba7d6365cbcc53",
+   "override_applied": false,
+   "request_id": "A_kapso.41017343a22a.0004.c03_ok_zero_all_one_side",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 3,
+   "status": "ok",
+   "true_value": 0,
+   "ts": "2026-09-22T17:37:37+0800",
+   "wall_sec": 0.243502
+  }
+ ],
+ "harness_ledger_rows_by_node": [
+  {
+   "candidate_id": "c01_ok_high_pc",
+   "candidate_source_sha256": "6ed5116f0d07c5b36eb8de025ea70b0d8d7de17de156d82574fc5f27f397a603",
+   "handed_value": 3,
+   "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+   "node_id": 0,
+   "override_applied": true,
+   "seq": 0,
+   "status": "ok",
+   "true_value": 207
+  },
+  {
+   "candidate_id": "c02_ok_low_baseline",
+   "candidate_source_sha256": "7247146ff9119791cde5c276f82a74aed4e45e2870527eb56324c12b9d20819e",
+   "handed_value": 9999,
+   "measurement_oid": "170436e1acc676692c3893eb672ddbfe08786e9b69ac4e68b862099359e8fbfa",
+   "node_id": 1,
+   "override_applied": true,
+   "seq": 1,
+   "status": "ok",
+   "true_value": 132
+  },
+  {
+   "candidate_id": "c01_ok_high_pc",
+   "candidate_source_sha256": "6ed5116f0d07c5b36eb8de025ea70b0d8d7de17de156d82574fc5f27f397a603",
+   "handed_value": 3,
+   "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+   "node_id": 2,
+   "override_applied": true,
+   "seq": 2,
+   "status": "ok",
+   "true_value": 207
+  },
+  {
+   "candidate_id": "c03_ok_zero_all_one_side",
+   "candidate_source_sha256": "80286155fc85333267c14ab3f934c13facfb9284aca11f5d824dc6a2221f0985",
+   "handed_value": 0,
+   "measurement_oid": "b0f19c0e68227fb77fd87ea9ec98f21563ef55a8db60f6d94eba7d6365cbcc53",
+   "node_id": 3,
+   "override_applied": false,
+   "seq": 3,
+   "status": "ok",
+   "true_value": 0
+  }
+ ],
+ "injector": {
+  "arm_id": "A_kapso",
+  "attribution_caveat": "KAPSO records this score as a `full`-fidelity attempt under the *registered evaluator's* id (record_evaluation_attempt, registered_evaluation.py:124-159, never consults the manifest), so node.evaluation_attempts, evidence tiers, get_deliverable_score and the MCP experiment memory will attribute the harness's number to the registered evaluator. KAPSO cannot distinguish a harness outcome from its own measurement. A1 must therefore NOT treat KAPSO's ledger as evaluator-realisation evidence; the realisation evidence is the harness's own ledger (a0/a1/eval_service.py) and the a0/envelope measurement token.",
+  "campaign_id": "C_t1_dryrun",
+  "events": [
+   {
+    "artifact": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
+    "granted_class": {
+     "fidelity": "full",
+     "fraction": 1.0,
+     "seed": 1337,
+     "source": {
+      "fidelity": "strategy.fidelity_decision.eval_fidelity",
+      "fraction": "strategy.fidelity_decision.eval_fraction",
+      "seed": "strategy.registered_subsample_seed"
+     }
+    },
+    "harness_ledger_seq": 0,
+    "harness_request_id": "A_kapso.41017343a22a.0001.c01_ok_high_pc",
+    "harness_score": 3.0,
+    "harness_status": "ok",
+    "last_line_is_the_harness_s": true,
+    "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+    "node_id": 0,
+    "override_applied": true,
+    "score_before_amendment": 777777.0,
+    "session_manifest_lines": [
+     {
+      "candidate_identity": {
+       "candidate_id_if_frozen": "c01_ok_high_pc",
+       "entry": "solution.py",
+       "in_frozen_set": true,
+       "present": true,
+       "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_0",
+       "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
+      },
+      "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+      "fidelity": "full",
+      "fraction": 1.0,
+      "items": 1,
+      "items_measured": 0,
+      "measurement": "none",
+      "metric_name": "cut_edges",
+      "runtime_is_the_author": false,
+      "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+      "seed": 1337,
+      "task": "T1-maxcut",
+      "theta_e_canonical_match": true,
+      "theta_e_canonical_seed": 1337,
+      "theta_e_canonical_timeout_s": 10.0,
+      "total_items": 1,
+      "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+     },
+     {
+      "claimed_by": "the implementation session itself",
+      "fidelity": "full",
+      "fraction": "1.0",
+      "items": 1,
+      "score": 777777.0,
+      "seed": 1337,
+      "session_claimed": true,
+      "total_items": 1
+     }
+    ],
+    "status": "written",
+    "wrote": true
+   },
+   {
+    "artifact": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c02_ok_low_baseline",
+    "granted_class": {
+     "fidelity": "full",
+     "fraction": 1.0,
+     "seed": 1337,
+     "source": {
+      "fidelity": "strategy.fidelity_decision.eval_fidelity",
+      "fraction": "strategy.fidelity_decision.eval_fraction",
+      "seed": "strategy.registered_subsample_seed"
+     }
+    },
+    "harness_ledger_seq": 1,
+    "harness_request_id": "A_kapso.41017343a22a.0002.c02_ok_low_baseline",
+    "harness_score": 9999.0,
+    "harness_status": "ok",
+    "last_line_is_the_harness_s": true,
+    "measurement_oid": "170436e1acc676692c3893eb672ddbfe08786e9b69ac4e68b862099359e8fbfa",
+    "node_id": 1,
+    "override_applied": true,
+    "score_before_amendment": 777777.0,
+    "session_manifest_lines": [
+     {
+      "candidate_identity": {
+       "candidate_id_if_frozen": "c02_ok_low_baseline",
+       "entry": "solution.py",
+       "in_frozen_set": true,
+       "present": true,
+       "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_1",
+       "solution_sha256": "1416e796c67745ba197e5cdf2f07d3629837b4544111f1c9adb6150c17037233"
+      },
+      "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+      "fidelity": "full",
+      "fraction": 1.0,
+      "items": 1,
+      "items_measured": 0,
+      "measurement": "none",
+      "metric_name": "cut_edges",
+      "runtime_is_the_author": false,
+      "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+      "seed": 1337,
+      "task": "T1-maxcut",
+      "theta_e_canonical_match": true,
+      "theta_e_canonical_seed": 1337,
+      "theta_e_canonical_timeout_s": 10.0,
+      "total_items": 1,
+      "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+     },
+     {
+      "claimed_by": "the implementation session itself",
+      "fidelity": "full",
+      "fraction": "1.0",
+      "items": 1,
+      "score": 777777.0,
+      "seed": 1337,
+      "session_claimed": true,
+      "total_items": 1
+     }
+    ],
+    "status": "written",
+    "wrote": true
+   },
+   {
+    "artifact": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
+    "granted_class": {
+     "fidelity": "full",
+     "fraction": 1.0,
+     "seed": 1337,
+     "source": {
+      "fidelity": "strategy.fidelity_decision.eval_fidelity",
+      "fraction": "strategy.fidelity_decision.eval_fraction",
+      "seed": "strategy.registered_subsample_seed"
+     }
+    },
+    "harness_ledger_seq": 2,
+    "harness_request_id": "A_kapso.41017343a22a.0003.c01_ok_high_pc",
+    "harness_score": 3.0,
+    "harness_status": "ok",
+    "last_line_is_the_harness_s": true,
+    "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+    "node_id": 2,
+    "override_applied": true,
+    "score_before_amendment": 777777.0,
+    "session_manifest_lines": [
+     {
+      "candidate_identity": {
+       "candidate_id_if_frozen": "c01_ok_high_pc",
+       "entry": "solution.py",
+       "in_frozen_set": true,
+       "present": true,
+       "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_2",
+       "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
+      },
+      "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+      "fidelity": "full",
+      "fraction": 1.0,
+      "items": 1,
+      "items_measured": 0,
+      "measurement": "none",
+      "metric_name": "cut_edges",
+      "runtime_is_the_author": false,
+      "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+      "seed": 1337,
+      "task": "T1-maxcut",
+      "theta_e_canonical_match": true,
+      "theta_e_canonical_seed": 1337,
+      "theta_e_canonical_timeout_s": 10.0,
+      "total_items": 1,
+      "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+     },
+     {
+      "claimed_by": "the implementation session itself",
+      "fidelity": "full",
+      "fraction": "1.0",
+      "items": 1,
+      "score": 777777.0,
+      "seed": 1337,
+      "session_claimed": true,
+      "total_items": 1
+     }
+    ],
+    "status": "written",
+    "wrote": true
+   },
+   {
+    "artifact": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c03_ok_zero_all_one_side",
+    "granted_class": {
+     "fidelity": "full",
+     "fraction": 1.0,
+     "seed": 1337,
+     "source": {
+      "fidelity": "strategy.fidelity_decision.eval_fidelity",
+      "fraction": "strategy.fidelity_decision.eval_fraction",
+      "seed": "strategy.registered_subsample_seed"
+     }
+    },
+    "harness_ledger_seq": 3,
+    "harness_request_id": "A_kapso.41017343a22a.0004.c03_ok_zero_all_one_side",
+    "harness_score": 0.0,
+    "harness_status": "ok",
+    "last_line_is_the_harness_s": true,
+    "measurement_oid": "b0f19c0e68227fb77fd87ea9ec98f21563ef55a8db60f6d94eba7d6365cbcc53",
+    "node_id": 3,
+    "override_applied": false,
+    "score_before_amendment": 777777.0,
+    "session_manifest_lines": [
+     {
+      "candidate_identity": {
+       "candidate_id_if_frozen": "c03_ok_zero_all_one_side",
+       "entry": "solution.py",
+       "in_frozen_set": true,
+       "present": true,
+       "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_3",
+       "solution_sha256": "1ce08e11a34a857bf77d3df9e7a5b410a115dd76f6ff4e5c3ff33424320f7283"
+      },
+      "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+      "fidelity": "full",
+      "fraction": 1.0,
+      "items": 1,
+      "items_measured": 0,
+      "measurement": "none",
+      "metric_name": "cut_edges",
+      "runtime_is_the_author": false,
+      "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+      "seed": 1337,
+      "task": "T1-maxcut",
+      "theta_e_canonical_match": true,
+      "theta_e_canonical_seed": 1337,
+      "theta_e_canonical_timeout_s": 10.0,
+      "total_items": 1,
+      "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+     },
+     {
+      "claimed_by": "the implementation session itself",
+      "fidelity": "full",
+      "fraction": "1.0",
+      "items": 1,
+      "score": 777777.0,
+      "seed": 1337,
+      "session_claimed": true,
+      "total_items": 1
+     }
+    ],
+    "status": "written",
+    "wrote": true
+   }
+  ],
+  "harness_calls": 4,
+  "harness_root": "/tmp/a1t1/dryrun/harness",
+  "installed_at": "a0_adapter/harness_manifest.py::PostSessionManifest.amend <- GenericSearch._absorb_implementation (kapso/execution/search_strategies/generic/strategy.py:606-662), called after the original returns",
+  "run_id": "t1-dryrun-1",
+  "schema": "a0.kapso.post_session_manifest/v1"
+ },
+ "model_calls": 0,
+ "nodes": [
+  {
+   "branch_name": "generic_exp_0",
+   "evaluation_attempts": [
+    {
+     "evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+     "fidelity": "full",
+     "fraction": 1.0,
+     "score": 3.0,
+     "seed": 1337
+    }
+   ],
+   "evaluation_integrity_error": "",
+   "evaluation_valid": true,
+   "manifest_lines": [
+    {
+     "candidate_identity": {
+      "candidate_id_if_frozen": "c01_ok_high_pc",
+      "entry": "solution.py",
+      "in_frozen_set": true,
+      "present": true,
+      "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_0",
+      "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
+     },
+     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "fidelity": "full",
+     "fraction": 1.0,
+     "items": 1,
+     "items_measured": 0,
+     "measurement": "none",
+     "metric_name": "cut_edges",
+     "runtime_is_the_author": false,
+     "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+     "seed": 1337,
+     "task": "T1-maxcut",
+     "theta_e_canonical_match": true,
+     "theta_e_canonical_seed": 1337,
+     "theta_e_canonical_timeout_s": 10.0,
+     "total_items": 1,
+     "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+    },
+    {
+     "claimed_by": "the implementation session itself",
+     "fidelity": "full",
+     "fraction": "1.0",
+     "items": 1,
+     "score": 777777.0,
+     "seed": 1337,
+     "session_claimed": true,
+     "total_items": 1
+    },
+    {
+     "fidelity": "full",
+     "fraction": "1.0",
+     "harness_ledger_seq": 0,
+     "harness_request_id": "A_kapso.41017343a22a.0001.c01_ok_high_pc",
+     "harness_run_id": "t1-dryrun-1",
+     "harness_supplied": true,
+     "items": 1,
+     "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+     "override_applied": true,
+     "score": 3.0,
+     "seed": 1337,
+     "total_items": 1,
+     "true_value": null,
+     "written_after_session": true,
+     "written_by": "a0/runtimes/kapso/a0_adapter/harness_manifest.py"
+    }
+   ],
+   "node_id": 0,
+   "parent_node_id": null,
+   "score": 3.0
+  },
+  {
+   "branch_name": "generic_exp_1",
+   "evaluation_attempts": [
+    {
+     "evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+     "fidelity": "full",
+     "fraction": 1.0,
+     "score": 9999.0,
+     "seed": 1337
+    }
+   ],
+   "evaluation_integrity_error": "",
+   "evaluation_valid": true,
+   "manifest_lines": [
+    {
+     "candidate_identity": {
+      "candidate_id_if_frozen": "c02_ok_low_baseline",
+      "entry": "solution.py",
+      "in_frozen_set": true,
+      "present": true,
+      "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_1",
+      "solution_sha256": "1416e796c67745ba197e5cdf2f07d3629837b4544111f1c9adb6150c17037233"
+     },
+     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "fidelity": "full",
+     "fraction": 1.0,
+     "items": 1,
+     "items_measured": 0,
+     "measurement": "none",
+     "metric_name": "cut_edges",
+     "runtime_is_the_author": false,
+     "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+     "seed": 1337,
+     "task": "T1-maxcut",
+     "theta_e_canonical_match": true,
+     "theta_e_canonical_seed": 1337,
+     "theta_e_canonical_timeout_s": 10.0,
+     "total_items": 1,
+     "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+    },
+    {
+     "claimed_by": "the implementation session itself",
+     "fidelity": "full",
+     "fraction": "1.0",
+     "items": 1,
+     "score": 777777.0,
+     "seed": 1337,
+     "session_claimed": true,
+     "total_items": 1
+    },
+    {
+     "fidelity": "full",
+     "fraction": "1.0",
+     "harness_ledger_seq": 1,
+     "harness_request_id": "A_kapso.41017343a22a.0002.c02_ok_low_baseline",
+     "harness_run_id": "t1-dryrun-1",
+     "harness_supplied": true,
+     "items": 1,
+     "measurement_oid": "170436e1acc676692c3893eb672ddbfe08786e9b69ac4e68b862099359e8fbfa",
+     "override_applied": true,
+     "score": 9999.0,
+     "seed": 1337,
+     "total_items": 1,
+     "true_value": null,
+     "written_after_session": true,
+     "written_by": "a0/runtimes/kapso/a0_adapter/harness_manifest.py"
+    }
+   ],
+   "node_id": 1,
+   "parent_node_id": 0,
+   "score": 9999.0
+  },
+  {
+   "branch_name": "generic_exp_2",
+   "evaluation_attempts": [
+    {
+     "evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+     "fidelity": "full",
+     "fraction": 1.0,
+     "score": 3.0,
+     "seed": 1337
+    }
+   ],
+   "evaluation_integrity_error": "",
+   "evaluation_valid": true,
+   "manifest_lines": [
+    {
+     "candidate_identity": {
+      "candidate_id_if_frozen": "c01_ok_high_pc",
+      "entry": "solution.py",
+      "in_frozen_set": true,
+      "present": true,
+      "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_2",
+      "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
+     },
+     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "fidelity": "full",
+     "fraction": 1.0,
+     "items": 1,
+     "items_measured": 0,
+     "measurement": "none",
+     "metric_name": "cut_edges",
+     "runtime_is_the_author": false,
+     "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+     "seed": 1337,
+     "task": "T1-maxcut",
+     "theta_e_canonical_match": true,
+     "theta_e_canonical_seed": 1337,
+     "theta_e_canonical_timeout_s": 10.0,
+     "total_items": 1,
+     "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+    },
+    {
+     "claimed_by": "the implementation session itself",
+     "fidelity": "full",
+     "fraction": "1.0",
+     "items": 1,
+     "score": 777777.0,
+     "seed": 1337,
+     "session_claimed": true,
+     "total_items": 1
+    },
+    {
+     "fidelity": "full",
+     "fraction": "1.0",
+     "harness_ledger_seq": 2,
+     "harness_request_id": "A_kapso.41017343a22a.0003.c01_ok_high_pc",
+     "harness_run_id": "t1-dryrun-1",
+     "harness_supplied": true,
+     "items": 1,
+     "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+     "override_applied": true,
+     "score": 3.0,
+     "seed": 1337,
+     "total_items": 1,
+     "true_value": null,
+     "written_after_session": true,
+     "written_by": "a0/runtimes/kapso/a0_adapter/harness_manifest.py"
+    }
+   ],
+   "node_id": 2,
+   "parent_node_id": 1,
+   "score": 3.0
+  },
+  {
+   "branch_name": "generic_exp_3",
+   "evaluation_attempts": [],
+   "evaluation_integrity_error": "Provided evaluation integrity check failed (changed: kapso_eval.py)",
+   "evaluation_valid": false,
+   "manifest_lines": [
+    {
+     "candidate_identity": {
+      "candidate_id_if_frozen": "c03_ok_zero_all_one_side",
+      "entry": "solution.py",
+      "in_frozen_set": true,
+      "present": true,
+      "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_3",
+      "solution_sha256": "1ce08e11a34a857bf77d3df9e7a5b410a115dd76f6ff4e5c3ff33424320f7283"
+     },
+     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "fidelity": "full",
+     "fraction": 1.0,
+     "items": 1,
+     "items_measured": 0,
+     "measurement": "none",
+     "metric_name": "cut_edges",
+     "runtime_is_the_author": false,
+     "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+     "seed": 1337,
+     "task": "T1-maxcut",
+     "theta_e_canonical_match": true,
+     "theta_e_canonical_seed": 1337,
+     "theta_e_canonical_timeout_s": 10.0,
+     "total_items": 1,
+     "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+    },
+    {
+     "claimed_by": "the implementation session itself",
+     "fidelity": "full",
+     "fraction": "1.0",
+     "items": 1,
+     "score": 777777.0,
+     "seed": 1337,
+     "session_claimed": true,
+     "total_items": 1
+    },
+    {
+     "fidelity": "full",
+     "fraction": "1.0",
+     "harness_ledger_seq": 3,
+     "harness_request_id": "A_kapso.41017343a22a.0004.c03_ok_zero_all_one_side",
+     "harness_run_id": "t1-dryrun-1",
+     "harness_supplied": true,
+     "items": 1,
+     "measurement_oid": "b0f19c0e68227fb77fd87ea9ec98f21563ef55a8db60f6d94eba7d6365cbcc53",
+     "override_applied": false,
+     "score": 0.0,
+     "seed": 1337,
+     "total_items": 1,
+     "true_value": null,
+     "written_after_session": true,
+     "written_by": "a0/runtimes/kapso/a0_adapter/harness_manifest.py"
+    }
+   ],
+   "node_id": 3,
+   "parent_node_id": 1,
+   "score": null
+  }
+ ],
+ "override": {
+  "c01_ok_high_pc": 3,
+  "c02_ok_low_baseline": 9999
+ },
+ "registered_tree_on_disk": {
+  "files": [
+   "a0_locator.json",
+   "kapso_eval.py"
+  ],
+  "stub_is_the_committed_source": true,
+  "tree_source": "/tmp/a1t1/dryrun/campaign/registered_evaluation_source"
+ },
+ "registration": {
+  "calibration_fraction": 0.15,
+  "calibration_total_items": 1,
+  "command_calibration": "python kapso_evaluation/kapso_eval.py --fidelity fast --fraction 0.03 --seed 1337",
+  "command_full": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
+  "evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "provenance": "provided",
+  "setup_agent_seam": "EvaluationMaintainer._run_agent monkeypatched to a no-op (maintainer.py:206): the provided evaluation tree needs no build session; every other maintainer post-condition runs for real",
+  "tree_files": [
+   "a0_locator.json",
+   "kapso_eval.py"
+  ],
+  "tree_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "version": 1
+ },
+ "relabelled_requests": [
+  {
+   "artifact": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
+   "candidate_id": "c01_ok_high_pc",
+   "node_label": "node0"
+  },
+  {
+   "artifact": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c02_ok_low_baseline",
+   "candidate_id": "c02_ok_low_baseline",
+   "node_label": "node1"
+  },
+  {
+   "artifact": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
+   "candidate_id": "c01_ok_high_pc",
+   "node_label": "node2"
+  },
+  {
+   "artifact": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c03_ok_zero_all_one_side",
+   "candidate_id": "c03_ok_zero_all_one_side",
+   "node_label": "node3"
+  }
+ ],
+ "schema": "a0.a1.kapso_t1.dryrun/v1",
+ "selection": {
+  "best_by_score": 9999.0,
+  "get_best_experiment": {
+   "branch_name": "generic_exp_1",
+   "node_id": 1,
+   "score": 9999.0
+  },
+  "get_deliverable_score": 9999.0,
+  "note": "with 9999 handed to the true-low candidate and 3 to the true-high one, a parent chain 0 -> 1 -> 1 is the harness's ranking, not E*'s",
+  "parent_of_each_node": {
+   "0": null,
+   "1": 0,
+   "2": 1,
+   "3": 1
+  }
+ },
+ "session_claim": 777777.0,
+ "session_claims": [
+  {
+   "candidate_id": "c01_ok_high_pc",
+   "claimed_score": 777777.0
+  },
+  {
+   "candidate_id": "c02_ok_low_baseline",
+   "claimed_score": 777777.0
+  },
+  {
+   "candidate_id": "c01_ok_high_pc",
+   "claimed_score": 777777.0
+  },
+  {
+   "candidate_id": "c03_ok_zero_all_one_side",
+   "claimed_score": 777777.0
+  }
+ ],
+ "setup_log": [
+  "materialized 24 dev instances into kapso_datasets/maxcut/dev (protected_data_paths)"
+ ],
+ "stub_plus_harness_score_of_record": {
+  "fidelity": "full",
+  "fraction": "1.0",
+  "harness_ledger_seq": 0,
+  "harness_request_id": "A_kapso.41017343a22a.0001.c01_ok_high_pc",
+  "harness_run_id": "t1-dryrun-1",
+  "harness_supplied": true,
+  "items": 1,
+  "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+  "override_applied": true,
+  "score": 3.0,
+  "seed": 1337,
+  "total_items": 1,
+  "true_value": null,
+  "written_after_session": true,
+  "written_by": "a0/runtimes/kapso/a0_adapter/harness_manifest.py"
+ },
+ "stub_standalone": {
+  "cmd": [
+   "/usr/bin/python3",
+   "/tmp/a1t1/dryrun/campaign/registered_evaluation_source/kapso_eval.py",
+   "--fidelity",
+   "full",
+   "--fraction",
+   "1.0",
+   "--seed",
+   "1337",
+   "--candidate",
+   "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc"
+  ],
+  "exit_code": 0,
+  "manifest": {
+   "candidate_identity": {
+    "candidate_id_if_frozen": "c01_ok_high_pc",
+    "entry": "solution.py",
+    "in_frozen_set": true,
+    "present": true,
+    "root": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
+    "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
+   },
+   "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+   "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+   "fidelity": "full",
+   "fraction": 1.0,
+   "items": 1,
+   "items_measured": 0,
+   "measurement": "none",
+   "metric_name": "cut_edges",
+   "runtime_is_the_author": false,
+   "score_omitted": "the harness owns the evaluation (INTERFACE.md principle (ii), \u00a712): E* is run by a0/a1/eval_service.py, and the harness appends its own KAPSO_EVAL_MANIFEST line \u2014 the last line \u2014 after this session ends",
+   "seed": 1337,
+   "task": "T1-maxcut",
+   "theta_e_canonical_match": true,
+   "theta_e_canonical_seed": 1337,
+   "theta_e_canonical_timeout_s": 10.0,
+   "total_items": 1,
+   "written_by": "a0/a1/kapso_t1/tree_src/kapso_eval.py"
+  },
+  "stderr_tail": "",
+  "stdout_lines": 1
+ },
+ "stub_standalone_score_of_record": null,
+ "task_binding": {
+  "baseline_candidate": "c02_ok_low_baseline",
+  "dev_materialization": {
+   "count": 24,
+   "dest_relative": "kapso_datasets/maxcut/dev",
+   "source_manifest_sha256": "47324fccb6a00c62e1bc6b767fd6591292515d4421d152b5c47f9ad547814d23"
+  },
+  "eid_r_matches_the_t1_tree_record": true,
+  "holdout_bytes_in_workspace": [],
+  "kapsos_registered_evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "module": "a0/runtimes/kapso/a0_adapter/runtime.py",
+  "notice": "the rebound names stay bound for the life of this process, which is why a T1 run is a separate process from any plumbing run",
+  "protected_data_paths": [
+   "kapso_datasets/maxcut/dev"
+  ],
+  "rebound": {
+   "GOAL": {
+    "now": "Evolve `solution.py`, a deterministic max-cut heuristic over the frozen T1 instance suite: given any \u00a72 graph (`--graph`) it must emit a \u00a73 partition (`--out`) within tau = 10 s, maximizing the harness-measured `cut_edges` on the unseen eval instances. The result must be a function of the graph bytes and `--seed` alone. `kapso_datasets/maxcut/dev/` holds the instances the agent may read; the eval and calibration instances are not part of the campaign.",
+    "was": "Optimize `solution.py`'s `pack_circles(n=26)` to return deterministic, non-overlapping circles inside the unit square, maximize `sum_radii`, and keep default `pack_circles()` equivalent to `pack_circles(26)`."
+   },
+   "PROBLEM": {
+    "now": "T1 \u2014 frozen Max-Cut heuristic search.\n\nThe artifact is a *program*. Write `solution.py` at the repository root, runnable as\n\n    python solution.py --graph <abs path to graph.json> --out <abs path to partition.json> --seed <int>\n\n- It reads a \u00a72 graph: `{\"schema\":\"a0.maxcut.graph/v1\",\"graph_id\":\u2026,\"family\":\u2026,\"n\":128,\n  \"edges\":[[u,v],\u2026],\"generator\":\u2026,\"notes\":\u2026}` \u2014 `n = 128`, unit weights, no self-loops,\n  no duplicate edges, `u < v`, edges sorted.\n- It writes a \u00a73 partition to `--out`, and nowhere else:\n  `{\"schema\":\"a0.maxcut.partition/v1\",\"graph_id\":\"<the graph's id>\",\"assignment\":[0,1,\u2026]}`\n  with exactly `n` entries, each the integer 0 or 1, in canonical JSON\n  (sorted keys, compact separators, one trailing newline).\n- Exit codes: 0 = produced something; 20 = the candidate declares its own output\n  invalid; 30 = internal error; 40 = refusal. Any other non-zero is an error.\n- It must not depend on the working directory, `PATH`, any file other than the graph\n  it is given, or the network. It is run with a minimal environment and no network.\n- Determinism is part of the contract: the same graph bytes and the same `--seed`\n  must produce byte-identical `partition.json`.\n\nThe objective is `cut_edges` \u2014 the number of edges whose endpoints are in different\nsides \u2014 recomputed by the harness-owned evaluator from the graph and the partition.\n**Do not report a score.** No number the program prints or writes is read; a\n`status != ok` is never folded into 0. The number in the experiment's record is the\nharness's, always.\n\nVisible data: the 24 development graphs under `kapso_datasets/maxcut/dev/`, indexed by\n`kapso_datasets/maxcut/dev/GRAPHS-DEV.json` with each file's sha256. They are\nprotected inputs: a candidate that rewrites one is not scored on this task at all.\nThe 24 hold-out `eval` instances and the 12 `calibration` instances are not in this\nworkspace and must not be sought: `eval` is scored once at the end, and `calibration`\nis for measuring resource rates, never for algorithmic selection.\n\nBudget: tau = 10 s of wall clock per graph (the harness SIGKILLs the process group at\ntau, which is recorded as `timeout`, not as a score). Aim well below it \u2014 the\ncalibrated p99 is what tau was derived from.\n",
+    "was": "circle-packing: pack 26 non-overlapping circles in the unit square and maximize the sum of their radii (sum_radii).  The evaluation is maintained by the system and is read-and-execute only."
+   },
+   "install_registered_tree": {
+    "now": "a0/a1/kapso_t1/tree.py::install_t1_tree",
+    "was": "a0_adapter.registered_tree.install_registered_tree"
+   }
+  },
+  "registered_data_manifest_entries": 25,
+  "schema": "a0.kapso_t1.task_binding/v1",
+  "tree_record_manifest_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "tree_source": "/tmp/a1t1/dryrun/campaign/registered_evaluation_source",
+  "tree_source_is_the_t1_stub": true,
+  "why": "the adapter is another workstream's file and is wired to the plumbing task; these three names are read as module globals at call time, so rebinding them makes the run T1's without editing it (DEVIATIONS.md D-KT1-2)"
+ },
+ "task_id": "T1-maxcut",
+ "tree_check": {
+  "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+  "files": {
+   "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+   "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
+  },
+  "fingerprint_matches_record": true,
+  "locator_rebuild_matches_committed": true,
+  "manifest_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "manifest_fingerprint_source": "kapso.execution.evaluation_integrity.manifest_fingerprint (imported)",
+  "pass": true,
+  "recorded_manifest_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "schema": "a0.kapso_t1.tree_check/v1",
+  "tree_dir": "/home/ebt/rsi-dev/a0/a1/kapso_t1/tree",
+  "tree_files": [
+   "kapso_eval.py",
+   "a0_locator.json"
+  ],
+  "wrapper_matches_source": true
+ },
+ "tree_record": {
+  "baseline_candidate": "c02_ok_low_baseline",
+  "binding": {
+   "candidate_set": {
+    "baseline": "c02_ok_low_baseline",
+    "candidate_count": 21,
+    "manifest": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/manifest.json",
+    "manifest_sha256": "62c147b342ce9500124beaba81ad9fee8efcfb1e81b2702594cdc894cc382356",
+    "members": {
+     "c01_ok_high_pc": {
+      "dir": "c01_ok_high_pc",
+      "kind": "ok",
+      "role": "high",
+      "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
+     },
+     "c02_ok_low_baseline": {
+      "dir": "c02_ok_low_baseline",
+      "kind": "ok",
+      "role": "low",
+      "solution_sha256": "1416e796c67745ba197e5cdf2f07d3629837b4544111f1c9adb6150c17037233"
+     },
+     "c03_ok_zero_all_one_side": {
+      "dir": "c03_ok_zero_all_one_side",
+      "kind": "ok",
+      "role": "edge",
+      "solution_sha256": "1ce08e11a34a857bf77d3df9e7a5b410a115dd76f6ff4e5c3ff33424320f7283"
+     },
+     "c04_tie_a_pc_optimum": {
+      "dir": "c04_tie_a_pc_optimum",
+      "kind": "ok",
+      "role": "tie-a",
+      "solution_sha256": "ac6cdcb1b5b3c24f50acfc202f74545370a435ebdab83d76b3b51144d00679a9"
+     },
+     "c05_tie_b_pc_complement": {
+      "dir": "c05_tie_b_pc_complement",
+      "kind": "ok",
+      "role": "tie-b",
+      "solution_sha256": "8ab8c3d07f3930b9fd1ccb7985e2153a553b28e06ac7e4a69367b5d38ac2b786"
+     },
+     "c06_invalid_length": {
+      "dir": "c06_invalid_length",
+      "kind": "invalid",
+      "role": "malformed",
+      "solution_sha256": "70b701170dd55cff19e369fe5beaf8501700e83e04717683c57bc2e38202f40b"
+     },
+     "c07_invalid_element": {
+      "dir": "c07_invalid_element",
+      "kind": "invalid",
+      "role": "malformed",
+      "solution_sha256": "84cfe9f92b05743006de1d93f628a352cb81a16d8793c96e9b4189ddf36cf3ba"
+     },
+     "c08_invalid_json": {
+      "dir": "c08_invalid_json",
+      "kind": "invalid",
+      "role": "malformed",
+      "solution_sha256": "b90e86aa0d6f809506a3c0e52a5f00a56c4ef5674e1c52a2fc695ecfe9a73ced"
+     },
+     "c09_invalid_missing_file": {
+      "dir": "c09_invalid_missing_file",
+      "kind": "invalid",
+      "role": "malformed",
+      "solution_sha256": "eef1baca2a652c4ee7ad53e2cb6a7b62f2d5fb264bfdaead757ac00b834d4aaa"
+     },
+     "c10_invalid_json_true": {
+      "dir": "c10_invalid_json_true",
+      "kind": "invalid",
+      "role": "malformed",
+      "solution_sha256": "1b9596ecc80bda90ddcb799b6ba5ccb8ed2eeaab8e4f236870cc3ab29eed6483"
+     },
+     "c11_error_raises": {
+      "dir": "c11_error_raises",
+      "kind": "error",
+      "role": "crash",
+      "solution_sha256": "99228aea527a1dd77c3991700475de08ec8dbd70ec9fb296b42780a1f2fa84b1"
+     },
+     "c12_error_exit30": {
+      "dir": "c12_error_exit30",
+      "kind": "error",
+      "role": "internal-error",
+      "solution_sha256": "67549e780ca16976cd93e89f05aed9b4a18ed703ed716cf824ba285927cf09a9"
+     },
+     "c13_error_non_deterministic": {
+      "dir": "c13_error_non_deterministic",
+      "kind": "error",
+      "role": "non-deterministic",
+      "solution_sha256": "c4c799b4b8ee73dea506c9b400b38dd40eae9a913fb276e30566e9dfa5fb4dea"
+     },
+     "c14_error_no_file_nonzero": {
+      "dir": "c14_error_no_file_nonzero",
+      "kind": "error",
+      "role": "missing-artifact",
+      "solution_sha256": "947a2a7024950abc4e6924ad3257a71309afb5ea6e2f667d20155946fc722f83"
+     },
+     "c15_error_network_attempt": {
+      "dir": "c15_error_network_attempt",
+      "kind": "error",
+      "role": "network",
+      "solution_sha256": "fc5a9e34676c88ee8827d78a76e3da8e62bf922c37fde63ed9811e382d3b96c6"
+     },
+     "c16_error_refused": {
+      "dir": "c16_error_refused",
+      "kind": "error",
+      "role": "refused",
+      "solution_sha256": "b647f32e74d14642e66b1f99fed304e96d05d92c446e92543ba9e0ef2439513f"
+     },
+     "c17_error_input_tampered": {
+      "dir": "c17_error_input_tampered",
+      "kind": "error",
+      "role": "tamper",
+      "solution_sha256": "4741af6e669b5ef4d385eead45f196a61a9708237cd76beaf4c532a1b794a193"
+     },
+     "c18_ok_inflation_attempt": {
+      "dir": "c18_ok_inflation_attempt",
+      "kind": "ok",
+      "role": "tamper-restored",
+      "solution_sha256": "e4f472ef495e880603ed3b650f90e7db87560099e904f7e946dcb30b5923a1e6"
+     },
+     "c19_timeout_process_group": {
+      "dir": "c19_timeout_process_group",
+      "kind": "timeout",
+      "role": "timeout",
+      "solution_sha256": "66ae1fcc3d202815ce2dd10f7dbb91577a1dc229e09c26342ef0f7e5522e8067"
+     },
+     "c20_env_probe": {
+      "dir": "c20_env_probe",
+      "kind": "ok",
+      "role": "probe",
+      "solution_sha256": "9188dde5ed7f757458cdd30b5d5b69aff540c1965791ff067da70337e175ba6c"
+     },
+     "c21_ok_parity_probe": {
+      "dir": "c21_ok_parity_probe",
+      "kind": "ok",
+      "role": "arithmetic-probe",
+      "solution_sha256": "a97af2b9a749d1e65e2ab102a76caba8864955befaaa85d6a71d188e9cc00588"
+     }
+    }
+   },
+   "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+   "eid_star_components": {
+    "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
+    "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
+    "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
+    "EvaluatorSource": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+    "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
+   },
+   "eid_star_file": "/home/ebt/rsi-dev/a0/a1/T1-EID.json",
+   "eid_star_task": "maxcut-t1",
+   "evaluator": {
+    "dir": "/home/ebt/rsi-dev/a0/tasks/maxcut",
+    "entry": "e_star.py",
+    "helper": "e_star_child.py",
+    "python": "/usr/bin/python3",
+    "source_records": [
+     {
+      "path": "e_star.py",
+      "sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
+      "size": 43410
+     },
+     {
+      "path": "e_star_child.py",
+      "sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
+      "size": 15128
+     }
+    ]
+   },
+   "metric": {
+    "direction": "maximize",
+    "epsilon": 0.0,
+    "failure_semantics": "invalid/error/timeout carry cut_edges: null \u2014 never 0; a legitimate 0 is reported as 0",
+    "name": "cut_edges",
+    "objective": {
+     "aggregation": "fractions.Fraction over integers",
+     "authoritative": "integer",
+     "direction": "maximize",
+     "display_only": "cut_fraction",
+     "name": "cut_edges",
+     "unit": "edges",
+     "weighted": false
+    }
+   },
+   "mode_config": "/home/ebt/rsi-dev/a0/a1/kapso_t1/config/mode.maxcut.yaml",
+   "registered_tree": "/home/ebt/rsi-dev/a0/a1/kapso_t1/tree",
+   "runtime": "kapso",
+   "schema": "a0.kapso_t1.eid_binding/v1",
+   "task_id": "T1-maxcut",
+   "theta_e_canonical": {
+    "seed": 1337,
+    "timeout_s": 10.0
+   }
+  },
+  "eid_contract_verification": {
+   "recompute_returncode": 0,
+   "recompute_stdout": "[ok ] EvaluatorSource    recorded=c095f0c6343069ee recomputed=c095f0c6343069ee\n  [ok ] DependencyLock     recorded=e7ac24763f0ebeed recomputed=e7ac24763f0ebeed\n  [ok ] DataManifest       recorded=042db1cc800e3030 recomputed=042db1cc800e3030\n  [ok ] Config             recorded=178b47c78297dca6 recomputed=178b47c78297dca6\n  [ok ] MetricDefinition   recorded=0ba2145a5e480c31 recomputed=0ba2145a5e480c31\n  [ok ] EID*               recorded=cddfa64ead571bbb recomputed=cddfa64ead571bbb",
+   "spec": "/home/ebt/rsi-dev/a0/a1/T1.contract.json",
+   "verify_returncode": 0,
+   "verify_stdout": "clean: all recorded inputs match; EID* = cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1"
+  },
+  "eid_mapping": {
+   "derivation": {
+    "eid_star_binding": "a0_locator.json embeds EID*'s EvaluatorSource records (per-file sha256) and the five component digests; kapso_eval.py re-hashes both E* source files on every invocation and aborts with exit 3 without a manifest line if either differs",
+    "eid_star_components": {
+     "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
+     "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
+     "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
+     "EvaluatorSource": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
+    },
+    "fingerprint_rule": "KAPSO's own: sha256(json.dumps(manifest, sort_keys=True, separators=(',',':'))) \u2014 execution/evaluation_integrity.py:112-119",
+    "formula": "EID_r = manifest_fingerprint(registered_evaluation_tree)",
+    "tree_files": {
+     "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+     "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
+    }
+   },
+   "eid_r": "manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+   "eid_r_value": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+   "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+   "mapping_mode": "native",
+   "native_scheme": "manifest_fingerprint",
+   "recomputable": true,
+   "recompute_recipe": [
+    "read EID* (a0/a1/T1-EID.json): eid_star, the EvaluatorSource records, the five component digests",
+    "regenerate a0_locator.json with a0/a1/kapso_t1/tree.py::build_locator",
+    "sha256(kapso_eval.py) and sha256(a0_locator.json), then apply KAPSO's manifest_fingerprint over the sorted name->sha256 map",
+    "compare with the value the adapter recorded on every trace event (eid_r.value) and with runtime.registration.evaluator_id, which KAPSO computes itself from the workspace tree"
+   ],
+   "runtime": "kapso",
+   "schema": "a0.kapso.eid_mapping/v1",
+   "task": "T1-maxcut"
+  },
+  "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+  "eid_star_component_digests": {
+   "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
+   "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
+   "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
+   "EvaluatorSource": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+   "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
+  },
+  "files": {
+   "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+   "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
+  },
+  "fingerprint_rule": "KAPSO's own: sha256(json.dumps(manifest, sort_keys=True, separators=(',',':'))) \u2014 execution/evaluation_integrity.py:112-119",
+  "manifest_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "manifest_fingerprint_source": "kapso.execution.evaluation_integrity.manifest_fingerprint (imported)",
+  "mapping": "EID_r = manifest_fingerprint({kapso_eval.py, a0_locator.json}); a0_locator.json carries EID*'s component digests and E*'s source records, and kapso_eval.py re-hashes e_star.py and e_star_child.py on every invocation and aborts with exit 3 without a manifest line if either differs, so EID_r cannot be produced from a different E*.",
+  "pass": true,
+  "produced_by": "a0/a1/kapso_t1/tree.py::install_t1_tree",
+  "schema": "a0.kapso.registered_tree/v1",
+  "task": "T1-maxcut",
+  "tree_dir": "/home/ebt/rsi-dev/a0/a1/kapso_t1/tree"
+ },
+ "verdict": "pass",
+ "workspace": {
+  "dev_materialization": {
+   "count": 24,
+   "dest": "/tmp/a1t1/dryrun/campaign/workspace/kapso_datasets/maxcut/dev",
+   "dest_relative": "kapso_datasets/maxcut/dev",
+   "index": "/tmp/a1t1/dryrun/campaign/workspace/kapso_datasets/maxcut/dev/GRAPHS-DEV.json",
+   "source_manifest_sha256": "47324fccb6a00c62e1bc6b767fd6591292515d4421d152b5c47f9ad547814d23"
+  },
+  "dev_members_sha256_checked": 24,
+  "holdout_bytes_in_workspace": [],
+  "protected_data_manifest_entries": [
+   "kapso_datasets/maxcut/dev/GRAPHS-DEV.json",
+   "kapso_datasets/maxcut/dev/G_dev_0001.json",
+   "kapso_datasets/maxcut/dev/G_dev_0002.json",
+   "kapso_datasets/maxcut/dev/G_dev_0003.json",
+   "kapso_datasets/maxcut/dev/G_dev_0004.json",
+   "kapso_datasets/maxcut/dev/G_dev_0005.json",
+   "kapso_datasets/maxcut/dev/G_dev_0006.json",
+   "kapso_datasets/maxcut/dev/G_dev_0007.json",
+   "kapso_datasets/maxcut/dev/G_dev_0008.json",
+   "kapso_datasets/maxcut/dev/G_dev_0009.json",
+   "kapso_datasets/maxcut/dev/G_dev_0010.json",
+   "kapso_datasets/maxcut/dev/G_dev_0011.json",
+   "kapso_datasets/maxcut/dev/G_dev_0012.json",
+   "kapso_datasets/maxcut/dev/G_dev_0013.json",
+   "kapso_datasets/maxcut/dev/G_dev_0014.json",
+   "kapso_datasets/maxcut/dev/G_dev_0015.json",
+   "kapso_datasets/maxcut/dev/G_dev_0016.json",
+   "kapso_datasets/maxcut/dev/G_dev_0017.json",
+   "kapso_datasets/maxcut/dev/G_dev_0018.json",
+   "kapso_datasets/maxcut/dev/G_dev_0019.json",
+   "kapso_datasets/maxcut/dev/G_dev_0020.json",
+   "kapso_datasets/maxcut/dev/G_dev_0021.json",
+   "kapso_datasets/maxcut/dev/G_dev_0022.json",
+   "kapso_datasets/maxcut/dev/G_dev_0023.json",
+   "kapso_datasets/maxcut/dev/G_dev_0024.json"
+  ]
+ }
+}

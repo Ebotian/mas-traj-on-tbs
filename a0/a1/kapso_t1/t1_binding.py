@@ -4,7 +4,7 @@
 document: it takes `eid_star`, the five component digests, the canonical
 `theta_E`, the metric name and the `EvaluatorSource` / `DataManifest` records, and
 refuses anything missing (`load_eid_star`). T1's document
-(`a0/a1/T1-EID.json`, `EID* = cddfa64e…`, authored by `a0/a1/t1_eid.py`, see
+(`a0/a1/T1-EID.json`, `EID* = 7ce9e72f…`, authored by `a0/a1/t1_eid.py`, see
 `a0/a1/DEVIATIONS.md` D-A1-1) is such a document, and this module is the binding
 that makes the KAPSO adapter carry it:
 
@@ -257,7 +257,7 @@ def check() -> Dict[str, Any]:
     record["pass"] = (
         contract["verify"]["returncode"] == 0
         and contract["recompute"]["returncode"] == 0
-        and eid.eid_star == "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1"
+        and eid.eid_star == "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec"
         and len(candidates) == 21
     )
     return record

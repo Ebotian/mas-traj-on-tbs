@@ -65,9 +65,13 @@ ADAPTER_PYTHON = KAPSO_DIR / ".venv" / "bin" / "python"
 
 #: Who gets what from the harness: `E*` measures both candidates, and the harness
 #: hands node 0 a small number and node 1 a huge one, i.e. the *inverse* of the true
-#: ranking (c01 is the high-scoring candidate, c02 the frozen low baseline). 9999 is
-#: a value `E*` cannot produce on a 128-node graph (`|E| <= 713`), so "the runtime
-#: consumes, it does not measure" is observable rather than argued.
+#: ranking (c01 is the high-scoring candidate, c02 the frozen low baseline). The
+#: huge one is `G_dev_0001`'s own `|E|` = 265, which is inside the evaluator's
+#: declared bound `0 <= cut_edges <= edges_total` (`a0/a1/eval_service.py`
+#: `score_bound`) and above the instance's `R = OPT = 224`
+#: (`a0/tasks/maxcut/references/targets.json`), so it is both publishable by
+#: `--override-mode bounded` and a number no measurement of this graph could have
+#: produced — "the runtime consumes, it does not measure" stays observable.
 ROUNDS = [
     {"candidate_id": "c01_ok_high_pc", "run_evaluation": True, "tamper": None},
     {"candidate_id": "c02_ok_low_baseline", "run_evaluation": True, "tamper": None},
@@ -75,7 +79,7 @@ ROUNDS = [
     {"candidate_id": "c03_ok_zero_all_one_side", "run_evaluation": True,
      "tamper": "A0-KAPSO-T1-TAMPER: the candidate edited the registered evaluator"},
 ]
-OVERRIDE = {"c01_ok_high_pc": 3, "c02_ok_low_baseline": 9999}
+OVERRIDE = {"c01_ok_high_pc": 3, "c02_ok_low_baseline": 265}
 SESSION_CLAIM = 777777.0        # what the session says its own score is
 GRAPH_ID = "G_dev_0001"
 
@@ -527,8 +531,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         for node in (node0, node1, node2)
     ) and SESSION_CLAIM not in (node0["score"], node1["score"], node2["score"])
     checks["the_score_of_record_is_not_what_e_star_measured"] = (
-        by_node[1]["handed_value"] == 9999
-        and by_node[0]["handed_value"] == 3
+        by_node[1]["handed_value"] == OVERRIDE["c02_ok_low_baseline"]
+        and by_node[0]["handed_value"] == OVERRIDE["c01_ok_high_pc"]
         and by_node[1]["true_value"] is not None
         and by_node[1]["true_value"] < by_node[0]["true_value"]
     )
@@ -541,7 +545,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         node1["parent_node_id"] == node0["node_id"]
         and node2["parent_node_id"] == node1["node_id"]
         and report["best"]["node_id"] == node1["node_id"]
-        and report["deliverable_score"] == 9999
+        and report["deliverable_score"] == OVERRIDE["c02_ok_low_baseline"]
     )
     checks["the_stub_alone_carries_no_score_of_record"] = (
         report["stub_standalone_score_of_record"] is None
@@ -649,8 +653,8 @@ def _selection_record(runtime) -> dict:
         "get_best_experiment": _best_record(runtime),
         "get_deliverable_score": runtime.strategy.get_deliverable_score(),
         "note": (
-            "with 9999 handed to the true-low candidate and 3 to the true-high one, a "
-            "parent chain 0 -> 1 -> 1 is the harness's ranking, not E*'s"
+            "with 265 = |E| handed to the true-low candidate and 3 to the true-high one, "
+            "a parent chain 0 -> 1 -> 2 is the harness's ranking, not E*'s"
         ),
     }
 

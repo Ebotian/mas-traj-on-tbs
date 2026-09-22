@@ -2,7 +2,7 @@
  "best": {
   "branch_name": "generic_exp_1",
   "node_id": 1,
-  "score": 9999.0
+  "score": 265.0
  },
  "binding": {
   "candidate_set": {
@@ -139,12 +139,12 @@
     }
    }
   },
-  "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+  "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
   "eid_star_components": {
    "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
    "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
    "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
-   "EvaluatorSource": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+   "EvaluatorSource": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
    "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
   },
   "eid_star_file": "/home/ebt/rsi-dev/a0/a1/T1-EID.json",
@@ -157,13 +157,13 @@
    "source_records": [
     {
      "path": "e_star.py",
-     "sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
-     "size": 43410
+     "sha256": "f67ecd41bd769e41e57e1812ce60d544b6894071cd7849bccaa83a2163b614f6",
+     "size": 53788
     },
     {
      "path": "e_star_child.py",
-     "sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
-     "size": 15128
+     "sha256": "fdcf425c1d41650da8eaeffe28c30b9ec1461b45570d91b487a98c10fb6263ad",
+     "size": 35924
     }
    ]
   },
@@ -262,8 +262,8 @@
       "root": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
       "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
      },
-     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+     "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
      "fidelity": "fast",
      "fraction": 0.15,
      "items": 1,
@@ -325,8 +325,8 @@
       "root": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
       "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
      },
-     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+     "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
      "fidelity": "full",
      "fraction": 1.0,
      "items": 1,
@@ -452,7 +452,7 @@
    ],
    "exit_code": 3,
    "manifest": null,
-   "stderr_tail": "kapso_eval_t1: E* source drifted: e_star.py sha256 6312cb7bdd17468635a42eaa9e569342fa964d1b48dfe16632035888a430ba78 != 670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0 recorded in EID* (cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1)",
+   "stderr_tail": "kapso_eval_t1: E* source drifted: e_star.py sha256 f76e86bacafacbaaa0f99c378013fb29602783e353b2340e6bffb0f1446a0fa0 != f67ecd41bd769e41e57e1812ce60d544b6894071cd7849bccaa83a2163b614f6 recorded in EID* (7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec)",
    "stdout_lines": 0,
    "why": "a0_locator.json still records EID*'s digests while e_star.py's bytes changed: the stub must refuse, because otherwise EID_r would name a tree that can run a different evaluator"
   },
@@ -584,13 +584,13 @@
    "matches_the_eid_declared_prefix": true
   }
  },
- "deliverable_score": 9999.0,
+ "deliverable_score": 265.0,
  "eid_contract_verification": {
   "recompute": {
    "cmd": "/home/ebt/rsi-dev/a0/contract/evalcontract.py recompute --eid-file /home/ebt/rsi-dev/a0/a1/T1-EID.json",
    "returncode": 0,
    "stderr": "",
-   "stdout": "[ok ] EvaluatorSource    recorded=c095f0c6343069ee recomputed=c095f0c6343069ee\n  [ok ] DependencyLock     recorded=e7ac24763f0ebeed recomputed=e7ac24763f0ebeed\n  [ok ] DataManifest       recorded=042db1cc800e3030 recomputed=042db1cc800e3030\n  [ok ] Config             recorded=178b47c78297dca6 recomputed=178b47c78297dca6\n  [ok ] MetricDefinition   recorded=0ba2145a5e480c31 recomputed=0ba2145a5e480c31\n  [ok ] EID*               recorded=cddfa64ead571bbb recomputed=cddfa64ead571bbb"
+   "stdout": "[ok ] EvaluatorSource    recorded=1bfee86896824ef0 recomputed=1bfee86896824ef0\n  [ok ] DependencyLock     recorded=e7ac24763f0ebeed recomputed=e7ac24763f0ebeed\n  [ok ] DataManifest       recorded=042db1cc800e3030 recomputed=042db1cc800e3030\n  [ok ] Config             recorded=178b47c78297dca6 recomputed=178b47c78297dca6\n  [ok ] MetricDefinition   recorded=0ba2145a5e480c31 recomputed=0ba2145a5e480c31\n  [ok ] EID*               recorded=7ce9e72f36a0d154 recomputed=7ce9e72f36a0d154"
   },
   "spec": "/home/ebt/rsi-dev/a0/a1/T1.contract.json",
   "spec_locator": "a0/a1/kapso_t1/t1_binding.py::locate_spec (see DEVIATIONS.md D-KT1-4)",
@@ -598,11 +598,11 @@
    "cmd": "/home/ebt/rsi-dev/a0/contract/evalcontract.py verify --eid-file /home/ebt/rsi-dev/a0/a1/T1-EID.json --spec /home/ebt/rsi-dev/a0/a1/T1.contract.json",
    "returncode": 0,
    "stderr": "",
-   "stdout": "clean: all recorded inputs match; EID* = cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1"
+   "stdout": "clean: all recorded inputs match; EID* = 7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec"
   }
  },
- "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
- "elapsed_sec": 2.095,
+ "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+ "elapsed_sec": 1.234,
  "graph": {
   "graph_id": "G_dev_0001",
   "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/dev/G_dev_0001.json",
@@ -619,101 +619,169 @@
    "arm_id": "A_kapso",
    "campaign_id": "C_t1_dryrun",
    "candidate_id": "c01_ok_high_pc",
+   "candidate_isolation": "sandbox",
    "candidate_source_sha256": "6ed5116f0d07c5b36eb8de025ea70b0d8d7de17de156d82574fc5f27f397a603",
    "e_star_exit_code": 0,
    "evaluator": "maxcut",
-   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
    "graph_id": "G_dev_0001",
    "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
    "handed_value": 3,
    "harness_run_id": "t1-dryrun-1",
    "harness_supplied": true,
    "iteration": null,
-   "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+   "measurement_oid": "8a2c451581c059d8b0112fdf4b47baddb58a2cc0a34be6da6283909c2a56d0a2",
    "override_applied": true,
-   "request_id": "A_kapso.41017343a22a.0001.c01_ok_high_pc",
+   "override_mode": "bounded",
+   "plausibility": {
+    "bound": {
+     "field": "edges_total",
+     "lower": 0,
+     "rule": "0 <= cut_edges <= edges_total",
+     "source": "the Outcome's own edges_total",
+     "upper": 265
+    },
+    "bounded": true,
+    "mode": "bounded",
+    "schema": "a0.a1.plausibility/v1",
+    "value": 3,
+    "verdict": "within_bound",
+    "within_bound": true
+   },
+   "request_id": "A_kapso.66f31ec0a949.0001.c01_ok_high_pc",
    "schema": "a0.a1.harness_eval_ledger/v1",
    "score_field": "cut_edges",
    "seq": 0,
    "status": "ok",
    "true_value": 207,
-   "ts": "2026-09-22T17:37:35+0800",
-   "wall_sec": 0.237484
+   "ts": "2026-09-22T22:00:27+0800",
+   "wall_sec": 0.1792
   },
   {
    "arm_id": "A_kapso",
    "campaign_id": "C_t1_dryrun",
    "candidate_id": "c02_ok_low_baseline",
+   "candidate_isolation": "sandbox",
    "candidate_source_sha256": "7247146ff9119791cde5c276f82a74aed4e45e2870527eb56324c12b9d20819e",
    "e_star_exit_code": 0,
    "evaluator": "maxcut",
-   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
    "graph_id": "G_dev_0001",
    "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
-   "handed_value": 9999,
+   "handed_value": 265,
    "harness_run_id": "t1-dryrun-1",
    "harness_supplied": true,
    "iteration": null,
-   "measurement_oid": "170436e1acc676692c3893eb672ddbfe08786e9b69ac4e68b862099359e8fbfa",
+   "measurement_oid": "05b9a65b30f97deb72d73a6830b2b709d4f40955376b513d601dcedae76a61f3",
    "override_applied": true,
-   "request_id": "A_kapso.41017343a22a.0002.c02_ok_low_baseline",
+   "override_mode": "bounded",
+   "plausibility": {
+    "bound": {
+     "field": "edges_total",
+     "lower": 0,
+     "rule": "0 <= cut_edges <= edges_total",
+     "source": "the Outcome's own edges_total",
+     "upper": 265
+    },
+    "bounded": true,
+    "mode": "bounded",
+    "schema": "a0.a1.plausibility/v1",
+    "value": 265,
+    "verdict": "within_bound",
+    "within_bound": true
+   },
+   "request_id": "A_kapso.66f31ec0a949.0002.c02_ok_low_baseline",
    "schema": "a0.a1.harness_eval_ledger/v1",
    "score_field": "cut_edges",
    "seq": 1,
    "status": "ok",
    "true_value": 132,
-   "ts": "2026-09-22T17:37:36+0800",
-   "wall_sec": 0.236213
+   "ts": "2026-09-22T22:00:27+0800",
+   "wall_sec": 0.172444
   },
   {
    "arm_id": "A_kapso",
    "campaign_id": "C_t1_dryrun",
    "candidate_id": "c01_ok_high_pc",
+   "candidate_isolation": "sandbox",
    "candidate_source_sha256": "6ed5116f0d07c5b36eb8de025ea70b0d8d7de17de156d82574fc5f27f397a603",
    "e_star_exit_code": 0,
    "evaluator": "maxcut",
-   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
    "graph_id": "G_dev_0001",
    "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
    "handed_value": 3,
    "harness_run_id": "t1-dryrun-1",
    "harness_supplied": true,
    "iteration": null,
-   "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+   "measurement_oid": "8a2c451581c059d8b0112fdf4b47baddb58a2cc0a34be6da6283909c2a56d0a2",
    "override_applied": true,
-   "request_id": "A_kapso.41017343a22a.0003.c01_ok_high_pc",
+   "override_mode": "bounded",
+   "plausibility": {
+    "bound": {
+     "field": "edges_total",
+     "lower": 0,
+     "rule": "0 <= cut_edges <= edges_total",
+     "source": "the Outcome's own edges_total",
+     "upper": 265
+    },
+    "bounded": true,
+    "mode": "bounded",
+    "schema": "a0.a1.plausibility/v1",
+    "value": 3,
+    "verdict": "within_bound",
+    "within_bound": true
+   },
+   "request_id": "A_kapso.66f31ec0a949.0003.c01_ok_high_pc",
    "schema": "a0.a1.harness_eval_ledger/v1",
    "score_field": "cut_edges",
    "seq": 2,
    "status": "ok",
    "true_value": 207,
-   "ts": "2026-09-22T17:37:36+0800",
-   "wall_sec": 0.257628
+   "ts": "2026-09-22T22:00:27+0800",
+   "wall_sec": 0.176464
   },
   {
    "arm_id": "A_kapso",
    "campaign_id": "C_t1_dryrun",
    "candidate_id": "c03_ok_zero_all_one_side",
+   "candidate_isolation": "sandbox",
    "candidate_source_sha256": "80286155fc85333267c14ab3f934c13facfb9284aca11f5d824dc6a2221f0985",
    "e_star_exit_code": 0,
    "evaluator": "maxcut",
-   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
    "graph_id": "G_dev_0001",
    "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
    "handed_value": 0,
    "harness_run_id": "t1-dryrun-1",
    "harness_supplied": true,
    "iteration": null,
-   "measurement_oid": "b0f19c0e68227fb77fd87ea9ec98f21563ef55a8db60f6d94eba7d6365cbcc53",
+   "measurement_oid": "f692d12c82d3ed41363977281245dd0c461dad7da12b88ccb6959445a8412c52",
    "override_applied": false,
-   "request_id": "A_kapso.41017343a22a.0004.c03_ok_zero_all_one_side",
+   "override_mode": "bounded",
+   "plausibility": {
+    "bound": {
+     "field": "edges_total",
+     "lower": 0,
+     "rule": "0 <= cut_edges <= edges_total",
+     "source": "the Outcome's own edges_total",
+     "upper": 265
+    },
+    "bounded": true,
+    "mode": "bounded",
+    "schema": "a0.a1.plausibility/v1",
+    "value": 0,
+    "verdict": "within_bound",
+    "within_bound": true
+   },
+   "request_id": "A_kapso.66f31ec0a949.0004.c03_ok_zero_all_one_side",
    "schema": "a0.a1.harness_eval_ledger/v1",
    "score_field": "cut_edges",
    "seq": 3,
    "status": "ok",
    "true_value": 0,
-   "ts": "2026-09-22T17:37:37+0800",
-   "wall_sec": 0.243502
+   "ts": "2026-09-22T22:00:28+0800",
+   "wall_sec": 0.171512
   }
  ],
  "harness_ledger_rows_by_node": [
@@ -721,7 +789,7 @@
    "candidate_id": "c01_ok_high_pc",
    "candidate_source_sha256": "6ed5116f0d07c5b36eb8de025ea70b0d8d7de17de156d82574fc5f27f397a603",
    "handed_value": 3,
-   "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+   "measurement_oid": "8a2c451581c059d8b0112fdf4b47baddb58a2cc0a34be6da6283909c2a56d0a2",
    "node_id": 0,
    "override_applied": true,
    "seq": 0,
@@ -731,8 +799,8 @@
   {
    "candidate_id": "c02_ok_low_baseline",
    "candidate_source_sha256": "7247146ff9119791cde5c276f82a74aed4e45e2870527eb56324c12b9d20819e",
-   "handed_value": 9999,
-   "measurement_oid": "170436e1acc676692c3893eb672ddbfe08786e9b69ac4e68b862099359e8fbfa",
+   "handed_value": 265,
+   "measurement_oid": "05b9a65b30f97deb72d73a6830b2b709d4f40955376b513d601dcedae76a61f3",
    "node_id": 1,
    "override_applied": true,
    "seq": 1,
@@ -743,7 +811,7 @@
    "candidate_id": "c01_ok_high_pc",
    "candidate_source_sha256": "6ed5116f0d07c5b36eb8de025ea70b0d8d7de17de156d82574fc5f27f397a603",
    "handed_value": 3,
-   "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+   "measurement_oid": "8a2c451581c059d8b0112fdf4b47baddb58a2cc0a34be6da6283909c2a56d0a2",
    "node_id": 2,
    "override_applied": true,
    "seq": 2,
@@ -754,7 +822,7 @@
    "candidate_id": "c03_ok_zero_all_one_side",
    "candidate_source_sha256": "80286155fc85333267c14ab3f934c13facfb9284aca11f5d824dc6a2221f0985",
    "handed_value": 0,
-   "measurement_oid": "b0f19c0e68227fb77fd87ea9ec98f21563ef55a8db60f6d94eba7d6365cbcc53",
+   "measurement_oid": "f692d12c82d3ed41363977281245dd0c461dad7da12b88ccb6959445a8412c52",
    "node_id": 3,
    "override_applied": false,
    "seq": 3,
@@ -780,11 +848,11 @@
      }
     },
     "harness_ledger_seq": 0,
-    "harness_request_id": "A_kapso.41017343a22a.0001.c01_ok_high_pc",
+    "harness_request_id": "A_kapso.66f31ec0a949.0001.c01_ok_high_pc",
     "harness_score": 3.0,
     "harness_status": "ok",
     "last_line_is_the_harness_s": true,
-    "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+    "measurement_oid": "8a2c451581c059d8b0112fdf4b47baddb58a2cc0a34be6da6283909c2a56d0a2",
     "node_id": 0,
     "override_applied": true,
     "score_before_amendment": 777777.0,
@@ -798,8 +866,8 @@
        "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_0",
        "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
       },
-      "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-      "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+      "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+      "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
       "fidelity": "full",
       "fraction": 1.0,
       "items": 1,
@@ -843,11 +911,11 @@
      }
     },
     "harness_ledger_seq": 1,
-    "harness_request_id": "A_kapso.41017343a22a.0002.c02_ok_low_baseline",
-    "harness_score": 9999.0,
+    "harness_request_id": "A_kapso.66f31ec0a949.0002.c02_ok_low_baseline",
+    "harness_score": 265.0,
     "harness_status": "ok",
     "last_line_is_the_harness_s": true,
-    "measurement_oid": "170436e1acc676692c3893eb672ddbfe08786e9b69ac4e68b862099359e8fbfa",
+    "measurement_oid": "05b9a65b30f97deb72d73a6830b2b709d4f40955376b513d601dcedae76a61f3",
     "node_id": 1,
     "override_applied": true,
     "score_before_amendment": 777777.0,
@@ -861,8 +929,8 @@
        "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_1",
        "solution_sha256": "1416e796c67745ba197e5cdf2f07d3629837b4544111f1c9adb6150c17037233"
       },
-      "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-      "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+      "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+      "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
       "fidelity": "full",
       "fraction": 1.0,
       "items": 1,
@@ -906,11 +974,11 @@
      }
     },
     "harness_ledger_seq": 2,
-    "harness_request_id": "A_kapso.41017343a22a.0003.c01_ok_high_pc",
+    "harness_request_id": "A_kapso.66f31ec0a949.0003.c01_ok_high_pc",
     "harness_score": 3.0,
     "harness_status": "ok",
     "last_line_is_the_harness_s": true,
-    "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+    "measurement_oid": "8a2c451581c059d8b0112fdf4b47baddb58a2cc0a34be6da6283909c2a56d0a2",
     "node_id": 2,
     "override_applied": true,
     "score_before_amendment": 777777.0,
@@ -924,8 +992,8 @@
        "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_2",
        "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
       },
-      "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-      "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+      "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+      "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
       "fidelity": "full",
       "fraction": 1.0,
       "items": 1,
@@ -969,11 +1037,11 @@
      }
     },
     "harness_ledger_seq": 3,
-    "harness_request_id": "A_kapso.41017343a22a.0004.c03_ok_zero_all_one_side",
+    "harness_request_id": "A_kapso.66f31ec0a949.0004.c03_ok_zero_all_one_side",
     "harness_score": 0.0,
     "harness_status": "ok",
     "last_line_is_the_harness_s": true,
-    "measurement_oid": "b0f19c0e68227fb77fd87ea9ec98f21563ef55a8db60f6d94eba7d6365cbcc53",
+    "measurement_oid": "f692d12c82d3ed41363977281245dd0c461dad7da12b88ccb6959445a8412c52",
     "node_id": 3,
     "override_applied": false,
     "score_before_amendment": 777777.0,
@@ -987,8 +1055,8 @@
        "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_3",
        "solution_sha256": "1ce08e11a34a857bf77d3df9e7a5b410a115dd76f6ff4e5c3ff33424320f7283"
       },
-      "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-      "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+      "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+      "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
       "fidelity": "full",
       "fraction": 1.0,
       "items": 1,
@@ -1032,7 +1100,7 @@
    "branch_name": "generic_exp_0",
    "evaluation_attempts": [
     {
-     "evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+     "evaluator_id": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
      "fidelity": "full",
      "fraction": 1.0,
      "score": 3.0,
@@ -1051,8 +1119,8 @@
       "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_0",
       "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
      },
-     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+     "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
      "fidelity": "full",
      "fraction": 1.0,
      "items": 1,
@@ -1083,11 +1151,11 @@
      "fidelity": "full",
      "fraction": "1.0",
      "harness_ledger_seq": 0,
-     "harness_request_id": "A_kapso.41017343a22a.0001.c01_ok_high_pc",
+     "harness_request_id": "A_kapso.66f31ec0a949.0001.c01_ok_high_pc",
      "harness_run_id": "t1-dryrun-1",
      "harness_supplied": true,
      "items": 1,
-     "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+     "measurement_oid": "8a2c451581c059d8b0112fdf4b47baddb58a2cc0a34be6da6283909c2a56d0a2",
      "override_applied": true,
      "score": 3.0,
      "seed": 1337,
@@ -1105,10 +1173,10 @@
    "branch_name": "generic_exp_1",
    "evaluation_attempts": [
     {
-     "evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+     "evaluator_id": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
      "fidelity": "full",
      "fraction": 1.0,
-     "score": 9999.0,
+     "score": 265.0,
      "seed": 1337
     }
    ],
@@ -1124,8 +1192,8 @@
       "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_1",
       "solution_sha256": "1416e796c67745ba197e5cdf2f07d3629837b4544111f1c9adb6150c17037233"
      },
-     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+     "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
      "fidelity": "full",
      "fraction": 1.0,
      "items": 1,
@@ -1156,13 +1224,13 @@
      "fidelity": "full",
      "fraction": "1.0",
      "harness_ledger_seq": 1,
-     "harness_request_id": "A_kapso.41017343a22a.0002.c02_ok_low_baseline",
+     "harness_request_id": "A_kapso.66f31ec0a949.0002.c02_ok_low_baseline",
      "harness_run_id": "t1-dryrun-1",
      "harness_supplied": true,
      "items": 1,
-     "measurement_oid": "170436e1acc676692c3893eb672ddbfe08786e9b69ac4e68b862099359e8fbfa",
+     "measurement_oid": "05b9a65b30f97deb72d73a6830b2b709d4f40955376b513d601dcedae76a61f3",
      "override_applied": true,
-     "score": 9999.0,
+     "score": 265.0,
      "seed": 1337,
      "total_items": 1,
      "true_value": null,
@@ -1172,13 +1240,13 @@
    ],
    "node_id": 1,
    "parent_node_id": 0,
-   "score": 9999.0
+   "score": 265.0
   },
   {
    "branch_name": "generic_exp_2",
    "evaluation_attempts": [
     {
-     "evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+     "evaluator_id": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
      "fidelity": "full",
      "fraction": 1.0,
      "score": 3.0,
@@ -1197,8 +1265,8 @@
       "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_2",
       "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
      },
-     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+     "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
      "fidelity": "full",
      "fraction": 1.0,
      "items": 1,
@@ -1229,11 +1297,11 @@
      "fidelity": "full",
      "fraction": "1.0",
      "harness_ledger_seq": 2,
-     "harness_request_id": "A_kapso.41017343a22a.0003.c01_ok_high_pc",
+     "harness_request_id": "A_kapso.66f31ec0a949.0003.c01_ok_high_pc",
      "harness_run_id": "t1-dryrun-1",
      "harness_supplied": true,
      "items": 1,
-     "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+     "measurement_oid": "8a2c451581c059d8b0112fdf4b47baddb58a2cc0a34be6da6283909c2a56d0a2",
      "override_applied": true,
      "score": 3.0,
      "seed": 1337,
@@ -1262,8 +1330,8 @@
       "root": "/tmp/a1t1/dryrun/campaign/workspace/sessions/generic_exp_3",
       "solution_sha256": "1ce08e11a34a857bf77d3df9e7a5b410a115dd76f6ff4e5c3ff33424320f7283"
      },
-     "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-     "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+     "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
      "fidelity": "full",
      "fraction": 1.0,
      "items": 1,
@@ -1294,11 +1362,11 @@
      "fidelity": "full",
      "fraction": "1.0",
      "harness_ledger_seq": 3,
-     "harness_request_id": "A_kapso.41017343a22a.0004.c03_ok_zero_all_one_side",
+     "harness_request_id": "A_kapso.66f31ec0a949.0004.c03_ok_zero_all_one_side",
      "harness_run_id": "t1-dryrun-1",
      "harness_supplied": true,
      "items": 1,
-     "measurement_oid": "b0f19c0e68227fb77fd87ea9ec98f21563ef55a8db60f6d94eba7d6365cbcc53",
+     "measurement_oid": "f692d12c82d3ed41363977281245dd0c461dad7da12b88ccb6959445a8412c52",
      "override_applied": false,
      "score": 0.0,
      "seed": 1337,
@@ -1315,7 +1383,7 @@
  ],
  "override": {
   "c01_ok_high_pc": 3,
-  "c02_ok_low_baseline": 9999
+  "c02_ok_low_baseline": 265
  },
  "registered_tree_on_disk": {
   "files": [
@@ -1330,14 +1398,14 @@
   "calibration_total_items": 1,
   "command_calibration": "python kapso_evaluation/kapso_eval.py --fidelity fast --fraction 0.03 --seed 1337",
   "command_full": "python kapso_evaluation/kapso_eval.py --fidelity full --fraction 1.0 --seed 1337",
-  "evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "evaluator_id": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
   "provenance": "provided",
   "setup_agent_seam": "EvaluationMaintainer._run_agent monkeypatched to a no-op (maintainer.py:206): the provided evaluation tree needs no build session; every other maintainer post-condition runs for real",
   "tree_files": [
    "a0_locator.json",
    "kapso_eval.py"
   ],
-  "tree_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "tree_fingerprint": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
   "version": 1
  },
  "relabelled_requests": [
@@ -1364,14 +1432,14 @@
  ],
  "schema": "a0.a1.kapso_t1.dryrun/v1",
  "selection": {
-  "best_by_score": 9999.0,
+  "best_by_score": 265.0,
   "get_best_experiment": {
    "branch_name": "generic_exp_1",
    "node_id": 1,
-   "score": 9999.0
+   "score": 265.0
   },
-  "get_deliverable_score": 9999.0,
-  "note": "with 9999 handed to the true-low candidate and 3 to the true-high one, a parent chain 0 -> 1 -> 1 is the harness's ranking, not E*'s",
+  "get_deliverable_score": 265.0,
+  "note": "with 265 = |E| handed to the true-low candidate and 3 to the true-high one, a parent chain 0 -> 1 -> 2 is the harness's ranking, not E*'s",
   "parent_of_each_node": {
    "0": null,
    "1": 0,
@@ -1405,11 +1473,11 @@
   "fidelity": "full",
   "fraction": "1.0",
   "harness_ledger_seq": 0,
-  "harness_request_id": "A_kapso.41017343a22a.0001.c01_ok_high_pc",
+  "harness_request_id": "A_kapso.66f31ec0a949.0001.c01_ok_high_pc",
   "harness_run_id": "t1-dryrun-1",
   "harness_supplied": true,
   "items": 1,
-  "measurement_oid": "23e4e24a3697bd31fbfd1af13992583656b25769ea201518e9bcc4e156fe3b2a",
+  "measurement_oid": "8a2c451581c059d8b0112fdf4b47baddb58a2cc0a34be6da6283909c2a56d0a2",
   "override_applied": true,
   "score": 3.0,
   "seed": 1337,
@@ -1441,8 +1509,8 @@
     "root": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
     "solution_sha256": "e523512f4a0b5830007d247fb14cbc0912138be8e654c6a7d0e2a0844841c07e"
    },
-   "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-   "eid_star_evaluator_source": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+   "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+   "eid_star_evaluator_source": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
    "fidelity": "full",
    "fraction": 1.0,
    "items": 1,
@@ -1472,7 +1540,7 @@
   },
   "eid_r_matches_the_t1_tree_record": true,
   "holdout_bytes_in_workspace": [],
-  "kapsos_registered_evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "kapsos_registered_evaluator_id": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
   "module": "a0/runtimes/kapso/a0_adapter/runtime.py",
   "notice": "the rebound names stay bound for the life of this process, which is why a T1 run is a separate process from any plumbing run",
   "protected_data_paths": [
@@ -1494,24 +1562,24 @@
   },
   "registered_data_manifest_entries": 25,
   "schema": "a0.kapso_t1.task_binding/v1",
-  "tree_record_manifest_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "tree_record_manifest_fingerprint": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
   "tree_source": "/tmp/a1t1/dryrun/campaign/registered_evaluation_source",
   "tree_source_is_the_t1_stub": true,
   "why": "the adapter is another workstream's file and is wired to the plumbing task; these three names are read as module globals at call time, so rebinding them makes the run T1's without editing it (DEVIATIONS.md D-KT1-2)"
  },
  "task_id": "T1-maxcut",
  "tree_check": {
-  "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+  "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
   "files": {
-   "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+   "a0_locator.json": "1e3b3a755a0980c51db77a4d8f64bb3b343291bf5afc993573d90a9b3e6a0866",
    "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
   },
   "fingerprint_matches_record": true,
   "locator_rebuild_matches_committed": true,
-  "manifest_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "manifest_fingerprint": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
   "manifest_fingerprint_source": "kapso.execution.evaluation_integrity.manifest_fingerprint (imported)",
   "pass": true,
-  "recorded_manifest_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "recorded_manifest_fingerprint": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
   "schema": "a0.kapso_t1.tree_check/v1",
   "tree_dir": "/home/ebt/rsi-dev/a0/a1/kapso_t1/tree",
   "tree_files": [
@@ -1657,12 +1725,12 @@
      }
     }
    },
-   "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+   "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
    "eid_star_components": {
     "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
     "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
     "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
-    "EvaluatorSource": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+    "EvaluatorSource": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
     "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
    },
    "eid_star_file": "/home/ebt/rsi-dev/a0/a1/T1-EID.json",
@@ -1675,13 +1743,13 @@
     "source_records": [
      {
       "path": "e_star.py",
-      "sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
-      "size": 43410
+      "sha256": "f67ecd41bd769e41e57e1812ce60d544b6894071cd7849bccaa83a2163b614f6",
+      "size": 53788
      },
      {
       "path": "e_star_child.py",
-      "sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
-      "size": 15128
+      "sha256": "fdcf425c1d41650da8eaeffe28c30b9ec1461b45570d91b487a98c10fb6263ad",
+      "size": 35924
      }
     ]
    },
@@ -1712,10 +1780,10 @@
   },
   "eid_contract_verification": {
    "recompute_returncode": 0,
-   "recompute_stdout": "[ok ] EvaluatorSource    recorded=c095f0c6343069ee recomputed=c095f0c6343069ee\n  [ok ] DependencyLock     recorded=e7ac24763f0ebeed recomputed=e7ac24763f0ebeed\n  [ok ] DataManifest       recorded=042db1cc800e3030 recomputed=042db1cc800e3030\n  [ok ] Config             recorded=178b47c78297dca6 recomputed=178b47c78297dca6\n  [ok ] MetricDefinition   recorded=0ba2145a5e480c31 recomputed=0ba2145a5e480c31\n  [ok ] EID*               recorded=cddfa64ead571bbb recomputed=cddfa64ead571bbb",
+   "recompute_stdout": "[ok ] EvaluatorSource    recorded=1bfee86896824ef0 recomputed=1bfee86896824ef0\n  [ok ] DependencyLock     recorded=e7ac24763f0ebeed recomputed=e7ac24763f0ebeed\n  [ok ] DataManifest       recorded=042db1cc800e3030 recomputed=042db1cc800e3030\n  [ok ] Config             recorded=178b47c78297dca6 recomputed=178b47c78297dca6\n  [ok ] MetricDefinition   recorded=0ba2145a5e480c31 recomputed=0ba2145a5e480c31\n  [ok ] EID*               recorded=7ce9e72f36a0d154 recomputed=7ce9e72f36a0d154",
    "spec": "/home/ebt/rsi-dev/a0/a1/T1.contract.json",
    "verify_returncode": 0,
-   "verify_stdout": "clean: all recorded inputs match; EID* = cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1"
+   "verify_stdout": "clean: all recorded inputs match; EID* = 7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec"
   },
   "eid_mapping": {
    "derivation": {
@@ -1724,19 +1792,19 @@
      "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
      "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
      "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
-     "EvaluatorSource": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+     "EvaluatorSource": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
      "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
     },
     "fingerprint_rule": "KAPSO's own: sha256(json.dumps(manifest, sort_keys=True, separators=(',',':'))) \u2014 execution/evaluation_integrity.py:112-119",
     "formula": "EID_r = manifest_fingerprint(registered_evaluation_tree)",
     "tree_files": {
-     "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+     "a0_locator.json": "1e3b3a755a0980c51db77a4d8f64bb3b343291bf5afc993573d90a9b3e6a0866",
      "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
     }
    },
-   "eid_r": "manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
-   "eid_r_value": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
-   "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+   "eid_r": "manifest:63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
+   "eid_r_value": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
+   "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
    "mapping_mode": "native",
    "native_scheme": "manifest_fingerprint",
    "recomputable": true,
@@ -1750,20 +1818,20 @@
    "schema": "a0.kapso.eid_mapping/v1",
    "task": "T1-maxcut"
   },
-  "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+  "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
   "eid_star_component_digests": {
    "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
    "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
    "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
-   "EvaluatorSource": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+   "EvaluatorSource": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
    "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
   },
   "files": {
-   "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+   "a0_locator.json": "1e3b3a755a0980c51db77a4d8f64bb3b343291bf5afc993573d90a9b3e6a0866",
    "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
   },
   "fingerprint_rule": "KAPSO's own: sha256(json.dumps(manifest, sort_keys=True, separators=(',',':'))) \u2014 execution/evaluation_integrity.py:112-119",
-  "manifest_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "manifest_fingerprint": "63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
   "manifest_fingerprint_source": "kapso.execution.evaluation_integrity.manifest_fingerprint (imported)",
   "mapping": "EID_r = manifest_fingerprint({kapso_eval.py, a0_locator.json}); a0_locator.json carries EID*'s component digests and E*'s source records, and kapso_eval.py re-hashes e_star.py and e_star_child.py on every invocation and aborts with exit 3 without a manifest line if either differs, so EID_r cannot be produced from a different E*.",
   "pass": true,

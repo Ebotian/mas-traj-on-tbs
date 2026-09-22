@@ -60,7 +60,7 @@ def test_the_binding_carries_t1_and_the_frozen_evaluator():
     record = t1_binding.binding_record(config, eid, candidates)
     assert record["task_id"] == "T1-maxcut"
     assert record["eid_star"] == (
-        "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1"
+        "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec"
     )
     assert record["metric"]["name"] == "cut_edges"
     assert record["metric"]["direction"] == "maximize"

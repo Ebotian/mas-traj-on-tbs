@@ -1,0 +1,42 @@
+{
+ "schema": "a0.a1.kapso_t1.evidence_history/v1",
+ "reason": "the two probe artifacts below were produced by the tree that was registered against a superseded evaluator identity; they are kept as the record of a real state, not as current evidence",
+ "superseded": {
+  "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+  "e_star_own_digest": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+  "e_star_py_sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
+  "e_star_child_py_sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
+  "eid_r": "manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "tree_files": {
+   "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+   "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
+  }
+ },
+ "replaced_by": {
+  "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+  "e_star_own_digest": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+  "e_star_py_sha256": "f67ecd41bd769e41e57e1812ce60d544b6894071cd7849bccaa83a2163b614f6",
+  "e_star_child_py_sha256": "fdcf425c1d41650da8eaeffe28c30b9ec1461b45570d91b487a98c10fb6263ad",
+  "eid_r": "manifest:63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f",
+  "tree_files": {
+   "a0_locator.json": "1e3b3a755a0980c51db77a4d8f64bb3b343291bf5afc993573d90a9b3e6a0866",
+   "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
+  }
+ },
+ "files": {
+  "dryrun_t1.json": {
+   "verdict": "pass",
+   "produced_by": "a0/a1/kapso_t1/probes/dryrun_t1.py",
+   "committed_by": "d49c9565, 2026-09-22T17:38:52+08:00"
+  },
+  "live_t1.json": {
+   "verdict": "pass",
+   "ceq": 1116,
+   "unmetered": 0,
+   "produced_by": "a0/a1/kapso_t1/probes/live_t1.py arm",
+   "run_at": "2026-09-22T17:36:37+0800",
+   "committed_by": "d49c9565, 2026-09-22T17:38:52+08:00"
+  }
+ },
+ "note": "Nothing here was used for the rebuilt tree's evidence. Both runs were green against the tree they were run with, which is exactly why they cannot be presented as evidence for the current one: their recorded EID_r names a tree whose locator pins an E* that is no longer on disk (see DEVIATIONS.md D-KT1-8)."
+}

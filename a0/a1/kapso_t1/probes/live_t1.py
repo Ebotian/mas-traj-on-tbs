@@ -28,14 +28,15 @@ measures nothing — and prints its own `KAPSO_EVAL_MANIFEST` line claiming a sc
 harness never produced; then the harness's line is appended after the session, and the
 selection runs. The harness itself runs the frozen T1 `E*` on the node's artifact.
 
-Checks, from recorded state only (11 of them; see `checks` in the artifact):
+Checks, from recorded state only (16 of them; see `checks` in the artifact):
 
 (a) the score of record equals the **harness-supplied** value, and the session's claim
     is recorded but is not it;
 (b) the harness's line is the *last* manifest line, i.e. the ordering rule survived a
     real session, and the granted class triple is the runtime's;
-(c) the parent selection follows the harness's number — with 9999 handed to the true-low
-    candidate and 3 to the true-high one, the second node's parent is the 9999 node;
+(c) the parent selection follows the harness's number — with `G_dev_0001`'s `|E| = 265`
+    handed to the true-low candidate and 3 to the true-high one, the second node's
+    parent is the 265 node;
 (d) the meter ledger has one row per upstream call, each with an integer `CEq > 0`,
     cross-checked against the proxy's own per-call sidecar and re-derived by
     `a0/meter/verify_ledger.py`;
@@ -76,7 +77,13 @@ ROUNDS = [
     {"candidate_id": "c01_ok_high_pc"},
     {"candidate_id": "c02_ok_low_baseline"},
 ]
-OVERRIDE = {"c01_ok_high_pc": 3, "c02_ok_low_baseline": 9999}
+#: The harness hands the *true-high* candidate a small number and the *true-low* one
+#: `G_dev_0001`'s own `|E|` = 265 — the top of the evaluator's declared bound
+#: `0 <= cut_edges <= edges_total` (`a0/a1/eval_service.py` `score_bound`) and above
+#: the instance's `R = OPT = 224` (`a0/tasks/maxcut/references/targets.json`), so
+#: `--override-mode bounded` publishes it and no measurement of this graph could
+#: have produced it.
+OVERRIDE = {"c01_ok_high_pc": 3, "c02_ok_low_baseline": 265}
 SESSION_CLAIM = 777777.0
 GRAPH_ID = "G_dev_0001"
 
@@ -315,7 +322,7 @@ class LiveT1Campaign:
             "selection_follows_the_harnesss_number": (
                 node1.get("parent_node_id") == node0.get("node_id")
                 and state.get("best_node_id") == node1.get("node_id")
-                and handed.get("c02_ok_low_baseline") == 9999
+                and handed.get("c02_ok_low_baseline") == OVERRIDE["c02_ok_low_baseline"]
                 and true.get("c02_ok_low_baseline") is not None
                 and true["c02_ok_low_baseline"] < true["c01_ok_high_pc"]
             ),
