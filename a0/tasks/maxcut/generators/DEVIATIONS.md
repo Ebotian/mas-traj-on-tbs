@@ -119,5 +119,7 @@ check, and the block plus the frozen generator *is* the label vector. The
 property the study needs is therefore not "the labels are absent from the suite"
 but "the labels are absent from what a candidate is handed". That is now the
 checked statement: `e_star.py` hands over `candidate_graph_document()` and masks
-`suite/**` from the child. `suite/README.md` §5 (frozen, uneditable) still
-describes the old, weaker claim; this section supersedes it.
+`suite/**` from the child. `suite/README.md` §5 now states the same claim — it
+names `candidate_graph_document`, the exact key set, and
+`generators/audit_labels.py verify` as the command — so that section and this one
+agree instead of one superseding the other.
