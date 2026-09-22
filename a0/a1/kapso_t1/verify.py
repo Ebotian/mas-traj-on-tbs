@@ -98,6 +98,14 @@ def main(argv: Optional[list] = None) -> int:
     print(json.dumps({"verdict": verdict,
                       "steps": {item["step"]: item["pass"] for item in results},
                       "evidence": sorted(evidence)}, indent=1))
+    for item in results:
+        if not item["pass"]:
+            # A failing step's reason is the whole point of running this, and the
+            # summary alone would hide it (a rehearsal failed once, transiently, and
+            # the reason was lost with the process).
+            print(f"\n--- {item['step']} failed (exit {item['returncode']}) ---")
+            print(item["stdout_tail"])
+            print(item["stderr_tail"], file=sys.stderr)
     if args.evidence:
         for name, digest in evidence.items():
             print(f"{digest}  {name}")
