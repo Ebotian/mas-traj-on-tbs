@@ -174,3 +174,27 @@ See `REPORT.md` for the commands and their output. `gen/run_l2.py` (no `--force`
 reuses the stored Outcomes rather than re-invoking `E*`, and both reductions were
 confirmed byte-identical to the committed files, so the diagnosis that the
 conclusions survive the superseded digest is measured rather than asserted.
+
+## D-HYG-11 — the checker was itself wrong once, and the commit is what caught it
+
+`h1_history.py`'s scan runs over `git ls-files`, so before this pass committed, the
+two label files it added (`redesign/HISTORY.md`, `redesign/out/HISTORY.json`) were
+untracked and invisible to it — it reported `pass` while the files it exists to
+justify were outside its scan, and while `run_all.sh`'s step 1 was therefore
+passing for an incomplete reason. Committing made them tracked, the very next run
+of `run_all.sh` failed with both of them listed as `UNLABELLED`, and the fix was to
+classify a *name* as a label: `HISTORY.md` / `HISTORY.json`, or any path under a
+`.../history/` directory, is a history record by construction. That also generalises
+the rule the `kapso_t1` directory already relied on.
+
+Two smaller notes from the same episode. The check now also runs post-commit (the
+committed hash is re-verified, not just the working tree), and `a0/verify/**` is
+deliberately outside the scan scope: a checker has to *name* the digests to have a
+list, so it cannot label itself by line-scoped wording, and its own raw output
+echoes the findings — an infinite regress that would make the scan useless. That is
+stated in the script, not hidden.
+
+**No artifact was affected by this**: the fix is in the checker and the label
+files, both of which this pass owns, and it was found by re-running the check after
+committing rather than by reading it.
+

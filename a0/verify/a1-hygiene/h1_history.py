@@ -87,6 +87,9 @@ EXCEPTIONS = {
         "by its own sentence and section.",
 }
 
+#: The scopes this pass owns. `a0/verify/**` is deliberately out of scope: a
+#: checker has to *name* the digests to have a list, so it cannot label itself
+#: by line-scoped wording, and its own raw output echoes the findings.
 SCAN_ROOTS = ("a0/a1", "a0/tasks/maxcut/redesign")
 
 
@@ -94,6 +97,20 @@ def tracked_files(root: Path):
     out = subprocess.run(["git", "ls-files", "-z", "--", *SCAN_ROOTS],
                          cwd=str(root), capture_output=True, check=True).stdout
     return [p.decode("utf-8") for p in out.split(b"\0") if p]
+
+
+def is_history_path(name: str) -> bool:
+    """Is the file *named* for what it is — a history record or under `.../history/`?
+
+    A label has to be recognisable without reading it. Two shapes are: a directory
+    named `history`, and a file called `HISTORY.md`/`HISTORY.json`. The two files
+    this pass added under `redesign/` are the second shape, and they would
+    otherwise be flagged by the scan they exist to satisfy.
+    """
+    path = Path(name)
+    if path.name.lower() in ("history.md", "history.json"):
+        return True
+    return any(part.lower() == "history" for part in path.parts)
 
 
 def history_index(root: Path):
@@ -144,8 +161,8 @@ def check_b(root: Path) -> bool:
         if name in structurally_labelled:
             labelled_files.append((name, len(hits), "listed in out/HISTORY.json"))
             continue
-        if "history" in Path(name).parts:
-            labelled_files.append((name, len(hits), "under a .../history/ directory"))
+        if is_history_path(name):
+            labelled_files.append((name, len(hits), "named for it: HISTORY.md/HISTORY.json or .../history/"))
             continue
         if name in EXCEPTIONS:
             exceptions.append((name, len(hits), EXCEPTIONS[name]))

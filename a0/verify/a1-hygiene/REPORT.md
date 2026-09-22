@@ -55,6 +55,14 @@ reduction). All three reproduce the committed files **byte-for-byte**, which is 
 evidence that the study's conclusions do not depend on the superseded digest — and
 none of them re-invokes `E*`.
 
+The command above is run **after** the commit, not only before it, and it is what
+found the one defect in this pass's own tooling: `h1_history.py` scans
+`git ls-files`, so while the two new label files were still untracked it passed
+without seeing them. The committed run flagged both, and the rule was generalised
+(a `HISTORY.md` / `HISTORY.json` name, or a `.../history/` directory, is a history
+record by construction). See `DEVIATIONS.md` D-HYG-11. `a1/verify.py` was also
+re-run at the committed revision: **6/6, rc 0, tree clean afterwards**.
+
 ## 3. Every file this pass changed
 
 | path | before → after |
