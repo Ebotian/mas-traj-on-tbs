@@ -1,0 +1,137 @@
+{
+ "arm_id": "A_kapso",
+ "candidate_set": {
+  "baseline": "c02_ok_low_baseline",
+  "candidate_count": 21,
+  "manifest": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/manifest.json",
+  "manifest_sha256": "62c147b342ce9500124beaba81ad9fee8efcfb1e81b2702594cdc894cc382356"
+ },
+ "config": {
+  "adapter_config": "/home/ebt/rsi-dev/a0/a1/kapso_t1/config/adapter.maxcut.json",
+  "mode_config": "/home/ebt/rsi-dev/a0/a1/kapso_t1/config/mode.maxcut.yaml",
+  "mode_name": "T1_MAXCUT",
+  "protected_data_paths": [
+   "kapso_datasets/maxcut/dev"
+  ]
+ },
+ "eid_mapping": {
+  "derivation": {
+   "eid_star_binding": "a0_locator.json embeds EID*'s EvaluatorSource records (per-file sha256) and the five component digests; kapso_eval.py re-hashes both E* source files on every invocation and aborts with exit 3 without a manifest line if either differs",
+   "eid_star_components": {
+    "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
+    "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
+    "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
+    "EvaluatorSource": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+    "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
+   },
+   "fingerprint_rule": "KAPSO's own: sha256(json.dumps(manifest, sort_keys=True, separators=(',',':'))) \u2014 execution/evaluation_integrity.py:112-119",
+   "formula": "EID_r = manifest_fingerprint(registered_evaluation_tree)",
+   "tree_files": {
+    "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+    "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
+   }
+  },
+  "eid_r": "manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "eid_r_value": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+  "mapping_mode": "native",
+  "native_scheme": "manifest_fingerprint",
+  "recomputable": true,
+  "recompute_recipe": [
+   "read EID* (a0/a1/T1-EID.json): eid_star, the EvaluatorSource records, the five component digests",
+   "regenerate a0_locator.json with a0/a1/kapso_t1/tree.py::build_locator",
+   "sha256(kapso_eval.py) and sha256(a0_locator.json), then apply KAPSO's manifest_fingerprint over the sorted name->sha256 map",
+   "compare with the value the adapter recorded on every trace event (eid_r.value) and with runtime.registration.evaluator_id, which KAPSO computes itself from the workspace tree"
+  ],
+  "runtime": "kapso",
+  "schema": "a0.kapso.eid_mapping/v1",
+  "task": "T1-maxcut"
+ },
+ "eid_r": "manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+ "eid_r_value": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+ "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+ "eid_star_file": "/home/ebt/rsi-dev/a0/a1/T1-EID.json",
+ "evaluator": {
+  "dir": "/home/ebt/rsi-dev/a0/tasks/maxcut",
+  "entry": "e_star.py",
+  "helper": "e_star_child.py",
+  "python": "/usr/bin/python3",
+  "source_records": [
+   {
+    "path": "e_star.py",
+    "sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
+    "size": 43410
+   },
+   {
+    "path": "e_star_child.py",
+    "sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
+    "size": 15128
+   }
+  ]
+ },
+ "graph_visibility": {
+  "dev": {
+   "count": 24,
+   "root": "a0/tasks/maxcut/suite/dev",
+   "visible_to_the_agent": true
+  },
+  "eval": {
+   "count": 24,
+   "root": "a0/tasks/maxcut/suite/eval",
+   "visible_to_the_agent": false
+  },
+  "suite_manifest_sha256": "47324fccb6a00c62e1bc6b767fd6591292515d4421d152b5c47f9ad547814d23"
+ },
+ "metric": {
+  "direction": "maximize",
+  "epsilon": 0.0,
+  "failure_semantics": "invalid/error/timeout carry cut_edges: null \u2014 never 0; a legitimate 0 is reported as 0",
+  "name": "cut_edges",
+  "objective": {
+   "aggregation": "fractions.Fraction over integers",
+   "authoritative": "integer",
+   "direction": "maximize",
+   "display_only": "cut_fraction",
+   "name": "cut_edges",
+   "unit": "edges",
+   "weighted": false
+  }
+ },
+ "not_covered_by_this_artifact": [
+  "no A1 campaign has run on this tree; the calibration pilot and the frozen B_hard come later (a0/tasks/maxcut/INTERFACE.md \u00a79)",
+  "the AID_r factors above are a proposal: a0/a1/declaration.py is another workstream's file",
+  "the frame-run path (a VALIDATE grant or an evaluator bridge) is not supported by the score-less stub \u2014 see DEVIATIONS.md D-KT1-6"
+ ],
+ "proposed_aid_r_factors": [
+  {
+   "identity": "manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+   "name": "runtime.registered_evaluation_tree",
+   "note": "built by a0/a1/kapso_t1/build_tree.py from cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+   "rationale": "the registered tree is what produces (or, in A1, is replaced by) the score the arm consumes; two trees under one AID_r would be one arm with two measurements",
+   "role": "aid_r"
+  },
+  {
+   "identity": "value:{\"a0_locator.json\": \"5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616\", \"kapso_eval.py\": \"6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467\"}",
+   "name": "runtime.registered_evaluation_tree_files",
+   "rationale": "the fingerprint's inputs, so a rebuild can be checked without running it",
+   "role": "aid_r"
+  }
+ ],
+ "registered_tree": {
+  "binding": "EID_r = manifest_fingerprint({kapso_eval.py, a0_locator.json}); a0_locator.json carries EID*'s component digests and E*'s source records, and kapso_eval.py re-hashes e_star.py and e_star_child.py on every invocation and aborts with exit 3 without a manifest line if either differs, so EID_r cannot be produced from a different E*.",
+  "files": {
+   "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+   "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
+  },
+  "fingerprint_rule": "KAPSO's own: sha256(json.dumps(manifest, sort_keys=True, separators=(',',':'))) \u2014 execution/evaluation_integrity.py:112-119",
+  "manifest_fingerprint_source": "kapso.execution.evaluation_integrity.manifest_fingerprint (imported)",
+  "tree_dir": "/home/ebt/rsi-dev/a0/a1/kapso_t1/tree"
+ },
+ "runtime": "kapso",
+ "schema": "a0.kapso_t1.binding/v1",
+ "task_id": "T1-maxcut",
+ "theta_e_canonical": {
+  "seed": 1337,
+  "timeout_s": 10.0
+ }
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "a0.kapso.adapter_config/v1",
+  "task": "T1-maxcut",
+  "note": "The KAPSO adapter's own AdapterConfig surface, retargeted to T1 (max-cut). It is loadable by a0/runtimes/kapso/a0_adapter/common.py::AdapterConfig.load, so the T1 arm is driven by the same adapter code the plumbing arm was, with no upstream edit and no edit to that adapter's files (see a0/a1/kapso_t1/DEVIATIONS.md D-KT1-1/D-KT1-2).",
+  "a0_root": "/home/ebt/rsi-dev/a0",
+  "e_star_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut",
+  "e_star_python": "/usr/bin/python3",
+  "kapso_src": "/home/ebt/kapso_ck/kapso/src",
+  "kapso_checkout": "/home/ebt/kapso_ck/kapso",
+  "candidate_set": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/manifest.json",
+  "eid_star_file": "/home/ebt/rsi-dev/a0/a1/T1-EID.json",
+  "evalcontract": "/home/ebt/rsi-dev/a0/contract/evalcontract.py",
+  "trace_validate": "/home/ebt/rsi-dev/a0/contract/trace_validate.py",
+  "fr_spec": "/home/ebt/rsi-dev/a0/contract/fr/scalar.json",
+  "mode_config": "/home/ebt/rsi-dev/a0/a1/kapso_t1/config/mode.maxcut.yaml",
+  "registered_tree": "/home/ebt/rsi-dev/a0/a1/kapso_t1/tree",
+  "state_root": "/home/ebt/rsi-dev/a0/a1/kapso_t1/state"
+}

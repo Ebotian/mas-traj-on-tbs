@@ -1,0 +1,104 @@
+# KAPSO mode config for T1 (Frozen Max-Cut Heuristic Search).
+#
+# This is the T1 counterpart of `config/mode.circle-packing.yaml` (the plumbing
+# task): the same three A0-mandated settings, the same front-door closure, and the
+# same `budget.fidelity.mode: "off"` — with the task's own design axes and one
+# T1-specific addition, `evaluation_maintainer.protected_data_paths`.
+#
+# The three mandatory settings (adapter_contract.md §6.1, a0/acceptance/ACCEPTANCE.md):
+#   * search_strategy.params.parent_policy = "best"   (the A0.2 frozen condition,
+#     strategy.py:211-212, default value; declared explicitly here)
+#   * evaluation_maintainer.max_change_requests = 0   (the implementing agent may not
+#     request edits to the registered evaluator at all — an accepted change request
+#     re-registers the evaluator, which changes EID_r mid-run)
+#   * budget.fidelity.mode = "off"                    (FidelitySpec default,
+#     fidelity.py:244; declared explicitly so no tier issues a `fast` grant while the
+#     registered class is `full`. T1 has no fidelity classes at all — EID*'s
+#     `theta_e_semantics.fidelity` is "none" — so the granted class is the only class
+#     the registered stub may echo, and FULL_PASSTHROUGH is what it gets.)
+#
+# T1-specific: `protected_data_paths: ["kapso_datasets/maxcut/dev"]`.
+# The 24 dev graphs are the instances the agent may read (INTERFACE.md §1: dev is
+# visible, eval/calibration are not). Declaring them protected means KAPSO's own
+# `build_data_manifest` (evaluation_integrity.py:178-210) hashes them into the
+# evaluator version, and `enforce_evaluation_integrity` (base.py:740-794) voids any
+# node whose worktree changed them — a candidate scored on a rewritten graph is not
+# scored on T1. The directory is materialized into the workspace by
+# `a0/a1/kapso_t1/task.py::materialize_dev_graphs`, from the frozen suite, with every
+# file's sha256 checked against suite/manifest.json, before the maintainer hashes it.
+#
+# Front-door closure (protocol §4.3) as in the plumbing mode: web_search false,
+# implementation_web false, no gate MCP servers, no knowledge_search block, and the
+# lane's own disallowed_tools. It is a config-level closure; the empirical closure
+# claim for T1 is the closed-topology probe (a0/a1/kapso_t1/probes/live_t1.py).
+#
+# The model lane named below is a PLACEHOLDER, exactly as in the plumbing config: the
+# verified T1 wiring drives the model-dependent phases through documented seams
+# (a0/runtimes/kapso/a0_adapter/seams.py), and the live T1 probe's one real model turn
+# goes through the harness's metered DeepSeek route, not through this lane. A full A1
+# campaign has to select a lane that can complete a call on the host before this
+# config is used as written.
+
+default_mode: T1_MAXCUT
+
+modes:
+  T1_MAXCUT:
+    search_strategy:
+      type: "generic"
+      params:
+        parent_policy: "best"
+        web_search: false
+        implementation_web: false
+        ideation_gates: []
+        implementation_gates: []
+        design_axes: [
+          "representation and analysis — how the heuristic reads graph.json (§2) and represents the partition: adjacency lists, incremental cut accounting, gain arrays, component handling for the sparse and disconnected instances",
+          "search procedure — the local-search kernel inside the candidate's `--seed` contract: 1-flip steepest ascent, Kernighan-Lin style passes, tabu / annealing / multi-start seeding, and how budget is spent across starts",
+          "determinism and budget — byte-identical partition.json for the same (graph bytes, seed) as INTERFACE.md §6 rule 4 requires, and p99 wall clock inside tau = 10 s per graph (§7)",
+        ]
+        idea_generation_model: "gpt-5.6-terra"
+        implementation_model: "gpt-5.6-terra"
+        implementation_cli: "codex"
+        gate_failure_policy: "warn"
+        repo_memory_failure_policy: "warn"
+        node_expansion_value: 1
+        implementation_timeout: 900
+        ideation_timeout: 900
+
+    coding_agent:
+      type: "codex"
+      model: "gpt-5.6-terra"
+      agent_specific:
+        sandbox: "danger-full-access"
+        web_search: false
+        timeout: 900
+        effort: "low"
+
+    feedback_generator:
+      type: "codex"
+      model: "gpt-5.6-terra"
+      agent_specific:
+        sandbox: "read-only"
+        web_search: false
+        timeout: 600
+        effort: "low"
+
+    evaluation_maintainer:
+      type: "codex"
+      model: "gpt-5.6-terra"
+      agent_specific:
+        sandbox: "read-only"
+        web_search: false
+        timeout: 600
+      subsample_seed: 1337
+      calibration_fraction: 0.03
+      calibration_timeout_seconds: 120
+      fast_variant_threshold_minutes: 20
+      overhead_factor: 1.25
+      max_change_requests: 0
+      transition_freeze_fraction: 0.85
+      protected_data_paths: ["kapso_datasets/maxcut/dev"]
+
+    budget:
+      fidelity:
+        mode: "off"
