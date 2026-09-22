@@ -89,7 +89,7 @@ closed topology with the model call skipped — free, and part of `verify.py`.
 |---|---|---|---|
 | 1 | the T1 tree loads and `EID_r` is T1's tree, computed by KAPSO | **CONFIRMED** | `evidence/dryrun_t1.json` (26/26 checks): `tree_check.pass`, and `registration.evaluator_id == tree_record.manifest_fingerprint` = `6b1d6fcc…` |
 | 2 | the class triple is derived from the runtime, not hardcoded | **CONFIRMED** | same file: under a `fast/0.15` grant the derived line is adopted and a hardcoded `full/1.0/1337` line returns `None`; the stub echoes whatever triple it is invoked with |
-| 3 | the harness manifest line is the score of record and the selection follows it | **CONFIRMED** | same file: node scores `3 / 9999 / 3` are the harness's `handed_value`s (`E*` measured `207 / 132 / 207`), the parent chain is `0 → 1 → 1`, `get_best_experiment()` and `get_deliverable_score()` return the 9999 node — i.e. the *inverse* of the true ranking |
+| 3 | the harness manifest line is the score of record and the selection follows it | **CONFIRMED** | same file: node scores `3 / 9999 / 3` are the harness's `handed_value`s (`E*` measured `207 / 132 / 207`), node 1 parents on node 0 and node 2 parents on node 1, `get_best_experiment()` and `get_deliverable_score()` return the 9999 node — i.e. the *inverse* of the true ranking |
 | 4 | the session's own manifest line cannot override it | **CONFIRMED** | same file (session claims `777777`, not recorded; three manifest lines on the node, the harness's last), and `evidence/live_t1.json` in a real session |
 | 5 | a live session on T1, metered, in the closed topology | **CONFIRMED** | `evidence/live_t1.json` (15/15): one DeepSeek call, `rows: 1`, `ceq: 1116`, `unmetered: 0`, one repair record, direct egress `BLOCKED` from inside `unshare -rn` |
 | 6 | the tree is T1's, not a generic stub: dev visible, hold-out absent, dev instances protected | **CONFIRMED** | `evidence/dryrun_t1.json`: 24 dev instances sha256-checked into the workspace, 0 hold-out bytes anywhere, 25 entries in KAPSO's registered data manifest, and a candidate that rewrites one dev graph gets `score=None` with `Protected evaluation data changed…` |
@@ -105,7 +105,7 @@ self-report is diagnostic only).
 |---|---|---|---|---|
 | `live_t1` (committed evidence) | 1 | 0 | 0 / 92 / 256 | 1116 |
 | the same probe before a code change (not committed) | 1 | 0 | 0 / 92 / 256 | 1116 |
-| `rehearse` (in `verify.py`), pre-flight and after | 2 | 0 | 0 / 0 / 0 | 0 |
+| `rehearse` (in `verify.py`; run several times) | 0 | 0 | 0 / 0 / 0 | 0 |
 | **session total for this workstream** | | | 0 / 184 / 512 | **2232** |
 
 `CEq = miss + floor(hit·2/100) + 4·completion = 92 + 0 + 1024 = 1116`, per
