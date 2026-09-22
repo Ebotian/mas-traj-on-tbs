@@ -190,3 +190,44 @@ entry, no network.  The L1 reference pipeline reuses the already-built MQLib
 binary at the pin (`/tmp/mcwork/MQLib/bin/MQLib`, sha256 `f761c326…`, the same
 binary `references/build/PROVENANCE.json` names); it was not rebuilt and nothing
 under `references/` was written.
+
+---
+
+## D-RD-9 — every artifact under `out/` is stamped with a **superseded** `E*` digest, and is labelled as history rather than re-measured
+
+**What is wrong with the artifacts as they stand.** All 276 Outcomes under
+`out/**` carry `evaluator_source_sha256 = 08281d21…`. That is `E*`'s composite
+source digest at **`11f55bf0`**, not at `HEAD` — it was superseded twice since
+(`6dd717c2` → `4afff01f…`, `baf13884` → `dc6969ec…`). Nothing in this directory
+said so, so a reader (or a scan) could take `08281d21…` for the current evaluator.
+This entry, `HISTORY.md` and the machine-readable `out/HISTORY.json` are the label.
+
+**Why the artifacts were not re-stamped.** The levers were measured against the
+revision current at the time, and their *conclusions* do not depend on the digest:
+the gate thresholds, the exact-rational `Δ`/`ρ` reductions, the reference recipe
+and every stored `cut_edges` are functions of the graphs and the candidates. An
+Outcome's `canonical_digest` is a self-digest over its own bytes and
+`INTERFACE.md` §5/§6 make the harness its author, so editing one to carry a new
+`evaluator_source_sha256` would falsify the measurement *and* break its
+self-digest. Re-deriving the digests means re-running `gen/l1_eval.py` and
+`gen/run_l2.py` — i.e. re-running the lever study — which the assignment forbids
+and which would move no conclusion. So: **the digests stay as measured, and the
+directory says which revision they belong to** (`HISTORY.md` §1–§3).
+
+**What was added.**
+* `HISTORY.md` — the labelled record: the superseded digest, the revision
+  (`11f55bf0`, `E*` = `e_star.py 670f02ee…` + `e_star_child.py 013f3e33…`), the
+  window in which the whole directory was produced, why re-deriving is a re-run,
+  and where the current value (`dc6969ec…`) is.
+* `out/HISTORY.json` (`"schema": "a0.maxcut.redesign.history/v1"`) — the
+  machine-readable marker an automated scan can read: the superseded digest list,
+  `measured_against`, the current digest, the per-directory counts and all 276
+  paths with their own `canonical_digest`. Its file list is exhaustive and
+  anchored by `files_sha256`.
+
+**Not claimed.** That the numbers here are measurements of the current `E*` (they
+are the measurements that were made), nor that the digest is recoverable from the
+repository (`E*` writes it). `out/e-star-state/` is untracked raw run state,
+excluded by the repository's `.gitignore`; it carries no `evaluator_source_sha256`
+and is left untouched.
+

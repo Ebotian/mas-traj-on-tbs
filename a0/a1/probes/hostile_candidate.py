@@ -54,6 +54,20 @@ after side is `HEAD`;
 `extract_pre_fix` refuses to run at all if the pinned evaluator is byte-identical
 to the current one, or if the pin is not an ancestor of `HEAD`.
 
+**A cited commit is a promise that a third party can check it out.** The before and
+after sides each name a revision, and the first 13/13 recording cited
+`654d5da2…` — a commit object this repository still holds but which *no ref
+reaches*, because `HEAD` was amended after the run. Every citation this probe
+writes is re-checked by `--check-citations`, which requires each cited revision to
+resolve **and** to be an ancestor of the current `HEAD`:
+
+    python3 a0/a1/probes/hostile_candidate.py --check-citations a0/a1/evidence/hostile_candidate.json
+
+A run cannot write a dangling citation for itself (`HEAD` is reachable from `HEAD`),
+but a later amend or rebase can orphan one, and that is what the check catches. If
+it ever fails, the honest repair is to re-run the probe — it is model-free — not to
+edit the citation.
+
 The provider key is never read: the probe plants a **canary** variable in the
 service's environment (`DEEPSEEK_API_KEY=<canary>`) and asks the candidate to
 report only *whether* that variable name is present in a readable environment —
@@ -368,6 +382,70 @@ def git_blob_sha1(data: bytes) -> str:
     return hashlib.sha1(b"blob %d\x00" % len(data) + data).hexdigest()
 
 
+def git_optional(*arguments: str) -> Optional[str]:
+    """Git output, or `None` when git refuses (a question, not a hard stop)."""
+    result = subprocess.run(["git", *arguments], cwd=str(REPO_ROOT), capture_output=True)
+    return result.stdout.decode("utf-8", "replace").strip() if result.returncode == 0 else None
+
+
+#: Every place a report names a commit, by dotted path. `before_side.evaluator` and
+#: `evaluator_used_for_the_comparison` are the same object in the report, and both
+#: are named here: if they ever diverge, both have to be checked.
+CITATION_FIELDS = (
+    ("before_side", "revision_full"),
+    ("before_side.evaluator", "revision_full"),
+    ("before_side.evaluator.differs_from", "revision_full"),
+    ("after_side", "revision_full"),
+    ("after_side.evaluator.differs_from", "revision_full"),
+    ("evaluator_used_for_the_comparison", "revision_full"),
+    ("evaluator_used_for_the_comparison.differs_from", "revision_full"),
+)
+
+
+def cited_revisions(report: dict) -> List[tuple]:
+    """`(field, revision)` for every commit the report cites, without duplicates."""
+    found = []
+    for dotted, key in CITATION_FIELDS:
+        block: object = report
+        for part in dotted.split("."):
+            block = (block or {}).get(part) if isinstance(block, dict) else None
+        revision = (block or {}).get(key) if isinstance(block, dict) else None
+        if revision and (dotted, revision) not in found:
+            found.append((dotted, revision))
+    return found
+
+
+def check_citations(report_path: Path) -> int:
+    """Every commit a committed report cites must resolve and be reachable from `HEAD`.
+
+    The defect this exists for is invisible at run time: a run records `HEAD`, which
+    is reachable by construction, and only a later amend or rebase makes the recorded
+    commit an orphan. The first 13/13 recording cites `654d5da2…`, the pre-amend
+    version of `7a1c0c16`, which no ref reaches any more — the artifact's content
+    claim stayed true, but a third party could not check the revision it compared
+    against.
+    """
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    head = git_optional("rev-parse", "HEAD")
+    rows = []
+    for field, revision in cited_revisions(report):
+        resolved = git_optional("rev-parse", "--verify", f"{revision}^{{commit}}")
+        reachable = resolved is not None and subprocess.run(
+            ["git", "merge-base", "--is-ancestor", revision, "HEAD"],
+            cwd=str(REPO_ROOT), capture_output=True).returncode == 0
+        rows.append({"field": field, "revision": revision, "resolves": resolved is not None,
+                     "reachable_from_HEAD": reachable})
+    dangling = [row for row in rows if not row["reachable_from_HEAD"]]
+    print(json.dumps({
+        "report": str(report_path), "HEAD": head, "citations_checked": len(rows),
+        "dangling": dangling, "citations": rows,
+        "verdict": "fail" if dangling else "pass",
+        "note": ("a dangling citation is history that cannot be checked out; re-run the "
+                 "probe (model-free) rather than editing the revision"),
+    }, indent=1, sort_keys=True))
+    return 5 if dangling else 0
+
+
 def extract_pre_fix(out_dir: Path) -> dict:
     """The evaluator at the pinned revision, with the guard the pin needs.
 
@@ -579,7 +657,12 @@ def run_lanes(out_dir: Path, candidate: Path, evaluator: Path) -> Dict[str, dict
 def main(argv: Optional[list] = None) -> int:
     parser = argparse.ArgumentParser(prog="hostile_candidate")
     parser.add_argument("--out-dir", default="/tmp/a1/hostile")
+    parser.add_argument("--check-citations", metavar="REPORT",
+                        help="check that every commit a committed report cites is reachable "
+                             "from HEAD, and exit; runs nothing")
     args = parser.parse_args(argv)
+    if args.check_citations:
+        return check_citations(Path(args.check_citations))
     out_dir = Path(args.out_dir).resolve()
     if out_dir.exists():
         shutil.rmtree(out_dir)

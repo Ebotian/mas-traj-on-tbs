@@ -52,7 +52,7 @@ circle-packing. Retargeting it to T1 means a new registered evaluator tree, a ne
 
 **Status of the gap: closed by another workstream, not by this directory.**
 `a0/a1/kapso_t1/` delivers the three missing pieces (the T1 registered evaluation
-tree with `EID_r = manifest:6b1d6fcc…`, the max-cut `EidStar` binding and the T1
+tree with `EID_r = manifest:63a9a83c…`, the max-cut `EidStar` binding and the T1
 problem/goal) plus its own free dry run (26/26) and its own live T1 arm (15/15), and
 it drives *this* directory's `a0/runtimes/kapso/a0_adapter/harness_manifest.py`.
 What this directory added in response is the declaration: the tree is now pinned in
@@ -65,7 +65,16 @@ conflated:
 | evidence | task | registered tree | `AID_r` |
 |---|---|---|---|
 | `a0/a1/evidence/live_kapso.json` (this directory's probe) | plumbing | the plumbing tree `8128cf91…` | **not** the file that describes it |
-| `a0/a1/kapso_t1/evidence/live_t1.json` (that workstream's probe) | T1 | `manifest:6b1d6fcc…` | `declarations/AID_r.A_kapso.json` |
+| `a0/a1/kapso_t1/evidence/live_t1.json` (that workstream's probe) | T1 | `manifest:63a9a83c…` | `declarations/AID_r.A_kapso.json` |
+
+> **The registered tree has since been rebuilt — this entry's earlier value is history.**
+> `a0/a1/kapso_t1/`'s tree moved `EID_r = manifest:6b1d6fcc…` →
+> `manifest:63a9a83c…` at `f8f8b386` (the rebuild that followed `EID*`'s second
+> re-freeze, D-A1-13), and its `tree/a0_locator.json` moved `5a0c99ff…` →
+> `1e3b3a75…` with it. Every `6b1d6fcc…`/`5a0c99ff…` in this file that is not so
+> labelled is that pre-rebuild pair; the current values are recomputed from the
+> committed tree by `declaration.py` and are what `AID_r.A_kapso.json` carries.
+> D-A1-6's closing note records the same move from the declaration's side.
 
 The plumbing run is kept because it is *this* probe's own record and is what a
 re-run of the committed code reproduces; it is not offered as T1 evidence for that
@@ -238,7 +247,7 @@ selection rule:
 ## D-A1-6 — the KAPSO T1 registered evaluation tree is adopted into `AID_r`
 
 **What.** `a0/a1/kapso_t1/` (another workstream) delivered KAPSO's T1 registered
-evaluation tree (`EID_r = manifest:6b1d6fcc…`) and its D-KT1-7 observed that the
+evaluation tree (`EID_r = manifest:63a9a83c…`) and its D-KT1-7 observed that the
 tree was **not** a factor of any `AID_r`, with `binding.json` proposing the names
 `runtime.registered_evaluation_tree(_files)`.
 
@@ -257,8 +266,20 @@ factors are recorded:
 
 | factor | identity |
 |---|---|
-| `runtime.registered_evaluation_tree` | `value:{eid_r: manifest:6b1d6fcc…, native_scheme: manifest_fingerprint, fingerprint_rule, tree, binding}` |
-| `runtime.registered_evaluation_tree_files` | `value:{"a0_locator.json": "5a0c99ff…", "kapso_eval.py": "6759ef05…"}` — the fingerprint's exact inputs |
+| `runtime.registered_evaluation_tree` | `value:{eid_r: manifest:63a9a83c…, native_scheme: manifest_fingerprint, fingerprint_rule, tree, binding}` |
+| `runtime.registered_evaluation_tree_files` | `value:{"a0_locator.json": "1e3b3a75…", "kapso_eval.py": "6759ef05…"}` — the fingerprint's exact inputs |
+
+> **Closing note — the tree was rebuilt, and these are the values after it.** The
+> tree `a0/a1/kapso_t1/` registers today is the one rebuilt at `f8f8b386` against
+> the second `EID*` (D-A1-13): `EID_r = manifest:63a9a83c…` and
+> `tree/a0_locator.json = 1e3b3a75…`. This entry was written when the tree was
+> `EID_r = manifest:6b1d6fcc…` with `a0_locator.json = 5a0c99ff…`, and the
+> superseded pair is preserved as history in
+> `a0/a1/kapso_t1/DEVIATIONS.md` D-KT1-8's before/after table and in
+> `a0/a1/kapso_t1/evidence/history/superseded-eid-cddfa64e/INDEX.json`. The
+> factor's *definition* is unchanged — `declaration.py` still recomputes it from
+> the committed tree's bytes — so the rebuild moved the values and nothing else;
+> `python3 a0/a1/verify.py`'s `declarations` step re-derives them today.
 
 Both are **recomputed from the tree's bytes by `declaration.py`**
 (`registered_tree()`), not copied from `binding.json`, and the result is
@@ -794,3 +815,35 @@ The closure is namespaces, not virtualisation, and it is honest about the line:
 * the harness process itself is not sandboxed: it holds the ABI directory, the
   ledger and the responses. A campaign that must survive a hostile *harness* needs
   a different boundary, and no such claim is made here.
+
+---
+
+## D-A1-15 — `calibration/pilot_procedure.json` still names the pre-rebuild tree, and is deliberately left byte-frozen
+
+**What is stale.** `a0/a1/calibration/pilot_procedure.json` line 69 records the
+KAPSO arm's tree as `"a0/a1/kapso_t1/tree (EID_r = manifest:6b1d6fcc…)"`. That is
+the **pre-rebuild** value: the registered tree has been `manifest:63a9a83c…`
+since `f8f8b386`, and its `tree/a0_locator.json` `1e3b3a75…` (it was
+`5a0c99ff…`). D-A1-6's closing note records the same move.
+
+**Why it was not edited.** That file is the frozen pre-registration, and its
+freeze is a *hash*: `a0/a1/calibration/B_hard.json` pins
+`procedure.json_sha256 = 8fcc8795e8f5c044771c6adc29c7fecdbbe730d5fe74bd2d51d4b6ca425cd3eb`
+— the sha256 of the file's bytes — and `a0/verify/a1-final/v4_bhard.py`'s V1b
+check asserts the file still hashes to it. Changing one character of line 69
+would break that check and leave `B_hard` describing bytes that no longer exist.
+`B_hard` is frozen by decision and no threshold may move, so an in-place edit is
+not the honest repair.
+
+**The honest alternative, stated.** Either (a) the line is corrected *and*
+`B_hard.json`'s `procedure.json_sha256` is re-derived in the same commit — which
+is a re-freeze of the pilot pre-registration and belongs to whoever owns `B_hard`
+and the pending contract decision, not to a documentation pass; or (b) the line
+stays byte-frozen and its staleness is recorded where a reader meets it, which is
+this note. (b) is what was done. **No pilot number depends on the line:** it names
+which tree the KAPSO arm registers, `f(telemetry) → B_hard` was applied to the
+measured ledger rows, and `calibration/verify.py --with-rehearsal` is green
+(`8 evaluations, 0 CEq`) with `B_hard` byte-identical. What the label must not do
+is let a reader take `6b1d6fcc…` for the tree registered today; it is marked as
+the pre-rebuild value here.
+

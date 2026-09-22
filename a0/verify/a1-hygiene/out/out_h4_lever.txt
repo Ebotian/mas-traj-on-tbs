@@ -1,0 +1,59 @@
+wrote /home/ebt/rsi-dev/a0/tasks/maxcut/redesign/lever_data.json
+{
+ "L1": {
+  "RR:d4": {
+   "n_values": [
+    128,
+    256,
+    512,
+    1024
+   ],
+   "median_rho_R": [
+    0.29006410256410253,
+    0.2585858585858586,
+    0.2906660759119776,
+    0.3188977528418223
+   ],
+   "delta_all_pass": true,
+   "n_where_rho_passes": [
+    1024
+   ],
+   "rho_monotone_nondecreasing": false,
+   "rho_slope_per_step": [
+    -0.03147824397824395,
+    0.03208021732611899,
+    0.02823167692984474
+   ],
+   "verdict": "rho reaches the bar"
+  },
+  "ER:p080": {
+   "n_values": [
+    128,
+    256,
+    512,
+    1024
+   ],
+   "median_rho_R": [
+    0.1768241025097956,
+    0.1483461369085482,
+    0.12976448803633944,
+    0.13380930742692693
+   ],
+   "delta_all_pass": true,
+   "n_where_rho_passes": [],
+   "rho_monotone_nondecreasing": false,
+   "rho_slope_per_step": [
+    -0.028477965601247407,
+    -0.018581648872208756,
+    0.004044819390587484
+   ],
+   "verdict": "rho stays below 0.30 at every n measured"
+  }
+ },
+ "L2_both": [
+  "exchange_k10",
+  "exchange_k2",
+  "exchange_k25",
+  "exchange_k5"
+ ]
+}

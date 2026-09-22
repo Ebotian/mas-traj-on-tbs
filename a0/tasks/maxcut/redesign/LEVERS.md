@@ -326,12 +326,21 @@ Artifacts:
 | `instances/targets.json`, `targets_raw.json` | `R_i`/`OPT_i`/`U_i` for the L1 sample |
 | `instances/logs/**`, `logs_topup/**`, `scip/**.json`, `ub/*.json` | reference evidence and budgets |
 | `gen/**` | every script that produced a number above |
-| `DEVIATIONS.md` | D-RD-1 … D-RD-8 |
+| `HISTORY.md` | **which revision this directory measured against** — the `E*` digest on every Outcome here (`08281d21…`, `11f55bf0`) is superseded; read this before comparing any digest with the current `E*` |
+| `out/HISTORY.json` | the machine-readable form of that record (superseded + current digest, the 276 files, per-directory counts) |
+| `DEVIATIONS.md` | D-RD-1 … D-RD-9 |
 
 Not committed (reproducible, and large): `instances/scip/*.lp` (up to 7.5 MB each)
 and `*.scip.log`; their sha256s are recorded inside the matching `*.json` records,
 and `gen/run_all.sh` regenerates them. `out/e-star-state/` is excluded by the
 repository's own `.gitignore`.
+
+**One thing to read before you compare digests:** every Outcome under `out/**`
+carries `evaluator_source_sha256 = 08281d21…`, which is `E*` at `11f55bf0`, not at
+`HEAD`. That is history, labelled in `HISTORY.md` and `out/HISTORY.json`, and it is
+not re-stamped because that would mean re-running the levers (D-RD-9). Re-running
+`gen/run_all.sh` reproduces every *number* below against the current `E*`; it does
+not reproduce the digests, because the artifacts it writes are new measurements.
 
 ---
 

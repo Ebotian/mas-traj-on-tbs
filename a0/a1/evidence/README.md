@@ -43,6 +43,24 @@ other file was refreshed, and none needed to be. The paid artifacts are
 untouched by that change for the same reason: they record the lane's *mode*
 (`"sandbox"`), not the sandbox module's digest.
 
+**A second reason this same file moved: its citation, not its measurement.**
+`hostile_candidate.json` recorded `after_side.revision_full = 654d5da2…`, the
+pre-amend version of `7a1c0c16` — a commit object this repository still holds but
+which **no ref reaches**, so a third party could not check out the revision the
+probe compared against (`before_side.evaluator.differs_from` and
+`evaluator_used_for_the_comparison.differs_from` carried the same value). The
+content claim was never affected — the two evaluator file digests are unchanged —
+but the citation was uncheckable, and the artifact is not supposed to contain one.
+The probe was re-run at the `HEAD` of its run; only the three revision fields and
+the per-run identifiers moved, and `verdict`, `checks` (13/13) and
+`lane_visibility` are byte-equal to the previous recording. The probe now carries
+the check that would have caught it, so this cannot be silently reintroduced:
+
+```console
+$ python3 a0/a1/probes/hostile_candidate.py --check-citations a0/a1/evidence/hostile_candidate.json
+  "citations_checked": 6, "dangling": [], "verdict": "pass"     # rc 0
+```
+
 The older versions are **not** duplicated here. They are the committed bytes at
 `8057c1ce` (the 9/13 and pre-D-A1-14 round), at `4b94503e` (the round that closed
 the verifier's findings) and at `75403e8c` (the round that followed the first
@@ -57,7 +75,7 @@ re-freeze), retrievable with `git show <commit>:a0/a1/evidence/<file>`.
 | `wiring_kapso.json` | **refreshed** (free) | as above |
 | `skeleton_dryrun.json` | **refreshed** (free) | now records `eid_star=7ce9e72f…` |
 | `score_bound.json` | **refreshed** (free) | records `dc6969ec…` |
-| `hostile_candidate.json` | **refreshed, 13/13** | re-run after D-A1-14 changed the sandbox module it embeds; it is the only artifact here that carries that digest. Both sides are real again: the before side is the pinned `75403e8c` evaluator against that revision's witnesses (`8057c1ce`, D-A1-13), and `lane_visibility` now reads `/tmp: hidden` |
+| `hostile_candidate.json` | **refreshed, 13/13** | re-run after D-A1-14 changed the sandbox module it embeds; it is the only artifact here that carries that digest. Both sides are real again: the before side is the pinned `75403e8c` evaluator against that revision's witnesses (`8057c1ce`, D-A1-13), and `lane_visibility` now reads `/tmp: hidden`. Re-run once more (see above) to replace a revision citation no ref reaches; every revision it now cites is an ancestor of `HEAD` and `--check-citations` is `pass` |
 
 | file | produced by | checks | cost |
 |---|---|---|---|
@@ -80,7 +98,7 @@ re-freeze), retrievable with `git show <commit>:a0/a1/evidence/<file>`.
 So the KAPSO arm's **T1** live evidence is not here: it is
 `a0/a1/kapso_t1/evidence/live_t1.json` (another workstream, 15/15), which drives
 the same `a0/runtimes/kapso/a0_adapter/harness_manifest.py` this directory wrote,
-against the tree whose `EID_r` = `manifest:6b1d6fcc…` that `AID_r.A_kapso.json`
+against the tree whose `EID_r` = `manifest:63a9a83c…` that `AID_r.A_kapso.json`
 now pins. The plumbing run is kept because it is *this* probe's own record and it
 is what a re-run of the committed code reproduces; it is not offered as T1
 evidence for that arm.

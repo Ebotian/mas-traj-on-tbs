@@ -43,7 +43,7 @@ only artifact here that moved with it. `EID*` did not move for that.
 | 3 | The runtime cannot substitute its own number | **CONFIRMED** | same file, two checks: with no harness identity the adapter exits 3 without running; with the service stopped mid-run every candidate is `error/harness_outcome_missing`, `search_signal: null`, champion `null`, exit 8 |
 | 4 | KAPSO's score of record is the harness's number, written **after** the session | **CONFIRMED** | `evidence/wiring_kapso.json` (7/7) and `evidence/live_kapso.json` (11/11): node.score = 2.4519205208433132 = the harness's value, while the session printed its own line claiming 9.75 |
 | 5 | KAPSO's class triple is derived from the runtime, not hardcoded | **CONFIRMED** | under a `fast/0.15` grant the derived line is adopted and a hardcoded `full/1.0/1337` line returns `None` (silently discarded, `registered_evaluation.py:87-99`) |
-| 5b | The T1 registered evaluation tree is an `AID_r` factor at full resolution | **CONFIRMED** | `declarations/AID_r.A_kapso.json`: `runtime.registered_evaluation_tree` = `manifest:6b1d6fcc…` recomputed from the tree's bytes and cross-checked against `a0/a1/kapso_t1/binding.json` (D-A1-6) |
+| 5b | The T1 registered evaluation tree is an `AID_r` factor at full resolution | **CONFIRMED** | `declarations/AID_r.A_kapso.json`: `runtime.registered_evaluation_tree` = `manifest:63a9a83c…` recomputed from the tree's bytes and cross-checked against `a0/a1/kapso_t1/binding.json` (D-A1-6; the tree was rebuilt at `f8f8b386` — the value this row carried before that rebuild was `6b1d6fcc…`) |
 | 6 | One real campaign per arm ran through the meter, inside the closed topology | **CONFIRMED** | `evidence/live_simpleloop.json`, `evidence/live_kapso.json` |
 | 7 | Every upstream call has a ledger row with a real `CEq`; a missing-usage response is `unmetered` | **CONFIRMED** | `evidence/live_controls.json` (6/6) and both live arms; rows cross-checked against the proxy's per-call sidecar and re-derived by `a0/meter/verify_ledger.py` |
 | 8 | No unmetered model call is possible | **CONFIRMED** | same file: direct egress blocked from inside `unshare -rn`; non-allowlisted destination 403'd; a call without the campaign token 403'd and booked against that campaign; an induced upstream response without usage booked `unmetered` and stops the campaign |
@@ -197,7 +197,7 @@ by something other than its consumer.
   the harness service, the ABI, the token issuer, the topology, the meter mode,
   the failure semantics, the model route, the measurement protocol) and one
   `AID_r` per arm. The KAPSO arm's declares the **T1 registered evaluation tree**
-  (`runtime.registered_evaluation_tree` = `manifest:6b1d6fcc…`, plus its exact
+  (`runtime.registered_evaluation_tree` = `manifest:63a9a83c…`, plus its exact
   per-file map), adopted per D-A1-6; the SimpleLoop arm's declares the same factor
   as "no registration mechanism", so the mechanism difference is explicit rather
   than an asymmetry in the paperwork. The audit passes on the real declaration, fails on an
@@ -219,8 +219,8 @@ Adopted per D-A1-6, from `a0/a1/kapso_t1`'s D-KT1-7:
 
 | factor | identity |
 |---|---|
-| `runtime.registered_evaluation_tree` | `value:{eid_r: manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301, native_scheme: manifest_fingerprint, fingerprint_rule: KAPSO's own, tree: a0/a1/kapso_t1/tree, binding: a0/a1/kapso_t1/binding.json}` |
-| `runtime.registered_evaluation_tree_files` | `value:{"a0_locator.json": "5a0c99ff…", "kapso_eval.py": "6759ef05…"}` |
+| `runtime.registered_evaluation_tree` | `value:{eid_r: manifest:63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f, native_scheme: manifest_fingerprint, fingerprint_rule: KAPSO's own, tree: a0/a1/kapso_t1/tree, binding: a0/a1/kapso_t1/binding.json}` |
+| `runtime.registered_evaluation_tree_files` | `value:{"a0_locator.json": "1e3b3a75…", "kapso_eval.py": "6759ef05…"}` |
 
 A byte in either file changes the factor; the fingerprint is recomputed here and
 disagreement with that directory's `binding.json` fails the audit
