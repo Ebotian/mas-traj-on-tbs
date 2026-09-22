@@ -19,7 +19,10 @@ be frozen and recomputable — so *some* document has to exist.
 **What was done.** `a0/a1/t1_eid.py` supplies a **spec**
 (`a0/a1/T1.contract.json`) and has the contract owner's own
 `a0/contract/evalcontract.py` build the five components and the combined
-`EID*` (`a0/a1/T1-EID.json`). `EID*` = `cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1`.
+`EID*` (`a0/a1/T1-EID.json`). `EID*` =
+`7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec` — re-frozen
+twice since this entry (`cddfa64e…` → `eccd859c…` → `7ce9e72f…`; D-A1-7 and
+D-A1-13 carry both moves and their reasons).
 `python3 a0/a1/t1_eid.py check` rebuilds everything from the repository and
 cross-checks the `EvaluatorSource` records against what `E*` itself hashes
 (`e_star.py digest`), so the two ways of naming the evaluator cannot drift.
@@ -75,7 +78,7 @@ and verified in two places:
 
 * `probes/wiring_kapso.py` (model-free, 7/7): the injection, the class-triple
   derivation, the ordering rule and the attribution caveat;
-* `probes/live_probe.py --arm kapso` (10/10): a real campaign with a real metered
+* `probes/live_probe.py --arm kapso` (11/11): a real campaign with a real metered
   model turn, the same ordering test, and the meter evidence.
 
 For the live arm the harness was pointed at the **plumbing** evaluator
@@ -386,6 +389,14 @@ number, not the candidate's story, is the evidence:
 third row is the point: the lane still *measures* (status `ok`, a real Outcome,
 `cut_edges = 0` for the all-zeros fallback) while every attack fails.
 
+> **Superseded — read D-A1-13.** This table is the measurement as it stood at
+> `4b94503e`, when the answers were still in the tree. `baf13884` removed them and
+> made `HEAD`'s `E*` mask the task directory, so the two "open" lanes above can no
+> longer be shown open: the same probe now reports **9/13**, with the four failing
+> checks being exactly the positive controls of rows 1–2. The sandboxed rows are
+> unchanged. `git show 4b94503e:a0/a1/evidence/hostile_candidate.json` retrieves
+> the recorded 13/13.
+
 **INTERFACE change proposed, for the coordinator.** `INTERFACE.md` §12 forbids
 letting the eval set into "any path a candidate can read" and §4 says a candidate
 must not depend on external files, but no §4/§12 sentence says *who* enforces the
@@ -487,6 +498,11 @@ The recorded artifacts that carried the pre-fix evaluator digest
 The pre-fix versions are not duplicated: they are the committed bytes at
 `4b94503e`, and `git show 4b94503e:a0/a1/evidence/<file>` retrieves any of them.
 
+> **This round is itself superseded — read D-A1-13.** The bytes refreshed here
+> were `E*` before the candidate-facing redaction, and every artifact they name was
+> refreshed once more after that change (the committed copies at `75403e8c` are
+> those bytes). D-A1-13 carries the current digests and the current table.
+
 ## D-A1-12 — another workstream is editing `E*` in the same working tree, and this freeze is a snapshot
 
 While this workstream worked, `a0/tasks/maxcut/e_star.py` and
@@ -509,6 +525,12 @@ content-addressed identity. It is recorded here because a reader who finds
 `verify.py` red again should know which two files to blame, and that the identity
 scheme itself is not in question.
 
+> **It happened, and it is closed.** Those edits were committed as `baf13884`, so
+> the snapshot described here was superseded within the hour; D-A1-13 is the
+> freeze taken against the committed bytes, with the new `EID*` and the evidence
+> refreshed once more. The prediction above is worth keeping precisely because it
+> was right.
+
 **Overlap, stated plainly.** Their change and D-A1-8 close the same door from two
 sides: theirs inside `E*` (masking the task directory, `.git` and the state roots
 around the candidate), ours at the harness (the namespace `E*` itself runs in).
@@ -517,6 +539,99 @@ lane and finds it closed there too, so the two mechanisms compose rather than
 conflict. If the coordinator prefers one mechanism, the harness-side one is the
 one that also covers the *plumbing* evaluator, whose argv carries no
 `--net-isolate` and which no other lane confines.
+
+## D-A1-13 — the final freeze: `EID*` moved a second time, and the evidence moved with it
+
+**Both values.** `a0/a1/T1-EID.json` carried `EID*` =
+`eccd859c921ae724602f09bb137f6081c8dced8631d758db9b6d0db110d7b861` (the value
+D-A1-7 froze). It now carries
+`7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec`, rebuilt with
+`python3 a0/a1/t1_eid.py build`.
+
+**Why it moved — a dependency move, not a scheme change.** After the D-A1-7
+freeze, two more commits to the evaluator landed in the same working tree, the
+last of them as `baf13884` ("close the answer leaks — redacted candidate view,
+masked child, committed witnesses"). Only the two files the `EvaluatorSource`
+component is built from changed:
+
+| file | at the D-A1-7 freeze | now | size |
+|---|---|---|---|
+| `e_star.py` | `83d55e80…` | `f67ecd41…` | 53 802 B → 53 788 B |
+| `e_star_child.py` | `7392915d…` | `fdcf425c…` | 32 825 B → 35 924 B |
+
+The spec, the recipe and the other four components are untouched, and
+`T1.contract.json` is **byte-identical** across this re-freeze (`git diff` shows
+only `T1-EID.json`): the spec carries no evaluator hash material, so the drift
+lives entirely in the EID document. `t1_eid.py check` now prints
+`evaluator_source_material_agrees_with_e_star: true` — the `EvaluatorSource`
+records and what `E*`'s own `digest` subcommand hashes are the same two files.
+
+**Green, and when.** `python3 a0/a1/verify.py` reached 6/6 / rc=0 at
+**2026-09-22T20:54:47+08:00**. The run before it (20:53:02) failed
+`wiring-simpleloop` for a reason outside the harness: a sibling polling loop in the
+same session ran `rm -rf /tmp/a1-verify` and started its own `verify.py` on top of
+that run, deleting the directory out from under it (that loop's own attempt was
+killed at its 600 s timeout, rc=124). Three further runs were green, and the
+calling session separately recorded a green at 21:05; the final run after this
+commit was green at **2026-09-22T21:12:09+08:00**. The repository state was
+confirmed frozen first: both `E*` files were clean against `HEAD`, `git status`
+clean for them, newest mtime 20:47:20 — before the `baf13884` commit at 20:47:06.
+A full `verify.py` run leaves the working tree clean (its `declarations` step
+re-derives byte-identical files), which is what makes the freeze a fixed point
+rather than a snapshot.
+
+**A second thing had to be rebuilt, and it was already stale at `HEAD`.**
+`a0/a1/declarations/CID.json` at `HEAD` still named the *pre*-`baf13884` evaluator
+(`e_star.py 83d55e80…`, `e_star_child.py 7392915d…`) because `baf13884` changed
+`E*` without re-deriving the CID. Its two rows are rebuilt here from the current
+bytes (`f67ecd41…`, `fdcf425c…`). The declaration is deterministic — no
+timestamp — so re-running `verify.py` (which runs `declaration.py build`) cannot
+make the tree dirty.
+
+**The evidence was refreshed, once, after the last evaluator edit.** Both paid
+arms were re-run through `a0/meter/` in the closed topology on `deepseek-flash`
+(`live_probe.py all`): SimpleLoop `CEq` 8380 and KAPSO `CEq` 1104, one ledger row
+each, **zero unmetered rows**, `verify_ledger.py` exit 0 with `failures: []` for
+both. The free probes were re-run in the same sitting: `score_bound` 7/7,
+`skeleton_dryrun` 25/25, `wiring_simpleloop` 9/9, `wiring_kapso` 7/7, the A1 unit
+tests 26 passed, `live_controls` 6/6. Spend for this round: **9484 `CEq`**
+(8380 + 1104); the session's whole-model total is ≈52 100 `CEq`. The refreshed
+artifacts and the status of each are listed in `a0/a1/evidence/README.md`;
+nothing in the directory still asserts `eccd859c…`.
+
+**A finding I did not repair — the hostile probe is now 9/13.** Four of its
+thirteen checks are *positive controls* that assert the leak is **real** in the
+open lanes: `the_pre_fix_lane_reads_the_key_file_and_the_answers`,
+`the_copied_witness_scores_exactly_R`,
+`net_isolate_alone_leaves_the_filesystem_open`, and
+`the_process_view_leak_is_real_in_the_open_lane_and_closed_in_the_service_lanes`.
+They now fail, and the cause is the closure itself, in two halves:
+
+* the lane the probe calls `raw_pre_fix` extracts `E*` **from `HEAD`**
+  (`extract_pre_fix`), on the assumption that `HEAD` is pre-fix. After `baf13884`
+  it is not: the extracted evaluator carries the candidate-facing redaction, the
+  filesystem mask and the cleared child environment, so the open lane reads 0
+  witnesses and finds no key variable;
+* the stored witnesses the probe copies were deleted from the tree by the same
+  commit, so there is nothing to copy even in a genuinely unconfined lane.
+
+What the probe exists to establish is unaffected and still measured: in the
+`sandboxed` lane the network is `BLOCKED`, `~/gptapi.md` is not readable, zero
+answer files are visible, no key variable is found in any readable
+`/proc/*/environ`, and the harness still books the candidate's honest fallback
+(`status ok`, `cut_edges 0`). What is lost is the **contrast** — the closure is no
+longer measured against a real attack, and `the_sandbox_closes_the_filesystem`
+would pass just as well against a tree that never had answers in it.
+
+I have not edited the probe, because which revision its before-side should name
+is a scoping decision about pre-registered evidence, not a refresh — the same
+class of decision as the bounded-round positive control, and the coordinator's to
+make. The repair, if it is wanted, is one line: give `extract_pre_fix` a pinned
+revision (the last pre-closure commit, `75403e8c`, which is also the revision the
+13/13 recording was made at) and record it in the artifact, so the before-side is
+once again "a fixed, named revision" as its docstring intends. A guard check that
+the before-side bytes differ from the current evaluator's would keep the control
+from silently degrading a third time.
 
 ## What still cannot be enforced without root
 

@@ -20,7 +20,7 @@
   "--eval-mode",
   "harness",
   "--harness-root",
-  "/tmp/a1-live/simpleloop/harness",
+  "/tmp/a1-final/live/simpleloop/harness",
   "--campaign-id",
   "simpleloop",
   "--arm-id",
@@ -38,16 +38,16 @@
   "--solver",
   "deepseek",
   "--model-base-url",
-  "http://127.0.0.1:51019/v1",
+  "http://127.0.0.1:44297/v1",
   "--model-name",
   "deepseek-flash",
-  "--meter-token=v6dRNSbgYUuVw5pXXbveOdbXVKEK9kh6",
+  "--meter-token=ZHOUrGAF7JGAwxRqIGIQEURrRrVbj205",
   "--model-timeout-s",
   "180.0",
   "--max-iterations",
   "2",
   "--run-dir",
-  "/tmp/a1-live/simpleloop/run"
+  "/tmp/a1-final/live/simpleloop/run"
  ],
  "arm_exit_code": 0,
  "arm_state": {
@@ -76,7 +76,7 @@
   "session_manifest_lines": null
  },
  "arm_stderr_tail": "",
- "arm_stdout_tail": "{\n \"champion_id\": \"c02_ok_low_baseline\",\n \"champion_scalar\": 132,\n \"exit_code\": 0,\n \"exit_meaning\": \"run completed within budget; all three traces written\",\n \"failure_counts\": {},\n \"iterations\": 2,\n \"run_dir\": \"/tmp/a1-live/simpleloop/run\",\n \"run_id\": \"run\",\n \"schema\": \"a0.simpleloop.run_summary/v1\",\n \"scored_candidates\": 2,\n \"stopped_because\": \"solver_exhausted\",\n \"trace_paths\": {\n  \"combined\": \"/tmp/a1-live/simpleloop/run/traces/simpleloop.run.all.jsonl\",\n  \"resource\": \"/tmp/a1-live/simpleloop/run/traces/simpleloop.run.resource.jsonl\",\n  \"score\": \"/tmp/a1-live/simpleloop/run/traces/simpleloop.run.score.jsonl\",\n  \"selection\": \"/tmp/a1-live/simpleloop/run/traces/simpleloop.run.selection.jsonl\"\n },\n \"trace_validation_per_file\": {\n  \"combined\": {\n   \"stats\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"events              7\\nschema/semantic errors 0\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 7\"\n   },\n   \"validate\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"valid: 7 event(s)\"\n   }\n  },\n  \"resource\": {\n   \"stats\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"events              3\\nschema/semantic errors 0\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 3\"\n   },\n   \"validate\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"valid: 3 event(s)\"\n   }\n  },\n  \"score\": {\n   \"stats\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"events              2\\nschema/semantic errors 0\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 2\"\n   },\n   \"validate\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"valid: 2 event(s)\"\n   }\n  },\n  \"selection\": {\n   \"stats\": {\n    \"returncode\": 1,\n    \"stderr\": \"\",\n    \"stdout\": \"events              2\\nschema/semantic errors 2\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 2\"\n   },\n   \"validate\": {\n    \"returncode\": 1,\n    \"stderr\": \"\",\n    \"stdout\": \"INVALID event 'run.s2.i0.c02_ok_low_baseline' (event_seq 2): selection.source_score_event_id 'run.s0.i0.c02_ok_low_baseline' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\\nINVALID event 'run.s5.i1.ds_i001' (event_seq 5): selection.source_score_event_id 'run.s0.i0.c02_ok_low_baseline' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\\n2 error(s) in 2 event(s)\"\n   }\n  }\n },\n \"trace_validation_run_unit\": {\n  \"returncode\": 0,\n  \"stderr\": \"\",\n  \"stdout\": \"[ok ] simpleloop.run  events=7  [score=2 selection=2 resource=3]  merged simpleloop.run.all.jsonl\\nvalid: 1 run(s), 7 event(s)\"\n }\n}\n",
+ "arm_stdout_tail": "{\n \"champion_id\": \"c02_ok_low_baseline\",\n \"champion_scalar\": 132,\n \"exit_code\": 0,\n \"exit_meaning\": \"run completed within budget; all three traces written\",\n \"failure_counts\": {},\n \"iterations\": 2,\n \"run_dir\": \"/tmp/a1-final/live/simpleloop/run\",\n \"run_id\": \"run\",\n \"schema\": \"a0.simpleloop.run_summary/v1\",\n \"scored_candidates\": 2,\n \"stopped_because\": \"solver_exhausted\",\n \"trace_paths\": {\n  \"combined\": \"/tmp/a1-final/live/simpleloop/run/traces/simpleloop.run.all.jsonl\",\n  \"resource\": \"/tmp/a1-final/live/simpleloop/run/traces/simpleloop.run.resource.jsonl\",\n  \"score\": \"/tmp/a1-final/live/simpleloop/run/traces/simpleloop.run.score.jsonl\",\n  \"selection\": \"/tmp/a1-final/live/simpleloop/run/traces/simpleloop.run.selection.jsonl\"\n },\n \"trace_validation_per_file\": {\n  \"combined\": {\n   \"stats\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"events              7\\nschema/semantic errors 0\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 7\"\n   },\n   \"validate\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"valid: 7 event(s)\"\n   }\n  },\n  \"resource\": {\n   \"stats\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"events              3\\nschema/semantic errors 0\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 3\"\n   },\n   \"validate\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"valid: 3 event(s)\"\n   }\n  },\n  \"score\": {\n   \"stats\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"events              2\\nschema/semantic errors 0\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 2\"\n   },\n   \"validate\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"valid: 2 event(s)\"\n   }\n  },\n  \"selection\": {\n   \"stats\": {\n    \"returncode\": 1,\n    \"stderr\": \"\",\n    \"stdout\": \"events              2\\nschema/semantic errors 2\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 2\"\n   },\n   \"validate\": {\n    \"returncode\": 1,\n    \"stderr\": \"\",\n    \"stdout\": \"INVALID event 'run.s2.i0.c02_ok_low_baseline' (event_seq 2): selection.source_score_event_id 'run.s0.i0.c02_ok_low_baseline' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\\nINVALID event 'run.s5.i1.ds_i001' (event_seq 5): selection.source_score_event_id 'run.s0.i0.c02_ok_low_baseline' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\\n2 error(s) in 2 event(s)\"\n   }\n  }\n },\n \"trace_validation_run_unit\": {\n  \"returncode\": 0,\n  \"stderr\": \"\",\n  \"stdout\": \"[ok ] simpleloop.run  events=7  [score=2 selection=2 resource=3]  merged simpleloop.run.all.jsonl\\nvalid: 1 run(s), 7 event(s)\"\n }\n}\n",
  "budget_check": {
   "arm_id": "A_simpleloop",
   "budget": {
@@ -97,7 +97,7 @@
    "CEq": 8380,
    "CEq_rows": 1,
    "N_evaluatorCalls": 2,
-   "T_wall_sec": 11.927454480006418,
+   "T_wall_sec": 14.316165133997856,
    "harness_eval_ledger_missing": false,
    "meter_ledger_missing": false,
    "reasons": {},
@@ -122,7 +122,7 @@
   "the_session_could_not_substitute_its_own_number": true,
   "the_topology_blocks_direct_egress": true
  },
- "elapsed_sec": 11.665,
+ "elapsed_sec": 14.146,
  "graph": "a0/tasks/maxcut/suite/dev/G_dev_0001.json",
  "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
  "harness_ledger_rows": [
@@ -134,14 +134,14 @@
    "candidate_source_sha256": "7247146ff9119791cde5c276f82a74aed4e45e2870527eb56324c12b9d20819e",
    "e_star_exit_code": 0,
    "evaluator": "maxcut",
-   "evaluator_source_sha256": "c95f1494342f7019a3cc7d5d334dafc22f841cf557be293344bff5827e3457f0",
+   "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
    "graph_id": "G_dev_0001",
    "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
    "handed_value": 132,
    "harness_run_id": "live-simpleloop",
    "harness_supplied": true,
    "iteration": 0,
-   "measurement_oid": "8242fdaa8401524c08a8cfcbbdfdbb4d894d1f85d99e3680d92cc8d736a49b18",
+   "measurement_oid": "a8ad08d6d6ce28c499bc383d65eab02d0cb2f00407396c5bc367c4655e0d302e",
    "override_applied": false,
    "override_mode": "bounded",
    "plausibility": {
@@ -159,31 +159,31 @@
     "verdict": "within_bound",
     "within_bound": true
    },
-   "request_id": "A_simpleloop.5c14632fa495.i0000.0001.c02_ok_low_baseline",
+   "request_id": "A_simpleloop.7dd1f2c60f47.i0000.0001.c02_ok_low_baseline",
    "schema": "a0.a1.harness_eval_ledger/v1",
    "score_field": "cut_edges",
    "seq": 0,
    "status": "ok",
    "true_value": 132,
-   "ts": "2026-09-22T20:13:45+0800",
-   "wall_sec": 0.172113
+   "ts": "2026-09-22T21:05:29+0800",
+   "wall_sec": 0.172225
   },
   {
    "arm_id": "A_simpleloop",
    "campaign_id": "C_live_simpleloop",
    "candidate_id": "ds_i001",
    "candidate_isolation": "sandbox",
-   "candidate_source_sha256": "d2632d5ebe70ed2b9d6a0f10badd9a2053ff3e885d7131b6eee8c230b66f01c9",
+   "candidate_source_sha256": "084553c8640d58ab5e6e1083b0702a0dc8f82c1d3b179ad7e6c5a12e12970e89",
    "e_star_exit_code": 0,
    "evaluator": "maxcut",
-   "evaluator_source_sha256": "c95f1494342f7019a3cc7d5d334dafc22f841cf557be293344bff5827e3457f0",
+   "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
    "graph_id": "G_dev_0001",
    "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
    "handed_value": 0,
    "harness_run_id": "live-simpleloop",
    "harness_supplied": true,
    "iteration": 1,
-   "measurement_oid": "bac4be490d7a63841290952b9fd98600dae2656ab9447a421358793a8922a868",
+   "measurement_oid": "b3872209c6902635da95c886a206d64afb4a5bf9f27bb1b5d7a1bfff9bc18c6f",
    "override_applied": false,
    "override_mode": "bounded",
    "plausibility": {
@@ -201,25 +201,25 @@
     "verdict": "within_bound",
     "within_bound": true
    },
-   "request_id": "A_simpleloop.5c14632fa495.i0001.0002.ds_i001",
+   "request_id": "A_simpleloop.7dd1f2c60f47.i0001.0002.ds_i001",
    "schema": "a0.a1.harness_eval_ledger/v1",
    "score_field": "cut_edges",
    "seq": 1,
    "status": "ok",
    "true_value": 0,
-   "ts": "2026-09-22T20:13:54+0800",
-   "wall_sec": 0.171277
+   "ts": "2026-09-22T21:05:41+0800",
+   "wall_sec": 0.167571
   }
  ],
  "meter": {
   "aid": {
    "endpoints": [
     {
-     "anthropic_base_url": "http://127.0.0.1:51019",
+     "anthropic_base_url": "http://127.0.0.1:44297",
      "arm_id": "A_simpleloop",
-     "base_url": "http://127.0.0.1:51019/v1",
+     "base_url": "http://127.0.0.1:44297/v1",
      "campaign_id": "C_live_simpleloop",
-     "token": "v6dRNSbgYUuVw5pXXbveOdbXVKEK9kh6"
+     "token": "ZHOUrGAF7JGAwxRqIGIQEURrRrVbj205"
     }
    ],
    "meter": {
@@ -229,7 +229,7 @@
     "attribution": "per_campaign_listener_port(+optional X-A0-Meter-Token)",
     "ceq_formula": "ceq = miss + floor(hit*2/100) + 4*completion",
     "connect": "refused",
-    "ledger": "/tmp/a1-live/simpleloop/meter/ledger.jsonl",
+    "ledger": "/tmp/a1-final/live/simpleloop/meter/ledger.jsonl",
     "missing_usage": "unmetered:true,ceq:null",
     "mode": "plaintext_base_url",
     "on_missing_cache_split": "unmetered",
@@ -238,8 +238,8 @@
    },
    "schema": "a0.meter.aid/v1"
   },
-  "base_url": "http://127.0.0.1:51019/v1",
-  "port": 51019,
+  "base_url": "http://127.0.0.1:44297/v1",
+  "port": 44297,
   "token_issued": true
  },
  "meter_call_events": [
@@ -279,11 +279,11 @@
    "model_reported": "deepseek-flash",
    "model_requested": "deepseek-flash",
    "provider": "deepseek",
-   "provider_request_id": "99295194-ccda-4b6e-85b6-982e40939f9e",
+   "provider_request_id": "99537f85-1a95-4207-8388-c654d43abf01",
    "reason": null,
    "schema": "a0.meter.call/v1",
    "stream": false,
-   "ts": "2026-09-22T20:13:54.211891+08:00",
+   "ts": "2026-09-22T21:05:41.187085+08:00",
    "unmetered": false,
    "usage": {
     "completion_tokens": 2048,
@@ -294,14 +294,14 @@
  ],
  "meter_summary": {
   "ceq": 8380,
-  "ledger": "/tmp/a1-live/simpleloop/meter/ledger.jsonl",
+  "ledger": "/tmp/a1-final/live/simpleloop/meter/ledger.jsonl",
   "rows": 1,
   "unmetered": 0
  },
  "meter_verify_ledger": {
   "returncode": 0,
   "stderr": "",
-  "stdout": "{\n  \"ledger\": \"/tmp/a1-live/simpleloop/meter/ledger.jsonl\",\n  \"rows\": 1,\n  \"metered\": 1,\n  \"unmetered\": 0,\n  \"ceq_total\": 8380,\n  \"ceq_per_campaign_arm\": {\n    \"C_live_simpleloop/A_simpleloop\": 8380\n  },\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
+  "stdout": "{\n  \"ledger\": \"/tmp/a1-final/live/simpleloop/meter/ledger.jsonl\",\n  \"rows\": 1,\n  \"metered\": 1,\n  \"unmetered\": 0,\n  \"ceq_total\": 8380,\n  \"ceq_per_campaign_arm\": {\n    \"C_live_simpleloop/A_simpleloop\": 8380\n  },\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
  },
  "model_requested": "deepseek-flash",
  "namespace_prefix": [
@@ -313,7 +313,7 @@
   "sh"
  ],
  "schema": "a0.a1.live_probe/v1",
- "started_at": "2026-09-22T20:13:43+0800",
+ "started_at": "2026-09-22T21:05:27+0800",
  "topology_probe": {
   "1.1.1.1": "BLOCKED:OSError",
   "123.148.116.184": "BLOCKED:OSError",

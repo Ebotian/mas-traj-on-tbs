@@ -44,7 +44,7 @@
    "reason": "upstream_http_400_no_usage",
    "schema": "a0.meter.call/v1",
    "stream": false,
-   "ts": "2026-09-22T20:13:37.231076+08:00",
+   "ts": "2026-09-22T21:05:27.434696+08:00",
    "unmetered": true,
    "usage": null
   }
@@ -63,7 +63,7 @@
    "reason": "host_header_not_allowlisted:evil.example",
    "schema": "a0.meter.call/v1",
    "stream": false,
-   "ts": "2026-09-22T20:13:36.731763+08:00",
+   "ts": "2026-09-22T21:05:21.955769+08:00",
    "unmetered": true,
    "usage": null
   },
@@ -71,7 +71,7 @@
    "arm_id": "A_controls",
    "campaign_id": "C_controls",
    "ceq": null,
-   "endpoint": "http://127.0.0.1:55665/v1/chat/completions",
+   "endpoint": "http://127.0.0.1:47151/v1/chat/completions",
    "model_reported": null,
    "model_requested": null,
    "provider": "deepseek",
@@ -79,7 +79,7 @@
    "reason": "attribution_token_mismatch",
    "schema": "a0.meter.call/v1",
    "stream": false,
-   "ts": "2026-09-22T20:13:36.734407+08:00",
+   "ts": "2026-09-22T21:05:21.958382+08:00",
    "unmetered": true,
    "usage": null
   }
@@ -87,7 +87,7 @@
  "meter_verify_ledger": {
   "returncode": 0,
   "stderr": "",
-  "stdout": "{\n  \"ledger\": \"/tmp/a1-live/meter/ledger.jsonl\",\n  \"rows\": 2,\n  \"metered\": 0,\n  \"unmetered\": 2,\n  \"ceq_total\": 0,\n  \"ceq_per_campaign_arm\": {},\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
+  "stdout": "{\n  \"ledger\": \"/tmp/a1-final/live/meter/ledger.jsonl\",\n  \"rows\": 2,\n  \"metered\": 0,\n  \"unmetered\": 2,\n  \"ceq_total\": 0,\n  \"ceq_per_campaign_arm\": {},\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
  },
  "non_allowlisted_destination": {
   "detail": "ModelCallError: model call refused with HTTP 403",

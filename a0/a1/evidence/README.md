@@ -11,23 +11,37 @@ a whole differ only in per-run identifiers (the harness's nonce, the measurement
 OIDs, the ledger sequence rows, `elapsed_sec` and `merged_stream_sha256`). Those
 are per-run by construction — a nonce that repeated would be the defect.
 
-## Pre-fix or refreshed, file by file
+One exception, and it is the reason `hostile_candidate.json` is `fail`: four of
+its checks assert that the *open* lanes really can read the answers and the key,
+and those assertions depend on what `HEAD` contains, not on this directory. They
+were true when the committed bytes were recorded and are false now that the
+maxcut worker removed the stored witnesses (D-A1-13). Re-running the probe
+reproduces its 9/13 faithfully; what it cannot reproduce is a leak that the tree
+no longer contains.
 
-This revision re-froze T1's `EID*` (see `DEVIATIONS.md` D-A1-7) and re-ran every
-artifact that described the pre-fix evaluator. The pre-fix versions are **not**
-duplicated here; they are the committed bytes at `4b94503e`, retrievable with
-`git show 4b94503e:a0/a1/evidence/<file>`.
+## Refreshed against one revision, file by file
+
+`EID*` moved a **second** time when two further commits to `E*` landed (the
+candidate-staging fix, then the candidate-facing redaction); `DEVIATIONS.md`
+D-A1-13 records both digests and the reason. Every artifact in this directory was
+produced *after* the last of those commits, in one sitting, so the set describes
+one revision: `EID*` = `7ce9e72f…`, `evaluator_source_sha256` = `dc6969ec…`.
+
+The older versions are **not** duplicated here. They are the committed bytes at
+`4b94503e` (the round that closed the verifier's findings) and at `75403e8c` (the
+round that followed the first re-freeze), retrievable with
+`git show <commit>:a0/a1/evidence/<file>`.
 
 | file | status | why |
 |---|---|---|
-| `wiring_simpleloop.json` | **refreshed** | carried `evaluator_source_sha256 08281d21…` (the pre-fix `E*`); now records the current evaluator, and has one new check for the labelled override |
-| `live_simpleloop.json` | **refreshed** (paid) | same, on a real campaign |
-| `live_kapso.json` | **refreshed** (paid) | re-run so that every artifact in the directory is from one revision |
+| `wiring_simpleloop.json` | **refreshed** | re-produced after the last `E*` edit; records `dc6969ec…` |
+| `live_simpleloop.json` | **refreshed** (paid) | same, on a real campaign; records `dc6969ec…` |
+| `live_kapso.json` | **refreshed** (paid) | re-run so every artifact is from one revision; records the *plumbing* evaluator (`5ae97ad9…`) because that is the task this arm ran (D-A1-2) |
 | `live_controls.json` | **refreshed** (free) | re-run with the rest |
-| `wiring_kapso.json` | **refreshed** (free) | carried no pre-fix digest, re-produced for the same reason |
-| `skeleton_dryrun.json` | **refreshed** (free) | as above; also records the new preflight check `iv.candidate_lane_is_closed` |
-| `score_bound.json` | **new** | the plausibility bound (D-A1-10) |
-| `hostile_candidate.json` | **new** | the candidate-lane closure (D-A1-8, D-A1-9) |
+| `wiring_kapso.json` | **refreshed** (free) | as above |
+| `skeleton_dryrun.json` | **refreshed** (free) | now records `eid_star=7ce9e72f…` |
+| `score_bound.json` | **refreshed** (free) | records `dc6969ec…` |
+| `hostile_candidate.json` | **refreshed, verdict changed to 9/13** | the four failing checks are the probe's own positive controls, invalidated by the maxcut worker's witness removal — see D-A1-13. This is the only artifact here whose verdict is not `pass`, and it is reported rather than repaired |
 
 | file | produced by | checks | cost |
 |---|---|---|---|
@@ -35,7 +49,7 @@ duplicated here; they are the committed bytes at `4b94503e`, retrievable with
 | `wiring_kapso.json` | `a0/runtimes/kapso/.venv/bin/python a0/a1/probes/wiring_kapso.py` | 7/7 | none |
 | `skeleton_dryrun.json` | `python3 a0/a1/probes/skeleton_dryrun.py` | 25/25 | none |
 | `score_bound.json` | `python3 a0/a1/probes/score_bound.py` | 7/7 | none |
-| `hostile_candidate.json` | `python3 a0/a1/probes/hostile_candidate.py` | 13/13 | none (TCP connect attempts and one byte of a file, no model call) |
+| `hostile_candidate.json` | `python3 a0/a1/probes/hostile_candidate.py` | **9/13** | none (TCP connect attempts and one byte of a file, no model call) |
 | `live_controls.json` | `python3 a0/a1/probes/live_probe.py controls` | 6/6 | none (refusals and one 400) |
 | `live_simpleloop.json` | `python3 a0/a1/probes/live_probe.py arm --arm simpleloop` | 9/9 | 1 model call |
 | `live_kapso.json` | `python3 a0/a1/probes/live_probe.py arm --arm kapso` | 11/11 | 1 model call |
@@ -73,13 +87,18 @@ its sandboxed candidate lane (`candidate_isolation.mechanism =
 
 `CEq = miss + floor(hit·2/100) + 4·completion` (`INTERFACE.md` §8), which the
 meter's own `verify_ledger.py` re-derives from each row's usage (recorded in every
-live artifact as `meter_verify_ledger`).
+live artifact as `meter_verify_ledger`). For this round it re-derived `ceq_total`
+8380 and 1104 with `failures: []` and `unmetered: 0` for the two arms.
 
-Earlier rounds of this workstream spent more than the table above: the first live
-round on the pre-fix meter (SimpleLoop attempts at `CEq` 8310, 9382, 3600; KAPSO
-attempts at 1104 and 1104), the model-free calls that found the framing defect
-(69, 14), and the previous round's refreshes (8380 + 1104, now superseded). The
-session's whole-model total is **≈42,600 `CEq`** — a few cents at any flash-tier
+The token counts of this round are identical to the previous round's refresh —
+same prompts, same deterministic decoding — but this is a **second** paid round:
+each arm was called once more and these are new ledger rows, not the old ones.
+
+Earlier rounds of this workstream spent more: the first live round on the pre-fix
+meter (SimpleLoop attempts at `CEq` 8310, 9382, 3600; KAPSO attempts at 1104 and
+1104), the model-free calls that found the framing defect (69, 14), and the
+previous round's refreshes (8380 + 1104). Counting this round's 9484, the
+session's whole-model total is **≈52,100 `CEq`** — a few cents at any flash-tier
 price. No price is asserted here, because none was measured.
 
 **No claim about model quality.** One call per arm is not a search. What the two
