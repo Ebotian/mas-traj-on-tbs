@@ -275,7 +275,20 @@ def test_the_committed_evidence_carries_no_objective_value():
         if not path.is_file():
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
-        for key in forbidden:
-            if f'"{key}"' in text:
-                offenders.append((str(path.relative_to(evidence)), key))
+        if path.suffix == ".jsonl":
+            documents = [json.loads(line) for line in text.splitlines() if line.strip()]
+        elif path.suffix == ".json":
+            documents = [json.loads(text)]
+        else:
+            continue
+        for index, document in enumerate(documents):
+            for found in pilot.objective_key_paths(document, forbidden):
+                offenders.append((str(path.relative_to(evidence)), index, found))
     assert offenders == []
+
+
+def test_objective_key_paths_ignores_the_reductions_own_documentation():
+    document = {"reduction": {"outcome_keys_removed": ["cut_edges", "cut_fraction"]},
+                "interpreted": {"wall_ms": 41}}
+    assert pilot.objective_key_paths(document, ("cut_edges", "cut_fraction")) == []
+    assert pilot.objective_key_paths({"cut_edges": 3}, ("cut_edges",)) == ["cut_edges"]

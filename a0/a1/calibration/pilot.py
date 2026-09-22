@@ -172,6 +172,25 @@ def reduce_outcome(document: dict) -> dict:
     return {key: value for key, value in document.items() if key not in OUTCOME_REDACT}
 
 
+def objective_key_paths(document: Any, forbidden, prefix: str = "") -> List[str]:
+    """Where `document` *uses* a forbidden name as a key (naming it is not using it).
+
+    The published reduction documents itself ("these keys were removed"), so a substring
+    search would flag the documentation. Structural walk: only a dict key counts.
+    """
+    found: List[str] = []
+    if isinstance(document, dict):
+        for key, value in document.items():
+            path = f"{prefix}.{key}" if prefix else str(key)
+            if key in forbidden:
+                found.append(path)
+            found.extend(objective_key_paths(value, forbidden, path))
+    elif isinstance(document, list):
+        for index, value in enumerate(document):
+            found.extend(objective_key_paths(value, forbidden, f"{prefix}[{index}]"))
+    return found
+
+
 # --------------------------------------------------------------------------- #
 # the frozen procedure
 # --------------------------------------------------------------------------- #
@@ -385,6 +404,56 @@ def diagnostics(per_arm: Dict[str, dict], procedure: Dict[str, Any], result: dic
     return out
 
 
+def frozen_identity_status() -> dict:
+    """Is the T1 frozen evaluator identity still the identity of the bytes on disk?
+
+    `a0/a1/T1.contract.json` and `a0/a1/T1-EID.json` freeze `EID*` (and the two
+    `EvaluatorSource` digests) at a revision of `a0/tasks/maxcut/e_star.py`.  Both arms
+    verify that before they will run, and the SimpleLoop adapter's check and KAPSO's
+    registration are independent of each other.  A pilot whose arms refuse at that
+    precondition has no rates to measure, so it is checked *before* anything else runs.
+    """
+    proc = subprocess.run(
+        [sys.executable, str(REPO_ROOT / "a0" / "a1" / "t1_eid.py"), "check"],
+        capture_output=True, text=True, cwd=str(REPO_ROOT), timeout=180,
+    )
+    try:
+        payload = json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        payload = {"pass": False, "reason": "t1_eid.py check produced no JSON",
+                   "stdout": proc.stdout[-2000:], "stderr": proc.stderr[-2000:]}
+    payload["exit_code"] = proc.returncode
+    payload["consistent"] = bool(proc.returncode == 0 and payload.get("pass") is True)
+    payload["command"] = "python3 a0/a1/t1_eid.py check"
+    if not payload["consistent"]:
+        payload["what_this_blocks"] = (
+            "both A1 arms refuse at their frozen-identity precondition: the SimpleLoop "
+            "adapter exits 3 (`evalcontract.py verify` drift against T1.contract.json) and "
+            "KAPSO's EvaluationMaintainer raises before the session starts (`E* source "
+            "drifted … recorded in EID*`). A resource pilot cannot measure a rate through "
+            "an arm that will not start."
+        )
+        payload["what_would_unblock_it"] = (
+            "the owner of a0/a1/T1-EID.json + T1.contract.json re-freezes the evaluator "
+            "identity against the current E* bytes (`python3 a0/a1/t1_eid.py build`, then "
+            "re-declare CID's `task.eid_star`), or a0/tasks/maxcut/e_star.py is returned to "
+            "the revision the frozen EID* names. This workstream owns neither file and did "
+            "not change either of them."
+        )
+    return payload
+
+
+def require_frozen_identity() -> dict:
+    status = frozen_identity_status()
+    if not status["consistent"]:
+        raise PilotError(
+            "the arms cannot start: the frozen evaluator identity does not match the E* "
+            f"bytes on disk ({status.get('reason')}: {status.get('on_disk')} -> "
+            f"{status.get('recomputed')}). See the blocker artifact for the remedy."
+        )
+    return status
+
+
 # --------------------------------------------------------------------------- #
 # the campaign
 # --------------------------------------------------------------------------- #
@@ -465,7 +534,8 @@ class PilotCampaign:
         self.work.mkdir(parents=True)
         self.units = units or calibration_units()
         spec = procedure["arms"][arm]
-        self.loop_depth = int(spec["loop"]["max_iterations"])
+        self.loop_depth = int(spec["loop"].get("max_iterations")
+                              or spec["loop"].get("rounds"))
         self.model_calls_per_unit = int(spec["model_calls_per_unit"])
         self.evals_per_unit = int(spec["evals_per_unit"])
         self.max_tokens = int(spec["max_tokens_per_call"])
@@ -625,10 +695,16 @@ class PilotCampaign:
         return report
 
     def _pythonpath(self) -> str:
-        parts = [str(REPO_ROOT), str(REPO_ROOT / "a0/runtimes/simpleloop")]
+        """Arm-specific: `a0_adapter` resolves to *this* arm's adapter package.
+
+        `a0/runtimes/simpleloop/a0_adapter` and `a0/runtimes/kapso/a0_adapter` are two
+        different packages with the same name, so the order of this list decides which one
+        a bare `import a0_adapter` gets (measured: a shared list made the KAPSO inner
+        import the SimpleLoop adapter and fail with `No module named 'a0_adapter.common'`).
+        """
         if self.short == "kapso":
-            parts += [str(KAPSO_DIR), str(KAPSO_T1)]
-        return os.pathsep.join(parts)
+            return os.pathsep.join([str(REPO_ROOT), str(KAPSO_DIR), str(KAPSO_T1)])
+        return os.pathsep.join([str(REPO_ROOT), str(REPO_ROOT / "a0/runtimes/simpleloop")])
 
     # ---------------------------------------------------------------- #
     def run(self) -> dict:
@@ -667,6 +743,7 @@ class PilotCampaign:
             "graphs": [{"graph_id": unit["graph_id"], "sha256": unit["graph_sha256"]}
                        for unit in self.units],
             "graph_set_sha256": sha256_text(json.dumps(sorted(graph_shas), sort_keys=True)),
+            "frozen_identity": frozen_identity_status(),
             "started_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
         }
 
@@ -1042,6 +1119,10 @@ class PilotCampaign:
                 else all(row.get("graph_sha256") in graph_shas for row in harness_rows)
             ),
             "no_unmetered_row_in_the_campaign": telemetry["unmetered_rows"] == 0,
+            # The point of the whole exercise: an arm that never reaches the harness has
+            # produced no rate, however green the other checks look.  This is not vacuous
+            # in either mode — the rehearsal skips the *model* call, not the evaluations.
+            "the_arm_reached_the_harness": bool(harness_rows),
             "every_metered_row_re_derives_its_ceq": (
                 (bool(metered) and rederived == len(metered)) if meter_rows else self.rehearsal
             ),
@@ -1252,13 +1333,23 @@ def publish(out_dir: Path, published_dir: Path) -> dict:
                 for row in meter_rows_all), encoding="utf-8")
     index["files"]["ledger.jsonl"] = sha256_file(published / "ledger.jsonl")
 
-    for name in ("rehearsal.json", "unmetered/unmetered_counterexample.json"):
+    for name in ("rehearsal.json", "BLOCKED.json", "meter-proof/meter_proof.json",
+                 "unmetered/unmetered_counterexample.json"):
         source = out_dir / name
         if source.is_file():
             destination = published / name
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(source, destination)
             index["files"][name] = sha256_file(destination)
+    # the two probe campaigns' own ledgers, verbatim: the meter's verifier can re-derive
+    # them, and they are where the real `ceq` row and the `unmetered` counter-example live.
+    for name, ledger in (("meter-proof", out_dir / "meter-proof" / "meter" / "ledger.jsonl"),
+                         ("unmetered", out_dir / "unmetered" / "meter" / "ledger.jsonl")):
+        if ledger.is_file():
+            destination = published / name / "meter_ledger.jsonl"
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(ledger, destination)
+            index["files"][f"{name}/meter_ledger.jsonl"] = sha256_file(destination)
     write_json(published / "INDEX.json", index)
     return index
 
@@ -1386,6 +1477,11 @@ def apply_b_hard(published: Path, procedure: Optional[Dict[str, Any]] = None) ->
     }
     if failures:
         payload["refused"] = True
+        payload["vector_note"] = (
+            "REFUSED: this vector comes from a telemetry without a measured interval and "
+            "is NOT a budget. It is recorded so the refusal's arithmetic is visible; the "
+            "campaigns must not read it as B_hard."
+        )
     else:
         payload["refused"] = False
     return payload
@@ -1420,6 +1516,120 @@ def validity_failures(procedure: Dict[str, Any], telemetry: Dict[str, dict]) -> 
         if report["campaign_id"] != procedure["campaign_ids"][arm] or report["arm_id"] != arm:
             failures.append(f"V7: {arm} campaign/arm id mismatch")
     return failures
+
+
+# --------------------------------------------------------------------------- #
+# the metering proof: a real, tiny, in-namespace metered call
+# --------------------------------------------------------------------------- #
+def meter_proof(out_dir: Path, procedure_sha: str) -> dict:
+    """Prove the pilot's own metering chain end to end, for the price of a few dozen CEq.
+
+    Everything here is the pilot's own boundary — the same `MeterProxy` on the same kind
+    of campaign port, the same `CampaignUplink` and `unshare -rn` namespace — with one
+    real, tiny model call issued **from inside the namespace** over the unix socket.  It
+    is deliberately not an arm: it exists so that a blocked pilot can still show a real
+    `ceq` row, the proxy's own re-derivation, and a refusal that is booked rather than
+    lost.  Its campaign id is its own; the pilot's totals stay clean.
+    """
+    root = Path(out_dir).resolve() / "meter-proof"
+    root.mkdir(parents=True, exist_ok=True)
+    campaign_id, arm_id = "C_calib_meter_proof", "A_calib_proof"
+    meter = MeterProxy(campaign_id=campaign_id, arm_id=arm_id, work_dir=root / "meter")
+    uplink = CampaignUplink(campaign_id=campaign_id, meter_port=meter.port)
+    report: Dict[str, Any] = {
+        "schema": "a0.a1.calibration.meter_proof/v1",
+        "not_used_for_selection": True,
+        "discarded_sentence": "The pilot's algorithmic results are discarded.",
+        "procedure_sha256": procedure_sha,
+        "runner_sha256": sha256_file(Path(__file__).resolve()),
+        "campaign_id": campaign_id,
+        "arm_id": arm_id,
+        "why": ("the arms are blocked before their first session (see the blocker "
+                "artifact); this proves the pilot's own metering chain — meter, namespace, "
+                "unix-socket hop, one real upstream call — independently of them"),
+        "model_requested": MODEL,
+    }
+    meter.start()
+    try:
+        uplink.start()
+        report["meter"] = {"port": meter.port, "base_url": meter.base_url,
+                           "ledger": str(meter.ledger), "token_issued": bool(meter.token)}
+        script = (
+            "import json, os, sys\n"
+            "sys.path.insert(0, %r)\n"
+            "from a0.a1.meter_runner import chat_completion\n"
+            "result = chat_completion(base_url=%r, api_key=os.environ['DEEPSEEK_API_KEY'],\n"
+            "    model=%r, messages=[{'role': 'user', 'content': 'reply with the single "
+            "word ok'}],\n"
+            "    token=%r, max_tokens=8, timeout=120)\n"
+            "body = result.get('body') or {}\n"
+            "print(json.dumps({'usage': body.get('usage'), 'model': body.get('model'),\n"
+            "                  'status': result.get('status')}))\n"
+        ) % (str(REPO_ROOT), meter.base_url, MODEL, meter.token or "")
+        proc = subprocess.run(
+            uplink.enter_command([sys.executable, "-c", script]), cwd=str(REPO_ROOT),
+            capture_output=True, text=True, timeout=240,
+            env={**os.environ, "PYTHONPATH": os.pathsep.join([str(REPO_ROOT)])},
+        )
+        report["in_namespace_call"] = {
+            "exit_code": proc.returncode,
+            "stdout_tail": (proc.stdout or "")[-1500:],
+            "stderr_tail": (proc.stderr or "")[-1500:],
+        }
+        report["direct_egress_from_inside_the_namespace"] = _direct_egress_probe(uplink)
+    finally:
+        uplink.stop()
+        meter.stop()
+    rows = read_rows(meter.ledger)
+    report["ledger_rows"] = rows
+    report["meter_verify"] = meter.verify_ledger()
+    report["checks"] = {
+        "the_call_was_made_from_inside_the_namespace": (
+            report["in_namespace_call"]["exit_code"] == 0
+        ),
+        "the_topology_blocks_direct_egress": bool(
+            report["direct_egress_from_inside_the_namespace"].get(
+                "_negative_controls_blocked")
+        ),
+        "exactly_one_row_was_booked": len(rows) == 1,
+        "the_row_carries_a_real_ceq": bool(
+            rows and isinstance(rows[0].get("ceq"), int) and rows[0]["ceq"] > 0
+            and rows[0].get("unmetered") is False
+        ),
+        "the_proxy_s_own_verifier_re_derives_it": (
+            (report["meter_verify"] or {}).get("returncode") == 0
+        ),
+    }
+    report["verdict"] = "pass" if all(report["checks"].values()) else "fail"
+    write_json(root / "meter_proof.json", report)
+    return report
+
+
+def _direct_egress_probe(uplink: CampaignUplink) -> dict:
+    script = (
+        "import json, socket\n"
+        "report = {}\n"
+        "for host in ('123.148.116.184', '1.1.1.1', '8.8.8.8'):\n"
+        "    try:\n"
+        "        socket.create_connection((host, 443), timeout=4).close()\n"
+        "        report[host] = 'REACHED'\n"
+        "    except OSError as exc:\n"
+        "        report[host] = 'BLOCKED:' + type(exc).__name__\n"
+        "print(json.dumps(report))\n"
+    )
+    proc = subprocess.run(
+        uplink.enter_command([sys.executable, "-c", script]), cwd=str(REPO_ROOT),
+        capture_output=True, text=True, timeout=120,
+        env={**os.environ, "PYTHONPATH": str(REPO_ROOT)},
+    )
+    lines = [line for line in (proc.stdout or "").splitlines()
+             if line.strip().startswith("{")]
+    report = json.loads(lines[-1]) if lines else {"error": (proc.stderr or "")[-400:]}
+    hosts = [key for key in ("123.148.116.184", "1.1.1.1", "8.8.8.8") if key in report]
+    report["_negative_controls_blocked"] = bool(hosts) and all(
+        str(report[key]).startswith("BLOCKED") for key in hosts
+    )
+    return report
 
 
 # --------------------------------------------------------------------------- #
@@ -1498,11 +1708,13 @@ def rehearsal(out_dir: Path) -> dict:
     procedure_sha = sha256_file(PROC_MD)
     units = rehearsal_units() * 2
     reports = {}
+    identities = {}
     for arm in SHORT:
         campaign = PilotCampaign(arm=arm, out_dir=Path(out_dir) / "rehearsal",
                                  procedure=procedure, procedure_sha=procedure_sha,
                                  rehearsal=True, units=units, passes_max=1)
         report = campaign.run()
+        identities[arm] = report["frozen_identity"]
         reports[arm] = {
             "arm": arm,
             "mode": "rehearsal",
@@ -1521,6 +1733,11 @@ def rehearsal(out_dir: Path) -> dict:
                               "wall_sec": row.get("wall_sec")}
                              for row in report["ledger"]["harness_rows"]],
             "topology_probe": report["topology_probe"],
+            "unit_refusals": [{"unit": unit["index"], "graph_id": unit["graph_id"],
+                               "exit_code": unit["exit_code"],
+                               "stderr_tail": unit["stderr_tail"]}
+                              for unit in report["units"]],
+            "arm_reached_the_harness": report["telemetry"]["N_E_r"] > 0,
         }
     payload = {
         "schema": "a0.a1.calibration.rehearsal/v1",
@@ -1533,6 +1750,7 @@ def rehearsal(out_dir: Path) -> dict:
         "procedure_sha256": procedure_sha,
         "runner_sha256": sha256_file(Path(__file__).resolve()),
         "arms": reports,
+        "frozen_identity": identities,
         "verdict": "pass" if all(r["verdict"] == "pass" for r in reports.values()) else "fail",
     }
     write_json(Path(out_dir).resolve() / "rehearsal.json", payload)
@@ -1563,6 +1781,8 @@ def main(argv: Optional[list] = None) -> int:
                        help="where to write B_hard.json (default: <out-dir>/B_hard.json)")
     p_un = sub.add_parser("unmetered", help="induce the unmetered counter-example")
     p_un.add_argument("--out-dir", required=True)
+    p_proof = sub.add_parser("meter-proof", help="one real, tiny, in-namespace metered call")
+    p_proof.add_argument("--out-dir", required=True)
     args = parser.parse_args(argv)
 
     if args.command == "freeze-check":
@@ -1590,6 +1810,7 @@ def main(argv: Optional[list] = None) -> int:
     if args.command in ("arm", "all"):
         procedure = load_procedure()
         procedure_sha = sha256_file(PROC_MD)
+        identity = frozen_identity_status()
         shorts = list(SHORT) if args.command == "all" else [
             "A_simpleloop" if args.arm == "simpleloop" else "A_kapso"]
         out: Dict[str, Any] = {}
@@ -1604,8 +1825,48 @@ def main(argv: Optional[list] = None) -> int:
                         "T_r_sec": report["telemetry"]["T_r_sec"],
                         "failed": [k for k, v in report["checks"].items() if not v],
                         "variance": report["telemetry"]["variance"]["per_unit"]["rates"]}
-        print(json.dumps(out, indent=1))
-        return 0 if all(r["verdict"] == "pass" for r in out.values()) else 5
+        blocked = None
+        if not identity["consistent"] or all(
+            data["N_E_r"] == 0 for data in out.values()
+        ):
+            blocked = {
+                "schema": "a0.a1.calibration.blocked/v1",
+                "not_used_for_selection": True,
+                "discarded_sentence": "The pilot's algorithmic results are discarded.",
+                "procedure_sha256": procedure_sha,
+                "runner_sha256": sha256_file(Path(__file__).resolve()),
+                "blocked": True,
+                "reason": "the arms refuse at their frozen-identity precondition, so no "
+                          "rate was measurable",
+                "frozen_identity": identity,
+                "arms": {arm: {"verdict": data["verdict"], "N_E_r": data["N_E_r"],
+                               "CEq_r": data["CEq_r"], "units": data["units"],
+                               "refusals": [{"unit": unit["index"],
+                                             "exit_code": unit["exit_code"],
+                                             "stderr_tail": unit["stderr_tail"]}
+                                            for unit in json.loads(
+                                                (Path(args.out_dir) / SHORT[arm]
+                                                 / "pilot_arm.json").read_text(
+                                                     encoding="utf-8"))["units"]]}
+                         for arm, data in out.items()},
+                "what_the_pilot_needs": identity.get("what_would_unblock_it"),
+                "then_run": ("python3 a0/a1/calibration/pilot.py all --out-dir <dir> && "
+                             "python3 a0/a1/calibration/pilot.py publish --out-dir <dir> "
+                             "--published-dir <dir>/published && "
+                             "python3 a0/a1/calibration/pilot.py apply --out-dir "
+                             "<dir>/published"),
+            }
+            write_json(Path(args.out_dir) / "BLOCKED.json", blocked)
+        print(json.dumps({"blocked": bool(blocked), "frozen_identity_consistent":
+                          identity["consistent"], "arms": out}, indent=1))
+        return 0 if not blocked else 6
+    if args.command == "meter-proof":
+        procedure = load_procedure()
+        payload = meter_proof(Path(args.out_dir), sha256_file(PROC_MD))
+        print(json.dumps({"verdict": payload["verdict"], "checks": payload["checks"],
+                          "rows": payload["ledger_rows"],
+                          "meter_verify": payload["meter_verify"]}, indent=1))
+        return 0 if payload["verdict"] == "pass" else 5
     if args.command == "publish":
         index = publish(Path(args.out_dir), Path(args.published_dir))
         print(json.dumps({"files": index["files"], "raw_sha256": index["raw_sha256"]},

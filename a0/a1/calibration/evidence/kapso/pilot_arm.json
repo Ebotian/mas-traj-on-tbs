@@ -1,0 +1,1093 @@
+{
+ "arm": "A_kapso",
+ "arm_id": "A_kapso",
+ "campaign_id": "C_calib_A_kapso",
+ "caps": {
+  "CEq_max": 300000,
+  "N_E_max": 192,
+  "T_wall_sec": 900.0
+ },
+ "checks": {
+  "every_harness_row_names_a_workload_graph": true,
+  "every_metered_row_re_derives_its_ceq": false,
+  "no_unmetered_row_in_the_campaign": true,
+  "the_arm_reached_the_harness": false,
+  "the_harness_identity_declares_ownership": true,
+  "the_meters_own_verifier_re_derives_the_ledger": true,
+  "the_model_family_is_deepseek_flash": false,
+  "the_procedure_document_is_the_frozen_one": true,
+  "the_runner_is_the_committed_one": true,
+  "the_topology_blocks_direct_egress": true,
+  "unit_attribution_is_exhaustive": true
+ },
+ "discarded_sentence": "The pilot's algorithmic results are discarded.",
+ "ended_at": "2026-09-22T19:40:17+0800",
+ "frozen_identity": {
+  "command": "python3 a0/a1/t1_eid.py check",
+  "consistent": false,
+  "exit_code": 5,
+  "on_disk": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+  "pass": false,
+  "reason": "eid_star drifted",
+  "recomputed": "6682ff6a85088cbb921080e3911805ffd99376572d144610ec7489d57c338614",
+  "what_this_blocks": "both A1 arms refuse at their frozen-identity precondition: the SimpleLoop adapter exits 3 (`evalcontract.py verify` drift against T1.contract.json) and KAPSO's EvaluationMaintainer raises before the session starts (`E* source drifted \u2026 recorded in EID*`). A resource pilot cannot measure a rate through an arm that will not start.",
+  "what_would_unblock_it": "the owner of a0/a1/T1-EID.json + T1.contract.json re-freezes the evaluator identity against the current E* bytes (`python3 a0/a1/t1_eid.py build`, then re-declare CID's `task.eid_star`), or a0/tasks/maxcut/e_star.py is returned to the revision the frozen EID* names. This workstream owns neither file and did not change either of them."
+ },
+ "graph_set_sha256": "df3cc93533e3da847629147b7db06808244a06c2664e9d35b7a8c934cac9b6b2",
+ "graphs": [
+  {
+   "graph_id": "C_0001",
+   "sha256": "8c23cbb224a31dbea8ccf28fb6db7b26d182f72c3abada9354a247d13cb7ad29"
+  },
+  {
+   "graph_id": "C_0002",
+   "sha256": "99710028c7d66594d3c6bd7620855c02412f9c2f78efdaa7b0ff2448333c255f"
+  },
+  {
+   "graph_id": "C_0003",
+   "sha256": "0e3f49d6ec062ba5ca4ce84323e3f035fa9bf807a02d9f4ad9d070c69be2d36e"
+  },
+  {
+   "graph_id": "C_0004",
+   "sha256": "0431a497c0462ffe44b697cdfeb265e76c56e64f1670eb1607eb232daa79a17e"
+  },
+  {
+   "graph_id": "C_0005",
+   "sha256": "385256224954c6ce9a84e05264f09c754a86b6bed6f4b0bd41b369f301086c17"
+  },
+  {
+   "graph_id": "C_0006",
+   "sha256": "b42f39d3431800fd9d7988131d6fa786c0b91fd26abf7ef5fafb55dc9f17394e"
+  },
+  {
+   "graph_id": "C_0007",
+   "sha256": "12b53751d29caf1c7fa9333ccfb5bbeb1da9b96d096e0b6433431642b0cca4ee"
+  },
+  {
+   "graph_id": "C_0008",
+   "sha256": "39504232beff0c326cca31e883a365d0711d3d42add1b173386b35dc7d7233ce"
+  },
+  {
+   "graph_id": "C_0009",
+   "sha256": "045f75500fc44e2c8fcf314309de6924a5d710be768e269efeed901ff37fad03"
+  },
+  {
+   "graph_id": "C_0010",
+   "sha256": "7107d3cd0a930fcfcd4fa5cec6abbd91fd3b5bebc4dfc6c6e28e260af1e86c20"
+  },
+  {
+   "graph_id": "C_0011",
+   "sha256": "04bebec51fb43c0fccd8b56da7045868629ce49caa5aecf49ece98f60628c6e6"
+  },
+  {
+   "graph_id": "C_0012",
+   "sha256": "204c62f040b44b21cc7182bcfc2c789f5c6b5a41b9a74f131cdfdbea432ed415"
+  }
+ ],
+ "harness": {
+  "identity": {
+   "arm_id": "A_kapso",
+   "campaign_id": "C_calib_A_kapso",
+   "e_star_script": "/home/ebt/rsi-dev/a0/tasks/maxcut/e_star.py",
+   "e_star_script_sha256": "fa0932b438c658cc500f9801ac6090e45c5756d22c4e62c253a65dcd93fb42b1",
+   "eid_star": "sha256:4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+   "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+   "harness_run_id": "calib-kapso",
+   "nonce": "aaf8afdea12b43cd339e4769d8a1d648",
+   "override": {},
+   "owns_evaluation": true,
+   "runtime_may_evaluate": false,
+   "schema": "a0.a1.harness_identity/v1",
+   "source_records": [
+    {
+     "bytes": 44332,
+     "path": "e_star.py",
+     "sha256": "fa0932b438c658cc500f9801ac6090e45c5756d22c4e62c253a65dcd93fb42b1"
+    },
+    {
+     "bytes": 16397,
+     "path": "e_star_child.py",
+     "sha256": "c08f0c36973cecb7624c54c70b82906d8a323517ef100cad2ab31877f92edd0f"
+    }
+   ],
+   "started_at": "2026-09-22T19:39:44+0800",
+   "theta_e": {
+    "fidelity": "full",
+    "fraction": 1.0,
+    "seed": 1337,
+    "timeout_s": 10.0
+   }
+  },
+  "ledger": "/tmp/a1cal/pilot/kapso/harness/ledger.jsonl",
+  "root": "/tmp/a1cal/pilot/kapso/harness"
+ },
+ "ledger": {
+  "harness_ledger": "/tmp/a1cal/pilot/kapso/harness/ledger.jsonl",
+  "harness_ledger_sha256": null,
+  "harness_rows": [],
+  "meter_ledger": "/tmp/a1cal/pilot/kapso/meter/ledger.jsonl",
+  "meter_ledger_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "meter_rows": [],
+  "meter_verify": {
+   "returncode": 0,
+   "stderr": "",
+   "stdout": "{\n  \"ledger\": \"/tmp/a1cal/pilot/kapso/meter/ledger.jsonl\",\n  \"rows\": 0,\n  \"metered\": 0,\n  \"unmetered\": 0,\n  \"ceq_total\": 0,\n  \"ceq_per_campaign_arm\": {},\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
+  }
+ },
+ "meter": {
+  "aid": {
+   "endpoints": [
+    {
+     "anthropic_base_url": "http://127.0.0.1:53839",
+     "arm_id": "A_kapso",
+     "base_url": "http://127.0.0.1:53839/v1",
+     "campaign_id": "C_calib_A_kapso",
+     "token": "dZdtKgQlffvBDUpghDqhgpz6uAE6yd7S"
+    }
+   ],
+   "meter": {
+    "allowlist": [
+     "api.deepseek.com"
+    ],
+    "attribution": "per_campaign_listener_port(+optional X-A0-Meter-Token)",
+    "ceq_formula": "ceq = miss + floor(hit*2/100) + 4*completion",
+    "connect": "refused",
+    "ledger": "/tmp/a1cal/pilot/kapso/meter/ledger.jsonl",
+    "missing_usage": "unmetered:true,ceq:null",
+    "mode": "plaintext_base_url",
+    "on_missing_cache_split": "unmetered",
+    "row_schema": "a0.meter.call/v1",
+    "upstream_base": "https://api.deepseek.com"
+   },
+   "schema": "a0.meter.aid/v1"
+  },
+  "base_url": "http://127.0.0.1:53839/v1",
+  "ledger": "/tmp/a1cal/pilot/kapso/meter/ledger.jsonl",
+  "port": 53839,
+  "token_issued": true
+ },
+ "mode": "pilot",
+ "model_requested": "deepseek-flash",
+ "not_used_for_selection": true,
+ "procedure": {
+  "document": "a0/a1/calibration/PILOT-PROCEDURE.md",
+  "document_sha256": "68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2",
+  "json": "a0/a1/calibration/pilot_procedure.json",
+  "json_sha256": "8fcc8795e8f5c044771c6adc29c7fecdbbe730d5fe74bd2d51d4b6ca425cd3eb"
+ },
+ "reduction": {
+  "harness_row_keys_removed": [
+   "true_value",
+   "handed_value"
+  ],
+  "kept": [
+   "ts",
+   "campaign_id",
+   "arm_id",
+   "candidate_source_sha256",
+   "graph_sha256",
+   "status",
+   "wall_sec",
+   "interpreted.wall_ms"
+  ],
+  "outcome_keys_removed": [
+   "cut_edges",
+   "cut_fraction"
+  ],
+  "why": "the pilot's algorithmic results are not published (PILOT-PROCEDURE.md \u00a70/\u00a78): the objective's value on a calibration graph must not be available to a later reader who might tune the budget by it"
+ },
+ "runner": {
+  "path": "a0/a1/calibration/pilot.py",
+  "sha256": "5034b91e0e4cdcf75d68954a3ca67d15eb2a41b16cc68937a6222dacc89c20a1"
+ },
+ "runtime": "kapso",
+ "schema": "a0.a1.calibration.pilot_arm/v1",
+ "started_at": "2026-09-22T19:39:45+0800",
+ "stop_reason": "workload_complete",
+ "telemetry": {
+  "CEq_r": 0,
+  "N_E_r": 0,
+  "N_E_r_ledger_rows": 0,
+  "T_r_ended_epoch": 1790077217.576499,
+  "T_r_micros": 32368727,
+  "T_r_sec": 32.368727,
+  "T_r_started_epoch": 1790077185.207772,
+  "arm": "A_kapso",
+  "arm_id": "A_kapso",
+  "attribution": {
+   "CEq_attributed_to_units": 0,
+   "CEq_total": 0,
+   "N_E_attributed_to_units": 0,
+   "N_E_ledger_rows": 0,
+   "exhaustive": true
+  },
+  "campaign_id": "C_calib_A_kapso",
+  "ceq_per_call": {
+   "completion_tokens": [],
+   "max_tokens_declared": 256,
+   "summary": {
+    "n": 0
+   },
+   "values": []
+  },
+  "cost_sec": {
+   "candidate_wall_ms": {
+    "n": 0
+   },
+   "e_star_wall_sec": {
+    "n": 0
+   }
+  },
+  "discarded_sentence": "The pilot's algorithmic results are discarded.",
+  "graph_shas_used": [],
+  "graphs": [
+   {
+    "graph_id": "C_0001",
+    "sha256": "8c23cbb224a31dbea8ccf28fb6db7b26d182f72c3abada9354a247d13cb7ad29"
+   },
+   {
+    "graph_id": "C_0002",
+    "sha256": "99710028c7d66594d3c6bd7620855c02412f9c2f78efdaa7b0ff2448333c255f"
+   },
+   {
+    "graph_id": "C_0003",
+    "sha256": "0e3f49d6ec062ba5ca4ce84323e3f035fa9bf807a02d9f4ad9d070c69be2d36e"
+   },
+   {
+    "graph_id": "C_0004",
+    "sha256": "0431a497c0462ffe44b697cdfeb265e76c56e64f1670eb1607eb232daa79a17e"
+   },
+   {
+    "graph_id": "C_0005",
+    "sha256": "385256224954c6ce9a84e05264f09c754a86b6bed6f4b0bd41b369f301086c17"
+   },
+   {
+    "graph_id": "C_0006",
+    "sha256": "b42f39d3431800fd9d7988131d6fa786c0b91fd26abf7ef5fafb55dc9f17394e"
+   },
+   {
+    "graph_id": "C_0007",
+    "sha256": "12b53751d29caf1c7fa9333ccfb5bbeb1da9b96d096e0b6433431642b0cca4ee"
+   },
+   {
+    "graph_id": "C_0008",
+    "sha256": "39504232beff0c326cca31e883a365d0711d3d42add1b173386b35dc7d7233ce"
+   },
+   {
+    "graph_id": "C_0009",
+    "sha256": "045f75500fc44e2c8fcf314309de6924a5d710be768e269efeed901ff37fad03"
+   },
+   {
+    "graph_id": "C_0010",
+    "sha256": "7107d3cd0a930fcfcd4fa5cec6abbd91fd3b5bebc4dfc6c6e28e260af1e86c20"
+   },
+   {
+    "graph_id": "C_0011",
+    "sha256": "04bebec51fb43c0fccd8b56da7045868629ce49caa5aecf49ece98f60628c6e6"
+   },
+   {
+    "graph_id": "C_0012",
+    "sha256": "204c62f040b44b21cc7182bcfc2c789f5c6b5a41b9a74f131cdfdbea432ed415"
+   }
+  ],
+  "meter_rows": 0,
+  "mode": "pilot",
+  "not_used_for_selection": true,
+  "per_unit": [
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.338597,
+    "exit_code": 1,
+    "graph_id": "C_0001",
+    "pass": 0,
+    "statuses": [],
+    "unit": 0
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.345775,
+    "exit_code": 1,
+    "graph_id": "C_0002",
+    "pass": 0,
+    "statuses": [],
+    "unit": 1
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.352076,
+    "exit_code": 1,
+    "graph_id": "C_0003",
+    "pass": 0,
+    "statuses": [],
+    "unit": 2
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.340683,
+    "exit_code": 1,
+    "graph_id": "C_0004",
+    "pass": 0,
+    "statuses": [],
+    "unit": 3
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.379363,
+    "exit_code": 1,
+    "graph_id": "C_0005",
+    "pass": 0,
+    "statuses": [],
+    "unit": 4
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.31992,
+    "exit_code": 1,
+    "graph_id": "C_0006",
+    "pass": 0,
+    "statuses": [],
+    "unit": 5
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.384661,
+    "exit_code": 1,
+    "graph_id": "C_0007",
+    "pass": 0,
+    "statuses": [],
+    "unit": 6
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.402443,
+    "exit_code": 1,
+    "graph_id": "C_0008",
+    "pass": 0,
+    "statuses": [],
+    "unit": 7
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.353119,
+    "exit_code": 1,
+    "graph_id": "C_0009",
+    "pass": 0,
+    "statuses": [],
+    "unit": 8
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.317756,
+    "exit_code": 1,
+    "graph_id": "C_0010",
+    "pass": 0,
+    "statuses": [],
+    "unit": 9
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.327132,
+    "exit_code": 1,
+    "graph_id": "C_0011",
+    "pass": 0,
+    "statuses": [],
+    "unit": 10
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.345305,
+    "exit_code": 1,
+    "graph_id": "C_0012",
+    "pass": 0,
+    "statuses": [],
+    "unit": 11
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.336704,
+    "exit_code": 1,
+    "graph_id": "C_0001",
+    "pass": 1,
+    "statuses": [],
+    "unit": 12
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.341273,
+    "exit_code": 1,
+    "graph_id": "C_0002",
+    "pass": 1,
+    "statuses": [],
+    "unit": 13
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.336469,
+    "exit_code": 1,
+    "graph_id": "C_0003",
+    "pass": 1,
+    "statuses": [],
+    "unit": 14
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.340184,
+    "exit_code": 1,
+    "graph_id": "C_0004",
+    "pass": 1,
+    "statuses": [],
+    "unit": 15
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.338218,
+    "exit_code": 1,
+    "graph_id": "C_0005",
+    "pass": 1,
+    "statuses": [],
+    "unit": 16
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.40235,
+    "exit_code": 1,
+    "graph_id": "C_0006",
+    "pass": 1,
+    "statuses": [],
+    "unit": 17
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.355079,
+    "exit_code": 1,
+    "graph_id": "C_0007",
+    "pass": 1,
+    "statuses": [],
+    "unit": 18
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.317239,
+    "exit_code": 1,
+    "graph_id": "C_0008",
+    "pass": 1,
+    "statuses": [],
+    "unit": 19
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.326879,
+    "exit_code": 1,
+    "graph_id": "C_0009",
+    "pass": 1,
+    "statuses": [],
+    "unit": 20
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.319169,
+    "exit_code": 1,
+    "graph_id": "C_0010",
+    "pass": 1,
+    "statuses": [],
+    "unit": 21
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.39988,
+    "exit_code": 1,
+    "graph_id": "C_0011",
+    "pass": 1,
+    "statuses": [],
+    "unit": 22
+   },
+   {
+    "CEq": 0,
+    "N_E": 0,
+    "arm_state": {
+     "kind": "kapso",
+     "present": false
+    },
+    "elapsed_sec": 1.34413,
+    "exit_code": 1,
+    "graph_id": "C_0012",
+    "pass": 1,
+    "statuses": [],
+    "unit": 23
+   }
+  ],
+  "procedure_sha256": "68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2",
+  "runner_sha256": "5034b91e0e4cdcf75d68954a3ca67d15eb2a41b16cc68937a6222dacc89c20a1",
+  "schema": "a0.a1.calibration.telemetry/v1",
+  "stop_reason": "workload_complete",
+  "tau_cross_check": {
+   "candidate_p99_ms": null,
+   "floor_binds": null,
+   "note": "reported, never changed: the frozen tau is the gate workstream's",
+   "tau_frozen_s": 10.0,
+   "ten_times_p99_s": null
+  },
+  "units_completed": 24,
+  "units_per_pass": 12,
+  "unmetered_rows": 0,
+  "variance": {
+   "per_unit": {
+    "expected_per_unit": {
+     "evals": 2,
+     "loop_depth": 2,
+     "model_calls": 2
+    },
+    "rates": {
+     "CEq": {
+      "cv": null,
+      "max": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "n": 24,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "sd": 0.0
+     },
+     "N_E": {
+      "cv": null,
+      "max": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "n": 24,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "sd": 0.0
+     },
+     "T_sec": {
+      "cv": 0.01956946830439738,
+      "max": 1.402443,
+      "mean": 1.3485168333333333,
+      "median": 1.340978,
+      "min": 1.317239,
+      "n": 24,
+      "p50": 1.340683,
+      "p95": 1.40235,
+      "p99": 1.402443,
+      "sd": 0.026389757427862988
+     }
+    }
+   },
+   "per_window": {
+    "CEq": {
+     "full_rates": [],
+     "full_windows": [],
+     "max_full_rate": null,
+     "mean_full_rate": null,
+     "min_full_rate": null,
+     "n_full": 0,
+     "partial": {
+      "CEq": 0,
+      "span_sec": 32.36872696876526,
+      "start_epoch": 1790077185.207772
+     },
+     "sum_full": 0
+    },
+    "N_E": {
+     "full_rates": [],
+     "full_windows": [],
+     "max_full_rate": null,
+     "mean_full_rate": null,
+     "min_full_rate": null,
+     "n_full": 0,
+     "partial": {
+      "N_E": 0,
+      "span_sec": 32.36872696876526,
+      "start_epoch": 1790077185.207772
+     },
+     "sum_full": 0
+    },
+    "anchor_epoch": 1790077185.207772,
+    "window_sec": 60.0,
+    "windows_total": 0
+   }
+  },
+  "workload_complete": true
+ },
+ "theta": {
+  "fidelity": "none",
+  "fraction": "none",
+  "note": "timeout_s is the gate workstream's frozen tau (section 7 floor); the pilot runs with it and re-measures the latency distribution without changing it",
+  "seed": 1337,
+  "timeout_s": 10.0
+ },
+ "topology_probe": {
+  "1.1.1.1": "BLOCKED:OSError",
+  "123.148.116.184": "BLOCKED:OSError",
+  "8.8.8.8": "BLOCKED:OSError",
+  "_meter_reachable": true,
+  "_negative_controls_blocked": true,
+  "meter_loopback": "REACHED"
+ },
+ "units": [
+  {
+   "elapsed_sec": 1.338597,
+   "ended_epoch": 1790077186.5465736,
+   "exit_code": 1,
+   "graph_id": "C_0001",
+   "graph_sha256": "8c23cbb224a31dbea8ccf28fb6db7b26d182f72c3abada9354a247d13cb7ad29",
+   "index": 0,
+   "pass": 0,
+   "started_epoch": 1790077185.207977,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "a361f0fb0abc6a008b7c2d5eb9fa6747ad3a2eee950566470637c73376da714c"
+  },
+  {
+   "elapsed_sec": 1.345775,
+   "ended_epoch": 1790077187.892549,
+   "exit_code": 1,
+   "graph_id": "C_0002",
+   "graph_sha256": "99710028c7d66594d3c6bd7620855c02412f9c2f78efdaa7b0ff2448333c255f",
+   "index": 1,
+   "pass": 0,
+   "started_epoch": 1790077186.5467737,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "9e7e1ecbb2e0ba0e1e4cd89f787b0c4ea09a36362f29c9f28ba673776f6cc6ac"
+  },
+  {
+   "elapsed_sec": 1.352076,
+   "ended_epoch": 1790077189.2448218,
+   "exit_code": 1,
+   "graph_id": "C_0003",
+   "graph_sha256": "0e3f49d6ec062ba5ca4ce84323e3f035fa9bf807a02d9f4ad9d070c69be2d36e",
+   "index": 2,
+   "pass": 0,
+   "started_epoch": 1790077187.892746,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "8b1ba3d77ef1cb4e163dc6e72f0b3bd5087dc6c9b3b4be90d4ce854aa641219b"
+  },
+  {
+   "elapsed_sec": 1.340683,
+   "ended_epoch": 1790077190.5856748,
+   "exit_code": 1,
+   "graph_id": "C_0004",
+   "graph_sha256": "0431a497c0462ffe44b697cdfeb265e76c56e64f1670eb1607eb232daa79a17e",
+   "index": 3,
+   "pass": 0,
+   "started_epoch": 1790077189.244992,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "8981adf7a9514473e928e2056f04b5e509bf1a3b84aff4b210bfc49e594e413c"
+  },
+  {
+   "elapsed_sec": 1.379363,
+   "ended_epoch": 1790077191.9652162,
+   "exit_code": 1,
+   "graph_id": "C_0005",
+   "graph_sha256": "385256224954c6ce9a84e05264f09c754a86b6bed6f4b0bd41b369f301086c17",
+   "index": 4,
+   "pass": 0,
+   "started_epoch": 1790077190.585853,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "d3d1922baaeb5bfef1d149579d7834f2bfc01a5b2e2ef2229bfc1daf68ccd613"
+  },
+  {
+   "elapsed_sec": 1.31992,
+   "ended_epoch": 1790077193.2853062,
+   "exit_code": 1,
+   "graph_id": "C_0006",
+   "graph_sha256": "b42f39d3431800fd9d7988131d6fa786c0b91fd26abf7ef5fafb55dc9f17394e",
+   "index": 5,
+   "pass": 0,
+   "started_epoch": 1790077191.965386,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "599deec7e5d5eea13dd166d7c3d20d60bd89dc2b57fd4c8b85072632f9b96407"
+  },
+  {
+   "elapsed_sec": 1.384661,
+   "ended_epoch": 1790077194.670166,
+   "exit_code": 1,
+   "graph_id": "C_0007",
+   "graph_sha256": "12b53751d29caf1c7fa9333ccfb5bbeb1da9b96d096e0b6433431642b0cca4ee",
+   "index": 6,
+   "pass": 0,
+   "started_epoch": 1790077193.2855048,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "cf194e8c7730788e321ccf661d7ba3cf533aeb61c0c8245a2d6b6f0104adb56d"
+  },
+  {
+   "elapsed_sec": 1.402443,
+   "ended_epoch": 1790077196.072792,
+   "exit_code": 1,
+   "graph_id": "C_0008",
+   "graph_sha256": "39504232beff0c326cca31e883a365d0711d3d42add1b173386b35dc7d7233ce",
+   "index": 7,
+   "pass": 0,
+   "started_epoch": 1790077194.6703494,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "29fce0bf9e1018b593561256586173ef52a39cb5475b50d005fe4b2019557be8"
+  },
+  {
+   "elapsed_sec": 1.353119,
+   "ended_epoch": 1790077197.4260662,
+   "exit_code": 1,
+   "graph_id": "C_0009",
+   "graph_sha256": "045f75500fc44e2c8fcf314309de6924a5d710be768e269efeed901ff37fad03",
+   "index": 8,
+   "pass": 0,
+   "started_epoch": 1790077196.072947,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "40397c0235e4d0a4532e588d96f9d6df47ddd707280cb562563e2c48443ce079"
+  },
+  {
+   "elapsed_sec": 1.317756,
+   "ended_epoch": 1790077198.7439787,
+   "exit_code": 1,
+   "graph_id": "C_0010",
+   "graph_sha256": "7107d3cd0a930fcfcd4fa5cec6abbd91fd3b5bebc4dfc6c6e28e260af1e86c20",
+   "index": 9,
+   "pass": 0,
+   "started_epoch": 1790077197.4262233,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "21ace379aae18044eda735f9f451cce442720bb7bdafd79871d4d2ac3152add7"
+  },
+  {
+   "elapsed_sec": 1.327132,
+   "ended_epoch": 1790077200.0712814,
+   "exit_code": 1,
+   "graph_id": "C_0011",
+   "graph_sha256": "04bebec51fb43c0fccd8b56da7045868629ce49caa5aecf49ece98f60628c6e6",
+   "index": 10,
+   "pass": 0,
+   "started_epoch": 1790077198.7441497,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "ab47181c6aca2dc0c2eb38ddc7ac0d61578adaf3dcad4da9f11ecd6a015d876c"
+  },
+  {
+   "elapsed_sec": 1.345305,
+   "ended_epoch": 1790077201.4167628,
+   "exit_code": 1,
+   "graph_id": "C_0012",
+   "graph_sha256": "204c62f040b44b21cc7182bcfc2c789f5c6b5a41b9a74f131cdfdbea432ed415",
+   "index": 11,
+   "pass": 0,
+   "started_epoch": 1790077200.0714574,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "23d49c49b084d738988f5bb8a1b80201160190bfa6d5aad52ef588cb44fbaba0"
+  },
+  {
+   "elapsed_sec": 1.336704,
+   "ended_epoch": 1790077202.7536402,
+   "exit_code": 1,
+   "graph_id": "C_0001",
+   "graph_sha256": "8c23cbb224a31dbea8ccf28fb6db7b26d182f72c3abada9354a247d13cb7ad29",
+   "index": 12,
+   "pass": 1,
+   "started_epoch": 1790077201.4169364,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "af40bfa87840fa6a1757d107a1bba9d0b4c2a229728e5d7ca5e136d6d3c43613"
+  },
+  {
+   "elapsed_sec": 1.341273,
+   "ended_epoch": 1790077204.0951006,
+   "exit_code": 1,
+   "graph_id": "C_0002",
+   "graph_sha256": "99710028c7d66594d3c6bd7620855c02412f9c2f78efdaa7b0ff2448333c255f",
+   "index": 13,
+   "pass": 1,
+   "started_epoch": 1790077202.7538278,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "3e7fbe15d42b2fdcdbae7b35dceb3ab759b0fce1013a4327653c8b844c04df5a"
+  },
+  {
+   "elapsed_sec": 1.336469,
+   "ended_epoch": 1790077205.431725,
+   "exit_code": 1,
+   "graph_id": "C_0003",
+   "graph_sha256": "0e3f49d6ec062ba5ca4ce84323e3f035fa9bf807a02d9f4ad9d070c69be2d36e",
+   "index": 14,
+   "pass": 1,
+   "started_epoch": 1790077204.0952563,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "a54d75991f8443251d2ced7cd5a6c1f7fb457d4e1c6f26e668d91f5fea3abc1b"
+  },
+  {
+   "elapsed_sec": 1.340184,
+   "ended_epoch": 1790077206.7720904,
+   "exit_code": 1,
+   "graph_id": "C_0004",
+   "graph_sha256": "0431a497c0462ffe44b697cdfeb265e76c56e64f1670eb1607eb232daa79a17e",
+   "index": 15,
+   "pass": 1,
+   "started_epoch": 1790077205.4319055,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "efe6e86459c7219768bf5cdadce21df1d93578639585d956ba24c417487c8d97"
+  },
+  {
+   "elapsed_sec": 1.338218,
+   "ended_epoch": 1790077208.1104941,
+   "exit_code": 1,
+   "graph_id": "C_0005",
+   "graph_sha256": "385256224954c6ce9a84e05264f09c754a86b6bed6f4b0bd41b369f301086c17",
+   "index": 16,
+   "pass": 1,
+   "started_epoch": 1790077206.772276,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "bee896bc1e4619cbef66f24a8b210b1dc916312164622379824b695e7d129a71"
+  },
+  {
+   "elapsed_sec": 1.40235,
+   "ended_epoch": 1790077209.513007,
+   "exit_code": 1,
+   "graph_id": "C_0006",
+   "graph_sha256": "b42f39d3431800fd9d7988131d6fa786c0b91fd26abf7ef5fafb55dc9f17394e",
+   "index": 17,
+   "pass": 1,
+   "started_epoch": 1790077208.1106567,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "5c52e1029cdb594fda6c5a12b1427a89e0f3e7343e331deb99c5db70b4d65bbb"
+  },
+  {
+   "elapsed_sec": 1.355079,
+   "ended_epoch": 1790077210.8682508,
+   "exit_code": 1,
+   "graph_id": "C_0007",
+   "graph_sha256": "12b53751d29caf1c7fa9333ccfb5bbeb1da9b96d096e0b6433431642b0cca4ee",
+   "index": 18,
+   "pass": 1,
+   "started_epoch": 1790077209.5131714,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "3d7737590cfac59e276a215e135fd305b65a04fe7b14eb98e6a613945ff38952"
+  },
+  {
+   "elapsed_sec": 1.317239,
+   "ended_epoch": 1790077212.185661,
+   "exit_code": 1,
+   "graph_id": "C_0008",
+   "graph_sha256": "39504232beff0c326cca31e883a365d0711d3d42add1b173386b35dc7d7233ce",
+   "index": 19,
+   "pass": 1,
+   "started_epoch": 1790077210.8684225,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "1e09707b7f647f4a0de180ecb3a8265483d920e2188b984e1d76503771a9077e"
+  },
+  {
+   "elapsed_sec": 1.326879,
+   "ended_epoch": 1790077213.5127127,
+   "exit_code": 1,
+   "graph_id": "C_0009",
+   "graph_sha256": "045f75500fc44e2c8fcf314309de6924a5d710be768e269efeed901ff37fad03",
+   "index": 20,
+   "pass": 1,
+   "started_epoch": 1790077212.1858342,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "4b9ca9c8308579389e3fc87f05c1c574d22f763246769a1daa8e6100016b5e20"
+  },
+  {
+   "elapsed_sec": 1.319169,
+   "ended_epoch": 1790077214.8320754,
+   "exit_code": 1,
+   "graph_id": "C_0010",
+   "graph_sha256": "7107d3cd0a930fcfcd4fa5cec6abbd91fd3b5bebc4dfc6c6e28e260af1e86c20",
+   "index": 21,
+   "pass": 1,
+   "started_epoch": 1790077213.5129066,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "5633b4b54224a90cb46e14a9557c1481457862d826c9f354e131e7f5caf622b9"
+  },
+  {
+   "elapsed_sec": 1.39988,
+   "ended_epoch": 1790077216.2321236,
+   "exit_code": 1,
+   "graph_id": "C_0011",
+   "graph_sha256": "04bebec51fb43c0fccd8b56da7045868629ce49caa5aecf49ece98f60628c6e6",
+   "index": 22,
+   "pass": 1,
+   "started_epoch": 1790077214.8322442,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "d5817ee5f8a5444d8e320691f773fb48a0ec2f0789daf1aea151f989be8bb57c"
+  },
+  {
+   "elapsed_sec": 1.34413,
+   "ended_epoch": 1790077217.5764856,
+   "exit_code": 1,
+   "graph_id": "C_0012",
+   "graph_sha256": "204c62f040b44b21cc7182bcfc2c789f5c6b5a41b9a74f131cdfdbea432ed415",
+   "index": 23,
+   "pass": 1,
+   "started_epoch": 1790077216.2323563,
+   "stderr_bytes": 1710,
+   "stderr_sha256": "b27c2c8be5bb1c49f74d9cc2e9db05572491c5063cfee5a4c1c0fdd0d2b8dfe7",
+   "stdout_bytes": 411,
+   "stdout_sha256": "74be03f339d8f8972262b57d5717bc03b2ed1f141009cb2036677cfab81232e3"
+  }
+ ],
+ "verdict": "fail",
+ "workload": {
+  "evals_per_unit_expected": 2,
+  "graph_role": "calibration",
+  "loop_depth": 2,
+  "max_tokens_per_call": 256,
+  "model_calls_per_unit_expected": 2,
+  "passes_max": 2,
+  "units_per_pass": 12
+ }
+}

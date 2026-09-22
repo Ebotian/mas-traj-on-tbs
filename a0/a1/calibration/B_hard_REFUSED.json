@@ -1,0 +1,623 @@
+{
+ "calibration_graphs": [
+  {
+   "graph_id": "C_0001",
+   "sha256": "8c23cbb224a31dbea8ccf28fb6db7b26d182f72c3abada9354a247d13cb7ad29"
+  },
+  {
+   "graph_id": "C_0002",
+   "sha256": "99710028c7d66594d3c6bd7620855c02412f9c2f78efdaa7b0ff2448333c255f"
+  },
+  {
+   "graph_id": "C_0003",
+   "sha256": "0e3f49d6ec062ba5ca4ce84323e3f035fa9bf807a02d9f4ad9d070c69be2d36e"
+  },
+  {
+   "graph_id": "C_0004",
+   "sha256": "0431a497c0462ffe44b697cdfeb265e76c56e64f1670eb1607eb232daa79a17e"
+  },
+  {
+   "graph_id": "C_0005",
+   "sha256": "385256224954c6ce9a84e05264f09c754a86b6bed6f4b0bd41b369f301086c17"
+  },
+  {
+   "graph_id": "C_0006",
+   "sha256": "b42f39d3431800fd9d7988131d6fa786c0b91fd26abf7ef5fafb55dc9f17394e"
+  },
+  {
+   "graph_id": "C_0007",
+   "sha256": "12b53751d29caf1c7fa9333ccfb5bbeb1da9b96d096e0b6433431642b0cca4ee"
+  },
+  {
+   "graph_id": "C_0008",
+   "sha256": "39504232beff0c326cca31e883a365d0711d3d42add1b173386b35dc7d7233ce"
+  },
+  {
+   "graph_id": "C_0009",
+   "sha256": "045f75500fc44e2c8fcf314309de6924a5d710be768e269efeed901ff37fad03"
+  },
+  {
+   "graph_id": "C_0010",
+   "sha256": "7107d3cd0a930fcfcd4fa5cec6abbd91fd3b5bebc4dfc6c6e28e260af1e86c20"
+  },
+  {
+   "graph_id": "C_0011",
+   "sha256": "04bebec51fb43c0fccd8b56da7045868629ce49caa5aecf49ece98f60628c6e6"
+  },
+  {
+   "graph_id": "C_0012",
+   "sha256": "204c62f040b44b21cc7182bcfc2c789f5c6b5a41b9a74f131cdfdbea432ed415"
+  }
+ ],
+ "campaigns": {
+  "A_kapso": {
+   "arm_id": "A_kapso",
+   "campaign_id": "C_calib_A_kapso",
+   "caps": {
+    "CEq_max": 300000,
+    "N_E_max": 192,
+    "T_wall_sec": 900.0
+   },
+   "mode": "pilot",
+   "stop_reason": "workload_complete",
+   "units_completed": 24,
+   "workload_complete": true
+  },
+  "A_simpleloop": {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_calib_A_simpleloop",
+   "caps": {
+    "CEq_max": 1200000,
+    "N_E_max": 288,
+    "T_wall_sec": 900.0
+   },
+   "mode": "pilot",
+   "stop_reason": "workload_complete",
+   "units_completed": 24,
+   "workload_complete": true
+  }
+ },
+ "diagnostics": {
+  "T_wall_min": 30.0,
+  "factor": 1.25,
+  "per_arm": {
+   "A_kapso": {
+    "D1_margin_CEq_minutes": null,
+    "D2_margin_NE_minutes": null,
+    "D3_ceq_worst_window_ratio": null,
+    "D3_ne_worst_window_ratio": null,
+    "D3_threshold": 1.25,
+    "D4_tau_cross_check": {
+     "candidate_p99_ms": null,
+     "floor_binds": null,
+     "note": "reported, never changed: the frozen tau is the gate workstream's",
+     "tau_frozen_s": 10.0,
+     "ten_times_p99_s": null
+    },
+    "D5_ceq_per_call": {
+     "n": 0
+    },
+    "D5_completion_tokens": [],
+    "e_r_evals_per_min": 0.0,
+    "guardrails_would_bind_before_T_wall": [],
+    "q_r_ceq_per_min": 0.0,
+    "variance": {
+     "per_unit_ceq": {
+      "cv": null,
+      "max": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "n": 24,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "sd": 0.0
+     },
+     "per_unit_ne": {
+      "cv": null,
+      "max": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "n": 24,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "sd": 0.0
+     },
+     "per_unit_seconds": {
+      "cv": 0.01956946830439738,
+      "max": 1.402443,
+      "mean": 1.3485168333333333,
+      "median": 1.340978,
+      "min": 1.317239,
+      "n": 24,
+      "p50": 1.340683,
+      "p95": 1.40235,
+      "p99": 1.402443,
+      "sd": 0.026389757427862988
+     },
+     "per_window_ceq": {
+      "full_rates": [],
+      "max_full_rate": null,
+      "mean_full_rate": null,
+      "min_full_rate": null,
+      "n_full": 0,
+      "partial": {
+       "CEq": 0,
+       "span_sec": 32.36872696876526,
+       "start_epoch": 1790077185.207772
+      },
+      "sum_full": 0
+     },
+     "per_window_ne": {
+      "full_rates": [],
+      "max_full_rate": null,
+      "mean_full_rate": null,
+      "min_full_rate": null,
+      "n_full": 0,
+      "partial": {
+       "N_E": 0,
+       "span_sec": 32.36872696876526,
+       "start_epoch": 1790077185.207772
+      },
+      "sum_full": 0
+     }
+    }
+   },
+   "A_simpleloop": {
+    "D1_margin_CEq_minutes": null,
+    "D2_margin_NE_minutes": null,
+    "D3_ceq_worst_window_ratio": null,
+    "D3_ne_worst_window_ratio": null,
+    "D3_threshold": 1.25,
+    "D4_tau_cross_check": {
+     "candidate_p99_ms": null,
+     "floor_binds": null,
+     "note": "reported, never changed: the frozen tau is the gate workstream's",
+     "tau_frozen_s": 10.0,
+     "ten_times_p99_s": null
+    },
+    "D5_ceq_per_call": {
+     "n": 0
+    },
+    "D5_completion_tokens": [],
+    "e_r_evals_per_min": 0.0,
+    "guardrails_would_bind_before_T_wall": [],
+    "q_r_ceq_per_min": 0.0,
+    "variance": {
+     "per_unit_ceq": {
+      "cv": null,
+      "max": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "n": 24,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "sd": 0.0
+     },
+     "per_unit_ne": {
+      "cv": null,
+      "max": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "min": 0.0,
+      "n": 24,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "sd": 0.0
+     },
+     "per_unit_seconds": {
+      "cv": 0.007255058392009651,
+      "max": 2.177662,
+      "mean": 2.142770666666667,
+      "median": 2.1435525,
+      "min": 2.111049,
+      "n": 24,
+      "p50": 2.141605,
+      "p95": 2.162064,
+      "p99": 2.177662,
+      "sd": 0.015545926307352116
+     },
+     "per_window_ceq": {
+      "full_rates": [],
+      "max_full_rate": null,
+      "mean_full_rate": null,
+      "min_full_rate": null,
+      "n_full": 0,
+      "partial": {
+       "CEq": 0,
+       "span_sec": 51.43032693862915,
+       "start_epoch": 1790077132.909472
+      },
+      "sum_full": 0
+     },
+     "per_window_ne": {
+      "full_rates": [],
+      "max_full_rate": null,
+      "mean_full_rate": null,
+      "min_full_rate": null,
+      "n_full": 0,
+      "partial": {
+       "N_E": 0,
+       "span_sec": 51.43032693862915,
+       "start_epoch": 1790077132.909472
+      },
+      "sum_full": 0
+     }
+    }
+   }
+  }
+ },
+ "discarded_sentence": "The pilot's algorithmic results are discarded.",
+ "frozen_on": "2026-09-22",
+ "manifest": {
+  "path": "a0/tasks/maxcut/suite/manifest.json",
+  "sha256": "47324fccb6a00c62e1bc6b767fd6591292515d4421d152b5c47f9ad547814d23"
+ },
+ "mapping": {
+  "name": "f",
+  "properties": {
+   "bounded": false,
+   "ceiling_active": {
+    "CEq_max": false,
+    "N_evaluatorCalls": false
+   },
+   "monotone": true,
+   "monotone_detail": [
+    {
+     "CEq_max": 0,
+     "N_evaluatorCalls": 0,
+     "scale": 0.5
+    },
+    {
+     "CEq_max": 0,
+     "N_evaluatorCalls": 0,
+     "scale": 1.0
+    },
+    {
+     "CEq_max": 0,
+     "N_evaluatorCalls": 0,
+     "scale": 2.0
+    },
+    {
+     "CEq_max": 0,
+     "N_evaluatorCalls": 0,
+     "scale": 4.0
+    }
+   ],
+   "total": true,
+   "variance_reported": false
+  },
+  "result": {
+   "clamped": {
+    "CEq_max": false,
+    "N_evaluatorCalls": false
+   },
+   "driving_arm": {
+    "CEq_max": "A_kapso",
+    "N_evaluatorCalls": "A_kapso"
+   },
+   "formula": "T_wall_sec = 1800; q_r = 60*CEq_r/T_r; e_r = 60*N_E_r/T_r; CEq_max = min(ceil((5/4) * 30 * max_r(q_r)), CEQ_CEILING); N_evaluatorCalls = min(ceil((5/4) * 30 * max_r(e_r)), N_E_CEILING); P_concurrency = 1",
+   "per_arm": {
+    "A_kapso": {
+     "C_r_ceq_per_30min": 0.0,
+     "E_r_evals_per_30min": 0.0,
+     "e_r_evals_per_min": 0.0,
+     "e_r_exact": "0/1",
+     "q_r_ceq_per_min": 0.0,
+     "q_r_exact": "0/1"
+    },
+    "A_simpleloop": {
+     "C_r_ceq_per_30min": 0.0,
+     "E_r_evals_per_30min": 0.0,
+     "e_r_evals_per_min": 0.0,
+     "e_r_exact": "0/1",
+     "q_r_ceq_per_min": 0.0,
+     "q_r_exact": "0/1"
+    }
+   },
+   "vector": {
+    "CEq_max": 0,
+    "N_evaluatorCalls": 0,
+    "P_concurrency": 1,
+    "T_wall_sec": 1800.0,
+    "unclamped": {
+     "CEq_max": 0,
+     "N_evaluatorCalls": 0
+    }
+   }
+  }
+ },
+ "not_used_for_selection": true,
+ "procedure": {
+  "document": "a0/a1/calibration/PILOT-PROCEDURE.md",
+  "document_sha256": "68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2",
+  "json": "a0/a1/calibration/pilot_procedure.json",
+  "json_sha256": "8fcc8795e8f5c044771c6adc29c7fecdbbe730d5fe74bd2d51d4b6ca425cd3eb"
+ },
+ "refused": true,
+ "runner": {
+  "path": "a0/a1/calibration/pilot.py",
+  "sha256": "5034b91e0e4cdcf75d68954a3ca67d15eb2a41b16cc68937a6222dacc89c20a1"
+ },
+ "schema": "a0.a1.calibration.b_hard/v1",
+ "scope_limits": [
+  "resource rates only: B_hard bounds consumption, never quality",
+  "the KAPSO rate is the rate of the arm's declared T1 configuration (the frozen C*(T1) implementation seam with one metered ideation call per round); a configuration with real implementation sessions would consume more per round",
+  "the SimpleLoop rate is the rate of the adapter's declared deepseek lane with the adapter's default --model-max-tokens",
+  "the calibration graphs are used for these rates only; no score on them was used, reported or published"
+ ],
+ "telemetry": {
+  "per_arm": {
+   "A_kapso": {
+    "CEq_r": 0,
+    "N_E_r": 0,
+    "T_r_micros": 32368727,
+    "T_r_sec": 32.368727,
+    "attribution": {
+     "CEq_attributed_to_units": 0,
+     "CEq_total": 0,
+     "N_E_attributed_to_units": 0,
+     "N_E_ledger_rows": 0,
+     "exhaustive": true
+    },
+    "ceq_per_call": {
+     "n": 0
+    },
+    "completion_tokens": [],
+    "cost_sec": {
+     "candidate_wall_ms": {
+      "n": 0
+     },
+     "e_star_wall_sec": {
+      "n": 0
+     }
+    },
+    "ledger_agrees_with_telemetry": true,
+    "stop_reason": "workload_complete",
+    "tau_cross_check": {
+     "candidate_p99_ms": null,
+     "floor_binds": null,
+     "note": "reported, never changed: the frozen tau is the gate workstream's",
+     "tau_frozen_s": 10.0,
+     "ten_times_p99_s": null
+    },
+    "units_completed": 24,
+    "unmetered_rows": 0,
+    "variance": {
+     "per_unit": {
+      "expected_per_unit": {
+       "evals": 2,
+       "loop_depth": 2,
+       "model_calls": 2
+      },
+      "rates": {
+       "CEq": {
+        "cv": null,
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "n": 24,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "sd": 0.0
+       },
+       "N_E": {
+        "cv": null,
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "n": 24,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "sd": 0.0
+       },
+       "T_sec": {
+        "cv": 0.01956946830439738,
+        "max": 1.402443,
+        "mean": 1.3485168333333333,
+        "median": 1.340978,
+        "min": 1.317239,
+        "n": 24,
+        "p50": 1.340683,
+        "p95": 1.40235,
+        "p99": 1.402443,
+        "sd": 0.026389757427862988
+       }
+      }
+     },
+     "per_window": {
+      "CEq": {
+       "full_rates": [],
+       "full_windows": [],
+       "max_full_rate": null,
+       "mean_full_rate": null,
+       "min_full_rate": null,
+       "n_full": 0,
+       "partial": {
+        "CEq": 0,
+        "span_sec": 32.36872696876526,
+        "start_epoch": 1790077185.207772
+       },
+       "sum_full": 0
+      },
+      "N_E": {
+       "full_rates": [],
+       "full_windows": [],
+       "max_full_rate": null,
+       "mean_full_rate": null,
+       "min_full_rate": null,
+       "n_full": 0,
+       "partial": {
+        "N_E": 0,
+        "span_sec": 32.36872696876526,
+        "start_epoch": 1790077185.207772
+       },
+       "sum_full": 0
+      },
+      "anchor_epoch": 1790077185.207772,
+      "window_sec": 60.0,
+      "windows_total": 0
+     }
+    },
+    "workload_complete": true
+   },
+   "A_simpleloop": {
+    "CEq_r": 0,
+    "N_E_r": 0,
+    "T_r_micros": 51430327,
+    "T_r_sec": 51.430327,
+    "attribution": {
+     "CEq_attributed_to_units": 0,
+     "CEq_total": 0,
+     "N_E_attributed_to_units": 0,
+     "N_E_ledger_rows": 0,
+     "exhaustive": true
+    },
+    "ceq_per_call": {
+     "n": 0
+    },
+    "completion_tokens": [],
+    "cost_sec": {
+     "candidate_wall_ms": {
+      "n": 0
+     },
+     "e_star_wall_sec": {
+      "n": 0
+     }
+    },
+    "ledger_agrees_with_telemetry": true,
+    "stop_reason": "workload_complete",
+    "tau_cross_check": {
+     "candidate_p99_ms": null,
+     "floor_binds": null,
+     "note": "reported, never changed: the frozen tau is the gate workstream's",
+     "tau_frozen_s": 10.0,
+     "ten_times_p99_s": null
+    },
+    "units_completed": 24,
+    "unmetered_rows": 0,
+    "variance": {
+     "per_unit": {
+      "expected_per_unit": {
+       "evals": 3,
+       "loop_depth": 3,
+       "model_calls": 2
+      },
+      "rates": {
+       "CEq": {
+        "cv": null,
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "n": 24,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "sd": 0.0
+       },
+       "N_E": {
+        "cv": null,
+        "max": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "n": 24,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "sd": 0.0
+       },
+       "T_sec": {
+        "cv": 0.007255058392009651,
+        "max": 2.177662,
+        "mean": 2.142770666666667,
+        "median": 2.1435525,
+        "min": 2.111049,
+        "n": 24,
+        "p50": 2.141605,
+        "p95": 2.162064,
+        "p99": 2.177662,
+        "sd": 0.015545926307352116
+       }
+      }
+     },
+     "per_window": {
+      "CEq": {
+       "full_rates": [],
+       "full_windows": [],
+       "max_full_rate": null,
+       "mean_full_rate": null,
+       "min_full_rate": null,
+       "n_full": 0,
+       "partial": {
+        "CEq": 0,
+        "span_sec": 51.43032693862915,
+        "start_epoch": 1790077132.909472
+       },
+       "sum_full": 0
+      },
+      "N_E": {
+       "full_rates": [],
+       "full_windows": [],
+       "max_full_rate": null,
+       "mean_full_rate": null,
+       "min_full_rate": null,
+       "n_full": 0,
+       "partial": {
+        "N_E": 0,
+        "span_sec": 51.43032693862915,
+        "start_epoch": 1790077132.909472
+       },
+       "sum_full": 0
+      },
+      "anchor_epoch": 1790077132.909472,
+      "window_sec": 60.0,
+      "windows_total": 0
+     }
+    },
+    "workload_complete": true
+   }
+  }
+ },
+ "validity": {
+  "all_hold": false,
+  "conditions": {
+   "V1": "sha256(PILOT-PROCEDURE.md) == procedure.document_sha256",
+   "V2": "every graph used matched manifest.graphs[i].graph_sha256",
+   "V3": "zero unmetered gaps in the pilot campaigns' meter rows and a0/meter/verify_ledger.py exits 0",
+   "V4": "T_r > 0, at least 12 units completed per arm, and T_r >= 120 s",
+   "V5": "every metered row reports model_reported == deepseek-flash",
+   "V6": "every harness evaluation row names a calibration graph sha256",
+   "V7": "campaign_id and arm_id match the frozen names",
+   "refusal": "apply writes B_hard_REFUSED.json naming the failed conditions instead of a B_hard; a low rate is never an invalidity"
+  },
+  "failures": [
+   "V4: A_kapso has no measured interval (T_r=32.368727s, units=24)",
+   "V6: A_kapso's harness evaluations are not all calibration graphs",
+   "V4: A_simpleloop has no measured interval (T_r=51.430327s, units=24)",
+   "V6: A_simpleloop's harness evaluations are not all calibration graphs"
+  ]
+ },
+ "vector": {
+  "CEq_max": 0,
+  "N_evaluatorCalls": 0,
+  "P_concurrency": 1,
+  "T_wall_sec": 1800.0,
+  "unclamped": {
+   "CEq_max": 0,
+   "N_evaluatorCalls": 0
+  }
+ },
+ "vector_note": "REFUSED: this vector comes from a telemetry without a measured interval and is NOT a budget. It is recorded so the refusal's arithmetic is visible; the campaigns must not read it as B_hard."
+}
