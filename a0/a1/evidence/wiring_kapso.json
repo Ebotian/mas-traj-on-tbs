@@ -51,12 +51,13 @@
   }
  },
  "eid_star": "664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328",
- "elapsed_sec": 0.295,
+ "elapsed_sec": 0.346,
  "harness_ledger": [
   {
    "arm_id": "A_kapso",
    "campaign_id": "C_kapso_wiring",
    "candidate_id": "node0",
+   "candidate_isolation": "sandbox",
    "candidate_source_sha256": null,
    "e_star_exit_code": 0,
    "evaluator": "circle-packing",
@@ -67,16 +68,24 @@
    "harness_run_id": "kapso-wiring-1",
    "harness_supplied": true,
    "iteration": null,
-   "measurement_oid": "5c15093c1cf8415e4badc28cba6b3bf65830242c0986a173ad4256870a184b06",
+   "measurement_oid": "ce53e874e910c10adaf4ae51f8148a5bd096c4b4e9c407e363f1a9ea7dbc2858",
    "override_applied": false,
-   "request_id": "A_kapso.b00d849a1b56.0001.node0",
+   "override_mode": "bounded",
+   "plausibility": {
+    "bounded": false,
+    "mode": "bounded",
+    "schema": "a0.a1.plausibility/v1",
+    "value": 2.4519205208433132,
+    "verdict": "within_bound"
+   },
+   "request_id": "A_kapso.cc6b63ff80af.0001.node0",
    "schema": "a0.a1.harness_eval_ledger/v1",
    "score_field": "fields.sum_radii",
    "seq": 0,
    "status": "ok",
    "true_value": 2.4519205208433132,
-   "ts": "2026-09-22T18:58:02+0800",
-   "wall_sec": 0.03799
+   "ts": "2026-09-22T20:12:46+0800",
+   "wall_sec": 0.089691
   }
  ],
  "injector": {
@@ -97,11 +106,11 @@
      }
     },
     "harness_ledger_seq": 0,
-    "harness_request_id": "A_kapso.b00d849a1b56.0001.node0",
+    "harness_request_id": "A_kapso.cc6b63ff80af.0001.node0",
     "harness_score": 2.4519205208433132,
     "harness_status": "ok",
     "last_line_is_the_harness_s": true,
-    "measurement_oid": "5c15093c1cf8415e4badc28cba6b3bf65830242c0986a173ad4256870a184b06",
+    "measurement_oid": "ce53e874e910c10adaf4ae51f8148a5bd096c4b4e9c407e363f1a9ea7dbc2858",
     "node_id": 0,
     "override_applied": false,
     "score_before_amendment": 9.75,
@@ -146,7 +155,7 @@
    }
   ],
   "harness_calls": 1,
-  "harness_root": "/tmp/a1-verify/wiring-kapso/harness",
+  "harness_root": "/tmp/a1-evidence/wiring_kapso/harness",
   "installed_at": "a0_adapter/harness_manifest.py::PostSessionManifest.amend <- GenericSearch._absorb_implementation (kapso/execution/search_strategies/generic/strategy.py:606-662), called after the original returns",
   "run_id": "kapso-wiring-1",
   "schema": "a0.kapso.post_session_manifest/v1"
@@ -164,10 +173,10 @@
   "evaluation_output_manifest_lines": [
    "KAPSO_EVAL_MANIFEST {\"candidate_identity\": {\"candidate_id\": \"c01_good_hex\", \"in_frozen_set\": true, \"solution_sha256\": \"bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d\"}, \"e_star_canonical_digest\": \"1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8\", \"e_star_evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\", \"e_star_exit_code\": 0, \"e_star_items_audited\": 26, \"e_star_objective_value\": 2.4519205208433132, \"e_star_outcome\": \"outcomes/bca4286ed3b15035.full.1.1337.json\", \"e_star_status\": \"ok\", \"eid_star\": \"664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\", \"eid_star_evaluator_source\": \"a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29\", \"fidelity\": \"full\", \"fraction\": 1.0, \"items\": 26, \"metric_name\": \"sum_radii\", \"score\": 2.4519205208433132, \"seed\": 1337, \"theta_e_canonical_match\": true, \"total_items\": 26}",
    "KAPSO_EVAL_MANIFEST {\"claimed_by\": \"the implementation session itself\", \"fidelity\": \"full\", \"fraction\": \"1.0\", \"items\": 1, \"score\": 9.75, \"seed\": 1337, \"session_claimed\": true, \"total_items\": 1}",
-   "KAPSO_EVAL_MANIFEST {\"fidelity\": \"full\", \"fraction\": \"1.0\", \"harness_ledger_seq\": 0, \"harness_request_id\": \"A_kapso.b00d849a1b56.0001.node0\", \"harness_run_id\": \"kapso-wiring-1\", \"harness_supplied\": true, \"items\": 1, \"measurement_oid\": \"5c15093c1cf8415e4badc28cba6b3bf65830242c0986a173ad4256870a184b06\", \"override_applied\": false, \"score\": 2.4519205208433132, \"seed\": 1337, \"total_items\": 1, \"true_value\": null, \"written_after_session\": true, \"written_by\": \"a0/runtimes/kapso/a0_adapter/harness_manifest.py\"}"
+   "KAPSO_EVAL_MANIFEST {\"fidelity\": \"full\", \"fraction\": \"1.0\", \"harness_ledger_seq\": 0, \"harness_request_id\": \"A_kapso.cc6b63ff80af.0001.node0\", \"harness_run_id\": \"kapso-wiring-1\", \"harness_supplied\": true, \"items\": 1, \"measurement_oid\": \"ce53e874e910c10adaf4ae51f8148a5bd096c4b4e9c407e363f1a9ea7dbc2858\", \"override_applied\": false, \"score\": 2.4519205208433132, \"seed\": 1337, \"total_items\": 1, \"true_value\": null, \"written_after_session\": true, \"written_by\": \"a0/runtimes/kapso/a0_adapter/harness_manifest.py\"}"
   ],
   "evaluation_valid": true,
-  "last_manifest_line": "KAPSO_EVAL_MANIFEST {\"fidelity\": \"full\", \"fraction\": \"1.0\", \"harness_ledger_seq\": 0, \"harness_request_id\": \"A_kapso.b00d849a1b56.0001.node0\", \"harness_run_id\": \"kapso-wiring-1\", \"harness_supplied\": true, \"items\": 1, \"measurement_oid\": \"5c15093c1cf8415e4badc28cba6b3bf65830242c0986a173ad4256870a184b06\", \"override_applied\": false, \"score\": 2.4519205208433132, \"seed\": 1337, \"total_items\": 1, \"true_value\": null, \"written_after_session\": true, \"written_by\": \"a0/runtimes/kapso/a0_adapter/harness_manifest.py\"}",
+  "last_manifest_line": "KAPSO_EVAL_MANIFEST {\"fidelity\": \"full\", \"fraction\": \"1.0\", \"harness_ledger_seq\": 0, \"harness_request_id\": \"A_kapso.cc6b63ff80af.0001.node0\", \"harness_run_id\": \"kapso-wiring-1\", \"harness_supplied\": true, \"items\": 1, \"measurement_oid\": \"ce53e874e910c10adaf4ae51f8148a5bd096c4b4e9c407e363f1a9ea7dbc2858\", \"override_applied\": false, \"score\": 2.4519205208433132, \"seed\": 1337, \"total_items\": 1, \"true_value\": null, \"written_after_session\": true, \"written_by\": \"a0/runtimes/kapso/a0_adapter/harness_manifest.py\"}",
   "node_id": 0,
   "registered_evaluator_id": "8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9",
   "score": 2.4519205208433132

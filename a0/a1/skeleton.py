@@ -33,6 +33,7 @@ from typing import Dict, List, Optional
 
 from .budget import Budget, BudgetEnforcer, BudgetError, read_meter_ledger
 from .causal import CampaignID
+from . import candidate_sandbox
 from .eval_service import EVALUATORS, HarnessEvalService
 from .meter_runner import MeterProxy, MeterError
 from .topology import CampaignUplink, netns_prefix, probe_netns
@@ -127,6 +128,19 @@ class A1Campaign:
                True,
                "meter.mode=plaintext_base_url, allowlist=[api.deepseek.com]; the runtime runs "
                "inside `unshare -rn` with a unix-socket hop to this campaign's port only")
+        # (iv) applies to the *candidate* lane too, not only to the arm: a
+        # candidate that can read the stored reference partitions or a credential
+        # is a candidate whose number is not a measurement. The check is
+        # fail-closed on the mechanism being present, not on a probe having been
+        # read (a0/a1/probes/hostile_candidate.py is the probe).
+        record("iv.candidate_lane_is_closed",
+               candidate_sandbox.available(),
+               "the harness runs E* and every candidate it spawns inside "
+               "`unshare -rmnpf --mount-proc` with "
+               f"{', '.join(candidate_sandbox.DEFAULT_HIDDEN_ROOTS)} hidden, and passes "
+               "--net-isolate to E*" if candidate_sandbox.available()
+               else "`unshare` is not on PATH: the candidate lane cannot be closed, so the "
+                    "campaign must not start")
 
         # (v) the instance is frozen and the arm never saw it
         if self.arm.graph is not None:
@@ -250,6 +264,12 @@ class A1Campaign:
                  "--stop-file", str(self.work_dir / "harness.stop")],
                 cwd=str(REPO_ROOT), stdout=(self.work_dir / "harness.console.txt").open("wb"),
                 stderr=subprocess.STDOUT,
+                # No provider credential for the harness: it owns the evaluation,
+                # and the arm brings its own key (a0/a1/probes/hostile_candidate.py
+                # measures what a candidate can read out of an ancestor's
+                # environment when the harness is launched with one).
+                env={key: value for key, value in os.environ.items()
+                     if key not in ("DEEPSEEK_API_KEY", "DEEPSEEK_KEY")},
             )
             deadline = time.monotonic() + 30
             while time.monotonic() < deadline and not (

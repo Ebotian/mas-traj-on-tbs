@@ -23,8 +23,9 @@ The paid runs are **not** re-run by that command (they spend money). They are
 
 | path | what it is |
 |---|---|
-| `eval_service.py` | **the harness-owned evaluation service**: the only process that runs `E*`, for `maxcut` or `circle-packing`. Writes the Outcome, binds it to an `a0/envelope` measurement token, books a row, then publishes |
-| `t1_eid.py` / `T1-EID.json` / `T1.contract.json` | T1's frozen evaluator identity `EID*` = `cddfa64e…`, built by `a0/contract/evalcontract.py` from a spec (see D-A1-1) |
+| `eval_service.py` | **the harness-owned evaluation service**: the only process that runs `E*`, for `maxcut` or `circle-packing`. Writes the Outcome, binds it to an `a0/envelope` measurement token, books a row, then publishes. Bounds every published score by the task (`0 ≤ cut_edges ≤ |E|`) and runs the candidate lane in the sandbox below |
+| `candidate_sandbox.py` | **the candidate lane's boundary**: `unshare -rmnpf --mount-proc` with the repository/home hidden by tmpfs and the invocation's own inputs bound back; a self-check that refuses to measure if the lane is not closed. See D-A1-8 |
+| `t1_eid.py` / `T1-EID.json` / `T1.contract.json` | T1's frozen evaluator identity `EID*` = `eccd859c…`, built by `a0/contract/evalcontract.py` from a spec (see D-A1-1; the re-freeze is D-A1-7). `write` and `build` are the same command |
 | `causal.py` | `CampaignID = (TaskID, BlockID, ArmID, ReplicateID)`, `CID` / `AID_r`, and the causal-role rule as an executable audit |
 | `declaration.py` / `declarations/` | the CID and the two arms' `AID_r`, rebuilt from the repository, plus the audit verdict |
 | `budget.py` | the `B_hard` enforcer: meter ledger + harness eval ledger + wall clock, fail-closed |
@@ -33,7 +34,7 @@ The paid runs are **not** re-run by that command (they spend money). They are
 | `meter_runner.py` | one metering listener per campaign and the model client; the proxy's own ledger verifier and per-call sidecar are read from here |
 | `skeleton.py` | the campaign skeleton: identity + boundary + budget + one arm's run |
 | `verify.py`, `tests/` | the re-runnable check entry point and the unit invariants |
-| `probes/` | the three model-free probes and the paid live probe |
+| `probes/` | the model-free probes — `wiring_simpleloop.py`, `wiring_kapso.py`, `skeleton_dryrun.py`, `score_bound.py` (the bound on a score), `hostile_candidate.py` (a candidate that attacks its own lane) — and the paid `live_probe.py` |
 | `evidence/` | the committed output of every probe (probes write to `/tmp`; the committed copy is the evidence) |
 
 ## The boundary, in one picture
@@ -45,6 +46,8 @@ The paid runs are **not** re-run by that command (they spend money). They are
   │        ▲                                                      │
   │        │ unix socket                                          │
   │ eval_service: runs E*, authors the Outcome, issues the token   │
+  │   └ the candidate lane: `unshare -rmnpf --mount-proc`, the repo │
+  │     hidden, only the invocation's inputs bound back (D-A1-8)    │
   │ budget enforcer: reads the two ledgers + its own clock         │
   └────────┬─────────────────────────────────────────────────────┘
            │  unshare -rn: the only reachable peer is 127.0.0.1:<campaign port>

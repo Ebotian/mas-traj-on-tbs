@@ -23,6 +23,7 @@ from typing import Optional
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
+from a0.a1 import candidate_sandbox  # noqa: E402
 from a0.a1.causal import AID, CID, CampaignID, Factor, audit, observed_identity  # noqa: E402
 
 TASK_ID = "T1-maxcut"
@@ -56,6 +57,21 @@ def build() -> dict:
                    sha256=_sha(REPO_ROOT / "a0/tasks/maxcut/candidates/manifest.json")))
     cid.add(Factor("harness.eval_service", "cid",
                    sha256=_sha(REPO_ROOT / "a0/a1/eval_service.py")))
+    cid.add(Factor("harness.candidate_lane_isolation", "cid",
+                   value={"mechanism": "unshare -rmnpf --mount-proc (user+mount+network+pid namespace)",
+                          "hidden_roots": list(candidate_sandbox.DEFAULT_HIDDEN_ROOTS),
+                          "candidate_allow_list": "the evaluator's files, the request's graph and "
+                                                  "candidate, the invocation's state and out directory",
+                          "net_isolate_flag": True,
+                          "refuses_when_unavailable": True,
+                          "override_above_the_bound": "refused unless --override-mode "
+                                                      "labelled_implausible"},
+                   sha256=_sha(REPO_ROOT / "a0/a1/candidate_sandbox.py"),
+                   note="principle (iv) at the candidate lane: what a candidate can reach is part of "
+                        "the measurement. Without it a candidate reads the stored reference "
+                        "partitions or the provider key and the score is not a measurement "
+                        "(a0/a1/probes/hostile_candidate.py). `none` is a labelled control mode "
+                        "and is recorded as unsafe in harness_identity.json"))
     cid.add(Factor("harness.eval_abi", "cid",
                    value={"request": "a0.a1.eval_request/v1",
                           "response": "a0.a1.harness_outcome/v1",

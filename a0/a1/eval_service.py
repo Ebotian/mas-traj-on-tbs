@@ -41,13 +41,44 @@ Only the argv and the score field differ (see ``EVALUATORS``); the ABI, the
 token, the ledger and the fail-closed ordering are identical, because the claim
 they carry — the harness authors the number — is not task-specific.
 
-**The override.**  ``--override <json>`` maps ``candidate_id -> integer``.  When
-a candidate is listed, the harness authors the *handed* value of its score field
-from that map instead of from ``E*``, and records both numbers.  This exists to make the
-A1 property "the runtime consumes, it does not measure" observable: the
-runtime's selection must follow the harness's number even when the harness's
-number is a deliberate lie.  The override is never silent — ``harness_supplied``
-and ``override_applied`` are on every response and on every ledger row.
+**The override, and the bound on it.**  ``--override <json>`` maps
+``candidate_id -> integer``.  When a candidate is listed, the harness authors the
+*handed* value of its score field from that map instead of from ``E*``, and
+records both numbers.  This exists to make the A1 property "the runtime consumes,
+it does not measure" observable: the runtime's selection must follow the
+harness's number even when the harness's number is a deliberate lie.  The
+override is never silent — ``harness_supplied`` and ``override_applied`` are on
+every response and on every ledger row.
+
+A harness-authored number is still a number *about this task*, so it is bounded
+by the task where a bound exists: for ``maxcut``, ``0 <= cut_edges <= |E|``
+(the Outcome's own ``edges_total``).  ``--override-mode`` decides what an
+out-of-bound value does:
+
+* ``bounded`` (the default) — the harness **refuses to publish** the value.  The
+  request is answered with ``status: error`` / ``failure.kind:
+  implausible_override``, ``value: null``, and the attempt is booked with
+  ``override_rejected: true``.  A number the task cannot produce never reaches a
+  runtime's selection, and no campaign can be scored on it.
+* ``labelled_implausible`` — the value **is published**, with a ``plausibility``
+  block on the response, on the handed Outcome and on the ledger row saying that
+  it is out of bound and that it was accepted only because the harness was
+  explicitly told to.  This is the mode the wiring probe uses: the deliberate
+  wrong-value probe must keep working, because "the runtime consumes rather than
+  measures" can only be shown with a number ``E*`` could not have produced —
+  but it must be visible that the harness knew.
+
+The bound is checked on *every* published value, not only on overrides: an
+Outcome whose own number is outside ``[0, |E|]`` is a harness-side integrity
+failure and is refused the same way (``failure.kind: implausible_outcome``).
+
+**The candidate lane.**  ``E*`` is run inside
+``a0/a1/candidate_sandbox.py`` (user + mount + network + PID namespace, the
+repository/home hidden by tmpfs, the invocation's own inputs bound back) and is
+given ``--net-isolate``, so a *hostile* candidate cannot reach any host, cannot
+read ``~/gptapi.md`` or the stored reference partitions, and cannot read another
+process's environment.  ``--candidate-isolation none`` exists for a labelled
+control run; it says so in ``harness_identity.json`` and on every response.
 """
 
 from __future__ import annotations
@@ -62,20 +93,26 @@ import sys
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 ENVELOPE_DIR = REPO_ROOT / "a0" / "envelope"
 MAXCUT_DIR = REPO_ROOT / "a0" / "tasks" / "maxcut"
+A1_DIR = Path(__file__).resolve().parent
 
 if str(ENVELOPE_DIR) not in sys.path:
     sys.path.insert(0, str(ENVELOPE_DIR))
 import envelope as env  # noqa: E402  (a0/envelope/envelope.py, by path on purpose)
 
+if str(A1_DIR) not in sys.path:
+    sys.path.insert(0, str(A1_DIR))
+import candidate_sandbox  # noqa: E402  (a0/a1/candidate_sandbox.py, by path on purpose)
+
 REQUEST_SCHEMA = "a0.a1.eval_request/v1"
 RESPONSE_SCHEMA = "a0.a1.harness_outcome/v1"
 IDENTITY_SCHEMA = "a0.a1.harness_identity/v1"
 LEDGER_SCHEMA = "a0.a1.harness_eval_ledger/v1"
+PLAUSIBILITY_SCHEMA = "a0.a1.plausibility/v1"
 
 DEFAULT_E_STAR = MAXCUT_DIR / "e_star.py"
 DEFAULT_PYTHON = Path("/usr/bin/python3")
@@ -93,10 +130,20 @@ EVALUATORS = {
             "evaluate", "--candidate", "{candidate}", "--graph", "{graph}",
             "--seed", "{seed}", "--timeout", "{timeout}", "--out", "{out}",
             "--emit-resources", "{resources}", "--state-dir", "{state}",
+            # §4's "inject no network", passed by the *harness* rather than left
+            # to the caller: the frozen argv used to omit it, so a candidate
+            # evaluated through this service ran in the host's network namespace.
+            # The sandbox already has no route, so this is the second closure of
+            # the same door, made by the candidate's own loader.
+            "--net-isolate",
         ],
         "requires_graph": True,
         "score_field": "cut_edges",
         "default_script": str(MAXCUT_DIR / "e_star.py"),
+        #: The task's own bound on a score: every Max-Cut outcome carries
+        #: `edges_total`, and a cut is a subset of those edges.
+        "score_bound": {"field": "edges_total", "lower": 0,
+                        "rule": "0 <= cut_edges <= edges_total"},
     },
     "circle-packing": {
         "argv": [
@@ -109,8 +156,27 @@ EVALUATORS = {
         "requires_graph": False,
         "score_field": "fields.sum_radii",
         "default_script": str(REPO_ROOT / "a0" / "tasks" / "circle-packing" / "e_star.py"),
+        #: No frozen bound is available for this evaluator (the plumbing
+        #: Outcome carries no `|E|`-like denominator to bound `sum_radii` by),
+        #: so there is nothing here to enforce. Named rather than implied:
+        #: a score from this lane is *not* bounded, and D-A1-11 says so.
+        "score_bound": None,
     },
 }
+
+#: The two answers to an out-of-bound harness-supplied score.
+OVERRIDE_MODES = ("bounded", "labelled_implausible")
+
+#: How the candidate lane is closed. `sandbox` is the default; `none` exists so
+#: that a *labelled* control run can reproduce the pre-fix lane, and it says so
+#: in the identity, on every response and on every ledger row.
+CANDIDATE_ISOLATION = ("sandbox", "none")
+
+#: `E*` and every candidate it spawns get this environment: no credential, no
+#: proxy variable, nothing the harness itself was launched with. The candidate's
+#: environment is narrower still (a0/tasks/maxcut/e_star_child.py §4).
+EVALUATOR_ENV_KEEP = ("HOME", "LANG")
+EVALUATOR_PATH = "/usr/bin:/bin"
 
 #: E*'s own exit codes (a0/tasks/maxcut/e_star.py:95) map onto these statuses.
 STATUS_BY_EXIT = {0: "ok", 2: "invalid", 3: "error", 4: "timeout"}
@@ -250,25 +316,60 @@ class HarnessEvalService:
     nonce: str = ""
     override: Dict[str, int] = field(default_factory=dict)
     overrides_ignored: bool = False
+    #: what an out-of-bound override does: refuse it, or publish it labelled
+    #: (`OVERRIDE_MODES`). The default is to refuse.
+    override_mode: str = "bounded"
+    #: how E* and every candidate it spawns are confined (`CANDIDATE_ISOLATION`).
+    candidate_isolation: str = "sandbox"
+    hidden_roots: Sequence[str] = candidate_sandbox.DEFAULT_HIDDEN_ROOTS
     #: how many E* invocations this process has made — the harness's own counter,
     #: which is what the budget enforcer reads (never the runtime's).
     evaluator_calls: int = 0
     calls: List[dict] = field(default_factory=list)
+    #: one receipt per invocation: what the lane's namespace actually hid and
+    #: restored, and its own self-check. Written by the sandbox before E* runs.
+    sandbox_receipts: List[dict] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         if self.evaluator not in EVALUATORS:
             raise ServiceError(f"unknown evaluator {self.evaluator!r}; known: {sorted(EVALUATORS)}")
+        if self.override_mode not in OVERRIDE_MODES:
+            raise ServiceError(f"unknown override mode {self.override_mode!r}; known: {list(OVERRIDE_MODES)}")
+        if self.candidate_isolation not in CANDIDATE_ISOLATION:
+            raise ServiceError(
+                f"unknown candidate isolation {self.candidate_isolation!r}; known: {list(CANDIDATE_ISOLATION)}"
+            )
+        if self.candidate_isolation == "sandbox" and not candidate_sandbox.available():
+            raise ServiceError(
+                "`unshare` is not on PATH; the candidate lane cannot be closed and this service "
+                "refuses to run in an open topology (use --candidate-isolation none to say so "
+                "explicitly, which is recorded as unsafe)"
+            )
         self.spec = EVALUATORS[self.evaluator]
         if self.e_star_script == DEFAULT_E_STAR and self.spec["default_script"] != str(DEFAULT_E_STAR):
             self.e_star_script = Path(self.spec["default_script"])
         self.root = Path(self.root).resolve()
+        # The script and the interpreter are *not* resolved through symlinks:
+        # `--e-star`/`--python` name the launcher, and a virtualenv's
+        # `bin/python` is a symlink whose *path* is what makes `sys.prefix` the
+        # venv. Resolving either would silently swap the interpreter's identity.
+        self.e_star_script = Path(self.e_star_script)
+        if not self.e_star_script.is_absolute():
+            self.e_star_script = self.root / self.e_star_script
+        self.python = Path(self.python)
         self.harness_run_id = self.harness_run_id or f"a1-{int(time.time())}"
         self.nonce = self.nonce or secrets.token_hex(16)
         (self.root / "requests").mkdir(parents=True, exist_ok=True)
         (self.root / "responses").mkdir(parents=True, exist_ok=True)
+        (self.state_dir).mkdir(parents=True, exist_ok=True)
         self.ledger_path = self.root / "ledger.jsonl"
         self.identity = self._identity()
         self._write_json(self.root / "harness_identity.json", self.identity)
+
+    @property
+    def state_dir(self) -> Path:
+        """E*'s state root: staged candidates, invocation records, scratch."""
+        return self.root / "estate"
 
     # -- identity ---------------------------------------------------------
     def source_records(self) -> List[dict]:
@@ -279,6 +380,37 @@ class HarnessEvalService:
                 {"path": name, "sha256": sha256_file(path), "bytes": path.stat().st_size}
             )
         return records
+
+    def isolation_identity(self) -> dict:
+        """What confines the candidate lane, as a fact about this process."""
+        if self.candidate_isolation == "none":
+            return {
+                "mechanism": "none",
+                "labelled_unsafe": True,
+                "reason": "started with --candidate-isolation none (a control run)",
+                "candidate_can_reach_the_network": True,
+                "candidate_can_read_the_host_filesystem": True,
+            }
+        module = Path(candidate_sandbox.__file__).resolve()
+        return {
+            "mechanism": "unshare -rmnpf --mount-proc (user+mount+network+pid namespace)",
+            "module": "a0/a1/candidate_sandbox.py",
+            "module_sha256": sha256_file(module),
+            "hidden_roots": [str(root) for root in self.hidden_roots],
+            "hidden_by": "an empty tmpfs per root; the invocation's own inputs are bound back",
+            "candidate_sees": [
+                "its staged bytes below the state dir",
+                "the one graph named by the request",
+                "its own scratch directory",
+                "the invocation's state and out directory",
+                "the evaluator's own two files and the interpreter",
+            ],
+            "network": "fresh netns with no route; E* is additionally given --net-isolate",
+            "processes": "fresh pid namespace and a fresh /proc: no other process is visible",
+            "net_isolate_flag": "--net-isolate" in self.spec["argv"],
+            "labelled_unsafe": False,
+            "self_check": "written per invocation to <out>/sandbox_receipt.json",
+        }
 
     def _identity(self) -> dict:
         """The harness's own statement of which evaluator it will run.
@@ -319,12 +451,58 @@ class HarnessEvalService:
             "owns_evaluation": True,
             "runtime_may_evaluate": False,
             "override": {k: int(v) for k, v in sorted(self.override.items())},
+            "override_mode": self.override_mode,
+            "score_bound": self.spec["score_bound"],
+            "candidate_isolation": self.isolation_identity(),
             "started_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
         }
 
     # -- evaluation -------------------------------------------------------
+    def _evaluator_environment(self) -> Dict[str, str]:
+        """E*'s environment: no credential, no proxy variable, minimal PATH.
+
+        The service used to hand E* its own environment, so everything the
+        harness process had been launched with (including the provider key) was
+        inherited by the evaluator and, through `/proc/<ppid>/environ`, readable
+        by the candidate it spawned. The candidate lane's PID namespace closes
+        that path from the candidate's side; this closes it at the source, so
+        the harness can be launched with the key present and still not pass it
+        down. `HOME` and `LANG` are kept verbatim because §4's path handling and
+        the candidate's own environment refer to them.
+        """
+        environment = {name: os.environ[name] for name in EVALUATOR_ENV_KEEP if name in os.environ}
+        environment["PATH"] = EVALUATOR_PATH
+        environment["PYTHONDONTWRITEBYTECODE"] = "1"
+        environment["TMPDIR"] = "/tmp"
+        return environment
+
+    def _allow_paths(self, request: EvalRequest, out_dir: Path) -> List[Path]:
+        """Everything the invocation legitimately needs, and nothing else.
+
+        This is the candidate lane's whole allow-list: the evaluator's two
+        files, the interpreter (and its virtualenv root, when it has one), the
+        one graph the request names, the candidate's own bytes, and the two
+        directories the harness writes into. A path outside the hidden roots
+        needs no entry; a path inside them that is missing here will not exist
+        inside the lane.
+        """
+        allow: List[Path] = [self.e_star_script]
+        child = self.e_star_script.parent / "e_star_child.py"
+        if child.is_file():
+            allow.append(child)
+        if request.graph_path is not None:
+            allow.append(request.graph_path)
+        allow.append(request.candidate_path)
+        allow.append(out_dir)
+        allow.append(self.state_dir)
+        allow.append(self.python)
+        prefix_root = self.python.parent.parent
+        if (prefix_root / "pyvenv.cfg").is_file():
+            allow.append(prefix_root)
+        return allow
+
     def evaluate(self, request: EvalRequest) -> dict:
-        """Run E*, author the outcome, book it, publish it.  In that order."""
+        """Run E*, author the outcome, bound it, book it, publish it.  In that order."""
         if self.spec["requires_graph"] and not request.graph_path:
             raise ServiceError(
                 f"the {self.evaluator} evaluator needs a graph, but the request carries none"
@@ -332,6 +510,7 @@ class HarnessEvalService:
         out_dir = self.root / "state" / request.request_id
         out_dir.mkdir(parents=True, exist_ok=True)
         outcome_path = out_dir / "outcome.json"
+        receipt_path = out_dir / "sandbox_receipt.json"
         values = {
             "candidate": str(request.candidate_path),
             "graph": str(request.graph_path) if request.graph_path else "",
@@ -339,7 +518,7 @@ class HarnessEvalService:
             "timeout": str(request.timeout_s),
             "out": str(outcome_path),
             "resources": str(out_dir / "resources.json"),
-            "state": str(self.root / "estate"),
+            "state": str(self.state_dir),
             "fidelity": self.fidelity,
             "fraction": repr(float(self.fraction)),
             "n": str(self.n),
@@ -350,16 +529,31 @@ class HarnessEvalService:
             values.get(token.strip("{}"), token) if token.startswith("{") else token
             for token in self.spec["argv"]
         ]
+        run_command = command
+        if self.candidate_isolation == "sandbox":
+            run_command = candidate_sandbox.prefix(
+                command,
+                allow=self._allow_paths(request, out_dir),
+                receipt=receipt_path,
+                hidden_roots=self.hidden_roots,
+                python=self.python,
+            )
         started = time.monotonic()
         proc = subprocess.run(
-            command,
+            run_command,
             capture_output=True,
             text=True,
             cwd=str(self.root),
             timeout=request.timeout_s + 300.0,
+            env=self._evaluator_environment(),
         )
         wall = time.monotonic() - started
         self.evaluator_calls += 1
+        if receipt_path.is_file():
+            try:
+                self.sandbox_receipts.append(json.loads(receipt_path.read_text(encoding="utf-8")))
+            except json.JSONDecodeError:
+                self.sandbox_receipts.append({"pass": False, "error": "receipt is not JSON"})
         if not outcome_path.is_file():
             raise ServiceError(
                 f"E* wrote no outcome for {request.candidate_id} "
@@ -367,13 +561,55 @@ class HarnessEvalService:
             )
         outcome = json.loads(outcome_path.read_text(encoding="utf-8"))
         field = self.spec["score_field"]
+
         true_value = _value_at(outcome, field)
+        bound = _score_bound(outcome, self.spec["score_bound"])
 
         handed = outcome
         override_applied = False
-        if not self.overrides_ignored and request.candidate_id in self.override:
-            handed = _apply_override(outcome, field, int(self.override[request.candidate_id]))
-            override_applied = _value_at(handed, field) != true_value
+        refusal: Optional[dict] = None
+        requested = None if self.overrides_ignored else self.override.get(request.candidate_id)
+        plausibility = _plausibility(bound=bound, value=true_value, mode=self.override_mode,
+                                     verdict=_verdict_for(true_value, bound))
+        if _within_bound(true_value, bound) is False:
+            # E*'s own number is outside the task's own bound: a harness-side
+            # integrity failure, so no score is published for it.
+            refusal = {
+                "kind": "implausible_outcome",
+                "detail": (f"the evaluator's own {field} = {true_value!r} is outside "
+                           f"[{bound['lower']}, {bound['upper']}] ({bound['rule']})"),
+            }
+        elif requested is not None:
+            requested = int(requested)
+            if _within_bound(requested, bound) is False and self.override_mode == "bounded":
+                # The bound is enforced *here*, at the boundary where the service
+                # publishes a value: an impossible number never reaches a
+                # runtime's selection.
+                refusal = {
+                    "kind": "implausible_override",
+                    "detail": (f"the harness was asked to hand {requested} for "
+                               f"{request.candidate_id!r}, outside [{bound['lower']}, "
+                               f"{bound['upper']}] ({bound['rule']}); --override-mode "
+                               f"labelled_implausible would publish it as a labelled lie"),
+                    "requested_value": requested,
+                }
+                plausibility = _plausibility(bound=bound, value=requested, mode=self.override_mode,
+                                             verdict="refused_out_of_bound")
+            else:
+                handed = _apply_override(outcome, field, requested)
+                override_applied = _value_at(handed, field) != true_value
+                plausibility = _plausibility(
+                    bound=bound, value=_value_at(handed, field), mode=self.override_mode,
+                    verdict=("within_bound" if _within_bound(_value_at(handed, field), bound) is not False
+                             else "accepted_labelled_out_of_bound"),
+                )
+                if plausibility["verdict"] == "accepted_labelled_out_of_bound":
+                    handed["plausibility"] = plausibility
+
+        if refusal is not None:
+            return self._refuse(request, outcome=outcome, field=field, true_value=true_value,
+                                bound=bound, plausibility=plausibility, refusal=refusal,
+                                exit_code=proc.returncode, wall=wall)
 
         graph_sha = outcome.get("graph_sha256")
         candidate_sha = outcome.get("candidate_source_sha256")
@@ -431,6 +667,9 @@ class HarnessEvalService:
             "evaluator_source_sha256": handed.get("evaluator_source_sha256"),
             "wall_sec": round(wall, 6),
             "harness_supplied": True,
+            "plausibility": plausibility,
+            "candidate_isolation": self.candidate_isolation,
+            "override_mode": self.override_mode,
         }
         seq = _fsync_append(self.ledger_path, row)
         row["seq"] = seq
@@ -454,6 +693,81 @@ class HarnessEvalService:
             "true_value": true_value,
             "handed_value": _value_at(handed, field),
             "override_applied": override_applied,
+            "plausibility": plausibility,
+            "candidate_isolation": self.candidate_isolation,
+            "override_mode": self.override_mode,
+            "harness_ledger_seq": seq,
+            "evaluator_calls": self.evaluator_calls,
+        }
+        self._publish(request.request_id, response)
+        return response
+
+    def _refuse(self, request: EvalRequest, *, outcome: dict, field: str, true_value: Any,
+                bound: Optional[dict], plausibility: dict, refusal: dict, exit_code: int,
+                wall: float) -> dict:
+        """Book the evaluation, publish no score, and say exactly why.
+
+        A refusal is not a failure to evaluate: `E*` ran and its true value is
+        recorded, because the harness's own counter is what the budget reads. What
+        is withheld is the *number a runtime could act on* — the response carries
+        `value: null` and no Outcome at all, so a selection cannot see it.
+        """
+        row = {
+            "schema": LEDGER_SCHEMA,
+            "seq": None,
+            "ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "campaign_id": self.campaign_id,
+            "arm_id": self.arm_id,
+            "harness_run_id": self.harness_run_id,
+            "request_id": request.request_id,
+            "iteration": request.iteration,
+            "candidate_id": request.candidate_id,
+            "graph_id": outcome.get("graph_id"),
+            "graph_sha256": outcome.get("graph_sha256"),
+            "candidate_source_sha256": outcome.get("candidate_source_sha256"),
+            "e_star_exit_code": exit_code,
+            "status": "error",
+            "true_value": true_value,
+            "handed_value": None,
+            "override_applied": False,
+            "override_rejected": True,
+            "refusal": refusal,
+            "measurement_oid": None,
+            "evaluator": self.evaluator,
+            "score_field": field,
+            "evaluator_source_sha256": outcome.get("evaluator_source_sha256"),
+            "wall_sec": round(wall, 6),
+            "harness_supplied": True,
+            "plausibility": plausibility,
+            "candidate_isolation": self.candidate_isolation,
+            "override_mode": self.override_mode,
+        }
+        seq = _fsync_append(self.ledger_path, row)
+        row["seq"] = seq
+        self.calls.append(row)
+        response = {
+            "schema": RESPONSE_SCHEMA,
+            "request_id": request.request_id,
+            "campaign_id": self.campaign_id,
+            "arm_id": self.arm_id,
+            "harness_run_id": self.harness_run_id,
+            "candidate_id": request.candidate_id,
+            "graph_id": outcome.get("graph_id"),
+            "graph_sha256": outcome.get("graph_sha256"),
+            "status": "error",
+            "score_field": field,
+            "value": None,
+            "outcome": None,
+            "measurement": None,
+            "failure": refusal,
+            "harness_supplied": True,
+            "true_value": true_value,
+            "handed_value": None,
+            "override_applied": False,
+            "override_rejected": True,
+            "plausibility": plausibility,
+            "candidate_isolation": self.candidate_isolation,
+            "override_mode": self.override_mode,
             "harness_ledger_seq": seq,
             "evaluator_calls": self.evaluator_calls,
         }
@@ -545,6 +859,17 @@ class HarnessEvalService:
             "errors": errors,
             "evaluator_calls": self.evaluator_calls,
             "ledger": str(self.ledger_path),
+            "candidate_isolation": self.candidate_isolation,
+            "override_mode": self.override_mode,
+            # The lane's own self-check, one per E* invocation: "the candidate ran
+            # closed" is a recorded measurement, not a claim about the flags.
+            "sandbox_self_checks": [
+                {"pass": receipt.get("pass"),
+                 "hidden_roots": receipt.get("hidden_roots"),
+                 "self_check": receipt.get("self_check"),
+                 "error": receipt.get("error")}
+                for receipt in self.sandbox_receipts
+            ],
         }
 
 
@@ -598,6 +923,71 @@ def _decimal_string(numerator: int, denominator: int) -> Optional[str]:
     """E*'s own renderer, imported rather than re-implemented."""
     module = _e_star_module()
     return module.decimal_string(numerator, denominator)
+
+
+# ---------------------------------------------------------------------------
+# the plausibility bound on a harness-supplied score
+# ---------------------------------------------------------------------------
+def _score_bound(outcome: dict, spec: Optional[dict]) -> Optional[dict]:
+    """The task's own bound on the score field, with its concrete numbers.
+
+    `spec` is declared per evaluator in `EVALUATORS`; the *numbers* come from the
+    Outcome the evaluator itself wrote, so the bound is the evaluator's own
+    statement about this instance (`edges_total`) rather than a constant this
+    service keeps. An evaluator without a declared bound (the plumbing one)
+    returns None, i.e. "no bound exists here", which is recorded rather than
+    guessed at.
+    """
+    if not spec:
+        return None
+    total = outcome.get(str(spec["field"]))
+    if not isinstance(total, int) or isinstance(total, bool) or total <= 0:
+        return None
+    return {
+        "field": str(spec["field"]),
+        "lower": int(spec["lower"]),
+        "upper": int(total),
+        "rule": str(spec["rule"]),
+        "source": f"the Outcome's own {spec['field']}",
+    }
+
+
+def _within_bound(value: Any, bound: Optional[dict]) -> Optional[bool]:
+    """`True`/`False`, or `None` when there is no number or no bound to test."""
+    if bound is None or value is None:
+        return None
+    try:
+        number = int(value)
+    except (TypeError, ValueError):
+        return False
+    if number != value:  # §5's metric is an integer; 3.5 is not a cut
+        return False
+    return bound["lower"] <= number <= bound["upper"]
+
+
+def _verdict_for(value: Any, bound: Optional[dict]) -> str:
+    """The one word a reader needs: was the number inside the task's bound?"""
+    state = _within_bound(value, bound)
+    if state is True:
+        return "within_bound"
+    if state is False:
+        return "refused_out_of_bound"
+    return "no_number" if value is None else "no_bound_declared"
+
+
+def _plausibility(*, bound: Optional[dict], value: Any, mode: str, verdict: str) -> dict:
+    """What the harness knew about a number when it published (or refused) it."""
+    document = {
+        "schema": PLAUSIBILITY_SCHEMA,
+        "bounded": bound is not None,
+        "mode": mode,
+        "verdict": verdict,
+        "value": value,
+    }
+    if bound is not None:
+        document["bound"] = bound
+        document["within_bound"] = _within_bound(value, bound)
+    return document
 
 
 def _e_star_module():
@@ -654,6 +1044,21 @@ def _add_common(parser: argparse.ArgumentParser) -> None:
         action="store_true",
         help="accept the override file but do not apply it (the control run)",
     )
+    parser.add_argument(
+        "--override-mode", default="bounded", choices=list(OVERRIDE_MODES),
+        help="what an override outside the task's bound does: refuse it (the default) or "
+             "publish it as a labelled lie (`labelled_implausible`)",
+    )
+    parser.add_argument(
+        "--candidate-isolation", default="sandbox", choices=list(CANDIDATE_ISOLATION),
+        help="`sandbox` runs E* (and every candidate it spawns) in a user+mount+network+PID "
+             "namespace with the repository hidden; `none` is a labelled control run",
+    )
+    parser.add_argument(
+        "--hide-root", action="append", default=None,
+        help=f"a root the candidate lane hides (repeatable; default: "
+             f"{', '.join(candidate_sandbox.DEFAULT_HIDDEN_ROOTS)})",
+    )
 
 
 def _service_from_args(args) -> HarnessEvalService:
@@ -681,6 +1086,9 @@ def _service_from_args(args) -> HarnessEvalService:
         nonce=args.nonce,
         override=override,
         overrides_ignored=bool(getattr(args, "ignore_override", False)),
+        override_mode=getattr(args, "override_mode", "bounded"),
+        candidate_isolation=getattr(args, "candidate_isolation", "sandbox"),
+        hidden_roots=tuple(getattr(args, "hide_root", None) or candidate_sandbox.DEFAULT_HIDDEN_ROOTS),
     )
 
 

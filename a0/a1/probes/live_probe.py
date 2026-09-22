@@ -211,6 +211,13 @@ class LiveCampaign:
                  "--timeout-s", "10" if self.arm == "simpleloop" else "120",
                  "--stop-file", str(self.work / "harness.stop")],
                 cwd=str(REPO_ROOT),
+                # The harness owns the *evaluation*, not the model code: it is
+                # given no provider credential at all. It does not need one (the
+                # arm holds its own), and a harness that holds one is a harness
+                # whose process environment a candidate could try to read
+                # (`a0/a1/probes/hostile_candidate.py` measures that path).
+                env={key: value for key, value in os.environ.items()
+                     if key not in ("DEEPSEEK_API_KEY", "DEEPSEEK_KEY")},
                 stdout=(self.work / "harness.console.txt").open("wb"),
                 stderr=subprocess.STDOUT,
             )

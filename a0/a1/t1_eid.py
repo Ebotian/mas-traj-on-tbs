@@ -26,6 +26,7 @@ against the `EvaluatorSource` digest this document carries, so the two ways of
 naming the evaluator cannot drift apart.
 
     python3 a0/a1/t1_eid.py write     # (re)generate T1-EID.json and T1.contract.json
+    python3 a0/a1/t1_eid.py build     # the same command, under the assignment's name
     python3 a0/a1/t1_eid.py check     # recompute everything; non-zero on drift
 """
 
@@ -268,9 +269,12 @@ def _e_star_source_files() -> dict:
 
 def main(argv: Optional[list] = None) -> int:
     parser = argparse.ArgumentParser(prog="a0.a1.t1_eid")
-    parser.add_argument("command", choices=["write", "check", "show"])
+    # `build` and `write` are the same command: both rebuild the spec and the EID
+    # document from the evaluator's current bytes. `write` is the original name;
+    # `build` is the one the A1 assignment names, and an alias costs nothing.
+    parser.add_argument("command", choices=["write", "build", "check", "show"])
     args = parser.parse_args(argv)
-    if args.command == "write":
+    if args.command in ("write", "build"):
         document = write()
         print(json.dumps({"eid_star": document["eid_star"],
                           "eid": str(EID_PATH), "spec": str(SPEC_PATH)}, indent=1))

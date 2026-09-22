@@ -81,8 +81,8 @@
   "rerun_block": {
    "block_id": "B001r",
    "order": [
-    "T1-maxcut/B001r/A_simpleloop/R000",
-    "T1-maxcut/B001r/A_kapso/R000"
+    "T1-maxcut/B001r/A_kapso/R000",
+    "T1-maxcut/B001r/A_simpleloop/R000"
    ]
   },
   "status": {
@@ -299,7 +299,7 @@
     "CEq": 11513,
     "CEq_rows": 1,
     "N_evaluatorCalls": 1,
-    "T_wall_sec": 1.000025410001399,
+    "T_wall_sec": 1.0000293319972116,
     "harness_eval_ledger_missing": false,
     "meter_ledger_missing": false,
     "reasons": {},
@@ -333,7 +333,7 @@
     "CEq": 11513,
     "CEq_rows": 2,
     "N_evaluatorCalls": 1,
-    "T_wall_sec": 1.0000250509983744,
+    "T_wall_sec": 1.0000258319996647,
     "harness_eval_ledger_missing": false,
     "meter_ledger_missing": false,
     "reasons": {
@@ -374,7 +374,7 @@
     "CEq": 100001,
     "CEq_rows": 1,
     "N_evaluatorCalls": 1,
-    "T_wall_sec": 1.0000280410022242,
+    "T_wall_sec": 1.000027312002203,
     "harness_eval_ledger_missing": false,
     "meter_ledger_missing": false,
     "reasons": {},
@@ -408,7 +408,7 @@
     "CEq": 11513,
     "CEq_rows": 1,
     "N_evaluatorCalls": 11,
-    "T_wall_sec": 1.0000323909989675,
+    "T_wall_sec": 1.0000323230051436,
     "harness_eval_ledger_missing": false,
     "meter_ledger_missing": false,
     "reasons": {},
@@ -423,7 +423,7 @@
    "within": false
   },
   "missing_ledger": {
-   "detail": "meter ledger not found: /tmp/a1-verify/skeleton-dryrun/budget/nope.jsonl",
+   "detail": "meter ledger not found: /tmp/a1-evidence/skeleton_dryrun/budget/nope.jsonl",
    "refused": true
   },
   "usage_gap_is_unmetered_and_stops": {
@@ -446,7 +446,7 @@
     "CEq": 11513,
     "CEq_rows": 2,
     "N_evaluatorCalls": 2,
-    "T_wall_sec": 1.000027059999411,
+    "T_wall_sec": 1.000028721995477,
     "harness_eval_ledger_missing": false,
     "meter_ledger_missing": false,
     "reasons": {
@@ -487,7 +487,7 @@
     "CEq": 11513,
     "CEq_rows": 1,
     "N_evaluatorCalls": 1,
-    "T_wall_sec": 120.00002345100074,
+    "T_wall_sec": 120.00002327199763,
     "harness_eval_ledger_missing": false,
     "meter_ledger_missing": false,
     "reasons": {},
@@ -521,7 +521,7 @@
     "CEq": 23026,
     "CEq_rows": 2,
     "N_evaluatorCalls": 2,
-    "T_wall_sec": 1.0000516310028615,
+    "T_wall_sec": 1.0000520140019944,
     "harness_eval_ledger_missing": false,
     "meter_ledger_missing": false,
     "reasons": {},
@@ -571,7 +571,7 @@
    "-c",
    "print('the arm would run here')",
    "--base-url",
-   "http://127.0.0.1:58503/v1"
+   "http://127.0.0.1:40377/v1"
   ],
   "budget": {
    "CEq_max": 100000,
@@ -594,13 +594,13 @@
   "dry_run": true,
   "harness": {
    "evaluator": "maxcut",
-   "ledger": "/tmp/a1-verify/skeleton-dryrun/campaign/harness/ledger.jsonl",
-   "root": "/tmp/a1-verify/skeleton-dryrun/campaign/harness"
+   "ledger": "/tmp/a1-evidence/skeleton_dryrun/campaign/harness/ledger.jsonl",
+   "root": "/tmp/a1-evidence/skeleton_dryrun/campaign/harness"
   },
   "meter": {
-   "base_url": "http://127.0.0.1:58503/v1",
-   "ledger": "/tmp/a1-verify/skeleton-dryrun/campaign/meter/ledger.jsonl",
-   "port": 58503,
+   "base_url": "http://127.0.0.1:40377/v1",
+   "ledger": "/tmp/a1-evidence/skeleton_dryrun/campaign/meter/ledger.jsonl",
+   "port": 40377,
    "token_issued": true
   },
   "namespace_prefix": [
@@ -622,7 +622,7 @@
    "checks": [
     {
      "check": "i.evaluator_identity_recomputes",
-     "detail": "eid_star=cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1 (t1_eid check exit 0)",
+     "detail": "eid_star=eccd859c921ae724602f09bb137f6081c8dced8631d758db9b6d0db110d7b861 (t1_eid check exit 0)",
      "ok": true
     },
     {
@@ -643,6 +643,11 @@
     {
      "check": "iv.meter_topology_declared",
      "detail": "meter.mode=plaintext_base_url, allowlist=[api.deepseek.com]; the runtime runs inside `unshare -rn` with a unix-socket hop to this campaign's port only",
+     "ok": true
+    },
+    {
+     "check": "iv.candidate_lane_is_closed",
+     "detail": "the harness runs E* and every candidate it spawns inside `unshare -rmnpf --mount-proc` with /home, /tmp, /var/tmp, /run/user hidden, and passes --net-isolate to E*",
      "ok": true
     },
     {
@@ -772,7 +777,7 @@
      "task_id": "T1-maxcut"
     }
    ],
-   "cid_factors": 13,
+   "cid_factors": 14,
    "problems": [],
    "schema": "a0.a1.causal_audit/v1",
    "task_id": "T1-maxcut",
@@ -820,7 +825,7 @@
      "task_id": "T1-maxcut"
     }
    ],
-   "cid_factors": 13,
+   "cid_factors": 14,
    "problems": [
     {
      "detail": "observed as value:{\"setting\":1}, declared in neither CID nor AID_r for arm(s) ['A_simpleloop', 'A_kapso']",

@@ -11,7 +11,12 @@ Four runs, each recorded, each re-runnable from this one command:
    an override map that *inverts* the true ranking (the true-best candidate is
    handed 1, the true-worst is handed 9999). The runtime's champion must be the
    candidate the harness rewarded, and the harness's own ledger must record both
-   the handed and the true number.
+   the handed and the true number. `9999 > |E| = 265` is outside the task's own
+   bound, so that instance is started with
+   `--override-mode labelled_implausible`: the deliberate lie is *published*, and
+   flagged as out of bound on the response, in the handed Outcome and on the
+   ledger row. Under the default mode the same override is refused outright
+   (`a0/a1/probes/score_bound.py` is the probe for that).
 3. **no fallback** — the adapter is pointed at an ABI root with no identity at
    all. It must refuse to run rather than evaluate locally (adapter exit 3).
 4. **fail-closed mid-run** — the identity exists, the service is then stopped,
@@ -78,7 +83,8 @@ def canonical_bytes(path: Path) -> bytes:
 
 class Service:
     def __init__(self, root: Path, campaign_id: str, arm_id: str, run_id: str,
-                 override: Optional[dict] = None):
+                 override: Optional[dict] = None,
+                 override_mode: str = "bounded"):
         self.root = root
         self.root.mkdir(parents=True, exist_ok=True)
         self.stop_file = self.root.parent / f"{self.root.name}.stop"
@@ -90,6 +96,7 @@ class Service:
             "--campaign-id", campaign_id,
             "--arm-id", arm_id,
             "--harness-run-id", run_id,
+            "--override-mode", override_mode,
             "--stop-file", str(self.stop_file),
             "--summary-out", str(self.summary),
         ]
@@ -262,7 +269,8 @@ def main(argv: Optional[list] = None) -> int:
 
     # -- 2. the harness lies; the runtime follows -------------------------
     lying = Service(out_dir / "harness-lying", "C_wiring_lying", "A_simpleloop", "wiring-lying",
-                    override={"proposal_i1": 1, "proposal_i2": 9999})
+                    override={"proposal_i1": 1, "proposal_i2": 9999},
+                    override_mode="labelled_implausible")
     lying.start()
     try:
         third = run_adapter(harness_root=lying.root, campaign_id="C_wiring_lying",
@@ -304,6 +312,26 @@ def main(argv: Optional[list] = None) -> int:
         for line in (out_dir / "run-lying" / "traces" / "simpleloop.run-lying.score.jsonl")
         .read_text().splitlines()
         if line.strip()
+    )
+    # The lie is only allowed because it is labelled, and only because the probe
+    # asked for that mode: `9999 > |E| = 265` is outside the task's own bound, so
+    # a bounded service would have refused to publish it at all
+    # (a0/a1/probes/score_bound.py measures that side).
+    report["plausibility_of_the_lie"] = [
+        {"candidate_id": row["candidate_id"], "true_value": row["true_value"],
+         "handed_value": row["handed_value"], "plausibility": row.get("plausibility")}
+        for row in lying_ledger
+    ]
+    labelled_rows = {row["candidate_id"]: row for row in lying_ledger}
+    report["checks"]["the_implausible_number_is_published_labelled_not_silently"] = (
+        bool(labelled_rows)
+        and all((row.get("plausibility") or {}).get("bounded") is True for row in lying_ledger)
+        and all((row.get("plausibility") or {}).get("mode") == "labelled_implausible"
+                for row in lying_ledger)
+        and (labelled_rows["proposal_i2"].get("plausibility") or {}).get("within_bound") is False
+        and (labelled_rows["proposal_i2"].get("plausibility") or {}).get("bound", {}).get("upper") == 265
+        and (labelled_rows["proposal_i2"].get("plausibility") or {}).get("verdict") == (
+            "accepted_labelled_out_of_bound")
     )
 
     # -- 3. no identity: refuse, do not evaluate locally -------------------

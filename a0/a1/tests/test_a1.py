@@ -149,6 +149,82 @@ def test_the_service_refuses_an_unknown_evaluator(tmp_path):
 
 
 # ---------------------------------------------------------------------------
+# the plausibility bound, and the candidate lane's closure
+# ---------------------------------------------------------------------------
+def test_the_service_refuses_an_undeclared_mode(tmp_path):
+    from a0.a1.eval_service import HarnessEvalService
+
+    with pytest.raises(Exception):
+        HarnessEvalService(root=tmp_path, override_mode="whatever")
+    with pytest.raises(Exception):
+        HarnessEvalService(root=tmp_path, candidate_isolation="almost")
+
+
+def test_the_bound_is_the_outcome_s_own_number_not_a_constant():
+    from a0.a1.eval_service import _score_bound, _within_bound
+
+    spec = {"field": "edges_total", "lower": 0, "rule": "0 <= cut_edges <= edges_total"}
+    bound = _score_bound({"cut_edges": 132, "edges_total": 265}, spec)
+    assert bound["upper"] == 265 and bound["lower"] == 0
+    # A different instance carries a different bound, from its own Outcome.
+    assert _score_bound({"cut_edges": 10, "edges_total": 9}, spec)["upper"] == 9
+    # No total, no bound: the service says "unbounded" instead of guessing.
+    assert _score_bound({"cut_edges": 10}, spec) is None
+    assert _score_bound({"cut_edges": 10, "edges_total": 9}, None) is None
+
+
+def test_an_out_of_bound_score_is_not_plausible():
+    from a0.a1.eval_service import _plausibility, _score_bound, _within_bound
+
+    bound = _score_bound({"edges_total": 265}, {"field": "edges_total", "lower": 0,
+                                                "rule": "0 <= cut_edges <= edges_total"})
+    assert _within_bound(0, bound) is True
+    assert _within_bound(265, bound) is True
+    assert _within_bound(266, bound) is False
+    assert _within_bound(-1, bound) is False
+    assert _within_bound(3.5, bound) is False     # §5's metric is an integer
+    assert _within_bound(None, bound) is None     # a failure carries no number
+    assert _within_bound(266, None) is None       # nothing to bound it by
+    document = _plausibility(bound=bound, value=9999, mode="bounded",
+                             verdict="refused_out_of_bound")
+    assert document["within_bound"] is False and document["bounded"] is True
+    assert document["mode"] == "bounded" and document["verdict"] == "refused_out_of_bound"
+
+
+def test_a_plumbing_score_has_no_bound_and_says_so():
+    from a0.a1.eval_service import EVALUATORS, _plausibility, _score_bound
+
+    spec = EVALUATORS["circle-packing"]["score_bound"]
+    assert spec is None
+    assert _score_bound({"fields": {"sum_radii": 9.0}}, spec) is None
+    document = _plausibility(bound=None, value=9.0, mode="bounded", verdict="within_bound")
+    assert document["bounded"] is False and "within_bound" not in document
+
+
+def test_the_harness_identity_declares_the_candidate_lane(tmp_path):
+    from a0.a1.candidate_sandbox import DEFAULT_HIDDEN_ROOTS
+    from a0.a1.eval_service import EVALUATORS
+
+    service = HarnessEvalService(root=tmp_path / "sandboxed", evaluator="maxcut")
+    isolation = service.identity["candidate_isolation"]
+    assert isolation["labelled_unsafe"] is False
+    assert isolation["net_isolate_flag"] is True
+    assert isolation["hidden_roots"] == list(DEFAULT_HIDDEN_ROOTS)
+    assert isolation["module_sha256"] == declaration._sha(
+        REPO_ROOT / "a0" / "a1" / "candidate_sandbox.py")
+    assert service.identity["score_bound"]["field"] == "edges_total"
+    assert "--net-isolate" in EVALUATORS["maxcut"]["argv"]
+
+
+def test_turning_the_candidate_lane_off_is_labelled(tmp_path):
+    service = HarnessEvalService(root=tmp_path / "open", evaluator="maxcut",
+                                 candidate_isolation="none")
+    isolation = service.identity["candidate_isolation"]
+    assert isolation["labelled_unsafe"] is True
+    assert isolation["candidate_can_reach_the_network"] is True
+
+
+# ---------------------------------------------------------------------------
 # KAPSO's manifest contract
 # ---------------------------------------------------------------------------
 def _strategy(fidelity="full", fraction=1.0, seed=1337):
