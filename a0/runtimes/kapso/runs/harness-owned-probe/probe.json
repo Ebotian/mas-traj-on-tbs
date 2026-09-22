@@ -1,0 +1,994 @@
+{
+  "checks": [
+    {
+      "check_id": "HOE-K1",
+      "description": "the harness Outcome is the node's score of record, though the session never ran the registered evaluation (plan record command is null)",
+      "evidence": {
+        "evaluator_calls": 0,
+        "record_harness_outcome": 42.0
+      },
+      "expected": {
+        "node0_record_command": null,
+        "node0_score": 42.0
+      },
+      "observed": {
+        "node0_record_command": null,
+        "node0_score": 42.0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K2",
+      "description": "the <score> tag (1.0) does not survive: the manifest line decides (strategy.py:624-627 is overwritten by feedback_flow.py:76-93)",
+      "evidence": {},
+      "expected": {
+        "differs": true,
+        "score_of_record": 42.0,
+        "tag_value": 1.0
+      },
+      "observed": {
+        "differs": true,
+        "score_of_record": 42.0,
+        "tag_value": 1.0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K3",
+      "description": "the harness-scored node is valid and selectable: the integrity gate checks the branch's evaluator tree, not the score's provenance",
+      "evidence": {},
+      "expected": {
+        "evaluation_valid": true,
+        "integrity_error": ""
+      },
+      "observed": {
+        "evaluation_valid": true,
+        "integrity_error": ""
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K4",
+      "description": "the next round's parent derives from the harness score: round 2 has one finished node, round 3 chooses node 0 (42.0) over node 1 (7.0)",
+      "evidence": {
+        "node0_branch": "generic_exp_0",
+        "round3_parent_branch": "generic_exp_0"
+      },
+      "expected": {
+        "round2_parent_node_id": 0,
+        "round3_parent_node_id": 0
+      },
+      "observed": {
+        "round2_parent_node_id": 0,
+        "round3_parent_node_id": 0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K5",
+      "description": "best and deliverable follow the harness score",
+      "evidence": {},
+      "expected": {
+        "best_node_id": 0,
+        "best_score": 42.0,
+        "deliverable_node_id": 0,
+        "deliverable_score": 42.0
+      },
+      "observed": {
+        "best_node_id": 0,
+        "best_score": 42.0,
+        "deliverable_node_id": 0,
+        "deliverable_score": 42.0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K6",
+      "description": "ATTRIBUTION CAVEAT: the harness score is recorded as an EvaluationAttempt under the registered evaluator id at the granted class (registered_evaluation.py:124-159)",
+      "evidence": {},
+      "expected": {
+        "attempt_fidelity": "full",
+        "attempt_fraction": 1.0,
+        "attempt_score": 42.0,
+        "attempt_seed": 1337,
+        "evaluator_id_is_registered": true
+      },
+      "observed": {
+        "attempt_fidelity": "full",
+        "attempt_fraction": 1.0,
+        "attempt_score": 42.0,
+        "attempt_seed": 1337,
+        "evaluator_id_is_registered": true
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K7",
+      "description": "the score of record is NOT what the harness's own frozen evaluator reports for this artifact: an independent E* run gives the baseline value, the runtime recorded 42.0",
+      "evidence": {
+        "e_star_status": "ok",
+        "outcome_path": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/harness-owned-probe/s1_harness_outcome/reference/reference/c02_baseline_upstream.full.json"
+      },
+      "expected": {
+        "e_star_objective": 0.25,
+        "score_of_record": 42.0,
+        "score_of_record_is_harness_value": true
+      },
+      "observed": {
+        "e_star_objective": 0.25,
+        "score_of_record": 42.0,
+        "score_of_record_is_harness_value": true
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K8",
+      "description": "with no manifest line the runtime's score of record is the feedback judge's extraction (feedback_flow.py:66-72), which overrides the <score> tag (5.0) \u2014 here the seam judge has nothing to extract, so the node is scoreless but still valid",
+      "evidence": {
+        "manifest": null,
+        "record_command": null
+      },
+      "expected": {
+        "node0_evaluation_valid": true,
+        "node0_score": null,
+        "tag_value_destroyed": true
+      },
+      "observed": {
+        "node0_evaluation_valid": true,
+        "node0_score": null,
+        "tag_value_destroyed": true
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K9",
+      "description": "a scoreless node is not selectable: no best, no deliverable, no evaluation attempt",
+      "evidence": {},
+      "expected": {
+        "attempts": 0,
+        "best_node_id": null,
+        "deliverable_node_id": null,
+        "deliverable_score": null
+      },
+      "observed": {
+        "attempts": 0,
+        "best_node_id": null,
+        "deliverable_node_id": null,
+        "deliverable_score": null
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K10",
+      "description": "a scoreless but integrity-clean node is still used as the lineage fallback (strategy.py:1390-1404), and it is NOT marked invalid",
+      "evidence": {},
+      "expected": {
+        "node0_evaluation_valid": true,
+        "node0_integrity_error": "",
+        "node1_parent_node_id": 0
+      },
+      "observed": {
+        "node0_evaluation_valid": true,
+        "node0_integrity_error": "",
+        "node1_parent_node_id": 0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K11",
+      "description": "a harness-supplied score on a candidate that changed its evaluator tree is voided by enforce_evaluation_integrity (base.py:740-794): the gate keys on the tree, and it nulls the score",
+      "evidence": {
+        "best_node_id": null,
+        "integrity_error": "Provided evaluation integrity check failed (changed: kapso_eval.py)"
+      },
+      "expected": {
+        "evaluation_valid": false,
+        "integrity_error_nonempty": true,
+        "score": null
+      },
+      "observed": {
+        "evaluation_valid": false,
+        "integrity_error_nonempty": true,
+        "score": null
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K12",
+      "description": "the injected line is accepted with exactly the granted class triple (fidelity/fraction/seed) and refused for any other class (registered_evaluation.py:87-99) \u2014 the gate is on the class label, not on who produced the line",
+      "evidence": {},
+      "expected": {
+        "accepted_score": 42.0,
+        "malformed_line": "EvaluationMaintainerError: Evaluation manifest line is missing 'items'",
+        "wrong_class": null,
+        "wrong_seed": null
+      },
+      "observed": {
+        "accepted_score": 42.0,
+        "malformed_line": "EvaluationMaintainerError: Evaluation manifest line is missing 'items'",
+        "wrong_class": null,
+        "wrong_seed": null
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K13",
+      "description": "with no registered evaluation command the whole manifest path is off (strategy.py:1117-1120, registered_evaluation.py:70-71): the runtime ignores a perfectly good manifest line",
+      "evidence": {},
+      "expected": {
+        "no_manifest_result": null,
+        "unregistered_result": null
+      },
+      "observed": {
+        "no_manifest_result": null,
+        "unregistered_result": null
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K14",
+      "description": "no documented configuration turns the session's own evaluation off: budget.fidelity.mode only selects the granted class, and the evaluation_maintainer block has no skip-evaluation key",
+      "evidence": {
+        "fidelity_mode_config": "off",
+        "maintainer_block_keys": [
+          "agent_specific",
+          "calibration_fraction",
+          "calibration_timeout_seconds",
+          "debug_model",
+          "fast_variant_threshold_minutes",
+          "max_change_requests",
+          "model",
+          "overhead_factor",
+          "protected_data_paths",
+          "subsample_seed",
+          "transition_freeze_fraction",
+          "type"
+        ],
+        "max_change_requests": 0
+      },
+      "expected": {
+        "fidelity_modes": [
+          "auto",
+          "off",
+          "on"
+        ],
+        "granted_class": {
+          "fidelity": "full",
+          "fraction": 1.0
+        },
+        "maintainer_block_has_skip_key": false
+      },
+      "observed": {
+        "fidelity_modes": [
+          "auto",
+          "off",
+          "on"
+        ],
+        "granted_class": {
+          "fidelity": "full",
+          "fraction": 1.0
+        },
+        "maintainer_block_has_skip_key": false
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K15",
+      "description": "the judge slot is a score-injection point: with no manifest and no evaluator run, the judge's number becomes the score of record (feedback_flow.py:66-72)",
+      "evidence": {},
+      "expected": {
+        "manifest_line_present": false,
+        "node0_evaluation_valid": true,
+        "node0_score": 99.0,
+        "record_command": null
+      },
+      "observed": {
+        "manifest_line_present": false,
+        "node0_evaluation_valid": true,
+        "node0_score": 99.0,
+        "record_command": null
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K16",
+      "description": "even with NO manifest anywhere, that externally supplied score is recorded as registered-evaluator full-tier evidence (record_evaluation_attempt does not consult the manifest) and drives best/deliverable/parent",
+      "evidence": {
+        "evaluator_id_is_registered": true
+      },
+      "expected": {
+        "attempt_fidelity": "full",
+        "attempt_score": 99.0,
+        "best_node_id": 0,
+        "deliverable_node_id": 0,
+        "deliverable_score": 99.0,
+        "round2_parent_node_id": 0
+      },
+      "observed": {
+        "attempt_fidelity": "full",
+        "attempt_score": 99.0,
+        "best_node_id": 0,
+        "deliverable_node_id": 0,
+        "deliverable_score": 99.0,
+        "round2_parent_node_id": 0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K17",
+      "description": "the harness score survives KAPSO's own checkpoint serializer and validator: the recorded state carries score=42.0 for node 0 with its attempt ledger",
+      "evidence": {
+        "checkpoint_path": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/harness-owned-probe/s1_harness_outcome/kapso-run-checkpoint.json",
+        "checkpoint_schema_version": 2
+      },
+      "expected": {
+        "node0_attempt_score": 42.0,
+        "node0_score_in_checkpoint": 42.0,
+        "node1_score_in_checkpoint": 7.0
+      },
+      "observed": {
+        "node0_attempt_score": 42.0,
+        "node0_score_in_checkpoint": 42.0,
+        "node1_score_in_checkpoint": 7.0
+      },
+      "pass": true
+    },
+    {
+      "check_id": "HOE-K18",
+      "description": "restoring that recorded state into a fresh strategy, KAPSO's own _select_parent returns the harness-scored node and the deliverable score is the harness value",
+      "evidence": {
+        "parent_branch_name": "generic_exp_0"
+      },
+      "expected": {
+        "best_node_id": 0,
+        "deliverable_node_id": 0,
+        "deliverable_score": 42.0,
+        "parent_node_id": 0
+      },
+      "observed": {
+        "best_node_id": 0,
+        "deliverable_node_id": 0,
+        "deliverable_score": 42.0,
+        "parent_node_id": 0
+      },
+      "pass": true
+    }
+  ],
+  "failed": [],
+  "harness_values": {
+    "high": 42.0,
+    "low": 7.0,
+    "tag_lie": 1.0,
+    "third": 3.0
+  },
+  "kapso_revision": "7d99b152",
+  "kapso_src": "/home/ebt/kapso_ck/kapso/src",
+  "model_calls": 0,
+  "pass": true,
+  "runtime": "kapso",
+  "s1_harness_outcome": {
+    "elapsed_sec": 4.491,
+    "independent_e_star": {
+      "candidate_id": "c02_baseline_upstream",
+      "objective": 0.25,
+      "outcome_path": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/harness-owned-probe/s1_harness_outcome/reference/reference/c02_baseline_upstream.full.json",
+      "status": "ok"
+    },
+    "nodes": [
+      {
+        "branch_name": "generic_exp_0",
+        "build_fidelity": "full",
+        "code_diff_lines": 25,
+        "eval_fidelity": "full",
+        "evaluation_attempts": [
+          {
+            "evaluator_id": "8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "score": 42.0,
+            "seed": 1337
+          }
+        ],
+        "evaluation_integrity_error": "",
+        "evaluation_output_tail": "KAPSO_EVAL_MANIFEST {\"fidelity\": \"full\", \"fraction\": \"1.0\", \"seed\": 1337, \"items\": 1, \"total_items\": 1, \"score\": 42.0, \"harness_supplied\": true}",
+        "evaluation_provenance": "provided",
+        "evaluation_valid": true,
+        "had_error": false,
+        "node_id": 0,
+        "parent_branch_name": "main",
+        "parent_node_id": null,
+        "score": 42.0
+      },
+      {
+        "branch_name": "generic_exp_1",
+        "build_fidelity": "full",
+        "code_diff_lines": 105,
+        "eval_fidelity": "full",
+        "evaluation_attempts": [
+          {
+            "evaluator_id": "8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "score": 7.0,
+            "seed": 1337
+          }
+        ],
+        "evaluation_integrity_error": "",
+        "evaluation_output_tail": "KAPSO_EVAL_MANIFEST {\"fidelity\": \"full\", \"fraction\": \"1.0\", \"seed\": 1337, \"items\": 1, \"total_items\": 1, \"score\": 7.0, \"harness_supplied\": true}",
+        "evaluation_provenance": "provided",
+        "evaluation_valid": true,
+        "had_error": false,
+        "node_id": 1,
+        "parent_branch_name": "generic_exp_0",
+        "parent_node_id": 0,
+        "score": 7.0
+      },
+      {
+        "branch_name": "generic_exp_2",
+        "build_fidelity": "full",
+        "code_diff_lines": 81,
+        "eval_fidelity": "full",
+        "evaluation_attempts": [
+          {
+            "evaluator_id": "8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "score": 3.0,
+            "seed": 1337
+          }
+        ],
+        "evaluation_integrity_error": "",
+        "evaluation_output_tail": "KAPSO_EVAL_MANIFEST {\"fidelity\": \"full\", \"fraction\": \"1.0\", \"seed\": 1337, \"items\": 1, \"total_items\": 1, \"score\": 3.0, \"harness_supplied\": true}",
+        "evaluation_provenance": "provided",
+        "evaluation_valid": true,
+        "had_error": false,
+        "node_id": 2,
+        "parent_branch_name": "generic_exp_0",
+        "parent_node_id": 0,
+        "score": 3.0
+      }
+    ],
+    "seam_records": [
+      {
+        "branch_name": "generic_exp_0",
+        "candidate_id": "c02_baseline_upstream",
+        "command": null,
+        "elapsed_sec": 0.113655,
+        "exit_code": null,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "harness_outcome": 42.0,
+        "manifest": {
+          "fidelity": "full",
+          "fraction": "1.0",
+          "harness_supplied": true,
+          "items": 1,
+          "score": 42.0,
+          "seed": 1337,
+          "total_items": 1
+        },
+        "parent_branch_name": "main",
+        "stderr_tail": "",
+        "stdout_sha256_prefix": "84c52518fb8c5f47",
+        "tamper": null
+      },
+      {
+        "branch_name": "generic_exp_1",
+        "candidate_id": "c01_good_hex",
+        "command": null,
+        "elapsed_sec": 0.190584,
+        "exit_code": null,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "harness_outcome": 7.0,
+        "manifest": {
+          "fidelity": "full",
+          "fraction": "1.0",
+          "harness_supplied": true,
+          "items": 1,
+          "score": 7.0,
+          "seed": 1337,
+          "total_items": 1
+        },
+        "parent_branch_name": "generic_exp_0",
+        "stderr_tail": "",
+        "stdout_sha256_prefix": "f2bca92b74498e19",
+        "tamper": null
+      },
+      {
+        "branch_name": "generic_exp_2",
+        "candidate_id": "c14_near_zero",
+        "command": null,
+        "elapsed_sec": 0.113831,
+        "exit_code": null,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "harness_outcome": 3.0,
+        "manifest": {
+          "fidelity": "full",
+          "fraction": "1.0",
+          "harness_supplied": true,
+          "items": 1,
+          "score": 3.0,
+          "seed": 1337,
+          "total_items": 1
+        },
+        "parent_branch_name": "generic_exp_0",
+        "stderr_tail": "",
+        "stdout_sha256_prefix": "019c0c0aa356959d",
+        "tamper": null
+      }
+    ],
+    "selection": {
+      "best_node_id": 0,
+      "best_score": 42.0,
+      "deliverable_node_id": 0,
+      "deliverable_score": 42.0,
+      "parent_policy": "best"
+    }
+  },
+  "s2_no_manifest": {
+    "elapsed_sec": 0.336,
+    "nodes": [
+      {
+        "branch_name": "generic_exp_0",
+        "build_fidelity": "full",
+        "code_diff_lines": 117,
+        "eval_fidelity": "full",
+        "evaluation_attempts": [],
+        "evaluation_integrity_error": "",
+        "evaluation_output_tail": "",
+        "evaluation_provenance": "provided",
+        "evaluation_valid": true,
+        "had_error": false,
+        "node_id": 0,
+        "parent_branch_name": "main",
+        "parent_node_id": null,
+        "score": null
+      },
+      {
+        "branch_name": "generic_exp_1",
+        "build_fidelity": "full",
+        "code_diff_lines": 105,
+        "eval_fidelity": "full",
+        "evaluation_attempts": [],
+        "evaluation_integrity_error": "",
+        "evaluation_output_tail": "",
+        "evaluation_provenance": "provided",
+        "evaluation_valid": true,
+        "had_error": false,
+        "node_id": 1,
+        "parent_branch_name": "generic_exp_0",
+        "parent_node_id": 0,
+        "score": null
+      }
+    ],
+    "seam_records": [
+      {
+        "branch_name": "generic_exp_0",
+        "candidate_id": "c01_good_hex",
+        "command": null,
+        "elapsed_sec": 0.114768,
+        "exit_code": null,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "harness_outcome": null,
+        "manifest": null,
+        "parent_branch_name": "main",
+        "stderr_tail": "",
+        "stdout_sha256_prefix": "e3b0c44298fc1c14",
+        "tamper": null
+      },
+      {
+        "branch_name": "generic_exp_1",
+        "candidate_id": "c02_baseline_upstream",
+        "command": null,
+        "elapsed_sec": 0.115719,
+        "exit_code": null,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "harness_outcome": null,
+        "manifest": null,
+        "parent_branch_name": "generic_exp_0",
+        "stderr_tail": "",
+        "stdout_sha256_prefix": "e3b0c44298fc1c14",
+        "tamper": null
+      }
+    ],
+    "selection": {
+      "best_node_id": null,
+      "best_score": null,
+      "deliverable_node_id": null,
+      "deliverable_score": null,
+      "parent_policy": "best"
+    }
+  },
+  "s3_tamper": {
+    "elapsed_sec": 0.22,
+    "nodes": [
+      {
+        "branch_name": "generic_exp_0",
+        "build_fidelity": "full",
+        "code_diff_lines": 127,
+        "eval_fidelity": "full",
+        "evaluation_attempts": [],
+        "evaluation_integrity_error": "Provided evaluation integrity check failed (changed: kapso_eval.py)",
+        "evaluation_output_tail": "KAPSO_EVAL_MANIFEST {\"fidelity\": \"full\", \"fraction\": \"1.0\", \"seed\": 1337, \"items\": 1, \"total_items\": 1, \"score\": 42.0, \"harness_supplied\": true}",
+        "evaluation_provenance": "provided",
+        "evaluation_valid": false,
+        "had_error": false,
+        "node_id": 0,
+        "parent_branch_name": "main",
+        "parent_node_id": null,
+        "score": null
+      }
+    ],
+    "seam_records": [
+      {
+        "branch_name": "generic_exp_0",
+        "candidate_id": "c01_good_hex",
+        "command": null,
+        "elapsed_sec": 0.118753,
+        "exit_code": null,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "harness_outcome": 42.0,
+        "manifest": {
+          "fidelity": "full",
+          "fraction": "1.0",
+          "harness_supplied": true,
+          "items": 1,
+          "score": 42.0,
+          "seed": 1337,
+          "total_items": 1
+        },
+        "parent_branch_name": "main",
+        "stderr_tail": "",
+        "stdout_sha256_prefix": "84c52518fb8c5f47",
+        "tamper": "A0-PROBE-TAMPER: harness-supplied score on a doctored tree"
+      }
+    ],
+    "selection": {
+      "best_node_id": null,
+      "best_score": null,
+      "deliverable_node_id": null,
+      "deliverable_score": null,
+      "parent_policy": "best"
+    }
+  },
+  "s4_gates": {
+    "config_evidence": {
+      "effective_config": {
+        "budget": {
+          "checkpoint_heartbeat_seconds": 60,
+          "fidelity": {
+            "mode": "off"
+          }
+        },
+        "coding_agent": {
+          "agent_specific": {
+            "disallowed_tools": [
+              "Bash",
+              "WebSearch",
+              "WebFetch",
+              "WebFetch",
+              "Task",
+              "NotebookEdit"
+            ],
+            "streaming": false
+          },
+          "model": "claude-opus-5",
+          "type": "claude_code"
+        },
+        "evaluation_maintainer": {
+          "agent_specific": {
+            "disallowed_tools": [
+              "Bash",
+              "WebSearch",
+              "WebFetch",
+              "WebFetch",
+              "Task"
+            ],
+            "streaming": false
+          },
+          "calibration_fraction": 0.03,
+          "calibration_timeout_seconds": 120,
+          "fast_variant_threshold_minutes": 20,
+          "max_change_requests": 0,
+          "model": "claude-opus-5",
+          "overhead_factor": 1.25,
+          "subsample_seed": 1337,
+          "transition_freeze_fraction": 0.85,
+          "type": "claude_code"
+        },
+        "feedback_generator": {
+          "agent_specific": {
+            "disallowed_tools": [
+              "Bash",
+              "WebSearch",
+              "WebFetch",
+              "WebFetch",
+              "Task",
+              "NotebookEdit"
+            ],
+            "streaming": false
+          },
+          "model": "claude-opus-5",
+          "type": "claude_code"
+        },
+        "inbox": {
+          "enabled": true,
+          "registry": "~/.kapso/campaigns.jsonl",
+          "stop_grace_seconds": 120
+        },
+        "models": {
+          "embedding": "text-embedding-3-small"
+        },
+        "retry": {
+          "request_timeout_seconds": 600
+        },
+        "search_strategy": {
+          "params": {
+            "design_axes": [
+              "geometry / parametrisation \u2014 the circle layout representation (hex lattice, concentric rings, strip packing) and how coordinates are parameterised",
+              "optimisation procedure \u2014 local refinement, seeding, perturbation and constraint-repair strategy inside pack_circles",
+              "numerical robustness \u2014 determinism across repeated calls, p50 runtime under the 250 ms budget gate, and the overlap / bounds margins"
+            ],
+            "gate_failure_policy": "warn",
+            "idea_generation_model": "claude-opus-5",
+            "ideation_gates": [],
+            "implementation_cli": "claude_code",
+            "implementation_gates": [],
+            "implementation_model": "claude-opus-5",
+            "implementation_web": false,
+            "node_expansion_value": 1,
+            "parent_policy": "best",
+            "repo_memory_failure_policy": "warn",
+            "web_search": false
+          },
+          "type": "generic"
+        }
+      },
+      "fidelity_mode": "off",
+      "max_change_requests": 0,
+      "mode_config_path": "/home/ebt/rsi-dev/a0/runtimes/kapso/config/mode.circle-packing.yaml",
+      "parent_policy_param": "best",
+      "subsample_seed": 1337
+    },
+    "elapsed_sec": 0.219,
+    "evaluation_provenance": "provided",
+    "fidelity_modes": [
+      "auto",
+      "off",
+      "on"
+    ],
+    "maintainer_block_keys": [
+      "agent_specific",
+      "calibration_fraction",
+      "calibration_timeout_seconds",
+      "debug_model",
+      "fast_variant_threshold_minutes",
+      "max_change_requests",
+      "model",
+      "overhead_factor",
+      "protected_data_paths",
+      "subsample_seed",
+      "transition_freeze_fraction",
+      "type"
+    ],
+    "manifest_gate": {
+      "accepted": {
+        "fidelity": "full",
+        "fraction": "1.0",
+        "items": 1,
+        "score": 42.0,
+        "seed": 1337,
+        "total_items": 1
+      },
+      "malformed_line": "EvaluationMaintainerError: Evaluation manifest line is missing 'items'",
+      "no_manifest_line": null,
+      "unregistered_command": null,
+      "wrong_class": null,
+      "wrong_seed": null
+    },
+    "node": {
+      "branch_name": "generic_exp_0",
+      "build_fidelity": "full",
+      "code_diff_lines": 25,
+      "eval_fidelity": "full",
+      "evaluation_attempts": [
+        {
+          "evaluator_id": "8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9",
+          "fidelity": "full",
+          "fraction": 1.0,
+          "score": 42.0,
+          "seed": 1337
+        }
+      ],
+      "evaluation_integrity_error": "",
+      "evaluation_output_tail": "KAPSO_EVAL_MANIFEST {\"fidelity\": \"full\", \"fraction\": \"1.0\", \"seed\": 1337, \"items\": 1, \"total_items\": 1, \"score\": 42.0, \"harness_supplied\": true}",
+      "evaluation_provenance": "provided",
+      "evaluation_valid": true,
+      "had_error": false,
+      "node_id": 0,
+      "parent_branch_name": "main",
+      "parent_node_id": null,
+      "score": 42.0
+    }
+  },
+  "s5_judge_slot": {
+    "elapsed_sec": 0.337,
+    "judge_score": 99.0,
+    "nodes": [
+      {
+        "branch_name": "generic_exp_0",
+        "build_fidelity": "full",
+        "code_diff_lines": 25,
+        "eval_fidelity": "full",
+        "evaluation_attempts": [
+          {
+            "evaluator_id": "8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "score": 99.0,
+            "seed": 1337
+          }
+        ],
+        "evaluation_integrity_error": "",
+        "evaluation_output_tail": "",
+        "evaluation_provenance": "provided",
+        "evaluation_valid": true,
+        "had_error": false,
+        "node_id": 0,
+        "parent_branch_name": "main",
+        "parent_node_id": null,
+        "score": 99.0
+      },
+      {
+        "branch_name": "generic_exp_1",
+        "build_fidelity": "full",
+        "code_diff_lines": 105,
+        "eval_fidelity": "full",
+        "evaluation_attempts": [
+          {
+            "evaluator_id": "8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "score": 99.0,
+            "seed": 1337
+          }
+        ],
+        "evaluation_integrity_error": "",
+        "evaluation_output_tail": "",
+        "evaluation_provenance": "provided",
+        "evaluation_valid": true,
+        "had_error": false,
+        "node_id": 1,
+        "parent_branch_name": "generic_exp_0",
+        "parent_node_id": 0,
+        "score": 99.0
+      }
+    ],
+    "seam_records": [
+      {
+        "branch_name": "generic_exp_0",
+        "candidate_id": "c02_baseline_upstream",
+        "command": null,
+        "elapsed_sec": 0.117623,
+        "exit_code": null,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "harness_outcome": null,
+        "manifest": null,
+        "parent_branch_name": "main",
+        "stderr_tail": "",
+        "stdout_sha256_prefix": "e3b0c44298fc1c14",
+        "tamper": null
+      },
+      {
+        "branch_name": "generic_exp_1",
+        "candidate_id": "c01_good_hex",
+        "command": null,
+        "elapsed_sec": 0.115067,
+        "exit_code": null,
+        "fidelity": "full",
+        "fraction": 1.0,
+        "harness_outcome": null,
+        "manifest": null,
+        "parent_branch_name": "generic_exp_0",
+        "stderr_tail": "",
+        "stdout_sha256_prefix": "e3b0c44298fc1c14",
+        "tamper": null
+      }
+    ],
+    "selection": {
+      "best_node_id": 0,
+      "best_score": 99.0,
+      "deliverable_node_id": 0,
+      "deliverable_score": 99.0,
+      "parent_policy": "best"
+    }
+  },
+  "s6_restored": {
+    "checkpoint_path": "/home/ebt/rsi-dev/a0/runtimes/kapso/runs/harness-owned-probe/s1_harness_outcome/kapso-run-checkpoint.json",
+    "elapsed_sec": 0.1,
+    "recorded_nodes": [
+      {
+        "branch_name": "generic_exp_0",
+        "evaluation_attempts": [
+          {
+            "commit_sha": "83072cebfbdc78b1e9b407c069d508d40b1efcfb",
+            "duration_seconds": 0.1136553760006791,
+            "evaluator_id": "8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 42.0,
+            "seed": 1337
+          }
+        ],
+        "evaluation_valid": true,
+        "node_id": 0,
+        "parent_node_id": null,
+        "score": 42.0
+      },
+      {
+        "branch_name": "generic_exp_1",
+        "evaluation_attempts": [
+          {
+            "commit_sha": "b4956837bed95c6cc6ce40652b5be1ca99c26763",
+            "duration_seconds": 0.1905835859997751,
+            "evaluator_id": "8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 7.0,
+            "seed": 1337
+          }
+        ],
+        "evaluation_valid": true,
+        "node_id": 1,
+        "parent_node_id": 0,
+        "score": 7.0
+      },
+      {
+        "branch_name": "generic_exp_2",
+        "evaluation_attempts": [
+          {
+            "commit_sha": "25def8b92f240a9b6d2c2ca4a25993eb8ab45825",
+            "duration_seconds": 0.11383146700063662,
+            "evaluator_id": "8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9",
+            "fidelity": "full",
+            "fraction": 1.0,
+            "metrics": {},
+            "score": 3.0,
+            "seed": 1337
+          }
+        ],
+        "evaluation_valid": true,
+        "node_id": 2,
+        "parent_node_id": 0,
+        "score": 3.0
+      }
+    ],
+    "restored_selection": {
+      "best_node_id": 0,
+      "deliverable_node_id": 0,
+      "deliverable_score": 42.0,
+      "node_scores": {
+        "node0": 42.0,
+        "node1": 7.0,
+        "node2": 3.0
+      },
+      "parent_branch_name": "generic_exp_0",
+      "parent_node_id": 0
+    }
+  },
+  "schema": "a0.kapso.harness_owned_probe/v1",
+  "seams": {
+    "harness_outcome": "a0_adapter/seams.py::_Plan(harness_outcome=\u2026)",
+    "ideation": "a0_adapter/seams.py::seam_generate_solution",
+    "implementation": "a0_adapter/seams.py::_Plan.run_implementation",
+    "judge": "a0_adapter/seams.py::SeamFeedbackJudge"
+  }
+}

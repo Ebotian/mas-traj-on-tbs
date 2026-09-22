@@ -15,6 +15,11 @@ implementation          ``strategy.py:1036`` ``run_implementation(...)``  drives
                                                                        registered command, returns its output
 feedback judge          ``feedback_flow.py:16`` ``generate_feedback``     deterministic judge: validity granted,
                         -> ``feedback_generator.generate``              score extracted from the manifest line
+harness outcome         ``registered_evaluation.py:52-102``             *opt-in* (``push(harness_outcome=…)``):
+                        ``manifest_of_record`` / ``strategy.py:624``     does NOT run the registered command; emits
+                                                                       a class-matching ``KAPSO_EVAL_MANIFEST``
+                                                                       line carrying an externally supplied
+                                                                       outcome, which upstream consumes
 ======================  =============================================  ==========================================
 
 What the seams *do not* touch, and therefore what A0.2 still measures with real
@@ -48,6 +53,10 @@ SEAM_IMPLEMENTATION = (
     "a0_adapter/seams.py::seam_run_implementation <- strategy.py:1036"
 )
 SEAM_JUDGE = "a0_adapter/seams.py::SeamFeedbackJudge <- feedback_flow.py:16"
+SEAM_HARNESS_OUTCOME = (
+    "a0_adapter/seams.py::_Plan.run_implementation(harness_outcome=…) <- "
+    "registered_evaluation.py:52-102 (manifest_of_record)"
+)
 
 
 class SeamFeedbackJudge:
@@ -142,7 +151,19 @@ class _Plan:
 
     def push(self, candidate_id: str, *, fidelity: str = "full",
              fraction: float = 1.0, tamper: Optional[str] = None,
-             commit_tamper: bool = False, run_evaluation: bool = True) -> None:
+             commit_tamper: bool = False, run_evaluation: bool = True,
+             harness_outcome: Optional[float] = None,
+             score_tag_value: Optional[float] = None) -> None:
+        """Queue one planned candidate.
+
+        ``harness_outcome`` is the harness-owned-evaluation injection: when set,
+        the registered evaluation is *not* executed and the session output is
+        synthesised to carry a class-matching ``KAPSO_EVAL_MANIFEST`` line whose
+        ``score`` is the externally supplied value — i.e. the value that
+        ``manifest_of_record`` (``registered_evaluation.py:52-102``) adopts as
+        the score of record.  ``score_tag_value`` overrides the ``<score>`` tag
+        independently, to show that tag is not the score of record.
+        """
         self.queue.append({
             "candidate_id": candidate_id,
             "fidelity": fidelity,
@@ -150,6 +171,8 @@ class _Plan:
             "tamper": tamper,
             "commit_tamper": commit_tamper,
             "run_evaluation": run_evaluation,
+            "harness_outcome": harness_outcome,
+            "score_tag_value": score_tag_value,
         })
 
     def next_solution(self):
@@ -198,7 +221,23 @@ class _Plan:
 
         stdout = stderr = ""
         exit_code: Optional[int] = None
-        if entry["run_evaluation"]:
+        harness_outcome = entry.get("harness_outcome")
+        if harness_outcome is not None:
+            # Harness-owned evaluation: E* ran outside the session; the runtime
+            # is handed the outcome, not the run.  The line carries the granted
+            # class triple because manifest_of_record (registered_evaluation.py:
+            # 87-99) rejects any other class, and the item-count keys because
+            # parse_manifest_line (maintainer.py:70-79) requires them.
+            stdout = "KAPSO_EVAL_MANIFEST " + json.dumps({
+                "fidelity": entry["fidelity"],
+                "fraction": repr(float(entry["fraction"])),
+                "seed": int(self.runtime.maintainer.subsample_seed),
+                "items": 1,
+                "total_items": 1,
+                "score": float(harness_outcome),
+                "harness_supplied": True,
+            }) + "\n"
+        elif entry["run_evaluation"]:
             command = self.runtime.maintainer.evaluation_command(
                 fidelity=entry["fidelity"], fraction=entry["fraction"]
             )
@@ -230,6 +269,8 @@ class _Plan:
                 )
                 if "score" in manifest_payload:
                     score_tag = repr(float(manifest_payload["score"]))
+        if entry.get("score_tag_value") is not None:
+            score_tag = repr(float(entry["score_tag_value"]))
 
         agent_output = (
             "<code_changes_summary>"
@@ -257,8 +298,9 @@ class _Plan:
                 self.runtime.maintainer.evaluation_command(
                     fidelity=entry["fidelity"], fraction=entry["fraction"]
                 )
-                if entry["run_evaluation"] else None
+                if entry["run_evaluation"] and harness_outcome is None else None
             ),
+            "harness_outcome": harness_outcome,
             "stdout_sha256_prefix": hashlib.sha256(
                 stdout.encode("utf-8")
             ).hexdigest()[:16],
