@@ -1,0 +1,45 @@
+{
+  "schema": "a0.maxcut.gate_config/v1",
+  "authority": "a0/tasks/maxcut/INTERFACE.md",
+  "registry": "the task assignment for a0/tasks/maxcut/{positive_control,gates}/",
+  "status": "PRE-REGISTERED",
+  "note": "These numbers are frozen before the runner is executed and must not be relaxed after seeing a result. If a gate fails, the branch is: report the failing path, propose the minimal suite change, and say what must be re-frozen. See DEVIATIONS.md for the two places where the assignment left the scale of a quantity open and this file had to choose one.",
+  "theta": {
+    "seed": 1337,
+    "timeout_s": 30.0,
+    "comment": "INTERFACE.md section 4's --seed and section 7's tau (the section 7 band maximum; no calibration p99 is frozen in this repository yet, see DEVIATIONS.md D-GATE-4)."
+  },
+  "sets": {
+    "gate": "dev",
+    "diagnostic": "eval",
+    "comment": "The gate is decided on dev only. eval numbers are recorded separately and are diagnostic: the pre-registered demand is (v) that an improvement hold on unseen instances, so eval must not be usable to tune the gate."
+  },
+  "quantities": {
+    "delta_i": "(p_i - b_i) / |E_i|, exact rational. The improvement in the objective, in edges, as a fraction of the instance's edges. b_i and p_i are E*'s recomputed cut_edges.",
+    "rho_i": "(T_i - p_i) / (T_i - b_i), exact rational, T_i = OPT_i when opt_certified else R_i (a lower bound on the optimum).",
+    "baseline_headroom_i": "(T_i - b_i) / T_i, exact rational. How much of the target the baseline leaves on the table."
+  },
+  "gates": {
+    "delta_gate": {
+      "overall_mean_min": {"numerator": 3, "denominator": 100},
+      "per_family_mean_min": {"numerator": 2, "denominator": 100},
+      "families_required": 3,
+      "families_total": 4,
+      "aggregation": "unweighted mean of the per-graph exact rationals; per-family means are over that family's graphs alone, so one easy family cannot carry the overall mean",
+      "unscored_policy": "a graph whose b_i or p_i is not ok is excluded from every mean and counted in `unscored`; it is never folded in as 0 (INTERFACE.md section 6 rule 5)"
+    },
+    "rho_gate": {
+      "global_median_min": {"numerator": 3, "denominator": 10},
+      "per_family_median_min": {"numerator": 3, "denominator": 10},
+      "families_required": 3,
+      "families_total": 4,
+      "median_definition": "exact midpoint of the two central order statistics for an even count, the central value for an odd count; ordering is on the exact rational, never on a float",
+      "requires": "references/targets.json (INTERFACE.md section 9's per-graph reference target)"
+    },
+    "saturation_no_go": {
+      "baseline_headroom_median_min": {"numerator": 1, "denominator": 20},
+      "also_fails_if": "any graph in the set has T_i == b_i (the baseline already attains the reference)",
+      "comment": "A veto, not a threshold to tune: if the baseline already sits at the reference there is nothing for a substrate to improve."
+    }
+  }
+}

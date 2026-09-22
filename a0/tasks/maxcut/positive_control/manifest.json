@@ -1,0 +1,54 @@
+{
+  "authority": "a0/tasks/maxcut/INTERFACE.md",
+  "candidates": [
+    {
+      "candidate_id": "b01_seeded_random_partition",
+      "dir": "baseline",
+      "entry": "solution.py",
+      "files": [
+        {
+          "bytes": 451,
+          "path": "candidate.json",
+          "sha256": "5354a2df9c72e8c81d25b8438decf3809ef4f79c5c040a81fad1a7870c189f30"
+        },
+        {
+          "bytes": 3303,
+          "path": "solution.py",
+          "sha256": "2a9be599f75477a534819efb239ae8ed701a9c8ca354ce6763e570f4e976b177"
+        }
+      ],
+      "source_sha256": "6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97"
+    },
+    {
+      "candidate_id": "pc01_external_networkx_one_exchange",
+      "dir": "pc",
+      "entry": "solution.py",
+      "files": [
+        {
+          "bytes": 511,
+          "path": "candidate.json",
+          "sha256": "036b5ef7afc8c93cf3b0b626777c8c07e9ea2eb59c3c8311a543b2ea4d4c8a05"
+        },
+        {
+          "bytes": 1633,
+          "path": "pinned/networkx_init_b69beb2c.py",
+          "sha256": "ec29aaa9f39edc35a6bc752099756f44c0153e4e2391f80f817e14808c0e4d15"
+        },
+        {
+          "bytes": 4333,
+          "path": "pinned/networkx_maxcut_b69beb2c.py",
+          "sha256": "793419aac0d000051ab9f9e2f9a0c9018d94cc871a8c385131d8fe01ca9590fb"
+        },
+        {
+          "bytes": 6759,
+          "path": "solution.py",
+          "sha256": "eeaf642d20c672ccf25dc069e2031bec8db40e5ca5a56628acf9e7d2ca3daa17"
+        }
+      ],
+      "source_sha256": "d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f"
+    }
+  ],
+  "identity_note": "source_sha256 is e_star_child.candidate_source_digest over files[], i.e. exactly the candidate_source_sha256 E* stamps into every Outcome",
+  "schema": "a0.maxcut.positive_control.manifest/v1",
+  "task": "a0/tasks/maxcut"
+}
