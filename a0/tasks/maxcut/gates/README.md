@@ -252,7 +252,8 @@ python3 gates/seed_sensitivity.py --set dev  # is the verdict seed luck? no
 python3 gates/tau_calibration.py             # derive tau per section 7 (10 s)
 python3 gates/strength_table.py              # PC strength -> Delta/rho, both sets
 python3 gates/refreeze_evidence.py --before HEAD   # re-freeze moved no decision
-python3 gates/restamp_evidence.py --before HEAD    # ... and every stamp is current
+python3 gates/restamp_evidence.py --before 7bf8a14b  # ... and every stamp is current
+                                                     # (7bf8a14b = the freeze before the re-stamp)
 python3 references/recompute_rho.py --targets references/targets.json \
     --baseline gates/values/dev.baseline.json \
     --positive-control gates/values/dev.positive-control.json \

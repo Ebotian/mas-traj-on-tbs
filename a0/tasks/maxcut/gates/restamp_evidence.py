@@ -56,11 +56,13 @@ RESTAMP_LEAVES = {
     "candidate_graph_sha256",
 }
 
-#: every digest an earlier E* was stamped with, and the revision it belongs to
+#: every digest an earlier E* was stamped with, and the revision it belongs to.
+#: The revision is on the same line as the digest on purpose: `scan_history`
+#: reads lines, and this file is a tracked artifact that names those digests.
 SUPERSEDED = [
-    ("08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+    ("08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",  # history: E* at 11f55bf0
      "E* at 11f55bf0, before the D-T1-10 launch fix"),
-    ("4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+    ("4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",  # history: E* at 6dd717c2
      "E* at 6dd717c2, the D-T1-10 launch fix"),
 ]
 

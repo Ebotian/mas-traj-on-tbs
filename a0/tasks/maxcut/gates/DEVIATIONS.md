@@ -359,10 +359,13 @@ if a superseded digest appears on a line that does not say it is history. Its
 first run reported the `README.md` line above as unlabelled — that is the check
 working, and it is why the line no longer reads as present tense.
 
-**Verified by execution.** `python3 gates/restamp_evidence.py --before HEAD`
-→ `CLEAN`, rc `0`; `python3 gates/refreeze_evidence.py --before HEAD` → `CLEAN`,
-12 verdicts, 0 decision leaves; `python3 gates/gate_runner.py` → `NOT_ADMISSIBLE`,
-exit 1. Zero model spend: no `a0/meter/` call was made for any of this.
+**Verified by execution.** `python3 gates/restamp_evidence.py --before 7bf8a14b`
+→ `CLEAN`, rc `0` (`7bf8a14b` is the freeze this re-stamp moved off, so the command
+reproduces the transition itself, not just the end state — that is the command a
+reviewer should re-run); `python3 gates/refreeze_evidence.py --before 7bf8a14b`
+→ `CLEAN`, 12 verdicts, 0 decision leaves;
+`python3 gates/gate_runner.py` → `NOT_ADMISSIBLE`, exit 1. Zero model spend: no
+`a0/meter/` call was made for any of this.
 
 ---
 
