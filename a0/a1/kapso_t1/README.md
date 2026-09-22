@@ -35,6 +35,13 @@ The key is read into the environment in that one command and is never printed or
 written to an artifact. `probes/live_t1.py rehearse` runs the same arm inside the same
 closed topology with the model call skipped — free, and part of `verify.py`.
 
+`verify.py` was green on five consecutive full runs from the committed state (and each
+step alone more often), with **one** transient failure of the `rehearse` step observed
+once and not reproduced; that run's reason was lost with the process, so `verify.py` now
+prints a failing step's stdout and stderr instead of only the summary. The rehearsal
+depends on `unshare -rn` and on a KAPSO workspace under `/tmp`, so a contended host is
+the place to look first if it recurs.
+
 ## What is here
 
 | path | what it is |
