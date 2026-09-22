@@ -34,8 +34,15 @@ IDENTITY_LEAVES = {
     "graph_sha256",
 }
 
-VERDICT_FILES = ["gates/verdict.dev.json", "gates/verdict.eval.json",
-                 "gates/verdict.dev.pc_exchange_k10.json"]
+def verdict_files():
+    """Every verdict this directory has issued, not a hand-kept subset.
+
+    The list used to name three files; the sixth positive control's verdicts were
+    then outside the diff, which is the one place a stale digest could hide
+    unchecked.  Globbing the directory keeps the evidence complete as verdicts
+    are added.
+    """
+    return sorted(f"gates/{path.name}" for path in HERE.glob("verdict.*.json"))
 
 
 def walk(before, after, path=""):
@@ -78,7 +85,7 @@ def main():
     args = parser.parse_args()
 
     documents = []
-    for relative in VERDICT_FILES:
+    for relative in verdict_files():
         current_path = MAXCUT / relative
         if not current_path.is_file():
             continue

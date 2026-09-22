@@ -195,6 +195,8 @@ value files and verdicts re-frozen. The field-level diff at that moment was:
 not this workstream's change at all (D-GATE-12). Every row, every family and
 stratum reduction, and the verdict itself were identical.
 
+`4afff01f…` is itself history now — `baf13884` superseded it, see D-GATE-15.
+
 This is a re-freeze, and calling it anything else — a "drift", or worse, keeping
 the old numbers and their now-wrong digests — would misrepresent what happened:
 the frozen artifacts are no longer the artifacts that produced the earlier
@@ -285,6 +287,85 @@ field-level diff in D-GATE-11 confirms.
 
 ---
 
+## D-GATE-15 — re-freeze #3: `E*` moved again (`4afff01f… → dc6969ec…`), and the stamps catch up
+
+**What triggered it.** The evaluator was re-frozen a third time for reasons
+outside this directory: `baf13884` ("close the answer leaks") changed
+`e_star.py`/`e_star_child.py` so the candidate is handed a redacted
+`candidate_graph.json` (`candidate_graph_sha256`/`bytes`/`keys`/`schema`) instead
+of the raw graph file. `e_star.py`'s own `digest --value-only`, run on each
+revision's two files, gives the full lineage:
+
+| `evaluator_source_sha256` | revision | status |
+|---|---|---|
+| `08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d` | `11f55bf0` | **history** |
+| `4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a` | `6dd717c2` (D-T1-10) | **history** |
+| `dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00` | `baf13884` | **current** |
+
+Independent verification (`a0/verify/a1-final/REPORT.md`) found that this
+directory's committed artifacts had not followed: 924 stamped records (576 stored
+Outcomes, the 14 `values/` documents built from them, and all 12 verdicts) still
+named the superseded `4afff01f…`, and `README.md` stated it in the present tense.
+The record was stale while every *decision* it carried was still correct.
+
+**What was done.** The whole measurement was re-run against the current `E*` —
+both sets at the frozen `θ`, all five truncation variants on both sets, and the
+seed-sensitivity seeds — which rewrote all 576 Outcomes, the 14 `values/`
+documents and the 12 verdicts. No `--force` was needed: `cache_is_current`
+(D-GATE-13) detects that the cached Outcome names a different evaluator and re-runs
+it, printing the fact to stderr. 576 of 576 Outcomes were re-measured.
+
+**Identity moved; nothing else did.** `restamp_evidence.py` (new, and the
+instrument for this question) diffs every stored record against the previous
+freeze at leaf level and asks `e_star.py digest` — rather than assuming — what the
+current evaluator is:
+
+| record set | records | differing | leaves that moved | decision leaves |
+|---|---|---|---|---|
+| stored Outcomes | 576/576 | 6 leaves each | `evaluator_source_sha256`, `canonical_digest`, `candidate_graph_bytes`, `candidate_graph_keys`, `candidate_graph_schema`, `candidate_graph_sha256` | **0** |
+| verdicts | 12/12 | 1 leaf each | `artifacts.evaluator_source_sha256` | **0** |
+| stamped records, all 602 documents | 924 | — | 924 name the current `E*`; **0 stale** | — |
+
+`refreeze.evidence.py` now covers all 12 verdicts, not the 3 it named before: the
+sixth positive control's verdicts (`pc_exchange_k01/k02/k05/k25`) were outside the
+diff, which is the one place a stale digest could have hidden unchecked. Every
+verdict — `NOT_ADMISSIBLE` for `dev`/`eval`, `ADMISSIBLE` for the variants that
+pass, `NOT_ADMISSIBLE` for `eval` at `k25` — is unchanged, and every rendered
+`.md` table and `strength_table.{json,md}`/`seed_sensitivity.dev.json`/
+`rho_crosscheck.dev.json` came out byte-identical, so no decision number moved.
+
+**One number that did move, and it is not a decision.** `tau_calibration.json` is
+re-measured from scratch, and the percentiles came out higher than at the first
+measurement: pooled p50 `23–24 → 34–35 ms` and pooled p99 `133–136 → 146–147 ms`
+over two re-stamp runs. Whether that is a slower host, a noisier one, or both is
+not measured here. What *is* measured is that the derivation's output does not
+depend on it: `10 × p99 ≤ 1.47 s` still sits under the 10 s band minimum, so
+`τ = 10 s` is unchanged and the floor still binds with 6.8× margin. Recorded here
+because a reader diffing the file would otherwise see timings move without an
+explanation; `wall_ms` is a diagnostic, never an input to Δ, ρ or the veto.
+
+**A fabricated stamp, corrected.** `README.md` §2 named `79a27789…` as the current
+`gate_config.json` digest. No revision of that file ever had it — measured:
+`1ff12031…` at `f9054e56` and `171c23d8…` at `b9dfb859`, which is what all 12
+verdicts record. The paragraph now names the right digests and says what was
+corrected.
+
+**What the history rule now is, and how it is enforced.** No artifact from a
+superseded revision is kept; the only surviving mentions of a superseded digest
+are prose sentences in `README.md` and this file, each of which names the revision
+it belongs to. `restamp_evidence.py` enforces exactly that: it fails with `DRIFT`
+if a stamped record names anything but the live `E*`, if a decision leaf moves, or
+if a superseded digest appears on a line that does not say it is history. Its
+first run reported the `README.md` line above as unlabelled — that is the check
+working, and it is why the line no longer reads as present tense.
+
+**Verified by execution.** `python3 gates/restamp_evidence.py --before HEAD`
+→ `CLEAN`, rc `0`; `python3 gates/refreeze_evidence.py --before HEAD` → `CLEAN`,
+12 verdicts, 0 decision leaves; `python3 gates/gate_runner.py` → `NOT_ADMISSIBLE`,
+exit 1. Zero model spend: no `a0/meter/` call was made for any of this.
+
+---
+
 ## Deliberately *not* done this round
 
 * **No `k` was adopted.** `REVISION-PROPOSAL.md` supplies the curve and a
@@ -295,7 +376,11 @@ field-level diff in D-GATE-11 confirms.
 * **No threshold was touched.** `Δ` (`0.03` / `0.02` / 3-of-4), `ρ`
   (`0.30` / `0.30` / 3-of-4) and the saturation veto are byte-identical to the
   pre-registered values; `gate_config.json`'s only change is `θ` and the comment
-  that documents it.
+  that documents it. Re-confirmed at the re-stamp (D-GATE-15) by
+  `gate_config_sha256 171c23d8…` in all 12 verdicts and by
+  `restamp_evidence.py` finding 0 decision leaves moved — the thresholds were not
+  re-typed, and the digest the pre-registration was frozen under is the digest the
+  verdicts record.
 * **The suite, `references/targets.json`, `C*(T1)`, `E*` and every upstream
   runtime are read-only here.** No file outside `positive_control/` and `gates/`
   was written.

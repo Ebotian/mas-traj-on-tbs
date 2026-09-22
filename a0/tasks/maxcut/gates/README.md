@@ -46,23 +46,45 @@ This is not a measurement accident:
 * the ρ numbers agree exactly, graph by graph, with
   `../references/recompute_rho.py` run over the same E* Outcomes.
 
-**Re-frozen twice on 2026-09-22, with no number moved.** Both verdicts were
-regenerated because two *dependencies* changed: `E*` was fixed (its
-`evaluator_source_sha256` moved `08281d21… → 4afff01f…`, `DEVIATIONS.md`
-D-GATE-10) and `θ` was derived instead of guessed (`τ 30 s → 10 s`, D-GATE-4 /
-D-GATE-11); `references/targets.json` was also revised underneath by its owner
-(D-GATE-12). `refreeze.evidence.py` diffs each verdict as committed against the
-verdict on disk and classifies every differing leaf field:
+**Re-frozen three times on 2026-09-22, with no number moved.** Each time a
+*dependency* changed, never a result: `E*` was fixed (`08281d21… → 4afff01f…`,
+`DEVIATIONS.md` D-GATE-10), `θ` was derived instead of guessed (`τ 30 s → 10 s`,
+D-GATE-4 / D-GATE-11), `references/targets.json` was revised underneath by its
+owner (D-GATE-12), and `E*` moved again — `4afff01f… → dc6969ec…`, whose history
+is D-GATE-15. The third re-freeze re-ran all 576 stored Outcomes, the 14 `values/`
+documents built from them, and all 12 verdicts against the current evaluator.
 
-| verdict | differing leaf fields | identity | decision | verdict value |
-|---|---|---|---|---|
-| `verdict.dev.json` | 5 | 5 | **0** | unchanged |
-| `verdict.eval.json` | 5 | 5 | **0** | unchanged |
+**Identity lineage — read no digest out of its revision.** Every digest named
+anywhere below is either current or marked **history** with the revision it
+belongs to:
 
-`refreeze.evidence.json`, verdict `CLEAN`. This is the point of calling it a
-re-freeze rather than a drift: the artifacts that produced the earlier digits no
-longer exist, every digit is the same, and the difference is machine-checked
-rather than asserted.
+| artifact | digest | revision | status |
+|---|---|---|---|
+| `E*` | `08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d` | `11f55bf0` | **history** — superseded |
+| `E*` | `4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a` | `6dd717c2` | **history** — superseded |
+| `E*` | `dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00` | `baf13884` | **current** |
+| `gate_config.json` | `1ff12031562031c879c86e177c2a685a5508632f1ecbf409ff650661223a30a0` | `f9054e56` | **history** — superseded |
+| `gate_config.json` | `171c23d89dd59e5c83868acff8526ab42b94e6d7b1fd37a7a3a04246a30c452f` | `b9dfb859` | **current** |
+| `references/targets.json` | `0919d7a4b41455ce504678c615d6a266666b5767435a4e6061982c780470d79c` | `b9dfb859` | **current** |
+
+No artifact from a superseded revision is retained. The only places those digests
+still appear at all are the history sentences in this file and in `DEVIATIONS.md`,
+and each says which revision it is about; `restamp_evidence.py` checks that
+mechanically and fails the run if an unlabelled one is found.
+
+Two instruments, one rule — an identity field may move, a decision field may not:
+
+| instrument | records | differing | identity leaves | decision leaves | verdict |
+|---|---|---|---|---|---|
+| `refreeze.evidence.json` — 12 verdicts | 12/12 | 1 leaf each | `evaluator_source_sha256` | **0** | `CLEAN` |
+| `restamp.evidence.json` — 576 Outcomes | 576/576 | 6 leaves each | the six stamps below | **0** | `CLEAN` |
+
+The six are `evaluator_source_sha256`, `canonical_digest`, and the four
+`candidate_graph_*` fields of the redacted candidate view `baf13884` introduced.
+The earlier two re-freezes' combined diff (5 identity leaves, 0 decision leaves)
+is recorded in D-GATE-11. This is the point of calling it a re-freeze rather than
+a drift: the artifacts that produced the earlier digits no longer exist, every
+digit is the same, and the difference is machine-checked rather than asserted.
 
 **The gate is satisfiable, and the decision it needs is not mine to make.** The
 same frozen runner, pointed at a weaker positive control (`--pc
@@ -78,9 +100,11 @@ run still evaluates the contract's `PC_i` and still says `NOT_ADMISSIBLE`.
 Not relaxing the gate. The three parts of the gate and their thresholds live in
 `gate_config.json`, which is frozen *before* execution and whose sha256 is
 recorded inside every verdict — so "the gate was not moved" is checkable, not
-asserted. (Its current digest is `79a27789…`; the earlier verdicts carry
-`1ff12031…`, and the only difference between those two config revisions is `θ`,
-which the same verdicts record. No threshold changed.)
+asserted. (Its current digest is `171c23d8…`; the verdicts issued before the `θ`
+revision carry the earlier config `1ff12031…`, and the only difference between
+those two config revisions is `θ`, which the same verdicts record. No threshold
+changed. This paragraph used to name `79a27789…` as the current digest — no
+revision of `gate_config.json` ever had that digest; corrected under D-GATE-15.)
 
 >> **This section is superseded for the *choice of lever*, and kept for the
 >> record.** It proposed re-drawing two strata at larger `n`. That lever was then
@@ -228,6 +252,7 @@ python3 gates/seed_sensitivity.py --set dev  # is the verdict seed luck? no
 python3 gates/tau_calibration.py             # derive tau per section 7 (10 s)
 python3 gates/strength_table.py              # PC strength -> Delta/rho, both sets
 python3 gates/refreeze_evidence.py --before HEAD   # re-freeze moved no decision
+python3 gates/restamp_evidence.py --before HEAD    # ... and every stamp is current
 python3 references/recompute_rho.py --targets references/targets.json \
     --baseline gates/values/dev.baseline.json \
     --positive-control gates/values/dev.positive-control.json \
@@ -244,7 +269,7 @@ because `../positive_control/pc/solution.py` is self-contained.
 
 * **The evaluator is the authority.** This runner never computes a cut. For every
   (candidate, graph) it invokes `../e_star.py evaluate` — the harness-owned E*,
-  `evaluator_source_sha256 4afff01f…` — with the frozen
+  `evaluator_source_sha256 dc6969ec…` — with the frozen
   `θ = (seed 1337, τ 10 s)`, and reads `cut_edges` out of the frozen Outcome. A
   candidate never reports its own score here either (§4, §5).
 * **Exact arithmetic only.** `Δ`, `ρ`, the medians and the family means are
@@ -274,15 +299,24 @@ because `../positive_control/pc/solution.py` is self-contained.
   `ρ_exact` and `T_i` agrees; its mean headroom closed `0.8257795790943124`
   matches this runner's exact figure.
 * **`tau_calibration.json`** — the §7 derivation of `θ.timeout_s` from the
-  calibration set over the candidates the task runs: pooled p99 `133 ms`,
-  `10 × p99 = 1.33 s`, so the 10 s floor binds and `τ = 10 s` (D-GATE-4, closed).
+  calibration set over the candidates the task runs: pooled p99 `133 ms` at the
+  first measurement and `146–147 ms` when re-measured for the re-stamp (D-GATE-15
+  — a timing on a host that read slower this time, not a decision).
+  `10 × p99 ≤ 1.47 s`, so the 10 s floor binds either way and `τ = 10 s`
+  (D-GATE-4, closed).
 * **`strength_table.json`** — the PC strength curve for both sets with per-family
   detail, and the **re-verification of `redesign/`**: 6 variants, 60 fields,
   largest difference `4.98e-10` (float rendering of exact rationals), 0 gate-count
   mismatches.
-* **`refreeze.evidence.json`** — every re-freeze diffed field by field, with
-  identity fields and decision fields separated: 5 identity leaves, 0 decision
-  leaves, `CLEAN`.
+* **`refreeze.evidence.json`** — every verdict diffed leaf by leaf against the
+  previous freeze, identity fields and decision fields separated. Currently all
+  12 verdicts, 1 identity leaf each, **0** decision leaves, `CLEAN`.
+* **`restamp.evidence.json`** — the same question asked of the stored Outcomes,
+  plus the stamp check the verdicts cannot make on their own: every one of the 924
+  stamped records in all 602 documents names *this* `E*` (asked of
+  `e_star.py digest`, not assumed); the 576 Outcomes each move 6 identity leaves
+  and **0** decision leaves; every remaining mention of a superseded digest
+  carries the revision it belongs to. Currently `CLEAN`.
 * **`positive_control/pc_identity_report.json`** — the artifact under test really
   is the pinned NetworkX `one_exchange`, not an approximation of it (§1 of that
   README).
