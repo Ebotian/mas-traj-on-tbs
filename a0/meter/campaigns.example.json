@@ -1,0 +1,19 @@
+{
+  "schema": "a0.meter.registry/v1",
+  "listen_host": "127.0.0.1",
+  "_comment": "One campaign = one listening port. Attribution is fixed at bind() time, so a row's (campaign_id, arm_id) cannot be influenced by anything the runtime sends. `token` is optional; when present the campaign's requests must carry X-A0-Meter-Token with that value or they are refused and recorded as refusals against this campaign.",
+  "campaigns": [
+    {
+      "campaign_id": "C_0001",
+      "arm_id": "A_baseline",
+      "port": 8801,
+      "token": "REPLACE-WITH-A-PER-CAMPAIGN-RANDOM-STRING"
+    },
+    {
+      "campaign_id": "C_0002",
+      "arm_id": "A_plus",
+      "port": 8802,
+      "token": "REPLACE-WITH-A-DIFFERENT-RANDOM-STRING"
+    }
+  ]
+}

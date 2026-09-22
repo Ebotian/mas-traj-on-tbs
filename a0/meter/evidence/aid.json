@@ -1,0 +1,34 @@
+{
+  "endpoints": [
+    {
+      "anthropic_base_url": "http://127.0.0.1:58281",
+      "arm_id": "A_base",
+      "base_url": "http://127.0.0.1:58281/v1",
+      "campaign_id": "C_0001",
+      "token": "tok-C1"
+    },
+    {
+      "anthropic_base_url": "http://127.0.0.1:40975",
+      "arm_id": "A_pc",
+      "base_url": "http://127.0.0.1:40975/v1",
+      "campaign_id": "C_0002",
+      "token": "tok-C2"
+    }
+  ],
+  "meter": {
+    "allowlist": [
+      "127.0.0.1",
+      "api.deepseek.com"
+    ],
+    "attribution": "per_campaign_listener_port(+optional X-A0-Meter-Token)",
+    "ceq_formula": "ceq = miss + floor(hit*2/100) + 4*completion",
+    "connect": "refused",
+    "ledger": "/home/ebt/rsi-dev/a0/meter/.run/ledger.jsonl",
+    "missing_usage": "unmetered:true,ceq:null",
+    "mode": "plaintext_base_url",
+    "on_missing_cache_split": "unmetered",
+    "row_schema": "a0.meter.call/v1",
+    "upstream_base": "https://127.0.0.1:45909"
+  },
+  "schema": "a0.meter.aid/v1"
+}
