@@ -66,9 +66,13 @@ at the frozen `θ = (seed 1337, τ = 30 s)` on the L1 sample:
 | graph | n | \|E\| | pinned PC status |
 |---|---|---|---|
 | `L1_ERp080_n256_r0` | 256 | 2540 | `ok` |
-| `L1_ERp080_n512_r0` | 512 | 10451 | **`timeout`** |
+| `L1_RRd4_n512_r0` | 512 | 1024 | `ok` |
+| `L1_ERp080_n512_r0` (×4) | 512 | 10451 | **`timeout`** |
+| `L1_RRd4_n1024_r0/r1/r2` | 1024 | 2048 | **`timeout`** (r3 `ok`) |
+| `L1_ERp080_n1024_r0…r3` | 1024 | ~41800 | **`timeout`** |
 
-So at `n ≥ 512` the frozen PC does not finish inside the frozen budget, and
+So beyond `n = 512` on the denser stratum, and mostly at `n = 1024` on the
+sparser one, the frozen PC does not finish inside the frozen budget, and
 `INTERFACE.md` §6 rule 5 forbids folding a `timeout` in as anything.  The value
 `p_i` in `out/l1_values.json` is therefore the local optimum of the **same
 algorithm**, obtained from `redesign/candidates/exchange_opt/solution.py`, which
@@ -133,7 +137,9 @@ R_i`), with the bracket shown beside it.
 
 The frozen suite has no size variance (60 graphs, all `n = 128`).  `gen/
 gen_l1_instances.py` draws the two strata `RR:d4` and `ER:p080` at
-`n ∈ {128,256,512,1024}`, 2 graphs per cell, by importing the frozen generator
+`n ∈ {128,256,512,1024}` — 2 graphs per cell at `n = 128` (matching the frozen
+suite's own 2-per-stratum density) and 4 per cell at `n ≥ 256`, 28 graphs in
+all — by importing the frozen generator
 module **read-only** (`generators/maxcut_suite.py`: same SplitMix64 stream, same
 generators, same canonical writer, `INTERFACE.md` §2).  A distinct generation
 role (`redesign-L1`) and distinct graph ids (`L1_*`) keep the streams disjoint
