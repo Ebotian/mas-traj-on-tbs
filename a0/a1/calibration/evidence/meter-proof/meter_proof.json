@@ -29,11 +29,11 @@
    "model_reported": "deepseek-flash",
    "model_requested": "deepseek-flash",
    "provider": "deepseek",
-   "provider_request_id": "04609b5a-7077-489f-b562-41a906c4f37a",
+   "provider_request_id": "2aae5080-d739-4ada-b39c-6ac0f173b7b8",
    "reason": null,
    "schema": "a0.meter.call/v1",
    "stream": false,
-   "ts": "2026-09-22T19:40:22.135468+08:00",
+   "ts": "2026-09-22T21:18:09.793551+08:00",
    "unmetered": false,
    "usage": {
     "completion_tokens": 8,
@@ -43,15 +43,15 @@
   }
  ],
  "meter": {
-  "base_url": "http://127.0.0.1:43925/v1",
-  "ledger": "/tmp/a1cal/pilot/meter-proof/meter/ledger.jsonl",
-  "port": 43925,
+  "base_url": "http://127.0.0.1:52321/v1",
+  "ledger": "/tmp/a1cal/pilot2/meter-proof/meter/ledger.jsonl",
+  "port": 52321,
   "token_issued": true
  },
  "meter_verify": {
   "returncode": 0,
   "stderr": "",
-  "stdout": "{\n  \"ledger\": \"/tmp/a1cal/pilot/meter-proof/meter/ledger.jsonl\",\n  \"rows\": 1,\n  \"metered\": 1,\n  \"unmetered\": 0,\n  \"ceq_total\": 68,\n  \"ceq_per_campaign_arm\": {\n    \"C_calib_meter_proof/A_calib_proof\": 68\n  },\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
+  "stdout": "{\n  \"ledger\": \"/tmp/a1cal/pilot2/meter-proof/meter/ledger.jsonl\",\n  \"rows\": 1,\n  \"metered\": 1,\n  \"unmetered\": 0,\n  \"ceq_total\": 68,\n  \"ceq_per_campaign_arm\": {\n    \"C_calib_meter_proof/A_calib_proof\": 68\n  },\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
  },
  "model_requested": "deepseek-flash",
  "not_used_for_selection": true,

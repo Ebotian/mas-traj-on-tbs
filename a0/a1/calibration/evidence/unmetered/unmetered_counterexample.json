@@ -13,24 +13,24 @@
    }
   },
   "campaign_id": "C_calib_unmetered_probe",
-  "detail": "1 ledger row(s) carry no usage; CEq is not established. reasons=['upstream_http_400_no_usage']",
+  "detail": "1 ledger row(s) carry no usage; CEq is not established. reasons=['upstream_http_401_no_usage']",
   "label": "induced-unmetered",
   "observed": {
    "CEq": 0,
    "CEq_rows": 1,
    "N_evaluatorCalls": 0,
-   "T_wall_sec": 5.1037000957876444e-05,
+   "T_wall_sec": 6.848799966974184e-05,
    "harness_eval_ledger_missing": true,
    "meter_ledger_missing": false,
    "reasons": {
-    "upstream_http_400_no_usage": 1
+    "upstream_http_401_no_usage": 1
    },
    "refusals": [],
    "refused_rows": 0,
    "unmetered": [
     {
-     "reason": "upstream_http_400_no_usage",
-     "ts": "2026-09-22T19:40:22.745794+08:00"
+     "reason": "upstream_http_401_no_usage",
+     "ts": "2026-09-22T21:18:04.891121+08:00"
     }
    ],
    "unmetered_rows": 1
@@ -47,9 +47,9 @@
    "endpoint": "https://api.deepseek.com/v1/chat/completions",
    "kind": "call",
    "raw_usage": null,
-   "reason": "upstream_http_400_no_usage",
+   "reason": "upstream_http_401_no_usage",
    "row_ceq": null,
-   "status": 400,
+   "status": 401,
    "streamed": false,
    "unmetered": true,
    "usage_source": "none"
@@ -64,7 +64,7 @@
  "discarded_sentence": "The pilot's algorithmic results are discarded.",
  "not_used_for_selection": true,
  "procedure_sha256": "68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2",
- "response": "ModelCallError: model call refused with HTTP 400",
+ "response": "ModelCallError: model call refused with HTTP 401",
  "row": {
   "arm_id": "A_calib_probe",
   "campaign_id": "C_calib_unmetered_probe",
@@ -74,10 +74,10 @@
   "model_requested": "deepseek-does-not-exist-a0-calibration",
   "provider": "deepseek",
   "provider_request_id": null,
-  "reason": "upstream_http_400_no_usage",
+  "reason": "upstream_http_401_no_usage",
   "schema": "a0.meter.call/v1",
   "stream": false,
-  "ts": "2026-09-22T19:40:22.745794+08:00",
+  "ts": "2026-09-22T21:18:04.891121+08:00",
   "unmetered": true,
   "usage": null
  },

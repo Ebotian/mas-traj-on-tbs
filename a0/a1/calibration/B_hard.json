@@ -1,0 +1,931 @@
+{
+ "calibration_graphs": [
+  {
+   "graph_id": "C_0001",
+   "sha256": "8c23cbb224a31dbea8ccf28fb6db7b26d182f72c3abada9354a247d13cb7ad29"
+  },
+  {
+   "graph_id": "C_0002",
+   "sha256": "99710028c7d66594d3c6bd7620855c02412f9c2f78efdaa7b0ff2448333c255f"
+  },
+  {
+   "graph_id": "C_0003",
+   "sha256": "0e3f49d6ec062ba5ca4ce84323e3f035fa9bf807a02d9f4ad9d070c69be2d36e"
+  },
+  {
+   "graph_id": "C_0004",
+   "sha256": "0431a497c0462ffe44b697cdfeb265e76c56e64f1670eb1607eb232daa79a17e"
+  },
+  {
+   "graph_id": "C_0005",
+   "sha256": "385256224954c6ce9a84e05264f09c754a86b6bed6f4b0bd41b369f301086c17"
+  },
+  {
+   "graph_id": "C_0006",
+   "sha256": "b42f39d3431800fd9d7988131d6fa786c0b91fd26abf7ef5fafb55dc9f17394e"
+  },
+  {
+   "graph_id": "C_0007",
+   "sha256": "12b53751d29caf1c7fa9333ccfb5bbeb1da9b96d096e0b6433431642b0cca4ee"
+  },
+  {
+   "graph_id": "C_0008",
+   "sha256": "39504232beff0c326cca31e883a365d0711d3d42add1b173386b35dc7d7233ce"
+  },
+  {
+   "graph_id": "C_0009",
+   "sha256": "045f75500fc44e2c8fcf314309de6924a5d710be768e269efeed901ff37fad03"
+  },
+  {
+   "graph_id": "C_0010",
+   "sha256": "7107d3cd0a930fcfcd4fa5cec6abbd91fd3b5bebc4dfc6c6e28e260af1e86c20"
+  },
+  {
+   "graph_id": "C_0011",
+   "sha256": "04bebec51fb43c0fccd8b56da7045868629ce49caa5aecf49ece98f60628c6e6"
+  },
+  {
+   "graph_id": "C_0012",
+   "sha256": "204c62f040b44b21cc7182bcfc2c789f5c6b5a41b9a74f131cdfdbea432ed415"
+  }
+ ],
+ "campaigns": {
+  "A_kapso": {
+   "arm_id": "A_kapso",
+   "campaign_id": "C_calib_A_kapso",
+   "caps": {
+    "CEq_max": 300000,
+    "N_E_max": 192,
+    "T_wall_sec": 900.0
+   },
+   "mode": "pilot",
+   "stop_reason": "workload_complete",
+   "units_completed": 24,
+   "workload_complete": true
+  },
+  "A_simpleloop": {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_calib_A_simpleloop",
+   "caps": {
+    "CEq_max": 1200000,
+    "N_E_max": 288,
+    "T_wall_sec": 900.0
+   },
+   "mode": "pilot",
+   "stop_reason": "workload_complete",
+   "units_completed": 24,
+   "workload_complete": true
+  }
+ },
+ "diagnostics": {
+  "T_wall_min": 30.0,
+  "factor": 1.25,
+  "per_arm": {
+   "A_kapso": {
+    "D1_margin_CEq_minutes": 92.22312505300454,
+    "D2_margin_NE_minutes": 37.536067178819444,
+    "D3_ceq_worst_window_ratio": 1.0,
+    "D3_ne_worst_window_ratio": 1.0,
+    "D3_threshold": 1.25,
+    "D4_tau_cross_check": {
+     "candidate_p99_ms": null,
+     "floor_binds": null,
+     "note": "reported, never changed: the frozen tau is the gate workstream's",
+     "tau_frozen_s": 10.0,
+     "ten_times_p99_s": null
+    },
+    "D5_ceq_per_call": {
+     "cv": 0.0,
+     "max": 1104.0,
+     "mean": 1104.0,
+     "median": 1104.0,
+     "min": 1104.0,
+     "n": 48,
+     "p50": 1104.0,
+     "p95": 1104.0,
+     "p99": 1104.0,
+     "sd": 0.0
+    },
+    "D5_completion_tokens": [
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256
+    ],
+    "e_r_evals_per_min": 19.314756565895568,
+    "guardrails_would_bind_before_T_wall": [],
+    "q_r_ceq_per_min": 21323.49124874871,
+    "variance": {
+     "per_unit_ceq": {
+      "cv": 0.0876784597599385,
+      "max": 24179.709558760453,
+      "mean": 21503.33066752904,
+      "median": 21684.511882043313,
+      "min": 16326.502443676154,
+      "n": 24,
+      "p50": 21574.642759547936,
+      "p95": 23781.57143626474,
+      "p99": 24179.709558760453,
+      "sd": 1885.3789126375964
+     },
+     "per_unit_ne": {
+      "cv": 0.08767845975993852,
+      "max": 21.901910832210557,
+      "mean": 19.47765459015312,
+      "median": 19.641768009097202,
+      "min": 14.788498590286371,
+      "n": 24,
+      "p50": 19.542248876402116,
+      "p95": 21.541278474877483,
+      "p99": 21.901910832210557,
+      "sd": 1.7077707542007219
+     },
+     "per_unit_seconds": {
+      "cv": 0.09959410938137712,
+      "max": 8.114414,
+      "mean": 6.212481291666666,
+      "median": 6.1095865,
+      "min": 5.478974,
+      "n": 24,
+      "p50": 6.078631,
+      "p95": 7.635552,
+      "p99": 8.114414,
+      "sd": 0.618726541292009
+     },
+     "per_window_ceq": {
+      "full_rates": [
+       20976.0,
+       20976.0
+      ],
+      "max_full_rate": 20976.0,
+      "mean_full_rate": 20976.0,
+      "min_full_rate": 20976.0,
+      "n_full": 2,
+      "partial": {
+       "CEq": 11040,
+       "span_sec": 29.10879111289978,
+       "start_epoch": 1790082891.473425
+      },
+      "sum_full": 41952
+     },
+     "per_window_ne": {
+      "full_rates": [
+       19.0,
+       19.0
+      ],
+      "max_full_rate": 19.0,
+      "mean_full_rate": 19.0,
+      "min_full_rate": 19.0,
+      "n_full": 2,
+      "partial": {
+       "N_E": 10,
+       "span_sec": 29.10879111289978,
+       "start_epoch": 1790082891.473425
+      },
+      "sum_full": 38
+     }
+    }
+   },
+   "A_simpleloop": {
+    "D1_margin_CEq_minutes": 37.500012345387965,
+    "D2_margin_NE_minutes": 73.25003148809523,
+    "D3_ceq_worst_window_ratio": 1.1316281596627873,
+    "D3_ne_worst_window_ratio": 1.115942028985507,
+    "D3_threshold": 1.25,
+    "D4_tau_cross_check": {
+     "candidate_p99_ms": null,
+     "floor_binds": null,
+     "note": "reported, never changed: the frozen tau is the gate workstream's",
+     "tau_frozen_s": 10.0,
+     "ten_times_p99_s": null
+    },
+    "D5_ceq_per_call": {
+     "cv": 0.24433614328657538,
+     "max": 10868.0,
+     "mean": 7891.085106382979,
+     "median": 8437.0,
+     "min": 2505.0,
+     "n": 47,
+     "p50": 8437.0,
+     "p95": 10392.0,
+     "p99": 10868.0,
+     "sd": 1928.0773012397524
+    },
+    "D5_completion_tokens": [
+     2048,
+     1507,
+     2048,
+     2048,
+     2048,
+     742,
+     750,
+     2048,
+     1911,
+     2048,
+     2048,
+     2048,
+     2048,
+     2030,
+     2048,
+     2048,
+     2048,
+     2048,
+     1992,
+     2048,
+     866,
+     2048,
+     2048,
+     2048,
+     2048,
+     2048,
+     2048,
+     2048,
+     2048,
+     1150,
+     2048,
+     2048,
+     2048,
+     1479,
+     2048,
+     2048,
+     2048,
+     1159,
+     2048,
+     2048,
+     2048,
+     565,
+     1796,
+     2048,
+     2048,
+     1043,
+     1098
+    ],
+    "e_r_evals_per_min": 9.89760666680162,
+    "guardrails_would_bind_before_T_wall": [],
+    "q_r_ceq_per_min": 52440.48940271502,
+    "variance": {
+     "per_unit_ceq": {
+      "cv": 0.11165668953551634,
+      "max": 64971.47080362079,
+      "mean": 52567.217303530655,
+      "median": 51199.41307340937,
+      "min": 42651.349320377456,
+      "n": 24,
+      "p50": 50953.86164272676,
+      "p95": 61773.01243396319,
+      "p99": 64971.47080362079,
+      "sd": 5869.481462206345
+     },
+     "per_unit_ne": {
+      "cv": 0.21695930584525894,
+      "max": 17.083324198500257,
+      "mean": 10.124465430796343,
+      "median": 9.907338822865999,
+      "min": 6.095374941243125,
+      "n": 24,
+      "p50": 9.74094181702983,
+      "p95": 14.325582609506744,
+      "p99": 17.083324198500257,
+      "sd": 2.196596991919895
+     },
+     "per_unit_seconds": {
+      "cv": 0.1879571022446391,
+      "max": 23.764972,
+      "mean": 17.680638666666667,
+      "median": 17.817614499999998,
+      "min": 9.843529,
+      "n": 24,
+      "p50": 17.766982,
+      "p95": 21.658523,
+      "p99": 23.764972,
+      "sd": 3.323201609621186
+     },
+     "per_window_ceq": {
+      "full_rates": [
+       47985.0,
+       47342.0,
+       55277.0,
+       59216.0,
+       55395.0,
+       44476.0,
+       56606.0
+      ],
+      "max_full_rate": 59216.0,
+      "mean_full_rate": 52328.142857142855,
+      "min_full_rate": 44476.0,
+      "n_full": 7,
+      "partial": {
+       "CEq": 4584,
+       "span_sec": 4.345010042190552,
+       "start_epoch": 1790082766.36827
+      },
+      "sum_full": 366297
+     },
+     "per_window_ne": {
+      "full_rates": [
+       10.0,
+       9.0,
+       9.0,
+       10.0,
+       10.0,
+       10.0,
+       11.0
+      ],
+      "max_full_rate": 11.0,
+      "mean_full_rate": 9.857142857142858,
+      "min_full_rate": 9.0,
+      "n_full": 7,
+      "partial": {
+       "N_E": 1,
+       "span_sec": 4.345010042190552,
+       "start_epoch": 1790082766.36827
+      },
+      "sum_full": 69
+     }
+    }
+   }
+  }
+ },
+ "discarded_sentence": "The pilot's algorithmic results are discarded.",
+ "frozen_on": "2026-09-22",
+ "manifest": {
+  "path": "a0/tasks/maxcut/suite/manifest.json",
+  "sha256": "47324fccb6a00c62e1bc6b767fd6591292515d4421d152b5c47f9ad547814d23"
+ },
+ "mapping": {
+  "name": "f",
+  "properties": {
+   "bounded": true,
+   "ceiling_active": {
+    "CEq_max": false,
+    "N_evaluatorCalls": false
+   },
+   "monotone": true,
+   "monotone_detail": [
+    {
+     "CEq_max": 983257,
+     "N_evaluatorCalls": 363,
+     "scale": 0.5
+    },
+    {
+     "CEq_max": 1966519,
+     "N_evaluatorCalls": 725,
+     "scale": 1.0
+    },
+    {
+     "CEq_max": 3933037,
+     "N_evaluatorCalls": 1449,
+     "scale": 2.0
+    },
+    {
+     "CEq_max": 5000000,
+     "N_evaluatorCalls": 2898,
+     "scale": 4.0
+    }
+   ],
+   "total": true,
+   "variance_reported": true
+  },
+  "result": {
+   "clamped": {
+    "CEq_max": false,
+    "N_evaluatorCalls": false
+   },
+   "driving_arm": {
+    "CEq_max": "A_simpleloop",
+    "N_evaluatorCalls": "A_kapso"
+   },
+   "formula": "T_wall_sec = 1800; q_r = 60*CEq_r/T_r; e_r = 60*N_E_r/T_r; CEq_max = min(ceil((5/4) * 30 * max_r(q_r)), CEQ_CEILING); N_evaluatorCalls = min(ceil((5/4) * 30 * max_r(e_r)), N_E_CEILING); P_concurrency = 1",
+   "per_arm": {
+    "A_kapso": {
+     "C_r_ceq_per_30min": 639704.7374624612,
+     "E_r_evals_per_30min": 579.4426969768671,
+     "e_r_evals_per_min": 19.314756565895568,
+     "e_r_exact": "2880000000/149108791",
+     "q_r_ceq_per_min": 21323.49124874871,
+     "q_r_exact": "3179520000000/149108791"
+    },
+    "A_simpleloop": {
+     "C_r_ceq_per_30min": 1573214.6820814507,
+     "E_r_evals_per_30min": 296.9282000040486,
+     "e_r_evals_per_min": 9.89760666680162,
+     "e_r_exact": "420000000/42434501",
+     "q_r_ceq_per_min": 52440.48940271502,
+     "q_r_exact": "2225286000000/42434501"
+    }
+   },
+   "vector": {
+    "CEq_max": 1966519,
+    "N_evaluatorCalls": 725,
+    "P_concurrency": 1,
+    "T_wall_sec": 1800.0,
+    "unclamped": {
+     "CEq_max": 1966519,
+     "N_evaluatorCalls": 725
+    }
+   }
+  }
+ },
+ "not_used_for_selection": true,
+ "procedure": {
+  "document": "a0/a1/calibration/PILOT-PROCEDURE.md",
+  "document_sha256": "68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2",
+  "json": "a0/a1/calibration/pilot_procedure.json",
+  "json_sha256": "8fcc8795e8f5c044771c6adc29c7fecdbbe730d5fe74bd2d51d4b6ca425cd3eb"
+ },
+ "refused": false,
+ "runner": {
+  "path": "a0/a1/calibration/pilot.py",
+  "sha256": "b6c69e43236162b7bb6f70ec1a26eb8738867be6d74464963417999f37190f09"
+ },
+ "schema": "a0.a1.calibration.b_hard/v1",
+ "scope_limits": [
+  "resource rates only: B_hard bounds consumption, never quality",
+  "the KAPSO rate is the rate of the arm's declared T1 configuration (the frozen C*(T1) implementation seam with one metered ideation call per round); a configuration with real implementation sessions would consume more per round",
+  "the SimpleLoop rate is the rate of the adapter's declared deepseek lane with the adapter's default --model-max-tokens",
+  "the calibration graphs are used for these rates only; no score on them was used, reported or published"
+ ],
+ "telemetry": {
+  "per_arm": {
+   "A_kapso": {
+    "CEq_r": 52992,
+    "N_E_r": 48,
+    "T_r_micros": 149108791,
+    "T_r_sec": 149.108791,
+    "attribution": {
+     "CEq_attributed_to_units": 52992,
+     "CEq_total": 52992,
+     "N_E_attributed_to_units": 48,
+     "N_E_ledger_rows": 48,
+     "exhaustive": true
+    },
+    "ceq_per_call": {
+     "cv": 0.0,
+     "max": 1104.0,
+     "mean": 1104.0,
+     "median": 1104.0,
+     "min": 1104.0,
+     "n": 48,
+     "p50": 1104.0,
+     "p95": 1104.0,
+     "p99": 1104.0,
+     "sd": 0.0
+    },
+    "completion_tokens": [
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256,
+     256
+    ],
+    "cost_sec": {
+     "candidate_wall_ms": {
+      "n": 0
+     },
+     "e_star_wall_sec": {
+      "cv": 0.017501252625050825,
+      "max": 0.178958,
+      "mean": 0.17234918750000003,
+      "median": 0.17258099999999998,
+      "min": 0.166717,
+      "n": 48,
+      "p50": 0.172571,
+      "p95": 0.177632,
+      "p99": 0.178958,
+      "sd": 0.0030163266701597525
+     }
+    },
+    "ledger_agrees_with_telemetry": true,
+    "stop_reason": "workload_complete",
+    "tau_cross_check": {
+     "candidate_p99_ms": null,
+     "floor_binds": null,
+     "note": "reported, never changed: the frozen tau is the gate workstream's",
+     "tau_frozen_s": 10.0,
+     "ten_times_p99_s": null
+    },
+    "units_completed": 24,
+    "unmetered_rows": 0,
+    "variance": {
+     "per_unit": {
+      "expected_per_unit": {
+       "evals": 2,
+       "loop_depth": 2,
+       "model_calls": 2
+      },
+      "rates": {
+       "CEq": {
+        "cv": 0.0876784597599385,
+        "max": 24179.709558760453,
+        "mean": 21503.33066752904,
+        "median": 21684.511882043313,
+        "min": 16326.502443676154,
+        "n": 24,
+        "p50": 21574.642759547936,
+        "p95": 23781.57143626474,
+        "p99": 24179.709558760453,
+        "sd": 1885.3789126375964
+       },
+       "N_E": {
+        "cv": 0.08767845975993852,
+        "max": 21.901910832210557,
+        "mean": 19.47765459015312,
+        "median": 19.641768009097202,
+        "min": 14.788498590286371,
+        "n": 24,
+        "p50": 19.542248876402116,
+        "p95": 21.541278474877483,
+        "p99": 21.901910832210557,
+        "sd": 1.7077707542007219
+       },
+       "T_sec": {
+        "cv": 0.09959410938137712,
+        "max": 8.114414,
+        "mean": 6.212481291666666,
+        "median": 6.1095865,
+        "min": 5.478974,
+        "n": 24,
+        "p50": 6.078631,
+        "p95": 7.635552,
+        "p99": 8.114414,
+        "sd": 0.618726541292009
+       }
+      }
+     },
+     "per_window": {
+      "CEq": {
+       "full_rates": [
+        20976.0,
+        20976.0
+       ],
+       "full_windows": [
+        20976,
+        20976
+       ],
+       "max_full_rate": 20976.0,
+       "mean_full_rate": 20976.0,
+       "min_full_rate": 20976.0,
+       "n_full": 2,
+       "partial": {
+        "CEq": 11040,
+        "span_sec": 29.10879111289978,
+        "start_epoch": 1790082891.473425
+       },
+       "sum_full": 41952
+      },
+      "N_E": {
+       "full_rates": [
+        19.0,
+        19.0
+       ],
+       "full_windows": [
+        19,
+        19
+       ],
+       "max_full_rate": 19.0,
+       "mean_full_rate": 19.0,
+       "min_full_rate": 19.0,
+       "n_full": 2,
+       "partial": {
+        "N_E": 10,
+        "span_sec": 29.10879111289978,
+        "start_epoch": 1790082891.473425
+       },
+       "sum_full": 38
+      },
+      "anchor_epoch": 1790082771.473425,
+      "window_sec": 60.0,
+      "windows_total": 2
+     }
+    },
+    "workload_complete": true
+   },
+   "A_simpleloop": {
+    "CEq_r": 370881,
+    "N_E_r": 70,
+    "T_r_micros": 424345010,
+    "T_r_sec": 424.34501,
+    "attribution": {
+     "CEq_attributed_to_units": 370881,
+     "CEq_total": 370881,
+     "N_E_attributed_to_units": 70,
+     "N_E_ledger_rows": 70,
+     "exhaustive": true
+    },
+    "ceq_per_call": {
+     "cv": 0.24433614328657538,
+     "max": 10868.0,
+     "mean": 7891.085106382979,
+     "median": 8437.0,
+     "min": 2505.0,
+     "n": 47,
+     "p50": 8437.0,
+     "p95": 10392.0,
+     "p99": 10868.0,
+     "sd": 1928.0773012397524
+    },
+    "completion_tokens": [
+     2048,
+     1507,
+     2048,
+     2048,
+     2048,
+     742,
+     750,
+     2048,
+     1911,
+     2048,
+     2048,
+     2048,
+     2048,
+     2030,
+     2048,
+     2048,
+     2048,
+     2048,
+     1992,
+     2048,
+     866,
+     2048,
+     2048,
+     2048,
+     2048,
+     2048,
+     2048,
+     2048,
+     2048,
+     1150,
+     2048,
+     2048,
+     2048,
+     1479,
+     2048,
+     2048,
+     2048,
+     1159,
+     2048,
+     2048,
+     2048,
+     565,
+     1796,
+     2048,
+     2048,
+     1043,
+     1098
+    ],
+    "cost_sec": {
+     "candidate_wall_ms": {
+      "n": 0
+     },
+     "e_star_wall_sec": {
+      "cv": 0.01467986413467811,
+      "max": 0.180179,
+      "mean": 0.17137975714285714,
+      "median": 0.170886,
+      "min": 0.167311,
+      "n": 70,
+      "p50": 0.170862,
+      "p95": 0.176172,
+      "p99": 0.180179,
+      "sd": 0.002515831550291273
+     }
+    },
+    "ledger_agrees_with_telemetry": true,
+    "stop_reason": "workload_complete",
+    "tau_cross_check": {
+     "candidate_p99_ms": null,
+     "floor_binds": null,
+     "note": "reported, never changed: the frozen tau is the gate workstream's",
+     "tau_frozen_s": 10.0,
+     "ten_times_p99_s": null
+    },
+    "units_completed": 24,
+    "unmetered_rows": 0,
+    "variance": {
+     "per_unit": {
+      "expected_per_unit": {
+       "evals": 3,
+       "loop_depth": 3,
+       "model_calls": 2
+      },
+      "rates": {
+       "CEq": {
+        "cv": 0.11165668953551634,
+        "max": 64971.47080362079,
+        "mean": 52567.217303530655,
+        "median": 51199.41307340937,
+        "min": 42651.349320377456,
+        "n": 24,
+        "p50": 50953.86164272676,
+        "p95": 61773.01243396319,
+        "p99": 64971.47080362079,
+        "sd": 5869.481462206345
+       },
+       "N_E": {
+        "cv": 0.21695930584525894,
+        "max": 17.083324198500257,
+        "mean": 10.124465430796343,
+        "median": 9.907338822865999,
+        "min": 6.095374941243125,
+        "n": 24,
+        "p50": 9.74094181702983,
+        "p95": 14.325582609506744,
+        "p99": 17.083324198500257,
+        "sd": 2.196596991919895
+       },
+       "T_sec": {
+        "cv": 0.1879571022446391,
+        "max": 23.764972,
+        "mean": 17.680638666666667,
+        "median": 17.817614499999998,
+        "min": 9.843529,
+        "n": 24,
+        "p50": 17.766982,
+        "p95": 21.658523,
+        "p99": 23.764972,
+        "sd": 3.323201609621186
+       }
+      }
+     },
+     "per_window": {
+      "CEq": {
+       "full_rates": [
+        47985.0,
+        47342.0,
+        55277.0,
+        59216.0,
+        55395.0,
+        44476.0,
+        56606.0
+       ],
+       "full_windows": [
+        47985,
+        47342,
+        55277,
+        59216,
+        55395,
+        44476,
+        56606
+       ],
+       "max_full_rate": 59216.0,
+       "mean_full_rate": 52328.142857142855,
+       "min_full_rate": 44476.0,
+       "n_full": 7,
+       "partial": {
+        "CEq": 4584,
+        "span_sec": 4.345010042190552,
+        "start_epoch": 1790082766.36827
+       },
+       "sum_full": 366297
+      },
+      "N_E": {
+       "full_rates": [
+        10.0,
+        9.0,
+        9.0,
+        10.0,
+        10.0,
+        10.0,
+        11.0
+       ],
+       "full_windows": [
+        10,
+        9,
+        9,
+        10,
+        10,
+        10,
+        11
+       ],
+       "max_full_rate": 11.0,
+       "mean_full_rate": 9.857142857142858,
+       "min_full_rate": 9.0,
+       "n_full": 7,
+       "partial": {
+        "N_E": 1,
+        "span_sec": 4.345010042190552,
+        "start_epoch": 1790082766.36827
+       },
+       "sum_full": 69
+      },
+      "anchor_epoch": 1790082346.36827,
+      "window_sec": 60.0,
+      "windows_total": 7
+     }
+    },
+    "workload_complete": true
+   }
+  }
+ },
+ "validity": {
+  "all_hold": true,
+  "conditions": {
+   "V1": "sha256(PILOT-PROCEDURE.md) == procedure.document_sha256",
+   "V2": "every graph used matched manifest.graphs[i].graph_sha256",
+   "V3": "zero unmetered gaps in the pilot campaigns' meter rows and a0/meter/verify_ledger.py exits 0",
+   "V4": "T_r > 0, at least 12 units completed per arm, and T_r >= 120 s",
+   "V5": "every metered row reports model_reported == deepseek-flash",
+   "V6": "every harness evaluation row names a calibration graph sha256",
+   "V7": "campaign_id and arm_id match the frozen names",
+   "refusal": "apply writes B_hard_REFUSED.json naming the failed conditions instead of a B_hard; a low rate is never an invalidity"
+  },
+  "failures": []
+ },
+ "vector": {
+  "CEq_max": 1966519,
+  "N_evaluatorCalls": 725,
+  "P_concurrency": 1,
+  "T_wall_sec": 1800.0,
+  "unclamped": {
+   "CEq_max": 1966519,
+   "N_evaluatorCalls": 725
+  }
+ }
+}

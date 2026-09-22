@@ -1,0 +1,63 @@
+{
+ "arm_id": "A_calib_proof",
+ "campaign_id": "C_calib_meter_proof",
+ "checks": {
+  "exactly_one_row_was_booked": true,
+  "the_call_was_made_from_inside_the_namespace": true,
+  "the_proxy_s_own_verifier_re_derives_it": true,
+  "the_row_carries_a_real_ceq": true,
+  "the_topology_blocks_direct_egress": true
+ },
+ "direct_egress_from_inside_the_namespace": {
+  "1.1.1.1": "BLOCKED:OSError",
+  "123.148.116.184": "BLOCKED:OSError",
+  "8.8.8.8": "BLOCKED:OSError",
+  "_negative_controls_blocked": true
+ },
+ "discarded_sentence": "The pilot's algorithmic results are discarded.",
+ "in_namespace_call": {
+  "exit_code": 0,
+  "stderr_tail": "",
+  "stdout_tail": "{\"usage\": {\"prompt_tokens\": 36, \"completion_tokens\": 8, \"total_tokens\": 44, \"prompt_tokens_details\": {\"cached_tokens\": 0}, \"completion_tokens_details\": {\"reasoning_tokens\": 8}, \"prompt_cache_hit_tokens\": 0, \"prompt_cache_miss_tokens\": 36}, \"model\": \"deepseek-flash\", \"status\": 200}\n"
+ },
+ "ledger_rows": [
+  {
+   "arm_id": "A_calib_proof",
+   "campaign_id": "C_calib_meter_proof",
+   "ceq": 68,
+   "endpoint": "https://api.deepseek.com/v1/chat/completions",
+   "model_reported": "deepseek-flash",
+   "model_requested": "deepseek-flash",
+   "provider": "deepseek",
+   "provider_request_id": "04609b5a-7077-489f-b562-41a906c4f37a",
+   "reason": null,
+   "schema": "a0.meter.call/v1",
+   "stream": false,
+   "ts": "2026-09-22T19:40:22.135468+08:00",
+   "unmetered": false,
+   "usage": {
+    "completion_tokens": 8,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 36
+   }
+  }
+ ],
+ "meter": {
+  "base_url": "http://127.0.0.1:43925/v1",
+  "ledger": "/tmp/a1cal/pilot/meter-proof/meter/ledger.jsonl",
+  "port": 43925,
+  "token_issued": true
+ },
+ "meter_verify": {
+  "returncode": 0,
+  "stderr": "",
+  "stdout": "{\n  \"ledger\": \"/tmp/a1cal/pilot/meter-proof/meter/ledger.jsonl\",\n  \"rows\": 1,\n  \"metered\": 1,\n  \"unmetered\": 0,\n  \"ceq_total\": 68,\n  \"ceq_per_campaign_arm\": {\n    \"C_calib_meter_proof/A_calib_proof\": 68\n  },\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
+ },
+ "model_requested": "deepseek-flash",
+ "not_used_for_selection": true,
+ "procedure_sha256": "68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2",
+ "runner_sha256": "5034b91e0e4cdcf75d68954a3ca67d15eb2a41b16cc68937a6222dacc89c20a1",
+ "schema": "a0.a1.calibration.meter_proof/v1",
+ "verdict": "pass",
+ "why": "the arms are blocked before their first session (see the blocker artifact); this proves the pilot's own metering chain \u2014 meter, namespace, unix-socket hop, one real upstream call \u2014 independently of them"
+}

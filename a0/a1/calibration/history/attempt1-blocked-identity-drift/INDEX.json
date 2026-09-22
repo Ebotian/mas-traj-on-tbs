@@ -1,0 +1,55 @@
+{
+ "discarded_sentence": "The pilot's algorithmic results are discarded.",
+ "files": {
+  "BLOCKED.json": "d18c402e57d895a936f1a543f81604f184d299bb8a7fe5378f26bbf7db2d3b4d",
+  "kapso/harness_ledger.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "kapso/meter_ledger.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "kapso/outcomes": {
+   "count": 0,
+   "note": "reduced: interpreted.wall_ms, status, graph_sha256 kept"
+  },
+  "kapso/pilot_arm.json": "e7b4cc1ee0b47e67ed8c7addc32c1cac3a0da628d46092b849ed6711c531681b",
+  "ledger.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "meter-proof/meter_ledger.jsonl": "78d97c0f6236ca8273604552e61d05a4f166a9f7f11b84361fb2c27438c2557c",
+  "meter-proof/meter_proof.json": "521945667e42fdab49446c6d2311acf6cf60f7606b15385711d26bb090f24147",
+  "rehearsal.json": "160d026ba263f85a6dd4992ff67d3d18a72bb4e8871f05f2f975aa111e7fc877",
+  "simpleloop/harness_ledger.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "simpleloop/meter_ledger.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "simpleloop/outcomes": {
+   "count": 0,
+   "note": "reduced: interpreted.wall_ms, status, graph_sha256 kept"
+  },
+  "simpleloop/pilot_arm.json": "40dbdc721f7f4701fce84787fea9efe13b01b65aa9c28ba1aca9dd7e80fec36e",
+  "unmetered/meter_ledger.jsonl": "56e5e499f360ae676310078ab315ca231bb5b72ccc11fc550c4e6fda5971d6a0",
+  "unmetered/unmetered_counterexample.json": "b1ed701271639ee49fc76d783a1900e470c78646385c8aedde9c3ccf1ebf94bb"
+ },
+ "not_used_for_selection": true,
+ "raw_sha256": {
+  "kapso/harness_ledger.jsonl": null,
+  "kapso/meter_ledger.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "simpleloop/harness_ledger.jsonl": null,
+  "simpleloop/meter_ledger.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+ },
+ "reduction": {
+  "harness_row_keys_removed": [
+   "true_value",
+   "handed_value"
+  ],
+  "kept": [
+   "ts",
+   "campaign_id",
+   "arm_id",
+   "candidate_source_sha256",
+   "graph_sha256",
+   "status",
+   "wall_sec",
+   "interpreted.wall_ms"
+  ],
+  "outcome_keys_removed": [
+   "cut_edges",
+   "cut_fraction"
+  ],
+  "why": "the pilot's algorithmic results are not published (PILOT-PROCEDURE.md \u00a70/\u00a78): the objective's value on a calibration graph must not be available to a later reader who might tune the budget by it"
+ },
+ "schema": "a0.a1.calibration.published_index/v1"
+}

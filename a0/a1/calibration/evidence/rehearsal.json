@@ -2,14 +2,14 @@
  "arms": {
   "A_kapso": {
    "CEq_r": 0,
-   "N_E_r": 0,
+   "N_E_r": 4,
    "arm": "A_kapso",
-   "arm_reached_the_harness": false,
+   "arm_reached_the_harness": true,
    "checks": {
     "every_harness_row_names_a_workload_graph": true,
     "every_metered_row_re_derives_its_ceq": true,
     "no_unmetered_row_in_the_campaign": true,
-    "the_arm_reached_the_harness": false,
+    "the_arm_reached_the_harness": true,
     "the_harness_identity_declares_ownership": true,
     "the_meters_own_verifier_re_derives_the_ledger": true,
     "the_model_family_is_deepseek_flash": true,
@@ -19,7 +19,32 @@
     "unit_attribution_is_exhaustive": true
    },
    "discarded_sentence": "The pilot's algorithmic results are discarded.",
-   "harness_rows": [],
+   "harness_rows": [
+    {
+     "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+     "seq": 0,
+     "status": "ok",
+     "wall_sec": 0.170488
+    },
+    {
+     "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+     "seq": 1,
+     "status": "ok",
+     "wall_sec": 0.169927
+    },
+    {
+     "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+     "seq": 2,
+     "status": "ok",
+     "wall_sec": 0.169828
+    },
+    {
+     "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+     "seq": 3,
+     "status": "ok",
+     "wall_sec": 0.178451
+    }
+   ],
    "meter_rows": 0,
    "mode": "rehearsal",
    "not_used_for_selection": true,
@@ -34,32 +59,32 @@
    },
    "unit_refusals": [
     {
-     "exit_code": 1,
+     "exit_code": 0,
      "graph_id": "G_dev_0001",
-     "stderr_tail": "Traceback (most recent call last):\n  File \"/home/ebt/rsi-dev/a0/a1/calibration/pilot.py\", line 1899, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/ebt/rsi-dev/a0/a1/calibration/pilot.py\", line 1764, in main\n    return kapso_inner(argv=argv[1:])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ebt/rsi-dev/a0/a1/calibration/pilot.py\", line 1181, in kapso_inner\n    binding = runtime_t1.prepare(runtime)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ebt/rsi-dev/a0/a1/kapso_t1/runtime_t1.py\", line 173, in prepare\n    runtime.prepare(baseline)\n  File \"/home/ebt/rsi-dev/a0/runtimes/kapso/a0_adapter/runtime.py\", line 159, in prepare\n    self._register_evaluator()\n  File \"/home/ebt/rsi-dev/a0/runtimes/kapso/a0_adapter/runtime.py\", line 301, in _register_evaluator\n    version = maintainer.setup(goal=GOAL, eval_dir=str(self.tree_source),\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ebt/kapso_ck/kapso/src/kapso/execution/evaluation_maintainer/maintainer.py\", line 209, in setup\n    timing, calibration_manifest = self._run_calibration()\n                                   ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ebt/kapso_ck/kapso/src/kapso/execution/evaluation_maintainer/maintainer.py\", line 490, in _run_calibration\n    raise EvaluationMaintainerError(\nkapso.execution.evaluation_maintainer.maintainer.EvaluationMaintainerError: Calibration run failed (exit 3): kapso_eval_t1: E* source drifted: e_star.py sha256 fa0932b438c658cc500f9801ac6090e45c5756d22c4e62c253a65dcd93fb42b1 != 670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0 recorded in EID* (cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1)\n\n",
+     "stderr_tail": "",
      "unit": 0
     },
     {
-     "exit_code": 1,
+     "exit_code": 0,
      "graph_id": "G_dev_0001",
-     "stderr_tail": "Traceback (most recent call last):\n  File \"/home/ebt/rsi-dev/a0/a1/calibration/pilot.py\", line 1899, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/home/ebt/rsi-dev/a0/a1/calibration/pilot.py\", line 1764, in main\n    return kapso_inner(argv=argv[1:])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ebt/rsi-dev/a0/a1/calibration/pilot.py\", line 1181, in kapso_inner\n    binding = runtime_t1.prepare(runtime)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ebt/rsi-dev/a0/a1/kapso_t1/runtime_t1.py\", line 173, in prepare\n    runtime.prepare(baseline)\n  File \"/home/ebt/rsi-dev/a0/runtimes/kapso/a0_adapter/runtime.py\", line 159, in prepare\n    self._register_evaluator()\n  File \"/home/ebt/rsi-dev/a0/runtimes/kapso/a0_adapter/runtime.py\", line 301, in _register_evaluator\n    version = maintainer.setup(goal=GOAL, eval_dir=str(self.tree_source),\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ebt/kapso_ck/kapso/src/kapso/execution/evaluation_maintainer/maintainer.py\", line 209, in setup\n    timing, calibration_manifest = self._run_calibration()\n                                   ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ebt/kapso_ck/kapso/src/kapso/execution/evaluation_maintainer/maintainer.py\", line 490, in _run_calibration\n    raise EvaluationMaintainerError(\nkapso.execution.evaluation_maintainer.maintainer.EvaluationMaintainerError: Calibration run failed (exit 3): kapso_eval_t1: E* source drifted: e_star.py sha256 fa0932b438c658cc500f9801ac6090e45c5756d22c4e62c253a65dcd93fb42b1 != 670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0 recorded in EID* (cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1)\n\n",
+     "stderr_tail": "",
      "unit": 1
     }
    ],
    "units_completed": 2,
    "unmetered_rows": 0,
-   "verdict": "fail"
+   "verdict": "pass"
   },
   "A_simpleloop": {
    "CEq_r": 0,
-   "N_E_r": 0,
+   "N_E_r": 4,
    "arm": "A_simpleloop",
-   "arm_reached_the_harness": false,
+   "arm_reached_the_harness": true,
    "checks": {
     "every_harness_row_names_a_workload_graph": true,
     "every_metered_row_re_derives_its_ceq": true,
     "no_unmetered_row_in_the_campaign": true,
-    "the_arm_reached_the_harness": false,
+    "the_arm_reached_the_harness": true,
     "the_harness_identity_declares_ownership": true,
     "the_meters_own_verifier_re_derives_the_ledger": true,
     "the_model_family_is_deepseek_flash": true,
@@ -69,7 +94,32 @@
     "unit_attribution_is_exhaustive": true
    },
    "discarded_sentence": "The pilot's algorithmic results are discarded.",
-   "harness_rows": [],
+   "harness_rows": [
+    {
+     "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+     "seq": 0,
+     "status": "ok",
+     "wall_sec": 0.172666
+    },
+    {
+     "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+     "seq": 1,
+     "status": "ok",
+     "wall_sec": 0.17198
+    },
+    {
+     "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+     "seq": 2,
+     "status": "ok",
+     "wall_sec": 0.172688
+    },
+    {
+     "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+     "seq": 3,
+     "status": "ok",
+     "wall_sec": 0.170393
+    }
+   ],
    "meter_rows": 0,
    "mode": "rehearsal",
    "not_used_for_selection": true,
@@ -84,46 +134,92 @@
    },
    "unit_refusals": [
     {
-     "exit_code": 3,
+     "exit_code": 4,
      "graph_id": "G_dev_0001",
-     "stderr_tail": "adapter: contract mismatch: evalcontract.py verify reported drift against T1.contract.json: DRIFT EvaluatorSource: digest changed c095f0c63430 -> a5636ab9f394\nDRIFT EvaluatorSource: content changed a0/tasks/maxcut/e_star.py\nDRIFT EvaluatorSource: content changed a0/tasks/maxcut/e_star_child.py\nDRIFT EID* changed cddfa64ead571bbb -> 6682ff6a85088cbb\n",
+     "stderr_tail": "adapter: candidate-set integrity failure: 'c03_ok_zero' is not a member of C*(T1)\n",
      "unit": 0
     },
     {
-     "exit_code": 3,
+     "exit_code": 4,
      "graph_id": "G_dev_0001",
-     "stderr_tail": "adapter: contract mismatch: evalcontract.py verify reported drift against T1.contract.json: DRIFT EvaluatorSource: digest changed c095f0c63430 -> a5636ab9f394\nDRIFT EvaluatorSource: content changed a0/tasks/maxcut/e_star.py\nDRIFT EvaluatorSource: content changed a0/tasks/maxcut/e_star_child.py\nDRIFT EID* changed cddfa64ead571bbb -> 6682ff6a85088cbb\n",
+     "stderr_tail": "adapter: candidate-set integrity failure: 'c03_ok_zero' is not a member of C*(T1)\n",
      "unit": 1
     }
    ],
    "units_completed": 2,
    "unmetered_rows": 0,
-   "verdict": "fail"
+   "verdict": "pass"
   }
  },
  "discarded_sentence": "The pilot's algorithmic results are discarded.",
  "frozen_identity": {
   "A_kapso": {
    "command": "python3 a0/a1/t1_eid.py check",
-   "consistent": false,
-   "exit_code": 5,
-   "on_disk": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-   "pass": false,
-   "reason": "eid_star drifted",
-   "recomputed": "6682ff6a85088cbb921080e3911805ffd99376572d144610ec7489d57c338614",
-   "what_this_blocks": "both A1 arms refuse at their frozen-identity precondition: the SimpleLoop adapter exits 3 (`evalcontract.py verify` drift against T1.contract.json) and KAPSO's EvaluationMaintainer raises before the session starts (`E* source drifted \u2026 recorded in EID*`). A resource pilot cannot measure a rate through an arm that will not start.",
-   "what_would_unblock_it": "the owner of a0/a1/T1-EID.json + T1.contract.json re-freezes the evaluator identity against the current E* bytes (`python3 a0/a1/t1_eid.py build`, then re-declare CID's `task.eid_star`), or a0/tasks/maxcut/e_star.py is returned to the revision the frozen EID* names. This workstream owns neither file and did not change either of them."
+   "component_digests": {
+    "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
+    "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
+    "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
+    "EvaluatorSource": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
+    "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
+   },
+   "consistent": true,
+   "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+   "evaluator_source_material_agrees_with_e_star": true,
+   "evaluator_source_records": {
+    "e_star.py": "f67ecd41bd769e41e57e1812ce60d544b6894071cd7849bccaa83a2163b614f6",
+    "e_star_child.py": "fdcf425c1d41650da8eaeffe28c30b9ec1461b45570d91b487a98c10fb6263ad"
+   },
+   "evaluator_source_sha256_from_e_star_digest": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+   "exit_code": 0,
+   "files_hashed": {
+    "DataManifest": 64,
+    "EvaluatorSource": 2
+   },
+   "pass": true,
+   "recompute_from_records": {
+    "components": {
+     "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
+     "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
+     "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
+     "EvaluatorSource": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
+     "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
+    },
+    "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec"
+   }
   },
   "A_simpleloop": {
    "command": "python3 a0/a1/t1_eid.py check",
-   "consistent": false,
-   "exit_code": 5,
-   "on_disk": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
-   "pass": false,
-   "reason": "eid_star drifted",
-   "recomputed": "6682ff6a85088cbb921080e3911805ffd99376572d144610ec7489d57c338614",
-   "what_this_blocks": "both A1 arms refuse at their frozen-identity precondition: the SimpleLoop adapter exits 3 (`evalcontract.py verify` drift against T1.contract.json) and KAPSO's EvaluationMaintainer raises before the session starts (`E* source drifted \u2026 recorded in EID*`). A resource pilot cannot measure a rate through an arm that will not start.",
-   "what_would_unblock_it": "the owner of a0/a1/T1-EID.json + T1.contract.json re-freezes the evaluator identity against the current E* bytes (`python3 a0/a1/t1_eid.py build`, then re-declare CID's `task.eid_star`), or a0/tasks/maxcut/e_star.py is returned to the revision the frozen EID* names. This workstream owns neither file and did not change either of them."
+   "component_digests": {
+    "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
+    "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
+    "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
+    "EvaluatorSource": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
+    "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
+   },
+   "consistent": true,
+   "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+   "evaluator_source_material_agrees_with_e_star": true,
+   "evaluator_source_records": {
+    "e_star.py": "f67ecd41bd769e41e57e1812ce60d544b6894071cd7849bccaa83a2163b614f6",
+    "e_star_child.py": "fdcf425c1d41650da8eaeffe28c30b9ec1461b45570d91b487a98c10fb6263ad"
+   },
+   "evaluator_source_sha256_from_e_star_digest": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+   "exit_code": 0,
+   "files_hashed": {
+    "DataManifest": 64,
+    "EvaluatorSource": 2
+   },
+   "pass": true,
+   "recompute_from_records": {
+    "components": {
+     "Config": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
+     "DataManifest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
+     "DependencyLock": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
+     "EvaluatorSource": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
+     "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
+    },
+    "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec"
+   }
   }
  },
  "mode": "rehearsal",
@@ -131,6 +227,6 @@
  "procedure_sha256": "68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2",
  "runner_sha256": "5034b91e0e4cdcf75d68954a3ca67d15eb2a41b16cc68937a6222dacc89c20a1",
  "schema": "a0.a1.calibration.rehearsal/v1",
- "verdict": "fail",
+ "verdict": "pass",
  "why": "the same runner, the same closed topology, the same harness, on a dev graph with the model call skipped: plumbing only, zero spend, and never an input to f"
 }

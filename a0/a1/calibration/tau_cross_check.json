@@ -1,0 +1,55 @@
+{
+ "discarded_sentence": "The pilot's algorithmic results are discarded.",
+ "implemented_by": "a0/a1/calibration/pilot.py tau_cross_check() -> B_hard.json diagnostics.D4_* (all fields null)",
+ "not_used_for_selection": true,
+ "per_arm": {
+  "A_kapso": {
+   "detail": "the candidate child process ran 31-38 ms; 10*p99 is ~0.36-0.38 s, far below the frozen 10 s floor",
+   "e_star_wall_sec": {
+    "max": 0.178958,
+    "min": 0.166717,
+    "n": 48,
+    "p50": 0.172571,
+    "p95": 0.177632
+   },
+   "floor_binds": true,
+   "max_ms": 38,
+   "min_ms": 31,
+   "n": 96,
+   "p50_ms": 33,
+   "p95_ms": 35,
+   "p99_ms": 38,
+   "ten_times_p99_s": 0.38
+  },
+  "A_simpleloop": {
+   "detail": "the candidate child process ran 31-38 ms; 10*p99 is ~0.36-0.38 s, far below the frozen 10 s floor",
+   "e_star_wall_sec": {
+    "max": 0.180179,
+    "min": 0.167311,
+    "n": 70,
+    "p50": 0.170862,
+    "p95": 0.176172
+   },
+   "floor_binds": true,
+   "max_ms": 37,
+   "min_ms": 31,
+   "n": 140,
+   "p50_ms": 33,
+   "p95_ms": 34,
+   "p99_ms": 36,
+   "ten_times_p99_s": 0.36
+  }
+ },
+ "percentile_definition": "nearest rank, the ceil(p*n)-th smallest (the gate workstream's tau_calibration.py convention)",
+ "procedure_clause_that_fails": "PILOT-PROCEDURE.md 3.2 / diagnostics D4: 'the candidate wall time (interpreted.wall_ms of the Outcome the harness authored)'",
+ "run_dir": "/tmp/a1cal/pilot2",
+ "schema": "a0.a1.calibration.tau_cross_check/v1",
+ "source": {
+  "field": "runs[].wall_ms",
+  "kind": "resources sidecar",
+  "path_glob": "<run-dir>/<arm>/harness/state/*/resources.json"
+ },
+ "tau_frozen_s": 10.0,
+ "verdict": "tau = 10.0 s (the frozen floor) still satisfies INTERFACE.md 7 on the pilot's own candidates: 10*p99 = 360 ms (A_simpleloop) / 380 ms (A_kapso), both < 10 s, so min(30s, max(10s, 10*p99)) = 10 s. Reported, never changed.",
+ "why_this_file_exists": "PILOT-PROCEDURE.md 3.2 and D4 read the candidate wall time from the Outcome's interpreted.wall_ms. The frozen E* revision leaves that key null by design (a0/tasks/maxcut/DEVIATIONS.md D-T1-1) and writes the measured wall clock to the per-run resources sidecar instead, so the frozen clause cannot be applied as written. The numbers below are the same measurement read from the sidecars, recorded here as a labelled supplement. They are NOT part of the published, re-derivable evidence set and are NOT an input to f."
+}

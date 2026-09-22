@@ -1304,9 +1304,16 @@ def publish(out_dir: Path, published_dir: Path) -> dict:
 
         meter_rows = report["ledger"]["meter_rows"]
         meter_rows_all.extend(meter_rows)
-        (target / "meter_ledger.jsonl").write_text(
-            "".join(json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n"
-                    for row in meter_rows), encoding="utf-8")
+        # The published ledger is the campaign's own meter file, copied verbatim: a
+        # re-serialized copy carries the keys in a different order, which the meter's
+        # verifier pins (`a0/meter/verify_ledger.py`, `ROW_KEY_ORDER`) and rejects row by
+        # row.  Fail loudly rather than publish a ledger the meter cannot re-derive.
+        raw_meter = Path(report["ledger"]["meter_ledger"])
+        if not raw_meter.is_file() or (sha256_file(raw_meter)
+                                       != report["ledger"]["meter_ledger_sha256"]):
+            raise PilotError(f"the campaign's meter ledger is not the recorded one: "
+                             f"{raw_meter}")
+        shutil.copyfile(raw_meter, target / "meter_ledger.jsonl")
         index["files"][f"{short}/meter_ledger.jsonl"] = sha256_file(target / "meter_ledger.jsonl")
 
         (target / "harness_ledger.jsonl").write_text(

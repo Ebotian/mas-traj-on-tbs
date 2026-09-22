@@ -1,0 +1,88 @@
+{
+ "budget_check": {
+  "arm_id": "A_calib_probe",
+  "budget": {
+   "CEq_max": 1000,
+   "N_evaluatorCalls": 10,
+   "P_concurrency": 1,
+   "T_wall_sec": 60.0,
+   "measured_by": {
+    "CEq_max": "a0/meter ledger",
+    "N_evaluatorCalls": "a0/a1/eval_service.py ledger",
+    "T_wall_sec": "harness monotonic clock"
+   }
+  },
+  "campaign_id": "C_calib_unmetered_probe",
+  "detail": "1 ledger row(s) carry no usage; CEq is not established. reasons=['upstream_http_400_no_usage']",
+  "label": "induced-unmetered",
+  "observed": {
+   "CEq": 0,
+   "CEq_rows": 1,
+   "N_evaluatorCalls": 0,
+   "T_wall_sec": 5.1037000957876444e-05,
+   "harness_eval_ledger_missing": true,
+   "meter_ledger_missing": false,
+   "reasons": {
+    "upstream_http_400_no_usage": 1
+   },
+   "refusals": [],
+   "refused_rows": 0,
+   "unmetered": [
+    {
+     "reason": "upstream_http_400_no_usage",
+     "ts": "2026-09-22T19:40:22.745794+08:00"
+    }
+   ],
+   "unmetered_rows": 1
+  },
+  "schema": "a0.a1.budget_check/v1",
+  "stopped_because": "budget_exhausted:unmetered_model_call",
+  "within": false
+ },
+ "call_events": [
+  {
+   "arm_id": "A_calib_probe",
+   "booked": true,
+   "campaign_id": "C_calib_unmetered_probe",
+   "endpoint": "https://api.deepseek.com/v1/chat/completions",
+   "kind": "call",
+   "raw_usage": null,
+   "reason": "upstream_http_400_no_usage",
+   "row_ceq": null,
+   "status": 400,
+   "streamed": false,
+   "unmetered": true,
+   "usage_source": "none"
+  }
+ ],
+ "campaign_id": "C_calib_unmetered_probe",
+ "checks": {
+  "the_enforcer_stops_the_campaign": true,
+  "the_row_carries_a_reason": true,
+  "the_row_is_unmetered_with_a_null_ceq": true
+ },
+ "discarded_sentence": "The pilot's algorithmic results are discarded.",
+ "not_used_for_selection": true,
+ "procedure_sha256": "68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2",
+ "response": "ModelCallError: model call refused with HTTP 400",
+ "row": {
+  "arm_id": "A_calib_probe",
+  "campaign_id": "C_calib_unmetered_probe",
+  "ceq": null,
+  "endpoint": "https://api.deepseek.com/v1/chat/completions",
+  "model_reported": null,
+  "model_requested": "deepseek-does-not-exist-a0-calibration",
+  "provider": "deepseek",
+  "provider_request_id": null,
+  "reason": "upstream_http_400_no_usage",
+  "schema": "a0.meter.call/v1",
+  "stream": false,
+  "ts": "2026-09-22T19:40:22.745794+08:00",
+  "unmetered": true,
+  "usage": null
+ },
+ "runner_sha256": "5034b91e0e4cdcf75d68954a3ca67d15eb2a41b16cc68937a6222dacc89c20a1",
+ "schema": "a0.a1.calibration.unmetered_counterexample/v1",
+ "verdict": "pass",
+ "why": "a 4xx with no `usage` field is a *gap*: a call that reached the model whose usage was not observable. a0/meter books it `unmetered` with `ceq: null`, and a0/a1/budget.py stops the campaign rather than estimating"
+}
