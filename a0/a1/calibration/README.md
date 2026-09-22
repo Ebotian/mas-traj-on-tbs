@@ -136,10 +136,10 @@ that are **not** part of the pilot's totals. Both rows are verbatim below.
 
 ```json
 {"schema":"a0.meter.call/v1","campaign_id":"C_calib_meter_proof","arm_id":"A_calib_proof",
- "ts":"2026-09-22T19:41:5x+08:00","provider":"deepseek",
+ "ts":"2026-09-22T19:40:22.135468+08:00","provider":"deepseek",
  "endpoint":"https://api.deepseek.com/v1/chat/completions",
  "model_requested":"deepseek-flash","model_reported":"deepseek-flash",
- "provider_request_id":"…","stream":false,
+ "provider_request_id":"04609b5a-7077-489f-b562-41a906c4f37a","stream":false,
  "usage":{"prompt_cache_hit_tokens":0,"prompt_cache_miss_tokens":36,"completion_tokens":8},
  "ceq":68,"unmetered":false,"reason":null}
 ```
@@ -152,10 +152,7 @@ and direct egress from the same namespace is `BLOCKED` for `1.1.1.1`, `8.8.8.8` 
 model that does not exist gets a 4xx with no `usage` field — a *gap*, not a refusal:
 
 ```json
-{"schema":"a0.meter.call/v1","campaign_id":"C_calib_unmetered_probe","arm_id":"A_calib_probe",
- "provider":"deepseek","model_requested":"deepseek-does-not-exist-a0-calibration",
- "model_reported":null,"provider_request_id":null,"stream":false,
- "usage":null,"ceq":null,"unmetered":true,"reason":"upstream_http_400_no_usage"}
+{"arm_id": "A_calib_probe", "campaign_id": "C_calib_unmetered_probe", "ceq": null, "endpoint": "https://api.deepseek.com/v1/chat/completions", "model_reported": null, "model_requested": "deepseek-does-not-exist-a0-calibration", "provider": "deepseek", "provider_request_id": null, "reason": "upstream_http_400_no_usage", "schema": "a0.meter.call/v1", "stream": false, "ts": "2026-09-22T19:40:22.745794+08:00", "unmetered": true, "usage": null}
 ```
 
 and `a0/a1/budget.py::BudgetEnforcer` stops the campaign on it —
@@ -192,8 +189,17 @@ the fabricated number the freeze exists to prevent.
 1. the owner of `a0/a1/T1-EID.json` + `a0/a1/T1.contract.json` re-freezes the evaluator
    identity against the current `E*` bytes — `python3 a0/a1/t1_eid.py build` — and
    re-declares `CID`'s `task.eid_star`; **or** `a0/tasks/maxcut/e_star.py` is returned to
-   the revision the frozen `EID*` names (`670f02ee…`, `git show 11f55bf0:a0/tasks/maxcut/e_star.py`).
-   Either way the two files must agree; nothing in this directory can decide which.
+   the revision the frozen `EID*` names (`670f02ee…`,
+   `git show 11f55bf0:a0/tasks/maxcut/e_star.py`). Either way the two files must agree;
+   nothing in this directory can decide which.
+   **Why I did not simply run the pilot against a copy of the older `E*` bytes:** the
+   contract's `components.EvaluatorSource` is `{"root": "a0/tasks/maxcut",
+   "include": ["e_star.py", "e_star_child.py"]}` — the verification hashes the *canonical*
+   files under the work root, not whichever `--e-star` path an arm is handed (measured:
+   KAPSO's own tree check prints `e_star.py sha256 fa0932b4… != 670f02ee… recorded in
+   EID*` while the harness is pointed elsewhere). Restoring the frozen identity therefore
+   means writing `a0/tasks/maxcut/e_star.py` — another workstream's file — which this
+   workstream does not do.
 2. then, with no design work:
 
 ```bash
