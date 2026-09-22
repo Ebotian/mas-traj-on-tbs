@@ -1,0 +1,67 @@
+{
+ "verdict": "pass",
+ "checks": {
+  "the_pre_fix_lane_reaches_the_network": true,
+  "the_pre_fix_lane_reads_the_key_file_and_the_answers": true,
+  "the_copied_witness_scores_exactly_R": true,
+  "net_isolate_alone_closes_the_network": true,
+  "net_isolate_alone_leaves_the_filesystem_open": true,
+  "the_sandbox_closes_the_network": true,
+  "the_sandbox_closes_the_filesystem": true,
+  "the_sandbox_closes_the_process_view": true,
+  "the_process_view_leak_is_real_in_the_open_lane_and_closed_in_the_service_lanes": true,
+  "the_lane_still_measures": true,
+  "the_sandbox_says_so_itself": true,
+  "the_identity_records_which_lane_ran": true,
+  "the_working_tree_evaluator_inside_the_sandbox_is_closed_too": true
+ },
+ "summary": {
+  "raw_pre_fix": {
+   "network": {
+    "1.1.1.1": "REACHED",
+    "api.deepseek.com": "REACHED",
+    "dns:api.deepseek.com": "resolved"
+   },
+   "home_secret_readable": true,
+   "reference_files_readable": 30,
+   "witness_copied_from": "75403e8c",
+   "key_variables_found": [
+    {
+     "pid": "761742",
+     "variable": "DEEPSEEK_API_KEY"
+    }
+   ],
+   "used": "copied_reference_partition"
+  },
+  "service_net_isolate_only": {
+   "network": {
+    "1.1.1.1": "BLOCKED:OSError",
+    "api.deepseek.com": "BLOCKED:gaierror",
+    "dns:api.deepseek.com": "BLOCKED:gaierror"
+   },
+   "home_secret_readable": true,
+   "reference_files_readable": 30,
+   "witness_copied_from": "75403e8c",
+   "key_variables_found": [],
+   "used": "copied_reference_partition"
+  },
+  "service_sandbox": {
+   "network": {
+    "1.1.1.1": "BLOCKED:OSError",
+    "api.deepseek.com": "BLOCKED:gaierror",
+    "dns:api.deepseek.com": "BLOCKED:gaierror"
+   },
+   "home_secret_readable": false,
+   "reference_files_readable": 0,
+   "witness_copied_from": null,
+   "key_variables_found": [],
+   "used": "all_zeros"
+  },
+  "harness_scores": {
+   "raw_pre_fix": 224,
+   "service_net_isolate_only": 224,
+   "service_sandbox": 0
+  }
+ },
+ "out": "/tmp/a1delta-hostile/hostile_candidate.json"
+}

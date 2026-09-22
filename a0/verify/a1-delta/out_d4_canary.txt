@@ -1,0 +1,46 @@
+== the canaries and the controls, on the host ==
+[ok ] the host can read back every file this probe wrote  — 6 file(s)
+
+== the same probe inside the lane (the committed module) ==
+  lane pid=1 uid=0 (unshared: pid 1 / uid 0 expected)
+  /home: mount=tmpfs dev=85 entries=0 []
+      canary  ERR:FileNotFoundError  readable=False
+  /run/user: mount=tmpfs dev=89 entries=0 []
+      canary  ERR:FileNotFoundError  readable=False
+  /tmp: mount=tmpfs dev=86 entries=1 ['a1delta-control.txt']
+      canary  ERR:FileNotFoundError  readable=False
+      control bytes=21  readable=True matches=True
+  /var/tmp: mount=tmpfs dev=88 entries=1 ['a1delta-control.txt']
+      canary  ERR:FileNotFoundError  readable=False
+      control bytes=21  readable=True matches=True
+[ok ] no host canary is readable from inside the lane  — {'/tmp': False, '/var/tmp': False, '/home': False, '/run/user': False}
+[ok ] the positive control IS readable inside the lane (the reader works)  — {'/tmp': 'bytes=21', '/var/tmp': 'bytes=21'}
+[ok ] every hidden root is covered by a tmpfs inside the lane  — {'/tmp': 'tmpfs', '/var/tmp': 'tmpfs', '/home': 'tmpfs', '/run/user': 'tmpfs'}
+[ok ] the lane's /tmp holds only the one file it was handed  — 1 entries: ['a1delta-control.txt']
+
+  receipt pass=True egress=BLOCKED:gaierror visible_pids=1
+    /home: host_mounted=False before=None(id -) after=tmpfs(id 478) dev 66307->85 entries 1->0
+    /tmp: host_mounted=True before=tmpfs(id 469) after=tmpfs(id 479) dev 35->86 entries 332->0
+    /var/tmp: host_mounted=False before=None(id -) after=tmpfs(id 480) dev 66307->88 entries 8->0
+    /run/user: host_mounted=False before=None(id -) after=tmpfs(id 481) dev 28->89 entries 1->0
+[ok ] /tmp was a host tmpfs and was still replaced by this lane's own tmpfs
+[ok ] the receipt is written before E* ran and records a pass  — BLOCKED:gaierror
+
+== the same canaries against the PRE-FIX module (the fix is a real change) ==
+  /home: canary readable=False mount=tmpfs entries=0
+  /run/user: canary readable=False mount=tmpfs entries=0
+  /tmp: canary readable=True mount=tmpfs entries=333
+  /var/tmp: canary readable=False mount=tmpfs entries=1
+[ok ] the pre-fix module exposes the host's /tmp to the lane (the regression)  — {'readable': True, 'value_matches': True, 'result': 'bytes=21'}
+[ok ] ...while its receipt still lists /tmp as hidden
+
+== the fail-closed branch: no mount topology -> refuse to measure ==
+  exit 3: candidate_sandbox: refusing to run: cannot read this namespace's own mount table ([Errno 2] No such file or directory: '/proc/self/mountinfo'); the lane's topology is unknown, so the harness must not 
+[ok ] the lane refuses with exit 3 when its mount table cannot be read  — rc=3
+  receipt pass=False error=cannot read this namespace's own mount table ([Errno 2] No such file or directory: '/proc/self/mountinfo'); the lane's topology is unknown, so the harness must not measure
+[ok ] the refusal is written down as a receipt, not asserted
+
+== cleanup ==
+  removed 6 canary/control file(s) and the receipts
+
+11/11 checks ok

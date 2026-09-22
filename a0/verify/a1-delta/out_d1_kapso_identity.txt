@@ -1,0 +1,70 @@
+== EID* from a0/a1/t1_eid.py's own material ==
+[ok ] T1.contract.json == t1_eid.build_spec()
+[ok ] EID* recomputed from T1-EID.json's recorded records  — 7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec
+[ok ] the document's own payload_canonical equals my canonical payload
+[ok ] every recorded component digest matches my recomputation
+[ok ] e_star.py digest --value-only == dc6969ec…  — dc6969ec9934ab66…
+[ok ] EvaluatorSource records are the bytes of e_star.py / e_star_child.py on disk  — ['e_star.py', 'e_star_child.py']
+
+== the registered tree, recomputed from its committed bytes ==
+[ok ] tree EID_r = manifest_fingerprint(tree bytes)  — 63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f
+[ok ] tree file map matches tree_record.json
+[ok ] tree/source wrapper is byte-identical to tree_src/kapso_eval.py
+[ok ] binding.json publishes the recomputed fingerprint
+[ok ] binding.json's declared tree files == recomputed tree files
+[ok ] locator pins the current EID*  — 7ce9e72f36a0d154…
+[ok ] locator's E* self-identity is the current dc6969ec…
+[ok ] locator's E* source records are the current files
+[ok ] locator's E* source sizes are the current file sizes  — {'e_star.py': 53788, 'e_star_child.py': 35924}
+[ok ] locator's EID* component digests are current
+
+== what the declarations actually contain ==
+[ok ] AID_r's tree factor names the recomputed EID_r
+[ok ] AID_r's files factor equals the recomputed tree file map
+[ok ] CID's task.eid_star == the recomputed EID*
+[ok ] AID_r's EID_r and CID's EID* are both names of the same E*
+
+== the paid live probe, recomputed from its own usage ==
+[ok ] meter ledger CEq recomputes from each row's own usage (miss + hit*2//100 + 4*completion)  — rows=[1116] summary=1116
+[ok ] the arm's own recorded model usage gives the same CEq  — miss=92 hit=0 completion=256
+[ok ] the live probe's evidence names the current EID* and EID_r  — 63a9a83c071d…
+[ok ] the live probe reports 16/16 checks true  — verdict=pass n_checks=16
+[ok ] every ledger row is metered (no unmetered row)
+
+== does anything in kapso_t1 still assert a superseded digest unlabelled? ==
+  a0/a1/kapso_t1/DEVIATIONS.md
+      [history] 159: when `EID*` named `cddfa64e…`, and both `t1_binding.check()` and the registered stub
+      [history] 165: `E* source drifted: e_star.py sha256 … != 670f02ee…` — while the harness's `CID` named
+      [history] 181: | `EID*` | `cddfa64ead571bbb…` | `7ce9e72f36a0d154…` |
+      [history] 183: | `e_star.py` (sha256 / size) | `670f02ee91885c10…` / 43 410 B | `f67ecd41bd769e41…` / 53 788 B |
+      [history] 184: | `e_star_child.py` (sha256 / size) | `013f3e334dbde616…` / 15 128 B | `fdcf425c1d41650d…` / 35 924 B |
+      [history] 185: | `E*`'s own digest (`e_star.py digest`) | `08281d21e6e84a79…` | `dc6969ec9934ab66…` |
+      … 3 more
+  a0/a1/kapso_t1/README.md
+      [history] 18: the previous revision's `EID* = cddfa64e…` and `EID_r = manifest:6b1d6fcc…` are recorded,
+  a0/a1/kapso_t1/evidence/history/superseded-eid-cddfa64e/INDEX.json
+      [history] 5: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 6: "e_star_own_digest": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+      [history] 7: "e_star_py_sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
+      [history] 8: "e_star_child_py_sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
+      [history] 9: "eid_r": "manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+      [history] 11: "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+  a0/a1/kapso_t1/evidence/history/superseded-eid-cddfa64e/dryrun_t1.json
+      [history] 142: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 160: "sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
+      [history] 165: "sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
+      [history] 265: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 328: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 455: "stderr_tail": "kapso_eval_t1: E* source drifted: e_star.py sha256 6312cb7bdd17468635a42eaa9e569342fa964d1b48dfe16632035888a430ba78 != 670f02ee91885c1
+      … 39 more
+  a0/a1/kapso_t1/evidence/history/superseded-eid-cddfa64e/live_t1.json
+      [history] 22: "eid_r": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+      [history] 24: "eid_r_value": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+      [history] 25: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 81: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 144: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 209: "evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+      … 12 more
+[ok ] every superseded digest in kapso_t1 is inside evidence/history/** or labelled history  — clean (5 file(s), all labelled)
+
+26/26 checks ok

@@ -1,0 +1,37 @@
+== the two registered-tree factors, recomputed from the tree bytes ==
+[ok ] registered_tree()'s file map == my recomputation  — {'a0_locator.json': '1e3b3a755a0980c51db77a4d8f64bb3b343291bf5afc993573d90a9b3e6a0866', 'kapso_eval.py': '6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467'}
+[ok ] registered_tree()'s fingerprint == sha256(canonical file map)  — 63a9a83c071d82f3…
+[ok ] registered_tree()'s eid_r is 'manifest:<fingerprint>'
+[ok ] AID_r's tree factor == the recomputed identity  — {"binding": "a0/a1/kapso_t1/binding.json", "eid_r": "manifest:63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab
+[ok ] AID_r's files factor == the recomputed file map
+[ok ] CID's task.eid_star == T1-EID.json's recomputed EID*
+[ok ] CID's E* script digests == the bytes on disk
+[ok ] the tree's locator pins the same EID* as CID (the cross-check the audit skips)  — 7ce9e72f36a0d154…
+[ok ] the tree's locator pins the same E* source files as CID
+
+== rebuilding the declarations into a scratch dir, then diffing ==
+[ok ] the causal audit verdict is pass  — problems=[]
+[ok ] registered_tree_checks() are all ok
+[ok ] a fresh build reproduces the committed declarations byte for byte  — {'CID.json': True, 'AID_r.A_kapso.json': True, 'AID_r.A_simpleloop.json': True, 'causal_audit.json': True}
+[ok ] the committed causal_audit.json says pass with no problems
+
+== can CID and AID_r disagree again without the audit noticing? ==
+   (offering the registered tree as of 7bf8a14b — the pre-rebuild
+    bytes, whose locator pins the superseded EID* — with a binding re-stamped
+    to those bytes, so tree and binding agree with each other)
+    stale tree locator pins EID* cddfa64ead571bbb…
+    AID_r names EID_r manifest:6b1d6fccf78d1b94f0bb2fa3e…
+    CID   names EID* 7ce9e72f36a0d154…
+[FAIL] the declaration audit CATCHES a tree built from a superseded EID*  — verdict=pass problems=[]
+[ok ] ...and the two declarations really do disagree in that state  — tree pins cddfa64e… vs CID 7ce9e72f…
+
+    what catches it instead:
+      build_tree.py check — rebuilds the locator from T1-EID.json and
+      compares the bytes with the committed tree:
+        {"locator_rebuild_matches_committed": false, "pass": false}
+[ok ] build_tree.py check refuses the stale tree (locator bytes do not rebuild)
+      the registered stub — re-hashes E* on every invocation:
+        exit 3; stderr: kapso_eval_t1: E* source drifted: e_star.py sha256 f67ecd41bd769e41e57e1812ce60d544b6894071cd7849bccaa83a2163b614f6 != 670f02ee91885c10c9c6df95971a15d5ae0f81ad8
+[ok ] the stale stub exits 3 without a manifest line
+
+16/17 checks ok; FAILED: ['the declaration audit CATCHES a tree built from a superseded EID*']

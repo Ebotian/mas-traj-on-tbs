@@ -1,0 +1,1487 @@
+
+===== d1-kapso-identity =====
+== EID* from a0/a1/t1_eid.py's own material ==
+[ok ] T1.contract.json == t1_eid.build_spec()
+[ok ] EID* recomputed from T1-EID.json's recorded records  — 7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec
+[ok ] the document's own payload_canonical equals my canonical payload
+[ok ] every recorded component digest matches my recomputation
+[ok ] e_star.py digest --value-only == dc6969ec…  — dc6969ec9934ab66…
+[ok ] EvaluatorSource records are the bytes of e_star.py / e_star_child.py on disk  — ['e_star.py', 'e_star_child.py']
+
+== the registered tree, recomputed from its committed bytes ==
+[ok ] tree EID_r = manifest_fingerprint(tree bytes)  — 63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab2f816f
+[ok ] tree file map matches tree_record.json
+[ok ] tree/source wrapper is byte-identical to tree_src/kapso_eval.py
+[ok ] binding.json publishes the recomputed fingerprint
+[ok ] binding.json's declared tree files == recomputed tree files
+[ok ] locator pins the current EID*  — 7ce9e72f36a0d154…
+[ok ] locator's E* self-identity is the current dc6969ec…
+[ok ] locator's E* source records are the current files
+[ok ] locator's E* source sizes are the current file sizes  — {'e_star.py': 53788, 'e_star_child.py': 35924}
+[ok ] locator's EID* component digests are current
+
+== what the declarations actually contain ==
+[ok ] AID_r's tree factor names the recomputed EID_r
+[ok ] AID_r's files factor equals the recomputed tree file map
+[ok ] CID's task.eid_star == the recomputed EID*
+[ok ] AID_r's EID_r and CID's EID* are both names of the same E*
+
+== the paid live probe, recomputed from its own usage ==
+[ok ] meter ledger CEq recomputes from each row's own usage (miss + hit*2//100 + 4*completion)  — rows=[1116] summary=1116
+[ok ] the arm's own recorded model usage gives the same CEq  — miss=92 hit=0 completion=256
+[ok ] the live probe's evidence names the current EID* and EID_r  — 63a9a83c071d…
+[ok ] the live probe reports 16/16 checks true  — verdict=pass n_checks=16
+[ok ] every ledger row is metered (no unmetered row)
+
+== does anything in kapso_t1 still assert a superseded digest unlabelled? ==
+  a0/a1/kapso_t1/DEVIATIONS.md
+      [history] 159: when `EID*` named `cddfa64e…`, and both `t1_binding.check()` and the registered stub
+      [history] 165: `E* source drifted: e_star.py sha256 … != 670f02ee…` — while the harness's `CID` named
+      [history] 181: | `EID*` | `cddfa64ead571bbb…` | `7ce9e72f36a0d154…` |
+      [history] 183: | `e_star.py` (sha256 / size) | `670f02ee91885c10…` / 43 410 B | `f67ecd41bd769e41…` / 53 788 B |
+      [history] 184: | `e_star_child.py` (sha256 / size) | `013f3e334dbde616…` / 15 128 B | `fdcf425c1d41650d…` / 35 924 B |
+      [history] 185: | `E*`'s own digest (`e_star.py digest`) | `08281d21e6e84a79…` | `dc6969ec9934ab66…` |
+      … 3 more
+  a0/a1/kapso_t1/README.md
+      [history] 18: the previous revision's `EID* = cddfa64e…` and `EID_r = manifest:6b1d6fcc…` are recorded,
+  a0/a1/kapso_t1/evidence/history/superseded-eid-cddfa64e/INDEX.json
+      [history] 5: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 6: "e_star_own_digest": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+      [history] 7: "e_star_py_sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
+      [history] 8: "e_star_child_py_sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
+      [history] 9: "eid_r": "manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+      [history] 11: "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+  a0/a1/kapso_t1/evidence/history/superseded-eid-cddfa64e/dryrun_t1.json
+      [history] 142: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 160: "sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
+      [history] 165: "sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
+      [history] 265: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 328: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 455: "stderr_tail": "kapso_eval_t1: E* source drifted: e_star.py sha256 6312cb7bdd17468635a42eaa9e569342fa964d1b48dfe16632035888a430ba78 != 670f02ee91885c1
+      … 39 more
+  a0/a1/kapso_t1/evidence/history/superseded-eid-cddfa64e/live_t1.json
+      [history] 22: "eid_r": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+      [history] 24: "eid_r_value": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+      [history] 25: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 81: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 144: "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+      [history] 209: "evaluator_id": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+      … 12 more
+[ok ] every superseded digest in kapso_t1 is inside evidence/history/** or labelled history  — clean (5 file(s), all labelled)
+
+26/26 checks ok
+[d1-kapso-identity exit 0]
+
+===== d1-kapso-verify =====
+{
+ "verdict": "pass",
+ "steps": {
+  "tree": true,
+  "binding": true,
+  "dryrun": true,
+  "rehearse": true,
+  "tests": true
+ },
+ "evidence": [
+  "dryrun_t1.json",
+  "live_t1.json"
+ ]
+}
+[d1-kapso-verify exit 0]
+
+===== d2-declaration =====
+== the two registered-tree factors, recomputed from the tree bytes ==
+[ok ] registered_tree()'s file map == my recomputation  — {'a0_locator.json': '1e3b3a755a0980c51db77a4d8f64bb3b343291bf5afc993573d90a9b3e6a0866', 'kapso_eval.py': '6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467'}
+[ok ] registered_tree()'s fingerprint == sha256(canonical file map)  — 63a9a83c071d82f3…
+[ok ] registered_tree()'s eid_r is 'manifest:<fingerprint>'
+[ok ] AID_r's tree factor == the recomputed identity  — {"binding": "a0/a1/kapso_t1/binding.json", "eid_r": "manifest:63a9a83c071d82f30d3053a79af664835cb4b76d159ca04ba27bc945ab
+[ok ] AID_r's files factor == the recomputed file map
+[ok ] CID's task.eid_star == T1-EID.json's recomputed EID*
+[ok ] CID's E* script digests == the bytes on disk
+[ok ] the tree's locator pins the same EID* as CID (the cross-check the audit skips)  — 7ce9e72f36a0d154…
+[ok ] the tree's locator pins the same E* source files as CID
+
+== rebuilding the declarations into a scratch dir, then diffing ==
+[ok ] the causal audit verdict is pass  — problems=[]
+[ok ] registered_tree_checks() are all ok
+[ok ] a fresh build reproduces the committed declarations byte for byte  — {'CID.json': True, 'AID_r.A_kapso.json': True, 'AID_r.A_simpleloop.json': True, 'causal_audit.json': True}
+[ok ] the committed causal_audit.json says pass with no problems
+
+== can CID and AID_r disagree again without the audit noticing? ==
+   (offering the registered tree as of 7bf8a14b — the pre-rebuild
+    bytes, whose locator pins the superseded EID* — with a binding re-stamped
+    to those bytes, so tree and binding agree with each other)
+    stale tree locator pins EID* cddfa64ead571bbb…
+    AID_r names EID_r manifest:6b1d6fccf78d1b94f0bb2fa3e…
+    CID   names EID* 7ce9e72f36a0d154…
+[FAIL] the declaration audit CATCHES a tree built from a superseded EID*  — verdict=pass problems=[]
+[ok ] ...and the two declarations really do disagree in that state  — tree pins cddfa64e… vs CID 7ce9e72f…
+
+    what catches it instead:
+      build_tree.py check — rebuilds the locator from T1-EID.json and
+      compares the bytes with the committed tree:
+        {"locator_rebuild_matches_committed": false, "pass": false}
+[ok ] build_tree.py check refuses the stale tree (locator bytes do not rebuild)
+      the registered stub — re-hashes E* on every invocation:
+        exit 3; stderr: kapso_eval_t1: E* source drifted: e_star.py sha256 f67ecd41bd769e41e57e1812ce60d544b6894071cd7849bccaa83a2163b614f6 != 670f02ee91885c10c9c6df95971a15d5ae0f81ad8
+[ok ] the stale stub exits 3 without a manifest line
+
+16/17 checks ok; FAILED: ['the declaration audit CATCHES a tree built from a superseded EID*']
+[d2-declaration exit 1]
+
+===== d3-gate-restamp =====
+== every stamped document, HEAD vs 7bf8a14b, leaf by leaf ==
+  outcomes: 576/576 differ; leaves moved {'candidate_graph_bytes': 576, 'candidate_graph_keys': 576, 'candidate_graph_schema': 576, 'candidate_graph_sha256': 576, 'canonical_digest': 576, 'evaluator_source_sha256': 576}; non-identity leaves 0
+  values: 14/14 differ; leaves moved {'candidate_graph_bytes': 336, 'candidate_graph_keys': 336, 'candidate_graph_schema': 336, 'candidate_graph_sha256': 336, 'canonical_digest': 336, 'evaluator_source_sha256': 336}; non-identity leaves 0
+  verdicts: 12/12 differ; leaves moved {'evaluator_source_sha256': 12}; non-identity leaves 0
+[ok ] no decision/input leaf moved in any stored Outcome
+[ok ] no decision/input leaf moved in any values/ document
+[ok ] no decision/input leaf moved in any verdict
+[ok ] the Outcomes' moved leaves are exactly the six identity fields  — ['candidate_graph_bytes', 'candidate_graph_keys', 'candidate_graph_schema', 'candidate_graph_sha256', 'canonical_digest', 'evaluator_source_sha256']
+[ok ] every verdict's moved leaf is the E* stamp alone  — ['evaluator_source_sha256']
+
+== the pre-registered thresholds, current vs the pre-restamp revision ==
+[ok ] gate_config.json is byte-identical to the pre-restamp revision
+[ok ] delta: overall mean >= 3/100 (0.03)  — {'numerator': 3, 'denominator': 100}
+[ok ] delta: per-family mean >= 2/100 (0.02) in >= 3 of 4 families  — {'numerator': 2, 'denominator': 100} 3/4
+[ok ] rho: global median >= 3/10 (0.30) and per-family median >= 3/10 in >= 3/4
+[ok ] saturation is a veto at headroom median >= 1/20 and T_i == b_i
+
+== each verdict: decision numbers before vs after ==
+  verdict.dev.json: NOT_ADMISSIBLE -> NOT_ADMISSIBLE; same decisions
+  verdict.dev.pc_exchange_k01.json: NOT_ADMISSIBLE -> NOT_ADMISSIBLE; same decisions
+  verdict.dev.pc_exchange_k02.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.dev.pc_exchange_k05.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.dev.pc_exchange_k10.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.dev.pc_exchange_k25.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.eval.json: NOT_ADMISSIBLE -> NOT_ADMISSIBLE; same decisions
+  verdict.eval.pc_exchange_k01.json: NOT_ADMISSIBLE -> NOT_ADMISSIBLE; same decisions
+  verdict.eval.pc_exchange_k02.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.eval.pc_exchange_k05.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.eval.pc_exchange_k10.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.eval.pc_exchange_k25.json: NOT_ADMISSIBLE -> NOT_ADMISSIBLE; same decisions
+[ok ] every verdict keeps its top-level decision fields
+[ok ] the dev gate verdict is still NOT_ADMISSIBLE  — NOT_ADMISSIBLE
+[ok ] the dev gate's failing gate is the rho gate, not the delta gate
+[ok ] the dev numbers still fail the pre-registered rho demand as measured
+[ok ] every verdict names the live E*
+[ok ] every stored Outcome names the live E*
+
+16/16 checks ok
+[d3-gate-restamp exit 0]
+
+===== d4-canary =====
+== the canaries and the controls, on the host ==
+[ok ] the host can read back every file this probe wrote  — 6 file(s)
+
+== the same probe inside the lane (the committed module) ==
+  lane pid=1 uid=0 (unshared: pid 1 / uid 0 expected)
+  /home: mount=tmpfs dev=76 entries=0 []
+      canary  ERR:FileNotFoundError  readable=False
+  /run/user: mount=tmpfs dev=88 entries=0 []
+      canary  ERR:FileNotFoundError  readable=False
+  /tmp: mount=tmpfs dev=85 entries=1 ['a1delta-control.txt']
+      canary  ERR:FileNotFoundError  readable=False
+      control bytes=21  readable=True matches=True
+  /var/tmp: mount=tmpfs dev=86 entries=1 ['a1delta-control.txt']
+      canary  ERR:FileNotFoundError  readable=False
+      control bytes=21  readable=True matches=True
+[ok ] no host canary is readable from inside the lane  — {'/tmp': False, '/var/tmp': False, '/home': False, '/run/user': False}
+[ok ] the positive control IS readable inside the lane (the reader works)  — {'/tmp': 'bytes=21', '/var/tmp': 'bytes=21'}
+[ok ] every hidden root is covered by a tmpfs inside the lane  — {'/tmp': 'tmpfs', '/var/tmp': 'tmpfs', '/home': 'tmpfs', '/run/user': 'tmpfs'}
+[ok ] the lane's /tmp holds only the one file it was handed  — 1 entries: ['a1delta-control.txt']
+
+  receipt pass=True egress=BLOCKED:gaierror visible_pids=1
+    /home: host_mounted=False before=None(id -) after=tmpfs(id 477) dev 66307->76 entries 1->0
+    /tmp: host_mounted=True before=tmpfs(id 468) after=tmpfs(id 478) dev 35->85 entries 335->0
+    /var/tmp: host_mounted=False before=None(id -) after=tmpfs(id 479) dev 66307->86 entries 8->0
+    /run/user: host_mounted=False before=None(id -) after=tmpfs(id 480) dev 28->88 entries 1->0
+[ok ] /tmp was a host tmpfs and was still replaced by this lane's own tmpfs
+[ok ] the receipt is written before E* ran and records a pass  — BLOCKED:gaierror
+
+== the same canaries against the PRE-FIX module (the fix is a real change) ==
+  /home: canary readable=False mount=tmpfs entries=0
+  /run/user: canary readable=False mount=tmpfs entries=0
+  /tmp: canary readable=True mount=tmpfs entries=336
+  /var/tmp: canary readable=False mount=tmpfs entries=1
+[ok ] the pre-fix module exposes the host's /tmp to the lane (the regression)  — {'readable': True, 'value_matches': True, 'result': 'bytes=21'}
+[ok ] ...while its receipt still lists /tmp as hidden
+
+== the fail-closed branch: no mount topology -> refuse to measure ==
+  exit 3: candidate_sandbox: refusing to run: cannot read this namespace's own mount table ([Errno 2] No such file or directory: '/proc/self/mountinfo'); the lane's topology is unknown, so the harness must not 
+[ok ] the lane refuses with exit 3 when its mount table cannot be read  — rc=3
+  receipt pass=False error=cannot read this namespace's own mount table ([Errno 2] No such file or directory: '/proc/self/mountinfo'); the lane's topology is unknown, so the harness must not measure
+[ok ] the refusal is written down as a receipt, not asserted
+
+== cleanup ==
+  removed 6 canary/control file(s) and the receipts
+
+11/11 checks ok
+[d4-canary exit 0]
+
+===== d5-entrypoints =====
+
+===== a1_verify =====
+[a1_verify exit 0]
+  "wiring_kapso.json",
+  "wiring_simpleloop.json"
+ ]
+}
+
+===== kapso_t1_verify =====
+[kapso_t1_verify exit 0]
+  "dryrun_t1.json",
+  "live_t1.json"
+ ]
+}
+
+===== restamp_evidence =====
+[restamp_evidence exit 0]
+history 4afff01f8a73… (E* at 6dd717c2, the D-T1-10 launch fix): 9 mention(s), 9 labelled
+outcomes: 576/576 differ; leaves moved {'candidate_graph_bytes': 576, 'candidate_graph_keys': 576, 'candidate_graph_schema': 576, 'candidate_graph_sha256': 576, 'canonical_digest': 576, 'evaluator_source_sha256': 576}; decision leaves 0
+verdicts: 12/12 differ; leaves moved {'evaluator_source_sha256': 12}; decision leaves 0
+re-stamp verdict: CLEAN
+
+===== conformance =====
+[conformance exit 0]
+  PASS  c_inflation_attempt
+  PASS  c_input_tampering_detected
+report           : /home/ebt/rsi-dev/a0/tasks/maxcut/conformance.report.json
+VERDICT: PASS
+
+===== calibration_verify =====
+[calibration_verify exit 0]
+PASS budget-loads         a0/a1/budget.Budget(T_wall_sec=1800.0, N_eval_max=725, CEq_max=1966519, P=1)
+PASS f-properties         V1–V7 hold · monotone+bounded+variance reported+total · A_kapso: margins 92.2/37.5 min · A_simpleloop: margins 37.5/73.3 min
+PASS rehearsal            both arms reached the harness through the closed topology, model calls skipped: 8 evaluations, 0 CEq
+verdict: pass
+
+===== artifacts rewritten by the entry points =====
+rewritten by an entry point, restored: a0/tasks/maxcut/conformance.report.json
+ a0/tasks/maxcut/conformance.report.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+git status after the restores:
+?? a0/verify/a1-delta/
+[d5-entrypoints exit 0]
+
+===== d6-superseded =====
+scanned 37208 tracked files; 299 carry a superseded digest (518 line(s)); 286 file(s) with an unlabelled line
+
+### [UNLABELLED] a0/A1-INTERIM.md  (1 line(s))
+    → 18: | 2 | T1 的 `E*` + `EID*` + `C*(T1)` | ✅ | `a0/tasks/maxcut/e_star.py`；`EID* = cddfa64e…`；21 个冻结候选，一致性 14 项全绿 |
+
+### [UNLABELLED] a0/a1/DEVIATIONS.md  (21 line(s))
+    → 55: tree with `EID_r = manifest:6b1d6fcc…`, the max-cut `EidStar` binding and the T1
+    → 68: | `a0/a1/kapso_t1/evidence/live_t1.json` (that workstream's probe) | T1 | `manifest:6b1d6fcc…` | `declarations/AID_r.A_kapso.json` |
+    → 241: evaluation tree (`EID_r = manifest:6b1d6fcc…`) and its D-KT1-7 observed that the
+    … 17 more
+
+### [UNLABELLED] a0/a1/WIRING-REPORT.md  (5 line(s))
+    → 46: | 5b | The T1 registered evaluation tree is an `AID_r` factor at full resolution | **CONFIRMED** | `declarations/AID_r.A_kapso.json`: `runtime.registered_evaluation_tree`
+    → 200: (`runtime.registered_evaluation_tree` = `manifest:6b1d6fcc…`, plus its exact
+    → 222: | `runtime.registered_evaluation_tree` | `value:{eid_r: manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301, native_scheme: manifest_fingerprint, fi
+    … 1 more
+
+### [UNLABELLED] a0/a1/calibration/evidence/kapso/pilot_arm.json  (1 line(s))
+    → 132: "module_sha256": "fd234f699de9c372134dcf0a06014c4c29806affba42d29d299995c7eac7efd9",
+
+### [UNLABELLED] a0/a1/calibration/evidence/simpleloop/pilot_arm.json  (1 line(s))
+    → 132: "module_sha256": "fd234f699de9c372134dcf0a06014c4c29806affba42d29d299995c7eac7efd9",
+
+### [labelled history] a0/a1/calibration/history/attempt1-blocked-identity-drift/BLOCKED.json  (49 line(s))
+    … 45 more
+
+### [labelled history] a0/a1/calibration/history/attempt1-blocked-identity-drift/kapso/pilot_arm.json  (6 line(s))
+    … 2 more
+
+### [labelled history] a0/a1/calibration/history/attempt1-blocked-identity-drift/rehearsal.json  (6 line(s))
+    … 2 more
+
+### [labelled history] a0/a1/calibration/history/attempt1-blocked-identity-drift/simpleloop/pilot_arm.json  (6 line(s))
+    … 2 more
+
+### [UNLABELLED] a0/a1/calibration/pilot_procedure.json  (1 line(s))
+    → 69: "tree": "a0/a1/kapso_t1/tree (EID_r = manifest:6b1d6fcc…)",
+
+### [UNLABELLED] a0/a1/causal.py  (1 line(s))
+    → 175: machine (for example ``{"evaluator.e_star.py": "sha256:670f02ee…"}``).
+
+### [UNLABELLED] a0/a1/evidence/README.md  (2 line(s))
+    → 83: against the tree whose `EID_r` = `manifest:6b1d6fcc…` that `AID_r.A_kapso.json`
+
+### [UNLABELLED] a0/a1/evidence/hostile_candidate.json  (23 line(s))
+    … 19 more
+
+### [UNLABELLED] a0/a1/kapso_t1/DEVIATIONS.md  (9 line(s))
+    → 159: when `EID*` named `cddfa64e…`, and both `t1_binding.check()` and the registered stub
+    … 5 more
+
+### [labelled history] a0/a1/kapso_t1/README.md  (1 line(s))
+
+### [labelled history] a0/a1/kapso_t1/evidence/history/superseded-eid-cddfa64e/INDEX.json  (6 line(s))
+    … 2 more
+
+### [labelled history] a0/a1/kapso_t1/evidence/history/superseded-eid-cddfa64e/dryrun_t1.json  (45 line(s))
+    … 41 more
+
+### [labelled history] a0/a1/kapso_t1/evidence/history/superseded-eid-cddfa64e/live_t1.json  (18 line(s))
+    … 14 more
+
+### [labelled history] a0/tasks/maxcut/gates/DEVIATIONS.md  (6 line(s))
+    … 2 more
+
+### [labelled history] a0/tasks/maxcut/gates/README.md  (4 line(s))
+
+### [labelled history] a0/tasks/maxcut/gates/refreeze.evidence.json  (12 line(s))
+    … 8 more
+
+### [labelled history] a0/tasks/maxcut/gates/restamp.evidence.json  (16 line(s))
+    … 12 more
+
+### [labelled history] a0/tasks/maxcut/gates/restamp_evidence.py  (2 line(s))
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n1024_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"c11153213cd
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n1024_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"bd73e789c27
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n1024_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"9846633d1a8
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n1024_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"4e85733f126
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n128_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"f19b43ffaed
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n128_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"c03abd95732
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n256_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"2862920ca85
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n256_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"2862ce00473
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n256_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"a9e9842e659
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n256_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"ffb6bc31128
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n512_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"6c1931120b4
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n512_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"4e1a2d69d00
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n512_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"85d28ce65d9
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n512_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"de9f29b5b51
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n1024_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"d9e84b3edd8
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n1024_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"f04de4223f7
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n1024_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"ebe3dd153f7
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n1024_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"ce1d7ef142e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n128_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"bacb7ac8b73
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n128_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"dfac7797369
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n256_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"d8950edeea4
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n256_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"e2350af769a
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n256_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"c28e27bf156
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n256_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"ecb2c960118
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n512_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"002fd58bb6e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n512_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"fee311916ad
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n512_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"a860f77bb14
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n512_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"08186e0356d
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n1024_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"c4e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n1024_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"e3a
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n1024_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"d1b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n1024_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"5c1
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n128_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"516
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n128_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"1ef
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n256_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"328
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n256_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"4ae
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n256_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"93f
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n256_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"76f
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n512_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"389
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n512_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"142
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n512_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"5e4
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n512_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"c49
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n1024_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"9c9
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n1024_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"d79
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n1024_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"62a
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n1024_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"d30
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n128_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"fd0
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n128_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"0b0
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n256_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"442
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n256_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"892
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n256_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"345
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n256_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"5f0
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n512_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"023
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n512_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"b38
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n512_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"4dc
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n512_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"e92
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n1024_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a0127936724046ba263a13e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n1024_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"01a8d523ebe5e4f9ca852a5
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n1024_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"b2f78537d1229d695f93fdc
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n1024_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"405833cbea53b2109905602
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n128_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"fce053b0f122244c7691a19
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n128_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"ef34bbd9afd00561b857c2d
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n256_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"2883ccdb74eb77bfbae8da9
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n256_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"b866de4043c7b614378f41c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n256_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"f70a2a7387b7abf2be71293
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n256_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"b5278d757c88f6caae9a168
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n512_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"774fa4d21dc96babfd226a4
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n512_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"e2b01fe9b13dfa02b51d238
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n512_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"c9b54ad3a77de06d18acf0c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n512_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"07cee9acf1cbdc960abb55b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n1024_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"d8cd74e5dc246a27cc6cbc2
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n1024_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"f79a365bc2670884dfe5877
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n1024_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"35a8ec00e5e76ed363dbd76
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n1024_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"612f2061ff114762bcff306
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n128_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a33578da15ec267003cc4df
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n128_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"4c3c1624b414e17abd1c3f2
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n256_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"2921a8ee1fc3784f19a56cc
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n256_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"3799b554b847cc033c5a068
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n256_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"9a83ad5324fd6eddb194c03
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n256_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"6b1231abadf62cf8d67c52d
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n512_r0.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"e5633666a3e010c52ea219f
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n512_r1.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"22f5c6212c9344121794bf1
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n512_r2.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"ac35b4082406d55f54b1314
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n512_r3.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"323c63abcad77e000fbcad0
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0001.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"2a199bbe1b54d5c72febae73
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0002.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"383e317aac0561f68c372101
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0003.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"769c08ae3c483939fab21e4c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0004.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"898c132c4a08decdd1c2e064
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0005.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"53fcd2969a4c95eb217b4924
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0006.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"d75d8f91faffba2f56364439
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0007.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"9d74a306d1728571bed2256f
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0008.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"23ba756b273b902535f2aac6
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0009.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"6d74895ae570337237b38e06
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0010.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"c20cc58dd76231aa22bc31f0
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0011.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"cb111a62c95500d0c37251ca
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0012.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"8566d01cea6e6db0305f6a3e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0013.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"d6ea32e6b01bcd848c4e1d1c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0014.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"118d2cb16bb00c75453e0023
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0015.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"3c4edb8f34b872e78e23970d
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0016.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"f62ed72e58186bdee34d8ae7
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0017.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"004d4cdc9315a711904ebaad
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0018.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"29f56cabd2644397b99ee4c9
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0019.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"95b8d9418282c369edc80b08
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0020.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"3525ab65356b6d8fef61ea7a
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0021.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"e3b37140cd180a9dec261427
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0022.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"d211e4601c17cff55c3d1ced
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0023.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"563f6faf291e39d2d0ac08f9
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0024.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"00b6b9525896bfb04cc2ad86
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0001.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"bed50fbdd1285bda0cc5a78
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0002.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"538f43004a94763da0acebd
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0003.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"f3acca146f54eed57df406a
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0004.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"afbbbcc7db9474893df5636
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0005.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"446f870ed5f7ce0d382636b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0006.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"900f65a4411fc7438b37b5a
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0007.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"86070531c924a181817e6f2
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0008.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"3a90f0a83e1a2569e140173
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0009.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"cc47e043f241c3699d9f2ac
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0010.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"57270223f5d8ec8200d82da
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0011.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"be37841afb571e51aca1c5f
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0012.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"7ba1169ac173599618a48b8
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0013.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"6deb46fdf2568db1e1f88ce
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0014.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"fb89143caeec563264e53b4
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0015.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"2e3267a4a494c34977fc970
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0016.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"4e7033e7ba4c7163c2da54c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0017.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"542553269a4f76d978e7c4b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0018.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"2da4038d00ca3c46ec49367
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0019.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"b44c5745e84bf2ca8e0d5b2
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0020.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"709f35172ef1c07098b6644
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0021.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"934c63509fffcdb78eeed5e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0022.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"ad33ca8ea0b1b2669bf574e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0023.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"065fb5335cb794209ee3188
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0024.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"b10b305bc260d9aa5cf9a3a
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0001.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"eb36436f6135fd758b831a8e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0002.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"a99d26c1e54c25dda3abbe80
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0003.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"4c3795a5da03c97a978085a1
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0004.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"87c8e76b2da5ef7f31b13d42
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0005.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"a641ccd42eaa01354c19ec96
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0006.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"8fa70ea3cb6328426f69ffcd
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0007.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"6a70337f0e33f297b23e3692
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0008.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"09d8a1c9610f4b21b1acc7b1
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0009.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"0ac381a69a8771e0abe0da5f
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0010.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"917723c863c721f4fa548d92
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0011.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"773392ddc11d83959e75a4f9
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0012.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"769aa1602d78166368655218
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0013.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"ea37bb3a480402288261c8bf
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0014.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"559889aab09baf9a042da3fa
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0015.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"4ceaee41f3ce333594a9c1de
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0016.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"a9410afbb2cdbfc5605dc8c5
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0017.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"aefc0284eb46e976482eb931
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0018.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"0e15c1e1a51124c4534d1527
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0019.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"ae0a962c3948aa2996e5b98e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0020.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"895f7cf96a28a090f90a03e6
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0021.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"599466d5c8d58c76e83bbf18
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0022.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"bdc8131ea08ff71ebff9e19e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0023.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"19508572e9665c90ff19c4d7
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0024.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"4a992e68f18721821c7e3203
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0001.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"53009dc72e5448dbfb8c634
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0002.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"01d5fea408b10140e8bb92d
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0003.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"f1fd8f865b3c3f8f07700e0
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0004.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"0a544be761a12f9701b3157
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0005.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"8a66b78ae0586a22e678807
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0006.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"f94d7e0849042aabb48b2ad
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0007.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"36d1a7bf3042ceddaca7efa
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0008.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"88e7d107cd196fa3be34c57
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0009.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"e29b2eb12c335d0085a13dd
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0010.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"d8c11db057530ebdabcfbaf
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0011.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"a3820dd3f051ffbc0d01ef5
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0012.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"9fbbbd47bb3d99052e93627
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0013.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"3d2c78cec4d919be3aeb260
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0014.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"323cf96dbf478f429722b3b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0015.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"351285978d8ab1aa49d57b0
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0016.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"645bddc8c7683a606e34baa
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0017.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"0b23d8cb2c0ebabcf0f2c1b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0018.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"ae6dee983d0f596687e1634
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0019.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"e3260d5d1e4a96db7fc1c2b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0020.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"5345edebd3456b5dd41391e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0021.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"971d6b888463bdbd0f73dfa
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0022.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"b5133c61aa11cc57669caf3
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0023.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"fd797c05501211055a6b038
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0024.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"c1aed4b25b86d7292fe790a
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0001.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"e4dd98c7a48e84d9167301dc
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0002.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"b76e0237328c154adceac93f
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0003.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"f7260edcb99d8e43432fcc16
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0004.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"f52214cdec5829e781a4f051
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0005.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"ed29113c0747f6afccf3001b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0006.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"a39e8c401efc1c575ff46ff1
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0007.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"93b534c7b0235028f0b659e2
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0008.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"13ff3d9e017d5a0f69532d98
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0009.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"9ab2bd08b5001f24bf68b1fe
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0010.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"0ae8ab2acc7620fa6372130d
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0011.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"7e9dfdc74e36a72014a6f6cf
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0012.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"c1e4988e654836276e20b398
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0013.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"9856f0b844e46c1ff8a24cea
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0014.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"a05ed2b489d7912d4d38392f
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0015.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"b2d7b27d43215ba0b4352baa
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0016.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"13fc2f6ebbd3f58ab16bcfb7
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0017.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"4dec1b01de052500f60be343
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0018.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"81677d2b12c98e3b49e9ab2d
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0019.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"30fd0753ab3bac66598b2737
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0020.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"5ec2be2856045ee868e8eab1
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0021.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"3db38cd4f71848b12529f9d3
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0022.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"d647df9661e5a069e762c9d8
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0023.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"0ae2ac1d76188f1be3945906
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0024.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"8273751f623e75ce25db6130
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0001.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"268a829ffef7c46ef4511a6
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0002.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"f48c18d7548b76466110863
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0003.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"89a54b56a72b2934c6a162f
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0004.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"c3deba29f563e0b47933ab8
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0005.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"ab5efbd8c65cb2a0489a666
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0006.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"442cb51f61b903a16158d46
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0007.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"2995d91bcce13e3f4e41278
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0008.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a086b25e9543f676cef9ae7
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0009.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"ad92c186fb2c9b768bc3bdc
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0010.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"5bd1097b51334659dd2f957
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0011.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a246933853a78f80b6adcca
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0012.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"531cbc7d329db6e29e92b76
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0013.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a7221b2311b6557a580d1e9
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0014.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"469cb5796201cbd222b8908
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0015.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"2e9946ffa023f369df1a899
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0016.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"98ed95bd7033dc2de9a2e0a
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0017.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"7024be229cb4a5485cb66ef
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0018.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"3985089eca15fdf9af16dfd
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0019.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a1e46d7b831995e77144e75
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0020.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"2b095bb0a6138593a6a38af
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0021.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"c345b971ad6b4f9b0d67981
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0022.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"d5591bd0fd28a7204d184f2
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0023.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"26ec987447396b299b29ad7
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0024.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"9b0b789694f6408170b0830
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0001.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"f7906108da4cc317a8532652d3a2e
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0002.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"afba0241e0cdce79371e15350e4f4
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0003.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"6f2d7b5098aa432b2694370e0cfa5
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0004.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"6ae87f26c5c47f4eee12c06750084
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0005.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"cfef8c6398573f4a8343650b8ca34
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0006.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"cef8ea7af29211d10a42fb3e4f508
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0007.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"a24af8bc74a3ded02e9c159a542ee
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0008.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"79ad87834e3994d379d5a6b19d2b5
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0009.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"278d3d6f70900c85cfff87b34a4e7
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0010.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"5db90d86494d3c48d7adaccaf833c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0011.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"288c1196ff951886a528553f642db
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0012.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"ad477e3cdb47df8301e5ab6f877d7
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0013.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"7a8c54eae9cce90993e10d1ce14a5
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0014.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"559ac86013be609fa87430704a830
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0015.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"53591581fc6e9f8fe9d12e398b74c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0016.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"ea6fe5a513c0e6218677b2d569b74
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0017.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"f15b7c7c00931d67d25bc3a1432d6
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0018.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"4abcd661844c8b91f68988eb7ec45
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0019.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"e415b43ec1d116d3e1fe8da67d8c9
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0020.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"a394685f8203fb4f7569bf38a024d
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0021.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"23195e89746959bacd3f58f0c7daa
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0022.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"56bd5357411c0e08e864ba0193ae7
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0023.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"09db5b1a2bb4faaf252a6f055496b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0024.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"81ad948563bd77d3ecb3573a67d34
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0001.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"96bd96dbce8507e44c11d04971
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0002.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"5fad79bfcef3293eb024de1bb5
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0003.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"0f12e1fc9bfc2589c846abb70c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0004.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"14ebfb708419fd08d318d5482f
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0005.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"525a597d288564869d9c00ed70
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0006.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"738ff87e3a71f28cb5c9b35a0c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0007.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"c7c2a828b2e346b87d17989342
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0008.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"9648ded0acf5b4931ee5cd0a6b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0009.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"1b3a4cb10b4122933c531d804c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0010.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"43fa610324bbdab8762c678d0c
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0011.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"36284f4a817da722b758171695
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0012.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"191727e1faf3d5bc26f45ef477
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0013.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"2e10829cec4123dae1757b577d
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0014.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"36f2c15aa668eabfa0f709d617
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0015.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"be58a5e906013f5ae39aac40e9
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0016.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"182628ed490611e5556047381b
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0017.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"2ee8c5535f5a09cbcbfebbbfdb
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0018.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"f51cea158424409505ce89e4b0
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0019.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"ada2f3f1bd8b41745328b7daa1
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0020.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"c2cedab4d7947ac14f5093b464
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0021.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"d6a7f1b693f37a436430982a73
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0022.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"d8cf89469f7ab5a31128376885
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0023.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"4243a3caccab4d542bf3451398
+
+### [UNLABELLED] a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0024.outcome.json  (1 line(s))
+    → 1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"86dd15f5479d6d3aa3701ab05d
+
+UNLABELLED LINES:
+  a0/A1-INTERIM.md:18: | 2 | T1 的 `E*` + `EID*` + `C*(T1)` | ✅ | `a0/tasks/maxcut/e_star.py`；`EID* = cddfa64e…`；21 个冻结候选，一致性 14 项全绿 |
+  a0/a1/DEVIATIONS.md:55: tree with `EID_r = manifest:6b1d6fcc…`, the max-cut `EidStar` binding and the T1
+  a0/a1/DEVIATIONS.md:68: | `a0/a1/kapso_t1/evidence/live_t1.json` (that workstream's probe) | T1 | `manifest:6b1d6fcc…` | `declarations/AID_r.A_kapso.json` |
+  a0/a1/DEVIATIONS.md:241: evaluation tree (`EID_r = manifest:6b1d6fcc…`) and its D-KT1-7 observed that the
+  a0/a1/DEVIATIONS.md:260: | `runtime.registered_evaluation_tree` | `value:{eid_r: manifest:6b1d6fcc…, native_scheme: manifest_fingerprint, fingerprint_rule, tree, binding}` |
+  a0/a1/DEVIATIONS.md:520: at the moment of the freeze (`e_star.py 83d55e80…`,
+  a0/a1/DEVIATIONS.md:521: `e_star_child.py 7392915d…`), and `verify.py` is 6/6 for *that* revision.
+  a0/a1/DEVIATIONS.md:553: `eccd859c921ae724602f09bb137f6081c8dced8631d758db9b6d0db110d7b861` (the value
+  a0/a1/DEVIATIONS.md:592: (`e_star.py 83d55e80…`, `e_star_child.py 7392915d…`) because `baf13884` changed
+  a0/a1/DEVIATIONS.md:607: nothing in the directory still asserts `eccd859c…`.
+  a0/a1/WIRING-REPORT.md:46: | 5b | The T1 registered evaluation tree is an `AID_r` factor at full resolution | **CONFIRMED** | `declarations/AID_r.A_kapso.json`: `runtime.registered_evaluation_tree`
+  a0/a1/WIRING-REPORT.md:200: (`runtime.registered_evaluation_tree` = `manifest:6b1d6fcc…`, plus its exact
+  a0/a1/WIRING-REPORT.md:222: | `runtime.registered_evaluation_tree` | `value:{eid_r: manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301, native_scheme: manifest_fingerprint, fi
+  a0/a1/calibration/evidence/kapso/pilot_arm.json:132: "module_sha256": "fd234f699de9c372134dcf0a06014c4c29806affba42d29d299995c7eac7efd9",
+  a0/a1/calibration/evidence/simpleloop/pilot_arm.json:132: "module_sha256": "fd234f699de9c372134dcf0a06014c4c29806affba42d29d299995c7eac7efd9",
+  a0/a1/calibration/pilot_procedure.json:69: "tree": "a0/a1/kapso_t1/tree (EID_r = manifest:6b1d6fcc…)",
+  a0/a1/causal.py:175: machine (for example ``{"evaluator.e_star.py": "sha256:670f02ee…"}``).
+  a0/a1/evidence/README.md:83: against the tree whose `EID_r` = `manifest:6b1d6fcc…` that `AID_r.A_kapso.json`
+  a0/a1/evidence/hostile_candidate.json:1047: "sha256": "fa0932b438c658cc500f9801ac6090e45c5756d22c4e62c253a65dcd93fb42b1"
+  a0/a1/evidence/hostile_candidate.json:1052: "sha256": "c08f0c36973cecb7624c54c70b82906d8a323517ef100cad2ab31877f92edd0f"
+  a0/a1/evidence/hostile_candidate.json:1071: "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+  a0/a1/evidence/hostile_candidate.json:1120: "eid_star": "sha256:4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+  a0/a1/evidence/hostile_candidate.json:1121: "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+  a0/a1/evidence/hostile_candidate.json:1156: "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+  a0/a1/evidence/hostile_candidate.json:1326: "e_star_script_sha256": "fa0932b438c658cc500f9801ac6090e45c5756d22c4e62c253a65dcd93fb42b1",
+  a0/a1/evidence/hostile_candidate.json:1327: "eid_star": "sha256:4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+  a0/a1/evidence/hostile_candidate.json:1328: "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+  a0/a1/evidence/hostile_candidate.json:1345: "sha256": "fa0932b438c658cc500f9801ac6090e45c5756d22c4e62c253a65dcd93fb42b1"
+  a0/a1/evidence/hostile_candidate.json:1350: "sha256": "c08f0c36973cecb7624c54c70b82906d8a323517ef100cad2ab31877f92edd0f"
+  a0/a1/evidence/hostile_candidate.json:1369: "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+  a0/a1/evidence/hostile_candidate.json:1418: "eid_star": "sha256:4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+  a0/a1/evidence/hostile_candidate.json:1419: "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+  a0/a1/evidence/hostile_candidate.json:1454: "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+  a0/a1/kapso_t1/DEVIATIONS.md:159: when `EID*` named `cddfa64e…`, and both `t1_binding.check()` and the registered stub
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n1024_r0.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"c11153213cd
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n1024_r1.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"bd73e789c27
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n1024_r2.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"9846633d1a8
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n1024_r3.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"4e85733f126
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n128_r0.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"f19b43ffaed
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n128_r1.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"c03abd95732
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n256_r0.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"2862920ca85
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n256_r1.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"2862ce00473
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n256_r2.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"a9e9842e659
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n256_r3.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"ffb6bc31128
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n512_r0.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"6c1931120b4
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n512_r1.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"4e1a2d69d00
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n512_r2.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"85d28ce65d9
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_ERp080_n512_r3.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"de9f29b5b51
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n1024_r0.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"d9e84b3edd8
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n1024_r1.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"f04de4223f7
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n1024_r2.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"ebe3dd153f7
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n1024_r3.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"ce1d7ef142e
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n128_r0.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"bacb7ac8b73
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n128_r1.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"dfac7797369
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n256_r0.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"d8950edeea4
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n256_r1.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"e2350af769a
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n256_r2.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"c28e27bf156
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n256_r3.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"ecb2c960118
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n512_r0.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"002fd58bb6e
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n512_r1.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"fee311916ad
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n512_r2.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"a860f77bb14
+  a0/tasks/maxcut/redesign/out/l1_outcomes/baseline/L1_RRd4_n512_r3.outcome.json:1: {"candidate_id":"b01_seeded_random_partition","candidate_source_sha256":"6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97","canonical_digest":"08186e0356d
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n1024_r0.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"c4e
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n1024_r1.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"e3a
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n1024_r2.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"d1b
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n1024_r3.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"5c1
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n128_r0.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"516
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n128_r1.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"1ef
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n256_r0.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"328
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n256_r1.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"4ae
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n256_r2.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"93f
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n256_r3.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"76f
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n512_r0.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"389
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n512_r1.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"142
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n512_r2.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"5e4
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_ERp080_n512_r3.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"c49
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n1024_r0.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"9c9
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n1024_r1.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"d79
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n1024_r2.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"62a
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n1024_r3.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"d30
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n128_r0.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"fd0
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n128_r1.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"0b0
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n256_r0.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"442
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n256_r1.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"892
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n256_r2.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"345
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n256_r3.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"5f0
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n512_r0.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"023
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n512_r1.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"b38
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n512_r2.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"4dc
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc/L1_RRd4_n512_r3.outcome.json:1: {"candidate_id":"pc01_external_networkx_one_exchange","candidate_source_sha256":"d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f","canonical_digest":"e92
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n1024_r0.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a0127936724046ba263a13e
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n1024_r1.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"01a8d523ebe5e4f9ca852a5
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n1024_r2.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"b2f78537d1229d695f93fdc
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n1024_r3.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"405833cbea53b2109905602
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n128_r0.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"fce053b0f122244c7691a19
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n128_r1.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"ef34bbd9afd00561b857c2d
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n256_r0.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"2883ccdb74eb77bfbae8da9
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n256_r1.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"b866de4043c7b614378f41c
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n256_r2.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"f70a2a7387b7abf2be71293
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n256_r3.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"b5278d757c88f6caae9a168
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n512_r0.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"774fa4d21dc96babfd226a4
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n512_r1.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"e2b01fe9b13dfa02b51d238
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n512_r2.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"c9b54ad3a77de06d18acf0c
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_ERp080_n512_r3.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"07cee9acf1cbdc960abb55b
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n1024_r0.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"d8cd74e5dc246a27cc6cbc2
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n1024_r1.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"f79a365bc2670884dfe5877
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n1024_r2.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"35a8ec00e5e76ed363dbd76
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n1024_r3.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"612f2061ff114762bcff306
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n128_r0.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a33578da15ec267003cc4df
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n128_r1.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"4c3c1624b414e17abd1c3f2
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n256_r0.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"2921a8ee1fc3784f19a56cc
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n256_r1.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"3799b554b847cc033c5a068
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n256_r2.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"9a83ad5324fd6eddb194c03
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n256_r3.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"6b1231abadf62cf8d67c52d
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n512_r0.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"e5633666a3e010c52ea219f
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n512_r1.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"22f5c6212c9344121794bf1
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n512_r2.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"ac35b4082406d55f54b1314
+  a0/tasks/maxcut/redesign/out/l1_outcomes/pc_fast/L1_RRd4_n512_r3.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"323c63abcad77e000fbcad0
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0001.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"2a199bbe1b54d5c72febae73
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0002.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"383e317aac0561f68c372101
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0003.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"769c08ae3c483939fab21e4c
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0004.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"898c132c4a08decdd1c2e064
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0005.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"53fcd2969a4c95eb217b4924
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0006.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"d75d8f91faffba2f56364439
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0007.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"9d74a306d1728571bed2256f
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0008.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"23ba756b273b902535f2aac6
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0009.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"6d74895ae570337237b38e06
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0010.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"c20cc58dd76231aa22bc31f0
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0011.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"cb111a62c95500d0c37251ca
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0012.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"8566d01cea6e6db0305f6a3e
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0013.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"d6ea32e6b01bcd848c4e1d1c
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0014.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"118d2cb16bb00c75453e0023
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0015.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"3c4edb8f34b872e78e23970d
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0016.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"f62ed72e58186bdee34d8ae7
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0017.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"004d4cdc9315a711904ebaad
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0018.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"29f56cabd2644397b99ee4c9
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0019.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"95b8d9418282c369edc80b08
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0020.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"3525ab65356b6d8fef61ea7a
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0021.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"e3b37140cd180a9dec261427
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0022.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"d211e4601c17cff55c3d1ced
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0023.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"563f6faf291e39d2d0ac08f9
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k1/G_dev_0024.outcome.json:1: {"candidate_id":"l2_exchange_k1","candidate_source_sha256":"7300573355edf112d4cd34d246939b0abae675a74afbe47dcd1b71cbe6ac390a","canonical_digest":"00b6b9525896bfb04cc2ad86
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0001.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"bed50fbdd1285bda0cc5a78
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0002.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"538f43004a94763da0acebd
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0003.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"f3acca146f54eed57df406a
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0004.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"afbbbcc7db9474893df5636
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0005.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"446f870ed5f7ce0d382636b
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0006.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"900f65a4411fc7438b37b5a
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0007.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"86070531c924a181817e6f2
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0008.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"3a90f0a83e1a2569e140173
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0009.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"cc47e043f241c3699d9f2ac
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0010.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"57270223f5d8ec8200d82da
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0011.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"be37841afb571e51aca1c5f
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0012.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"7ba1169ac173599618a48b8
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0013.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"6deb46fdf2568db1e1f88ce
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0014.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"fb89143caeec563264e53b4
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0015.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"2e3267a4a494c34977fc970
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0016.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"4e7033e7ba4c7163c2da54c
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0017.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"542553269a4f76d978e7c4b
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0018.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"2da4038d00ca3c46ec49367
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0019.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"b44c5745e84bf2ca8e0d5b2
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0020.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"709f35172ef1c07098b6644
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0021.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"934c63509fffcdb78eeed5e
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0022.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"ad33ca8ea0b1b2669bf574e
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0023.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"065fb5335cb794209ee3188
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k10/G_dev_0024.outcome.json:1: {"candidate_id":"l2_exchange_k10","candidate_source_sha256":"e905ba5a7ce64e72706793e18b6adedee747f71f13801a08235a5d018d4acf90","canonical_digest":"b10b305bc260d9aa5cf9a3a
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0001.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"eb36436f6135fd758b831a8e
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0002.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"a99d26c1e54c25dda3abbe80
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0003.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"4c3795a5da03c97a978085a1
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0004.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"87c8e76b2da5ef7f31b13d42
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0005.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"a641ccd42eaa01354c19ec96
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0006.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"8fa70ea3cb6328426f69ffcd
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0007.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"6a70337f0e33f297b23e3692
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0008.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"09d8a1c9610f4b21b1acc7b1
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0009.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"0ac381a69a8771e0abe0da5f
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0010.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"917723c863c721f4fa548d92
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0011.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"773392ddc11d83959e75a4f9
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0012.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"769aa1602d78166368655218
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0013.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"ea37bb3a480402288261c8bf
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0014.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"559889aab09baf9a042da3fa
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0015.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"4ceaee41f3ce333594a9c1de
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0016.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"a9410afbb2cdbfc5605dc8c5
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0017.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"aefc0284eb46e976482eb931
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0018.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"0e15c1e1a51124c4534d1527
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0019.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"ae0a962c3948aa2996e5b98e
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0020.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"895f7cf96a28a090f90a03e6
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0021.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"599466d5c8d58c76e83bbf18
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0022.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"bdc8131ea08ff71ebff9e19e
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0023.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"19508572e9665c90ff19c4d7
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k2/G_dev_0024.outcome.json:1: {"candidate_id":"l2_exchange_k2","candidate_source_sha256":"b6cd9eb222ddf3b0c4c0a903226deedf7a40534b61e6e84d215f931d261d42fd","canonical_digest":"4a992e68f18721821c7e3203
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0001.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"53009dc72e5448dbfb8c634
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0002.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"01d5fea408b10140e8bb92d
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0003.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"f1fd8f865b3c3f8f07700e0
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0004.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"0a544be761a12f9701b3157
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0005.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"8a66b78ae0586a22e678807
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0006.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"f94d7e0849042aabb48b2ad
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0007.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"36d1a7bf3042ceddaca7efa
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0008.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"88e7d107cd196fa3be34c57
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0009.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"e29b2eb12c335d0085a13dd
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0010.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"d8c11db057530ebdabcfbaf
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0011.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"a3820dd3f051ffbc0d01ef5
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0012.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"9fbbbd47bb3d99052e93627
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0013.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"3d2c78cec4d919be3aeb260
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0014.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"323cf96dbf478f429722b3b
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0015.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"351285978d8ab1aa49d57b0
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0016.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"645bddc8c7683a606e34baa
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0017.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"0b23d8cb2c0ebabcf0f2c1b
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0018.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"ae6dee983d0f596687e1634
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0019.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"e3260d5d1e4a96db7fc1c2b
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0020.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"5345edebd3456b5dd41391e
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0021.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"971d6b888463bdbd0f73dfa
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0022.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"b5133c61aa11cc57669caf3
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0023.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"fd797c05501211055a6b038
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k25/G_dev_0024.outcome.json:1: {"candidate_id":"l2_exchange_k25","candidate_source_sha256":"9d9a4badb1f79b32107345c1c51d5d6348ede80d5d5de2dbe8f37adea4d81dae","canonical_digest":"c1aed4b25b86d7292fe790a
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0001.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"e4dd98c7a48e84d9167301dc
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0002.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"b76e0237328c154adceac93f
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0003.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"f7260edcb99d8e43432fcc16
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0004.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"f52214cdec5829e781a4f051
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0005.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"ed29113c0747f6afccf3001b
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0006.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"a39e8c401efc1c575ff46ff1
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0007.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"93b534c7b0235028f0b659e2
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0008.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"13ff3d9e017d5a0f69532d98
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0009.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"9ab2bd08b5001f24bf68b1fe
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0010.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"0ae8ab2acc7620fa6372130d
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0011.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"7e9dfdc74e36a72014a6f6cf
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0012.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"c1e4988e654836276e20b398
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0013.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"9856f0b844e46c1ff8a24cea
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0014.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"a05ed2b489d7912d4d38392f
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0015.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"b2d7b27d43215ba0b4352baa
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0016.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"13fc2f6ebbd3f58ab16bcfb7
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0017.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"4dec1b01de052500f60be343
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0018.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"81677d2b12c98e3b49e9ab2d
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0019.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"30fd0753ab3bac66598b2737
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0020.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"5ec2be2856045ee868e8eab1
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0021.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"3db38cd4f71848b12529f9d3
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0022.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"d647df9661e5a069e762c9d8
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0023.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"0ae2ac1d76188f1be3945906
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_k5/G_dev_0024.outcome.json:1: {"candidate_id":"l2_exchange_k5","candidate_source_sha256":"a87937d8005e29becf623eff659ab4934d8e255d329b1494b4d9db8563be807e","canonical_digest":"8273751f623e75ce25db6130
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0001.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"268a829ffef7c46ef4511a6
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0002.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"f48c18d7548b76466110863
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0003.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"89a54b56a72b2934c6a162f
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0004.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"c3deba29f563e0b47933ab8
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0005.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"ab5efbd8c65cb2a0489a666
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0006.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"442cb51f61b903a16158d46
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0007.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"2995d91bcce13e3f4e41278
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0008.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a086b25e9543f676cef9ae7
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0009.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"ad92c186fb2c9b768bc3bdc
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0010.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"5bd1097b51334659dd2f957
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0011.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a246933853a78f80b6adcca
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0012.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"531cbc7d329db6e29e92b76
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0013.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a7221b2311b6557a580d1e9
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0014.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"469cb5796201cbd222b8908
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0015.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"2e9946ffa023f369df1a899
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0016.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"98ed95bd7033dc2de9a2e0a
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0017.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"7024be229cb4a5485cb66ef
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0018.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"3985089eca15fdf9af16dfd
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0019.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"a1e46d7b831995e77144e75
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0020.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"2b095bb0a6138593a6a38af
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0021.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"c345b971ad6b4f9b0d67981
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0022.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"d5591bd0fd28a7204d184f2
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0023.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"26ec987447396b299b29ad7
+  a0/tasks/maxcut/redesign/out/l2_outcomes/exchange_opt/G_dev_0024.outcome.json:1: {"candidate_id":"l2_exchange_opt","candidate_source_sha256":"3bd55709e93dc67811bca3226d25b8d4ff2ecd47ed9e87092cb9d81344c1b58c","canonical_digest":"9b0b789694f6408170b0830
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0001.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"f7906108da4cc317a8532652d3a2e
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0002.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"afba0241e0cdce79371e15350e4f4
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0003.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"6f2d7b5098aa432b2694370e0cfa5
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0004.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"6ae87f26c5c47f4eee12c06750084
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0005.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"cfef8c6398573f4a8343650b8ca34
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0006.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"cef8ea7af29211d10a42fb3e4f508
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0007.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"a24af8bc74a3ded02e9c159a542ee
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0008.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"79ad87834e3994d379d5a6b19d2b5
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0009.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"278d3d6f70900c85cfff87b34a4e7
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0010.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"5db90d86494d3c48d7adaccaf833c
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0011.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"288c1196ff951886a528553f642db
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0012.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"ad477e3cdb47df8301e5ab6f877d7
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0013.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"7a8c54eae9cce90993e10d1ce14a5
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0014.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"559ac86013be609fa87430704a830
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0015.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"53591581fc6e9f8fe9d12e398b74c
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0016.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"ea6fe5a513c0e6218677b2d569b74
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0017.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"f15b7c7c00931d67d25bc3a1432d6
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0018.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"4abcd661844c8b91f68988eb7ec45
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0019.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"e415b43ec1d116d3e1fe8da67d8c9
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0020.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"a394685f8203fb4f7569bf38a024d
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0021.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"23195e89746959bacd3f58f0c7daa
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0022.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"56bd5357411c0e08e864ba0193ae7
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0023.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"09db5b1a2bb4faaf252a6f055496b
+  a0/tasks/maxcut/redesign/out/l2_outcomes/greedy/G_dev_0024.outcome.json:1: {"candidate_id":"l2_greedy","candidate_source_sha256":"2c189702acb762577ad387b0d3f53c8068ecb1b47147c957a6ddbda1bf925359","canonical_digest":"81ad948563bd77d3ecb3573a67d34
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0001.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"96bd96dbce8507e44c11d04971
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0002.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"5fad79bfcef3293eb024de1bb5
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0003.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"0f12e1fc9bfc2589c846abb70c
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0004.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"14ebfb708419fd08d318d5482f
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0005.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"525a597d288564869d9c00ed70
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0006.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"738ff87e3a71f28cb5c9b35a0c
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0007.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"c7c2a828b2e346b87d17989342
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0008.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"9648ded0acf5b4931ee5cd0a6b
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0009.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"1b3a4cb10b4122933c531d804c
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0010.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"43fa610324bbdab8762c678d0c
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0011.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"36284f4a817da722b758171695
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0012.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"191727e1faf3d5bc26f45ef477
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0013.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"2e10829cec4123dae1757b577d
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0014.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"36f2c15aa668eabfa0f709d617
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0015.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"be58a5e906013f5ae39aac40e9
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0016.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"182628ed490611e5556047381b
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0017.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"2ee8c5535f5a09cbcbfebbbfdb
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0018.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"f51cea158424409505ce89e4b0
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0019.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"ada2f3f1bd8b41745328b7daa1
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0020.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"c2cedab4d7947ac14f5093b464
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0021.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"d6a7f1b693f37a436430982a73
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0022.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"d8cf89469f7ab5a31128376885
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0023.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"4243a3caccab4d542bf3451398
+  a0/tasks/maxcut/redesign/out/l2_outcomes/rand_part/G_dev_0024.outcome.json:1: {"candidate_id":"l2_rand_part","candidate_source_sha256":"295153e78f599f94485e96b723a50d01c2c4fd7871a4309594a22cf6bb3a4b99","canonical_digest":"86dd15f5479d6d3aa3701ab05d
+
+verdict: UNLABELLED DIGESTS REMAIN
+[d6-superseded exit 1]
+
+===== tree status after the run =====
+?? a0/verify/a1-delta/

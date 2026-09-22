@@ -1,0 +1,134 @@
+{
+  "before_revision": "7bf8a14b",
+  "current_evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+  "history": [
+    {
+      "all_labelled": true,
+      "digest": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+      "mentions": [
+        {
+          "file": "gates/DEVIATIONS.md",
+          "labelled": true,
+          "line": 187,
+          "text": "succeed. `evaluator_source_sha256` moved `08281d21\u2026 \u2192 4afff01f\u2026`, and because"
+        },
+        {
+          "file": "gates/DEVIATIONS.md",
+          "labelled": true,
+          "line": 301,
+          "text": "| `08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d` | `11f55bf0` | **history** |"
+        },
+        {
+          "file": "gates/README.md",
+          "labelled": true,
+          "line": 50,
+          "text": "*dependency* changed, never a result: `E*` was fixed (`08281d21\u2026 \u2192 4afff01f\u2026`,"
+        },
+        {
+          "file": "gates/README.md",
+          "labelled": true,
+          "line": 63,
+          "text": "| `E*` | `08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d` | `11f55bf0` | **history** \u2014 superseded |"
+        },
+        {
+          "file": "gates/restamp_evidence.py",
+          "labelled": true,
+          "line": 63,
+          "text": "(\"08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d\",  # history: E* at 11f55bf0"
+        }
+      ],
+      "revision": "E* at 11f55bf0, before the D-T1-10 launch fix"
+    },
+    {
+      "all_labelled": true,
+      "digest": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+      "mentions": [
+        {
+          "file": "gates/DEVIATIONS.md",
+          "labelled": true,
+          "line": 187,
+          "text": "succeed. `evaluator_source_sha256` moved `08281d21\u2026 \u2192 4afff01f\u2026`, and because"
+        },
+        {
+          "file": "gates/DEVIATIONS.md",
+          "labelled": true,
+          "line": 198,
+          "text": "`4afff01f\u2026` is itself history now \u2014 `baf13884` superseded it, see D-GATE-15."
+        },
+        {
+          "file": "gates/DEVIATIONS.md",
+          "labelled": true,
+          "line": 290,
+          "text": "## D-GATE-15 \u2014 re-freeze #3: `E*` moved again (`4afff01f\u2026 \u2192 dc6969ec\u2026`), and the stamps catch up"
+        },
+        {
+          "file": "gates/DEVIATIONS.md",
+          "labelled": true,
+          "line": 302,
+          "text": "| `4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a` | `6dd717c2` (D-T1-10) | **history** |"
+        },
+        {
+          "file": "gates/DEVIATIONS.md",
+          "labelled": true,
+          "line": 308,
+          "text": "named the superseded `4afff01f\u2026`, and `README.md` stated it in the present tense."
+        },
+        {
+          "file": "gates/README.md",
+          "labelled": true,
+          "line": 50,
+          "text": "*dependency* changed, never a result: `E*` was fixed (`08281d21\u2026 \u2192 4afff01f\u2026`,"
+        },
+        {
+          "file": "gates/README.md",
+          "labelled": true,
+          "line": 53,
+          "text": "owner (D-GATE-12), and `E*` moved again \u2014 `4afff01f\u2026 \u2192 dc6969ec\u2026`, whose history"
+        },
+        {
+          "file": "gates/README.md",
+          "labelled": true,
+          "line": 64,
+          "text": "| `E*` | `4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a` | `6dd717c2` | **history** \u2014 superseded |"
+        },
+        {
+          "file": "gates/restamp_evidence.py",
+          "labelled": true,
+          "line": 65,
+          "text": "(\"4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a\",  # history: E* at 6dd717c2"
+        }
+      ],
+      "revision": "E* at 6dd717c2, the D-T1-10 launch fix"
+    }
+  ],
+  "outcomes": {
+    "decision_leaves_moved": [],
+    "differing_leaf_names": {
+      "candidate_graph_bytes": 576,
+      "candidate_graph_keys": 576,
+      "candidate_graph_schema": 576,
+      "candidate_graph_sha256": 576,
+      "canonical_digest": 576,
+      "evaluator_source_sha256": 576
+    },
+    "records": 576,
+    "records_differing": 576
+  },
+  "rule": "a re-stamp is clean when every stored record names this E*, the only leaves that move are the stamps themselves, and every superseded digest still written down is labelled with the revision it belongs to",
+  "schema": "a0.maxcut.restamp_evidence/v1",
+  "stamps": {
+    "current": 924,
+    "files_with_a_stamp": 602,
+    "stale": [],
+    "stamped_records": 924
+  },
+  "verdict": "CLEAN",
+  "verdicts": {
+    "decision_leaves_moved": [],
+    "differing_leaf_names": {
+      "evaluator_source_sha256": 12
+    },
+    "records": 12,
+    "records_differing": 12
+  }
+}

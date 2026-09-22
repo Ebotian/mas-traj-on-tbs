@@ -1,0 +1,42 @@
+
+===== a1_verify =====
+[a1_verify exit 0]
+  "wiring_kapso.json",
+  "wiring_simpleloop.json"
+ ]
+}
+
+===== kapso_t1_verify =====
+[kapso_t1_verify exit 0]
+  "dryrun_t1.json",
+  "live_t1.json"
+ ]
+}
+
+===== restamp_evidence =====
+[restamp_evidence exit 0]
+history 4afff01f8a73… (E* at 6dd717c2, the D-T1-10 launch fix): 9 mention(s), 9 labelled
+outcomes: 576/576 differ; leaves moved {'candidate_graph_bytes': 576, 'candidate_graph_keys': 576, 'candidate_graph_schema': 576, 'candidate_graph_sha256': 576, 'canonical_digest': 576, 'evaluator_source_sha256': 576}; decision leaves 0
+verdicts: 12/12 differ; leaves moved {'evaluator_source_sha256': 12}; decision leaves 0
+re-stamp verdict: CLEAN
+
+===== conformance =====
+[conformance exit 0]
+  PASS  c_inflation_attempt
+  PASS  c_input_tampering_detected
+report           : /home/ebt/rsi-dev/a0/tasks/maxcut/conformance.report.json
+VERDICT: PASS
+
+===== calibration_verify =====
+[calibration_verify exit 0]
+PASS budget-loads         a0/a1/budget.Budget(T_wall_sec=1800.0, N_eval_max=725, CEq_max=1966519, P=1)
+PASS f-properties         V1–V7 hold · monotone+bounded+variance reported+total · A_kapso: margins 92.2/37.5 min · A_simpleloop: margins 37.5/73.3 min
+PASS rehearsal            both arms reached the harness through the closed topology, model calls skipped: 8 evaluations, 0 CEq
+verdict: pass
+
+===== artifacts rewritten by the entry points =====
+rewritten by an entry point, restored: a0/tasks/maxcut/conformance.report.json
+ a0/tasks/maxcut/conformance.report.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+git status after the restores:
+?? a0/verify/a1-delta/

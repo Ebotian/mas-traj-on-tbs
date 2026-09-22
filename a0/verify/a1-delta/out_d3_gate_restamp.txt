@@ -1,0 +1,38 @@
+== every stamped document, HEAD vs 7bf8a14b, leaf by leaf ==
+  outcomes: 576/576 differ; leaves moved {'candidate_graph_bytes': 576, 'candidate_graph_keys': 576, 'candidate_graph_schema': 576, 'candidate_graph_sha256': 576, 'canonical_digest': 576, 'evaluator_source_sha256': 576}; non-identity leaves 0
+  values: 14/14 differ; leaves moved {'candidate_graph_bytes': 336, 'candidate_graph_keys': 336, 'candidate_graph_schema': 336, 'candidate_graph_sha256': 336, 'canonical_digest': 336, 'evaluator_source_sha256': 336}; non-identity leaves 0
+  verdicts: 12/12 differ; leaves moved {'evaluator_source_sha256': 12}; non-identity leaves 0
+[ok ] no decision/input leaf moved in any stored Outcome
+[ok ] no decision/input leaf moved in any values/ document
+[ok ] no decision/input leaf moved in any verdict
+[ok ] the Outcomes' moved leaves are exactly the six identity fields  — ['candidate_graph_bytes', 'candidate_graph_keys', 'candidate_graph_schema', 'candidate_graph_sha256', 'canonical_digest', 'evaluator_source_sha256']
+[ok ] every verdict's moved leaf is the E* stamp alone  — ['evaluator_source_sha256']
+
+== the pre-registered thresholds, current vs the pre-restamp revision ==
+[ok ] gate_config.json is byte-identical to the pre-restamp revision
+[ok ] delta: overall mean >= 3/100 (0.03)  — {'numerator': 3, 'denominator': 100}
+[ok ] delta: per-family mean >= 2/100 (0.02) in >= 3 of 4 families  — {'numerator': 2, 'denominator': 100} 3/4
+[ok ] rho: global median >= 3/10 (0.30) and per-family median >= 3/10 in >= 3/4
+[ok ] saturation is a veto at headroom median >= 1/20 and T_i == b_i
+
+== each verdict: decision numbers before vs after ==
+  verdict.dev.json: NOT_ADMISSIBLE -> NOT_ADMISSIBLE; same decisions
+  verdict.dev.pc_exchange_k01.json: NOT_ADMISSIBLE -> NOT_ADMISSIBLE; same decisions
+  verdict.dev.pc_exchange_k02.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.dev.pc_exchange_k05.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.dev.pc_exchange_k10.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.dev.pc_exchange_k25.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.eval.json: NOT_ADMISSIBLE -> NOT_ADMISSIBLE; same decisions
+  verdict.eval.pc_exchange_k01.json: NOT_ADMISSIBLE -> NOT_ADMISSIBLE; same decisions
+  verdict.eval.pc_exchange_k02.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.eval.pc_exchange_k05.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.eval.pc_exchange_k10.json: ADMISSIBLE -> ADMISSIBLE; same decisions
+  verdict.eval.pc_exchange_k25.json: NOT_ADMISSIBLE -> NOT_ADMISSIBLE; same decisions
+[ok ] every verdict keeps its top-level decision fields
+[ok ] the dev gate verdict is still NOT_ADMISSIBLE  — NOT_ADMISSIBLE
+[ok ] the dev gate's failing gate is the rho gate, not the delta gate
+[ok ] the dev numbers still fail the pre-registered rho demand as measured
+[ok ] every verdict names the live E*
+[ok ] every stored Outcome names the live E*
+
+16/16 checks ok
