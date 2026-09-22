@@ -1,6 +1,8 @@
 {
-  "passed": 55,
-  "total": 55,
+  "passed": 65,
+  "total": 65,
+  "proxy_under_test": "/home/ebt/rsi-dev/a0/meter/meter_proxy.py",
+  "proxy_sha256": "0aa928bed0847e6cddba08e858016c3cbf1a9cd99ef688fccc532d5c7114115c",
   "checks": [
     {
       "name": "S1 http 200",
@@ -40,7 +42,7 @@
     {
       "name": "S2 content reached the client before usage existed",
       "ok": true,
-      "detail": "content at 0.047s, usage at 0.408s"
+      "detail": "content at 0.045s, usage at 0.407s"
     },
     {
       "name": "S2 client received the terminator after the row was durable",
@@ -80,7 +82,7 @@
     {
       "name": "S4 anthropic path routed",
       "ok": true,
-      "detail": "https://127.0.0.1:45909/anthropic/v1/messages"
+      "detail": "https://127.0.0.1:60165/anthropic/v1/messages"
     },
     {
       "name": "S5 usage merged from message_start + message_delta",
@@ -190,7 +192,7 @@
     {
       "name": "S11 reason says the stream was truncated before usage",
       "ok": true,
-      "detail": "reason='stream_truncated_before_usage:BrokenPipeError'"
+      "detail": "reason='stream_truncated_before_usage:IncompleteRead'"
     },
     {
       "name": "S11 the client never saw message_stop",
@@ -245,7 +247,7 @@
     {
       "name": "S15 both endpoint shapes are published",
       "ok": true,
-      "detail": "{\"anthropic_base_url\": \"http://127.0.0.1:58281\", \"arm_id\": \"A_base\", \"base_url\": \"http://127.0.0.1:58281/v1\", \"campaign_id\": \"C_0001\", \"token\": \"tok-C1\"}"
+      "detail": "{\"anthropic_base_url\": \"http://127.0.0.1:42315\", \"arm_id\": \"A_base\", \"base_url\": \"http://127.0.0.1:42315/v1\", \"campaign_id\": \"C_0001\", \"token\": \"tok-C1\"}"
     },
     {
       "name": "S16 start refused, non-zero exit",
@@ -276,6 +278,56 @@
       "name": "S17 no name outside the host was ever contacted",
       "ok": true,
       "detail": "no transport errors to foreign hosts"
+    },
+    {
+      "name": "S18a the upstream received a framing header naming the exact body length",
+      "ok": true,
+      "detail": "framing='content-length' declared=79 read=79 sent=79"
+    },
+    {
+      "name": "S18b the body bytes are byte-identical to the client's",
+      "ok": true,
+      "detail": "upstream sha256=d7de70f77055968920538880bd4606bfd22e37221940f3ac5693c264f3828f51 client sha256=d7de70f77055968920538880bd4606bfd22e37221940f3ac5693c264f3828f51"
+    },
+    {
+      "name": "S18c the upstream parsed the body (the old mock logged model=null here)",
+      "ok": true,
+      "detail": "json_ok=True model='deepseek-flash'"
+    },
+    {
+      "name": "S18d a chunked client body reaches the upstream framed and unchanged",
+      "ok": true,
+      "detail": "framing='chunked' complete=True read=82 sent=82 response=HTTP/1.1 200 OK"
+    },
+    {
+      "name": "S18e every body-bearing request in the whole run was framed, whole and parseable",
+      "ok": true,
+      "detail": "audited=22 offenders=[]"
+    },
+    {
+      "name": "S18f every forwarded request carried a credential",
+      "ok": true,
+      "detail": "audited=22"
+    },
+    {
+      "name": "S18g every ledger row written so far still re-derives, including the ones added here",
+      "ok": true,
+      "detail": "rows=26 bad=[]"
+    },
+    {
+      "name": "S19a an unframed body is refused by the proxy (400), not guessed at",
+      "ok": true,
+      "detail": "HTTP/1.1 400 Bad Request"
+    },
+    {
+      "name": "S19b the refusal is booked, unmetered, with the reason naming the framing gap",
+      "ok": true,
+      "detail": "reason='request_body_unframed' unmetered=True"
+    },
+    {
+      "name": "S19c nothing unframed ever reached the upstream",
+      "ok": true,
+      "detail": "upstream log lines 22 -> 22"
     }
   ]
 }

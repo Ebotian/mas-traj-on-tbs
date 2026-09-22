@@ -11,15 +11,27 @@ Nothing here talks to api.deepseek.com and nothing here costs money. What it *do
 * a stream cut before usage arrives is unmetered and says it was truncated;
 * a non-allowlisted destination is refused without any connection being attempted;
 * two campaigns running concurrently are attributed to their own ports and never to each other;
-* a ledger that cannot be written makes the call fail instead of producing an unmetered success.
+* a ledger that cannot be written makes the call fail instead of producing an unmetered success;
+* **the upstream leg is framed correctly**: the upstream's own log is read back and asserted to
+  contain a framing header whose declared length equals the number of body bytes it received,
+  whose sha256 equals the client's body, and which it could parse -- plus a case (an unframed
+  client body) that the previous implementation forwarded unframed.
 
-Usage: `python3 selftest.py --out evidence [--keep]`
-Exit code 0 iff every check passed.
+The last group exists because a mock that answers from its own defaults can hide a mangled
+request: the checks above it assert on responses, and a request with no framing header still drew
+a `200` and a `usage` block from `fake_upstream.py` while that file read *zero* body bytes. Reading
+the upstream's raw request bytes is what makes a request-side claim falsifiable.
+
+Usage: `python3 selftest.py --out evidence [--keep] [--proxy PATH]`
+Exit code 0 iff every check passed. `--proxy` points the whole run at another copy of
+`meter_proxy.py`; pointing it at the pre-fix revision is how the new checks are shown to fail on
+the old code.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import http.client
 import json
 import os
@@ -33,7 +45,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
-from meter_core import ceq, read_ledger, verify_row  # noqa: E402
+from meter_core import ROW_KEY_ORDER, ceq, read_ledger, verify_row  # noqa: E402
 
 PROXY = os.path.join(HERE, "meter_proxy.py")
 FAKE = os.path.join(HERE, "fake_upstream.py")
@@ -182,7 +194,11 @@ def make_certs(work: str) -> tuple[str, str, str]:
 
 def start(cmd: list[str], log_path: str) -> subprocess.Popen:
     handle = open(log_path, "ab")
-    proc = subprocess.Popen(cmd, stdout=handle, stderr=subprocess.STDOUT, cwd=HERE)
+    # `--proxy` may point at a copy outside this directory (that is how the pre-fix revision is
+    # run), so `meter_core` has to be importable from where the proxy is not.
+    env = dict(os.environ)
+    env["PYTHONPATH"] = HERE + os.pathsep + env.get("PYTHONPATH", "")
+    proc = subprocess.Popen(cmd, stdout=handle, stderr=subprocess.STDOUT, cwd=HERE, env=env)
     proc._log_handle = handle  # type: ignore[attr-defined]
     return proc
 
@@ -211,7 +227,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", default=os.path.join(HERE, "evidence"))
     parser.add_argument("--work", default=os.path.join(HERE, ".run"))
     parser.add_argument("--keep", action="store_true", help="keep the scratch run directory")
+    parser.add_argument("--proxy", default=PROXY,
+                        help="meter_proxy.py under test (default: the one in this directory)")
     args = parser.parse_args(argv)
+    proxy_script = os.path.abspath(args.proxy)
 
     work = os.path.abspath(args.work)
     out = os.path.abspath(args.out)
@@ -251,7 +270,7 @@ def main(argv: list[str] | None = None) -> int:
         stop(upstream)
         return 1
 
-    proxy = start([sys.executable, PROXY, "--registry", registry,
+    proxy = start([sys.executable, proxy_script, "--registry", registry,
                    "--ledger", ledger, "--events", events,
                    "--upstream-base", "https://127.0.0.1:%d" % upstream_port,
                    "--allowlist", "127.0.0.1,api.deepseek.com",
@@ -269,15 +288,19 @@ def main(argv: list[str] | None = None) -> int:
 
     H1 = {"X-Fake-Scenario": "chat-usage-ns", "X-A0-Meter-Token": "tok-C1",
           "Authorization": "Bearer sk-fake-not-a-real-key"}
-    H1S = {"X-Fake-Scenario": "chat-usage-stream", "X-A0-Meter-Token": "tok-C1"}
-    H1N = {"X-Fake-Scenario": "chat-nousage", "X-A0-Meter-Token": "tok-C1"}
-    H1A = {"X-Fake-Scenario": "anthropic-cache", "X-A0-Meter-Token": "tok-C1"}
-    H1AS = {"X-Fake-Scenario": "anthropic-stream", "X-A0-Meter-Token": "tok-C1"}
-    H1AT = {"X-Fake-Scenario": "anthropic-truncated", "X-A0-Meter-Token": "tok-C1"}
-    H1R = {"X-Fake-Scenario": "responses-stream", "X-A0-Meter-Token": "tok-C1"}
-    H1G = {"X-Fake-Scenario": "generic-nosplit", "X-A0-Meter-Token": "tok-C1"}
-    H1E = {"X-Fake-Scenario": "error-401", "X-A0-Meter-Token": "tok-C1"}
-    H2 = {"X-Fake-Scenario": "chat-usage-ns", "X-A0-Meter-Token": "tok-C2"}
+    # Every client below carries a credential: the fake upstream is wire-shaped and answers a
+    # body-bearing request with no `Authorization`/`x-api-key` the way the real endpoint does
+    # (401), so a test that forgot the key would be testing the 401 path by accident.
+    AUTH = {"Authorization": "Bearer sk-fake-not-a-real-key"}
+    H1S = {"X-Fake-Scenario": "chat-usage-stream", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1N = {"X-Fake-Scenario": "chat-nousage", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1A = {"X-Fake-Scenario": "anthropic-cache", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1AS = {"X-Fake-Scenario": "anthropic-stream", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1AT = {"X-Fake-Scenario": "anthropic-truncated", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1R = {"X-Fake-Scenario": "responses-stream", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1G = {"X-Fake-Scenario": "generic-nosplit", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1E = {"X-Fake-Scenario": "error-401", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H2 = {"X-Fake-Scenario": "chat-usage-ns", "X-A0-Meter-Token": "tok-C2", **AUTH}
 
     def rows() -> list[dict]:
         return read_ledger(ledger)
@@ -310,6 +333,7 @@ def main(argv: list[str] | None = None) -> int:
     payload = json.dumps({"model": "deepseek-flash", "stream": True, "messages": []}).encode()
     sock.sendall(b"POST /v1/chat/completions HTTP/1.1\r\nHost: 127.0.0.1\r\n"
                  b"Content-Type: application/json\r\n"
+                 b"Authorization: Bearer sk-fake-not-a-real-key\r\n"
                  b"X-Fake-Scenario: chat-usage-stream\r\nX-A0-Meter-Token: tok-C1\r\n"
                  b"Content-Length: " + str(len(payload)).encode() + b"\r\n\r\n" + payload)
     stream = b""
@@ -553,7 +577,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print("\n=== S16 the proxy refuses to start when its upstream is not allowlisted ===")
     bad = subprocess.run(
-        [sys.executable, PROXY, "--campaign-id", "C_X", "--arm-id", "A_X",
+        [sys.executable, proxy_script, "--campaign-id", "C_X", "--arm-id", "A_X",
          "--port", str(free_port()), "--ledger", os.path.join(work, "never.jsonl"),
          "--upstream-base", "https://api.deepseek.com",
          "--allowlist", "openrouter.ai"],
@@ -583,6 +607,98 @@ def main(argv: list[str] | None = None) -> int:
           "upstream error" not in proxy_console.replace(
               "upstream error peer=127.0.0.1", "x"),
           "no transport errors to foreign hosts")
+
+    print("\n=== S18 the upstream leg: framing and body identity, read from the upstream's own log ===")
+    # The lesson of the framing defect: assertions that look only at the *response* cannot see a
+    # request that arrived mangled, because the mock answered from its own defaults either way.
+    # These checks read the bytes the upstream recorded, so they fail if the request is unframed,
+    # truncated, or not the body the client sent.
+    def upstream_records() -> list[dict]:
+        with open(upstream_log, encoding="utf-8") as handle:
+            return [json.loads(line) for line in handle if line.strip()]
+
+    payload = {"model": "deepseek-flash", "messages": [], "s18_marker": "framing-check-0001"}
+    payload_bytes = json.dumps(payload).encode()
+    status, _, _ = post(p1, "/v1/chat/completions", payload, H1)
+    last_rec = upstream_records()[-1]
+    check("S18a the upstream received a framing header naming the exact body length",
+          status == 200 and last_rec["framing"] == "content-length"
+          and last_rec["declared_length"] == len(payload_bytes)
+          and last_rec["body_bytes"] == len(payload_bytes),
+          "framing=%r declared=%r read=%d sent=%d"
+          % (last_rec["framing"], last_rec["declared_length"], last_rec["body_bytes"],
+             len(payload_bytes)))
+    check("S18b the body bytes are byte-identical to the client's",
+          last_rec["body_sha256"] == hashlib.sha256(payload_bytes).hexdigest(),
+          "upstream sha256=%s client sha256=%s"
+          % (last_rec["body_sha256"], hashlib.sha256(payload_bytes).hexdigest()))
+    check("S18c the upstream parsed the body (the old mock logged model=null here)",
+          last_rec["body_json_ok"] is True and last_rec["model"] == "deepseek-flash",
+          "json_ok=%r model=%r" % (last_rec["body_json_ok"], last_rec["model"]))
+
+    # A chunked client body must be re-framed upstream, not forwarded as stray bytes.
+    chunked_payload = {"model": "deepseek-flash", "messages": [],
+                       "s18_marker": "framing-check-chunked"}
+    chunked_bytes = json.dumps(chunked_payload).encode()
+    half = len(chunked_bytes) // 2
+    chunked_wire = (b"%x\r\n" % half + chunked_bytes[:half] + b"\r\n"
+                    + b"%x\r\n" % (len(chunked_bytes) - half) + chunked_bytes[half:] + b"\r\n"
+                    + b"0\r\n\r\n")
+    chunked_response = request_raw(
+        p1, b"POST /v1/chat/completions HTTP/1.1\r\nHost: 127.0.0.1\r\n"
+            b"Content-Type: application/json\r\nAuthorization: Bearer sk-fake-not-a-real-key\r\n"
+            b"X-A0-Meter-Token: tok-C1\r\nTransfer-Encoding: chunked\r\n\r\n" + chunked_wire)
+    chunk_rec = upstream_records()[-1]
+    check("S18d a chunked client body reaches the upstream framed and unchanged",
+          b"200 OK" in chunked_response.split(b"\r\n")[0]
+          and chunk_rec["framing"] == "chunked" and chunk_rec["chunked_complete"] is True
+          and chunk_rec["body_bytes"] == len(chunked_bytes)
+          and chunk_rec["body_sha256"] == hashlib.sha256(chunked_bytes).hexdigest(),
+          "framing=%r complete=%r read=%d sent=%d response=%s"
+          % (chunk_rec["framing"], chunk_rec["chunked_complete"], chunk_rec["body_bytes"],
+             len(chunked_bytes), chunked_response.split(b"\r\n")[0].decode()))
+
+    audit = upstream_records()
+    body_requests = [r for r in audit if r["method"] in ("POST", "PUT", "PATCH")]
+    offenders = [r for r in body_requests
+                 if r["framing"] not in ("content-length", "chunked")
+                 or r["framing_error"] is not None
+                 or r["body_bytes"] == 0
+                 or r["body_json_ok"] is not True
+                 or (r["framing"] == "content-length" and r["declared_length"] != r["body_bytes"])]
+    check("S18e every body-bearing request in the whole run was framed, whole and parseable",
+          not offenders and len(body_requests) >= 15,
+          "audited=%d offenders=%s" % (len(body_requests),
+                                       [(r["path"], r["framing"], r["body_bytes"])
+                                        for r in offenders[:3]]))
+    check("S18f every forwarded request carried a credential",
+          all(r["authorization_present"] or r["x_api_key_present"] for r in body_requests),
+          "audited=%d" % len(body_requests))
+    final_rows = rows()
+    final_bad = [(index, detail) for index, row in enumerate(final_rows)
+                 for good, detail in [verify_row(row)] if not good]
+    check("S18g every ledger row written so far still re-derives, including the ones added here",
+          not final_bad and all(list(r.keys()) == list(ROW_KEY_ORDER) for r in final_rows),
+          "rows=%d bad=%s" % (len(final_rows), final_bad[:2]))
+
+    print("\n=== S19 a body the proxy cannot delimit is refused, never forwarded ===")
+    before_lines = len(upstream_records())
+    unframed = (b"POST /v1/chat/completions HTTP/1.1\r\nHost: 127.0.0.1\r\n"
+                b"Content-Type: application/json\r\n"
+                b"Authorization: Bearer sk-fake-not-a-real-key\r\n"
+                b"X-A0-Meter-Token: tok-C1\r\n\r\n"
+                + json.dumps({"model": "deepseek-flash", "messages": []}).encode())
+    raw_unframed = request_raw(p1, unframed)
+    row = last()
+    check("S19a an unframed body is refused by the proxy (400), not guessed at",
+          b"400" in raw_unframed.split(b"\r\n")[0], raw_unframed.split(b"\r\n")[0].decode())
+    check("S19b the refusal is booked, unmetered, with the reason naming the framing gap",
+          row["unmetered"] is True and row["ceq"] is None
+          and row["reason"] == "request_body_unframed",
+          "reason=%r unmetered=%r" % (row["reason"], row["unmetered"]))
+    check("S19c nothing unframed ever reached the upstream",
+          len(upstream_records()) == before_lines,
+          "upstream log lines %d -> %d" % (before_lines, len(upstream_records())))
 
     stop(proxy)
     stop(upstream)
@@ -617,8 +733,10 @@ def main(argv: list[str] | None = None) -> int:
     with open(os.path.join(out, "highlights.json"), "w", encoding="utf-8") as handle:
         json.dump(highlights, handle, indent=2)
         handle.write("\n")
+    upstream_rows = upstream_records()
     with open(os.path.join(out, "checks.json"), "w", encoding="utf-8") as handle:
-        json.dump({"passed": passed, "total": total,
+        json.dump({"passed": passed, "total": total, "proxy_under_test": proxy_script,
+                   "proxy_sha256": hashlib.sha256(open(proxy_script, "rb").read()).hexdigest(),
                    "checks": [{"name": n, "ok": o, "detail": d} for n, o, d in CHECKS]},
                   handle, indent=2)
         handle.write("\n")
@@ -626,6 +744,11 @@ def main(argv: list[str] | None = None) -> int:
     report = []
     report.append("a0/meter selftest -- %d/%d checks passed" % (passed, total))
     report.append("all traffic went to a local fake upstream; no model was called; no spend")
+    report.append("proxy under test: %s (sha256 %s)"
+                  % (proxy_script, hashlib.sha256(open(proxy_script, "rb").read()).hexdigest()))
+    report.append("upstream requests recorded: %d, of which %d carried a body"
+                  % (len(upstream_rows),
+                     len([r for r in upstream_rows if r["method"] in ("POST", "PUT", "PATCH")])))
     report.append("")
     for name, ok, detail in CHECKS:
         report.append("%-4s %s%s" % ("PASS" if ok else "FAIL", name,

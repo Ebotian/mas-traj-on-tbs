@@ -7,6 +7,7 @@ local fake upstream (no model, no spend). This module runs it and asserts every 
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import subprocess
@@ -43,7 +44,29 @@ def test_every_named_check_passed(selftest_run):
     assert payload is not None, "selftest wrote no checks.json"
     failed = [c for c in payload["checks"] if not c["ok"]]
     assert not failed, failed
-    assert payload["passed"] == payload["total"] >= 45
+    assert payload["passed"] == payload["total"] >= 65
+
+
+def test_the_request_framing_checks_are_present_and_not_vacuous(selftest_run):
+    """The framing checks are the ones that must not be droppable.
+
+    They are named here so a future edit cannot quietly delete the only request-side assertions in
+    the suite -- the same blindness that let an unframed body pass 55/55 checks.
+    """
+    payload = selftest_run["checks"]
+    names = {c["name"]: c for c in payload["checks"]}
+    for name in [n for n in names if n.startswith(("S18", "S19"))]:
+        assert names[name]["ok"], names[name]
+    expected_prefixes = ["S18a", "S18b", "S18c", "S18d", "S18e", "S18f", "S18g",
+                         "S19a", "S19b", "S19c"]
+    for prefix in expected_prefixes:
+        assert any(name.startswith(prefix) for name in names), \
+            "selftest lost the %s framing check" % prefix
+    # The evidence must say which revision it tested.
+    meter_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    with open(os.path.join(meter_dir, "meter_proxy.py"), "rb") as handle:
+        digest = hashlib.sha256(handle.read()).hexdigest()
+    assert payload["proxy_sha256"] == digest, "checks.json does not describe this proxy"
 
 
 def test_ledger_verifier_agrees_on_the_real_ledger(selftest_run):

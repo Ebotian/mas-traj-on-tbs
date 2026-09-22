@@ -1,5 +1,7 @@
-a0/meter selftest -- 55/55 checks passed
+a0/meter selftest -- 65/65 checks passed
 all traffic went to a local fake upstream; no model was called; no spend
+proxy under test: /home/ebt/rsi-dev/a0/meter/meter_proxy.py (sha256 0aa928bed0847e6cddba08e858016c3cbf1a9cd99ef688fccc532d5c7114115c)
+upstream requests recorded: 22, of which 22 carried a body
 
 PASS S1 http 200 -- status=200
 PASS S1 row metered -- ceq=11513 expected=11513
@@ -8,7 +10,7 @@ PASS S1 attribution -- C_0001/A_base
 PASS S1 provider identity echoed -- model=deepseek-flash id=fake-chatcmpl-0001
 PASS S2 row metered from late usage chunk -- ceq=11444 expected=11444
 PASS S2 row records stream=true -- stream=True
-PASS S2 content reached the client before usage existed -- content at 0.047s, usage at 0.408s
+PASS S2 content reached the client before usage existed -- content at 0.045s, usage at 0.407s
 PASS S2 client received the terminator after the row was durable -- events=6 final_chunk=True
 PASS S3 http 200 but unmetered -- status=200 unmetered=True
 PASS S3 ceq is null, not zero -- ceq=None
@@ -16,7 +18,7 @@ PASS S3 usage is null -- usage=None
 PASS S3 reason names the gap -- reason='no_usage_field_in_response'
 PASS S4 metered with cache-read as hit -- {"prompt_cache_hit_tokens": 2048, "prompt_cache_miss_tokens": 184, "completion_tokens": 55}
 PASS S4 ceq matches formula -- ceq=444 expected=444
-PASS S4 anthropic path routed -- https://127.0.0.1:45909/anthropic/v1/messages
+PASS S4 anthropic path routed -- https://127.0.0.1:60165/anthropic/v1/messages
 PASS S5 usage merged from message_start + message_delta -- {"prompt_cache_hit_tokens": 3072, "prompt_cache_miss_tokens": 96, "completion_tokens": 73}
 PASS S5 ceq matches formula -- ceq=449 expected=449
 PASS S5 message_stop reached the client -- last='message_stop' events=7
@@ -39,7 +41,7 @@ PASS S10 no success reached the client -- a0-meter: ledger not writable; call re
 
 PASS S10 the failure is recorded in the diagnostic sidecar -- sidecar entries=23
 PASS S11 unmetered -- unmetered=True ceq=None
-PASS S11 reason says the stream was truncated before usage -- reason='stream_truncated_before_usage:BrokenPipeError'
+PASS S11 reason says the stream was truncated before usage -- reason='stream_truncated_before_usage:IncompleteRead'
 PASS S11 the client never saw message_stop -- events=5
 PASS S12 every row passes independent re-derivation
 PASS S12 every row carries exactly the frozen key set -- rows=23
@@ -50,32 +52,42 @@ PASS S14 the authorization header reached the upstream (proxy is a pass-through)
 PASS S15 meter.mode is the plaintext self-terminating mode -- plaintext_base_url
 PASS S15 allowlist is declared -- ['127.0.0.1', 'api.deepseek.com']
 PASS S15 ceq formula is quoted verbatim from the interface -- ceq = miss + floor(hit*2/100) + 4*completion
-PASS S15 both endpoint shapes are published -- {"anthropic_base_url": "http://127.0.0.1:58281", "arm_id": "A_base", "base_url": "http://127.0.0.1:58281/v1", "campaign_id": "C_0001", "token": "tok-C1"}
+PASS S15 both endpoint shapes are published -- {"anthropic_base_url": "http://127.0.0.1:42315", "arm_id": "A_base", "base_url": "http://127.0.0.1:42315/v1", "campaign_id": "C_0001", "token": "tok-C1"}
 PASS S16 start refused, non-zero exit -- rc=1
 PASS S16 the refusal names the offending host -- refusing to start: upstream host 'api.deepseek.com' is not in --allowlist ['openrouter.ai']
 PASS S16 no ledger was created for the refused proxy
 PASS S17 every forwarded call went to the local fake upstream -- rows=19 offenders=[]
 PASS S17 upstream TLS was verified against a real CA, not disabled -- no insecure-upstream warning in the proxy console
 PASS S17 no name outside the host was ever contacted -- no transport errors to foreign hosts
+PASS S18a the upstream received a framing header naming the exact body length -- framing='content-length' declared=79 read=79 sent=79
+PASS S18b the body bytes are byte-identical to the client's -- upstream sha256=d7de70f77055968920538880bd4606bfd22e37221940f3ac5693c264f3828f51 client sha256=d7de70f77055968920538880bd4606bfd22e37221940f3ac5693c264f3828f51
+PASS S18c the upstream parsed the body (the old mock logged model=null here) -- json_ok=True model='deepseek-flash'
+PASS S18d a chunked client body reaches the upstream framed and unchanged -- framing='chunked' complete=True read=82 sent=82 response=HTTP/1.1 200 OK
+PASS S18e every body-bearing request in the whole run was framed, whole and parseable -- audited=22 offenders=[]
+PASS S18f every forwarded request carried a credential -- audited=22
+PASS S18g every ledger row written so far still re-derives, including the ones added here -- rows=26 bad=[]
+PASS S19a an unframed body is refused by the proxy (400), not guessed at -- HTTP/1.1 400 Bad Request
+PASS S19b the refusal is booked, unmetered, with the reason naming the framing gap -- reason='request_body_unframed' unmetered=True
+PASS S19c nothing unframed ever reached the upstream -- upstream log lines 22 -> 22
 
 ledger rows: 23 (metered 17, unmetered 6)
 
 ledger excerpts (verbatim rows):
   S1_chat_completions_with_usage:
-    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T15:06:36.781950+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:45909/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-chatcmpl-0001", "stream": false, "usage": {"prompt_cache_hit_tokens": 1280, "prompt_cache_miss_tokens": 10240, "completion_tokens": 312}, "ceq": 11513, "unmetered": false, "reason": null}
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T17:32:36.201082+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:60165/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-chatcmpl-0001", "stream": false, "usage": {"prompt_cache_hit_tokens": 1280, "prompt_cache_miss_tokens": 10240, "completion_tokens": 312}, "ceq": 11513, "unmetered": false, "reason": null}
   S2_streamed_usage_arrives_late:
-    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T15:06:37.190738+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:45909/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-stream-0001", "stream": true, "usage": {"prompt_cache_hit_tokens": 1024, "prompt_cache_miss_tokens": 10240, "completion_tokens": 296}, "ceq": 11444, "unmetered": false, "reason": null}
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T17:32:36.608566+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:60165/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-stream-0001", "stream": true, "usage": {"prompt_cache_hit_tokens": 1024, "prompt_cache_miss_tokens": 10240, "completion_tokens": 296}, "ceq": 11444, "unmetered": false, "reason": null}
   S3_usage_missing:
-    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T15:06:37.197516+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:45909/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-chatcmpl-0002", "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "no_usage_field_in_response"}
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T17:32:36.616586+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:60165/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-chatcmpl-0002", "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "no_usage_field_in_response"}
   S4_anthropic_cache_read:
-    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T15:06:37.203576+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:45909/anthropic/v1/messages", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-msg-0001", "stream": false, "usage": {"prompt_cache_hit_tokens": 2048, "prompt_cache_miss_tokens": 184, "completion_tokens": 55}, "ceq": 444, "unmetered": false, "reason": null}
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T17:32:36.623477+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:60165/anthropic/v1/messages", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-msg-0001", "stream": false, "usage": {"prompt_cache_hit_tokens": 2048, "prompt_cache_miss_tokens": 184, "completion_tokens": 55}, "ceq": 444, "unmetered": false, "reason": null}
   S5_anthropic_streamed:
-    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T15:06:37.209537+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:45909/anthropic/v1/messages", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-msg-stream-0001", "stream": true, "usage": {"prompt_cache_hit_tokens": 3072, "prompt_cache_miss_tokens": 96, "completion_tokens": 73}, "ceq": 449, "unmetered": false, "reason": null}
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T17:32:36.631938+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:60165/anthropic/v1/messages", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-msg-stream-0001", "stream": true, "usage": {"prompt_cache_hit_tokens": 3072, "prompt_cache_miss_tokens": 96, "completion_tokens": 73}, "ceq": 449, "unmetered": false, "reason": null}
   S6_responses_streamed:
-    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T15:06:37.216654+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:45909/v1/responses", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-resp-stream-0001", "stream": true, "usage": {"prompt_cache_hit_tokens": 512, "prompt_cache_miss_tokens": 1536, "completion_tokens": 128}, "ceq": 2058, "unmetered": false, "reason": null}
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T17:32:36.637709+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:60165/v1/responses", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-resp-stream-0001", "stream": true, "usage": {"prompt_cache_hit_tokens": 512, "prompt_cache_miss_tokens": 1536, "completion_tokens": 128}, "ceq": 2058, "unmetered": false, "reason": null}
   S7a_connect_refused:
-    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T15:06:37.218094+08:00", "provider": "deepseek", "endpoint": "example.com:443", "model_requested": null, "model_reported": null, "provider_request_id": null, "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "connect_not_supported"}
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T17:32:36.642287+08:00", "provider": "deepseek", "endpoint": "example.com:443", "model_requested": null, "model_reported": null, "provider_request_id": null, "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "connect_not_supported"}
   S7b_non_allowlisted_host_refused:
-    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T15:06:37.220290+08:00", "provider": "deepseek", "endpoint": "http://example.com/", "model_requested": null, "model_reported": null, "provider_request_id": null, "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "non_allowlisted_host:example.com"}
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T17:32:36.643282+08:00", "provider": "deepseek", "endpoint": "http://example.com/", "model_requested": null, "model_reported": null, "provider_request_id": null, "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "non_allowlisted_host:example.com"}
   S11_stream_truncated_before_usage:
-    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T15:06:37.288183+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:45909/anthropic/v1/messages", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-msg-stream-0001", "stream": true, "usage": null, "ceq": null, "unmetered": true, "reason": "stream_truncated_before_usage:BrokenPipeError"}
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T17:32:36.712049+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:60165/anthropic/v1/messages", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "fake-msg-stream-0001", "stream": true, "usage": null, "ceq": null, "unmetered": true, "reason": "stream_truncated_before_usage:IncompleteRead"}

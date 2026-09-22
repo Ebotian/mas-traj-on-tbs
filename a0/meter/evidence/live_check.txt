@@ -1,0 +1,36 @@
+a0/meter live check -- calls to https://api.deepseek.com through the metering proxy
+model=deepseek-flash max_tokens=4  key: read from $DEEPSEEK_API_KEY, never printed or stored
+
+GET /v1/models (no body, no framing header)  [unmetered-ok]
+  client saw: HTTP 200 OK in 0.54s
+  response body (first 200 bytes): {"object":"list","data":[{"id":"deepseek-flash","object":"model","owned_by":"deepseek"},{"id":"deepseek-v4-pro","object":"model","owned_by":"deepseek"}]}
+
+POST /v1/chat/completions (Content-Length)  [must be metered]
+  client saw: HTTP 200 OK in 0.73s
+  response body (first 200 bytes): {"id":"a0169d99-a999-41fb-9243-5b02516dcb71","object":"chat.completion","created":1790069501,"model":"deepseek-flash","choices":[{"index":0,"message":{"role":"assistant","content":"","reasoning_conten
+
+POST /v1/chat/completions (Transfer-Encoding: chunked)  [must be metered]
+  client saw: HTTP 200 HTTP/1.1 200 OK in 0.68s
+  response body (first 200 bytes): {"id":"f0eb8d27-f598-4c04-be32-3ef9a9a3468d","object":"chat.completion","created":1790069502,"model":"deepseek-flash","choices":[{"index":0,"message":{"role":"assistant","content":"","reasoning_conten
+
+ledger rows: 3
+  {"schema": "a0.meter.call/v1", "campaign_id": "live_check", "arm_id": "A_live", "ts": "2026-09-22T17:31:41.538669+08:00", "provider": "deepseek", "endpoint": "https://api.deepseek.com/v1/models", "model_requested": null, "model_reported": null, "provider_request_id": null, "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "no_usage_field_in_response"}
+  {"schema": "a0.meter.call/v1", "campaign_id": "live_check", "arm_id": "A_live", "ts": "2026-09-22T17:31:42.272650+08:00", "provider": "deepseek", "endpoint": "https://api.deepseek.com/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "a0169d99-a999-41fb-9243-5b02516dcb71", "stream": false, "usage": {"prompt_cache_hit_tokens": 0, "prompt_cache_miss_tokens": 37, "completion_tokens": 4}, "ceq": 53, "unmetered": false, "reason": null}
+  {"schema": "a0.meter.call/v1", "campaign_id": "live_check", "arm_id": "A_live", "ts": "2026-09-22T17:31:42.954707+08:00", "provider": "deepseek", "endpoint": "https://api.deepseek.com/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": "deepseek-flash", "provider_request_id": "f0eb8d27-f598-4c04-be32-3ef9a9a3468d", "stream": false, "usage": {"prompt_cache_hit_tokens": 0, "prompt_cache_miss_tokens": 37, "completion_tokens": 4}, "ceq": 53, "unmetered": false, "reason": null}
+
+verify_ledger.py exit=0
+{
+  "ledger": "/tmp/live_check2/live_ledger.jsonl",
+  "rows": 3,
+  "metered": 2,
+  "unmetered": 1,
+  "ceq_total": 106,
+  "ceq_per_campaign_arm": {
+    "live_check/A_live": 106
+  },
+  "failures": [],
+  "formula": "ceq = miss + floor(hit*2/100) + 4*completion"
+}
+
+VERDICT: 2 live model call(s) metered with a real ceq, ledger re-derives
+key absent from every artifact: True

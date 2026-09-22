@@ -1,0 +1,93 @@
+{
+  "label": "after",
+  "proxy": "/home/ebt/rsi-dev/a0/meter/meter_proxy.py",
+  "proxy_sha256": "0aa928bed0847e6cddba08e858016c3cbf1a9cd99ef688fccc532d5c7114115c",
+  "verdicts": [
+    {
+      "shape": "A: client uses Content-Length",
+      "reached_upstream": true,
+      "framing": "content-length",
+      "framing_header_present": true,
+      "declared_length_matches_body": true,
+      "body_identical_to_client": true,
+      "upstream_status": "HTTP/1.1 200 OK"
+    },
+    {
+      "shape": "B: client uses Transfer-Encoding: chunked",
+      "reached_upstream": true,
+      "framing": "chunked",
+      "framing_header_present": true,
+      "declared_length_matches_body": true,
+      "body_identical_to_client": true,
+      "upstream_status": "HTTP/1.1 200 OK"
+    },
+    {
+      "shape": "C: client sends an unframed body (illegal, but the old proxy emitted one)",
+      "reached_upstream": false,
+      "framing": null,
+      "framing_header_present": null,
+      "declared_length_matches_body": null,
+      "body_identical_to_client": null,
+      "upstream_status": "HTTP/1.1 400 Bad Request"
+    }
+  ],
+  "ok": true,
+  "ledger_rows": [
+    {
+      "schema": "a0.meter.call/v1",
+      "campaign_id": "C_tap",
+      "arm_id": "A_tap",
+      "ts": "2026-09-22T17:32:41.052942+08:00",
+      "provider": "deepseek",
+      "endpoint": "https://127.0.0.1:42933/v1/chat/completions",
+      "model_requested": "deepseek-flash",
+      "model_reported": "deepseek-flash",
+      "provider_request_id": "tap-0001",
+      "stream": false,
+      "usage": {
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4096,
+        "completion_tokens": 8
+      },
+      "ceq": 4128,
+      "unmetered": false,
+      "reason": null
+    },
+    {
+      "schema": "a0.meter.call/v1",
+      "campaign_id": "C_tap",
+      "arm_id": "A_tap",
+      "ts": "2026-09-22T17:32:41.459583+08:00",
+      "provider": "deepseek",
+      "endpoint": "https://127.0.0.1:42933/v1/chat/completions",
+      "model_requested": "deepseek-flash",
+      "model_reported": "deepseek-flash",
+      "provider_request_id": "tap-0001",
+      "stream": false,
+      "usage": {
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4096,
+        "completion_tokens": 8
+      },
+      "ceq": 4128,
+      "unmetered": false,
+      "reason": null
+    },
+    {
+      "schema": "a0.meter.call/v1",
+      "campaign_id": "C_tap",
+      "arm_id": "A_tap",
+      "ts": "2026-09-22T17:32:41.862209+08:00",
+      "provider": "deepseek",
+      "endpoint": "http://127.0.0.1:37155/v1/chat/completions",
+      "model_requested": null,
+      "model_reported": null,
+      "provider_request_id": null,
+      "stream": false,
+      "usage": null,
+      "ceq": null,
+      "unmetered": true,
+      "reason": "request_body_unframed"
+    }
+  ]
+}

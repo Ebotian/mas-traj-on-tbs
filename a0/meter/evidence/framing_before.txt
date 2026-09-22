@@ -1,0 +1,74 @@
+a0/meter framing proof -- label=before proxy=/tmp/a0-old/meter_proxy.py (sha256 48c7129b17e390ab9e802515ab725ed3a42d80c675c8ce20a6acdd204ccc8325) upstream=https://127.0.0.1:40589
+tap: raw socket capture of the bytes the upstream actually received
+
+=== A: client uses Content-Length ===
+  client sent 98 body bytes
+  proxy answered the client: HTTP/1.1 400 Bad Request
+  request-line: POST /v1/chat/completions HTTP/1.1
+  framing: none
+      Content-Length header: None
+      Transfer-Encoding header: None
+      body bytes actually received: 98
+      body sha256: f85ce7ba7def0183d8a3095a88e6a9d8a6dd25eaeda957c8e3cfd8e353ca05e3
+      note: unframed:98 stray bytes after an inert idle window
+  --- raw bytes on the wire (head verbatim) ---
+      POST /v1/chat/completions HTTP/1.1
+      Content-Type: application/json
+      Authorization: Bearer tap-not-a-real-key
+      X-A0-Meter-Token: tok-tap
+      Host: 127.0.0.1:40589
+      Accept-Encoding: identity
+  --- body bytes (98) ---
+      {"model": "deepseek-flash", "messages": [{"role": "user", "content": "framing"}], "max_tokens": 8}
+
+=== B: client uses Transfer-Encoding: chunked ===
+  client sent 98 body bytes
+  proxy answered the client: HTTP/1.1 400 Bad Request
+  request-line: POST /v1/chat/completions HTTP/1.1
+  framing: none
+      Content-Length header: None
+      Transfer-Encoding header: None
+      body bytes actually received: 98
+      body sha256: f85ce7ba7def0183d8a3095a88e6a9d8a6dd25eaeda957c8e3cfd8e353ca05e3
+      note: unframed:98 stray bytes after an inert idle window
+  --- raw bytes on the wire (head verbatim) ---
+      POST /v1/chat/completions HTTP/1.1
+      Content-Type: application/json
+      Authorization: Bearer tap-not-a-real-key
+      X-A0-Meter-Token: tok-tap
+      Host: 127.0.0.1:40589
+      Accept-Encoding: identity
+  --- body bytes (98) ---
+      {"model": "deepseek-flash", "messages": [{"role": "user", "content": "framing"}], "max_tokens": 8}
+
+=== C: client sends an unframed body (illegal, but the old proxy emitted one) ===
+  client sent 98 body bytes
+  proxy answered the client: HTTP/1.1 400 Bad Request
+  request-line: POST /v1/chat/completions HTTP/1.1
+  framing: none
+      Content-Length header: None
+      Transfer-Encoding header: None
+      body bytes actually received: 98
+      body sha256: f85ce7ba7def0183d8a3095a88e6a9d8a6dd25eaeda957c8e3cfd8e353ca05e3
+      note: unframed:98 stray bytes after an inert idle window
+  --- raw bytes on the wire (head verbatim) ---
+      POST /v1/chat/completions HTTP/1.1
+      Content-Type: application/json
+      Authorization: Bearer tap-not-a-real-key
+      X-A0-Meter-Token: tok-tap
+      Host: 127.0.0.1:40589
+      Accept-Encoding: identity
+  --- body bytes (98) ---
+      {"model": "deepseek-flash", "messages": [{"role": "user", "content": "framing"}], "max_tokens": 8}
+
+=== ledger rows for this tap run ===
+  deepseek https://127.0.0.1:40589/v1/chat/completions ceq=None unmetered=True reason='upstream_http_400_no_usage'
+  deepseek https://127.0.0.1:40589/v1/chat/completions ceq=None unmetered=True reason='upstream_http_400_no_usage'
+  deepseek https://127.0.0.1:40589/v1/chat/completions ceq=None unmetered=True reason='upstream_http_400_no_usage'
+
+=== verdicts ===
+  FAIL A: client uses Content-Length -> framing=none header=False length_matches=True body_identical=True status=HTTP/1.1 400 Bad Request
+  FAIL B: client uses Transfer-Encoding: chunked -> framing=none header=False length_matches=True body_identical=True status=HTTP/1.1 400 Bad Request
+  FAIL C: client sends an unframed body (illegal, b -> reached_upstream=True framing=none
+
+RESULT: AT LEAST ONE REQUEST WAS NOT CORRECTLY FRAMED

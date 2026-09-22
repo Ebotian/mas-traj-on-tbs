@@ -98,10 +98,17 @@ ROUTES = (
 
 ANTHROPIC_ROUTES = ("/v1/messages", "/anthropic/v1/messages")
 
+# Headers whose meaning is confined to one hop. `Content-Length` is **not** one of them: it is a
+# payload header, and it used to sit in this set, which is exactly how the proxy came to forward
+# bodies with no framing header at all. Framing is re-derived from the bytes actually held, in
+# `forward()`, so the client's numbers are dropped and ours are stated.
 HOP_BY_HOP = {
     "host", "connection", "proxy-connection", "keep-alive", "transfer-encoding",
-    "te", "trailer", "upgrade", "content-length", "accept-encoding",
+    "te", "trailer", "upgrade", "accept-encoding",
 }
+
+# Framing headers, stripped from the client's header list because `forward()` re-states them.
+FRAMING_HEADERS = {"content-length", "transfer-encoding"}
 
 MAX_HEADER_BYTES = 1 << 20
 MAX_REQUEST_BODY = 64 << 20
@@ -186,30 +193,92 @@ def dechunk(raw: bytes) -> bytes:
         pos = start + size + 2
 
 
-def read_request_body(sock: socket.socket, headers: list[str], already: bytes) -> bytes:
+def chunked_body_complete(raw: bytes) -> bool:
+    """Walk the chunk sizes and say whether the terminating zero-length chunk has arrived.
+
+    Stronger than testing `raw.endswith(b"0\\r\\n\\r\\n")`: a chunk whose *data* happens to end in
+    those five bytes would stop that test early, and the truncated body would then be forwarded.
+    """
+    pos = 0
+    while True:
+        end = raw.find(b"\r\n", pos)
+        if end < 0:
+            return False
+        try:
+            size = int(raw[pos:end].split(b";")[0].strip(), 16)
+        except ValueError:
+            return False
+        if size == 0:
+            return True
+        pos = end + 2 + size + 2
+        if pos > len(raw):
+            return False
+
+
+class BodyFramingError(ValueError):
+    """The client's body has no usable extent. Never forwarded, never guessed at."""
+
+    def __init__(self, label: str, detail: str) -> None:
+        super().__init__("%s: %s" % (label, detail))
+        self.label = label
+        self.detail = detail
+
+
+def read_request_body(sock: socket.socket, headers: list[str],
+                      already: bytes) -> tuple[bytes, str]:
+    """Read the body and return `(body, framing)`.
+
+    `framing` is what the *client* declared: `"content-length"`, `"chunked"`, or `"none"` when it
+    declared nothing. It is a statement about the client, not an instruction to the upstream --
+    `forward()` re-derives the outbound framing from the bytes below.
+
+    A body whose extent cannot be established is refused rather than forwarded: an undelimited
+    body would be framed by guesswork, and a guessed body is a mis-metered one.
+    """
     body = already
     te = (header_get(headers, "transfer-encoding") or "").lower()
     if "chunked" in te:
-        while not (body.endswith(b"\r\n0\r\n\r\n") or body.endswith(b"0\r\n\r\n")):
+        while not chunked_body_complete(body):
             chunk = sock.recv(65536)
             if not chunk:
                 break
             body += chunk
             if len(body) > MAX_REQUEST_BODY:
-                raise ValueError("request body too large")
-        return dechunk(body)
+                raise BodyFramingError("request_body_too_large",
+                                       "chunked body exceeded %d bytes" % MAX_REQUEST_BODY)
+        if not chunked_body_complete(body):
+            raise BodyFramingError("request_body_truncated",
+                                   "chunked body ended before its terminating chunk")
+        return dechunk(body), "chunked"
     cl = header_get(headers, "content-length")
     if cl is not None:
-        want = int(cl)
+        try:
+            want = int(cl)
+        except ValueError:
+            raise BodyFramingError("request_body_length_unparsable",
+                                   "Content-Length: %r" % cl)
+        if want < 0:
+            raise BodyFramingError("request_body_length_unparsable", "Content-Length: %d" % want)
         if want > MAX_REQUEST_BODY:
-            raise ValueError("request body too large")
+            raise BodyFramingError("request_body_too_large",
+                                   "Content-Length %d exceeds %d" % (want, MAX_REQUEST_BODY))
         while len(body) < want:
             chunk = sock.recv(min(65536, want - len(body)))
             if not chunk:
                 break
             body += chunk
-        return body[:want]
-    return body
+        if len(body) < want:
+            raise BodyFramingError("request_body_truncated",
+                                   "declared %d bytes, read %d" % (want, len(body)))
+        return body[:want], "content-length"
+    if body:
+        # e.g. an HTTP/1.0-style POST. A conforming server reads none of these bytes, so
+        # forwarding them as-is is what produced the 400 this proxy used to answer every call
+        # with; forwarding them under a guessed length would be our invention.
+        raise BodyFramingError("request_body_unframed",
+                               "%d body bytes arrived with neither Content-Length nor "
+                               "Transfer-Encoding: chunked" % len(body))
+    return body, "none"
 
 
 def send_simple(conn: socket.socket, code: int, phrase: str, body: bytes) -> None:
@@ -273,7 +342,16 @@ def host_header_ok(host_header: str | None, cfg: Config) -> bool:
 
 
 def forward(svc: "Service", method: str, up_host: str, up_port: int, up_path: str,
-            headers: list[str], body: bytes, scheme: str) -> tuple[int, str, list, Any]:
+            headers: list[str], body: bytes, scheme: str,
+            client_framing: str = "content-length") -> tuple[int, str, list, Any]:
+    """Send one request upstream with framing the proxy states itself.
+
+    `http.client.endheaders(message_body)` adds **no** framing header: it writes the head, then
+    the bytes. Every framing header therefore has to come from this function, derived from the
+    length of `body` -- the bytes that will actually be written. The client's own framing header
+    is not forwarded, and `client_framing` is used only to keep the client's *choice* of framing
+    (a chunked request stays chunked); its numbers are never reused.
+    """
     if scheme == "https":
         conn: http.client.HTTPConnection = http.client.HTTPSConnection(
             up_host, up_port, timeout=svc.config.upstream_timeout, context=svc.upstream_context())
@@ -282,13 +360,20 @@ def forward(svc: "Service", method: str, up_host: str, up_port: int, up_path: st
     conn.putrequest(method, up_path, skip_host=True, skip_accept_encoding=True)
     for h in headers:
         name, _, value = h.partition(":")
-        if name.strip().lower() in HOP_BY_HOP:
+        if name.strip().lower() in HOP_BY_HOP | FRAMING_HEADERS:
             continue
         conn.putheader(name.strip(), value.strip())
     conn.putheader("Host", up_host if up_port in (80, 443) else "%s:%d" % (up_host, up_port))
     # Metering correctness beats transfer savings: a compressed body is not parseable.
     conn.putheader("Accept-Encoding", "identity")
-    conn.endheaders(body if body else None)
+    if client_framing == "chunked":
+        conn.putheader("Transfer-Encoding", "chunked")
+        conn.endheaders(body, encode_chunked=True)
+    elif body or client_framing == "content-length":
+        conn.putheader("Content-Length", str(len(body)))
+        conn.endheaders(body if body else None)
+    else:
+        conn.endheaders()
     resp = conn.getresponse()
     return resp.status, resp.reason, list(resp.getheaders()), resp
 
@@ -453,7 +538,14 @@ def handle_request(conn: socket.socket, peer: str, campaign: Campaign, svc: Serv
         return
 
     try:
-        body = read_request_body(conn, headers, rest)
+        body, client_framing = read_request_body(conn, headers, rest)
+    except BodyFramingError as exc:
+        # A body we cannot delimit is a body we cannot forward honestly. Refused *and* recorded,
+        # like every other refusal, so an unframed client is visible in the ledger.
+        refuse(400, "Bad Request", exc.label, exc.detail)
+        log("body framing refused peer=%s label=%s detail=%s"
+            % (peer, exc.label, exc.detail))
+        return
     except (OSError, ValueError) as exc:
         send_simple(conn, 400, "Bad Request", b"a0-meter: bad request body\n")
         log("body read failed peer=%s: %s" % (peer, exc))
@@ -483,7 +575,7 @@ def handle_request(conn: socket.socket, peer: str, campaign: Campaign, svc: Serv
     svc.bump("calls")
     try:
         status, reason_phrase, resp_headers, resp = forward(
-            svc, method, up_host, up_port, up_path, headers, body, base.scheme)
+            svc, method, up_host, up_port, up_path, headers, body, base.scheme, client_framing)
     except (OSError, http.client.HTTPException) as exc:
         label = "upstream_unreachable:%s" % type(exc).__name__
         svc.bump("unmetered")

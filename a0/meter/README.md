@@ -33,6 +33,43 @@ first principles, and the visibility point for constraint (v).
   the upstream host is never taken from client bytes. The proxy is not an open relay, and the
   failure mode of a misconfigured client is a 403, not a silent forward.
 
+### 1.1 The outbound request is framed by the proxy, not by the client
+
+`http.client.endheaders(message_body)` writes the request head and then the body; it adds **no**
+framing header. Every framing header on the upstream leg is therefore stated by `forward()`, from
+the bytes it is about to write:
+
+| client sent | proxy sends upstream |
+|---|---|
+| `Content-Length: N` + body | `Content-Length: <len(body)>` — re-derived, never the client's number |
+| `Transfer-Encoding: chunked` + chunks | `Transfer-Encoding: chunked`, re-encoded by `http.client` from the decoded body |
+| both (a smuggling shape) | chunked, per RFC 9112 §6.1; the client's `Content-Length` is dropped |
+| no body, no framing header | no framing header (a `GET /v1/models`, unchanged) |
+| a body with **no** framing header | refused: `400 request_body_unframed`, recorded, never forwarded |
+
+This is a correctness fix for a defect that made the budget unmeasurable: `Content-Length` used
+to sit in `HOP_BY_HOP`, so it was stripped, `endheaders` did not re-add it, and the upstream
+received a body with no framing header at all. A conforming server reads no body, so every real
+call answered `400 … EOF while parsing a value at line 1 column 0` and was booked `unmetered` —
+which means §8's `CEq` could never have carried a real number.
+
+**Evidence, on the wire.** `raw_tap.py --proof` runs the proxy against a raw socket that records
+the exact bytes it receives and answers an unframed body the way DeepSeek does. Before/after
+captures live in `evidence/framing_before.txt` and `evidence/framing_after.txt`; the pre-fix
+capture shows the 98-byte body arriving under a head with no `Content-Length` and no
+`Transfer-Encoding`, answered `400`, booked `unmetered`. The after capture shows
+`Content-Length: 98` (and, for the chunked client, `Transfer-Encoding: chunked` with the same
+decoded body) and two metered rows. `evidence/selftest_on_prefix_proxy.txt` is the same selftest
+run against the pre-fix revision: **36/65**, exit 1, versus 65/65 for this one.
+
+**Why the selftest missed it for 55/55.** `fake_upstream.py` read the body length from
+`content-length`, got zero bytes, and answered from its scenario default; every check asserted on
+the *response*. The mock has been made wire-shaped: it frames its own reads (`Content-Length` or
+chunked), records the framing headers, the body byte count and the body's sha256, requires a
+credential, and answers a body it could not read or parse with `400`. Section S18 of the selftest
+now reads that log back, and S19 proves an undelimitable body never reaches the upstream.
+`tests/test_meter_framing.py` pins the same property at unit level (17 tests).
+
 ## 2. The ledger row
 
 Exactly the key set and order of `INTERFACE.md` §8 — verified by `verify_ledger.py`, which
@@ -95,6 +132,9 @@ this component exists to close. Reasons this implementation emits:
 | `non_allowlisted_host:<host>` / `host_header_not_allowlisted:<h>` / `path_not_routed:<p>` | destination policy refusal, recorded, nothing forwarded |
 | `connect_not_supported` | a CONNECT tunnel was attempted (§8 forbids metering by tunnel) |
 | `attribution_token_mismatch` | request arrived on campaign C's port without C's token |
+| `request_body_unframed` | body bytes with neither `Content-Length` nor chunked framing: extent undefined, so refused rather than guessed (recorded, nothing forwarded) |
+| `request_body_truncated` | declared length or chunked terminator never arrived |
+| `request_body_length_unparsable` / `request_body_too_large` | `Content-Length` that is not a non-negative integer / exceeds the 64 MiB cap |
 
 ## 3. Attribution — how a row knows which campaign it belongs to
 
@@ -192,27 +232,51 @@ the fake upstream sleeping 0.4 s before it emits usage.
 ```bash
 cd a0/meter
 
-# Everything, against a local fake upstream. No model call, no spend.
-python3 selftest.py --out evidence          # 55/55 checks; writes evidence/*
+# Everything behavioural, against a local fake upstream. No model call, no spend.
+python3 selftest.py --out evidence          # 65/65 checks; writes evidence/*
 
-# The same thing under pytest (unit + end-to-end)
-python3 -m pytest tests -q                  # 47 passed
+# The same thing under pytest (unit + end-to-end + the raw TCP tap proof)
+python3 -m pytest tests -q                  # 64 passed
+
+# The wire-level framing proof, on its own (raw socket capture of the upstream leg)
+python3 raw_tap.py --proof --out evidence --label after
+# ... and the same proof against the pre-fix proxy, which must FAIL:
+#   git show HEAD^:a0/meter/meter_proxy.py > /tmp/a0-old/meter_proxy.py
+#   python3 raw_tap.py --proof --out /tmp --label before --proxy /tmp/a0-old/meter_proxy.py
 
 # Independently re-derive an existing ledger
 python3 verify_ledger.py evidence/ledger.jsonl
 python3 verify_ledger.py evidence/ledger.jsonl --json
+python3 verify_ledger.py evidence/live_ledger.jsonl        # the one real call
+
+# One trivial REAL call through the proxy (spends a fraction of a cent)
+export DEEPSEEK_API_KEY=$(awk -F: '/^deepseek:/{sub(/^deepseek:[ ]*/,""); print; exit}' ~/gptapi.md)
+python3 live_check.py --out evidence/live              # GET /v1/models + one model call
+python3 live_check.py --out evidence/live --chunked    # plus the chunked-framing path
 ```
 
 `verify_ledger.py` is deliberately a separate program: a ledger that only its author can check is
 not evidence. It recomputes every metered row's `ceq` from that row's own `usage`, asserts the
 frozen key set and order, and asserts that unmetered rows carry no score.
 
+`live_check.py` is deliberately a separate program too: it starts a fresh proxy pointed at
+`https://api.deepseek.com` (no repair hop, no test double) and asserts from the ledger that each
+model call was metered. `evidence/live_ledger.jsonl` is its output — three rows: the free
+`GET /v1/models` (a catalogue reports no usage, so it is booked `unmetered` by design), and two
+model calls, `Content-Length`-framed and chunked-framed, each `ceq: 53`, `unmetered: false` — and
+`verify_ledger.py` re-derives all three.
+
 ## 6. What this does not establish
 
-* **No real DeepSeek call was made.** Every number in `evidence/` comes from
-  `fake_upstream.py`, whose token figures are constants chosen by the test. That is the point —
-  the meter must reproduce them exactly — but it means this directory proves *the meter*, not
-  *DeepSeek's field names*. The coordinator's calibration run is what closes that gap.
+* **Behavioural coverage is still from a mock; only three live paths were proved.** S1–S19 run
+  against `fake_upstream.py`, whose token figures are constants chosen by the test. That is the
+  point — the meter must reproduce them exactly — but it means the suite proves *the meter*, not
+  *DeepSeek's field names*. Three real calls are now proved end-to-end
+  (`evidence/live_check.txt`): the no-body `GET /v1/models` path, a `Content-Length`-framed chat
+  call, and a chunked-framed chat call, each `ceq: 53`. That closes the framing question for all
+  three shapes on the upstream leg, and confirms the provider accepts the re-encoded chunked
+  request. Streaming, Anthropic-shaped and Responses-shaped calls, 429s, and cache-hit accounting
+  against a real provider are still unverified here.
 * **Rate limits, 429s with usage, and provider-side truncation mid-tool-call are untested.** They
   land in the `unmetered` bucket with a reason, which is the designed behaviour, but it is
   unverified behaviour.

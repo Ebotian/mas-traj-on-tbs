@@ -11,7 +11,22 @@ model name, so the requests a test sends can be realistic (`model: "deepseek-fla
 response shape stays under the test's control.
 
 Every request is appended to `--log` as jsonl. That log is how "the refusal never touched the
-upstream" is proved: a refusal that reaches here would leave a line.
+upstream" is proved: a refusal that reaches here would leave a line. It is *also* how "the proxy
+sent a correctly framed request" is proved: the log records the request's framing headers
+verbatim, the number of body bytes the server actually read, and that body's sha256. A mock that
+records only the response cannot tell a body that arrived from a body that was silently dropped --
+which is precisely how this upstream used to let 55/55 checks pass while it read zero bytes of
+every request (`_read_body` below is now the *server's* framing decision, not a `content-length`
+lookup).
+
+Its shape is deliberately the wire's, not the test's:
+
+* a request body exists only if `Content-Length` or `Transfer-Encoding: chunked` declares it --
+  the rule a conforming HTTP/1.1 server applies, and the rule the proxy used to violate;
+* a body-bearing request without framing, with an empty body, or with a body that is not JSON is
+  answered `400` with DeepSeek's own wording -- a real provider never parses nothing and calls it
+  success;
+* a request with no `Authorization`/`x-api-key` is answered `401`, as the real endpoint is.
 
 Deliberately *not* a general mock: there is no usage computation, no tokenizer, and no model.
 Every token figure below is a constant chosen by the test, which is the point — the meter must
@@ -21,6 +36,7 @@ reproduce it exactly, and any invention by the meter shows up as a mismatch.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import http.server
 import json
 import socket
@@ -28,6 +44,18 @@ import ssl
 import sys
 import threading
 import time
+
+# DeepSeek's wording for a body it could not read, quoted from the failure that motivated the
+# framing fix in `meter_proxy.py`.
+BODY_400 = {
+    "error": {
+        "message": "Failed to parse the request body as JSON: EOF while parsing a value at "
+                   "line 1 column 0",
+        "type": "invalid_request_error",
+    }
+}
+AUTH_401 = {"error": {"message": "Authentication Fails", "type": "authentication_error"}}
+BODY_METHODS = {"POST", "PUT", "PATCH"}
 
 SCENARIOS = {
     # OpenAI chat completions, non-streaming, DeepSeek's native usage fields.
@@ -135,6 +163,27 @@ def sse(event: str | None, payload: dict) -> bytes:
     return out
 
 
+def dechunk(raw: bytes) -> tuple[bytes, bool]:
+    """Decode a chunked body; returns `(body, saw_terminating_chunk)`."""
+    out = bytearray()
+    pos = 0
+    while True:
+        end = raw.find(b"\r\n", pos)
+        if end < 0:
+            return bytes(out), False
+        try:
+            size = int(raw[pos:end].split(b";")[0].strip(), 16)
+        except ValueError:
+            return bytes(out), False
+        if size == 0:
+            return bytes(out), True
+        start = end + 2
+        if len(raw) < start + size + 2:
+            return bytes(out), False
+        out += raw[start:start + size]
+        pos = start + size + 2
+
+
 class Handler(http.server.BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
     server_version = "a0-fake-upstream/1"
@@ -142,10 +191,65 @@ class Handler(http.server.BaseHTTPRequestHandler):
     def log_message(self, *_args):
         pass
 
-    def _record(self, body: bytes) -> dict:
+    def _read_body(self) -> tuple[bytes, dict]:
+        """Frame the request body the way an HTTP/1.1 server does.
+
+        Returns `(body, info)`. `info["framing"]` is the mechanism the *client* used -- this is a
+        property of the bytes on the socket, not of the scenario the test wants, so a client that
+        sends nothing framed is visible here as `framing: "none"` with an empty body rather than
+        as a request whose body the mock quietly invented a length of zero for.
+        """
+        transfer_encoding = (self.headers.get("transfer-encoding") or "").lower()
+        content_length = self.headers.get("content-length")
+        info: dict = {
+            "request_line": self.requestline,
+            "content_length_header": content_length,
+            "transfer_encoding_header": transfer_encoding or None,
+            "declared_length": None,
+            "framing": None,
+        }
+        if "chunked" in transfer_encoding:
+            info["framing"] = "chunked"
+            raw = b""
+            while True:
+                line = self.rfile.readline(65536)
+                if not line:
+                    break
+                raw += line
+                try:
+                    size = int(line.split(b";")[0].strip(), 16)
+                except ValueError:
+                    break
+                if size == 0:
+                    while True:  # trailer section, terminated by a blank line
+                        trailer = self.rfile.readline(65536)
+                        raw += trailer
+                        if trailer in (b"\r\n", b"\n", b""):
+                            break
+                    break
+                raw += self.rfile.read(size)
+                raw += self.rfile.readline(3)
+            body, complete = dechunk(raw)
+            info["chunked_complete"] = complete
+            return body, info
+        if content_length is not None:
+            info["framing"] = "content-length"
+            try:
+                want = int(content_length)
+            except ValueError:
+                info["framing_error"] = "unparsable_content_length"
+                return b"", info
+            info["declared_length"] = want
+            return self.rfile.read(want), info
+        info["framing"] = "none"
+        return b"", info
+
+    def _record(self, body: bytes, framing: dict, framing_error: str | None) -> dict:
         payload = {}
+        json_ok = False
         try:
             payload = json.loads(body.decode("utf-8")) if body else {}
+            json_ok = True
         except (ValueError, UnicodeDecodeError):
             pass
         record = {
@@ -159,6 +263,17 @@ class Handler(http.server.BaseHTTPRequestHandler):
             "authorization_present": bool(self.headers.get("authorization")),
             "x_api_key_present": bool(self.headers.get("x-api-key")),
             "accept_encoding": self.headers.get("accept-encoding"),
+            # --- what the upstream actually read, as opposed to what it answered ---
+            "request_line": framing.get("request_line"),
+            "framing": framing.get("framing"),
+            "content_length_header": framing.get("content_length_header"),
+            "transfer_encoding_header": framing.get("transfer_encoding_header"),
+            "declared_length": framing.get("declared_length"),
+            "chunked_complete": framing.get("chunked_complete"),
+            "framing_error": framing_error,
+            "body_bytes": len(body),
+            "body_sha256": hashlib.sha256(body).hexdigest(),
+            "body_json_ok": json_ok,
         }
         log_path = self.server.log_path
         if log_path:
@@ -235,10 +350,43 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self._flush_chunked(sse("response.completed", RESPONSES_COMPLETED))
         self._finish_chunked()
 
+    def _framing_error(self, body: bytes, framing: dict) -> str | None:
+        """Why a *real* provider would refuse this request, or None if it would serve it.
+
+        The mock must not be more forgiving than the wire: every reason here is one a conforming
+        server applies, and each of them was invisible while the mock read `content-length` and
+        called a missing body zero bytes.
+        """
+        if framing.get("framing_error"):
+            return framing["framing_error"]
+        if self.command in BODY_METHODS:
+            if framing["framing"] == "none":
+                return "unframed_request_body"
+            if framing["framing"] == "chunked" and not framing.get("chunked_complete"):
+                return "truncated_chunked_body"
+            if framing["framing"] == "content-length" \
+                    and len(body) < (framing.get("declared_length") or 0):
+                return "short_body"
+            if not body:
+                return "empty_body"
+            try:
+                json.loads(body.decode("utf-8"))
+            except (ValueError, UnicodeDecodeError):
+                return "body_not_json"
+            if not (self.headers.get("authorization") or self.headers.get("x-api-key")):
+                return "no_credentials"
+        return None
+
     def _handle(self):
-        length = int(self.headers.get("content-length") or 0)
-        body = self.rfile.read(length) if length else b""
-        record = self._record(body)
+        body, framing = self._read_body()
+        framing_error = self._framing_error(body, framing)
+        record = self._record(body, framing, framing_error)
+        if framing_error == "no_credentials":
+            self._send_json(401, AUTH_401)
+            return
+        if framing_error is not None:
+            self._send_json(400, BODY_400)
+            return
         scenario = record["scenario"] or "chat-usage-ns"
         spec = SCENARIOS.get(scenario)
         if spec is None:
