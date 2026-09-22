@@ -174,15 +174,54 @@ PASS: canonical identity, structure, regeneration, statistics, disjointness and 
 
 ---
 
-## 5. Leakage check
+## 5. Leakage: what a candidate is handed, and what is checked
 
-`graph.json` is handed to candidate programs, so it must not carry the planted partition. The planted
-labels live only in `generators/provenance.json`, and two checks keep that true. Both scan every JSON
-file under `suite/` — the 60 graph files plus `manifest.json` — which is the candidate-readable
-surface. (Prose is excluded on purpose: `suite/README.md` quotes the check itself, so a scan that
-included it would match its own text; see the third command below.)
+`graph.json` is handed to candidate programs, so it must not carry the planted partition. Two things
+are true of this suite, and each has a command.
 
-**(a) No label-bearing content anywhere in the data:**
+**The instances are generated locally, from a role-keyed seed stream, and were never published.**
+Every one of the 60 comes from `generators/maxcut_suite.py`, whose per-graph seed is
+`sha256("a0.maxcut.suite/v1|master=…|role=…|family=…|stratum=…|rep=…|graph_id=…")` — each graph draws
+from a stream of its own, with the role inside the key, so `dev`, `eval` and `calibration` are
+independent draws rather than splits of one draw (`provenance.json.role_seed_stream` records the
+derivation, `manifest.json.generator_config` the parameters). No instance is taken from, or derived
+from, a public collection — DIMACS, Biq Mac, MQLib, GSet, BigMac — so the
+memorisation-of-a-published-optimum threat does not exist here by construction (§6).
+
+**The labels are a function of the frozen bytes, so "no label text under `suite/`" is not the property
+that carries the claim.** A `graph.json` keeps its `generator` block (`INTERFACE.md` §2), and for the
+Planted family that block plus the frozen generator *is* the label vector: replaying
+`generator.params` + `generator.seed` through `gen_planted_partition` reproduces the edge list and the
+labels together. The two scans below still hold and are still worth quoting, but a leak claim has to
+be about the bytes a candidate actually receives — which is what the audit checks.
+
+### 5.1 The label audit — `generators/audit_labels.py`
+
+The audit exists because of finding F4 (`generators/DEVIATIONS.md`): the label vectors recorded in
+`provenance.json` came from an earlier seed derivation, matched no shipped Planted graph, and a scan
+that searched for them proved nothing about these files.
+
+```console
+$ python3 a0/tasks/maxcut/generators/audit_labels.py verify
+planted graphs: 15
+provenance records: 15
+suite JSON files scanned with 15 x 6 label spellings: 61, hits: 0
+candidate-facing views checked: 60 (keys == ['schema', 'graph_id', 'family', 'n', 'edges'])
+PASS: the recorded labels are the labels of the frozen graphs, no spelling of them appears in suite/**/*.json, and the candidate-facing view carries only schema/graph_id/family/n/edges
+```
+
+* **Scope: the shipped files plus the candidate-facing views.** The 61 JSON files under `suite/` — the
+  60 graph files plus `manifest.json` — and, for all 60 graphs, the document `E*` hands a candidate:
+  `e_star.py::candidate_graph_document`, asserted to carry exactly
+  `{schema, graph_id, family, n, edges}` and neither `generator` nor `notes`. Six spellings per
+  graph: 0/1 compact and spaced, ±1 compact and spaced, class-membership lists, bitmask.
+* **The needles are recomputed, never remembered.** For each Planted graph the audit replays its own
+  `generator` block, fails if the replay does not reproduce the frozen edge list, and only then uses
+  the labels it produced; `audit_labels.py refresh --apply` writes `provenance.json` from the shipped
+  files rather than from a build-time variable.
+* **The two direct scans** of the shipped data run unchanged, and still return nothing:
+
+**(a) No label-bearing content anywhere in the shipped data:**
 
 ```console
 $ grep -rn --include='*.json' -E '"labels"|planted_labels|community_of|node_labels|"assignment"|"partition"' \
@@ -211,8 +250,9 @@ a0/tasks/maxcut/suite/README.md
 
 `README.md` is documentation, is never handed to a candidate, and carries no node labels.
 
-**(b) The exact label vectors do not occur in the data.** For every one of the 15 Planted instances,
-take `planted_labels` from `generators/provenance.json`, serialise it both compactly and spaced, and
+**(b) The exact label vectors do not occur in the shipped data.** For every one of the 15 Planted
+instances, take `planted_labels` — now the labels of the frozen graph on disk, recomputed by the
+audit above — from `generators/provenance.json`, serialise the vector both compactly and spaced, and
 search every JSON file under `suite/`:
 
 ```console
@@ -235,8 +275,52 @@ PY
 planted label vectors searched: 15 x 2 spellings; files scanned: 61; hits: 0
 ```
 
-Both checks are also run inside `verify` (`leakage_scan`, `leakage_needles = 30` = 15 × 2,
-`leakage_files = 61`), so they cannot silently rot.
+`maxcut_suite.py verify` prints its inline subset of the same scan — `leakage_scan`, `leakage_needles
+= 30` (15 vectors × the two 0/1 spellings), `leakage_files = 61` — beside a forbidden-key scan, so the
+cheap check cannot silently rot either. `maxcut_suite.py` is left byte-identical on purpose:
+`suite/manifest.json` records its sha256, so editing it would move the suite's frozen identity.
+
+### 5.2 The witness partitions are sealed out of the tree
+
+A stored partition of a `dev`/`eval` instance *is* that instance's answer. The reference build left
+1968 of them — plus 1908 heuristic stdout transcripts carrying MQLib's `Solution:` line — under
+`references/`. The vectors are gone; the commitment to them stays:
+
+```console
+$ python3 -c "import json;d=json.load(open('a0/tasks/maxcut/references/witnesses/commitments.json'));print(d['counts'], len(d['per_graph']))"
+{'stdout_transcripts': 1908, 'witnesses': 1968} 60
+$ find a0/tasks/maxcut/references/logs/partitions a0/tasks/maxcut/references/logs/raw \
+       a0/tasks/maxcut/references/logs_topup/partitions a0/tasks/maxcut/references/logs_topup/raw \
+       a0/tasks/maxcut/references/scip -name '*.partition.json' -type f | wc -l
+0
+$ python3 a0/tasks/maxcut/references/tools/seal_witnesses.py verify --corpus <retained corpus>
+witnesses: 1968 committed, 1908 transcripts
+per-graph commitments checked: 60
+corpus: <retained corpus>, 1968 witnesses recomputed
+PASS: every recorded maximum equals targets.json's R; every supplied witness matches its commitment and its cut
+```
+
+`references/witnesses/commitments.json` (`schema: a0.maxcut.witnesses/v1`) records each witness's
+`path_removed`, `bytes`, `canonical_sha256`, the cut it scores and its graph's sha256, and its
+`targets_json_sha256` is the sha256 of `references/targets.json`. Its own `recoverable_from` names two
+routes back to the bytes, and both are real — so this is evidence, not secrecy: a retained corpus
+re-verifies witness by witness against the commitments, and git history still carries every blob
+(`git show c409318d:a0/tasks/maxcut/references/logs/partitions/C_0001__BURER2002__s1337.partition.json`
+hashes to the committed `788179e7…`, while the path does not exist in `HEAD`). That is why the
+evaluator masks `.git` and this directory from a candidate.
+`references/witnesses/fs_policy.json` records the answer stores that live outside this repository,
+which E* masks per invocation because it cannot delete them.
+
+### 5.3 What closes the route at hand-over
+
+`references/leak-proof/` runs a hostile candidate that tries every route — the handed graph, the suite
+file, the reference table, the witness store, raw stdout, git history, `/proc` escapes, unmounting the
+masks — in three environments. `out_leak_probe.pre_seal.json` is the defect: with the pre-fix evaluator
+(`prefix`) or with isolation off (`open`) the candidate copies a stored witness and the harness books
+**217 = R = OPT** on `G_eval_0001` (|E| = 254). `out_leak_probe.json` is the same candidate against the
+sealed tree (`fixed`): every route fails and the booked score is the candidate's own honest guess, 136.
+`references/leak-proof/README.md` tabulates the attempts and states the limits of the scan;
+`a0/verify/a1-testbed/REPORT.md` §2c is the verifier's independent reproduction of the defect.
 
 ---
 
