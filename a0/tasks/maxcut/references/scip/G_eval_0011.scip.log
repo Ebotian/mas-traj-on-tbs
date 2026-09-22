@@ -1,0 +1,450 @@
+SCIP version 10.0.3 [precision: 8 byte] [memory: block] [mode: optimized] [LP solver: SoPlex 8.0.3] [GitHash: d409edf9f6]
+Copyright (c) 2002-2026 Zuse Institute Berlin (ZIB)
+
+External libraries: 
+  Readline 8.3         GNU library for command line editing (gnu.org/s/readline)
+  SoPlex 8.0.3         Linear programming solver developed at Zuse Institute Berlin (soplex.zib.de) [GitHash: 13e2ab24]
+  CppAD 20180000.0     Algorithmic Differentiation of C++ algorithms developed by B. Bell (github.com/coin-or/CppAD)
+  ZLIB 1.3.2           General purpose compression library by J. Gailly and M. Adler (zlib.net)
+  MPFR 4.2.2           GNU Multiple Precision Floating-Point Reliable Library (mpfr.org)
+  Boost 1.92.0         Boost C++ Libraries (boost.org)
+  TinyCThread 1.2      small portable implementation of the C11 threads API (tinycthread.github.io)
+  GMP 6.3.0            GNU Multiple Precision Arithmetic Library developed by T. Granlund (gmplib.org)
+  AMPL/MP 4.0.4        AMPL .nl file reader library (github.com/ampl/mp)
+  PaPILO 3.0.1         parallel presolve for integer and linear optimization (github.com/scipopt/papilo) (built with TBB) [GitHash: ac69e19d]
+  bliss 0.77           Computing Graph Automorphism Groups by T. Junttila and P. Kaski (users.aalto.fi/~tjunttil/bliss)
+
+user parameter file <scip.set> not found - using default parameters
+
+
+read problem <scip/G_eval_0011.lp>
+============
+
+original problem has 448 variables (448 bin, 0 int, 0 cont) and 649 constraints
+limits/time = 120
+display/verblevel = 4
+
+feasible solution found by trivial heuristic after 0.0 seconds, objective value 0.000000e+00
+presolving:
+   (0.0s) running MILP presolver
+   (0.0s) MILP presolver found nothing
+(round 1, exhaustive) 0 del vars, 0 del conss, 0 add conss, 0 chg bounds, 0 chg sides, 0 chg coeffs, 649 upgd conss, 0 impls, 0 clqs, 0 implints
+   (0.0s) probing: 51/448 (11.4%) - 0 fixings, 0 aggregations, 0 implications, 0 bound changes
+   (0.0s) probing aborted: 50/50 successive totally useless probings
+   (0.0s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)
+   (0.0s) no symmetry present (symcode time: 0.00)
+presolving (2 rounds: 2 fast, 2 medium, 2 exhaustive):
+ 0 deleted vars, 0 deleted constraints, 0 added constraints, 0 tightened bounds, 0 added holes, 0 changed sides, 0 changed coefficients
+ 0 implications, 0 cliques, 0 implied integral variables (0 bin, 0 int, 0 cont)
+presolved problem has 448 variables (448 bin, 0 int, 0 cont) and 649 constraints
+    649 constraints of type <logicor>
+transformed objective value is always integral (scale: 1)
+Presolving Time: 0.01
+transformed 2/2 original solutions to the transformed problem space
+
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+p 0.0s|     1 |     0 |     0 |     - |   locks|   0 | 448 | 649 | 649 |   0 |  0 |   0 |   0 | 3.200000e+02 | 2.190000e+02 |  46.12%| unknown
+i 0.0s|     1 |     0 |     0 |     - |  oneopt|   0 | 448 | 649 | 649 |   0 |  0 |   0 |   0 | 3.200000e+02 | 2.280000e+02 |  40.35%| unknown
+  0.0s|     1 |     0 |   166 |     - |  6832k |   0 | 448 | 649 | 649 |   0 |  0 |   0 |   0 | 3.110000e+02 | 2.280000e+02 |  36.40%| unknown
+  0.0s|     1 |     0 |   374 |     - |  7151k |   0 | 448 | 649 | 659 |  10 |  1 |   0 |   0 | 3.078333e+02 | 2.280000e+02 |  35.01%| unknown
+  0.0s|     1 |     0 |   501 |     - |  7999k |   0 | 448 | 649 | 665 |  16 |  2 |   0 |   0 | 3.056667e+02 | 2.280000e+02 |  34.06%| unknown
+  0.0s|     1 |     0 |   744 |     - |  8405k |   0 | 448 | 649 | 677 |  28 |  3 |   0 |   0 | 3.035000e+02 | 2.280000e+02 |  33.11%| unknown
+  0.0s|     1 |     0 |  1035 |     - |  8951k |   0 | 448 | 649 | 684 |  35 |  4 |   0 |   0 | 3.026923e+02 | 2.280000e+02 |  32.76%| unknown
+  0.1s|     1 |     0 |  1397 |     - |  9581k |   0 | 448 | 649 | 693 |  44 |  5 |   0 |   0 | 3.025000e+02 | 2.280000e+02 |  32.68%| unknown
+  0.1s|     1 |     0 |  1781 |     - |    11M |   0 | 448 | 649 | 702 |  53 |  6 |   0 |   0 | 3.016099e+02 | 2.280000e+02 |  32.29%| unknown
+  0.1s|     1 |     0 |  2109 |     - |    14M |   0 | 448 | 649 | 710 |  61 |  7 |   0 |   0 | 3.007688e+02 | 2.280000e+02 |  31.92%| unknown
+  0.1s|     1 |     0 |  2366 |     - |    16M |   0 | 448 | 649 | 721 |  72 |  8 |   0 |   0 | 2.999823e+02 | 2.280000e+02 |  31.57%| unknown
+  0.2s|     1 |     0 |  2906 |     - |    19M |   0 | 448 | 649 | 733 |  84 |  9 |   0 |   0 | 2.987128e+02 | 2.280000e+02 |  31.01%| unknown
+  0.2s|     1 |     0 |  3178 |     - |    25M |   0 | 448 | 649 | 741 |  92 | 10 |   0 |   0 | 2.980354e+02 | 2.280000e+02 |  30.72%| unknown
+  0.2s|     1 |     0 |  3611 |     - |    25M |   0 | 448 | 649 | 749 | 101 | 11 |   0 |   0 | 2.973734e+02 | 2.280000e+02 |  30.43%| unknown
+  0.2s|     1 |     0 |  3922 |     - |    25M |   0 | 448 | 649 | 758 | 110 | 12 |   0 |   0 | 2.969384e+02 | 2.280000e+02 |  30.24%| unknown
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+  0.3s|     1 |     0 |  4313 |     - |    25M |   0 | 448 | 649 | 764 | 116 | 13 |   0 |   0 | 2.964922e+02 | 2.280000e+02 |  30.04%| unknown
+  0.3s|     1 |     0 |  4623 |     - |    25M |   0 | 448 | 650 | 768 | 120 | 14 |   1 |   0 | 2.960362e+02 | 2.280000e+02 |  29.84%| unknown
+  0.3s|     1 |     0 |  4871 |     - |    26M |   0 | 448 | 650 | 772 | 124 | 15 |   1 |   0 | 2.957586e+02 | 2.280000e+02 |  29.72%| unknown
+  0.3s|     1 |     0 |  5216 |     - |    26M |   0 | 448 | 650 | 778 | 130 | 16 |   1 |   0 | 2.953501e+02 | 2.280000e+02 |  29.54%| unknown
+  0.3s|     1 |     0 |  5584 |     - |    26M |   0 | 448 | 650 | 775 | 135 | 17 |   1 |   0 | 2.948271e+02 | 2.280000e+02 |  29.31%| unknown
+  0.3s|     1 |     0 |  5846 |     - |    26M |   0 | 448 | 650 | 780 | 140 | 18 |   1 |   0 | 2.945813e+02 | 2.280000e+02 |  29.20%| unknown
+  0.3s|     1 |     0 |  6108 |     - |    26M |   0 | 448 | 651 | 786 | 146 | 19 |   2 |   0 | 2.943096e+02 | 2.280000e+02 |  29.08%| unknown
+  0.4s|     1 |     0 |  6496 |     - |    26M |   0 | 448 | 652 | 793 | 153 | 20 |   3 |   0 | 2.938689e+02 | 2.280000e+02 |  28.89%| unknown
+  0.4s|     1 |     0 |  6527 |     - |    26M |   0 | 448 | 653 | 795 | 155 | 21 |   4 |   0 | 2.938675e+02 | 2.280000e+02 |  28.89%| unknown
+o 0.4s|     1 |     0 |  8846 |     - |feaspump|   0 | 448 | 653 | 795 | 155 | 22 |   4 |   0 | 2.938675e+02 | 2.450000e+02 |  19.95%| unknown
+  0.5s|     1 |     0 | 10405 |     - |    26M |   0 | 448 | 658 | 795 | 155 | 22 |   9 |   0 | 2.938675e+02 | 2.450000e+02 |  19.95%| unknown
+i 0.5s|     1 |     0 | 10405 |     - |  oneopt|   0 | 448 | 658 | 795 | 155 | 22 |   9 |   0 | 2.938675e+02 | 2.500000e+02 |  17.55%| unknown
+  1.5s|     1 |     2 | 10405 |     - |    26M |   0 | 448 | 659 | 795 | 155 | 23 |  10 |  27 | 2.919439e+02 | 2.500000e+02 |  16.78%| unknown
+d 5.7s|    14 |    15 | 16896 | 797.6 |pscostdi|  13 | 448 | 659 | 794 |   0 |  1 |  10 | 185 | 2.919439e+02 | 2.580000e+02 |  13.16%| unknown
+d 6.4s|    40 |    41 | 30519 | 615.2 |fracdivi|  14 | 448 | 657 | 820 |   0 |  1 |  13 | 185 | 2.898604e+02 | 2.590000e+02 |  11.92%| unknown
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+  8.8s|   100 |   101 | 64180 | 582.4 |   103M |  15 | 448 | 659 | 862 | 619 |  1 |  15 | 214 | 2.891219e+02 | 2.590000e+02 |  11.63%| unknown
+ 12.6s|   200 |   193 |124986 | 595.3 |   116M |  18 | 448 | 687 | 845 |1115 |  1 |  44 | 270 | 2.869420e+02 | 2.590000e+02 |  10.79%| unknown
+ 19.2s|   300 |   293 |211501 | 685.5 |   127M |  18 | 448 | 769 | 933 |2180 |  1 | 126 | 359 | 2.841867e+02 | 2.590000e+02 |   9.72%| unknown
+*21.0s|   327 |   305 |228676 | 681.4 |    LP  |  18 | 448 | 769 | 930 |2527 |  2 | 126 | 375 | 2.841867e+02 | 2.600000e+02 |   9.30%| unknown
+ 24.0s|   400 |   342 |266573 | 651.7 |   131M |  18 | 448 | 791 | 921 |3159 |  1 | 148 | 411 | 2.837517e+02 | 2.600000e+02 |   9.14%| unknown
+ 27.9s|   500 |   394 |318366 | 624.9 |   133M |  18 | 448 | 817 | 954 |3847 |  0 | 174 | 483 | 2.828565e+02 | 2.600000e+02 |   8.79%| unknown
+ 30.3s|   600 |   410 |349044 | 571.8 |   134M |  18 | 448 | 832 | 920 |4141 |  0 | 189 | 529 | 2.821641e+02 | 2.600000e+02 |   8.52%| unknown
+ 32.9s|   700 |   434 |385945 | 542.8 |   145M |  18 | 448 | 886 | 931 |4475 |  1 | 243 | 584 | 2.819335e+02 | 2.600000e+02 |   8.44%| unknown
+ 36.1s|   800 |   448 |423523 | 521.9 |   147M |  18 | 448 | 939 | 905 |4940 |  1 | 296 | 642 | 2.818465e+02 | 2.600000e+02 |   8.40%|   9.13%
+*36.6s|   823 |   448 |429823 | 515.0 |strongbr|  18 | 448 | 966 | 949 |5003 |  1 | 323 | 664 | 2.818465e+02 | 2.610000e+02 |   7.99%|   9.17%
+ 38.7s|   900 |   451 |454538 | 498.3 |   150M |  18 | 448 |1001 | 974 |5256 |  0 | 366 | 708 | 2.815774e+02 | 2.610000e+02 |   7.88%|   9.71%
+ 43.4s|  1000 |   477 |501942 | 495.9 |   159M |  18 | 448 |1033 | 949 |6043 |  0 | 416 | 786 | 2.802236e+02 | 2.610000e+02 |   7.37%|  10.71%
+ 46.3s|  1100 |   487 |538775 | 484.3 |   161M |  18 | 448 |1085 | 945 |6342 |  4 | 507 | 865 | 2.801283e+02 | 2.610000e+02 |   7.33%|  11.50%
+ 51.6s|  1200 |   511 |593287 | 489.4 |   162M |  18 | 448 |1118 | 926 |7334 |  1 | 582 | 956 | 2.789564e+02 | 2.610000e+02 |   6.88%|  12.76%
+ 55.7s|  1300 |   521 |641761 | 489.0 |   163M |  18 | 448 |1150 |1022 |8327 |  9 | 647 |1012 | 2.786477e+02 | 2.610000e+02 |   6.76%|  13.33%
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+*57.7s|  1341 |   506 |665195 | 491.5 |    LP  |  18 | 448 |1166 | 941 |8754 |  2 | 671 |1040 | 2.784458e+02 | 2.620000e+02 |   6.28%|  14.15%
+ 61.0s|  1400 |   501 |704787 | 499.1 |   175M |  18 | 448 |1171 |1001 |9552 |  3 | 691 |1040 | 2.783456e+02 | 2.620000e+02 |   6.24%|  16.21%
+ 65.4s|  1500 |   499 |771281 | 510.2 |   190M |  18 | 448 |1201 |1037 |  10k|  1 | 773 |1070 | 2.783024e+02 | 2.620000e+02 |   6.22%|  20.30%
+ 68.9s|  1600 |   499 |828206 | 513.9 |   200M |  18 | 448 |1202 | 941 |  11k|  1 | 814 |1079 | 2.780487e+02 | 2.620000e+02 |   6.13%|  24.10%
+ 72.1s|  1700 |   481 |882366 | 515.5 |   206M |  18 | 448 |1206 | 861 |  12k|  0 | 853 |1084 | 2.776020e+02 | 2.620000e+02 |   5.95%|  28.76%
+ 75.1s|  1800 |   477 |931619 | 514.2 |   206M |  18 | 448 |1206 | 967 |  13k|  0 | 881 |1091 | 2.767327e+02 | 2.620000e+02 |   5.62%|  32.44%
+ 77.7s|  1900 |   465 |976555 | 510.8 |   206M |  18 | 448 |1218 | 904 |  13k|  0 | 925 |1100 | 2.766578e+02 | 2.620000e+02 |   5.59%|  36.02%
+ 79.7s|  2000 |   439 |  1018k| 506.2 |   206M |  18 | 448 |1219 |1103 |  13k|  0 | 943 |1105 | 2.763306e+02 | 2.620000e+02 |   5.47%|  40.50%
+ 82.5s|  2100 |   423 |  1066k| 505.1 |   206M |  18 | 448 |1225 | 964 |  14k|  1 | 982 |1115 | 2.760895e+02 | 2.620000e+02 |   5.38%|  44.64%
+ 84.4s|  2200 |   401 |  1105k| 499.6 |   206M |  18 | 448 |1234 | 902 |  14k|  1 |1009 |1121 | 2.760556e+02 | 2.620000e+02 |   5.36%|  49.12%
+ 86.7s|  2300 |   379 |  1151k| 498.0 |   206M |  18 | 448 |1245 | 943 |  15k|  0 |1047 |1131 | 2.756228e+02 | 2.620000e+02 |   5.20%|  53.50%
+ 88.9s|  2400 |   349 |  1191k| 493.9 |   206M |  18 | 448 |1256 | 927 |  15k|  0 |1078 |1142 | 2.748602e+02 | 2.620000e+02 |   4.91%|  58.06%
+ 90.4s|  2500 |   315 |  1224k| 487.5 |   206M |  18 | 448 |1253 | 929 |  15k|  0 |1083 |1142 | 2.746649e+02 | 2.620000e+02 |   4.83%|  62.51%
+ 92.0s|  2600 |   283 |  1257k| 481.2 |   206M |  18 | 448 |1253 | 990 |  15k|  0 |1091 |1142 | 2.745854e+02 | 2.620000e+02 |   4.80%|  66.78%
+ 93.5s|  2700 |   255 |  1290k| 475.8 |   207M |  18 | 448 |1250 | 961 |  16k|  0 |1112 |1147 | 2.742779e+02 | 2.620000e+02 |   4.69%|  70.71%
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+ 95.5s|  2800 |   205 |  1331k| 473.3 |   207M |  18 | 448 |1252 |1061 |  16k|  2 |1127 |1152 | 2.741125e+02 | 2.620000e+02 |   4.62%|  77.11%
+ 98.4s|  2900 |   151 |  1392k| 478.0 |   207M |  18 | 448 |1270 |1024 |  16k|  0 |1179 |1171 | 2.733309e+02 | 2.620000e+02 |   4.32%|  84.90%
+  102s|  3000 |    67 |  1460k| 485.0 |   208M |  18 | 448 |1284 | 943 |  17k|  1 |1214 |1185 | 2.719678e+02 | 2.620000e+02 |   3.80%|  94.68%
+
+SCIP Status        : problem is solved [optimal solution found]
+Solving Time (sec) : 103.59
+Solving Nodes      : 3073
+Primal Bound       : +2.62000000000000e+02 (21 solutions)
+Dual Bound         : +2.62000000000000e+02
+Gap                : 0.00 %
+
+
+objective value:                                  262
+x1                                                  1 	(obj:0)
+x3                                                  1 	(obj:0)
+x4                                  0.999999999999999 	(obj:0)
+x6                                                  1 	(obj:0)
+x8                                  0.999999999999999 	(obj:0)
+x9                                                  1 	(obj:0)
+x10                                 0.999999999999999 	(obj:0)
+x11                                                 1 	(obj:0)
+x13                                 0.999999999999999 	(obj:0)
+x15                                 0.999999999999999 	(obj:0)
+x19                                                 1 	(obj:0)
+x21                                                 1 	(obj:0)
+x25                                                 1 	(obj:0)
+x26                                                 1 	(obj:0)
+x29                                                 1 	(obj:0)
+x30                                                 1 	(obj:0)
+x37                                                 1 	(obj:0)
+x38                                 0.999999999999999 	(obj:0)
+x40                                 0.999999999999999 	(obj:0)
+x42                                 0.999999999999998 	(obj:0)
+x44                                                 1 	(obj:0)
+x46                                                 1 	(obj:0)
+x48                                                 1 	(obj:0)
+x49                                 0.999999999999998 	(obj:0)
+x50                                                 1 	(obj:0)
+x53                                                 1 	(obj:0)
+x54                                                 1 	(obj:0)
+x55                                                 1 	(obj:0)
+x56                                                 1 	(obj:0)
+x57                                                 1 	(obj:0)
+x58                                                 1 	(obj:0)
+x59                                                 1 	(obj:0)
+x60                                                 1 	(obj:0)
+x62                                                 1 	(obj:0)
+x65                                                 1 	(obj:0)
+x67                                                 1 	(obj:0)
+x69                                                 1 	(obj:0)
+x70                                                 1 	(obj:0)
+x72                                                 1 	(obj:0)
+x73                                                 1 	(obj:0)
+x74                                                 1 	(obj:0)
+x75                                                 1 	(obj:0)
+x77                                                 1 	(obj:0)
+x78                                                 1 	(obj:0)
+x80                                                 1 	(obj:0)
+x85                                                 1 	(obj:0)
+x89                                                 1 	(obj:0)
+x90                                                 1 	(obj:0)
+x91                                                 1 	(obj:0)
+x95                                                 1 	(obj:0)
+x99                                 0.999999999999999 	(obj:0)
+x100                                                1 	(obj:0)
+x101                                                1 	(obj:0)
+x102                                                1 	(obj:0)
+x103                                                1 	(obj:0)
+x107                                                1 	(obj:0)
+x111                                                1 	(obj:0)
+x113                                                1 	(obj:0)
+x114                                                1 	(obj:0)
+x115                                0.999999999999998 	(obj:0)
+x118                                                1 	(obj:0)
+x119                                                1 	(obj:0)
+x122                                0.999999999999998 	(obj:0)
+x127                                                1 	(obj:0)
+y1                                                  1 	(obj:1)
+y2                                                  1 	(obj:1)
+y3                                                  1 	(obj:1)
+y4                                                  1 	(obj:1)
+y6                                                  1 	(obj:1)
+y7                                  0.999999999999999 	(obj:1)
+y8                                                  1 	(obj:1)
+y9                                  0.999999999999999 	(obj:1)
+y11                                                 1 	(obj:1)
+y12                                                 1 	(obj:1)
+y14                                                 1 	(obj:1)
+y16                                                 1 	(obj:1)
+y18                                                 1 	(obj:1)
+y19                                                 1 	(obj:1)
+y20                                                 1 	(obj:1)
+y21                                 0.999999999999999 	(obj:1)
+y22                                 0.999999999999999 	(obj:1)
+y23                                                 1 	(obj:1)
+y24                                 0.999999999999998 	(obj:1)
+y25                                 0.999999999999998 	(obj:1)
+y26                                                 1 	(obj:1)
+y27                                                 1 	(obj:1)
+y28                                                 1 	(obj:1)
+y29                                                 1 	(obj:1)
+y30                                                 1 	(obj:1)
+y31                                                 1 	(obj:1)
+y32                                                 1 	(obj:1)
+y33                                                 1 	(obj:1)
+y35                                                 1 	(obj:1)
+y36                                                 1 	(obj:1)
+y37                                                 1 	(obj:1)
+y39                                 0.999999999999999 	(obj:1)
+y40                                                 1 	(obj:1)
+y41                                 0.999999999999999 	(obj:1)
+y42                                                 1 	(obj:1)
+y43                                                 1 	(obj:1)
+y44                                                 1 	(obj:1)
+y47                                                 1 	(obj:1)
+y48                                                 1 	(obj:1)
+y49                                                 1 	(obj:1)
+y50                                 0.999999999999999 	(obj:1)
+y51                                                 1 	(obj:1)
+y52                                 0.999999999999999 	(obj:1)
+y53                                                 1 	(obj:1)
+y54                                                 1 	(obj:1)
+y55                                                 1 	(obj:1)
+y56                                                 1 	(obj:1)
+y57                                                 1 	(obj:1)
+y58                                 0.999999999999999 	(obj:1)
+y59                                                 1 	(obj:1)
+y60                                                 1 	(obj:1)
+y64                                                 1 	(obj:1)
+y65                                 0.999999999999998 	(obj:1)
+y66                                 0.999999999999999 	(obj:1)
+y67                                                 1 	(obj:1)
+y68                                                 1 	(obj:1)
+y70                                                 1 	(obj:1)
+y71                                 0.999999999999999 	(obj:1)
+y73                                                 1 	(obj:1)
+y74                                                 1 	(obj:1)
+y75                                                 1 	(obj:1)
+y76                                 0.999999999999999 	(obj:1)
+y77                                                 1 	(obj:1)
+y78                                                 1 	(obj:1)
+y80                                                 1 	(obj:1)
+y81                                                 1 	(obj:1)
+y82                                                 1 	(obj:1)
+y83                                                 1 	(obj:1)
+y84                                                 1 	(obj:1)
+y85                                                 1 	(obj:1)
+y86                                                 1 	(obj:1)
+y87                                                 1 	(obj:1)
+y88                                                 1 	(obj:1)
+y89                                                 1 	(obj:1)
+y90                                                 1 	(obj:1)
+y91                                                 1 	(obj:1)
+y93                                                 1 	(obj:1)
+y94                                                 1 	(obj:1)
+y95                                                 1 	(obj:1)
+y97                                                 1 	(obj:1)
+y99                                                 1 	(obj:1)
+y100                                                1 	(obj:1)
+y101                                                1 	(obj:1)
+y102                                0.999999999999998 	(obj:1)
+y104                                                1 	(obj:1)
+y105                                                1 	(obj:1)
+y106                                                1 	(obj:1)
+y107                                                1 	(obj:1)
+y108                                                1 	(obj:1)
+y109                                                1 	(obj:1)
+y110                                                1 	(obj:1)
+y113                                                1 	(obj:1)
+y115                                                1 	(obj:1)
+y116                                                1 	(obj:1)
+y117                                                1 	(obj:1)
+y118                                                1 	(obj:1)
+y119                                                1 	(obj:1)
+y121                                0.999999999999998 	(obj:1)
+y122                                                1 	(obj:1)
+y123                                                1 	(obj:1)
+y124                                0.999999999999998 	(obj:1)
+y125                                                1 	(obj:1)
+y126                                                1 	(obj:1)
+y127                                                1 	(obj:1)
+y129                                0.999999999999999 	(obj:1)
+y130                                                1 	(obj:1)
+y131                                                1 	(obj:1)
+y132                                                1 	(obj:1)
+y134                                                1 	(obj:1)
+y135                                                1 	(obj:1)
+y136                                                1 	(obj:1)
+y137                                                1 	(obj:1)
+y138                                                1 	(obj:1)
+y139                                                1 	(obj:1)
+y140                                                1 	(obj:1)
+y142                                0.999999999999999 	(obj:1)
+y143                                                1 	(obj:1)
+y145                                0.999999999999999 	(obj:1)
+y146                                                1 	(obj:1)
+y148                                0.999999999999999 	(obj:1)
+y150                                                1 	(obj:1)
+y152                                                1 	(obj:1)
+y153                                                1 	(obj:1)
+y154                                0.999999999999999 	(obj:1)
+y155                                                1 	(obj:1)
+y156                                                1 	(obj:1)
+y157                                                1 	(obj:1)
+y159                                                1 	(obj:1)
+y160                                                1 	(obj:1)
+y161                                                1 	(obj:1)
+y162                                                1 	(obj:1)
+y163                                                1 	(obj:1)
+y164                                0.999999999999999 	(obj:1)
+y166                                                1 	(obj:1)
+y167                                                1 	(obj:1)
+y168                                                1 	(obj:1)
+y169                                                1 	(obj:1)
+y170                                                1 	(obj:1)
+y171                                                1 	(obj:1)
+y173                                                1 	(obj:1)
+y174                                                1 	(obj:1)
+y177                                                1 	(obj:1)
+y178                                                1 	(obj:1)
+y179                                                1 	(obj:1)
+y181                                                1 	(obj:1)
+y182                                                1 	(obj:1)
+y183                                                1 	(obj:1)
+y184                                                1 	(obj:1)
+y185                                                1 	(obj:1)
+y186                                                1 	(obj:1)
+y187                                                1 	(obj:1)
+y189                                                1 	(obj:1)
+y190                                                1 	(obj:1)
+y192                                                1 	(obj:1)
+y193                                                1 	(obj:1)
+y196                                                1 	(obj:1)
+y197                                                1 	(obj:1)
+y198                                                1 	(obj:1)
+y199                                                1 	(obj:1)
+y200                                                1 	(obj:1)
+y201                                                1 	(obj:1)
+y202                                                1 	(obj:1)
+y203                                                1 	(obj:1)
+y204                                                1 	(obj:1)
+y206                                                1 	(obj:1)
+y208                                0.999999999999999 	(obj:1)
+y209                                                1 	(obj:1)
+y210                                                1 	(obj:1)
+y211                                0.999999999999999 	(obj:1)
+y212                                                1 	(obj:1)
+y213                                0.999999999999996 	(obj:1)
+y214                                                1 	(obj:1)
+y215                                                1 	(obj:1)
+y216                                                1 	(obj:1)
+y217                                                1 	(obj:1)
+y218                                0.999999999999999 	(obj:1)
+y219                                                1 	(obj:1)
+y220                                                1 	(obj:1)
+y221                                0.999999999999999 	(obj:1)
+y223                                                1 	(obj:1)
+y225                                                1 	(obj:1)
+y226                                                1 	(obj:1)
+y228                                                1 	(obj:1)
+y229                                                1 	(obj:1)
+y230                                                1 	(obj:1)
+y232                                                1 	(obj:1)
+y233                                                1 	(obj:1)
+y234                                                1 	(obj:1)
+y235                                                1 	(obj:1)
+y236                                                1 	(obj:1)
+y237                                0.999999999999999 	(obj:1)
+y238                                                1 	(obj:1)
+y239                                                1 	(obj:1)
+y240                                                1 	(obj:1)
+y241                                                1 	(obj:1)
+y242                                                1 	(obj:1)
+y243                                                1 	(obj:1)
+y244                                                1 	(obj:1)
+y246                                                1 	(obj:1)
+y247                                                1 	(obj:1)
+y248                                                1 	(obj:1)
+y249                                                1 	(obj:1)
+y251                                                1 	(obj:1)
+y253                                                1 	(obj:1)
+y255                                                1 	(obj:1)
+y256                                                1 	(obj:1)
+y257                                                1 	(obj:1)
+y258                                0.999999999999999 	(obj:1)
+y259                                                1 	(obj:1)
+y260                                                1 	(obj:1)
+y261                                0.999999999999999 	(obj:1)
+y262                                                1 	(obj:1)
+y263                                0.999999999999999 	(obj:1)
+y264                                                1 	(obj:1)
+y265                                                1 	(obj:1)
+y266                                                1 	(obj:1)
+y267                                                1 	(obj:1)
+y268                                                1 	(obj:1)
+y269                                                1 	(obj:1)
+y270                                0.999999999999999 	(obj:1)
+y271                                                1 	(obj:1)
+y272                                                1 	(obj:1)
+y273                                                1 	(obj:1)
+y274                                                1 	(obj:1)
+y276                                                1 	(obj:1)
+y277                                                1 	(obj:1)
+y278                                                1 	(obj:1)
+y279                                                1 	(obj:1)
+y280                                                1 	(obj:1)
+y281                                                1 	(obj:1)
+y282                                                1 	(obj:1)
+y283                                                1 	(obj:1)
+y284                                                1 	(obj:1)
+y286                                                1 	(obj:1)
+y287                                                1 	(obj:1)
+y288                                                1 	(obj:1)
+y289                                                1 	(obj:1)
+y291                                                1 	(obj:1)
+y293                                                1 	(obj:1)
+y294                                                1 	(obj:1)
+y295                                                1 	(obj:1)
+y296                                                1 	(obj:1)
+y297                                                1 	(obj:1)
+y298                                                1 	(obj:1)
+y299                                0.999999999999999 	(obj:1)
+y300                                                1 	(obj:1)
+y302                                                1 	(obj:1)
+y303                                                1 	(obj:1)
+y304                                                1 	(obj:1)
+y305                                                1 	(obj:1)
+y306                                                1 	(obj:1)
+y307                                0.999999999999999 	(obj:1)
+y309                                                1 	(obj:1)
+y310                                                1 	(obj:1)
+y311                                                1 	(obj:1)
+y313                                                1 	(obj:1)
+y314                                0.999999999999998 	(obj:1)
+y315                                                1 	(obj:1)
+y316                                0.999999999999996 	(obj:1)
+y317                                                1 	(obj:1)
+y318                                                1 	(obj:1)
+y319                                0.999999999999998 	(obj:1)
+
+

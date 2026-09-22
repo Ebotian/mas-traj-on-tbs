@@ -1,0 +1,377 @@
+SCIP version 10.0.3 [precision: 8 byte] [memory: block] [mode: optimized] [LP solver: SoPlex 8.0.3] [GitHash: d409edf9f6]
+Copyright (c) 2002-2026 Zuse Institute Berlin (ZIB)
+
+External libraries: 
+  Readline 8.3         GNU library for command line editing (gnu.org/s/readline)
+  SoPlex 8.0.3         Linear programming solver developed at Zuse Institute Berlin (soplex.zib.de) [GitHash: 13e2ab24]
+  CppAD 20180000.0     Algorithmic Differentiation of C++ algorithms developed by B. Bell (github.com/coin-or/CppAD)
+  ZLIB 1.3.2           General purpose compression library by J. Gailly and M. Adler (zlib.net)
+  MPFR 4.2.2           GNU Multiple Precision Floating-Point Reliable Library (mpfr.org)
+  Boost 1.92.0         Boost C++ Libraries (boost.org)
+  TinyCThread 1.2      small portable implementation of the C11 threads API (tinycthread.github.io)
+  GMP 6.3.0            GNU Multiple Precision Arithmetic Library developed by T. Granlund (gmplib.org)
+  AMPL/MP 4.0.4        AMPL .nl file reader library (github.com/ampl/mp)
+  PaPILO 3.0.1         parallel presolve for integer and linear optimization (github.com/scipopt/papilo) (built with TBB) [GitHash: ac69e19d]
+  bliss 0.77           Computing Graph Automorphism Groups by T. Junttila and P. Kaski (users.aalto.fi/~tjunttil/bliss)
+
+user parameter file <scip.set> not found - using default parameters
+
+
+read problem <scip/C_0007.lp>
+============
+
+original problem has 381 variables (381 bin, 0 int, 0 cont) and 538 constraints
+limits/time = 120
+display/verblevel = 4
+
+feasible solution found by trivial heuristic after 0.0 seconds, objective value 0.000000e+00
+presolving:
+   (0.0s) running MILP presolver
+   (0.0s) MILP presolver found nothing
+(round 1, exhaustive) 0 del vars, 0 del conss, 0 add conss, 0 chg bounds, 0 chg sides, 0 chg coeffs, 538 upgd conss, 0 impls, 0 clqs, 0 implints
+   (0.0s) probing: 51/381 (13.4%) - 0 fixings, 0 aggregations, 0 implications, 0 bound changes
+   (0.0s) probing aborted: 50/50 successive totally useless probings
+   (0.0s) symmetry computation started: requiring (bin +, int +, cont +), (fixed: bin -, int -, cont -)
+   (0.0s) symmetry computation finished: 2 generators found (max: 1500, log10 of symmetry group size: 0.60) (symcode time: 0.00)
+dynamic symmetry handling statistics:
+   orbitopal reduction:       no components
+   orbital reduction:         no components
+   lexicographic reduction:    2 permutations with support sizes 6, 6
+handled 2 out of 2 symmetry components
+presolving (2 rounds: 2 fast, 2 medium, 2 exhaustive):
+ 0 deleted vars, 0 deleted constraints, 0 added constraints, 0 tightened bounds, 0 added holes, 0 changed sides, 0 changed coefficients
+ 0 implications, 0 cliques, 0 implied integral variables (0 bin, 0 int, 0 cont)
+presolved problem has 381 variables (381 bin, 0 int, 0 cont) and 538 constraints
+    538 constraints of type <logicor>
+transformed objective value is always integral (scale: 1)
+Presolving Time: 0.01
+transformed 2/2 original solutions to the transformed problem space
+
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+p 0.0s|     1 |     0 |     0 |     - |   locks|   0 | 381 | 538 | 538 |   0 |  0 |   0 |   0 | 2.530000e+02 | 1.730000e+02 |  46.24%| unknown
+i 0.0s|     1 |     0 |     0 |     - |  oneopt|   0 | 381 | 538 | 538 |   0 |  0 |   0 |   0 | 2.530000e+02 | 1.910000e+02 |  32.46%| unknown
+  0.0s|     1 |     0 |   209 |     - |  9217k |   0 | 381 | 538 | 538 |   0 |  0 |   0 |   0 | 2.340000e+02 | 1.910000e+02 |  22.51%| unknown
+  0.0s|     1 |     0 |   290 |     - |  9584k |   0 | 381 | 538 | 542 |   4 |  1 |   0 |   0 | 2.331667e+02 | 1.910000e+02 |  22.08%| unknown
+  0.0s|     1 |     0 |   371 |     - |  9757k |   0 | 381 | 538 | 547 |   9 |  2 |   0 |   0 | 2.316667e+02 | 1.910000e+02 |  21.29%| unknown
+  0.0s|     1 |     0 |   481 |     - |  9873k |   0 | 381 | 538 | 553 |  15 |  3 |   0 |   0 | 2.310000e+02 | 1.910000e+02 |  20.94%| unknown
+  0.0s|     1 |     0 |   686 |     - |    10M |   0 | 381 | 538 | 559 |  21 |  4 |   0 |   0 | 2.300556e+02 | 1.910000e+02 |  20.45%| unknown
+  0.0s|     1 |     0 |   759 |     - |    11M |   0 | 381 | 538 | 563 |  25 |  5 |   0 |   0 | 2.293750e+02 | 1.910000e+02 |  20.09%| unknown
+  0.1s|     1 |     0 |   934 |     - |    12M |   0 | 381 | 538 | 572 |  34 |  6 |   0 |   0 | 2.289444e+02 | 1.910000e+02 |  19.87%| unknown
+  0.1s|     1 |     0 |  1030 |     - |    13M |   0 | 381 | 539 | 580 |  42 |  7 |   1 |   0 | 2.282188e+02 | 1.910000e+02 |  19.49%| unknown
+  0.1s|     1 |     0 |  1149 |     - |    15M |   0 | 381 | 540 | 585 |  47 |  8 |   2 |   0 | 2.277329e+02 | 1.910000e+02 |  19.23%| unknown
+  0.1s|     1 |     0 |  1329 |     - |    18M |   0 | 381 | 540 | 592 |  54 |  9 |   2 |   0 | 2.270964e+02 | 1.910000e+02 |  18.90%| unknown
+  0.1s|     1 |     0 |  1483 |     - |    22M |   0 | 381 | 540 | 599 |  61 | 10 |   2 |   0 | 2.264537e+02 | 1.910000e+02 |  18.56%| unknown
+  0.1s|     1 |     0 |  1512 |     - |    22M |   0 | 381 | 540 | 603 |  66 | 11 |   2 |   0 | 2.264537e+02 | 1.910000e+02 |  18.56%| unknown
+  0.2s|     1 |     0 |  1584 |     - |    23M |   0 | 381 | 540 | 608 |  71 | 12 |   2 |   0 | 2.263642e+02 | 1.910000e+02 |  18.52%| unknown
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+  0.2s|     1 |     0 |  1642 |     - |    23M |   0 | 381 | 540 | 613 |  76 | 13 |   2 |   0 | 2.263252e+02 | 1.910000e+02 |  18.49%| unknown
+  0.2s|     1 |     0 |  1737 |     - |    23M |   0 | 381 | 540 | 618 |  81 | 14 |   2 |   0 | 2.261471e+02 | 1.910000e+02 |  18.40%| unknown
+  0.2s|     1 |     0 |  1898 |     - |    24M |   0 | 381 | 540 | 622 |  85 | 15 |   2 |   0 | 2.258937e+02 | 1.910000e+02 |  18.27%| unknown
+  0.2s|     1 |     0 |  1959 |     - |    24M |   0 | 381 | 540 | 626 |  89 | 16 |   2 |   0 | 2.257632e+02 | 1.910000e+02 |  18.20%| unknown
+  0.2s|     1 |     0 |  2108 |     - |    24M |   0 | 381 | 540 | 618 |  93 | 17 |   2 |   0 | 2.256613e+02 | 1.910000e+02 |  18.15%| unknown
+  0.2s|     1 |     0 |  2240 |     - |    24M |   0 | 381 | 540 | 622 |  97 | 18 |   2 |   0 | 2.252794e+02 | 1.910000e+02 |  17.95%| unknown
+  0.2s|     1 |     0 |  2388 |     - |    24M |   0 | 381 | 540 | 628 | 103 | 19 |   2 |   0 | 2.251442e+02 | 1.910000e+02 |  17.88%| unknown
+  0.2s|     1 |     0 |  2462 |     - |    24M |   0 | 381 | 540 | 632 | 107 | 20 |   2 |   0 | 2.250220e+02 | 1.910000e+02 |  17.81%| unknown
+  0.2s|     1 |     0 |  2496 |     - |    24M |   0 | 381 | 540 | 635 | 110 | 21 |   2 |   0 | 2.249970e+02 | 1.910000e+02 |  17.80%| unknown
+o 0.2s|     1 |     0 |  3250 |     - |feaspump|   0 | 381 | 540 | 635 | 110 | 22 |   2 |   0 | 2.249970e+02 | 1.970000e+02 |  14.21%| unknown
+  0.3s|     1 |     0 |  3765 |     - |    24M |   0 | 381 | 540 | 635 | 110 | 22 |   2 |   0 | 2.249970e+02 | 1.970000e+02 |  14.21%| unknown
+i 0.3s|     1 |     0 |  3765 |     - |  oneopt|   0 | 381 | 540 | 635 | 110 | 22 |   2 |   0 | 2.249970e+02 | 2.000000e+02 |  12.50%| unknown
+  0.7s|     1 |     2 |  3765 |     - |    24M |   0 | 381 | 540 | 635 | 110 | 23 |   2 |  30 | 2.207175e+02 | 2.000000e+02 |  10.36%| unknown
+* 1.0s|     7 |     6 |  4612 | 352.7 |strongbr|   6 | 381 | 540 | 598 | 110 |  1 |   2 | 140 | 2.207175e+02 | 2.050000e+02 |   7.67%| unknown
+* 1.2s|    13 |     8 |  5442 | 245.5 |strongbr|   6 | 381 | 551 | 598 | 110 |  1 |  13 | 210 | 2.174167e+02 | 2.080000e+02 |   4.53%|  12.10%
+ time | node  | left  |LP iter|LP it/n|mem/heur|mdpt |vars |cons |rows |cuts |sepa|confs|strbr|  dualbound   | primalbound  |  gap   | compl. 
+* 1.3s|    18 |     5 |  5826 | 195.9 |strongbr|   6 | 381 | 560 | 598 | 110 |  1 |  22 | 259 | 2.174167e+02 | 2.100000e+02 |   3.53%|  24.82%
+
+SCIP Status        : problem is solved [optimal solution found]
+Solving Time (sec) : 1.55
+Solving Nodes      : 29
+Primal Bound       : +2.10000000000000e+02 (10 solutions)
+Dual Bound         : +2.10000000000000e+02
+Gap                : 0.00 %
+
+
+objective value:                                  210
+x0                                                  1 	(obj:0)
+x3                                                  1 	(obj:0)
+x4                                                  1 	(obj:0)
+x5                                                  1 	(obj:0)
+x7                                                  1 	(obj:0)
+x10                                                 1 	(obj:0)
+x12                                                 1 	(obj:0)
+x13                                                 1 	(obj:0)
+x15                                                 1 	(obj:0)
+x18                                                 1 	(obj:0)
+x19                                                 1 	(obj:0)
+x21                                                 1 	(obj:0)
+x24                                                 1 	(obj:0)
+x25                                                 1 	(obj:0)
+x27                                                 1 	(obj:0)
+x28                                                 1 	(obj:0)
+x30                                                 1 	(obj:0)
+x31                                                 1 	(obj:0)
+x33                                                 1 	(obj:0)
+x34                                                 1 	(obj:0)
+x36                                                 1 	(obj:0)
+x38                                                 1 	(obj:0)
+x40                                                 1 	(obj:0)
+x41                                                 1 	(obj:0)
+x42                                                 1 	(obj:0)
+x50                                                 1 	(obj:0)
+x51                                                 1 	(obj:0)
+x52                                                 1 	(obj:0)
+x55                                                 1 	(obj:0)
+x56                                                 1 	(obj:0)
+x57                                                 1 	(obj:0)
+x59                                                 1 	(obj:0)
+x60                                                 1 	(obj:0)
+x62                                                 1 	(obj:0)
+x64                                                 1 	(obj:0)
+x65                                                 1 	(obj:0)
+x66                                                 1 	(obj:0)
+x71                                                 1 	(obj:0)
+x72                                                 1 	(obj:0)
+x73                                                 1 	(obj:0)
+x75                                                 1 	(obj:0)
+x77                                                 1 	(obj:0)
+x78                                                 1 	(obj:0)
+x80                                                 1 	(obj:0)
+x82                                                 1 	(obj:0)
+x84                                                 1 	(obj:0)
+x91                                                 1 	(obj:0)
+x92                                                 1 	(obj:0)
+x93                                                 1 	(obj:0)
+x95                                                 1 	(obj:0)
+x96                                                 1 	(obj:0)
+x97                                                 1 	(obj:0)
+x98                                                 1 	(obj:0)
+x99                                                 1 	(obj:0)
+x100                                                1 	(obj:0)
+x101                                                1 	(obj:0)
+x103                                                1 	(obj:0)
+x104                                                1 	(obj:0)
+x106                                                1 	(obj:0)
+x109                                                1 	(obj:0)
+x110                                                1 	(obj:0)
+x111                                                1 	(obj:0)
+x115                                                1 	(obj:0)
+x119                                                1 	(obj:0)
+x120                                                1 	(obj:0)
+x121                                                1 	(obj:0)
+x122                                                1 	(obj:0)
+x123                                                1 	(obj:0)
+x124                                                1 	(obj:0)
+x125                                                1 	(obj:0)
+x126                                                1 	(obj:0)
+x127                                                1 	(obj:0)
+y0                                                  1 	(obj:1)
+y1                                                  1 	(obj:1)
+y3                                                  1 	(obj:1)
+y4                                                  1 	(obj:1)
+y5                                                  1 	(obj:1)
+y6                                                  1 	(obj:1)
+y8                                                  1 	(obj:1)
+y9                                                  1 	(obj:1)
+y10                                                 1 	(obj:1)
+y11                                                 1 	(obj:1)
+y12                                                 1 	(obj:1)
+y15                                                 1 	(obj:1)
+y16                                                 1 	(obj:1)
+y17                                                 1 	(obj:1)
+y18                                                 1 	(obj:1)
+y19                                                 1 	(obj:1)
+y21                                                 1 	(obj:1)
+y22                                                 1 	(obj:1)
+y23                                                 1 	(obj:1)
+y24                                                 1 	(obj:1)
+y26                                                 1 	(obj:1)
+y27                                                 1 	(obj:1)
+y28                                                 1 	(obj:1)
+y29                                                 1 	(obj:1)
+y30                                                 1 	(obj:1)
+y31                                                 1 	(obj:1)
+y32                                                 1 	(obj:1)
+y33                                                 1 	(obj:1)
+y34                                                 1 	(obj:1)
+y35                                                 1 	(obj:1)
+y38                                                 1 	(obj:1)
+y40                                                 1 	(obj:1)
+y42                                                 1 	(obj:1)
+y43                                                 1 	(obj:1)
+y44                                                 1 	(obj:1)
+y45                                                 1 	(obj:1)
+y46                                                 1 	(obj:1)
+y47                                                 1 	(obj:1)
+y49                                                 1 	(obj:1)
+y50                                                 1 	(obj:1)
+y51                                                 1 	(obj:1)
+y52                                                 1 	(obj:1)
+y53                                                 1 	(obj:1)
+y55                                                 1 	(obj:1)
+y56                                                 1 	(obj:1)
+y57                                                 1 	(obj:1)
+y58                                                 1 	(obj:1)
+y59                                                 1 	(obj:1)
+y60                                                 1 	(obj:1)
+y61                                                 1 	(obj:1)
+y63                                                 1 	(obj:1)
+y64                                                 1 	(obj:1)
+y65                                                 1 	(obj:1)
+y66                                                 1 	(obj:1)
+y67                                                 1 	(obj:1)
+y69                                                 1 	(obj:1)
+y70                                                 1 	(obj:1)
+y72                                                 1 	(obj:1)
+y73                                                 1 	(obj:1)
+y74                                                 1 	(obj:1)
+y75                                                 1 	(obj:1)
+y76                                                 1 	(obj:1)
+y77                                                 1 	(obj:1)
+y78                                                 1 	(obj:1)
+y80                                                 1 	(obj:1)
+y81                                                 1 	(obj:1)
+y82                                                 1 	(obj:1)
+y84                                                 1 	(obj:1)
+y85                                                 1 	(obj:1)
+y86                                                 1 	(obj:1)
+y88                                                 1 	(obj:1)
+y89                                                 1 	(obj:1)
+y90                                                 1 	(obj:1)
+y92                                                 1 	(obj:1)
+y93                                                 1 	(obj:1)
+y94                                                 1 	(obj:1)
+y95                                                 1 	(obj:1)
+y97                                                 1 	(obj:1)
+y98                                                 1 	(obj:1)
+y99                                                 1 	(obj:1)
+y100                                                1 	(obj:1)
+y101                                                1 	(obj:1)
+y102                                                1 	(obj:1)
+y104                                                1 	(obj:1)
+y105                                                1 	(obj:1)
+y106                                                1 	(obj:1)
+y107                                                1 	(obj:1)
+y108                                                1 	(obj:1)
+y109                                                1 	(obj:1)
+y110                                                1 	(obj:1)
+y111                                                1 	(obj:1)
+y112                                                1 	(obj:1)
+y113                                                1 	(obj:1)
+y114                                                1 	(obj:1)
+y115                                                1 	(obj:1)
+y116                                                1 	(obj:1)
+y118                                                1 	(obj:1)
+y119                                                1 	(obj:1)
+y120                                                1 	(obj:1)
+y121                                                1 	(obj:1)
+y122                                                1 	(obj:1)
+y124                                                1 	(obj:1)
+y125                                                1 	(obj:1)
+y126                                                1 	(obj:1)
+y127                                                1 	(obj:1)
+y128                                                1 	(obj:1)
+y129                                                1 	(obj:1)
+y131                                                1 	(obj:1)
+y132                                                1 	(obj:1)
+y133                                                1 	(obj:1)
+y134                                                1 	(obj:1)
+y135                                                1 	(obj:1)
+y136                                                1 	(obj:1)
+y137                                                1 	(obj:1)
+y140                                                1 	(obj:1)
+y141                                                1 	(obj:1)
+y142                                                1 	(obj:1)
+y143                                                1 	(obj:1)
+y144                                                1 	(obj:1)
+y145                                                1 	(obj:1)
+y148                                                1 	(obj:1)
+y149                                                1 	(obj:1)
+y150                                                1 	(obj:1)
+y151                                                1 	(obj:1)
+y152                                                1 	(obj:1)
+y153                                                1 	(obj:1)
+y154                                                1 	(obj:1)
+y155                                                1 	(obj:1)
+y156                                                1 	(obj:1)
+y157                                                1 	(obj:1)
+y158                                                1 	(obj:1)
+y159                                                1 	(obj:1)
+y160                                                1 	(obj:1)
+y161                                                1 	(obj:1)
+y162                                                1 	(obj:1)
+y163                                                1 	(obj:1)
+y165                                                1 	(obj:1)
+y166                                                1 	(obj:1)
+y167                                                1 	(obj:1)
+y168                                                1 	(obj:1)
+y169                                                1 	(obj:1)
+y170                                                1 	(obj:1)
+y172                                                1 	(obj:1)
+y173                                                1 	(obj:1)
+y174                                                1 	(obj:1)
+y175                                                1 	(obj:1)
+y176                                                1 	(obj:1)
+y177                                                1 	(obj:1)
+y179                                                1 	(obj:1)
+y180                                                1 	(obj:1)
+y181                                                1 	(obj:1)
+y182                                                1 	(obj:1)
+y184                                                1 	(obj:1)
+y186                                                1 	(obj:1)
+y187                                                1 	(obj:1)
+y188                                                1 	(obj:1)
+y189                                                1 	(obj:1)
+y190                                                1 	(obj:1)
+y192                                                1 	(obj:1)
+y193                                                1 	(obj:1)
+y194                                                1 	(obj:1)
+y195                                                1 	(obj:1)
+y196                                                1 	(obj:1)
+y197                                                1 	(obj:1)
+y198                                                1 	(obj:1)
+y199                                                1 	(obj:1)
+y201                                                1 	(obj:1)
+y202                                                1 	(obj:1)
+y203                                                1 	(obj:1)
+y204                                                1 	(obj:1)
+y205                                                1 	(obj:1)
+y206                                                1 	(obj:1)
+y207                                                1 	(obj:1)
+y208                                                1 	(obj:1)
+y210                                                1 	(obj:1)
+y212                                                1 	(obj:1)
+y213                                                1 	(obj:1)
+y216                                                1 	(obj:1)
+y217                                                1 	(obj:1)
+y218                                                1 	(obj:1)
+y219                                                1 	(obj:1)
+y220                                                1 	(obj:1)
+y221                                                1 	(obj:1)
+y222                                                1 	(obj:1)
+y223                                                1 	(obj:1)
+y224                                                1 	(obj:1)
+y225                                                1 	(obj:1)
+y227                                                1 	(obj:1)
+y228                                                1 	(obj:1)
+y229                                                1 	(obj:1)
+y231                                                1 	(obj:1)
+y233                                                1 	(obj:1)
+y234                                                1 	(obj:1)
+y235                                                1 	(obj:1)
+y236                                                1 	(obj:1)
+y238                                                1 	(obj:1)
+y239                                                1 	(obj:1)
+y240                                                1 	(obj:1)
+y241                                                1 	(obj:1)
+y242                                                1 	(obj:1)
+y243                                                1 	(obj:1)
+y244                                                1 	(obj:1)
+y245                                                1 	(obj:1)
+y246                                                1 	(obj:1)
+y247                                                1 	(obj:1)
+y248                                                1 	(obj:1)
+y249                                                1 	(obj:1)
+y250                                                1 	(obj:1)
+y251                                                1 	(obj:1)
+y252                                                1 	(obj:1)
+
+

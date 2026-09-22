@@ -1,0 +1,6 @@
+BURER2002      seed=1337 limit=30s  objective 338/338  stdout=DIFFERS  solution_line=IDENTICAL
+FESTA2002GPR   seed=1337 limit=30s  objective 338/338  stdout=DIFFERS  solution_line=IDENTICAL
+DESOUSA2013    seed=1337 limit=30s  objective 300/300  stdout=DIFFERS  solution_line=IDENTICAL
+
+stdout differs because MQLib's history field records the wall-clock second
+at which each incumbent was found; the partition itself is what is compared.

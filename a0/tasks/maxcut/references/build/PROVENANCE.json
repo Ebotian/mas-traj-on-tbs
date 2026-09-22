@@ -1,0 +1,36 @@
+{
+  "schema": "a0.maxcut.reference.provenance/v1",
+  "tool": "MQLib",
+  "clone_url": "https://github.com/MQLib/MQLib.git",
+  "commit_pin": "585496274af5abb0849d0d47e135496b4688680b",
+  "commit_date": "2025-11-12 12:55:29 -0500",
+  "commit_subject": "Merge pull request #6 from giordano/mg/makefile",
+  "branch_at_clone_time": "master",
+  "tree_sha": "24c278fd918978c332750c600e03588d0325dd25",
+  "patches": [],
+  "patches_note": "none: the working tree was clean at build time (git status --porcelain empty) and no source file was edited. The graph.json -> MQLib conversion lives in our own tools/to_mqlib.py, not in a patch to upstream.",
+  "source_digest": {
+    "method": "sha256 over the sorted `sha256sum` output of every src/**/*.cpp and include/**/*.h",
+    "value": "81cc2835050554fadcf5fb3f2b11cfc9b4cfc221831fb79d59f491747d7078be"
+  },
+  "build": {
+    "command": "make -j12",
+    "cxx": "g++ (GCC) 16.2.1 20260810",
+    "cxxflags": "-Iinclude -std=c++0x -O2 -Wall",
+    "lflags": "-lm",
+    "objects": 41,
+    "script": "build/build_mqlib.sh"
+  },
+  "artifacts": {
+    "bin/MQLib": "f761c326b68decc7da8218084bfc9c6322c7d15fb330411c1c67d42e70a6004f",
+    "bin/MQLib.a": "68e7d54eb154d74fa106d6ae7057ad402944691b430ccb6bdf77004ba9113ee7"
+  },
+  "artifacts_note": "Binaries are NOT vendored into this repository (575 KB). The sha256 above identifies the exact executable that produced targets.json; rebuild with build/build_mqlib.sh. A different compiler may produce a different binary and, in principle, a different R_i; the source pin plus flags are the reproducible identity.",
+  "host": {
+    "os": "Arch Linux",
+    "kernel": "Linux 7.2.4-arch1-2 x86_64",
+    "glibc": "2.44",
+    "threads": 12
+  },
+  "reported_vs_recomputed": "MQLib's own objective line is recorded per run in logs/runs/*.json as mqlib_reported_objective, purely as a cross-check. The authoritative value is the integer recomputed from graph.json + partition.json by tools/verify_partition.py."
+}

@@ -1,0 +1,12 @@
+# tools/verify_partition.py -- rejection path
+# command:
+#   python3 tools/verify_partition.py ../suite/dev/G_dev_0001.json <case>.partition.json
+
+short      exit=2  stderr=invalid: assignment length
+two        exit=2  stderr=invalid: assignment element not in {0,1}
+bad        exit=2  stderr=invalid: JSONDecodeError('Expecting property name enclosed in double quotes: line 1 column 36 (char 35)')
+wrongid    exit=2  stderr=invalid: graph_id mismatch
+noschema   exit=2  stderr=invalid: schema
+
+# control: the real witness for G_dev_0001
+{"cut_edges":224,"edges_total":265,"graph_id":"G_dev_0001","graph_sha256":"94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6","partition_sha256":"9f877d6d3f8efe48603bb5b145837fb9afdca0c73b1a2ed1e8db814022ff38e5"}

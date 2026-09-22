@@ -1,0 +1,2981 @@
+{
+  "generated_utc": "2026-09-22T09:00:37Z",
+  "headline_budget_per_graph": {
+    "certification": {
+      "formulation": "edge MIP + triangle odd-cycle inequalities",
+      "on": "all 60 graphs",
+      "parallelism": 11,
+      "solver": "SCIP 10.0.3 / SoPlex 8.0.3 (/usr/bin/scip, offline)",
+      "time_limit_s_per_graph": 120.0
+    },
+    "ensemble": {
+      "binary_sha256": "f761c326b68decc7da8218084bfc9c6322c7d15fb330411c1c67d42e70a6004f",
+      "commit_pin": "585496274af5abb0849d0d47e135496b4688680b",
+      "heuristics": [
+        "BURER2002",
+        "FESTA2002GPR",
+        "FESTA2002VNSPR",
+        "DUARTE2005",
+        "LAGUNA2009HCE",
+        "DESOUSA2013"
+      ],
+      "on": "all 60 graphs (24 dev + 24 eval + 12 calibration)",
+      "parallelism": 11,
+      "runs_per_graph": 30,
+      "seeds": [
+        1337,
+        2718,
+        31415,
+        4242,
+        65521
+      ],
+      "time_limit_s_per_run": 30.0,
+      "tool": "MQLib"
+    },
+    "ensemble_topup": {
+      "heuristics": [
+        "BURER2002",
+        "FESTA2002GPR",
+        "LAGUNA2009HCE"
+      ],
+      "on": "the 18 graphs whose optimality SCIP did not certify",
+      "parallelism": 11,
+      "purpose": "test whether the 30 s reference R_i is converged; a 10x budget that fails to beat R_i is evidence that R_i is at or very near the optimum, which is exactly the unresolved case the certification pass left open",
+      "runs_per_graph": 6,
+      "seeds": [
+        1337,
+        65521
+      ],
+      "separate_outdir": "logs_topup (the primary 30 s records in logs/ are never overwritten, so the two budget regimes stay distinguishable)",
+      "time_limit_s_per_run": 300.0
+    },
+    "upper_bounds": {
+      "bm_iters": 3000,
+      "bm_rank": 8,
+      "iters_sdp": 4000,
+      "on": "all 60 graphs",
+      "parallelism": 11,
+      "purpose": "a rigorous U_i for every graph, so that an uncertified R_i is still bracketed rather than open-ended"
+    }
+  },
+  "per_graph": {
+    "C_0001": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 11,
+        "wall_s": 6.3
+      },
+      "edges": 245,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900068
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "8c23cbb224a31dbea8ccf28fb6db7b26d182f72c3abada9354a247d13cb7ad29",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "p030",
+      "target": {
+        "OPT": 209,
+        "R": 209,
+        "U": 209,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 219.5380442429058,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 15.354
+      }
+    },
+    "C_0002": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 34,
+        "wall_s": 25.9
+      },
+      "edges": 378,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900040
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "99710028c7d66594d3c6bd7620855c02412f9c2f78efdaa7b0ff2448333c255f",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "p050",
+      "target": {
+        "OPT": 301,
+        "R": 301,
+        "U": 301,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 314.1157269111354,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.506
+      }
+    },
+    "C_0003": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 166,
+        "wall_s": 120.1
+      },
+      "edges": 636,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900030
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "0e3f49d6ec062ba5ca4ce84323e3f035fa9bf807a02d9f4ad9d070c69be2d36e",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "p080",
+      "target": {
+        "OPT": null,
+        "R": 460,
+        "U": 484,
+        "U_minus_R": 24,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 484.042532680194,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.678
+      }
+    },
+    "C_0004": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 0,
+        "wall_s": 4.8
+      },
+      "edges": 192,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900026
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "0431a497c0462ffe44b697cdfeb265e76c56e64f1670eb1607eb232daa79a17e",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "d3",
+      "target": {
+        "OPT": 177,
+        "R": 177,
+        "U": 177,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 184.60825300232668,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.286
+      }
+    },
+    "C_0005": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 4,
+        "wall_s": 24.7
+      },
+      "edges": 256,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900030
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "385256224954c6ce9a84e05264f09c754a86b6bed6f4b0bd41b369f301086c17",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "d4",
+      "target": {
+        "OPT": 218,
+        "R": 218,
+        "U": 218,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 233.9148853193541,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.337
+      }
+    },
+    "C_0006": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 9,
+        "wall_s": 40.6
+      },
+      "edges": 320,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900045
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "b42f39d3431800fd9d7988131d6fa786c0b91fd26abf7ef5fafb55dc9f17394e",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "d5",
+      "target": {
+        "OPT": 267,
+        "R": 267,
+        "U": 267,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 281.086580327445,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.365
+      }
+    },
+    "C_0007": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 32,
+        "wall_s": 1.6
+      },
+      "edges": 253,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900046
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "12b53751d29caf1c7fa9333ccfb5bbeb1da9b96d096e0b6433431642b0cca4ee",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "m2",
+      "target": {
+        "OPT": 210,
+        "R": 210,
+        "U": 210,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 221.61180969382843,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.027
+      }
+    },
+    "C_0008": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 118,
+        "wall_s": 6.8
+      },
+      "edges": 378,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900048
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "39504232beff0c326cca31e883a365d0711d3d42add1b173386b35dc7d7233ce",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "m3",
+      "target": {
+        "OPT": 292,
+        "R": 292,
+        "U": 292,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 306.6369618732838,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 10.5
+      }
+    },
+    "C_0009": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 445,
+        "wall_s": 105.3
+      },
+      "edges": 625,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900050
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "045f75500fc44e2c8fcf314309de6924a5d710be768e269efeed901ff37fad03",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "m5",
+      "target": {
+        "OPT": 449,
+        "R": 449,
+        "U": 449,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 470.0431449424123,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 9.997
+      }
+    },
+    "C_0010": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 61,
+        "wall_s": 120.0
+      },
+      "edges": 436,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900048
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "7107d3cd0a930fcfcd4fa5cec6abbd91fd3b5bebc4dfc6c6e28e260af1e86c20",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "k2sym",
+      "target": {
+        "OPT": null,
+        "R": 335,
+        "U": 345,
+        "U_minus_R": 10,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 353.9656295930163,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 9.797
+      }
+    },
+    "C_0011": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 74,
+        "wall_s": 93.8
+      },
+      "edges": 415,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900051
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "04bebec51fb43c0fccd8b56da7045868629ce49caa5aecf49ece98f60628c6e6",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "k4sym",
+      "target": {
+        "OPT": 318,
+        "R": 318,
+        "U": 318,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 337.2085831390994,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 9.352
+      }
+    },
+    "C_0012": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 117,
+        "wall_s": 120.1
+      },
+      "edges": 517,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900043
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "204c62f040b44b21cc7182bcfc2c789f5c6b5a41b9a74f131cdfdbea432ed415",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "calibration",
+      "stratum": "k3asym",
+      "target": {
+        "OPT": null,
+        "R": 381,
+        "U": 400,
+        "U_minus_R": 19,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 400.51483319044826,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 9.281
+      }
+    },
+    "G_dev_0001": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 12,
+        "wall_s": 8.4
+      },
+      "edges": 265,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900058
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "p030",
+      "target": {
+        "OPT": 224,
+        "R": 224,
+        "U": 224,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 234.60655662511417,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.258
+      }
+    },
+    "G_dev_0002": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 7,
+        "wall_s": 9.8
+      },
+      "edges": 265,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900050
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "e979e1fbfedc18de7647eb5c3376c169db8753d19c5d1dc17e5955ed9c35c23f",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "p030",
+      "target": {
+        "OPT": 224,
+        "R": 224,
+        "U": 224,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 236.90717567367892,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.075
+      }
+    },
+    "G_dev_0003": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 43,
+        "wall_s": 109.2
+      },
+      "edges": 433,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900060
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "6fbf68ab1e87548335d741e2d4deb59fbe0bb53321de6de5f051cda6de85a01f",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "p050",
+      "target": {
+        "OPT": 338,
+        "R": 338,
+        "U": 338,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 354.3019670363678,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.325
+      }
+    },
+    "G_dev_0004": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 30,
+        "wall_s": 60.3
+      },
+      "edges": 385,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900057
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "65f480bbe6a0031d5c4421bd1821e1c5485503b86e7ef076e1421d420e36997b",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "p050",
+      "target": {
+        "OPT": 305,
+        "R": 305,
+        "U": 305,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 321.2326150052615,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.416
+      }
+    },
+    "G_dev_0005": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 203,
+        "wall_s": 120.2
+      },
+      "edges": 696,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900054
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "545769f217e02ba4fbc92ddcc71a08ff0a77e8efbabc36196f45a8c1622babbe",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "p080",
+      "target": {
+        "OPT": null,
+        "R": 499,
+        "U": 525,
+        "U_minus_R": 26,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 525.4759938141444,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.369
+      }
+    },
+    "G_dev_0006": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 177,
+        "wall_s": 120.1
+      },
+      "edges": 642,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900065
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "ecc150196acb7449dddd1a9d460215cfd6cec9316db279188728b191bdf0af6a",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "p080",
+      "target": {
+        "OPT": null,
+        "R": 467,
+        "U": 490,
+        "U_minus_R": 23,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 490.15902888201754,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.117
+      }
+    },
+    "G_dev_0007": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 2,
+        "wall_s": 3.5
+      },
+      "edges": 192,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900063
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "a0d1888b8b6e4ddf5b97b42e0b9eca8478ca1876f2f54e6190e1d6986a9d73e1",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "d3",
+      "target": {
+        "OPT": 175,
+        "R": 175,
+        "U": 175,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 182.7516616468845,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.373
+      }
+    },
+    "G_dev_0008": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 1,
+        "wall_s": 3.8
+      },
+      "edges": 192,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900056
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "d6bbec3db24b5f3c6cd191ad0a367ae4b81d0f53ea9043264514af3080b8c7ee",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "d3",
+      "target": {
+        "OPT": 175,
+        "R": 175,
+        "U": 175,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 182.65745839138242,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.476
+      }
+    },
+    "G_dev_0009": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 8,
+        "wall_s": 25.3
+      },
+      "edges": 256,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900055
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "65dc0e1d0211d53eacd94d83ed23218f036f2187ed75a75aee5a282e9f016916",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "d4",
+      "target": {
+        "OPT": 218,
+        "R": 218,
+        "U": 218,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 230.1170568912192,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.355
+      }
+    },
+    "G_dev_0010": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 5,
+        "wall_s": 17.6
+      },
+      "edges": 256,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900056
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "8d432a4a5c41e1209fece0dff2a8fec9e21c5a7a18616af906bec4975e1e486a",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "d4",
+      "target": {
+        "OPT": 220,
+        "R": 220,
+        "U": 220,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 232.21820387160545,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.105
+      }
+    },
+    "G_dev_0011": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 7,
+        "wall_s": 70.1
+      },
+      "edges": 320,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900056
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "5d573e57f92635ecc0ad8558c2f91bb3dfdb5da1a6e0a18b361b94714b9fb5ea",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "d5",
+      "target": {
+        "OPT": 267,
+        "R": 267,
+        "U": 267,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 280.50314932252786,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.269
+      }
+    },
+    "G_dev_0012": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 9,
+        "wall_s": 97.7
+      },
+      "edges": 320,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900055
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "0dd6d936c0fde4e3f7bb9673d567777a210ea501d953612e1b16197140992c1a",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "d5",
+      "target": {
+        "OPT": 263,
+        "R": 263,
+        "U": 263,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 278.6129981041445,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.037
+      }
+    },
+    "G_dev_0013": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 34,
+        "wall_s": 1.3
+      },
+      "edges": 253,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900050
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "9f9e6b1c22a747bd25d0de2b24dca8bd0e56537dff5f32c7040f512f8b8d738a",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "m2",
+      "target": {
+        "OPT": 208,
+        "R": 208,
+        "U": 208,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 222.40614910919118,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.776
+      }
+    },
+    "G_dev_0014": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 35,
+        "wall_s": 0.9
+      },
+      "edges": 253,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900049
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "e2910c706c433fc93873cf69c3b4bdef4a8a5c82d5055f98d7e47954f6575085",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "m2",
+      "target": {
+        "OPT": 209,
+        "R": 209,
+        "U": 209,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 222.30952803008057,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.53
+      }
+    },
+    "G_dev_0015": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 111,
+        "wall_s": 5.4
+      },
+      "edges": 378,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900049
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "82e820ec5f0945387eb0e865bd77b1f9c69fed04f19a60d1b91fa08f1ef97bdf",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "m3",
+      "target": {
+        "OPT": 295,
+        "R": 295,
+        "U": 295,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 308.96292300361745,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.058
+      }
+    },
+    "G_dev_0016": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 110,
+        "wall_s": 5.2
+      },
+      "edges": 378,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900050
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "4f673d95a7b42d904459ba323f1ca90ea03c19642fdaf25fcfc5e1b33c7a3062",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "m3",
+      "target": {
+        "OPT": 294,
+        "R": 294,
+        "U": 294,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 308.59140812144443,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.958
+      }
+    },
+    "G_dev_0017": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 413,
+        "wall_s": 120.1
+      },
+      "edges": 625,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900051
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "631a1e5f5b6f78b6832614ea4cb27243ef9daeacf21ca7ad6388a7856cfeadaf",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "m5",
+      "target": {
+        "OPT": null,
+        "R": 446,
+        "U": 461,
+        "U_minus_R": 15,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 468.6676725723705,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.885
+      }
+    },
+    "G_dev_0018": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 426,
+        "wall_s": 120.1
+      },
+      "edges": 625,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900058
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "5d239715a8f57394da83379cd1667e907c56810feff89b52a89dc4735de777b1",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "m5",
+      "target": {
+        "OPT": null,
+        "R": 449,
+        "U": 465,
+        "U_minus_R": 16,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 469.9292155308714,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.904
+      }
+    },
+    "G_dev_0019": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 106,
+        "wall_s": 120.1
+      },
+      "edges": 505,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900072
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "f38353e0d8bd93bdd6e83d86961b8ad4efc9170d7ce521ca2bead2df7eadda03",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "k2sym",
+      "target": {
+        "OPT": null,
+        "R": 377,
+        "U": 398,
+        "U_minus_R": 21,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 399.8754498266886,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.921
+      }
+    },
+    "G_dev_0020": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 105,
+        "wall_s": 120.1
+      },
+      "edges": 516,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900072
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "e4b435c89e9e3a6c6969748edf8b8c9c5a44e275357737c233244dec86192ae5",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "k2sym",
+      "target": {
+        "OPT": null,
+        "R": 384,
+        "U": 405,
+        "U_minus_R": 21,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 405.4100003760915,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.954
+      }
+    },
+    "G_dev_0021": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 81,
+        "wall_s": 70.0
+      },
+      "edges": 415,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900073
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "8985adfdccbccad1ca9d9ba79f4829b78970cb05b261d2328aac92f923aa4425",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "k4sym",
+      "target": {
+        "OPT": 319,
+        "R": 319,
+        "U": 319,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 336.1389586770093,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.195
+      }
+    },
+    "G_dev_0022": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 105,
+        "wall_s": 120.1
+      },
+      "edges": 447,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900052
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "87989f83eaff51c481f21103aa9c1b9085542bd2fdad9fa9e3dd8999751a0c3e",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "k4sym",
+      "target": {
+        "OPT": null,
+        "R": 337,
+        "U": 353,
+        "U_minus_R": 16,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 356.9429575584314,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.834
+      }
+    },
+    "G_dev_0023": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 95,
+        "wall_s": 100.7
+      },
+      "edges": 488,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900054
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "b3890fd842f84a32190e2129a75d84c6b3c0b078b8b56b8bc5647f0ef63c84a4",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "k3asym",
+      "target": {
+        "OPT": 372,
+        "R": 372,
+        "U": 372,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 387.82521296944947,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.632
+      }
+    },
+    "G_dev_0024": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 118,
+        "wall_s": 120.1
+      },
+      "edges": 549,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900062
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "8ea3091cd8485325d1868e67bdde13a8d4aae40a9590fcc46095e9f531458b67",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "dev",
+      "stratum": "k3asym",
+      "target": {
+        "OPT": null,
+        "R": 407,
+        "U": 427,
+        "U_minus_R": 20,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 427.5544813544211,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.695
+      }
+    },
+    "G_eval_0001": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 3,
+        "wall_s": 6.7
+      },
+      "edges": 254,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900058
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "0ec1485f9e8e9030daf591b193b30baee69409862198b056f43d73a1152517db",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "p030",
+      "target": {
+        "OPT": 217,
+        "R": 217,
+        "U": 217,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 228.59309704288344,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 15.016
+      }
+    },
+    "G_eval_0002": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 12,
+        "wall_s": 5.6
+      },
+      "edges": 251,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900057
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "28f91de77e5b7786fa614eb34b2700cf234b5c1b01786133307e886da152925f",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "p030",
+      "target": {
+        "OPT": 210,
+        "R": 210,
+        "U": 210,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 222.7788352209854,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 14.127
+      }
+    },
+    "G_eval_0003": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 31,
+        "wall_s": 47.3
+      },
+      "edges": 383,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900057
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "af86028590a1d6ae2d9fcea5ced0181ede6c2db35eae819a9795fe0ca474770c",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "p050",
+      "target": {
+        "OPT": 304,
+        "R": 304,
+        "U": 304,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 319.9667226681024,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.573
+      }
+    },
+    "G_eval_0004": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 41,
+        "wall_s": 48.6
+      },
+      "edges": 376,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900054
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "14ad84ede77d4a9a49abd8e26cb660df3e067fb08beef3e644d8f85b8fc55bde",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "p050",
+      "target": {
+        "OPT": 296,
+        "R": 296,
+        "U": 296,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 311.2195246169175,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 15.782
+      }
+    },
+    "G_eval_0005": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 255,
+        "wall_s": 120.1
+      },
+      "edges": 713,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900058
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "5429ebf76888593ff0289169d257b811adb2bf8f087735f7df2fbc106b88f215",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "p080",
+      "target": {
+        "OPT": null,
+        "R": 511,
+        "U": 533,
+        "U_minus_R": 22,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 533.9910947260735,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.716
+      }
+    },
+    "G_eval_0006": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 168,
+        "wall_s": 120.1
+      },
+      "edges": 660,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900061
+      },
+      "ensemble_topup": null,
+      "family": "ER",
+      "graph_sha256": "2092f3f481e2d2f787df91b70e20b1e513ff184720e59c42ed7d255e2784c48e",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "p080",
+      "target": {
+        "OPT": null,
+        "R": 478,
+        "U": 502,
+        "U_minus_R": 24,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 502.7953162220869,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.836
+      }
+    },
+    "G_eval_0007": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 0,
+        "wall_s": 4.5
+      },
+      "edges": 192,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900059
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "1b925539cdb38d16734cba483c8767e0d116500bf7497639c14cc216617086af",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "d3",
+      "target": {
+        "OPT": 177,
+        "R": 177,
+        "U": 177,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 184.57256702811253,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.857
+      }
+    },
+    "G_eval_0008": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 1,
+        "wall_s": 3.8
+      },
+      "edges": 192,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900050
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "fd1d5c07338fe673b86f0a70c346d189ae3cb14edfd42c1d87bf0912500666c8",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "d3",
+      "target": {
+        "OPT": 175,
+        "R": 175,
+        "U": 175,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 182.91483260276254,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.85
+      }
+    },
+    "G_eval_0009": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 6,
+        "wall_s": 22.5
+      },
+      "edges": 256,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900048
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "a499c1ab72416c1d2992e856de4e09f20b088f91d03264f363331be4b088c1b6",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "d4",
+      "target": {
+        "OPT": 218,
+        "R": 218,
+        "U": 218,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 231.6367673364623,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.683
+      }
+    },
+    "G_eval_0010": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 6,
+        "wall_s": 21.9
+      },
+      "edges": 256,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900046
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "6ca4597fbfd03eb314faeb29f9ae6b7c0d5485e622ebe1fedebd7af93576352c",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "d4",
+      "target": {
+        "OPT": 218,
+        "R": 218,
+        "U": 218,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 232.56443095780642,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 15.637
+      }
+    },
+    "G_eval_0011": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 9,
+        "wall_s": 103.6
+      },
+      "edges": 320,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900056
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "a8234ece640fbba264f6df89ae0e0df9d50dfcd95cc75fd1c928413652a1923b",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "d5",
+      "target": {
+        "OPT": 262,
+        "R": 262,
+        "U": 262,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 276.8617326268114,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 15.913
+      }
+    },
+    "G_eval_0012": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 11,
+        "wall_s": 67.6
+      },
+      "edges": 320,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900063
+      },
+      "ensemble_topup": null,
+      "family": "RR",
+      "graph_sha256": "d64604a1f13cfd7d7f3c6a96559a6d0182805607e87b6fde1256d65bef5e550b",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "d5",
+      "target": {
+        "OPT": 266,
+        "R": 266,
+        "U": 266,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 279.13589933763814,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 17.144
+      }
+    },
+    "G_eval_0013": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 29,
+        "wall_s": 1.5
+      },
+      "edges": 253,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900056
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "a1989a39f18015ee8c67e7d5a4b1cf2ccd42b45aca416b4c4c2ddac1705f32b3",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "m2",
+      "target": {
+        "OPT": 211,
+        "R": 211,
+        "U": 211,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 222.9058098366212,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 15.893
+      }
+    },
+    "G_eval_0014": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 38,
+        "wall_s": 0.9
+      },
+      "edges": 253,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900063
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "f5fe0dc98f5b8abcd055ef2e3312cd5084bf5bebdb6343c9baf6d515aabce095",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "m2",
+      "target": {
+        "OPT": 212,
+        "R": 212,
+        "U": 212,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 222.74116221295805,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.09
+      }
+    },
+    "G_eval_0015": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 138,
+        "wall_s": 5.7
+      },
+      "edges": 378,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900071
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "acbb79170fc4902a5d7c4602ff51e847da077274d60614a1702c4c29d8f5cc48",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "m3",
+      "target": {
+        "OPT": 295,
+        "R": 295,
+        "U": 295,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 306.17788397247557,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.612
+      }
+    },
+    "G_eval_0016": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 92,
+        "wall_s": 6.3
+      },
+      "edges": 378,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900058
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "e35415472ba6c88bd2a4a22f24ad704ec9808ea4a5e4e408118663b1bec51d63",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "m3",
+      "target": {
+        "OPT": 294,
+        "R": 294,
+        "U": 294,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 309.49131612314795,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.595
+      }
+    },
+    "G_eval_0017": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 407,
+        "wall_s": 120.1
+      },
+      "edges": 625,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900063
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "0ccaef5923e0c5de3424a3ed0880d0647e6a24f4aa1f20eca1a5d92b4296b742",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "m5",
+      "target": {
+        "OPT": null,
+        "R": 445,
+        "U": 465,
+        "U_minus_R": 20,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 465.9469188821845,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.85
+      }
+    },
+    "G_eval_0018": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 437,
+        "wall_s": 120.1
+      },
+      "edges": 625,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900064
+      },
+      "ensemble_topup": null,
+      "family": "BA",
+      "graph_sha256": "26309b9d1d322ebe7cec4a7c9b05414935a19129b902c01c4e72c22006694db4",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "m5",
+      "target": {
+        "OPT": null,
+        "R": 446,
+        "U": 467,
+        "U_minus_R": 21,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 467.33764944947154,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.787
+      }
+    },
+    "G_eval_0019": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 104,
+        "wall_s": 120.1
+      },
+      "edges": 503,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900058
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "ce92ed83e52a8ddd22a694f7d8f4af2c9f6b367a35420b8832219d606fb79144",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "k2sym",
+      "target": {
+        "OPT": null,
+        "R": 377,
+        "U": 393,
+        "U_minus_R": 16,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 396.12805976890786,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.769
+      }
+    },
+    "G_eval_0020": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 79,
+        "wall_s": 108.1
+      },
+      "edges": 458,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900059
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "3c8ffe91686d8fd8061995fba40ea596314a977ca4d9aa9ba2da259f59e724fd",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "k2sym",
+      "target": {
+        "OPT": 352,
+        "R": 352,
+        "U": 352,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 370.2128402082942,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 16.756
+      }
+    },
+    "G_eval_0021": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 57,
+        "wall_s": 69.4
+      },
+      "edges": 414,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900066
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "5f36a093a4b58d4a67b118ff9e9941a5bc517ed400f3749b27b8ee3ea1a92514",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "k4sym",
+      "target": {
+        "OPT": 321,
+        "R": 321,
+        "U": 321,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 337.7502996953138,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 15.104
+      }
+    },
+    "G_eval_0022": {
+      "certification": {
+        "solved_to_optimality": true,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "certified_optimal",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 91,
+        "wall_s": 76.5
+      },
+      "edges": 434,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900063
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "e32f647ad091eaa8fa8ffc2b748caac8005512e3bb552e925ab7b33a559e2bc8",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "k4sym",
+      "target": {
+        "OPT": 332,
+        "R": 332,
+        "U": 332,
+        "U_minus_R": 0,
+        "opt_certified": true
+      },
+      "upper_bound": {
+        "U_min": 351.26697709818615,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 15.056
+      }
+    },
+    "G_eval_0023": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 138,
+        "wall_s": 120.1
+      },
+      "edges": 537,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900059
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "7b40c996df18ae10fd5baa656a9a2feaedc42aa7bf92d137d85b689d528f29cc",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "k3asym",
+      "target": {
+        "OPT": null,
+        "R": 396,
+        "U": 416,
+        "U_minus_R": 20,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 416.1882215425534,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 15.614
+      }
+    },
+    "G_eval_0024": {
+      "certification": {
+        "solved_to_optimality": false,
+        "solver": "SCIP 10.0.3 / SoPlex 8.0.3",
+        "status": "not_certified",
+        "time_limit_s": 120.0,
+        "triangle_inequalities": 119,
+        "wall_s": 120.1
+      },
+      "edges": 532,
+      "ensemble_primary": {
+        "budget": {
+          "heuristics": 6,
+          "runs_scheduled": 30,
+          "seeds": 5,
+          "time_limit_s_per_run": 30.0,
+          "time_limit_s_per_run_distinct": [
+            30.0
+          ]
+        },
+        "runs_not_ok": 0,
+        "runs_ok": 30,
+        "wall_ms_total": 900048
+      },
+      "ensemble_topup": null,
+      "family": "Planted",
+      "graph_sha256": "bf8f1b6f10ca09e7ec6a9b685925f74b4535c03ac99fa359911bb1e684816637",
+      "graph_sha256_matches_targets": true,
+      "n": 128,
+      "role": "eval",
+      "stratum": "k3asym",
+      "target": {
+        "OPT": null,
+        "R": 393,
+        "U": 414,
+        "U_minus_R": 21,
+        "opt_certified": false
+      },
+      "upper_bound": {
+        "U_min": 414.13648342528063,
+        "params": {
+          "bm_iters": 3000,
+          "bm_rank": 8,
+          "iters": 4000
+        },
+        "wall_s": 15.854
+      }
+    }
+  },
+  "question_answered": "which graph had which budget applied, and where any budget was reduced relative to the headline",
+  "reductions": {
+    "any": false,
+    "history": "An earlier window did not finish in time; nothing was reduced then either -- the 1800 primary run records already on disk are the full sweep, and the resume only had to assemble them.",
+    "statement": "No budget was reduced relative to the headline, and no graph was dropped. All 60 graphs (48 dev+eval as required, plus the 12 calibration graphs) received the full ensemble budget of 6 heuristics x 5 seeds x 30 s = 30 runs, plus a 120 s SCIP attempt, plus the upper-bound computation. The 18 uncertified graphs additionally received 6 runs of 300 s each."
+  },
+  "schema": "a0.maxcut.references.coverage/v1",
+  "suite": {
+    "counts": {
+      "calibration": 12,
+      "dev": 24,
+      "eval": 24,
+      "total": 60
+    },
+    "manifest_path": "../../suite/manifest.json",
+    "manifest_sha256": "47324fccb6a00c62e1bc6b767fd6591292515d4421d152b5c47f9ad547814d23"
+  },
+  "summary": {
+    "by_role": {
+      "calibration": 12,
+      "dev": 24,
+      "eval": 24
+    },
+    "certified": {
+      "false": 18,
+      "true": 42
+    },
+    "ensemble_runs_ok_total": 1800,
+    "ensemble_runs_scheduled_total": 1800,
+    "graphs": 60,
+    "graphs_with_U": 60,
+    "graphs_with_sha_match": 60,
+    "scip_status": {
+      "certified_optimal": 42,
+      "not_certified": 18
+    },
+    "topup_runs_ok_total": 0
+  }
+}
