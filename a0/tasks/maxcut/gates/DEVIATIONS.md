@@ -214,7 +214,7 @@ same reason as D-GATE-10: `θ` is in the Outcome and in its digest. Both sets we
 re-run at the new `θ`.
 
 **The record is the combined diff, and it is machine-checked.**
-`gates/refreeze_evidence.py --before HEAD` compares each verdict as committed
+`gates/refreeze_evidence.py --before 7bf8a14b` compares each verdict as committed
 against the verdict on disk now, classifies every differing leaf field as
 identity or decision, and refuses to be quiet about a decision field that moved:
 
@@ -387,3 +387,72 @@ reviewer should re-run); `python3 gates/refreeze_evidence.py --before 7bf8a14b`
 * **The suite, `references/targets.json`, `C*(T1)`, `E*` and every upstream
   runtime are read-only here.** No file outside `positive_control/` and `gates/`
   was written.
+
+---
+
+## D-GATE-16 — the re-freeze instruments no longer default to a vacuous window
+
+**The defect.** Both instruments documented `--before HEAD`. Once the re-stamp had
+landed, that invoked each one against itself: `restamp_evidence.py` reported
+`0/576` and `0/12` and `CLEAN`, `refreeze_evidence.py` reported 0 differing leaf
+fields for all 12 verdicts and `CLEAN` — and either run **rewrote its own committed
+evidence file** (`before_revision: HEAD`, empty diffs), so a reader following the
+documentation would commit a strictly weaker record without noticing. Measured
+before the change:
+
+```
+outcomes: 0/576 differ; leaves moved {}; decision leaves 0
+verdicts: 0/12 differ;  leaves moved {}; decision leaves 0
+re-stamp verdict: CLEAN
+```
+
+**What changed.** `--before` now defaults to the revision the instrument's own
+committed evidence records (`7bf8a14b`, the freeze the re-stamp moved off), the
+revision is resolved with `git rev-parse --verify` (an unknown revision refuses
+with exit 2), and a run whose comparison window is empty — 0 Outcomes or 0 verdicts
+differing — **refuses with exit 2 and writes nothing**. An explicit `--before` is
+still honoured, so the meaningful comparison and any later re-freeze both work;
+only the self-comparison is refused. `refreeze_evidence.py` grew the same guard and
+the two share the resolution helpers rather than keeping a second copy.
+
+**Verified by execution.** `python3 gates/restamp_evidence.py` and
+`python3 gates/refreeze_evidence.py` (no `--before`) → `CLEAN`, `576/576`+`12/12`
+and `12/12` respectively, rc 0. `--before HEAD` on either → `REFUSED`, rc 2, and no
+file written. `refreeze.evidence.json` is byte-identical to its committed copy after
+the default run; `restamp.evidence.json` was regenerated because this file's and
+`restamp_evidence.py`'s own line numbers moved, which is the only field that
+changed.
+
+**The extension beyond the reported finding.** The verifier's caveat named
+`restamp_evidence.py`. `refreeze_evidence.py` measured vacuous in exactly the same
+way (0/12, `CLEAN`) and its documented command was the one `README.md` recommended,
+so the same rule was applied to both rather than closing half of a shared failure
+mode. No threshold, the suite, `E*` and the pending contract revision were touched.
+
+## D-GATE-17 — the causal audit cross-checks the registered tree (`a0/a1/declaration.py`)
+
+Recorded here rather than in `a0/a1/DEVIATIONS.md` because another workstream has
+uncommitted edits in that file in this shared tree; the change itself is in
+`a0/a1/declaration.py`, one of this pass's owned files.
+
+**The gap.** The audit gating `CID`/`AID_r` compared the registered tree only
+against `binding.json` (tree ↔ binding), never against `CID`. A tree rebuilt from a
+superseded `T1-EID.json`, with a binding re-derived from *its* bytes so the two
+agreed, made `AID_r` name `manifest:6b1d6fcc…` while `CID` named
+`EID* 7ce9e72f…`, and the audit still said `pass` (verifier finding 2c, REJECTED).
+
+**What changed.** `registered_tree_checks(cid)` now also reads the tree's own
+`tree/a0_locator.json` and fails with the named problem
+`registered_tree_eid_mismatch` when the locator does not pin the `CID`'s
+`task.eid_star` or its `E*` source digests; a new
+`registered_tree_factor_checks()` re-reads the written `AID_r` and fails with
+`registered_tree_factor_mismatch` when its tree factors do not equal a fresh
+recomputation of the tree's bytes. `write()` appends both to the audit's
+`problems`, so the verdict is `fail` and the CLI exits 5. On the honest tree the
+committed `declarations/**` are still reproduced byte for byte — no declaration
+digest moved.
+
+**Verified by execution.** `python3 a0/a1/declaration.py selftest` offers the
+pre-rebuild tree (`7bf8a14b`) plus a binding re-stamped to its bytes: the audit
+fails with `registered_tree_eid_mismatch`, while the honest tree passes. The full
+A1 entry point (`a0/a1/verify.py`) stays green.

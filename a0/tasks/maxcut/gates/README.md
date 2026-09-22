@@ -86,6 +86,12 @@ is recorded in D-GATE-11. This is the point of calling it a re-freeze rather tha
 a drift: the artifacts that produced the earlier digits no longer exist, every
 digit is the same, and the difference is machine-checked rather than asserted.
 
+Both instruments default `--before` to the revision the committed evidence records
+(`7bf8a14b`), not to `HEAD`, and both refuse with exit 2 — writing nothing — when
+the comparison window is empty. `--before HEAD` would compare the re-stamped
+records with themselves, report `0/576` and `0/12`, and call that `CLEAN`; a window
+in which nothing moved cannot show that a re-stamp was clean (D-GATE-16).
+
 **The gate is satisfiable, and the decision it needs is not mine to make.** The
 same frozen runner, pointed at a weaker positive control (`--pc
 ../positive_control/variants/pc_exchange_k10`), returns `ADMISSIBLE` on dev *and*
@@ -251,9 +257,11 @@ python3 gates/gate_runner.py --set eval      # diagnostic, separate files
 python3 gates/seed_sensitivity.py --set dev  # is the verdict seed luck? no
 python3 gates/tau_calibration.py             # derive tau per section 7 (10 s)
 python3 gates/strength_table.py              # PC strength -> Delta/rho, both sets
-python3 gates/refreeze_evidence.py --before HEAD   # re-freeze moved no decision
+python3 gates/refreeze_evidence.py --before 7bf8a14b  # re-freeze moved no decision
 python3 gates/restamp_evidence.py --before 7bf8a14b  # ... and every stamp is current
-                                                     # (7bf8a14b = the freeze before the re-stamp)
+                                                     # (7bf8a14b = the freeze before the re-stamp; both
+                                                     #  scripts default to the revision recorded in their
+                                                     #  evidence and refuse an empty comparison window)
 python3 references/recompute_rho.py --targets references/targets.json \
     --baseline gates/values/dev.baseline.json \
     --positive-control gates/values/dev.positive-control.json \

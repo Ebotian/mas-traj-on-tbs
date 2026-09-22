@@ -12,7 +12,13 @@ disk now, at the level of leaf fields, and separates the two classes:
                         only thing that moves
     decision fields  -- rows, gate reductions, counts, verdict: must not move
 
-    python3 gates/refreeze_evidence.py --before HEAD --out gates/refreeze.evidence.json
+The default `--before` is the pre-re-freeze revision the committed evidence
+records, not `HEAD`: after the re-freeze has landed, `HEAD` compares the re-frozen
+verdicts with themselves, reports 0 differing leaf fields for every verdict, calls
+that `CLEAN`, and rewrites the committed evidence with the emptier report.  If the
+comparison window is empty the command refuses (exit 2) and writes nothing.
+
+    python3 gates/refreeze_evidence.py --before 7bf8a14b --out gates/refreeze.evidence.json
 """
 
 import argparse
@@ -77,25 +83,57 @@ def from_git(revision, relative_path):
         return None
 
 
+def recorded_before(path):
+    """The pre-re-freeze revision the evidence artifact at `path` records, if any."""
+    try:
+        record = json.loads(Path(path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return record.get("before_revision") or None
+
+
+def resolve_revision(revision):
+    """The commit `revision` names, or `None` when this repository has no such revision."""
+    proc = subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--verify", f"{revision}^{{commit}}"],
+                          capture_output=True, text=True)
+    return proc.stdout.strip() if proc.returncode == 0 else None
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--before", default="HEAD",
-                        help="git revision holding the previously frozen verdicts")
+    parser.add_argument("--before", default=None,
+                        help="git revision holding the previously frozen verdicts; defaults to "
+                             "the pre-re-freeze revision the evidence artifact records")
     parser.add_argument("--out", default=str(HERE / "refreeze.evidence.json"))
     args = parser.parse_args()
+
+    before = args.before
+    if before is None:
+        # The committed evidence is the authority on the revision the re-freeze moved
+        # off, not `--out` (which may be a scratch path).
+        recorded = HERE / "refreeze.evidence.json"
+        before = recorded_before(recorded)
+        if before is None:
+            print(f"refusing: no --before given and none recorded in {recorded}; pass the "
+                  "revision the re-freeze moved off, e.g. --before 7bf8a14b", file=sys.stderr)
+            return 2
+        print(f"no --before given; using the revision {recorded.name} records: {before}")
+    if resolve_revision(before) is None:
+        print(f"refusing: {before!r} is not a revision in {ROOT}", file=sys.stderr)
+        return 2
 
     documents = []
     for relative in verdict_files():
         current_path = MAXCUT / relative
         if not current_path.is_file():
             continue
-        before = from_git(args.before, f"a0/tasks/maxcut/{relative}")
-        if before is None:
+        frozen = from_git(before, f"a0/tasks/maxcut/{relative}")
+        if frozen is None:
             documents.append({"verdict": relative, "status": "no_frozen_copy",
-                              "note": f"not present at {args.before}"})
+                              "note": f"not present at {before}"})
             continue
         after = json.loads(current_path.read_text(encoding="utf-8"))
-        differences = walk(before, after)
+        differences = walk(frozen, after)
         identity, decision = [], []
         for path, old, new in differences:
             leaf = path.rsplit(".", 1)[-1]
@@ -109,25 +147,14 @@ def main():
             "differing_leaf_fields": len(differences),
             "identity_fields_moved": identity,
             "decision_fields_moved": decision,
-            "verdict_value_before": before.get("verdict"),
+            "verdict_value_before": frozen.get("verdict"),
             "verdict_value_after": after.get("verdict"),
             "clean": not decision,
         })
 
-    report = {
-        "schema": "a0.maxcut.refreeze_evidence/v1",
-        "before_revision": args.before,
-        "identity_leaf_allowlist": sorted(IDENTITY_LEAVES),
-        "rule": ("a re-freeze is clean when every differing leaf field is an identity field "
-                 "and the verdict value is unchanged"),
-        "documents": documents,
-        "verdict": "CLEAN" if all(d.get("clean", True) for d in documents) else "DRIFT",
-    }
-    Path(args.out).write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-
     for document in documents:
         if document["status"] != "compared":
-            print(f"{document['verdict']}: {document['status']} (before={args.before})")
+            print(f"{document['verdict']}: {document['status']} (before={before})")
             continue
         print(f"{document['verdict']}: {document['differing_leaf_fields']} differing leaf fields, "
               f"{len(document['identity_fields_moved'])} identity, "
@@ -137,6 +164,28 @@ def main():
             print(f"    identity  {record['field']}")
         for record in document["decision_fields_moved"]:
             print(f"    DECISION  {record['field']}: {record['before']} -> {record['after']}")
+
+    # `--before HEAD` (the old default) compares the re-frozen verdicts with
+    # themselves once the re-freeze has landed: 0 differing leaf fields for every
+    # verdict, `CLEAN`.  A window in which nothing moved cannot show that a
+    # re-freeze was clean, so an empty window is a refusal, and nothing is written.
+    if not any(document.get("differing_leaf_fields", 0) for document in documents):
+        print(f"re-freeze verdict: REFUSED — the comparison window against {before} is empty "
+              f"(0 differing leaf fields across {len(documents)} verdicts). Pass the revision "
+              "the re-freeze moved off.")
+        print(f"nothing written to {args.out}", file=sys.stderr)
+        return 2
+
+    report = {
+        "schema": "a0.maxcut.refreeze_evidence/v1",
+        "before_revision": before,
+        "identity_leaf_allowlist": sorted(IDENTITY_LEAVES),
+        "rule": ("a re-freeze is clean when every differing leaf field is an identity field "
+                 "and the verdict value is unchanged"),
+        "documents": documents,
+        "verdict": "CLEAN" if all(d.get("clean", True) for d in documents) else "DRIFT",
+    }
+    Path(args.out).write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"re-freeze verdict: {report['verdict']}")
     print(f"wrote {args.out}", file=sys.stderr)
     return 0 if report["verdict"] == "CLEAN" else 1

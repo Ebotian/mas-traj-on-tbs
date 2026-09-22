@@ -23,7 +23,15 @@ candidate view that `baf13884` introduced.  `cut_edges`, `status`, `failure`,
 `candidate_source_sha256` are decisions or inputs to one: if any of them moves,
 this script reports `DRIFT` and exits non-zero.
 
-    python3 gates/restamp_evidence.py --before HEAD
+The default `--before` is the pre-re-stamp revision the committed evidence
+records, not `HEAD`: after the re-stamp has landed, `HEAD` compares the re-stamped
+records with themselves, reports `0/576` and `0/12`, calls that `CLEAN`, and
+rewrites the committed evidence with the emptier report.  If the comparison window
+is empty the command now refuses (exit 2) and writes nothing, so its success
+cannot be vacuous.
+
+    python3 gates/restamp_evidence.py                    # the recorded pre-re-stamp revision
+    python3 gates/restamp_evidence.py --before 7bf8a14b   # ... or name it explicitly
 """
 
 import argparse
@@ -181,12 +189,51 @@ def diff_against(revision, relative_paths):
             "decision_leaves_moved": decisions}
 
 
+def render(live, stamps, history, outcome_diff, verdict_diff) -> list:
+    lines = [f"E* now: {live[:16]}…",
+             f"stamped records: {stamps['stamped_records']} in {stamps['files_with_a_stamp']} "
+             f"documents, {stamps['current']} current, {len(stamps['stale'])} stale"]
+    for record in stamps["stale"][:10]:
+        lines.append(f"    STALE {record['file']} {record['where']} {record['stamp'][:16]}…")
+    for entry in history:
+        labelled = sum(1 for mention in entry["mentions"] if mention["labelled"])
+        lines.append(f"history {entry['digest'][:12]}… ({entry['revision']}): "
+                     f"{len(entry['mentions'])} mention(s), {labelled} labelled")
+        for mention in entry["mentions"]:
+            if not mention["labelled"]:
+                lines.append(f"    UNLABELLED {mention['file']}:{mention['line']}: {mention['text']}")
+    for name, diff in (("outcomes", outcome_diff), ("verdicts", verdict_diff)):
+        lines.append(f"{name}: {diff['records_differing']}/{diff['records']} differ; "
+                     f"leaves moved {diff['differing_leaf_names']}; "
+                     f"decision leaves {len(diff['decision_leaves_moved'])}")
+        for record in diff["decision_leaves_moved"][:10]:
+            lines.append(f"    DECISION {record['file']} {record['field']}: "
+                         f"{record['before']} -> {record['after']}")
+    return lines
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--before", default="HEAD",
-                        help="revision holding the superseded stamps")
+    parser.add_argument("--before", default=None,
+                        help="revision holding the superseded stamps; defaults to the "
+                             "pre-re-stamp revision the evidence artifact records")
     parser.add_argument("--out", default=str(HERE / "restamp.evidence.json"))
     args = parser.parse_args()
+
+    before = args.before
+    if before is None:
+        # The committed evidence is the authority on which revision the re-stamp
+        # moved off, not `--out` (which may be a scratch path).
+        recorded = HERE / "restamp.evidence.json"
+        before = R.recorded_before(recorded)
+        if before is None:
+            print(f"refusing: no --before given and none recorded in {recorded}; pass the "
+                  "revision the re-stamp moved off, e.g. --before 7bf8a14b", file=sys.stderr)
+            return 2
+        print(f"no --before given; using the revision {recorded.name} records: {before}")
+    if R.resolve_revision(before) is None:
+        print(f"refusing: {before!r} is not a revision in {ROOT}", file=sys.stderr)
+        return 2
 
     live = live_digest()
     stamps = scan_stamps(live)
@@ -195,13 +242,28 @@ def main():
     outcomes = sorted(str(path.relative_to(ROOT)) for path in
                       (HERE / "outcomes").glob("**/*.outcome.json"))
     verdicts = sorted(str(path.relative_to(ROOT)) for path in HERE.glob("verdict.*.json"))
-    outcome_diff = diff_against(args.before, outcomes)
-    verdict_diff = diff_against(args.before, verdicts)
+    outcome_diff = diff_against(before, outcomes)
+    verdict_diff = diff_against(before, verdicts)
+
+    for line in render(live, stamps, history, outcome_diff, verdict_diff):
+        print(line)
+
+    # `--before HEAD` (the old default) compares the re-stamped records with
+    # themselves once the re-stamp has landed: 0/576 and 0/12, `CLEAN`.  A window
+    # in which nothing moved cannot show that a re-stamp was clean, so an empty
+    # window is a refusal, and nothing is written.
+    if outcome_diff["records_differing"] == 0 or verdict_diff["records_differing"] == 0:
+        print(f"re-stamp verdict: REFUSED — the comparison window against {before} is empty "
+              f"({outcome_diff['records_differing']}/{outcome_diff['records']} Outcomes, "
+              f"{verdict_diff['records_differing']}/{verdict_diff['records']} verdicts differ). "
+              "Pass the revision the re-stamp moved off.")
+        print(f"nothing written to {args.out}", file=sys.stderr)
+        return 2
 
     history_ok = all(entry["all_labelled"] for entry in history)
     report = {
         "schema": "a0.maxcut.restamp_evidence/v1",
-        "before_revision": args.before,
+        "before_revision": before,
         "current_evaluator_source_sha256": live,
         "rule": ("a re-stamp is clean when every stored record names this E*, the only "
                  "leaves that move are the stamps themselves, and every superseded digest "
@@ -216,26 +278,6 @@ def main():
     }
     Path(args.out).write_text(json.dumps(report, indent=2, sort_keys=True) + "\n",
                               encoding="utf-8")
-
-    print(f"E* now: {live[:16]}…")
-    print(f"stamped records: {stamps['stamped_records']} in {stamps['files_with_a_stamp']} "
-          f"documents, {stamps['current']} current, {len(stamps['stale'])} stale")
-    for record in stamps["stale"][:10]:
-        print(f"    STALE {record['file']} {record['where']} {record['stamp'][:16]}…")
-    for entry in history:
-        labelled = sum(1 for m in entry["mentions"] if m["labelled"])
-        print(f"history {entry['digest'][:12]}… ({entry['revision']}): "
-              f"{len(entry['mentions'])} mention(s), {labelled} labelled")
-        for mention in entry["mentions"]:
-            if not mention["labelled"]:
-                print(f"    UNLABELLED {mention['file']}:{mention['line']}: {mention['text']}")
-    for name, diff in (("outcomes", outcome_diff), ("verdicts", verdict_diff)):
-        print(f"{name}: {diff['records_differing']}/{diff['records']} differ; "
-              f"leaves moved {diff['differing_leaf_names']}; "
-              f"decision leaves {len(diff['decision_leaves_moved'])}")
-        for record in diff["decision_leaves_moved"][:10]:
-            print(f"    DECISION {record['file']} {record['field']}: "
-                  f"{record['before']} -> {record['after']}")
     print(f"re-stamp verdict: {report['verdict']}")
     print(f"wrote {args.out}", file=sys.stderr)
     return 0 if report["verdict"] == "CLEAN" else 1
