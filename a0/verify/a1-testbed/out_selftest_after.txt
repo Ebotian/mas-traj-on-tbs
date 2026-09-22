@@ -1,0 +1,106 @@
+
+=== S1  chat-completions, non-streaming, usage present ===
+  PASS S1 http 200 -- status=200
+  PASS S1 row metered -- ceq=11513 expected=11513
+  PASS S1 usage fields exact -- {"prompt_cache_hit_tokens": 1280, "prompt_cache_miss_tokens": 10240, "completion_tokens": 312}
+  PASS S1 attribution -- C_0001/A_base
+  PASS S1 provider identity echoed -- model=deepseek-flash id=fake-chatcmpl-0001
+
+=== S2  chat-completions, streaming, usage arrives late ===
+  PASS S2 row metered from late usage chunk -- ceq=11444 expected=11444
+  PASS S2 row records stream=true -- stream=True
+  PASS S2 content reached the client before usage existed -- content at 0.042s, usage at 0.402s
+  PASS S2 client received the terminator after the row was durable -- events=6 final_chunk=True
+
+=== S3  chat-completions, usage deliberately omitted ===
+  PASS S3 http 200 but unmetered -- status=200 unmetered=True
+  PASS S3 ceq is null, not zero -- ceq=None
+  PASS S3 usage is null -- usage=None
+  PASS S3 reason names the gap -- reason='no_usage_field_in_response'
+
+=== S4  Anthropic shape, non-streaming, cache-read fields ===
+  PASS S4 metered with cache-read as hit -- {"prompt_cache_hit_tokens": 2048, "prompt_cache_miss_tokens": 184, "completion_tokens": 55}
+  PASS S4 ceq matches formula -- ceq=444 expected=444
+  PASS S4 anthropic path routed -- https://127.0.0.1:54091/anthropic/v1/messages
+
+=== S5  Anthropic shape, streaming (usage split across two events) ===
+  PASS S5 usage merged from message_start + message_delta -- {"prompt_cache_hit_tokens": 3072, "prompt_cache_miss_tokens": 96, "completion_tokens": 73}
+  PASS S5 ceq matches formula -- ceq=449 expected=449
+  PASS S5 message_stop reached the client -- last='message_stop' events=7
+
+=== S6  OpenAI Responses shape, streaming (usage in response.completed) ===
+  PASS S6 metered from response.completed -- {"prompt_cache_hit_tokens": 512, "prompt_cache_miss_tokens": 1536, "completion_tokens": 128}
+  PASS S6 ceq matches formula -- ceq=2058 expected=2058
+
+=== S7  refusals: non-allowlisted destinations, no upstream contact ===
+  PASS S7a CONNECT refused -- HTTP/1.1 405 Method Not Allowed
+  PASS S7b absolute-URI to a foreign host refused -- HTTP/1.1 403 Forbidden
+  PASS S7c unresolvable name also refused locally (no DNS attempted) -- HTTP/1.1 403 Forbidden
+  PASS S7d no refusal reached the upstream -- upstream log lines 6 -> 6
+  PASS S7e refusals are recorded as unmetered rows -- connect_not_supported / non_allowlisted_host:example.com
+
+=== S8  two campaigns, concurrent calls, attribution ===
+  PASS S8 all 12 concurrent calls succeeded -- errs=[] rows=12
+  PASS S8 rows attributed to the right campaign -- C_0001=6 C_0002=6
+  PASS S8 arm ids follow the campaign -- {'A_base'} / {'A_pc'}
+  PASS S8 every concurrent row is metered and arithmetic-correct -- distinct ceq=[11513]
+
+=== S9  cross-campaign attribution attempt ===
+  PASS S9 request on C_0001's port with C_0002's token is refused -- status=403
+  PASS S9 the refusal is booked against C_0001, never C_0002 -- C_0001 / attribution_token_mismatch
+
+=== S10 ledger unwritable -> the call fails, it does not proceed unmetered ===
+  PASS S10 call fails with 500 -- status=500 body=b'a0-meter: ledger not writable; call refused rather than unmetered\n'
+  PASS S10 upstream was never contacted (preflight refused first) -- upstream log lines 18 -> 18
+  PASS S10 no success reached the client -- a0-meter: ledger not writable; call refused rather than unmetered
+
+  PASS S10 the failure is recorded in the diagnostic sidecar -- sidecar entries=23
+
+=== S11 stream truncated before usage arrives ===
+  PASS S11 unmetered -- unmetered=True ceq=None
+  PASS S11 reason says the stream was truncated before usage -- reason='stream_truncated_before_usage:IncompleteRead'
+  PASS S11 the client never saw message_stop -- events=5
+
+=== S12 arithmetic and schema, recomputed from every row ===
+  PASS S12 every row passes independent re-derivation
+  PASS S12 every row carries exactly the frozen key set -- rows=23
+  PASS S12 unmetered rows are never scored and never estimated -- unmetered=6 of 23
+
+=== S13 an HTTP error response is an honest gap, not a zero ===
+  PASS S13 401 passed through, booked as a gap -- status=401 reason='upstream_http_401_no_usage'
+
+=== S14 provider-reported tokens never enter the row ===
+  PASS S14 sidecar keeps the raw provider usage for audit -- sidecar call records=18
+  PASS S14 the authorization header reached the upstream (proxy is a pass-through) -- checked upstream.log.jsonl
+
+=== S15 aid fragment ===
+  PASS S15 meter.mode is the plaintext self-terminating mode -- plaintext_base_url
+  PASS S15 allowlist is declared -- ['127.0.0.1', 'api.deepseek.com']
+  PASS S15 ceq formula is quoted verbatim from the interface -- ceq = miss + floor(hit*2/100) + 4*completion
+  PASS S15 both endpoint shapes are published -- {"anthropic_base_url": "http://127.0.0.1:37311", "arm_id": "A_base", "base_url": "http://127.0.0.1:37311/v1", "campaign_id": "C_0001", "token": "tok-C1"}
+
+=== S16 the proxy refuses to start when its upstream is not allowlisted ===
+  PASS S16 start refused, non-zero exit -- rc=1
+  PASS S16 the refusal names the offending host -- refusing to start: upstream host 'api.deepseek.com' is not in --allowlist ['openrouter.ai']
+  PASS S16 no ledger was created for the refused proxy
+
+=== S17 no spend: nothing in this run left the host ===
+  PASS S17 every forwarded call went to the local fake upstream -- rows=19 offenders=[]
+  PASS S17 upstream TLS was verified against a real CA, not disabled -- no insecure-upstream warning in the proxy console
+  PASS S17 no name outside the host was ever contacted -- no transport errors to foreign hosts
+
+=== S18 the upstream leg: framing and body identity, read from the upstream's own log ===
+  PASS S18a the upstream received a framing header naming the exact body length -- framing='content-length' declared=79 read=79 sent=79
+  PASS S18b the body bytes are byte-identical to the client's -- upstream sha256=d7de70f77055968920538880bd4606bfd22e37221940f3ac5693c264f3828f51 client sha256=d7de70f77055968920538880bd4606bfd22e37221940f3ac5693c264f3828f51
+  PASS S18c the upstream parsed the body (the old mock logged model=null here) -- json_ok=True model='deepseek-flash'
+  PASS S18d a chunked client body reaches the upstream framed and unchanged -- framing='chunked' complete=True read=82 sent=82 response=HTTP/1.1 200 OK
+  PASS S18e every body-bearing request in the whole run was framed, whole and parseable -- audited=22 offenders=[]
+  PASS S18f every forwarded request carried a credential -- audited=22
+  PASS S18g every ledger row written so far still re-derives, including the ones added here -- rows=26 bad=[]
+
+=== S19 a body the proxy cannot delimit is refused, never forwarded ===
+  PASS S19a an unframed body is refused by the proxy (400), not guessed at -- HTTP/1.1 400 Bad Request
+  PASS S19b the refusal is booked, unmetered, with the reason naming the framing gap -- reason='request_body_unframed' unmetered=True
+  PASS S19c nothing unframed ever reached the upstream -- upstream log lines 22 -> 22
+
+=== 65/65 checks passed ===

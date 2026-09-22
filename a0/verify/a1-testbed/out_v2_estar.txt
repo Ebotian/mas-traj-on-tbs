@@ -1,0 +1,76 @@
+work dir: /tmp/a1testbed-e-star-e_x6svc9
+
+== c_cwd_path_independence ==
+  [ACCEPTED] C2.1 cwd independence: 3 cwds (/, /tmp, repo root) -> cut_edges [207, 207, 207], equal canonical bytes True
+  [ACCEPTED] C2.1 PATH independence: PATH normal/empty/absent/absurd -> cut_edges [207, 207, 207, 207], equal canonical bytes True
+
+== c_determinism ==
+  [ACCEPTED] C2.1 determinism across two E* processes: canonical_digest 4f16a3a3160a8e5c==4f16a3a3160a8e5c, runs-2-identical=True
+
+== c_failure_semantics ==
+  [ACCEPTED] C2.1 failure semantics: cut_edges null (never 0) for every non-ok row: 12 non-ok C*(T1) candidates run (c15 with the frozen table's own --net-isolate); problems=none
+    c15_error_network_attempt without --net-isolate: status=ok cut_edges=136 failure=None
+  [ACCEPTED] C2.1 input tampering is reported, not scored: status=error failure=input_tampered cut_edges=None
+
+== c_network_and_env ==
+  [ACCEPTED] C2.1 no credential/proxy leakage into the child: child env keys=['HOME', 'LANG', 'PATH', 'PYTHONDONTWRITEBYTECODE']; extra=[]; suspicious=[]; host vars not inherited=46/49
+  [ACCEPTED] C2.1 network independence (an honest candidate's number does not move with the topology): honest candidate cut_edges open=207 netns=207, canonical_digest equal=True
+  [ACCEPTED] C2.1 a candidate that insists on the network is refused in both topologies: 1.1.1.1:443 open-topology -> status=error failure=candidate_refused (exit 40); --net-isolate -> status=error failure=candidate_refused
+    child egress (open topology): {'127.0.0.1:7890': 'open', '127.0.0.1:8080': 'ConnectionRefusedError', '127.0.0.1:8081': 'ConnectionRefusedError', '127.0.0.1:8082': 'ConnectionRefusedError', 'api.deepseek.com:443': 'open'}
+    child egress (--net-isolate): {'127.0.0.1:7890': 'OSError', '127.0.0.1:8080': 'OSError', '127.0.0.1:8081': 'OSError', '127.0.0.1:8082': 'OSError', 'api.deepseek.com:443': 'gaierror'}
+  [REJECTED] C2.1 the child has no route to the model API in the OPEN topology: from inside the candidate process (env has no proxy): reachable=['127.0.0.1:7890', 'api.deepseek.com:443']; --net-isolate reachable=none
+
+== c_exact_aggregation ==
+  [ACCEPTED] C2.1 exact rational aggregation of 24 dev Outcomes (Σcut/Σ|E|, the implemented rule): mine=2381/3218 theirs=2381/3218 counts mine={'ok': 24, 'invalid': 0, 'error': 0, 'timeout': 0} theirs={'error': 0, 'invalid': 0, 'ok': 24, 'timeout': 0} per_family_exact match=True reduced=True
+  [PARTIALLY ACCEPTED] C2.1 §5's literal reading (accumulate cut_i/|E_i|) gives a different number: literal Σ(cut_i/|E_i|)=360273725615380207845617419/19833043538429067855216000 (18.165327) vs implemented Σcut/Σ|E|=2381/3218 (0.739901); no consumer of score_exact exists in a0/a1 or gates/ (grep), so the divergence is inert
+
+== c_mode_irrelevance ==
+    mode variants: {'0755': ('0o755', 'ok', 136, '25d9f11f49d3'), '0644': ('0o644', 'ok', 136, '25d9f11f49d3'), '0600': ('0o600', 'ok', 136, '25d9f11f49d3'), '0400': ('0o400', 'ok', 136, '25d9f11f49d3')}
+  [ACCEPTED] C2.2 the launch does not depend on the entry's mode bit (byte-identical, 0755/0644/0600/0400): identical candidate_source_sha256=True, identical canonical outcome=True, all ok=True
+  [ACCEPTED] C2.2 the '#!/...' line is not consulted (no execve): entry first line '#!/bin/false …' -> status=ok cut_edges=136
+  [ACCEPTED] C2.2 `exec: []` is honoured for a genuinely self-executing entry: shell entry with exec:[] -> status=ok cut_edges=136 argv0-mode=shell
+  [ACCEPTED] C2.2 a declared direct execution with a non-executable entry errors precisely: rc=3 stderr=e_star: declared-exec declares direct execution (`exec: []`) but the staged entry /tmp/maxcut-e-star-state/candidates/5f0b112205e2aa10/solution.sh is not executable
+
+== c_prefix_regression ==
+    pre-fix e_star.py sha256=670f02ee91885c10  (test: rc pre=1 post=0)
+    pre-fix stdout tail: e5o/state/declared_self_exec/candidates/a1a9ab49f717a1d3/solution.py'",
+        "failure_kind": "candidate_entry_failed",
+        "status": "error"
+      }
+    }
+  ],
+  "claim": "the candidate launch is a function of the candidate's bytes alone",
+  "e_star": "/tmp/a1testbed-e-star-e_x6svc9/pre-fix/e_star.py",
+  "graph": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/dev/G_dev_0001.json",
+  "ok": false
+}
+  [ACCEPTED] C2.3 test_candidate_staging.py passes on the working tree: rc=0
+  [ACCEPTED] C2.3 test_candidate_staging.py fails on the pre-fix E* (git 11f55bf0): rc=1; failure line: }
+  [ACCEPTED] C2.3 conformance.py --check is green (21 rows + 14 checks incl. 5 staging cases): rc=0; VERDICT: PASS
+
+== c_hand_rows ==
+    c01_ok_high_pc: expected status=ok cut=207 kind=None rc=0 | mine status=ok cut=207 kind=None rc=0
+    c13_error_non_deterministic: expected status=error cut=None kind=non_deterministic rc=3 | mine status=error cut=None kind=non_deterministic rc=3
+    c19_timeout_process_group: expected status=timeout cut=None kind=runtime_budget_exceeded rc=4 | mine status=timeout cut=None kind=runtime_budget_exceeded rc=4
+  [ACCEPTED] C2.4 conformance rows reproduce by hand (ok / non-deterministic / timeout): c01_ok_high_pc:match; c13_error_non_deterministic:match; c19_timeout_process_group:match
+
+== summary ==
+ACCEPTED           C2.1 cwd independence
+ACCEPTED           C2.1 PATH independence
+ACCEPTED           C2.1 determinism across two E* processes
+ACCEPTED           C2.1 failure semantics: cut_edges null (never 0) for every non-ok row
+ACCEPTED           C2.1 input tampering is reported, not scored
+ACCEPTED           C2.1 no credential/proxy leakage into the child
+ACCEPTED           C2.1 network independence (an honest candidate's number does not move with the topology)
+ACCEPTED           C2.1 a candidate that insists on the network is refused in both topologies
+REJECTED           C2.1 the child has no route to the model API in the OPEN topology
+ACCEPTED           C2.1 exact rational aggregation of 24 dev Outcomes (Σcut/Σ|E|, the implemented rule)
+PARTIALLY ACCEPTED C2.1 §5's literal reading (accumulate cut_i/|E_i|) gives a different number
+ACCEPTED           C2.2 the launch does not depend on the entry's mode bit (byte-identical, 0755/0644/0600/0400)
+ACCEPTED           C2.2 the '#!/...' line is not consulted (no execve)
+ACCEPTED           C2.2 `exec: []` is honoured for a genuinely self-executing entry
+ACCEPTED           C2.2 a declared direct execution with a non-executable entry errors precisely
+ACCEPTED           C2.3 test_candidate_staging.py passes on the working tree
+ACCEPTED           C2.3 test_candidate_staging.py fails on the pre-fix E* (git 11f55bf0)
+ACCEPTED           C2.3 conformance.py --check is green (21 rows + 14 checks incl. 5 staging cases)
+ACCEPTED           C2.4 conformance rows reproduce by hand (ok / non-deterministic / timeout)

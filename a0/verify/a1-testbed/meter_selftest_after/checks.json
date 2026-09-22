@@ -1,0 +1,333 @@
+{
+  "passed": 65,
+  "total": 65,
+  "proxy_under_test": "/home/ebt/rsi-dev/a0/meter/meter_proxy.py",
+  "proxy_sha256": "0aa928bed0847e6cddba08e858016c3cbf1a9cd99ef688fccc532d5c7114115c",
+  "checks": [
+    {
+      "name": "S1 http 200",
+      "ok": true,
+      "detail": "status=200"
+    },
+    {
+      "name": "S1 row metered",
+      "ok": true,
+      "detail": "ceq=11513 expected=11513"
+    },
+    {
+      "name": "S1 usage fields exact",
+      "ok": true,
+      "detail": "{\"prompt_cache_hit_tokens\": 1280, \"prompt_cache_miss_tokens\": 10240, \"completion_tokens\": 312}"
+    },
+    {
+      "name": "S1 attribution",
+      "ok": true,
+      "detail": "C_0001/A_base"
+    },
+    {
+      "name": "S1 provider identity echoed",
+      "ok": true,
+      "detail": "model=deepseek-flash id=fake-chatcmpl-0001"
+    },
+    {
+      "name": "S2 row metered from late usage chunk",
+      "ok": true,
+      "detail": "ceq=11444 expected=11444"
+    },
+    {
+      "name": "S2 row records stream=true",
+      "ok": true,
+      "detail": "stream=True"
+    },
+    {
+      "name": "S2 content reached the client before usage existed",
+      "ok": true,
+      "detail": "content at 0.042s, usage at 0.402s"
+    },
+    {
+      "name": "S2 client received the terminator after the row was durable",
+      "ok": true,
+      "detail": "events=6 final_chunk=True"
+    },
+    {
+      "name": "S3 http 200 but unmetered",
+      "ok": true,
+      "detail": "status=200 unmetered=True"
+    },
+    {
+      "name": "S3 ceq is null, not zero",
+      "ok": true,
+      "detail": "ceq=None"
+    },
+    {
+      "name": "S3 usage is null",
+      "ok": true,
+      "detail": "usage=None"
+    },
+    {
+      "name": "S3 reason names the gap",
+      "ok": true,
+      "detail": "reason='no_usage_field_in_response'"
+    },
+    {
+      "name": "S4 metered with cache-read as hit",
+      "ok": true,
+      "detail": "{\"prompt_cache_hit_tokens\": 2048, \"prompt_cache_miss_tokens\": 184, \"completion_tokens\": 55}"
+    },
+    {
+      "name": "S4 ceq matches formula",
+      "ok": true,
+      "detail": "ceq=444 expected=444"
+    },
+    {
+      "name": "S4 anthropic path routed",
+      "ok": true,
+      "detail": "https://127.0.0.1:54091/anthropic/v1/messages"
+    },
+    {
+      "name": "S5 usage merged from message_start + message_delta",
+      "ok": true,
+      "detail": "{\"prompt_cache_hit_tokens\": 3072, \"prompt_cache_miss_tokens\": 96, \"completion_tokens\": 73}"
+    },
+    {
+      "name": "S5 ceq matches formula",
+      "ok": true,
+      "detail": "ceq=449 expected=449"
+    },
+    {
+      "name": "S5 message_stop reached the client",
+      "ok": true,
+      "detail": "last='message_stop' events=7"
+    },
+    {
+      "name": "S6 metered from response.completed",
+      "ok": true,
+      "detail": "{\"prompt_cache_hit_tokens\": 512, \"prompt_cache_miss_tokens\": 1536, \"completion_tokens\": 128}"
+    },
+    {
+      "name": "S6 ceq matches formula",
+      "ok": true,
+      "detail": "ceq=2058 expected=2058"
+    },
+    {
+      "name": "S7a CONNECT refused",
+      "ok": true,
+      "detail": "HTTP/1.1 405 Method Not Allowed"
+    },
+    {
+      "name": "S7b absolute-URI to a foreign host refused",
+      "ok": true,
+      "detail": "HTTP/1.1 403 Forbidden"
+    },
+    {
+      "name": "S7c unresolvable name also refused locally (no DNS attempted)",
+      "ok": true,
+      "detail": "HTTP/1.1 403 Forbidden"
+    },
+    {
+      "name": "S7d no refusal reached the upstream",
+      "ok": true,
+      "detail": "upstream log lines 6 -> 6"
+    },
+    {
+      "name": "S7e refusals are recorded as unmetered rows",
+      "ok": true,
+      "detail": "connect_not_supported / non_allowlisted_host:example.com"
+    },
+    {
+      "name": "S8 all 12 concurrent calls succeeded",
+      "ok": true,
+      "detail": "errs=[] rows=12"
+    },
+    {
+      "name": "S8 rows attributed to the right campaign",
+      "ok": true,
+      "detail": "C_0001=6 C_0002=6"
+    },
+    {
+      "name": "S8 arm ids follow the campaign",
+      "ok": true,
+      "detail": "{'A_base'} / {'A_pc'}"
+    },
+    {
+      "name": "S8 every concurrent row is metered and arithmetic-correct",
+      "ok": true,
+      "detail": "distinct ceq=[11513]"
+    },
+    {
+      "name": "S9 request on C_0001's port with C_0002's token is refused",
+      "ok": true,
+      "detail": "status=403"
+    },
+    {
+      "name": "S9 the refusal is booked against C_0001, never C_0002",
+      "ok": true,
+      "detail": "C_0001 / attribution_token_mismatch"
+    },
+    {
+      "name": "S10 call fails with 500",
+      "ok": true,
+      "detail": "status=500 body=b'a0-meter: ledger not writable; call refused rather than unmetered\\n'"
+    },
+    {
+      "name": "S10 upstream was never contacted (preflight refused first)",
+      "ok": true,
+      "detail": "upstream log lines 18 -> 18"
+    },
+    {
+      "name": "S10 no success reached the client",
+      "ok": true,
+      "detail": "a0-meter: ledger not writable; call refused rather than unmetered\n"
+    },
+    {
+      "name": "S10 the failure is recorded in the diagnostic sidecar",
+      "ok": true,
+      "detail": "sidecar entries=23"
+    },
+    {
+      "name": "S11 unmetered",
+      "ok": true,
+      "detail": "unmetered=True ceq=None"
+    },
+    {
+      "name": "S11 reason says the stream was truncated before usage",
+      "ok": true,
+      "detail": "reason='stream_truncated_before_usage:IncompleteRead'"
+    },
+    {
+      "name": "S11 the client never saw message_stop",
+      "ok": true,
+      "detail": "events=5"
+    },
+    {
+      "name": "S12 every row passes independent re-derivation",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "S12 every row carries exactly the frozen key set",
+      "ok": true,
+      "detail": "rows=23"
+    },
+    {
+      "name": "S12 unmetered rows are never scored and never estimated",
+      "ok": true,
+      "detail": "unmetered=6 of 23"
+    },
+    {
+      "name": "S13 401 passed through, booked as a gap",
+      "ok": true,
+      "detail": "status=401 reason='upstream_http_401_no_usage'"
+    },
+    {
+      "name": "S14 sidecar keeps the raw provider usage for audit",
+      "ok": true,
+      "detail": "sidecar call records=18"
+    },
+    {
+      "name": "S14 the authorization header reached the upstream (proxy is a pass-through)",
+      "ok": true,
+      "detail": "checked upstream.log.jsonl"
+    },
+    {
+      "name": "S15 meter.mode is the plaintext self-terminating mode",
+      "ok": true,
+      "detail": "plaintext_base_url"
+    },
+    {
+      "name": "S15 allowlist is declared",
+      "ok": true,
+      "detail": "['127.0.0.1', 'api.deepseek.com']"
+    },
+    {
+      "name": "S15 ceq formula is quoted verbatim from the interface",
+      "ok": true,
+      "detail": "ceq = miss + floor(hit*2/100) + 4*completion"
+    },
+    {
+      "name": "S15 both endpoint shapes are published",
+      "ok": true,
+      "detail": "{\"anthropic_base_url\": \"http://127.0.0.1:37311\", \"arm_id\": \"A_base\", \"base_url\": \"http://127.0.0.1:37311/v1\", \"campaign_id\": \"C_0001\", \"token\": \"tok-C1\"}"
+    },
+    {
+      "name": "S16 start refused, non-zero exit",
+      "ok": true,
+      "detail": "rc=1"
+    },
+    {
+      "name": "S16 the refusal names the offending host",
+      "ok": true,
+      "detail": "refusing to start: upstream host 'api.deepseek.com' is not in --allowlist ['openrouter.ai']"
+    },
+    {
+      "name": "S16 no ledger was created for the refused proxy",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "S17 every forwarded call went to the local fake upstream",
+      "ok": true,
+      "detail": "rows=19 offenders=[]"
+    },
+    {
+      "name": "S17 upstream TLS was verified against a real CA, not disabled",
+      "ok": true,
+      "detail": "no insecure-upstream warning in the proxy console"
+    },
+    {
+      "name": "S17 no name outside the host was ever contacted",
+      "ok": true,
+      "detail": "no transport errors to foreign hosts"
+    },
+    {
+      "name": "S18a the upstream received a framing header naming the exact body length",
+      "ok": true,
+      "detail": "framing='content-length' declared=79 read=79 sent=79"
+    },
+    {
+      "name": "S18b the body bytes are byte-identical to the client's",
+      "ok": true,
+      "detail": "upstream sha256=d7de70f77055968920538880bd4606bfd22e37221940f3ac5693c264f3828f51 client sha256=d7de70f77055968920538880bd4606bfd22e37221940f3ac5693c264f3828f51"
+    },
+    {
+      "name": "S18c the upstream parsed the body (the old mock logged model=null here)",
+      "ok": true,
+      "detail": "json_ok=True model='deepseek-flash'"
+    },
+    {
+      "name": "S18d a chunked client body reaches the upstream framed and unchanged",
+      "ok": true,
+      "detail": "framing='chunked' complete=True read=82 sent=82 response=HTTP/1.1 200 OK"
+    },
+    {
+      "name": "S18e every body-bearing request in the whole run was framed, whole and parseable",
+      "ok": true,
+      "detail": "audited=22 offenders=[]"
+    },
+    {
+      "name": "S18f every forwarded request carried a credential",
+      "ok": true,
+      "detail": "audited=22"
+    },
+    {
+      "name": "S18g every ledger row written so far still re-derives, including the ones added here",
+      "ok": true,
+      "detail": "rows=26 bad=[]"
+    },
+    {
+      "name": "S19a an unframed body is refused by the proxy (400), not guessed at",
+      "ok": true,
+      "detail": "HTTP/1.1 400 Bad Request"
+    },
+    {
+      "name": "S19b the refusal is booked, unmetered, with the reason naming the framing gap",
+      "ok": true,
+      "detail": "reason='request_body_unframed' unmetered=True"
+    },
+    {
+      "name": "S19c nothing unframed ever reached the upstream",
+      "ok": true,
+      "detail": "upstream log lines 22 -> 22"
+    }
+  ]
+}

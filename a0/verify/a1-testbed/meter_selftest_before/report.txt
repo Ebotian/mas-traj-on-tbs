@@ -1,0 +1,93 @@
+a0/meter selftest -- 37/65 checks passed
+all traffic went to a local fake upstream; no model was called; no spend
+proxy under test: /tmp/prefix-meter/a0/meter/meter_proxy.py (sha256 48c7129b17e390ab9e802515ab725ed3a42d80c675c8ce20a6acdd204ccc8325)
+upstream requests recorded: 23, of which 23 carried a body
+
+FAIL S1 http 200 -- status=400
+FAIL S1 row metered -- ceq=None expected=11513
+FAIL S1 usage fields exact -- null
+PASS S1 attribution -- C_0001/A_base
+FAIL S1 provider identity echoed -- model=None id=fake-req-1790077342471
+FAIL S2 row metered from late usage chunk -- ceq=None expected=11444
+PASS S2 row records stream=true -- stream=True
+FAIL S2 content reached the client before usage existed -- content at -1.000s, usage at -1.000s
+FAIL S2 client received the terminator after the row was durable -- events=0 final_chunk=False
+FAIL S3 http 200 but unmetered -- status=400 unmetered=True
+PASS S3 ceq is null, not zero -- ceq=None
+PASS S3 usage is null -- usage=None
+FAIL S3 reason names the gap -- reason='upstream_http_400_no_usage'
+FAIL S4 metered with cache-read as hit -- null
+FAIL S4 ceq matches formula -- ceq=None expected=444
+PASS S4 anthropic path routed -- https://127.0.0.1:49667/anthropic/v1/messages
+FAIL S5 usage merged from message_start + message_delta -- null
+FAIL S5 ceq matches formula -- ceq=None expected=449
+FAIL S5 message_stop reached the client -- last=None events=1
+FAIL S6 metered from response.completed -- null
+FAIL S6 ceq matches formula -- ceq=None expected=2058
+PASS S7a CONNECT refused -- HTTP/1.1 405 Method Not Allowed
+PASS S7b absolute-URI to a foreign host refused -- HTTP/1.1 403 Forbidden
+PASS S7c unresolvable name also refused locally (no DNS attempted) -- HTTP/1.1 403 Forbidden
+PASS S7d no refusal reached the upstream -- upstream log lines 6 -> 6
+PASS S7e refusals are recorded as unmetered rows -- connect_not_supported / non_allowlisted_host:example.com
+FAIL S8 all 12 concurrent calls succeeded -- errs=['status 400', 'status 400', 'status 400'] rows=12
+PASS S8 rows attributed to the right campaign -- C_0001=6 C_0002=6
+PASS S8 arm ids follow the campaign -- {'A_base'} / {'A_pc'}
+FAIL S8 every concurrent row is metered and arithmetic-correct -- distinct ceq=[None]
+PASS S9 request on C_0001's port with C_0002's token is refused -- status=403
+PASS S9 the refusal is booked against C_0001, never C_0002 -- C_0001 / attribution_token_mismatch
+PASS S10 call fails with 500 -- status=500 body=b'a0-meter: ledger not writable; call refused rather than unmetered\n'
+PASS S10 upstream was never contacted (preflight refused first) -- upstream log lines 18 -> 18
+PASS S10 no success reached the client -- a0-meter: ledger not writable; call refused rather than unmetered
+
+PASS S10 the failure is recorded in the diagnostic sidecar -- sidecar entries=23
+PASS S11 unmetered -- unmetered=True ceq=None
+FAIL S11 reason says the stream was truncated before usage -- reason='upstream_http_400_no_usage'
+PASS S11 the client never saw message_stop -- events=1
+PASS S12 every row passes independent re-derivation
+PASS S12 every row carries exactly the frozen key set -- rows=23
+PASS S12 unmetered rows are never scored and never estimated -- unmetered=23 of 23
+FAIL S13 401 passed through, booked as a gap -- status=400 reason='upstream_http_400_no_usage'
+FAIL S14 sidecar keeps the raw provider usage for audit -- sidecar call records=18
+PASS S14 the authorization header reached the upstream (proxy is a pass-through) -- checked upstream.log.jsonl
+PASS S15 meter.mode is the plaintext self-terminating mode -- plaintext_base_url
+PASS S15 allowlist is declared -- ['127.0.0.1', 'api.deepseek.com']
+PASS S15 ceq formula is quoted verbatim from the interface -- ceq = miss + floor(hit*2/100) + 4*completion
+PASS S15 both endpoint shapes are published -- {"anthropic_base_url": "http://127.0.0.1:44619", "arm_id": "A_base", "base_url": "http://127.0.0.1:44619/v1", "campaign_id": "C_0001", "token": "tok-C1"}
+PASS S16 start refused, non-zero exit -- rc=1
+PASS S16 the refusal names the offending host -- refusing to start: upstream host 'api.deepseek.com' is not in --allowlist ['openrouter.ai']
+PASS S16 no ledger was created for the refused proxy
+PASS S17 every forwarded call went to the local fake upstream -- rows=19 offenders=[]
+PASS S17 upstream TLS was verified against a real CA, not disabled -- no insecure-upstream warning in the proxy console
+PASS S17 no name outside the host was ever contacted -- no transport errors to foreign hosts
+FAIL S18a the upstream received a framing header naming the exact body length -- framing='none' declared=None read=0 sent=79
+FAIL S18b the body bytes are byte-identical to the client's -- upstream sha256=e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 client sha256=d7de70f77055968920538880bd4606bfd22e37221940f3ac5693c264f3828f51
+FAIL S18c the upstream parsed the body (the old mock logged model=null here) -- json_ok=True model=None
+FAIL S18d a chunked client body reaches the upstream framed and unchanged -- framing='none' complete=None read=0 sent=82 response=HTTP/1.1 400 Bad Request
+FAIL S18e every body-bearing request in the whole run was framed, whole and parseable -- audited=22 offenders=[('/v1/chat/completions', 'none', 0), ('/v1/chat/completions', 'none', 0), ('/v1/chat/completions', 'none', 0)]
+PASS S18f every forwarded request carried a credential -- audited=22
+PASS S18g every ledger row written so far still re-derives, including the ones added here -- rows=26 bad=[]
+PASS S19a an unframed body is refused by the proxy (400), not guessed at -- HTTP/1.1 400 Bad Request
+FAIL S19b the refusal is booked, unmetered, with the reason naming the framing gap -- reason='upstream_http_400_no_usage' unmetered=True
+FAIL S19c nothing unframed ever reached the upstream -- upstream log lines 22 -> 23
+
+ledger rows: 23 (metered 0, unmetered 23)
+
+ledger excerpts (verbatim rows):
+  S1_chat_completions_with_usage:
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T19:42:22.472170+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:49667/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": null, "provider_request_id": "fake-req-1790077342471", "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "upstream_http_400_no_usage"}
+  S2_streamed_usage_arrives_late:
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T19:42:22.474027+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:49667/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": null, "provider_request_id": "fake-req-1790077342473", "stream": true, "usage": null, "ceq": null, "unmetered": true, "reason": "upstream_http_400_no_usage"}
+  S3_usage_missing:
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T19:42:22.475560+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:49667/v1/chat/completions", "model_requested": "deepseek-flash", "model_reported": null, "provider_request_id": "fake-req-1790077342475", "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "upstream_http_400_no_usage"}
+  S4_anthropic_cache_read:
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T19:42:22.477094+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:49667/anthropic/v1/messages", "model_requested": "deepseek-flash", "model_reported": null, "provider_request_id": "fake-req-1790077342476", "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "upstream_http_400_no_usage"}
+  S5_anthropic_streamed:
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T19:42:22.478631+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:49667/anthropic/v1/messages", "model_requested": "deepseek-flash", "model_reported": null, "provider_request_id": "fake-req-1790077342478", "stream": true, "usage": null, "ceq": null, "unmetered": true, "reason": "upstream_http_400_no_usage"}
+  S6_responses_streamed:
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T19:42:22.480183+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:49667/v1/responses", "model_requested": "deepseek-flash", "model_reported": null, "provider_request_id": "fake-req-1790077342480", "stream": true, "usage": null, "ceq": null, "unmetered": true, "reason": "upstream_http_400_no_usage"}
+  S7a_connect_refused:
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T19:42:22.480550+08:00", "provider": "deepseek", "endpoint": "example.com:443", "model_requested": null, "model_reported": null, "provider_request_id": null, "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "connect_not_supported"}
+  S7b_non_allowlisted_host_refused:
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T19:42:22.480727+08:00", "provider": "deepseek", "endpoint": "http://example.com/", "model_requested": null, "model_reported": null, "provider_request_id": null, "stream": false, "usage": null, "ceq": null, "unmetered": true, "reason": "non_allowlisted_host:example.com"}
+  S11_stream_truncated_before_usage:
+    {"schema": "a0.meter.call/v1", "campaign_id": "C_0001", "arm_id": "A_base", "ts": "2026-09-22T19:42:22.493462+08:00", "provider": "deepseek", "endpoint": "https://127.0.0.1:49667/anthropic/v1/messages", "model_requested": "deepseek-flash", "model_reported": null, "provider_request_id": "fake-req-1790077342493", "stream": true, "usage": null, "ceq": null, "unmetered": true, "reason": "upstream_http_400_no_usage"}

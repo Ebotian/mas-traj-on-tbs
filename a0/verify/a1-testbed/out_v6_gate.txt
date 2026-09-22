@@ -1,0 +1,66 @@
+== A. threshold provenance: is gate_config.json the contract's numbers? ==
+  ok   Δ overall threshold == 0.03
+  ok   Δ per-family threshold == 0.02
+  ok   Δ needs 3 of 4 families
+  ok   ρ global-median threshold == 0.30
+  ok   ρ per-family threshold == 0.30
+  ok   ρ needs 3 of 4 families
+  ok   verdict stamps the gate_config.json sha256 171c23d89dd59e5c… (a later edit is visible)
+  ok   the contract audit states Δ_PC ≥ 0.03
+  ok   the contract audit states the per-family Δ ≥ 0.02 variant
+  ok   the pre-registration (A1-INTERIM.md) states the ρ rule as median ≥ 0.30 and ≥3/4 families ≥ 0.30
+  ok   the same document records that the frozen thresholds (0.30/0.03/0.02) were not moved
+
+== B. Δ_i and ρ_i recomputed for every dev graph, exact rationals ==
+  ok   all 24 dev rows: b_i, p_i, T_i, |E_i|, Δ_i, ρ_i agree with the stored verdict rows
+    G_dev_0001: b=132 p=212 T=224 |E|=265 Δ=16/53=0.301887 ρ=3/23=0.130435 (T from OPT)
+    G_dev_0007: b=97 p=165 T=175 |E|=192 Δ=17/48=0.354167 ρ=5/39=0.128205 (T from OPT)
+    G_dev_0019: b=261 p=358 T=377 |E|=505 Δ=97/505=0.192079 ρ=19/116=0.163793 (T from R)
+
+== C. the aggregates in verdict.dev.json ==
+  ok   Δ overall mean (unweighted) 49634140872237362663001971/200183990855171899847040000 == stored (0.247943)
+  ok   Δ family BA: 43552937/179313750 == stored (0.242887)
+  ok   Δ family ER: 295564351/1317731580 == stored (0.224298)
+  ok   Δ family Planted: 1559251055053/7076813920560 == stored (0.220332)
+  ok   Δ family RR: 701/2304 == stored (0.304253)
+  ok   Δ families passing (≥0.02): ['BA', 'ER', 'Planted', 'RR']
+  ok   Δ gate PASS on recomputation
+  ok   ρ global median 479/3016 == stored (0.158820)
+  ok   ρ family BA: 377/2484 == stored (0.151771)
+  ok   ρ family ER: 491/2394 == stored (0.205096)
+  ok   ρ family Planted: 236/1547 == stored (0.152553)
+  ok   ρ family RR: 293/2040 == stored (0.143627)
+  ok   ρ families passing (≥0.30): none
+  ok   ρ gate FAILS on recomputation
+  ok   frozen verdict is NOT_ADMISSIBLE
+
+== D. the saturation veto ==
+  ok   baseline-headroom median 0.384381 == stored
+  ok   baseline-headroom min 0.257848 == stored
+  ok   saturation veto not triggered
+
+== E. the revision proposal's table vs the stored k-variants ==
+  ok   one_exchange: stored Δ=0.247943 ρ=0.158820 verdict=NOT_ADMISSIBLE (proposal says 0.247943 / 0.15882 / NOT_ADMISSIBLE)
+  ok   k25: stored Δ=0.204898 ρ=0.325903 verdict=ADMISSIBLE (proposal says 0.204898 / 0.325903 / ADMISSIBLE)
+  ok   k25: same gate_config sha256 as the frozen verdict (thresholds not moved)
+  ok   k10: stored Δ=0.116585 ρ=0.615639 verdict=ADMISSIBLE (proposal says 0.116585 / 0.615639 / ADMISSIBLE)
+  ok   k10: same gate_config sha256 as the frozen verdict (thresholds not moved)
+  ok   k05: stored Δ=0.069658 ρ=0.775149 verdict=ADMISSIBLE (proposal says 0.069658 / 0.775149 / ADMISSIBLE)
+  ok   k05: same gate_config sha256 as the frozen verdict (thresholds not moved)
+  ok   k02: stored Δ=0.032882 ρ=0.895644 verdict=ADMISSIBLE (proposal says 0.032882 / 0.895644 / ADMISSIBLE)
+  ok   k02: same gate_config sha256 as the frozen verdict (thresholds not moved)
+  ok   k01: stored Δ=0.018221 ρ=0.940123 verdict=NOT_ADMISSIBLE (proposal says 0.018221 / 0.940123 / NOT_ADMISSIBLE)
+  ok   k01: same gate_config sha256 as the frozen verdict (thresholds not moved)
+
+== F. the eval set is diagnostic, not the gate ==
+  ok   dev is the gate (gate), eval is diagnostic
+  ok   eval verdict also NOT_ADMISSIBLE
+
+== G. the proposal's eval table (§3.2) vs the stored eval variants ==
+  ok   eval k25: Δ=0.202023 ρ=0.301163 Δ-families=4/4 ρ-families=2/4 verdict=NOT_ADMISSIBLE (proposal §3.2 says Δ-families 4/4, ρ-families 2/4, NOT_ADMISSIBLE)
+  ok   eval k10: Δ=0.116427 ρ=0.600847 Δ-families=4/4 ρ-families=4/4 verdict=ADMISSIBLE (proposal §3.2 says Δ-families 4/4, ρ-families 4/4, ADMISSIBLE)
+  ok   eval k05: Δ=0.070200 ρ=0.762308 Δ-families=4/4 ρ-families=4/4 verdict=ADMISSIBLE (proposal §3.2 says Δ-families 4/4, ρ-families 4/4, ADMISSIBLE)
+  ok   eval k02: Δ=0.033074 ρ=0.894196 Δ-families=4/4 ρ-families=4/4 verdict=ADMISSIBLE (proposal §3.2 says Δ-families 4/4, ρ-families 4/4, ADMISSIBLE)
+  ok   eval k01: Δ=0.017983 ρ=0.942883 Δ-families=1/4 ρ-families=4/4 verdict=NOT_ADMISSIBLE (proposal §3.2 says Δ-families 1/4, ρ-families 4/4, NOT_ADMISSIBLE)
+
+PROBLEMS: 0

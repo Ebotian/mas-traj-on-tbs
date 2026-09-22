@@ -1,0 +1,49 @@
+== 1. ledger arithmetic re-derived from each row's own usage ==
+  ok   ledger.jsonl: 27 rows, 19 metered / 8 unmetered, my ceq_total=187090, verify_ledger.py ceq_total=187090, rc=0, mismatches=[]
+  ok   live_ledger.jsonl: 3 rows, 2 metered / 1 unmetered, my ceq_total=106, verify_ledger.py ceq_total=106, rc=0, mismatches=[]
+  ok   INTERFACE.md §8's own example arithmetic (4*312=1248)
+    formula: ceq = miss + floor(hit*2/100) + 4*completion; no float anywhere: Fraction(187090) == 187090
+
+== 2. framing on the wire: my own raw-tap captures, after and before ==
+    mine_after: 3 client shapes, 2 reached the upstream framed, ledger rows metered=2, ok=True
+      A: client uses Content-Lengt reached=True framing='content-length' header_present=True length_matches=True body_identical=True status='HTTP/1.1 200 OK'
+      B: client uses Transfer-Enco reached=True framing='chunked' header_present=True length_matches=True body_identical=True status='HTTP/1.1 200 OK'
+      C: client sends an unframed  reached=False framing=None header_present=None length_matches=None body_identical=None status='HTTP/1.1 400 Bad Request'
+  ok   mine_after: both body-bearing shapes arrive framed, with a length that matches the body and bytes identical to the client's
+  ok   mine_after: shape A framed by Content-Length, shape B by Transfer-Encoding: chunked
+  ok   mine_after: the client's illegal unframed body never reaches the upstream (the proxy answers it HTTP/1.1 400 Bad Request itself)
+  ok   mine_after: exactly 2 metered rows, each ceq=4128 (usage was readable upstream)
+    mine_before: 3 client shapes, 0 reached the upstream framed, ledger rows metered=0, ok=False
+      A: client uses Content-Lengt reached=True framing='none' header_present=False length_matches=True body_identical=True status='HTTP/1.1 400 Bad Request'
+      B: client uses Transfer-Enco reached=True framing='none' header_present=False length_matches=True body_identical=True status='HTTP/1.1 400 Bad Request'
+      C: client sends an unframed  reached=True framing='none' header_present=False length_matches=True body_identical=True status='HTTP/1.1 400 Bad Request'
+  ok   mine_before: NO request carries a framing header (the pre-fix defect)
+  ok   mine_before: every shape answered 400 by the wire-shaped upstream
+  ok   mine_before: every row unmetered (usage unreadable upstream)
+
+== 3a. an unframed body is refused and never forwarded ==
+  ok   unframed body -> HTTP/1.1 400 Bad Request
+  ok   booked as unmetered with reason request_body_unframed (['request_body_unframed'])
+
+== 3b. ledger unwritable -> the call is refused (not booked unmetered) ==
+  ok   call answered HTTP/1.1 500 Internal Server Error
+  ok   the refusal says the call was refused rather than unmetered
+  ok   the proxy log shows the refusal happened before the upstream leg
+  ok   a proxy whose ledger cannot be created does not start (rc=1)
+
+== 3c. CONNECT is never tunnelled, and the destination is allowlisted ==
+  ok   CONNECT -> HTTP/1.1 405 Method Not Allowed
+  ok   the tunnelling attempt is recorded as unmetered/connect_not_supported
+  ok   Host: example.com -> HTTP/1.1 403 Forbidden
+  ok   a non-allowlisted destination is refused, not silently forwarded
+
+== 3d. the meter's own selftest: before and after ==
+    post-fix proxy: mine 65/65 checks passed, committed 65/65 checks passed
+    pre-fix proxy:  mine 37/65 checks passed, committed 36/65 checks passed
+  ok   the current proxy passes 65/65 in my run and in the committed report
+    pre-fix failures: mine 28, committed 29; only in the committed run: ['FAIL S16 the refusal names the offending host']
+  ok   the pre-fix proxy fails the framing checks specifically (['FAIL S18a the upstream received a framing header naming the exact body length', "FAIL S18b the body bytes are byte-identical to the client's", 'FAIL S18c the upstream parsed the body (the old mock logged model=null here)', 'FAIL S18d a chunked client body reaches the upstream framed and unchanged', 'FAIL S18e every body-bearing request in the whole run was framed, whole and parseable', 'FAIL S19b the refusal is booked, unmetered, with the reason naming the framing gap', 'FAIL S19c nothing unframed ever reached the upstream']) and 28 of the 65 checks in all
+  ok   the committed 36/65 differs from my 37/65 by exactly one row (S16), whose committed failure is a ModuleNotFoundError from copying only meter_proxy.py without meter_core.py
+    (no provider was contacted anywhere above; all upstream legs are local or dead ports)
+
+PROBLEMS: 0

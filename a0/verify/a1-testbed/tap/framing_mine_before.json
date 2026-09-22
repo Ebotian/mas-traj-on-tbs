@@ -1,0 +1,85 @@
+{
+  "label": "mine_before",
+  "proxy": "/tmp/prefix-meter/a0/meter/meter_proxy.py",
+  "proxy_sha256": "48c7129b17e390ab9e802515ab725ed3a42d80c675c8ce20a6acdd204ccc8325",
+  "verdicts": [
+    {
+      "shape": "A: client uses Content-Length",
+      "reached_upstream": true,
+      "framing": "none",
+      "framing_header_present": false,
+      "declared_length_matches_body": true,
+      "body_identical_to_client": true,
+      "upstream_status": "HTTP/1.1 400 Bad Request"
+    },
+    {
+      "shape": "B: client uses Transfer-Encoding: chunked",
+      "reached_upstream": true,
+      "framing": "none",
+      "framing_header_present": false,
+      "declared_length_matches_body": true,
+      "body_identical_to_client": true,
+      "upstream_status": "HTTP/1.1 400 Bad Request"
+    },
+    {
+      "shape": "C: client sends an unframed body (illegal, but the old proxy emitted one)",
+      "reached_upstream": true,
+      "framing": "none",
+      "framing_header_present": false,
+      "declared_length_matches_body": true,
+      "body_identical_to_client": true,
+      "upstream_status": "HTTP/1.1 400 Bad Request"
+    }
+  ],
+  "ok": false,
+  "ledger_rows": [
+    {
+      "schema": "a0.meter.call/v1",
+      "campaign_id": "C_tap",
+      "arm_id": "A_tap",
+      "ts": "2026-09-22T19:42:24.503153+08:00",
+      "provider": "deepseek",
+      "endpoint": "https://127.0.0.1:41879/v1/chat/completions",
+      "model_requested": "deepseek-flash",
+      "model_reported": null,
+      "provider_request_id": "tap-req-1",
+      "stream": false,
+      "usage": null,
+      "ceq": null,
+      "unmetered": true,
+      "reason": "upstream_http_400_no_usage"
+    },
+    {
+      "schema": "a0.meter.call/v1",
+      "campaign_id": "C_tap",
+      "arm_id": "A_tap",
+      "ts": "2026-09-22T19:42:25.306269+08:00",
+      "provider": "deepseek",
+      "endpoint": "https://127.0.0.1:41879/v1/chat/completions",
+      "model_requested": "deepseek-flash",
+      "model_reported": null,
+      "provider_request_id": "tap-req-1",
+      "stream": false,
+      "usage": null,
+      "ceq": null,
+      "unmetered": true,
+      "reason": "upstream_http_400_no_usage"
+    },
+    {
+      "schema": "a0.meter.call/v1",
+      "campaign_id": "C_tap",
+      "arm_id": "A_tap",
+      "ts": "2026-09-22T19:42:26.109454+08:00",
+      "provider": "deepseek",
+      "endpoint": "https://127.0.0.1:41879/v1/chat/completions",
+      "model_requested": "deepseek-flash",
+      "model_reported": null,
+      "provider_request_id": "tap-req-1",
+      "stream": false,
+      "usage": null,
+      "ceq": null,
+      "unmetered": true,
+      "reason": "upstream_http_400_no_usage"
+    }
+  ]
+}

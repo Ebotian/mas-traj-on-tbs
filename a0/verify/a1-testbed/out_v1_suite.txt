@@ -1,0 +1,36 @@
+== C1.1/C1.2/C1.6 canonical form, identity, cleanliness ==
+== C1.3 disjointness ==
+  role calibration: files=12 distinct_edge_sets=12
+  role dev: files=24 distinct_edge_sets=24
+  role eval: files=24 distinct_edge_sets=24
+  dev/eval same-slot Jaccard compared=48 worst=0.0889 ('dev/G_dev_0017.json', 'eval/G_eval_0017.json', 102, 1148)
+== C1.4 independent sampling ==
+  slot seeds re-derived=24 dev/eval shared seeds=0
+== C1.5 leakage ==
+  provenance planted records: 15
+  narrow surface files=62  broad surface files=24137 (roots: ['a0/tasks/maxcut', 'a0/a1', 'a0/meter'])
+  text-needle hits: 0
+  G_dev_0019: declared p_in=0.100 p_out=0.020 | replayed intra=0.103 inter=0.022 | provenance intra=0.062 inter=0.062
+  G_dev_0020: declared p_in=0.100 p_out=0.020 | replayed intra=0.104 inter=0.023 | provenance intra=0.067 inter=0.060
+  G_dev_0021: declared p_in=0.150 p_out=0.020 | replayed intra=0.154 inter=0.018 | provenance intra=0.055 inter=0.050
+  G_dev_0022: declared p_in=0.150 p_out=0.020 | replayed intra=0.163 inter=0.020 | provenance intra=0.049 inter=0.057
+  G_dev_0023: declared p_in=0.120 p_out=0.030 | replayed intra=0.118 inter=0.025 | provenance intra=0.061 inter=0.060
+  G_dev_0024: declared p_in=0.120 p_out=0.030 | replayed intra=0.125 inter=0.033 | provenance intra=0.069 inter=0.067
+  G_eval_0019: declared p_in=0.100 p_out=0.020 | replayed intra=0.107 inter=0.017 | provenance intra=0.064 inter=0.060
+  G_eval_0020: declared p_in=0.100 p_out=0.020 | replayed intra=0.096 inter=0.018 | provenance intra=0.059 inter=0.054
+  G_eval_0021: declared p_in=0.150 p_out=0.020 | replayed intra=0.142 inter=0.022 | provenance intra=0.049 inter=0.051
+  G_eval_0022: declared p_in=0.150 p_out=0.020 | replayed intra=0.164 inter=0.018 | provenance intra=0.052 inter=0.054
+  G_eval_0023: declared p_in=0.120 p_out=0.030 | replayed intra=0.125 inter=0.030 | provenance intra=0.061 inter=0.069
+  G_eval_0024: declared p_in=0.120 p_out=0.030 | replayed intra=0.122 inter=0.031 | provenance intra=0.068 inter=0.064
+  C_0010: declared p_in=0.100 p_out=0.020 | replayed intra=0.088 inter=0.020 | provenance intra=0.052 inter=0.055
+  C_0011: declared p_in=0.150 p_out=0.020 | replayed intra=0.143 inter=0.021 | provenance intra=0.051 inter=0.051
+  C_0012: declared p_in=0.120 p_out=0.030 | replayed intra=0.117 inter=0.031 | provenance intra=0.058 inter=0.067
+  C1.5(2) replay of graph.json (seed+params+published generator): edges reproduced 15/15, label vector equal to provenance.json 0/15
+  true planted-partition cut fraction: min=0.1392 max=0.3213 (random partition ~0.50, so this label leak is worth little for max-cut)
+  reference partition files readable on disk: eval=720 dev=720 (a full assignment, one JSON object each, filename carries the graph_id)
+  references/targets.json readable: 762953 B, graphs=60
+
+counters: {'canonical_reparse': 60, 'manifest_sha_matches_file': 60, 'graph_keys_exact': 60, 'all 60 edge sets distinct': 1, 'seed_reproduced_from_role_keyed_stream': 60, 'role_inside_stream_key': 24}
+NOTES:
+  * provenance.json's planted_labels are NOT the label vector of the shipped graphs (density test above); the suite's leakage needles therefore search vectors that no shipped graph encodes
+FAILURES: 0

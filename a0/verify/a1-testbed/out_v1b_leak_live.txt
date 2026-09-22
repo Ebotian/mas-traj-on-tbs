@@ -1,0 +1,22 @@
+== A. the planted partition is recoverable from the graph the candidate is handed ==
+   cand_replay on G_dev_0019 (planted labels re-derived from generator.seed): status=ok cut_edges=89/505 = 0.176 of the edges
+   (the planted partition is a *trap* for max-cut: below a random 0.50, so this leak is a label leak, not a score leak)
+
+== B. the suite's own label store is stale, so its needles search the wrong vectors ==
+   cand_provenance (reads generators/provenance.json) on G_dev_0019: cut_edges=254/505 = 0.503 (a random-looking partition, NOT the graph's planted structure)
+
+== C. a stored reference partition for an EVAL graph is readable and scores R ==
+   G_eval_0001: E* cut_edges=217 | harness handed_value=217 (true_value=217, status=ok) | targets.json R=217 OPT=217
+   G_eval_0019: E* cut_edges=377 | harness handed_value=377 (true_value=377, status=ok) | targets.json R=377 OPT=None
+
+== D. the same hand that runs the harness runs the candidate ==
+   eval_service spawns E* with cwd=/tmp/a1testbed-leak-d3z00xc2 and no mount/user namespace; the candidate child is the same uid and can read the whole repository tree
+
+FINDINGS (5):
+  ! the planted label vector is a deterministic function of graph.json's own generator.seed+params via the published generator, so the 'no labels in a candidate-readable file' claim is true only of the label *text*
+  ! generators/provenance.json's planted_labels do not reproduce the shipped graphs (intra/inter densities 0.05-0.07 against declared p_in/p_out up to 0.15), so verify's 30 leakage needles are inert with respect to the labels the graphs actually encode
+  ! G_eval_0001: the candidate's score equals R_i, the frozen reference target, obtained by reading a0/tasks/maxcut/references/logs/partitions/G_eval_0001__*.partition.json (720 such files exist for the 24 eval graphs)
+  ! G_eval_0019: the candidate's score equals R_i, the frozen reference target, obtained by reading a0/tasks/maxcut/references/logs/partitions/G_eval_0019__*.partition.json (720 such files exist for the 24 eval graphs)
+  ! INTERFACE.md section 12 requires that eval 'must not enter an agent's workspace, context or any path a candidate can read'; the eval set's reference partitions and targets.json are committed inside the same repository and the candidate child has unrestricted filesystem read access, so that clause is not enforced anywhere in the A1 chain (E* or eval_service)
+
+work dir: /tmp/a1testbed-leak-d3z00xc2
