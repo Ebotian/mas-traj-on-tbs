@@ -33,11 +33,19 @@ def failure_stage_for(exit_code: int, failure_kind: str | None) -> str:
 
     The trace schema fixes the enum but not this mapping; SimpleLoop declares it
     rather than inventing a stage per call site.
+
+    One extension for T1: the max-cut ``E*`` gives a timeout **its own exit code**
+    (4, ``a0/tasks/maxcut/e_star.py:99``) instead of reporting it as exit 3 with
+    ``failure.kind = runtime_budget_exceeded``, so the same trace stage has to be
+    reachable from code 4. This is the mapping ``a0/tasks/maxcut/DEVIATIONS.md``
+    D-T1-8 declares; the plumbing table above is untouched.
     """
     if exit_code == 0:
         return "none"
     if exit_code == 2:
         return "verify_failed"
+    if exit_code == 4:
+        return "timeout"
     return FAILURE_STAGE_BY_E_STAR_VERDICT.get((exit_code, failure_kind), "evaluator_failed")
 
 
@@ -195,7 +203,7 @@ class TraceWriter:
         return self._write(event)
 
 
-def evaluator_evidence_for(result) -> dict:
+def evaluator_evidence_for(result, *, evaluator=None) -> dict:
     """Guard the false-green traps.
 
     SimpleLoop never synthesizes a score and never reuses a cache, so every real
@@ -203,10 +211,20 @@ def evaluator_evidence_for(result) -> dict:
     `outcome.status`, `failure_stage` and `failure_detail`, and the point of
     recording `ok` here is that a 0.0 in `outcome` would be a real 0.0. A
     candidate with no evaluation at all is `not_run`, never `ok`.
+
+    When the lane is the harness-outcome lane (`harnesseval.py`), the evaluator
+    can say *who* produced the number. That string is carried in `detail`,
+    because `evaluator_evidence` is a closed object in the trace schema and
+    adding a field to it would change the frozen contract; it names the harness
+    run id, the `a0/envelope` measurement token and the harness ledger sequence,
+    so a reader can tell a harness-authored number from a locally measured one.
     """
     if result is None:
         return {"status": "not_run", "detail": "no evaluation was performed"}
-    return {"status": "ok", "detail": None}
+    detail = None
+    if evaluator is not None and hasattr(evaluator, "evidence_detail"):
+        detail = evaluator.evidence_detail(result.candidate_id)
+    return {"status": "ok", "detail": detail}
 
 
 def policy_digest(policy: dict) -> str:

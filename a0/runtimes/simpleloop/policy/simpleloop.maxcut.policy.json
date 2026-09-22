@@ -1,0 +1,26 @@
+{
+  "authority": "a0/tasks/maxcut/INTERFACE.md §5 (cut_edges is the only authoritative value; cut_fraction is display only, read by no decision) read together with a0/contract/selection/simpleloop.selection.json (the frozen rule c*_t = argmax_{i<=t} E(c_i), exact comparison, lexicographic-id tie-break)",
+  "check_point": "T1 A1: c*_t = argmax_{i<=t} cut_edges(Outcome supplied by the harness)",
+  "frozen_before_run": true,
+  "schema": "a0.simpleloop.policy/v1",
+  "scalarization": {
+    "applies": "scalar",
+    "direction": "maximize",
+    "input": "outcome.cut_edges",
+    "nonfinite": "cut_edges is an integer by construction (INTERFACE.md §5); a non-integer or a float that is not finite is rejected as an adapter-side error, never compared",
+    "null_is_not_zero": "a null scalar is never coerced to 0.0 or to -inf; an unscored candidate is recorded as unscored and excluded from the argmax. A non-ok Outcome carries no scalar at all (E* never writes 0 for a failure; c03 is the control: a legitimate 0 is a real 0).",
+    "status_gate": "scalar is defined iff outcome.status == \"ok\"",
+    "integer_authority": "the returned scalar keeps the integer type of cut_edges, so the argmax is exact integer comparison rather than an IEEE-754 equality that merely happens to be exact at these magnitudes"
+  },
+  "selection": {
+    "champion_update": "running max over all candidates evaluated so far, so c*_t is monotone and never loses a previously best candidate",
+    "comparison": "exact; see scalarization.integer_authority",
+    "epsilon_role": "the frozen conformance epsilon is the A0.1 tolerance only; it is NOT applied in selection",
+    "order_invariance": "c*_t is a function of the set {(candidate_id, scalar)}; permuting the order in which candidates are proposed cannot change the champion",
+    "rule": "c*_t = argmax over { c_i : i <= t and scalar(c_i) is not null } of scalar(c_i)",
+    "rule_expression": "argmax_{i<=t} E(c_i)",
+    "tie_break": "smallest candidate_id by byte-wise comparison of the UTF-8 encoding of candidate_id",
+    "when_nothing_scored": "chosen_candidate_id is null; the run continues with parent = null and the iteration is recorded honestly"
+  },
+  "task": "maxcut"
+}

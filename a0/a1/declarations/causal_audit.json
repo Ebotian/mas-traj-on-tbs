@@ -1,0 +1,48 @@
+{
+ "aidr_factors": {
+  "A_kapso": [
+   "runtime.attribution_caveat",
+   "runtime.checkout",
+   "runtime.grant_triple",
+   "runtime.outcome_lane",
+   "runtime.substrate"
+  ],
+  "A_simpleloop": [
+   "runtime.grant_triple",
+   "runtime.outcome_lane",
+   "runtime.policy",
+   "runtime.source",
+   "runtime.substrate"
+  ]
+ },
+ "anchors": {
+  "dev_instance": "a0/tasks/maxcut/suite/dev/G_dev_0001.json",
+  "dev_instance_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6"
+ },
+ "arm_varying_factors": [
+  "runtime.grant_triple",
+  "runtime.outcome_lane",
+  "runtime.substrate"
+ ],
+ "arms": [
+  {
+   "arm_id": "A_simpleloop",
+   "block_id": "B000",
+   "campaign_key": "T1-maxcut/B000/A_simpleloop/R000",
+   "replicate_id": "R000",
+   "task_id": "T1-maxcut"
+  },
+  {
+   "arm_id": "A_kapso",
+   "block_id": "B000",
+   "campaign_key": "T1-maxcut/B000/A_kapso/R000",
+   "replicate_id": "R000",
+   "task_id": "T1-maxcut"
+  }
+ ],
+ "cid_factors": 14,
+ "problems": [],
+ "schema": "a0.a1.causal_audit/v1",
+ "task_id": "T1-maxcut",
+ "verdict": "pass"
+}

@@ -1,0 +1,40 @@
+{
+ "campaign": {
+  "arm_id": "A_simpleloop",
+  "block_id": "B000",
+  "campaign_key": "T1-maxcut/B000/A_simpleloop/R000",
+  "replicate_id": "R000",
+  "task_id": "T1-maxcut"
+ },
+ "factors": {
+  "runtime.grant_triple": {
+   "identity": "value:{\"fidelity\":\"n/a (T1 has no fidelity classes)\",\"fraction\":\"n/a\",\"seed\":1337}",
+   "name": "runtime.grant_triple",
+   "role": "aid_r"
+  },
+  "runtime.outcome_lane": {
+   "identity": "sha256:b0e5be52dc98f15815999f6c5aed90a30085566fe486ec848b837fe9ab8a3886",
+   "name": "runtime.outcome_lane",
+   "note": "the code that consumes the harness Outcome; the only one in this arm",
+   "role": "aid_r"
+  },
+  "runtime.policy": {
+   "identity": "sha256:ee1c836374e62da5ebd7d11804595d5d56444bc559772dbfb46048f403134147",
+   "name": "runtime.policy",
+   "note": "the scalarization and tie-break the arm's selection uses",
+   "role": "aid_r"
+  },
+  "runtime.source": {
+   "identity": "sha256:d9f8ad32be9828ec227228abd92122dfae4d3a43f963bc4dcc4436878def0772",
+   "name": "runtime.source",
+   "role": "aid_r"
+  },
+  "runtime.substrate": {
+   "identity": "value:{\"name\":\"simpleloop\",\"origin\":\"ours\"}",
+   "name": "runtime.substrate",
+   "note": "the substrate under test",
+   "role": "aid_r"
+  }
+ },
+ "schema": "a0.a1.aid_r/v1"
+}

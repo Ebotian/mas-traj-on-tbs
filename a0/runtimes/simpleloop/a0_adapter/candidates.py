@@ -40,11 +40,23 @@ class CandidateSet:
                 return c
         raise CandidateSetError(f"{candidate_id!r} is not a member of {self.set_id}")
 
-    def baseline(self) -> Candidate:
+    def baseline(self, candidate_id: str | None = None) -> Candidate:
+        """`c_0` — the C* member the search starts from.
+
+        Two ways to name it, because the two frozen sets name it differently: the
+        plumbing set marks exactly one member ``role: "baseline"``, while
+        ``C*(T1)`` describes ``c02_ok_low_baseline`` as "the c_0 baseline a search
+        must beat" in its purpose text. So a caller may pass the id explicitly,
+        and when it does not, the single member with ``role == "baseline"`` is
+        used.
+        """
+        if candidate_id is not None:
+            return self.by_id(candidate_id)
         baselines = [c for c in self.candidates if c.role == "baseline"]
         if len(baselines) != 1:
             raise CandidateSetError(
-                f"expected exactly one C* member with role=baseline, found {len(baselines)}"
+                f"expected exactly one C* member with role=baseline, found {len(baselines)}; "
+                f"name the baseline explicitly instead"
             )
         return baselines[0]
 
@@ -73,14 +85,17 @@ def load_candidate_set(manifest_path: Path) -> CandidateSet:
     candidates = []
     seen = set()
     for entry in entries:
-        for key in ("candidate_id", "path", "solution_sha256"):
+        for key in ("candidate_id",):
             if key not in entry:
                 raise CandidateSetError(f"candidate entry missing {key!r}: {entry!r}")
         candidate_id = entry["candidate_id"]
         if candidate_id in seen:
             raise CandidateSetError(f"duplicate candidate_id {candidate_id!r}")
         seen.add(candidate_id)
-        rel = entry["path"]
+        # `path` is the plumbing set's key; `C*(T1)`'s manifest uses `dir`.
+        rel = entry.get("path") or entry.get("dir")
+        if not rel:
+            raise CandidateSetError(f"candidate {candidate_id!r} names no directory")
         candidate_dir = (base_dir / rel).resolve()
         if base_dir not in candidate_dir.parents and candidate_dir != base_dir:
             raise CandidateSetError(f"candidate {candidate_id!r} escapes the manifest dir: {rel}")
@@ -88,10 +103,25 @@ def load_candidate_set(manifest_path: Path) -> CandidateSet:
         if not solution.is_file():
             raise CandidateSetError(f"candidate {candidate_id!r} has no solution.py at {solution}")
         # Integrity before evaluation: a silently edited candidate invalidates the
-        # whole comparison (adapter_contract.md §2.2).
+        # whole comparison (adapter_contract.md §2.2). Two declarations are
+        # accepted, and when the manifest carries a per-file table that table is
+        # what is checked — it is the stronger statement.
         actual = sha256_file(solution)
-        declared = entry["solution_sha256"]
-        if actual != declared:
+        if entry.get("files"):
+            for record in entry["files"]:
+                path = candidate_dir / record["path"]
+                if not path.is_file():
+                    raise CandidateSetError(
+                        f"candidate {candidate_id!r} declares {record['path']!r} but it is missing"
+                    )
+                digest = sha256_file(path)
+                if digest != record["sha256"]:
+                    raise CandidateSetError(
+                        f"candidate {candidate_id!r} {record['path']} sha256 mismatch: "
+                        f"declared {record['sha256']} actual {digest}"
+                    )
+        declared = entry.get("solution_sha256") or entry.get("source_sha256")
+        if declared and entry.get("solution_sha256") and actual != declared:
             raise CandidateSetError(
                 f"candidate {candidate_id!r} solution.py sha256 mismatch: "
                 f"declared {declared} actual {actual}"
@@ -103,8 +133,9 @@ def load_candidate_set(manifest_path: Path) -> CandidateSet:
                 solution_sha256=actual,
                 role=entry.get("role", ""),
                 kind=entry.get("kind", ""),
-                note=entry.get("note", ""),
-                expected_status=entry.get("expected_status_at_theta_e_star"),
+                note=entry.get("note") or entry.get("purpose", ""),
+                expected_status=entry.get("expected_status_at_theta_e_star")
+                or (entry.get("expected") or {}).get("status"),
                 raw=entry,
             )
         )

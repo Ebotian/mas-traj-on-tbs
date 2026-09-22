@@ -1,0 +1,854 @@
+{
+ "blocks": {
+  "block_b_after_outage": {
+   "block_id": "B001",
+   "complete": false,
+   "invalidated": true,
+   "invalidation_reason": "model_relay_interruption (hit B001 during T1-maxcut/B001/A_kapso/R000)",
+   "order": [
+    "T1-maxcut/B001/A_simpleloop/R000",
+    "T1-maxcut/B001/A_kapso/R000"
+   ],
+   "records": {
+    "T1-maxcut/B001/A_kapso/R000": {
+     "campaign": {
+      "arm_id": "A_kapso",
+      "block_id": "B001",
+      "campaign_key": "T1-maxcut/B001/A_kapso/R000",
+      "replicate_id": "R000",
+      "task_id": "T1-maxcut"
+     },
+     "evidence": {
+      "detail": "the metered relay dropped mid-block",
+      "reason": "model_relay_interruption"
+     },
+     "status": "outage"
+    },
+    "T1-maxcut/B001/A_simpleloop/R000": {
+     "campaign": {
+      "arm_id": "A_simpleloop",
+      "block_id": "B001",
+      "campaign_key": "T1-maxcut/B001/A_simpleloop/R000",
+      "replicate_id": "R000",
+      "task_id": "T1-maxcut"
+     },
+     "evidence": {
+      "score_source": "harness"
+     },
+     "status": "invalidated"
+    }
+   }
+  },
+  "outage_event": {
+   "block": "B001",
+   "detail": "the metered relay dropped mid-block",
+   "event": "block_invalidated",
+   "invalidated_campaigns": [
+    "T1-maxcut/B001/A_simpleloop/R000",
+    "T1-maxcut/B001/A_kapso/R000"
+   ],
+   "reason": "model_relay_interruption",
+   "triggered_by": "T1-maxcut/B001/A_kapso/R000"
+  },
+  "per_block_arm_orders": [
+   [
+    "A_kapso",
+    "A_simpleloop"
+   ],
+   [
+    "A_simpleloop",
+    "A_kapso"
+   ],
+   [
+    "A_simpleloop",
+    "A_kapso"
+   ],
+   [
+    "A_simpleloop",
+    "A_kapso"
+   ]
+  ],
+  "planned_order": [
+   "T1-maxcut/B000/A_kapso/R000",
+   "T1-maxcut/B000/A_simpleloop/R000",
+   "T1-maxcut/B001/A_simpleloop/R000",
+   "T1-maxcut/B001/A_kapso/R000",
+   "T1-maxcut/B002/A_simpleloop/R000",
+   "T1-maxcut/B002/A_kapso/R000",
+   "T1-maxcut/B003/A_simpleloop/R000",
+   "T1-maxcut/B003/A_kapso/R000"
+  ],
+  "rerun_block": {
+   "block_id": "B001r",
+   "order": [
+    "T1-maxcut/B001r/A_kapso/R000",
+    "T1-maxcut/B001r/A_simpleloop/R000"
+   ]
+  },
+  "status": {
+   "blocks": [
+    {
+     "block_id": "B000",
+     "complete": true,
+     "invalidated": false,
+     "invalidation_reason": null,
+     "order": [
+      "T1-maxcut/B000/A_kapso/R000",
+      "T1-maxcut/B000/A_simpleloop/R000"
+     ],
+     "records": {
+      "T1-maxcut/B000/A_kapso/R000": {
+       "campaign": {
+        "arm_id": "A_kapso",
+        "block_id": "B000",
+        "campaign_key": "T1-maxcut/B000/A_kapso/R000",
+        "replicate_id": "R000",
+        "task_id": "T1-maxcut"
+       },
+       "evidence": {
+        "score_source": "harness"
+       },
+       "status": "complete"
+      },
+      "T1-maxcut/B000/A_simpleloop/R000": {
+       "campaign": {
+        "arm_id": "A_simpleloop",
+        "block_id": "B000",
+        "campaign_key": "T1-maxcut/B000/A_simpleloop/R000",
+        "replicate_id": "R000",
+        "task_id": "T1-maxcut"
+       },
+       "evidence": {
+        "score_source": "harness"
+       },
+       "status": "complete"
+      }
+     }
+    },
+    {
+     "block_id": "B001",
+     "complete": false,
+     "invalidated": true,
+     "invalidation_reason": "model_relay_interruption (hit B001 during T1-maxcut/B001/A_kapso/R000)",
+     "order": [
+      "T1-maxcut/B001/A_simpleloop/R000",
+      "T1-maxcut/B001/A_kapso/R000"
+     ],
+     "records": {
+      "T1-maxcut/B001/A_kapso/R000": {
+       "campaign": {
+        "arm_id": "A_kapso",
+        "block_id": "B001",
+        "campaign_key": "T1-maxcut/B001/A_kapso/R000",
+        "replicate_id": "R000",
+        "task_id": "T1-maxcut"
+       },
+       "evidence": {
+        "detail": "the metered relay dropped mid-block",
+        "reason": "model_relay_interruption"
+       },
+       "status": "outage"
+      },
+      "T1-maxcut/B001/A_simpleloop/R000": {
+       "campaign": {
+        "arm_id": "A_simpleloop",
+        "block_id": "B001",
+        "campaign_key": "T1-maxcut/B001/A_simpleloop/R000",
+        "replicate_id": "R000",
+        "task_id": "T1-maxcut"
+       },
+       "evidence": {
+        "score_source": "harness"
+       },
+       "status": "invalidated"
+      }
+     }
+    },
+    {
+     "block_id": "B002",
+     "complete": false,
+     "invalidated": false,
+     "invalidation_reason": null,
+     "order": [
+      "T1-maxcut/B002/A_simpleloop/R000",
+      "T1-maxcut/B002/A_kapso/R000"
+     ],
+     "records": {
+      "T1-maxcut/B002/A_kapso/R000": {
+       "campaign": {
+        "arm_id": "A_kapso",
+        "block_id": "B002",
+        "campaign_key": "T1-maxcut/B002/A_kapso/R000",
+        "replicate_id": "R000",
+        "task_id": "T1-maxcut"
+       },
+       "evidence": {},
+       "status": "pending"
+      },
+      "T1-maxcut/B002/A_simpleloop/R000": {
+       "campaign": {
+        "arm_id": "A_simpleloop",
+        "block_id": "B002",
+        "campaign_key": "T1-maxcut/B002/A_simpleloop/R000",
+        "replicate_id": "R000",
+        "task_id": "T1-maxcut"
+       },
+       "evidence": {},
+       "status": "pending"
+      }
+     }
+    },
+    {
+     "block_id": "B003",
+     "complete": false,
+     "invalidated": false,
+     "invalidation_reason": null,
+     "order": [
+      "T1-maxcut/B003/A_simpleloop/R000",
+      "T1-maxcut/B003/A_kapso/R000"
+     ],
+     "records": {
+      "T1-maxcut/B003/A_kapso/R000": {
+       "campaign": {
+        "arm_id": "A_kapso",
+        "block_id": "B003",
+        "campaign_key": "T1-maxcut/B003/A_kapso/R000",
+        "replicate_id": "R000",
+        "task_id": "T1-maxcut"
+       },
+       "evidence": {},
+       "status": "pending"
+      },
+      "T1-maxcut/B003/A_simpleloop/R000": {
+       "campaign": {
+        "arm_id": "A_simpleloop",
+        "block_id": "B003",
+        "campaign_key": "T1-maxcut/B003/A_simpleloop/R000",
+        "replicate_id": "R000",
+        "task_id": "T1-maxcut"
+       },
+       "evidence": {},
+       "status": "pending"
+      }
+     }
+    }
+   ],
+   "delta_admissible": true,
+   "events": [
+    {
+     "block": "B001",
+     "campaign": "T1-maxcut/B001/A_simpleloop/R000",
+     "event": "complete"
+    },
+    {
+     "block": "B001",
+     "detail": "the metered relay dropped mid-block",
+     "event": "block_invalidated",
+     "invalidated_campaigns": [
+      "T1-maxcut/B001/A_simpleloop/R000",
+      "T1-maxcut/B001/A_kapso/R000"
+     ],
+     "reason": "model_relay_interruption",
+     "triggered_by": "T1-maxcut/B001/A_kapso/R000"
+    },
+    {
+     "block": "B000",
+     "campaign": "T1-maxcut/B000/A_kapso/R000",
+     "event": "complete"
+    },
+    {
+     "block": "B000",
+     "campaign": "T1-maxcut/B000/A_simpleloop/R000",
+     "event": "complete"
+    },
+    {
+     "event": "block_rerun",
+     "new_block": "B001r",
+     "replaces": "B001"
+    }
+   ],
+   "invalidated_blocks": [
+    "B001"
+   ],
+   "planned_campaigns": 8,
+   "schema": "a0.a1.block_schedule/v1",
+   "task_id": "T1-maxcut",
+   "usable_blocks": [
+    "B000"
+   ]
+  }
+ },
+ "budget_cases": {
+  "a_foreign_campaign_is_not_this_campaign": {
+   "arm_id": "A_simpleloop",
+   "budget": {
+    "CEq_max": 100000,
+    "N_evaluatorCalls": 10,
+    "P_concurrency": 1,
+    "T_wall_sec": 60.0,
+    "measured_by": {
+     "CEq_max": "a0/meter ledger",
+     "N_evaluatorCalls": "a0/a1/eval_service.py ledger",
+     "T_wall_sec": "harness monotonic clock"
+    }
+   },
+   "campaign_id": "C_dry",
+   "detail": "",
+   "label": "foreign",
+   "observed": {
+    "CEq": 11513,
+    "CEq_rows": 1,
+    "N_evaluatorCalls": 1,
+    "T_wall_sec": 1.0000242090027314,
+    "harness_eval_ledger_missing": false,
+    "meter_ledger_missing": false,
+    "reasons": {},
+    "refusals": [],
+    "refused_rows": 0,
+    "unmetered": [],
+    "unmetered_rows": 0
+   },
+   "schema": "a0.a1.budget_check/v1",
+   "stopped_because": null,
+   "synthetic": true,
+   "within": true
+  },
+  "a_refusal_is_not_a_gap": {
+   "arm_id": "A_simpleloop",
+   "budget": {
+    "CEq_max": 100000,
+    "N_evaluatorCalls": 10,
+    "P_concurrency": 1,
+    "T_wall_sec": 60.0,
+    "measured_by": {
+     "CEq_max": "a0/meter ledger",
+     "N_evaluatorCalls": "a0/a1/eval_service.py ledger",
+     "T_wall_sec": "harness monotonic clock"
+    }
+   },
+   "campaign_id": "C_dry",
+   "detail": "",
+   "label": "refusal",
+   "observed": {
+    "CEq": 11513,
+    "CEq_rows": 2,
+    "N_evaluatorCalls": 1,
+    "T_wall_sec": 1.0000264789996436,
+    "harness_eval_ledger_missing": false,
+    "meter_ledger_missing": false,
+    "reasons": {
+     "non_allowlisted_host:evil.example": 1
+    },
+    "refusals": [
+     {
+      "reason": "non_allowlisted_host:evil.example",
+      "ts": "2026-09-22T00:00:00+08:00"
+     }
+    ],
+    "refused_rows": 1,
+    "unmetered": [],
+    "unmetered_rows": 0
+   },
+   "schema": "a0.a1.budget_check/v1",
+   "stopped_because": null,
+   "synthetic": true,
+   "within": true
+  },
+  "ceq_over_cap": {
+   "arm_id": "A_simpleloop",
+   "budget": {
+    "CEq_max": 100000,
+    "N_evaluatorCalls": 10,
+    "P_concurrency": 1,
+    "T_wall_sec": 60.0,
+    "measured_by": {
+     "CEq_max": "a0/meter ledger",
+     "N_evaluatorCalls": "a0/a1/eval_service.py ledger",
+     "T_wall_sec": "harness monotonic clock"
+    }
+   },
+   "campaign_id": "C_dry",
+   "detail": "100001 > 100000",
+   "label": "ceq_over_cap",
+   "observed": {
+    "CEq": 100001,
+    "CEq_rows": 1,
+    "N_evaluatorCalls": 1,
+    "T_wall_sec": 1.0000291789983748,
+    "harness_eval_ledger_missing": false,
+    "meter_ledger_missing": false,
+    "reasons": {},
+    "refusals": [],
+    "refused_rows": 0,
+    "unmetered": [],
+    "unmetered_rows": 0
+   },
+   "schema": "a0.a1.budget_check/v1",
+   "stopped_because": "budget_exhausted:CEq_max",
+   "synthetic": true,
+   "within": false
+  },
+  "evaluator_calls_over": {
+   "arm_id": "A_simpleloop",
+   "budget": {
+    "CEq_max": 100000,
+    "N_evaluatorCalls": 10,
+    "P_concurrency": 1,
+    "T_wall_sec": 60.0,
+    "measured_by": {
+     "CEq_max": "a0/meter ledger",
+     "N_evaluatorCalls": "a0/a1/eval_service.py ledger",
+     "T_wall_sec": "harness monotonic clock"
+    }
+   },
+   "campaign_id": "C_dry",
+   "detail": "11 > 10",
+   "label": "evaluator_calls_over",
+   "observed": {
+    "CEq": 11513,
+    "CEq_rows": 1,
+    "N_evaluatorCalls": 11,
+    "T_wall_sec": 1.0000345789994753,
+    "harness_eval_ledger_missing": false,
+    "meter_ledger_missing": false,
+    "reasons": {},
+    "refusals": [],
+    "refused_rows": 0,
+    "unmetered": [],
+    "unmetered_rows": 0
+   },
+   "schema": "a0.a1.budget_check/v1",
+   "stopped_because": "budget_exhausted:N_evaluatorCalls",
+   "synthetic": true,
+   "within": false
+  },
+  "missing_ledger": {
+   "detail": "meter ledger not found: /tmp/a1-verify/skeleton-dryrun/budget/nope.jsonl",
+   "refused": true
+  },
+  "usage_gap_is_unmetered_and_stops": {
+   "arm_id": "A_simpleloop",
+   "budget": {
+    "CEq_max": 100000,
+    "N_evaluatorCalls": 10,
+    "P_concurrency": 1,
+    "T_wall_sec": 60.0,
+    "measured_by": {
+     "CEq_max": "a0/meter ledger",
+     "N_evaluatorCalls": "a0/a1/eval_service.py ledger",
+     "T_wall_sec": "harness monotonic clock"
+    }
+   },
+   "campaign_id": "C_dry",
+   "detail": "1 ledger row(s) carry no usage; CEq is not established. reasons=['no_usage_field_in_response']",
+   "label": "usage_gap",
+   "observed": {
+    "CEq": 11513,
+    "CEq_rows": 2,
+    "N_evaluatorCalls": 2,
+    "T_wall_sec": 1.0000286889990093,
+    "harness_eval_ledger_missing": false,
+    "meter_ledger_missing": false,
+    "reasons": {
+     "no_usage_field_in_response": 1
+    },
+    "refusals": [],
+    "refused_rows": 0,
+    "unmetered": [
+     {
+      "reason": "no_usage_field_in_response",
+      "ts": "2026-09-22T00:00:00+08:00"
+     }
+    ],
+    "unmetered_rows": 1
+   },
+   "schema": "a0.a1.budget_check/v1",
+   "stopped_because": "budget_exhausted:unmetered_model_call",
+   "synthetic": true,
+   "within": false
+  },
+  "wall_clock_over": {
+   "arm_id": "A_simpleloop",
+   "budget": {
+    "CEq_max": 100000,
+    "N_evaluatorCalls": 10,
+    "P_concurrency": 1,
+    "T_wall_sec": 60.0,
+    "measured_by": {
+     "CEq_max": "a0/meter ledger",
+     "N_evaluatorCalls": "a0/a1/eval_service.py ledger",
+     "T_wall_sec": "harness monotonic clock"
+    }
+   },
+   "campaign_id": "C_dry",
+   "detail": "120.000s > 60.0s",
+   "label": "wall_clock_over",
+   "observed": {
+    "CEq": 11513,
+    "CEq_rows": 1,
+    "N_evaluatorCalls": 1,
+    "T_wall_sec": 120.0000237489985,
+    "harness_eval_ledger_missing": false,
+    "meter_ledger_missing": false,
+    "reasons": {},
+    "refusals": [],
+    "refused_rows": 0,
+    "unmetered": [],
+    "unmetered_rows": 0
+   },
+   "schema": "a0.a1.budget_check/v1",
+   "stopped_because": "budget_exhausted:T_wall_sec",
+   "synthetic": true,
+   "within": false
+  },
+  "within_budget": {
+   "arm_id": "A_simpleloop",
+   "budget": {
+    "CEq_max": 100000,
+    "N_evaluatorCalls": 10,
+    "P_concurrency": 1,
+    "T_wall_sec": 60.0,
+    "measured_by": {
+     "CEq_max": "a0/meter ledger",
+     "N_evaluatorCalls": "a0/a1/eval_service.py ledger",
+     "T_wall_sec": "harness monotonic clock"
+    }
+   },
+   "campaign_id": "C_dry",
+   "detail": "",
+   "label": "within_budget",
+   "observed": {
+    "CEq": 23026,
+    "CEq_rows": 2,
+    "N_evaluatorCalls": 2,
+    "T_wall_sec": 1.0000525980030943,
+    "harness_eval_ledger_missing": false,
+    "meter_ledger_missing": false,
+    "reasons": {},
+    "refusals": [],
+    "refused_rows": 0,
+    "unmetered": [],
+    "unmetered_rows": 0
+   },
+   "schema": "a0.a1.budget_check/v1",
+   "stopped_because": null,
+   "synthetic": true,
+   "within": true
+  }
+ },
+ "campaign_broken": {
+  "detail": "PreflightError: the maxcut evaluator measures an instance; ArmSpec.graph is None",
+  "refused": true
+ },
+ "campaign_id": {
+  "components": [
+   "TaskID",
+   "BlockID",
+   "ArmID",
+   "ReplicateID"
+  ],
+  "distinct_keys": [
+   "T1-maxcut/B000/A_simpleloop/R001",
+   "T1-maxcut/B000/A_kapso/R000",
+   "T1-maxcut/B001/A_simpleloop/R000",
+   "T2-other/B000/A_simpleloop/R000"
+  ],
+  "value": {
+   "arm_id": "A_simpleloop",
+   "block_id": "B000",
+   "campaign_key": "T1-maxcut/B000/A_simpleloop/R000",
+   "replicate_id": "R000",
+   "task_id": "T1-maxcut"
+  }
+ },
+ "campaign_plan": {
+  "arm": {
+   "arm_id": "A_simpleloop",
+   "runtime": "simpleloop"
+  },
+  "arm_command": [
+   "python3",
+   "-c",
+   "print('the arm would run here')",
+   "--base-url",
+   "http://127.0.0.1:55359/v1"
+  ],
+  "budget": {
+   "CEq_max": 100000,
+   "N_evaluatorCalls": 10,
+   "P_concurrency": 1,
+   "T_wall_sec": 60.0,
+   "measured_by": {
+    "CEq_max": "a0/meter ledger",
+    "N_evaluatorCalls": "a0/a1/eval_service.py ledger",
+    "T_wall_sec": "harness monotonic clock"
+   }
+  },
+  "campaign": {
+   "arm_id": "A_simpleloop",
+   "block_id": "B000",
+   "campaign_key": "T1-maxcut/B000/A_simpleloop/R000",
+   "replicate_id": "R000",
+   "task_id": "T1-maxcut"
+  },
+  "dry_run": true,
+  "harness": {
+   "evaluator": "maxcut",
+   "ledger": "/tmp/a1-verify/skeleton-dryrun/campaign/harness/ledger.jsonl",
+   "root": "/tmp/a1-verify/skeleton-dryrun/campaign/harness"
+  },
+  "meter": {
+   "base_url": "http://127.0.0.1:55359/v1",
+   "ledger": "/tmp/a1-verify/skeleton-dryrun/campaign/meter/ledger.jsonl",
+   "port": 55359,
+   "token_issued": true
+  },
+  "namespace_prefix": [
+   "unshare",
+   "-rn",
+   "sh",
+   "-c",
+   "ip link set lo up && exec \"$@\"",
+   "sh"
+  ],
+  "preflight": {
+   "campaign": {
+    "arm_id": "A_simpleloop",
+    "block_id": "B000",
+    "campaign_key": "T1-maxcut/B000/A_simpleloop/R000",
+    "replicate_id": "R000",
+    "task_id": "T1-maxcut"
+   },
+   "checks": [
+    {
+     "check": "i.evaluator_identity_recomputes",
+     "detail": "eid_star=cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1 (t1_eid check exit 0)",
+     "ok": true
+    },
+    {
+     "check": "ii.harness_owns_realisation",
+     "detail": "the arm command is launched with --eval-mode harness and the harness service is the only process that runs E* (a0/a1/eval_service.py)",
+     "ok": true
+    },
+    {
+     "check": "iii.score_enters_selection",
+     "detail": "the arm's outcome lane consumes the published Outcome; the wiring probes measure that the selection follows it (a0/a1/probes/wiring_*.py)",
+     "ok": true
+    },
+    {
+     "check": "iv.budget_sources",
+     "detail": "budget={'T_wall_sec': 60.0, 'N_evaluatorCalls': 10, 'CEq_max': 100000, 'P_concurrency': 1, 'measured_by': {'T_wall_sec': 'harness monotonic clock', 'N_evaluatorCalls': 'a0/a1/eval_service.py ledger', 'CEq_max': 'a0/meter ledger'}}",
+     "ok": true
+    },
+    {
+     "check": "iv.meter_topology_declared",
+     "detail": "meter.mode=plaintext_base_url, allowlist=[api.deepseek.com]; the runtime runs inside `unshare -rn` with a unix-socket hop to this campaign's port only",
+     "ok": true
+    },
+    {
+     "check": "v.instance_sha256_matches_the_frozen_suite",
+     "detail": "G_dev_0001.json sha256=94c713897fc1c5d4\u2026 declared=94c713897fc1c5d4\u2026",
+     "ok": true
+    },
+    {
+     "check": "v.instance_is_not_in_the_agent_visible_set",
+     "detail": "set=dev; the eval set is never placed on a path the arm can read",
+     "ok": true
+    }
+   ],
+   "evaluator": "maxcut",
+   "pass": true,
+   "schema": "a0.a1.preflight/v1",
+   "tools_present": {
+    "unshare": true
+   }
+  },
+  "schema": "a0.a1.campaign_run/v1",
+  "topology": {
+   "mechanism": "unshare -rn",
+   "unix_socket": "/tmp/a0a1/T1-maxcut_B000_A_simpleloop_R000.sock"
+  },
+  "would_start": [
+   "meter_proxy",
+   "harness_eval_service",
+   "unix_relay",
+   "arm"
+  ]
+ },
+ "causal_audit": {
+  "cid_drift_case": {
+   "aidr_factors": {
+    "A_kapso": [
+     "runtime.attribution_caveat",
+     "runtime.checkout",
+     "runtime.grant_triple",
+     "runtime.outcome_lane",
+     "runtime.substrate"
+    ],
+    "A_simpleloop": [
+     "runtime.grant_triple",
+     "runtime.outcome_lane",
+     "runtime.policy",
+     "runtime.source",
+     "runtime.substrate"
+    ]
+   },
+   "arm_varying_factors": [
+    "runtime.grant_triple",
+    "runtime.outcome_lane",
+    "runtime.substrate"
+   ],
+   "arms": [
+    {
+     "arm_id": "A_simpleloop",
+     "block_id": "B000",
+     "campaign_key": "T1-maxcut/B000/A_simpleloop/R000",
+     "replicate_id": "R000",
+     "task_id": "T1-maxcut"
+    },
+    {
+     "arm_id": "A_kapso",
+     "block_id": "B000",
+     "campaign_key": "T1-maxcut/B000/A_kapso/R000",
+     "replicate_id": "R000",
+     "task_id": "T1-maxcut"
+    }
+   ],
+   "cid_factors": 1,
+   "problems": [
+    {
+     "detail": "declared cid as sha256:dededededededededededededededededededededededededededededededede but the object on this machine hashes to sha256:adadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadad",
+     "factor": "task.e_star_script",
+     "kind": "uncontrolled"
+    }
+   ],
+   "schema": "a0.a1.causal_audit/v1",
+   "task_id": "T1-maxcut",
+   "verdict": "fail"
+  },
+  "pass_case": {
+   "aidr_factors": {
+    "A_kapso": [
+     "runtime.attribution_caveat",
+     "runtime.checkout",
+     "runtime.grant_triple",
+     "runtime.outcome_lane",
+     "runtime.substrate"
+    ],
+    "A_simpleloop": [
+     "runtime.grant_triple",
+     "runtime.outcome_lane",
+     "runtime.policy",
+     "runtime.source",
+     "runtime.substrate"
+    ]
+   },
+   "arm_varying_factors": [
+    "runtime.grant_triple",
+    "runtime.outcome_lane",
+    "runtime.substrate"
+   ],
+   "arms": [
+    {
+     "arm_id": "A_simpleloop",
+     "block_id": "B000",
+     "campaign_key": "T1-maxcut/B000/A_simpleloop/R000",
+     "replicate_id": "R000",
+     "task_id": "T1-maxcut"
+    },
+    {
+     "arm_id": "A_kapso",
+     "block_id": "B000",
+     "campaign_key": "T1-maxcut/B000/A_kapso/R000",
+     "replicate_id": "R000",
+     "task_id": "T1-maxcut"
+    }
+   ],
+   "cid_factors": 14,
+   "problems": [],
+   "schema": "a0.a1.causal_audit/v1",
+   "task_id": "T1-maxcut",
+   "verdict": "pass"
+  },
+  "undeclared_object_case": {
+   "aidr_factors": {
+    "A_kapso": [
+     "runtime.attribution_caveat",
+     "runtime.checkout",
+     "runtime.grant_triple",
+     "runtime.outcome_lane",
+     "runtime.substrate"
+    ],
+    "A_simpleloop": [
+     "runtime.grant_triple",
+     "runtime.outcome_lane",
+     "runtime.policy",
+     "runtime.source",
+     "runtime.substrate"
+    ]
+   },
+   "arm_varying_factors": [
+    "runtime.grant_triple",
+    "runtime.outcome_lane",
+    "runtime.substrate"
+   ],
+   "arms": [
+    {
+     "arm_id": "A_simpleloop",
+     "block_id": "B000",
+     "campaign_key": "T1-maxcut/B000/A_simpleloop/R000",
+     "replicate_id": "R000",
+     "task_id": "T1-maxcut"
+    },
+    {
+     "arm_id": "A_kapso",
+     "block_id": "B000",
+     "campaign_key": "T1-maxcut/B000/A_kapso/R000",
+     "replicate_id": "R000",
+     "task_id": "T1-maxcut"
+    }
+   ],
+   "cid_factors": 14,
+   "problems": [
+    {
+     "detail": "observed as value:{\"setting\":1}, declared in neither CID nor AID_r for arm(s) ['A_simpleloop', 'A_kapso']",
+     "factor": "runtime.undeclared_knob",
+     "kind": "uncontrolled"
+    }
+   ],
+   "schema": "a0.a1.causal_audit/v1",
+   "task_id": "T1-maxcut",
+   "verdict": "fail"
+  }
+ },
+ "checks": {
+  "a_campaign_without_an_instance_is_refused": true,
+  "a_drifting_cid_factor_fails_the_audit": true,
+  "a_policy_refusal_does_not_look_like_spend": true,
+  "an_already_complete_campaign_in_an_invalidated_block_is_discarded": true,
+  "an_invalidated_block_cannot_be_completed": true,
+  "an_invalidated_block_is_replaced_by_a_new_block": true,
+  "an_outage_invalidates_the_whole_block": true,
+  "an_undeclared_object_fails_the_audit": true,
+  "an_unobservable_usage_gap_stops_the_campaign": true,
+  "an_unreadable_ledger_is_refused_not_zeroed": true,
+  "another_campaigns_ledger_rows_are_not_counted": true,
+  "blocks_are_not_all_the_same_order": true,
+  "budget_stops_on_ceq": true,
+  "budget_stops_on_evaluator_calls": true,
+  "budget_stops_on_wall_clock": true,
+  "budget_within_is_within": true,
+  "campaign_dry_run_starts_nothing": true,
+  "campaign_id_is_the_ordered_four_tuple": true,
+  "campaign_preflight_passes_on_the_real_artifacts": true,
+  "causal_audit_passes_on_the_real_declarations": true,
+  "each_block_contains_every_arm_once": true,
+  "only_complete_blocks_are_usable": true,
+  "the_arm_command_carries_the_campaigns_meter_url": true,
+  "the_plan_is_reproducible_from_the_seed": true,
+  "the_topology_prefix_is_unshare_rn": true
+ },
+ "note": "no model call and no campaign was made; the budget ledgers marked `synthetic` were constructed because an unmetered call cannot be produced without spending money",
+ "schema": "a0.a1.skeleton_dryrun/v1",
+ "verdict": "pass"
+}

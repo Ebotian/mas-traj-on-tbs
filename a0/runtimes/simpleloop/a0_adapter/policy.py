@@ -69,8 +69,21 @@ def load_policy(path: Path = POLICY_PATH) -> dict:
     scalar = policy["scalarization"]
     if scalar["applies"] != "scalar" or scalar["direction"] != "maximize":
         raise PolicyError("round-one F_r must be scalar/maximize (plan:528)")
-    if scalar["input"] != f"outcome.fields.{scalar['input'].split('.')[-1]}":
-        raise PolicyError("scalarization.input must name a field of outcome.fields")
+    # The scalar may name a field of E*'s multi-field Outcome
+    # (`outcome.fields.sum_radii`, the plumbing task) or a top-level quantity the
+    # Outcome defines (`outcome.cut_edges`, T1's integer-authoritative objective,
+    # INTERFACE.md §5). Both are an `outcome.<...>` path; anything else is a
+    # scalarization the trace schema cannot describe.
+    parts = str(scalar["input"]).split(".")
+    if len(parts) == 3 and parts[0] == "outcome" and parts[1] == "fields" and parts[2]:
+        pass
+    elif len(parts) == 2 and parts[0] == "outcome" and parts[1]:
+        pass
+    else:
+        raise PolicyError(
+            f"scalarization.input must be an `outcome.fields.<name>` or `outcome.<name>` "
+            f"path; got {scalar['input']!r}"
+        )
     if policy["selection"]["tie_break"] != (
         "smallest candidate_id by byte-wise comparison of the UTF-8 encoding of candidate_id"
     ):
@@ -87,6 +100,12 @@ def scalar_of(outcome: dict | None, field: str) -> float | None:
 
     Returning None (never 0.0, never -inf) is what keeps an `invalid` or `error`
     verdict from looking like a bad-but-real score.
+
+    A field is read from `outcome.fields` when the Outcome has one and from the
+    Outcome's own top level otherwise. An integer objective (T1's `cut_edges`) is
+    returned as an `int`: §5 makes it the only authoritative value, and the
+    argmax's exactness is then a property of integer comparison rather than of
+    an IEEE-754 equality that happens to be exact at these magnitudes.
     """
     if outcome is None:
         return None
@@ -95,15 +114,19 @@ def scalar_of(outcome: dict | None, field: str) -> float | None:
     fields = outcome.get("fields") or {}
     value = fields.get(field)
     if value is None:
+        value = outcome.get(field)
+    if value is None:
         return None
-    if not isinstance(value, (int, float)) or value != value or value in (float("inf"), float("-inf")):
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise PolicyError(f"non-numeric scalar for {field}: {value!r}")
+    if isinstance(value, float) and (value != value or value in (float("inf"), float("-inf"))):
         raise PolicyError(f"non-finite scalar for {field}: {value!r}")
     objective = (outcome.get("objective") or {}).get("value")
     if objective is not None and objective != value:
         raise PolicyError(
             f"objective.value {objective!r} disagrees with fields.{field} {value!r}"
         )
-    return float(value)
+    return value if isinstance(value, int) else float(value)
 
 
 def choose(scores: dict[str, float | None]) -> tuple[str | None, str | None]:
@@ -142,7 +165,8 @@ def choose_earliest_index(scores: dict[str, float | None]) -> str | None:
     return None
 
 
-def fr_for_events(policy: dict, *, injected: bool = False) -> dict:
+def fr_for_events(policy: dict, *, injected: bool = False,
+                  policy_path: Path | None = None) -> dict:
     """The `fr` block recorded on every score event."""
     if injected:
         return {
@@ -151,6 +175,22 @@ def fr_for_events(policy: dict, *, injected: bool = False) -> dict:
             "applies": "scalar",
             "spec_hash": canonical_file_digest(INJECT_FR_PATH),
             "declared_in": "a0/runtimes/simpleloop/policy/simpleloop.inject.json",
+        }
+    if policy.get("task") == "maxcut":
+        # T1's F_r: the scalar is E*'s integer objective, which the harness
+        # authors (a0/a1/eval_service.py) and the runtime consumes. The frozen
+        # declaration is this policy file itself, so a change of what the search
+        # maximizes changes the digest the score events carry.
+        path = Path(policy_path) if policy_path else POLICY_PATH
+        return {
+            "name": "F_r = cut_edges(E*_harness_outcome)",
+            "version": "v1",
+            "applies": "scalar",
+            "spec_hash": canonical_file_digest(path),
+            "declared_in": (
+                f"{path} + a0/tasks/maxcut/INTERFACE.md#5 (cut_edges is the only "
+                "authoritative value; cut_fraction is display only)"
+            ),
         }
     if not FR_SCALAR_PATH.exists():
         raise PolicyError(f"frozen F_r declaration missing: {FR_SCALAR_PATH}")

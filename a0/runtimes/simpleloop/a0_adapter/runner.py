@@ -54,6 +54,27 @@ class Settings:
     max_iterations: int = 64
     reference_table: Path | None = None
     evalcontract_py: Path | None = None
+    #: which lane produces the Outcome. ``estareval`` = the A0 lane, where the
+    #: adapter ran E* itself; ``harness`` = A1, where the harness runs E* and this
+    #: adapter only consumes what it published (``harnesseval.py``).
+    eval_mode: str = "estareval"
+    harness_root: Path | None = None
+    harness_request_timeout_s: float = 600.0
+    campaign_id: str = ""
+    arm_id: str = ""
+    #: the T1 instance this run is about. SimpleLoop's campaign is one graph; the
+    #: harness evaluates candidates on it and nothing else.
+    graph_path: Path | None = None
+    baseline_candidate: str | None = None
+    policy_path: Path | None = None
+    #: the model lane's metered endpoint (the campaign's meter port) and its
+    #: credential variable. The key itself is only ever an env var.
+    model_base_url: str | None = None
+    model_name: str = "deepseek-flash"
+    model_api_key_env: str = "DEEPSEEK_API_KEY"
+    meter_token: str | None = None
+    model_timeout_s: float = 300.0
+    model_max_tokens: int = 2048
     #: the harness measurement envelope (external review D3), handed over by the runner as
     #: `A0_ENVELOPE` or `--envelope`. When it is absent the A0.1 rows still report their identity,
     #: but they cannot echo a measurement token -- which the checker treats as non-accepting.
@@ -112,7 +133,37 @@ def theta_block(settings: Settings, *, injected: bool, theta_extra: dict, defaul
     }
 
 
-def build_evaluator(settings: Settings, *, state_dir: Path, out_dir: Path) -> EStarEvaluator:
+def build_evaluator(settings: Settings, *, state_dir: Path, out_dir: Path):
+    """The evaluator lane.
+
+    Two lanes, one interface, and the choice is declared in `run_meta.json`:
+
+    * ``estareval`` (A0) — this adapter invokes E* and reads the Outcome;
+    * ``harness``   (A1) — the *harness* invokes E*, publishes an Outcome over
+      the ABI directory, and the adapter consumes it. Nothing here can run an
+      evaluator, which is the property the A1 arm is about.
+    """
+    if settings.eval_mode == "harness":
+        if settings.harness_root is None:
+            raise ValueError("--eval-mode harness requires --harness-root")
+        if settings.graph_path is None:
+            raise ValueError("--eval-mode harness requires --graph (the T1 instance)")
+        from .harnesseval import HarnessEvaluator
+
+        evaluator = HarnessEvaluator(
+            root=settings.harness_root,
+            campaign_id=settings.campaign_id or settings.run_id,
+            arm_id=settings.arm_id or settings.runtime,
+            graph_path=settings.graph_path,
+            seed=settings.theta["seed"] if settings.theta["seed"] is not None else 1337,
+            timeout_s=float(settings.theta.get("timeout_s", 10.0)),
+            request_timeout_s=settings.harness_request_timeout_s,
+            expected_source_records=settings.eid.source_records,
+            recorded_source_digest=settings.eid.evaluator_source_digest,
+        )
+        evaluator.verify_wiring()
+        return evaluator
+
     evaluator = EStarEvaluator(
         python=settings.e_star_python,
         script=settings.e_star_script,
@@ -135,6 +186,7 @@ def build_evaluator(settings: Settings, *, state_dir: Path, out_dir: Path) -> ES
 def adapter_md(settings: Settings, outcome: RunOutcome, evaluator: EStarEvaluator,
                theta_extra: dict) -> str:
     ident = evaluator.identity
+    harness = settings.eval_mode == "harness"
     lines = [
         f"# adapter.md — SimpleLoop, run {settings.run_id}",
         "",
@@ -151,10 +203,33 @@ def adapter_md(settings: Settings, outcome: RunOutcome, evaluator: EStarEvaluato
         f"(sha256 recomputed and compared with the EID* records: "
         f"{ident.source_verified if ident else 'NOT CHECKED'})",
         f"* E* interpreter: `{settings.rel(settings.e_star_python)}` "
-        f"({ident.interpreter_version if ident else 'unknown'})",
+        f"({getattr(ident, 'interpreter_version', None) or 'supplied by the harness'})",
         f"* E* self-reported evaluator_source_sha256: "
-        f"`{ident.evaluator_source_sha256_self_reported if ident else None}`",
+        f"`{getattr(ident, 'evaluator_source_sha256_self_reported', None) or (ident.document.get('evaluator_source_sha256') if ident else None)}`",
         "",
+        "## Who realised the evaluator",
+        "",
+    ]
+    if harness:
+        lines += [
+            f"* lane: **harness-owned** (`--eval-mode harness`), root `{settings.rel(settings.harness_root)}`",
+            f"* campaign `{settings.campaign_id}` / arm `{settings.arm_id}`",
+            "* the adapter does not invoke E* on this path: it writes a request into the harness "
+            "ABI directory and consumes the Outcome the harness published "
+            "(`a0/runtimes/simpleloop/a0_adapter/harnesseval.py`). The score of record is the "
+            "harness's number, bound to the candidate bytes by the harness's `a0/envelope` "
+            "measurement token, which every score event records in `evaluator_evidence.detail`.",
+            "* fail-closed: with no harness answering, a candidate is recorded `unscored`, never "
+            "scored locally.",
+            "",
+        ]
+    else:
+        lines += [
+            "* lane: adapter-invoked (`--eval-mode estareval`, the A0 lane): this adapter runs E* "
+            "and reads the Outcome it wrote.",
+            "",
+        ]
+    lines += [
         "## `EID_r -> EID*` mapping",
         "",
         "* `native_scheme` = `none`, `mapping_mode` = `adapter_declared_injection`.",
@@ -165,7 +240,7 @@ def adapter_md(settings: Settings, outcome: RunOutcome, evaluator: EStarEvaluato
         "",
         "## Frozen policy",
         "",
-        f"* policy file: `a0/runtimes/simpleloop/policy/simpleloop.policy.json`",
+        f"* policy file: `{settings.rel(settings.policy_path) if settings.policy_path else 'a0/runtimes/simpleloop/policy/simpleloop.policy.json'}`",
         f"* canonical policy digest: `{hashlib.sha256(canonical_bytes(settings.policy)).hexdigest()}`",
         f"* frozen `F_r` declaration `a0/contract/fr/scalar.json` canonical digest: "
         f"`{canonical_file_digest(Path(settings.work_root) / 'a0/contract/fr/scalar.json')}`",
@@ -230,8 +305,15 @@ def run_once(
         work_dir=run_dir / "work",
         script=solver_script,
         timeout_s=solver_timeout_s if solver_timeout_s is not None else 300.0,
+        base_url=settings.model_base_url,
+        model=settings.model_name,
+        meter_token=settings.meter_token,
+        graph_path=settings.graph_path,
+        api_key_env=settings.model_api_key_env,
+        max_tokens=settings.model_max_tokens,
     )
 
+    maxcut = settings.task == "maxcut"
     theta_extra = {
         "n": int(settings.theta.get("n", 26)),
         "runs": int(settings.theta.get("runs", 5)),
@@ -239,9 +321,30 @@ def run_once(
         "timeout_s": float(settings.theta.get("timeout_s", 120.0)),
         "e_star_script_sha256": sha256_file(settings.e_star_script),
         "candidate_set_sha256": settings.candidate_set.manifest_sha256,
-        "evaluator_lane": "subprocess: e_star.py evaluate (frozen CLI)",
+        "evaluator_lane": (
+            "harness: a0/a1/eval_service.py owns every E* call; the runtime consumes the "
+            "harness's Outcome (a0/runtimes/simpleloop/a0_adapter/harnesseval.py)"
+            if settings.eval_mode == "harness"
+            else "subprocess: e_star.py evaluate (frozen CLI)"
+        ),
+        "eval_mode": settings.eval_mode,
         "solver_lane": solver_kind,
     }
+    if maxcut:
+        theta_extra.update({
+            "t1_graph_path": str(settings.graph_path) if settings.graph_path else None,
+            "t1_graph_sha256": (
+                sha256_file(settings.graph_path) if settings.graph_path else None
+            ),
+            "t1_baseline_candidate": settings.baseline_candidate,
+            "t1_scalar_source": "outcome.cut_edges (integer; INTERFACE.md §5)",
+            "e_star_script": str(settings.e_star_script),
+        })
+    if settings.eval_mode == "harness":
+        theta_extra["harness_root"] = str(settings.harness_root)
+        theta_extra["harness_request_timeout_s"] = settings.harness_request_timeout_s
+        theta_extra["campaign_id"] = settings.campaign_id
+        theta_extra["arm_id"] = settings.arm_id
     if injected_mode:
         theta_extra["inject_scores_sha256"] = hashlib.sha256(
             json.dumps(inject, sort_keys=True, separators=(",", ":")).encode()
@@ -252,6 +355,26 @@ def run_once(
         defaults["seed"] = {
             "value": 1337,
             "source": "E* requires --seed; the canonical theta_E seed (EID* Config.theta_e_canonical) is used",
+        }
+    if maxcut:
+        # T1's E* receives no fidelity and no fraction (it measures the whole
+        # graph for every candidate, §2/§5). The trace keeps the uniform
+        # theta_E shape and records the equivalents here, as the schema requires
+        # of any parameter that is null.
+        defaults["fidelity"] = {
+            "value": None,
+            "source": (
+                "T1's E* has no fidelity classes; a0/tasks/maxcut/e_star.py evaluate takes "
+                "--candidate/--graph/--seed/--timeout only"
+            ),
+        }
+        defaults["fraction"] = {
+            "value": 1.0,
+            "source": "no subsampling exists in T1; every candidate is measured on the whole graph",
+        }
+        defaults["timeout_s"] = {
+            "value": float(settings.theta.get("timeout_s", 10.0)),
+            "source": "tau carried in theta_E.extra; a0/tasks/maxcut/INTERFACE.md §7",
         }
 
     writer = trace_mod.TraceWriter(
@@ -279,6 +402,8 @@ def run_once(
         max_iterations=max_iterations or settings.max_iterations,
         inject_scores=inject,
         check_point=check_point,
+        baseline_candidate_id=settings.baseline_candidate,
+        policy_path=settings.policy_path,
     )
     started = time.monotonic()
     outcome = loop.execute()
@@ -312,6 +437,22 @@ def run_once(
                 "extra": theta_extra,
             },
             "policy": settings.policy,
+            "policy_path": settings.rel(settings.policy_path) if settings.policy_path else None,
+            "eval_mode": settings.eval_mode,
+            "harness_root": settings.rel(settings.harness_root) if settings.harness_root else None,
+            "harness_identity": (
+                evaluator.identity.as_dict()
+                if settings.eval_mode == "harness" and evaluator.identity
+                else None
+            ),
+            "campaign_id": settings.campaign_id,
+            "arm_id": settings.arm_id,
+            "graph_path": settings.rel(settings.graph_path) if settings.graph_path else None,
+            "graph_sha256": (
+                sha256_file(settings.graph_path) if settings.graph_path else None
+            ),
+            "baseline_candidate": settings.baseline_candidate,
+            "evaluator_calls": evaluator.calls,
             "solver_lane": solver_kind,
             "solver_script": settings.rel(solver_script) if solver_script else None,
             "inject_scores": inject or None,

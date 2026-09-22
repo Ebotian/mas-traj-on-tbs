@@ -22,6 +22,7 @@ from . import a02check, closure, conformance
 from .candidates import CandidateSetError, load_candidate_set
 from .eidmap import EidError, load_eid
 from .estareval import EvaluatorWiringError
+from .harnesseval import HarnessEvalError
 from .loop import Budget
 from .policy import PolicyError, load_policy
 from .runner import (EXIT_CODES, Settings, parse_theta, run_once, validate_run_dir,
@@ -81,6 +82,30 @@ def add_common(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--budget", default="T_wall_sec=3600,N_evaluatorCalls=200,concurrency=1")
     parser.add_argument("--traces", default="score,selection,resource")
     parser.add_argument(
+        "--eval-mode", default="estareval", choices=["estareval", "harness"],
+        help="who realises the evaluator: `estareval` = this adapter runs E* (A0); "
+             "`harness` = the harness runs E* and publishes an Outcome this adapter consumes (A1), "
+             "in which case no local evaluator exists at all",
+    )
+    parser.add_argument("--harness-root", default=None,
+                        help="the harness evaluation ABI directory (with --eval-mode harness)")
+    parser.add_argument("--harness-request-timeout-s", type=float, default=600.0)
+    parser.add_argument("--campaign-id", default=None)
+    parser.add_argument("--arm-id", default=None)
+    parser.add_argument("--graph", default=None, help="the T1 instance this run is about")
+    parser.add_argument("--baseline-candidate", default=None,
+                        help="which C* member is c_0 (C*(T1) does not mark one with role=baseline)")
+    parser.add_argument("--policy", default=None,
+                        help="the frozen policy file (default: the plumbing policy)")
+    parser.add_argument("--model-base-url", default=None,
+                        help="the metered endpoint the solver lane points at (the campaign's "
+                             "meter port inside the closed topology)")
+    parser.add_argument("--model-name", default="deepseek-flash")
+    parser.add_argument("--model-api-key-env", default="DEEPSEEK_API_KEY")
+    parser.add_argument("--meter-token", default=None)
+    parser.add_argument("--model-timeout-s", type=float, default=300.0)
+    parser.add_argument("--model-max-tokens", type=int, default=2048)
+    parser.add_argument(
         "--envelope", default=None,
         help="the harness measurement envelope to join A0.1 to (external review D3): the path the "
              "runner hands over as A0_ENVELOPE. Every conformance row echoes the per-candidate "
@@ -121,7 +146,11 @@ def build_settings(args) -> Settings:
         path = Path(value)
         return path if path.is_absolute() else (adapter_dir / value)
 
-    policy = load_policy()
+    policy_path = (
+        Path(args.policy) if args.policy and Path(args.policy).is_absolute()
+        else (abs_of(args.policy) if args.policy else None)
+    )
+    policy = load_policy(policy_path) if policy_path else load_policy()
     candidate_set = load_candidate_set(abs_of(args.candidate_set))
     eid = load_eid(
         abs_of(args.eid),
@@ -187,6 +216,22 @@ def build_settings(args) -> Settings:
         reference_table=abs_of(args.reference_table) if getattr(args, "reference_table", None) else None,
         evalcontract_py=abs_of(args.evalcontract),
         envelope_path=envelope_path_of(args),
+        eval_mode=args.eval_mode,
+        harness_root=(
+            abs_of(args.harness_root) if args.harness_root else None
+        ),
+        harness_request_timeout_s=args.harness_request_timeout_s,
+        campaign_id=args.campaign_id or "",
+        arm_id=args.arm_id or "",
+        graph_path=(abs_of(args.graph) if args.graph else None),
+        baseline_candidate=args.baseline_candidate,
+        policy_path=policy_path,
+        model_base_url=args.model_base_url,
+        model_name=args.model_name,
+        model_api_key_env=args.model_api_key_env,
+        meter_token=args.meter_token,
+        model_timeout_s=args.model_timeout_s,
+        model_max_tokens=args.model_max_tokens,
     )
 
 
@@ -308,7 +353,7 @@ def main(argv=None) -> int:
     add_common(p_run)
     p_run.add_argument("--run-id", default=None)
     p_run.add_argument("--solver", default="injected",
-                       choices=["injected", "codex", "claude"])
+                       choices=["injected", "codex", "claude", "deepseek"])
     p_run.add_argument("--solver-script", default=None)
     p_run.add_argument("--inject-scores", default=None)
     p_run.add_argument("--max-iterations", type=int, default=64)
@@ -348,7 +393,7 @@ def main(argv=None) -> int:
     except (CandidateSetError,) as exc:
         print(f"adapter: candidate-set integrity failure: {exc}", file=sys.stderr)
         return 4
-    except (EidError, EvaluatorWiringError) as exc:
+    except (EidError, EvaluatorWiringError, HarnessEvalError) as exc:
         print(f"adapter: contract mismatch: {exc}", file=sys.stderr)
         return 3
     except (SolverError, PolicyError, UsageError, ValueError) as exc:

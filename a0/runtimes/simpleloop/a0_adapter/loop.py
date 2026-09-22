@@ -78,6 +78,8 @@ class SimpleLoop:
         max_iterations: int = 64,
         inject_scores: dict | None = None,
         check_point: str | None = None,
+        baseline_candidate_id: str | None = None,
+        policy_path: Path | None = None,
     ) -> None:
         self.candidate_set = candidate_set
         self.evaluator = evaluator
@@ -95,7 +97,8 @@ class SimpleLoop:
         self.check_point = check_point or (
             "SimpleLoop A0.2: c*_t = argmax_{i<=t} E(c_i) with frozen tie-break"
         )
-        self.fr = fr_for_events(policy, injected=self.injected_mode)
+        self.baseline_candidate_id = baseline_candidate_id
+        self.fr = fr_for_events(policy, injected=self.injected_mode, policy_path=policy_path)
         self.history: list[dict] = []
         self.scalar_running: dict[str, float | None] = {}
         self._proposal_paths: dict[str, Path] = {}
@@ -151,7 +154,7 @@ class SimpleLoop:
             outcome=result.outcome,
             fields=fields,
             search_signal=search_signal,
-            evaluator_evidence=trace_mod.evaluator_evidence_for(result),
+            evaluator_evidence=trace_mod.evaluator_evidence_for(result, evaluator=self.evaluator),
             fr=self.fr,
             failure_stage=failure_stage,
             failure_detail=failure_detail,
@@ -262,7 +265,7 @@ class SimpleLoop:
         iteration = 0
         candidate: dict | None = None
 
-        baseline = self.candidate_set.baseline()
+        baseline = self.candidate_set.baseline(self.baseline_candidate_id)
         while iteration < self.max_iterations:
             iteration_started = time.monotonic()
             elapsed = iteration_started - started

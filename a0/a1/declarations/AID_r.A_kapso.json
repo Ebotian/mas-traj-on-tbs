@@ -1,0 +1,42 @@
+{
+ "campaign": {
+  "arm_id": "A_kapso",
+  "block_id": "B000",
+  "campaign_key": "T1-maxcut/B000/A_kapso/R000",
+  "replicate_id": "R000",
+  "task_id": "T1-maxcut"
+ },
+ "factors": {
+  "runtime.attribution_caveat": {
+   "identity": "value:{\"kapsos_ledger_is_not_realisation_evidence\":true}",
+   "name": "runtime.attribution_caveat",
+   "note": "KAPSO files the harness's number under the registered evaluator's id; A1 must not read its ledger as evidence",
+   "role": "aid_r"
+  },
+  "runtime.checkout": {
+   "identity": "value:{\"commit\":\"7d99b152\"}",
+   "name": "runtime.checkout",
+   "note": "/home/ebt/kapso_ck/kapso, read-only by protocol",
+   "role": "aid_r"
+  },
+  "runtime.grant_triple": {
+   "identity": "value:{\"fidelity\":\"read from strategy.fidelity_decision.eval_fidelity\",\"fraction\":\"read from strategy.fidelity_decision.eval_fraction\",\"seed\":\"read from strategy.registered_subsample_seed\"}",
+   "name": "runtime.grant_triple",
+   "note": "derived from the runtime; a hardcoded triple is silently discarded when the grant differs (HARNESS-OWNED-EVAL.md \u00a77.2)",
+   "role": "aid_r"
+  },
+  "runtime.outcome_lane": {
+   "identity": "sha256:5cacfc4309761c44ab46e0f45f3546424cf98c35aa027f44dbb4e49847856478",
+   "name": "runtime.outcome_lane",
+   "note": "the post-session manifest write; the ordering IS the attribution",
+   "role": "aid_r"
+  },
+  "runtime.substrate": {
+   "identity": "value:{\"name\":\"kapso\",\"origin\":\"third party\"}",
+   "name": "runtime.substrate",
+   "note": "KAPSO's score-of-record path is a *different mechanism* (the manifest line), which is why it is an arm",
+   "role": "aid_r"
+  }
+ },
+ "schema": "a0.a1.aid_r/v1"
+}

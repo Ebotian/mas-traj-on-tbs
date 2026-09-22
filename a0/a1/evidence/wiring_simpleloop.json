@@ -1,0 +1,388 @@
+{
+ "adapter": "a0/runtimes/simpleloop",
+ "checks": {
+  "absent_harness_refuses_instead_of_evaluating": true,
+  "honest_ledger_true_equals_handed": true,
+  "runtime_selection_follows_the_harness_number": true,
+  "same_candidate_bytes_same_consumed_outcome": true,
+  "same_consumed_outcome_same_selection": true,
+  "stopped_service_scores_nothing_and_exits_8": true,
+  "the_override_inverts_the_true_ranking": true,
+  "the_score_of_record_is_the_harness_s_in_the_trace": true
+ },
+ "config": {
+  "candidate_set": "a0/tasks/maxcut/candidates/manifest.json",
+  "candidate_set_sha256": "62c147b342ce9500124beaba81ad9fee8efcfb1e81b2702594cdc894cc382356",
+  "eid": "a0/a1/T1-EID.json",
+  "eid_sha256": "0d1e669ba690f13e56824d0a45e2c1168d84ceddf5e92b034fe3c8270cbd7c87",
+  "eval_mode": "harness",
+  "policy": "a0/runtimes/simpleloop/policy/simpleloop.maxcut.policy.json",
+  "theta": "seed=1337,fidelity=none,fraction=none,timeout_s=10"
+ },
+ "graph": "a0/tasks/maxcut/suite/dev/G_dev_0001.json",
+ "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+ "honest_ledger": [
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_wiring_honest",
+   "candidate_id": "c02_ok_low_baseline",
+   "candidate_source_sha256": "f99cb470852991974fbe8e96686b2c600fb20593ce8d59e01e9e218b3da5eae5",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 132,
+   "harness_run_id": "wiring-honest",
+   "harness_supplied": true,
+   "iteration": 0,
+   "measurement_oid": "eb52d7df2c4adf2914727911c7a8ad6353bb3925430190ddf55eb3c73e677e19",
+   "override_applied": false,
+   "request_id": "A_simpleloop.2354b5df8620.i0000.0001.c02_ok_low_baseline",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 0,
+   "status": "ok",
+   "true_value": 132,
+   "ts": "2026-09-22T17:20:30+0800",
+   "wall_sec": 0.085791
+  },
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_wiring_honest",
+   "candidate_id": "proposal_i1",
+   "candidate_source_sha256": "a8f0668b5bcedd5a901fc9f18d057360bc5e00bdb73165ad1904fbf5d9bf021a",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 207,
+   "harness_run_id": "wiring-honest",
+   "harness_supplied": true,
+   "iteration": 1,
+   "measurement_oid": "f112a589637c36d727c8b4900c891bd0c22b1d07e575517342d4e62505025891",
+   "override_applied": false,
+   "request_id": "A_simpleloop.2354b5df8620.i0001.0002.proposal_i1",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 1,
+   "status": "ok",
+   "true_value": 207,
+   "ts": "2026-09-22T17:20:30+0800",
+   "wall_sec": 0.085689
+  },
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_wiring_honest",
+   "candidate_id": "proposal_i2",
+   "candidate_source_sha256": "5c6c15c52b816b04be5e7c40364b661e98a07ba0f6b39b3c758715d1a6c38039",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 0,
+   "harness_run_id": "wiring-honest",
+   "harness_supplied": true,
+   "iteration": 2,
+   "measurement_oid": "819fd40eaccf9b10ced1637e61f534fef972b930703c682c1aed1a855aea1911",
+   "override_applied": false,
+   "request_id": "A_simpleloop.2354b5df8620.i0002.0003.proposal_i2",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 2,
+   "status": "ok",
+   "true_value": 0,
+   "ts": "2026-09-22T17:20:30+0800",
+   "wall_sec": 0.086748
+  },
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_wiring_honest",
+   "candidate_id": "c02_ok_low_baseline",
+   "candidate_source_sha256": "f99cb470852991974fbe8e96686b2c600fb20593ce8d59e01e9e218b3da5eae5",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 132,
+   "harness_run_id": "wiring-honest",
+   "harness_supplied": true,
+   "iteration": 0,
+   "measurement_oid": "eb52d7df2c4adf2914727911c7a8ad6353bb3925430190ddf55eb3c73e677e19",
+   "override_applied": false,
+   "request_id": "A_simpleloop.4f3089064bbf.i0000.0001.c02_ok_low_baseline",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 3,
+   "status": "ok",
+   "true_value": 132,
+   "ts": "2026-09-22T17:20:32+0800",
+   "wall_sec": 0.087051
+  },
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_wiring_honest",
+   "candidate_id": "proposal_i1",
+   "candidate_source_sha256": "a8f0668b5bcedd5a901fc9f18d057360bc5e00bdb73165ad1904fbf5d9bf021a",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 207,
+   "harness_run_id": "wiring-honest",
+   "harness_supplied": true,
+   "iteration": 1,
+   "measurement_oid": "f112a589637c36d727c8b4900c891bd0c22b1d07e575517342d4e62505025891",
+   "override_applied": false,
+   "request_id": "A_simpleloop.4f3089064bbf.i0001.0002.proposal_i1",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 4,
+   "status": "ok",
+   "true_value": 207,
+   "ts": "2026-09-22T17:20:32+0800",
+   "wall_sec": 0.088282
+  },
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_wiring_honest",
+   "candidate_id": "proposal_i2",
+   "candidate_source_sha256": "5c6c15c52b816b04be5e7c40364b661e98a07ba0f6b39b3c758715d1a6c38039",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 0,
+   "harness_run_id": "wiring-honest",
+   "harness_supplied": true,
+   "iteration": 2,
+   "measurement_oid": "819fd40eaccf9b10ced1637e61f534fef972b930703c682c1aed1a855aea1911",
+   "override_applied": false,
+   "request_id": "A_simpleloop.4f3089064bbf.i0002.0003.proposal_i2",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 5,
+   "status": "ok",
+   "true_value": 0,
+   "ts": "2026-09-22T17:20:32+0800",
+   "wall_sec": 0.08471
+  }
+ ],
+ "lying_ledger": [
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_wiring_lying",
+   "candidate_id": "c02_ok_low_baseline",
+   "candidate_source_sha256": "f99cb470852991974fbe8e96686b2c600fb20593ce8d59e01e9e218b3da5eae5",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 132,
+   "harness_run_id": "wiring-lying",
+   "harness_supplied": true,
+   "iteration": 0,
+   "measurement_oid": "1f39c7516280612150abf63251a1cf79db071ef37cc1eb172c7779696f3105e5",
+   "override_applied": false,
+   "request_id": "A_simpleloop.ccdb96b82eb9.i0000.0001.c02_ok_low_baseline",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 0,
+   "status": "ok",
+   "true_value": 132,
+   "ts": "2026-09-22T17:20:34+0800",
+   "wall_sec": 0.08315
+  },
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_wiring_lying",
+   "candidate_id": "proposal_i1",
+   "candidate_source_sha256": "a8f0668b5bcedd5a901fc9f18d057360bc5e00bdb73165ad1904fbf5d9bf021a",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 1,
+   "harness_run_id": "wiring-lying",
+   "harness_supplied": true,
+   "iteration": 1,
+   "measurement_oid": "16fbee142ed3bf66d333880b49b0b5f051d4fe86b46ff7b7e73fd4694823e73c",
+   "override_applied": true,
+   "request_id": "A_simpleloop.ccdb96b82eb9.i0001.0002.proposal_i1",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 1,
+   "status": "ok",
+   "true_value": 207,
+   "ts": "2026-09-22T17:20:34+0800",
+   "wall_sec": 0.084544
+  },
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_wiring_lying",
+   "candidate_id": "proposal_i2",
+   "candidate_source_sha256": "5c6c15c52b816b04be5e7c40364b661e98a07ba0f6b39b3c758715d1a6c38039",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 9999,
+   "harness_run_id": "wiring-lying",
+   "harness_supplied": true,
+   "iteration": 2,
+   "measurement_oid": "59c88b44e7639d104e65dcfc033d79dacf90427b6dae355cd7c762002c082d70",
+   "override_applied": true,
+   "request_id": "A_simpleloop.ccdb96b82eb9.i0002.0003.proposal_i2",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 2,
+   "status": "ok",
+   "true_value": 0,
+   "ts": "2026-09-22T17:20:34+0800",
+   "wall_sec": 0.082992
+  }
+ ],
+ "merged_stream_sha256": "ab1485c9bc22f79a10ebf472a2afbd94e948487f422368ae4dcd8cb66e9455be",
+ "outcome_digests": {
+  "c02_ok_low_baseline": "b1943c0fa1bf5bc4c085c9c7a05b51dcda929e2ea3b8aa7693f5a6845716ebd7",
+  "proposal_i1": "ea5126aefdf58ca74c7eca9a2be1042fe836e377cd4544ca781b8c6e2a184374",
+  "proposal_i2": "0ecde402183e7cf5273a81a3559dfcf14780670b525a4bc896040f8dcbdd7171"
+ },
+ "runs": {
+  "absent": {
+   "returncode": 3,
+   "stderr_tail": "adapter: contract mismatch: no harness identity at /tmp/a1-verify/wiring-simpleloop/harness-absent/harness_identity.json: the harness evaluation service is not running, and this lane has no local evaluator to fall back on\n"
+  },
+  "honest_a": {
+   "champion": "proposal_i1",
+   "champion_scalar": 207,
+   "exit_code": 0,
+   "history": [
+    {
+     "candidate_id": "c02_ok_low_baseline",
+     "e_star_status": "ok",
+     "iteration": 0,
+     "search_signal": 132
+    },
+    {
+     "candidate_id": "proposal_i1",
+     "e_star_status": "ok",
+     "iteration": 1,
+     "search_signal": 207
+    },
+    {
+     "candidate_id": "proposal_i2",
+     "e_star_status": "ok",
+     "iteration": 2,
+     "search_signal": 0
+    }
+   ],
+   "returncode": 0
+  },
+  "honest_b": {
+   "champion": "proposal_i1",
+   "champion_scalar": 207,
+   "exit_code": 0,
+   "history": [
+    {
+     "candidate_id": "c02_ok_low_baseline",
+     "e_star_status": "ok",
+     "iteration": 0,
+     "search_signal": 132
+    },
+    {
+     "candidate_id": "proposal_i1",
+     "e_star_status": "ok",
+     "iteration": 1,
+     "search_signal": 207
+    },
+    {
+     "candidate_id": "proposal_i2",
+     "e_star_status": "ok",
+     "iteration": 2,
+     "search_signal": 0
+    }
+   ],
+   "returncode": 0
+  },
+  "lying": {
+   "champion": "proposal_i2",
+   "champion_scalar": 9999,
+   "exit_code": 0,
+   "history": [
+    {
+     "candidate_id": "c02_ok_low_baseline",
+     "e_star_status": "ok",
+     "iteration": 0,
+     "search_signal": 132
+    },
+    {
+     "candidate_id": "proposal_i1",
+     "e_star_status": "ok",
+     "iteration": 1,
+     "search_signal": 1
+    },
+    {
+     "candidate_id": "proposal_i2",
+     "e_star_status": "ok",
+     "iteration": 2,
+     "search_signal": 9999
+    }
+   ],
+   "returncode": 0
+  },
+  "service_stopped": {
+   "champion": null,
+   "exit_code": 8,
+   "history": [
+    {
+     "candidate_id": "c02_ok_low_baseline",
+     "e_star_failure_kind": "harness_outcome_missing",
+     "e_star_status": "error",
+     "iteration": 0,
+     "search_signal": null
+    },
+    {
+     "candidate_id": "proposal_i1",
+     "e_star_failure_kind": "harness_outcome_missing",
+     "e_star_status": "error",
+     "iteration": 1,
+     "search_signal": null
+    },
+    {
+     "candidate_id": "proposal_i2",
+     "e_star_failure_kind": "harness_outcome_missing",
+     "e_star_status": "error",
+     "iteration": 2,
+     "search_signal": null
+    }
+   ],
+   "returncode": 8
+  }
+ },
+ "schema": "a0.a1.wiring_simpleloop/v1",
+ "task": "maxcut-t1",
+ "truth_vs_handed": {
+  "handed": {
+   "c02_ok_low_baseline": 132,
+   "proposal_i1": 1,
+   "proposal_i2": 9999
+  },
+  "handed_best": "proposal_i2",
+  "true": {
+   "c02_ok_low_baseline": 132,
+   "proposal_i1": 207,
+   "proposal_i2": 0
+  },
+  "true_best": "proposal_i1"
+ },
+ "verdict": "pass"
+}

@@ -1,0 +1,278 @@
+{
+ "arm": "simpleloop",
+ "arm_command": [
+  "/home/ebt/rsi-dev/a0/runtimes/simpleloop/.venv/bin/python",
+  "-m",
+  "a0_adapter",
+  "run",
+  "--work-root",
+  "/home/ebt/rsi-dev",
+  "--runtime",
+  "simpleloop",
+  "--task",
+  "maxcut",
+  "--candidate-set",
+  "a0/tasks/maxcut/candidates/manifest.json",
+  "--eid",
+  "a0/a1/T1-EID.json",
+  "--eid-spec",
+  "a0/a1/T1.contract.json",
+  "--eval-mode",
+  "harness",
+  "--harness-root",
+  "/tmp/a1/live/simpleloop/harness",
+  "--campaign-id",
+  "simpleloop",
+  "--arm-id",
+  "A_simpleloop",
+  "--graph",
+  "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/dev/G_dev_0001.json",
+  "--baseline-candidate",
+  "c02_ok_low_baseline",
+  "--policy",
+  "a0/runtimes/simpleloop/policy/simpleloop.maxcut.policy.json",
+  "--theta",
+  "seed=1337,fidelity=none,fraction=none,timeout_s=10",
+  "--e-star",
+  "a0/tasks/maxcut/e_star.py",
+  "--solver",
+  "deepseek",
+  "--model-base-url",
+  "http://127.0.0.1:38927/v1",
+  "--model-name",
+  "deepseek-flash",
+  "--meter-token=AV1lZD6orRDChQ3_iJSOhOaKmHaSyO6K",
+  "--model-timeout-s",
+  "180.0",
+  "--max-iterations",
+  "2",
+  "--run-dir",
+  "/tmp/a1/live/simpleloop/run"
+ ],
+ "arm_exit_code": 0,
+ "arm_state": {
+  "champion_id": "c02_ok_low_baseline",
+  "exit_code": 0,
+  "history": [
+   {
+    "candidate_id": "c02_ok_low_baseline",
+    "proposal_source": "baseline:c02_ok_low_baseline",
+    "search_signal": 132,
+    "status": "ok"
+   },
+   {
+    "candidate_id": "ds_i001",
+    "proposal_source": "model:deepseek-flash",
+    "search_signal": 0,
+    "status": "ok"
+   }
+  ],
+  "last_line_is_the_harness_s": null,
+  "model_calls": 1,
+  "schema": "a0.a1.live_simpleloop_arm/v1",
+  "score_of_record": 132,
+  "score_source": "harness",
+  "session_claimed_score": null,
+  "session_manifest_lines": null
+ },
+ "arm_stderr_tail": "",
+ "arm_stdout_tail": "{\n \"champion_id\": \"c02_ok_low_baseline\",\n \"champion_scalar\": 132,\n \"exit_code\": 0,\n \"exit_meaning\": \"run completed within budget; all three traces written\",\n \"failure_counts\": {},\n \"iterations\": 2,\n \"run_dir\": \"/tmp/a1/live/simpleloop/run\",\n \"run_id\": \"run\",\n \"schema\": \"a0.simpleloop.run_summary/v1\",\n \"scored_candidates\": 2,\n \"stopped_because\": \"solver_exhausted\",\n \"trace_paths\": {\n  \"combined\": \"/tmp/a1/live/simpleloop/run/traces/simpleloop.run.all.jsonl\",\n  \"resource\": \"/tmp/a1/live/simpleloop/run/traces/simpleloop.run.resource.jsonl\",\n  \"score\": \"/tmp/a1/live/simpleloop/run/traces/simpleloop.run.score.jsonl\",\n  \"selection\": \"/tmp/a1/live/simpleloop/run/traces/simpleloop.run.selection.jsonl\"\n },\n \"trace_validation_per_file\": {\n  \"combined\": {\n   \"stats\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"events              7\\nschema/semantic errors 0\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 7\"\n   },\n   \"validate\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"valid: 7 event(s)\"\n   }\n  },\n  \"resource\": {\n   \"stats\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"events              3\\nschema/semantic errors 0\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 3\"\n   },\n   \"validate\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"valid: 3 event(s)\"\n   }\n  },\n  \"score\": {\n   \"stats\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"events              2\\nschema/semantic errors 0\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 2\"\n   },\n   \"validate\": {\n    \"returncode\": 0,\n    \"stderr\": \"\",\n    \"stdout\": \"valid: 2 event(s)\"\n   }\n  },\n  \"selection\": {\n   \"stats\": {\n    \"returncode\": 1,\n    \"stderr\": \"\",\n    \"stdout\": \"events              2\\nschema/semantic errors 2\\n  search_failed          0\\n  resolve_failed         0\\n  comprehension_failed   0\\n  mechanism_mismatch     0\\n  other_failures         0\\n  events[simpleloop] 2\"\n   },\n   \"validate\": {\n    \"returncode\": 1,\n    \"stderr\": \"\",\n    \"stdout\": \"INVALID event 'run.s2.i0.c02_ok_low_baseline' (event_seq 2): selection.source_score_event_id 'run.s0.i0.c02_ok_low_baseline' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\\nINVALID event 'run.s5.i1.ds_i001' (event_seq 5): selection.source_score_event_id 'run.s0.i0.c02_ok_low_baseline' has no score event in this stream (validate the run, not one per-kind file: validate-run --run-dir <run_dir>)\\n2 error(s) in 2 event(s)\"\n   }\n  }\n },\n \"trace_validation_run_unit\": {\n  \"returncode\": 0,\n  \"stderr\": \"\",\n  \"stdout\": \"[ok ] simpleloop.run  events=7  [score=2 selection=2 resource=3]  merged simpleloop.run.all.jsonl\\nvalid: 1 run(s), 7 event(s)\"\n }\n}\n",
+ "budget_check": {
+  "arm_id": "A_simpleloop",
+  "budget": {
+   "CEq_max": 200000,
+   "N_evaluatorCalls": 50,
+   "P_concurrency": 1,
+   "T_wall_sec": 1800.0,
+   "measured_by": {
+    "CEq_max": "a0/meter ledger",
+    "N_evaluatorCalls": "a0/a1/eval_service.py ledger",
+    "T_wall_sec": "harness monotonic clock"
+   }
+  },
+  "campaign_id": "C_live_simpleloop",
+  "detail": "",
+  "label": "after-live-run",
+  "observed": {
+   "CEq": 3600,
+   "CEq_rows": 1,
+   "N_evaluatorCalls": 2,
+   "T_wall_sec": 8.171737988999666,
+   "harness_eval_ledger_missing": false,
+   "meter_ledger_missing": false,
+   "reasons": {},
+   "refusals": [],
+   "refused_rows": 0,
+   "unmetered": [],
+   "unmetered_rows": 0
+  },
+  "schema": "a0.a1.budget_check/v1",
+  "stopped_because": null,
+  "within": true
+ },
+ "campaign_id": "C_live_simpleloop",
+ "checks": {
+  "every_metered_row_has_a_real_ceq": true,
+  "the_budget_is_within_its_limits": true,
+  "the_ledger_has_one_row_per_upstream_call": true,
+  "the_model_was_reached_through_the_meter": true,
+  "the_score_of_record_comes_from_the_harness": true,
+  "the_score_of_record_is_the_harness_s_value": true,
+  "the_session_could_not_substitute_its_own_number": true,
+  "the_topology_blocks_direct_egress": true
+ },
+ "elapsed_sec": 7.64,
+ "graph": "a0/tasks/maxcut/suite/dev/G_dev_0001.json",
+ "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+ "harness_ledger_rows": [
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_live_simpleloop",
+   "candidate_id": "c02_ok_low_baseline",
+   "candidate_source_sha256": "7247146ff9119791cde5c276f82a74aed4e45e2870527eb56324c12b9d20819e",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 132,
+   "harness_run_id": "live-simpleloop",
+   "harness_supplied": true,
+   "iteration": 0,
+   "measurement_oid": "439efa299b696f6b735f20de7ebc38a4d2cb0c0ac84a3133c9fa3632fb6bc51b",
+   "override_applied": false,
+   "request_id": "A_simpleloop.91da129c6ed2.i0000.0001.c02_ok_low_baseline",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 0,
+   "status": "ok",
+   "true_value": 132,
+   "ts": "2026-09-22T17:17:05+0800",
+   "wall_sec": 0.251838
+  },
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_live_simpleloop",
+   "candidate_id": "ds_i001",
+   "candidate_source_sha256": "8c22a9e29b63b1c3a82b7d735de726513d1d87bda1a1fcc69dcf3e0bb41f4295",
+   "e_star_exit_code": 0,
+   "evaluator": "maxcut",
+   "evaluator_source_sha256": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 0,
+   "harness_run_id": "live-simpleloop",
+   "harness_supplied": true,
+   "iteration": 1,
+   "measurement_oid": "fe350429f8c9eb65f3de434e7f9d0d3ea405db6f3c0f2c8620c042c540c70f89",
+   "override_applied": false,
+   "request_id": "A_simpleloop.91da129c6ed2.i0001.0002.ds_i001",
+   "schema": "a0.a1.harness_eval_ledger/v1",
+   "score_field": "cut_edges",
+   "seq": 1,
+   "status": "ok",
+   "true_value": 0,
+   "ts": "2026-09-22T17:17:09+0800",
+   "wall_sec": 0.239535
+  }
+ ],
+ "meter": {
+  "aid": {
+   "body_repair": {
+    "declared_in": "a0/a1/DEVIATIONS.md D-A1-3",
+    "dials": "https://api.deepseek.com",
+    "hop": "a0/a1/meter_body_repair.py",
+    "hop_log": "/tmp/a1/live/simpleloop/meter/repair/repair.jsonl",
+    "why": "a0/meter/meter_proxy.py forwards the upstream request with no Content-Length (HOP_BY_HOP strips it; http.client does not re-add it), so every real provider call answers 400 and is booked unmetered"
+   },
+   "endpoints": [
+    {
+     "anthropic_base_url": "http://127.0.0.1:38927",
+     "arm_id": "A_simpleloop",
+     "base_url": "http://127.0.0.1:38927/v1",
+     "campaign_id": "C_live_simpleloop",
+     "token": "AV1lZD6orRDChQ3_iJSOhOaKmHaSyO6K"
+    }
+   ],
+   "meter": {
+    "allowlist": [
+     "127.0.0.1"
+    ],
+    "attribution": "per_campaign_listener_port(+optional X-A0-Meter-Token)",
+    "ceq_formula": "ceq = miss + floor(hit*2/100) + 4*completion",
+    "connect": "refused",
+    "ledger": "/tmp/a1/live/simpleloop/meter/ledger.jsonl",
+    "missing_usage": "unmetered:true,ceq:null",
+    "mode": "plaintext_base_url",
+    "on_missing_cache_split": "unmetered",
+    "row_schema": "a0.meter.call/v1",
+    "upstream_base": "http://127.0.0.1:41349"
+   },
+   "schema": "a0.meter.aid/v1"
+  },
+  "base_url": "http://127.0.0.1:38927/v1",
+  "port": 38927,
+  "token_issued": true
+ },
+ "meter_ledger_rows": [
+  {
+   "arm_id": "A_simpleloop",
+   "campaign_id": "C_live_simpleloop",
+   "ceq": 3600,
+   "endpoint": "http://127.0.0.1:41349/v1/chat/completions",
+   "model_reported": "deepseek-flash",
+   "model_requested": "deepseek-flash",
+   "provider": "deepseek",
+   "provider_request_id": "7f137f58-053b-4c6e-908f-755333e44598",
+   "reason": null,
+   "schema": "a0.meter.call/v1",
+   "stream": false,
+   "ts": "2026-09-22T17:17:09.023661+08:00",
+   "unmetered": false,
+   "usage": {
+    "completion_tokens": 602,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1192
+   }
+  }
+ ],
+ "meter_summary": {
+  "ceq": 3600,
+  "ledger": "/tmp/a1/live/simpleloop/meter/ledger.jsonl",
+  "rows": 1,
+  "unmetered": 0
+ },
+ "model_requested": "deepseek-flash",
+ "namespace_prefix": [
+  "unshare",
+  "-rn",
+  "sh",
+  "-c",
+  "ip link set lo up && exec \"$@\"",
+  "sh"
+ ],
+ "repair_records": [
+  {
+   "client_framing": "unframed_repaired",
+   "method": "POST",
+   "path": "/v1/chat/completions HTTP/1.1",
+   "repaired_with": "Content-Length: 2697",
+   "request_body_bytes": 2697,
+   "status": 200,
+   "to": "api.deepseek.com:443",
+   "ts": "2026-09-22T17:17:06+0800"
+  }
+ ],
+ "schema": "a0.a1.live_probe/v1",
+ "started_at": "2026-09-22T17:17:02+0800",
+ "topology_probe": {
+  "1.1.1.1": "BLOCKED:OSError",
+  "123.148.116.184": "BLOCKED:OSError",
+  "8.8.8.8": "BLOCKED:OSError",
+  "_meter_reachable": true,
+  "_negative_controls_blocked": true,
+  "meter_loopback": "REACHED"
+ },
+ "topology_probe_note": "run inside `unshare -rn`; the negative controls are bare IP literals, the positive control is the campaign's metered port over the unix socket",
+ "verdict": "pass"
+}

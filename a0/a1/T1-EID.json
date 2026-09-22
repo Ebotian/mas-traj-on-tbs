@@ -1,0 +1,717 @@
+{
+ "base_declared": "../..",
+ "components": {
+  "Config": {
+   "declared": {
+    "value": {
+     "conformance": {
+      "epsilon": {
+       "kind": "exact",
+       "unit": "edges",
+       "value": 0
+      }
+     },
+     "determinism": {
+      "rule": "INTERFACE.md \u00a76 rule 4: canonical bytes of partition.json over two invocations",
+      "runs": 2,
+      "violation": "non_deterministic (status error)"
+     },
+     "environment_policy": {
+      "allow_network": false,
+      "child_env_specified_by_evaluator": true,
+      "no_proxy_variables": true,
+      "path": "minimal",
+      "private_home_tmpdir_cwd": true,
+      "pythondontwritebytecode": "1"
+     },
+     "evaluator": {
+      "cli": "e_star.py evaluate --candidate <path> --graph <json> --seed <S> --timeout <tau> --out <json>",
+      "exit_codes": {
+       "error": 3,
+       "invalid": 2,
+       "ok": 0,
+       "timeout": 4
+      },
+      "numbers_are_the_harness_s": "the harness runs E* and authors the Outcome; the runtime consumes it",
+      "outcome_is_multi_field": true,
+      "scalarization_owner": "F_r (per runtime)"
+     },
+     "metric": "cut_edges",
+     "revert_safety": {
+      "note": "E* writes only below --state-dir and --out; never inside a candidate tree",
+      "required": true
+     },
+     "task": "maxcut-t1",
+     "theta_e_canonical": {
+      "seed": 1337,
+      "timeout_s": 10.0
+     },
+     "theta_e_semantics": {
+      "fidelity": "none \u2014 T1 has no fidelity classes",
+      "fraction": "none \u2014 every candidate is measured on the whole graph",
+      "seed": "passed to the candidate as --seed; inert for a deterministic candidate",
+      "timeout_s": "tau; at tau the harness SIGKILLs the process group (INTERFACE.md \u00a77)"
+     }
+    }
+   },
+   "digest": "178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054",
+   "kind": "value",
+   "value": {
+    "conformance": {
+     "epsilon": {
+      "kind": "exact",
+      "unit": "edges",
+      "value": 0
+     }
+    },
+    "determinism": {
+     "rule": "INTERFACE.md \u00a76 rule 4: canonical bytes of partition.json over two invocations",
+     "runs": 2,
+     "violation": "non_deterministic (status error)"
+    },
+    "environment_policy": {
+     "allow_network": false,
+     "child_env_specified_by_evaluator": true,
+     "no_proxy_variables": true,
+     "path": "minimal",
+     "private_home_tmpdir_cwd": true,
+     "pythondontwritebytecode": "1"
+    },
+    "evaluator": {
+     "cli": "e_star.py evaluate --candidate <path> --graph <json> --seed <S> --timeout <tau> --out <json>",
+     "exit_codes": {
+      "error": 3,
+      "invalid": 2,
+      "ok": 0,
+      "timeout": 4
+     },
+     "numbers_are_the_harness_s": "the harness runs E* and authors the Outcome; the runtime consumes it",
+     "outcome_is_multi_field": true,
+     "scalarization_owner": "F_r (per runtime)"
+    },
+    "metric": "cut_edges",
+    "revert_safety": {
+     "note": "E* writes only below --state-dir and --out; never inside a candidate tree",
+     "required": true
+    },
+    "task": "maxcut-t1",
+    "theta_e_canonical": {
+     "seed": 1337,
+     "timeout_s": 10.0
+    },
+    "theta_e_semantics": {
+     "fidelity": "none \u2014 T1 has no fidelity classes",
+     "fraction": "none \u2014 every candidate is measured on the whole graph",
+     "seed": "passed to the candidate as --seed; inert for a deterministic candidate",
+     "timeout_s": "tau; at tau the harness SIGKILLs the process group (INTERFACE.md \u00a77)"
+    }
+   }
+  },
+  "DataManifest": {
+   "declared": {
+    "entries": [
+     {
+      "manifest": "a0/tasks/maxcut/suite/manifest.json",
+      "manifest_sha256_prefix": "47324fcc",
+      "name": "suite",
+      "role": "24 dev + 24 eval + 12 calibration canonical graphs"
+     },
+     {
+      "manifest": "a0/tasks/maxcut/candidates/manifest.json",
+      "name": "candidate_set",
+      "role": "C*(T1): the 21 fixed candidates used for conformance"
+     }
+    ],
+    "files": [
+     "a0/tasks/maxcut/candidates/manifest.json",
+     "a0/tasks/maxcut/suite/calibration/C_0001.json",
+     "a0/tasks/maxcut/suite/calibration/C_0002.json",
+     "a0/tasks/maxcut/suite/calibration/C_0003.json",
+     "a0/tasks/maxcut/suite/calibration/C_0004.json",
+     "a0/tasks/maxcut/suite/calibration/C_0005.json",
+     "a0/tasks/maxcut/suite/calibration/C_0006.json",
+     "a0/tasks/maxcut/suite/calibration/C_0007.json",
+     "a0/tasks/maxcut/suite/calibration/C_0008.json",
+     "a0/tasks/maxcut/suite/calibration/C_0009.json",
+     "a0/tasks/maxcut/suite/calibration/C_0010.json",
+     "a0/tasks/maxcut/suite/calibration/C_0011.json",
+     "a0/tasks/maxcut/suite/calibration/C_0012.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0001.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0002.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0003.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0004.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0005.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0006.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0007.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0008.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0009.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0010.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0011.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0012.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0013.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0014.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0015.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0016.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0017.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0018.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0019.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0020.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0021.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0022.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0023.json",
+     "a0/tasks/maxcut/suite/dev/G_dev_0024.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0001.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0002.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0003.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0004.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0005.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0006.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0007.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0008.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0009.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0010.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0011.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0012.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0013.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0014.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0015.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0016.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0017.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0018.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0019.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0020.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0021.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0022.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0023.json",
+     "a0/tasks/maxcut/suite/eval/G_eval_0024.json",
+     "a0/tasks/maxcut/suite/manifest.json"
+    ]
+   },
+   "digest": "042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee",
+   "kind": "data_manifest",
+   "records": [
+    {
+     "data": "a0/tasks/maxcut/candidates/manifest.json",
+     "kind": "file",
+     "sha256": "62c147b342ce9500124beaba81ad9fee8efcfb1e81b2702594cdc894cc382356",
+     "size": 16515
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0001.json",
+     "kind": "file",
+     "sha256": "8c23cbb224a31dbea8ccf28fb6db7b26d182f72c3abada9354a247d13cb7ad29",
+     "size": 2256
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0002.json",
+     "kind": "file",
+     "sha256": "99710028c7d66594d3c6bd7620855c02412f9c2f78efdaa7b0ff2448333c255f",
+     "size": 3360
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0003.json",
+     "kind": "file",
+     "sha256": "0e3f49d6ec062ba5ca4ce84323e3f035fa9bf807a02d9f4ad9d070c69be2d36e",
+     "size": 5505
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0004.json",
+     "kind": "file",
+     "sha256": "0431a497c0462ffe44b697cdfeb265e76c56e64f1670eb1607eb232daa79a17e",
+     "size": 1806
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0005.json",
+     "kind": "file",
+     "sha256": "385256224954c6ce9a84e05264f09c754a86b6bed6f4b0bd41b369f301086c17",
+     "size": 2337
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0006.json",
+     "kind": "file",
+     "sha256": "b42f39d3431800fd9d7988131d6fa786c0b91fd26abf7ef5fafb55dc9f17394e",
+     "size": 2866
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0007.json",
+     "kind": "file",
+     "sha256": "12b53751d29caf1c7fa9333ccfb5bbeb1da9b96d096e0b6433431642b0cca4ee",
+     "size": 2212
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0008.json",
+     "kind": "file",
+     "sha256": "39504232beff0c326cca31e883a365d0711d3d42add1b173386b35dc7d7233ce",
+     "size": 3157
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0009.json",
+     "kind": "file",
+     "sha256": "045f75500fc44e2c8fcf314309de6924a5d710be768e269efeed901ff37fad03",
+     "size": 5114
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0010.json",
+     "kind": "file",
+     "sha256": "7107d3cd0a930fcfcd4fa5cec6abbd91fd3b5bebc4dfc6c6e28e260af1e86c20",
+     "size": 3960
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0011.json",
+     "kind": "file",
+     "sha256": "04bebec51fb43c0fccd8b56da7045868629ce49caa5aecf49ece98f60628c6e6",
+     "size": 3798
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/calibration/C_0012.json",
+     "kind": "file",
+     "sha256": "204c62f040b44b21cc7182bcfc2c789f5c6b5a41b9a74f131cdfdbea432ed415",
+     "size": 4632
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0001.json",
+     "kind": "file",
+     "sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+     "size": 2428
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0002.json",
+     "kind": "file",
+     "sha256": "e979e1fbfedc18de7647eb5c3376c169db8753d19c5d1dc17e5955ed9c35c23f",
+     "size": 2409
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0003.json",
+     "kind": "file",
+     "sha256": "6fbf68ab1e87548335d741e2d4deb59fbe0bb53321de6de5f051cda6de85a01f",
+     "size": 3788
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0004.json",
+     "kind": "file",
+     "sha256": "65f480bbe6a0031d5c4421bd1821e1c5485503b86e7ef076e1421d420e36997b",
+     "size": 3430
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0005.json",
+     "kind": "file",
+     "sha256": "545769f217e02ba4fbc92ddcc71a08ff0a77e8efbabc36196f45a8c1622babbe",
+     "size": 5988
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0006.json",
+     "kind": "file",
+     "sha256": "ecc150196acb7449dddd1a9d460215cfd6cec9316db279188728b191bdf0af6a",
+     "size": 5567
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0007.json",
+     "kind": "file",
+     "sha256": "a0d1888b8b6e4ddf5b97b42e0b9eca8478ca1876f2f54e6190e1d6986a9d73e1",
+     "size": 1811
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0008.json",
+     "kind": "file",
+     "sha256": "d6bbec3db24b5f3c6cd191ad0a367ae4b81d0f53ea9043264514af3080b8c7ee",
+     "size": 1811
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0009.json",
+     "kind": "file",
+     "sha256": "65dc0e1d0211d53eacd94d83ed23218f036f2187ed75a75aee5a282e9f016916",
+     "size": 2341
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0010.json",
+     "kind": "file",
+     "sha256": "8d432a4a5c41e1209fece0dff2a8fec9e21c5a7a18616af906bec4975e1e486a",
+     "size": 2340
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0011.json",
+     "kind": "file",
+     "sha256": "5d573e57f92635ecc0ad8558c2f91bb3dfdb5da1a6e0a18b361b94714b9fb5ea",
+     "size": 2870
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0012.json",
+     "kind": "file",
+     "sha256": "0dd6d936c0fde4e3f7bb9673d567777a210ea501d953612e1b16197140992c1a",
+     "size": 2870
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0013.json",
+     "kind": "file",
+     "sha256": "9f9e6b1c22a747bd25d0de2b24dca8bd0e56537dff5f32c7040f512f8b8d738a",
+     "size": 2219
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0014.json",
+     "kind": "file",
+     "sha256": "e2910c706c433fc93873cf69c3b4bdef4a8a5c82d5055f98d7e47954f6575085",
+     "size": 2217
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0015.json",
+     "kind": "file",
+     "sha256": "82e820ec5f0945387eb0e865bd77b1f9c69fed04f19a60d1b91fa08f1ef97bdf",
+     "size": 3180
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0016.json",
+     "kind": "file",
+     "sha256": "4f673d95a7b42d904459ba323f1ca90ea03c19642fdaf25fcfc5e1b33c7a3062",
+     "size": 3191
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0017.json",
+     "kind": "file",
+     "sha256": "631a1e5f5b6f78b6832614ea4cb27243ef9daeacf21ca7ad6388a7856cfeadaf",
+     "size": 5131
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0018.json",
+     "kind": "file",
+     "sha256": "5d239715a8f57394da83379cd1667e907c56810feff89b52a89dc4735de777b1",
+     "size": 5117
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0019.json",
+     "kind": "file",
+     "sha256": "f38353e0d8bd93bdd6e83d86961b8ad4efc9170d7ce521ca2bead2df7eadda03",
+     "size": 4537
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0020.json",
+     "kind": "file",
+     "sha256": "e4b435c89e9e3a6c6969748edf8b8c9c5a44e275357737c233244dec86192ae5",
+     "size": 4632
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0021.json",
+     "kind": "file",
+     "sha256": "8985adfdccbccad1ca9d9ba79f4829b78970cb05b261d2328aac92f923aa4425",
+     "size": 3797
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0022.json",
+     "kind": "file",
+     "sha256": "87989f83eaff51c481f21103aa9c1b9085542bd2fdad9fa9e3dd8999751a0c3e",
+     "size": 4052
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0023.json",
+     "kind": "file",
+     "sha256": "b3890fd842f84a32190e2129a75d84c6b3c0b078b8b56b8bc5647f0ef63c84a4",
+     "size": 4416
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/dev/G_dev_0024.json",
+     "kind": "file",
+     "sha256": "8ea3091cd8485325d1868e67bdde13a8d4aae40a9590fcc46095e9f531458b67",
+     "size": 4906
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0001.json",
+     "kind": "file",
+     "sha256": "0ec1485f9e8e9030daf591b193b30baee69409862198b056f43d73a1152517db",
+     "size": 2345
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0002.json",
+     "kind": "file",
+     "sha256": "28f91de77e5b7786fa614eb34b2700cf234b5c1b01786133307e886da152925f",
+     "size": 2325
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0003.json",
+     "kind": "file",
+     "sha256": "af86028590a1d6ae2d9fcea5ced0181ede6c2db35eae819a9795fe0ca474770c",
+     "size": 3419
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0004.json",
+     "kind": "file",
+     "sha256": "14ad84ede77d4a9a49abd8e26cb660df3e067fb08beef3e644d8f85b8fc55bde",
+     "size": 3341
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0005.json",
+     "kind": "file",
+     "sha256": "5429ebf76888593ff0289169d257b811adb2bf8f087735f7df2fbc106b88f215",
+     "size": 6140
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0006.json",
+     "kind": "file",
+     "sha256": "2092f3f481e2d2f787df91b70e20b1e513ff184720e59c42ed7d255e2784c48e",
+     "size": 5698
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0007.json",
+     "kind": "file",
+     "sha256": "1b925539cdb38d16734cba483c8767e0d116500bf7497639c14cc216617086af",
+     "size": 1811
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0008.json",
+     "kind": "file",
+     "sha256": "fd1d5c07338fe673b86f0a70c346d189ae3cb14edfd42c1d87bf0912500666c8",
+     "size": 1812
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0009.json",
+     "kind": "file",
+     "sha256": "a499c1ab72416c1d2992e856de4e09f20b088f91d03264f363331be4b088c1b6",
+     "size": 2342
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0010.json",
+     "kind": "file",
+     "sha256": "6ca4597fbfd03eb314faeb29f9ae6b7c0d5485e622ebe1fedebd7af93576352c",
+     "size": 2342
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0011.json",
+     "kind": "file",
+     "sha256": "a8234ece640fbba264f6df89ae0e0df9d50dfcd95cc75fd1c928413652a1923b",
+     "size": 2871
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0012.json",
+     "kind": "file",
+     "sha256": "d64604a1f13cfd7d7f3c6a96559a6d0182805607e87b6fde1256d65bef5e550b",
+     "size": 2871
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0013.json",
+     "kind": "file",
+     "sha256": "a1989a39f18015ee8c67e7d5a4b1cf2ccd42b45aca416b4c4c2ddac1705f32b3",
+     "size": 2215
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0014.json",
+     "kind": "file",
+     "sha256": "f5fe0dc98f5b8abcd055ef2e3312cd5084bf5bebdb6343c9baf6d515aabce095",
+     "size": 2199
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0015.json",
+     "kind": "file",
+     "sha256": "acbb79170fc4902a5d7c4602ff51e847da077274d60614a1702c4c29d8f5cc48",
+     "size": 3197
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0016.json",
+     "kind": "file",
+     "sha256": "e35415472ba6c88bd2a4a22f24ad704ec9808ea4a5e4e408118663b1bec51d63",
+     "size": 3169
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0017.json",
+     "kind": "file",
+     "sha256": "0ccaef5923e0c5de3424a3ed0880d0647e6a24f4aa1f20eca1a5d92b4296b742",
+     "size": 5165
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0018.json",
+     "kind": "file",
+     "sha256": "26309b9d1d322ebe7cec4a7c9b05414935a19129b902c01c4e72c22006694db4",
+     "size": 5129
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0019.json",
+     "kind": "file",
+     "sha256": "ce92ed83e52a8ddd22a694f7d8f4af2c9f6b367a35420b8832219d606fb79144",
+     "size": 4553
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0020.json",
+     "kind": "file",
+     "sha256": "3c8ffe91686d8fd8061995fba40ea596314a977ca4d9aa9ba2da259f59e724fd",
+     "size": 4170
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0021.json",
+     "kind": "file",
+     "sha256": "5f36a093a4b58d4a67b118ff9e9941a5bc517ed400f3749b27b8ee3ea1a92514",
+     "size": 3786
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0022.json",
+     "kind": "file",
+     "sha256": "e32f647ad091eaa8fa8ffc2b748caac8005512e3bb552e925ab7b33a559e2bc8",
+     "size": 3982
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0023.json",
+     "kind": "file",
+     "sha256": "7b40c996df18ae10fd5baa656a9a2feaedc42aa7bf92d137d85b689d528f29cc",
+     "size": 4793
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/eval/G_eval_0024.json",
+     "kind": "file",
+     "sha256": "bf8f1b6f10ca09e7ec6a9b685925f74b4535c03ac99fa359911bb1e684816637",
+     "size": 4772
+    },
+    {
+     "data": "a0/tasks/maxcut/suite/manifest.json",
+     "kind": "file",
+     "sha256": "47324fccb6a00c62e1bc6b767fd6591292515d4421d152b5c47f9ad547814d23",
+     "size": 93022
+    },
+    {
+     "entry": {
+      "manifest": "a0/tasks/maxcut/candidates/manifest.json",
+      "name": "candidate_set",
+      "role": "C*(T1): the 21 fixed candidates used for conformance"
+     },
+     "kind": "inline"
+    },
+    {
+     "entry": {
+      "manifest": "a0/tasks/maxcut/suite/manifest.json",
+      "manifest_sha256_prefix": "47324fcc",
+      "name": "suite",
+      "role": "24 dev + 24 eval + 12 calibration canonical graphs"
+     },
+     "kind": "inline"
+    }
+   ]
+  },
+  "DependencyLock": {
+   "declared": {
+    "entries": [
+     {
+      "name": "interpreter",
+      "note": "a0/tasks/maxcut/e_star.py and e_star_child.py import nothing outside the standard library; the candidate child is launched with the evaluator's own absolute interpreter path",
+      "requirement": "cpython >= 3.10, standard library only"
+     },
+     {
+      "name": "third_party_runtime_dependencies",
+      "value": []
+     },
+     {
+      "name": "child_environment",
+      "note": "INTERFACE.md \u00a74; measured by E*'s child-environment probe",
+      "value": [
+       "PATH",
+       "PYTHONDONTWRITEBYTECODE",
+       "HOME",
+       "LANG"
+      ]
+     }
+    ]
+   },
+   "digest": "e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a",
+   "kind": "lock_entries",
+   "records": [
+    {
+     "entry": {
+      "name": "child_environment",
+      "note": "INTERFACE.md \u00a74; measured by E*'s child-environment probe",
+      "value": [
+       "PATH",
+       "PYTHONDONTWRITEBYTECODE",
+       "HOME",
+       "LANG"
+      ]
+     },
+     "kind": "inline"
+    },
+    {
+     "entry": {
+      "name": "interpreter",
+      "note": "a0/tasks/maxcut/e_star.py and e_star_child.py import nothing outside the standard library; the candidate child is launched with the evaluator's own absolute interpreter path",
+      "requirement": "cpython >= 3.10, standard library only"
+     },
+     "kind": "inline"
+    },
+    {
+     "entry": {
+      "name": "third_party_runtime_dependencies",
+      "value": []
+     },
+     "kind": "inline"
+    }
+   ]
+  },
+  "EvaluatorSource": {
+   "declared": {
+    "exclude": [
+     "**/*.tmp",
+     "**/__pycache__/**"
+    ],
+    "include": [
+     "e_star.py",
+     "e_star_child.py"
+    ],
+    "root": "a0/tasks/maxcut"
+   },
+   "digest": "c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6",
+   "include": [
+    "e_star.py",
+    "e_star_child.py"
+   ],
+   "kind": "source_tree",
+   "records": [
+    {
+     "kind": "file",
+     "path": "e_star.py",
+     "sha256": "670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
+     "size": 43410
+    },
+    {
+     "kind": "file",
+     "path": "e_star_child.py",
+     "sha256": "013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
+     "size": 15128
+    }
+   ],
+   "root": "a0/tasks/maxcut"
+  },
+  "MetricDefinition": {
+   "declared": {
+    "value": {
+     "failure_semantics": "invalid/error/timeout carry cut_edges: null \u2014 never 0; a legitimate 0 is reported as 0",
+     "objective": {
+      "aggregation": "fractions.Fraction over integers",
+      "authoritative": "integer",
+      "direction": "maximize",
+      "display_only": "cut_fraction",
+      "name": "cut_edges",
+      "unit": "edges",
+      "weighted": false
+     }
+    }
+   },
+   "digest": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349",
+   "direction": "maximize",
+   "kind": "value",
+   "metric_name": "cut_edges",
+   "value": {
+    "failure_semantics": "invalid/error/timeout carry cut_edges: null \u2014 never 0; a legitimate 0 is reported as 0",
+    "objective": {
+     "aggregation": "fractions.Fraction over integers",
+     "authoritative": "integer",
+     "direction": "maximize",
+     "display_only": "cut_fraction",
+     "name": "cut_edges",
+     "unit": "edges",
+     "weighted": false
+    }
+   }
+  }
+ },
+ "eid_star": "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1",
+ "eid_star_derivation": {
+  "algorithm": "sha256",
+  "domain": "a0/evalcontract/v1/EID*",
+  "payload_canonical": "{\"Config\":\"178b47c78297dca6bc1b10b56990f9ed6c0392009ad9be45aca8b9c787d2b054\",\"DataManifest\":\"042db1cc800e3030f51b5c2153aa3c51de4d1d341a07d5acfe433723e138a1ee\",\"DependencyLock\":\"e7ac24763f0ebeedff0bc4a2944bba47e7b3eb4b973b0177da926e9a6d94198a\",\"EvaluatorSource\":\"c095f0c6343069ee6a400cc72a62030704b191b910f08469ecbb51785636a1c6\",\"MetricDefinition\":\"0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349\"}"
+ },
+ "schema": "a0.evalcontract/v1",
+ "spec": "a0/a1/T1.contract.json",
+ "task": "maxcut-t1"
+}

@@ -1,0 +1,186 @@
+{
+ "base": "../..",
+ "components": {
+  "Config": {
+   "value": {
+    "conformance": {
+     "epsilon": {
+      "kind": "exact",
+      "unit": "edges",
+      "value": 0
+     }
+    },
+    "determinism": {
+     "rule": "INTERFACE.md \u00a76 rule 4: canonical bytes of partition.json over two invocations",
+     "runs": 2,
+     "violation": "non_deterministic (status error)"
+    },
+    "environment_policy": {
+     "allow_network": false,
+     "child_env_specified_by_evaluator": true,
+     "no_proxy_variables": true,
+     "path": "minimal",
+     "private_home_tmpdir_cwd": true,
+     "pythondontwritebytecode": "1"
+    },
+    "evaluator": {
+     "cli": "e_star.py evaluate --candidate <path> --graph <json> --seed <S> --timeout <tau> --out <json>",
+     "exit_codes": {
+      "error": 3,
+      "invalid": 2,
+      "ok": 0,
+      "timeout": 4
+     },
+     "numbers_are_the_harness_s": "the harness runs E* and authors the Outcome; the runtime consumes it",
+     "outcome_is_multi_field": true,
+     "scalarization_owner": "F_r (per runtime)"
+    },
+    "metric": "cut_edges",
+    "revert_safety": {
+     "note": "E* writes only below --state-dir and --out; never inside a candidate tree",
+     "required": true
+    },
+    "task": "maxcut-t1",
+    "theta_e_canonical": {
+     "seed": 1337,
+     "timeout_s": 10.0
+    },
+    "theta_e_semantics": {
+     "fidelity": "none \u2014 T1 has no fidelity classes",
+     "fraction": "none \u2014 every candidate is measured on the whole graph",
+     "seed": "passed to the candidate as --seed; inert for a deterministic candidate",
+     "timeout_s": "tau; at tau the harness SIGKILLs the process group (INTERFACE.md \u00a77)"
+    }
+   }
+  },
+  "DataManifest": {
+   "entries": [
+    {
+     "manifest": "a0/tasks/maxcut/suite/manifest.json",
+     "manifest_sha256_prefix": "47324fcc",
+     "name": "suite",
+     "role": "24 dev + 24 eval + 12 calibration canonical graphs"
+    },
+    {
+     "manifest": "a0/tasks/maxcut/candidates/manifest.json",
+     "name": "candidate_set",
+     "role": "C*(T1): the 21 fixed candidates used for conformance"
+    }
+   ],
+   "files": [
+    "a0/tasks/maxcut/candidates/manifest.json",
+    "a0/tasks/maxcut/suite/calibration/C_0001.json",
+    "a0/tasks/maxcut/suite/calibration/C_0002.json",
+    "a0/tasks/maxcut/suite/calibration/C_0003.json",
+    "a0/tasks/maxcut/suite/calibration/C_0004.json",
+    "a0/tasks/maxcut/suite/calibration/C_0005.json",
+    "a0/tasks/maxcut/suite/calibration/C_0006.json",
+    "a0/tasks/maxcut/suite/calibration/C_0007.json",
+    "a0/tasks/maxcut/suite/calibration/C_0008.json",
+    "a0/tasks/maxcut/suite/calibration/C_0009.json",
+    "a0/tasks/maxcut/suite/calibration/C_0010.json",
+    "a0/tasks/maxcut/suite/calibration/C_0011.json",
+    "a0/tasks/maxcut/suite/calibration/C_0012.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0001.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0002.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0003.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0004.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0005.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0006.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0007.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0008.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0009.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0010.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0011.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0012.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0013.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0014.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0015.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0016.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0017.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0018.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0019.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0020.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0021.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0022.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0023.json",
+    "a0/tasks/maxcut/suite/dev/G_dev_0024.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0001.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0002.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0003.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0004.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0005.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0006.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0007.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0008.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0009.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0010.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0011.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0012.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0013.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0014.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0015.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0016.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0017.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0018.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0019.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0020.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0021.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0022.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0023.json",
+    "a0/tasks/maxcut/suite/eval/G_eval_0024.json",
+    "a0/tasks/maxcut/suite/manifest.json"
+   ]
+  },
+  "DependencyLock": {
+   "entries": [
+    {
+     "name": "interpreter",
+     "note": "a0/tasks/maxcut/e_star.py and e_star_child.py import nothing outside the standard library; the candidate child is launched with the evaluator's own absolute interpreter path",
+     "requirement": "cpython >= 3.10, standard library only"
+    },
+    {
+     "name": "third_party_runtime_dependencies",
+     "value": []
+    },
+    {
+     "name": "child_environment",
+     "note": "INTERFACE.md \u00a74; measured by E*'s child-environment probe",
+     "value": [
+      "PATH",
+      "PYTHONDONTWRITEBYTECODE",
+      "HOME",
+      "LANG"
+     ]
+    }
+   ]
+  },
+  "EvaluatorSource": {
+   "exclude": [
+    "**/*.tmp",
+    "**/__pycache__/**"
+   ],
+   "include": [
+    "e_star.py",
+    "e_star_child.py"
+   ],
+   "root": "a0/tasks/maxcut"
+  },
+  "MetricDefinition": {
+   "value": {
+    "failure_semantics": "invalid/error/timeout carry cut_edges: null \u2014 never 0; a legitimate 0 is reported as 0",
+    "objective": {
+     "aggregation": "fractions.Fraction over integers",
+     "authoritative": "integer",
+     "direction": "maximize",
+     "display_only": "cut_fraction",
+     "name": "cut_edges",
+     "unit": "edges",
+     "weighted": false
+    }
+   }
+  }
+ },
+ "schema": "a0.evalcontract.spec/v1",
+ "task": "maxcut-t1"
+}

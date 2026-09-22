@@ -1,0 +1,85 @@
+{
+ "factors": {
+  "harness.eval_abi": {
+   "identity": "value:{\"owns_evaluation\":true,\"request\":\"a0.a1.eval_request/v1\",\"response\":\"a0.a1.harness_outcome/v1\"}",
+   "name": "harness.eval_abi",
+   "note": "the harness runs E*; the runtime consumes the published Outcome",
+   "role": "cid"
+  },
+  "harness.eval_service": {
+   "identity": "sha256:10936596ad92a6e390568e2b2c99395e40574d795240a743a6f25f20227839f0",
+   "name": "harness.eval_service",
+   "role": "cid"
+  },
+  "harness.failure_semantics": {
+   "identity": "value:{\"never_zero_for_failure\":true,\"non_ok_carries_no_number\":true,\"scalarization_owner\":\"F_r (per runtime)\"}",
+   "name": "harness.failure_semantics",
+   "note": "INTERFACE.md \u00a75 and \u00a76 rule 5",
+   "role": "cid"
+  },
+  "harness.measurement_token": {
+   "identity": "sha256:0f70d89f27783c1881ca91c1755a2ec2ef32c980e3237e375c5f9d4b6829c9b2",
+   "name": "harness.measurement_token",
+   "note": "a0/envelope's OID binding, issued per response",
+   "role": "cid"
+  },
+  "harness.meter_body_repair": {
+   "identity": "sha256:abb3035b16a0358e9768e2f3e40f85714919910336f6ba7436864e7b2c73ae90",
+   "name": "harness.meter_body_repair",
+   "note": "declared compensating hop for a0/meter's missing request framing (a0/a1/DEVIATIONS.md D-A1-3): the proxy forwards the upstream request with no Content-Length, so every real call answers 400 and is booked unmetered. Remove this factor when a0/meter is fixed.",
+   "role": "cid"
+  },
+  "harness.meter_mode": {
+   "identity": "value:{\"allowlist\":[\"api.deepseek.com\"],\"ceq_formula\":\"miss + floor(hit*2/100) + 4*completion\",\"mode\":\"plaintext_base_url\",\"row_schema\":\"a0.meter.call/v1\"}",
+   "name": "harness.meter_mode",
+   "note": "INTERFACE.md \u00a78; the proxy's own --aid-out fragment is AID_r's copy",
+   "role": "cid"
+  },
+  "harness.topology": {
+   "identity": "value:{\"egress\":\"none\",\"mechanism\":\"unshare -rn\",\"reachable_peer\":\"campaign meter port over a unix socket\"}",
+   "name": "harness.topology",
+   "note": "a0/a1/topology.py; probed, not asserted",
+   "role": "cid"
+  },
+  "measurement.protocol": {
+   "identity": "value:{\"ceq_source\":\"a0/meter ledger\",\"evaluator_count_source\":\"a0/a1/eval_service ledger\",\"runtime_self_report\":\"diagnostic only\",\"wall_clock_source\":\"harness monotonic clock\"}",
+   "name": "measurement.protocol",
+   "note": "principle (iv): the budget is read where the runtime cannot write",
+   "role": "cid"
+  },
+  "model.route": {
+   "identity": "value:{\"model_requested\":\"deepseek-flash\",\"provider\":\"deepseek\"}",
+   "name": "model.route",
+   "note": "the model family is held fixed across arms; a differing model id is a confound, not an arm",
+   "role": "cid"
+  },
+  "task.candidate_set_manifest": {
+   "identity": "sha256:62c147b342ce9500124beaba81ad9fee8efcfb1e81b2702594cdc894cc382356",
+   "name": "task.candidate_set_manifest",
+   "role": "cid"
+  },
+  "task.e_star_child": {
+   "identity": "sha256:013f3e334dbde616c3cb6beb5debf125d5e9ad57d56ae1fa145da5ae4ca76473",
+   "name": "task.e_star_child",
+   "role": "cid"
+  },
+  "task.e_star_script": {
+   "identity": "sha256:670f02ee91885c10c9c6df95971a15d5ae0f81ad8bbb723d20e8f7fa0bdebbb0",
+   "name": "task.e_star_script",
+   "role": "cid"
+  },
+  "task.eid_star": {
+   "identity": "value:{\"document\":\"a0/a1/T1-EID.json\",\"eid_star\":\"cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1\"}",
+   "name": "task.eid_star",
+   "note": "the frozen evaluator identity; recompute with `python3 a0/a1/t1_eid.py check`",
+   "role": "cid"
+  },
+  "task.suite_manifest": {
+   "identity": "sha256:47324fccb6a00c62e1bc6b767fd6591292515d4421d152b5c47f9ad547814d23",
+   "name": "task.suite_manifest",
+   "role": "cid"
+  }
+ },
+ "schema": "a0.a1.cid/v1",
+ "task_id": "T1-maxcut"
+}
