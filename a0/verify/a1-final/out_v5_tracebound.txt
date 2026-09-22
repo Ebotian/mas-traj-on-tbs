@@ -1,0 +1,14 @@
+[PASS] the fixture's every score is 9999  search_signal={9999} outcome.fields.coverage={9999}
+[PASS] direction 1: without --metric the fixture still validates (no invented bound)  valid: 11 event(s)
+[PASS] direction 2: with the range-declaring metric the fixture is rejected  14 error(s) in 11 event(s)
+[PASS] direction 2b: every violation is reported with value, range and metric  14 mentions of 9999
+[PASS] the good stream is still valid with the metric named  valid: 11 event(s)
+[PASS] a metric without a declared range is not bounded  valid: 11 event(s)
+[PASS] a definition declared for another task is not in force  valid: 11 event(s)
+[PASS] an independent range I chose (0.0, 0.5] also rejects  14 error(s) in 11 event(s)
+[PASS] regression: the pre-fix module accepts both streams unchecked  out_of_range rc=0 (valid: 11 event(s)), good rc=0
+[PASS] the new module rejects it under the identical directory layout  rc=1 14 error(s) in 11 event(s)
+[PASS] validate-run rejects the out-of-range run with the metric named  14 error(s): 1 run(s), 11 event(s)
+[PASS] validate-run without --metric leaves the run unchecked (D-C-1, opt-in)  valid: 1 run(s), 11 event(s)
+
+12/12 checks pass

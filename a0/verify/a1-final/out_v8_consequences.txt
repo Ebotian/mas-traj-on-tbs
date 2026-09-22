@@ -1,0 +1,19 @@
+[PASS] (1) baseline: the re-run books the same cut_edges  fresh 132 vs frozen 132 (|E| 265)
+[PASS] (1) baseline: same status  ok vs ok
+[PASS] (1) baseline: same candidate_source_sha256
+[PASS] (1) baseline: the evaluator digest differs, as recorded  fresh dc6969ec9934 vs frozen 4afff01f8a73
+      fields differing from the frozen Outcome: ['candidate_graph_bytes', 'candidate_graph_keys', 'candidate_graph_schema', 'candidate_graph_sha256', 'canonical_digest', 'evaluator_source_sha256']
+[PASS] (1) pc: the re-run books the same cut_edges  fresh 212 vs frozen 212 (|E| 265)
+[PASS] (1) pc: same status  ok vs ok
+[PASS] (1) pc: same candidate_source_sha256
+[PASS] (1) pc: the evaluator digest differs, as recorded  fresh dc6969ec9934 vs frozen 4afff01f8a73
+      fields differing from the frozen Outcome: ['candidate_graph_bytes', 'candidate_graph_keys', 'candidate_graph_schema', 'candidate_graph_sha256', 'canonical_digest', 'evaluator_source_sha256']
+      [bounded] value=None handed=None true=132 plausibility={"bound": {"field": "edges_total", "lower": 0, "rule": "0 <= cut_edges <= edges_total", "source": "the Outcome's own edges_total", "upper": 265}, "bounded": tru
+[PASS] (2) bounded mode: a 9999 override on |E|=265 publishes nothing  value=None handed=None
+[PASS] (2) bounded mode: the true value is still recorded  132
+[PASS] (2) bounded mode: the refusal is named and booked  verdict=refused_out_of_bound rejected=True status=error
+      [labelled_implausible] value=9999 handed=9999 true=132 plausibility={"bound": {"field": "edges_total", "lower": 0, "rule": "0 <= cut_edges <= edges_total", "source": "the Outcome's own edges_total", "upper": 265}, "bounded": tru
+[PASS] (2) labelled mode: the out-of-range value is published  value=9999
+[PASS] (2) labelled mode: it is labelled out-of-bound, with the true value beside it  verdict=accepted_labelled_out_of_bound within_bound=False true=132
+
+13/13 checks pass

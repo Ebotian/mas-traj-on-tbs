@@ -1,0 +1,45 @@
+[PASS] A_simpleloop: every metered row's ceq recomputes from its own usage  47 rows, 0 mismatches
+[PASS] A_simpleloop: no unmetered row  0 unmetered
+[PASS] A_simpleloop: model_reported uniformly deepseek-flash  ['deepseek-flash']
+[PASS] A_simpleloop: campaign/arm ids match the frozen names  ['C_calib_A_simpleloop'] ['A_simpleloop']
+[PASS] A_simpleloop: CEq_r == Σ ledger ceq  370881 vs 370881
+[PASS] A_simpleloop: N_E_r == harness ledger rows  70 vs 70
+[PASS] A_kapso: every metered row's ceq recomputes from its own usage  48 rows, 0 mismatches
+[PASS] A_kapso: no unmetered row  0 unmetered
+[PASS] A_kapso: model_reported uniformly deepseek-flash  ['deepseek-flash']
+[PASS] A_kapso: campaign/arm ids match the frozen names  ['C_calib_A_kapso'] ['A_kapso']
+[PASS] A_kapso: CEq_r == Σ ledger ceq  52992 vs 52992
+[PASS] A_kapso: N_E_r == harness ledger rows  48 vs 48
+[PASS] A_simpleloop: V6 every harness row names a manifest graph sha256  12 distinct shas, 0 unknown
+[PASS] A_simpleloop: T_r_sec agrees with the recorded epoch span  424.34501004219055 vs 424.34501
+[PASS] A_simpleloop: V4 T_r>0, units>=12, T_r>=120s  T_r=424.345s units=24
+[PASS] A_simpleloop: q_r and e_r recompute  q=52440.489403 e=9.897607
+[PASS] A_kapso: V6 every harness row names a manifest graph sha256  12 distinct shas, 0 unknown
+[PASS] A_kapso: T_r_sec agrees with the recorded epoch span  149.10879111289978 vs 149.108791
+[PASS] A_kapso: V4 T_r>0, units>=12, T_r>=120s  T_r=149.109s units=24
+[PASS] A_kapso: q_r and e_r recompute  q=21323.491249 e=19.314757
+[PASS] the published vector is the frozen formula applied to the published telemetry  derived {'CEq_max': 1966519, 'N_evaluatorCalls': 725, 'P_concurrency': 1, 'T_wall_sec': 1800.0} vs published {"CEq_max": 1966519, "N_evaluatorCalls": 725, "P_concurrency": 1, "T_wall_sec": 1800.0}
+[PASS] the CEQ_CEILING did not clamp the vector  1966519 < 5_000_000
+[PASS] mapping.ceiling_active is false and matches
+[PASS] A_simpleloop: no ceiling binds before T_wall at its own rate  CEq_max lasts 37.5000 min, N_E lasts 73.2500 min, T_wall 30 min
+[PASS] A_simpleloop: diagnostics D1/D2 margins recompute  D1 37.5000 D2 73.2500
+[PASS] A_simpleloop: guardrails_would_bind_before_T_wall is []
+[PASS] A_kapso: no ceiling binds before T_wall at its own rate  CEq_max lasts 92.2231 min, N_E lasts 37.5361 min, T_wall 30 min
+[PASS] A_kapso: diagnostics D1/D2 margins recompute  D1 92.2231 D2 37.5361
+[PASS] A_kapso: guardrails_would_bind_before_T_wall is []
+[PASS] the binding margin (worst arm) exceeds T_wall  37.5000 min > 30 min
+[PASS] V1: sha256(PILOT-PROCEDURE.md) == the recorded document_sha256  68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2
+[PASS] V1b: pilot_procedure.json hashes to the recorded json_sha256
+[PASS] runner.pilot.py sha256 matches the file
+[PASS] manifest sha256 matches B_hard.manifest.sha256
+[PASS] V3: a0/meter/verify_ledger.py exits 0 on both pilot ledgers  simpleloop rc=0 kapso rc=0
+[PASS] V3b: published ledger bytes == the meter's raw sha256 in INDEX.json
+[PASS] validity.all_hold and failures == []  []
+[PASS] refused is false
+[PASS] A_simpleloop: calls hit max_tokens=2048  33/47 rows at the cap
+[PASS] A_kapso: calls hit max_tokens=256  48/48 rows at the cap
+[PASS] A_simpleloop: one unit exited 8, the rest 0  [0, 8] counts 0x23 8x1
+[PASS] A_kapso: all 24 units exited 0  [0]
+[PASS] the exit-8 unit is unit 20 (pass 1) on C_0009  {"index": 20, "pass": 1, "graph_id": "C_0009", "exit_code": 8}
+
+43/43 checks pass

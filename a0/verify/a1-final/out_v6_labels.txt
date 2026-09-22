@@ -1,0 +1,25 @@
+[PASS] replay reproduces the frozen edge list: G_dev_0019  505 edges
+[PASS] replay reproduces the frozen edge list: G_dev_0020  516 edges
+[PASS] replay reproduces the frozen edge list: G_dev_0021  415 edges
+[PASS] replay reproduces the frozen edge list: G_dev_0022  447 edges
+[PASS] replay reproduces the frozen edge list: G_dev_0023  488 edges
+[PASS] replay reproduces the frozen edge list: G_dev_0024  549 edges
+[PASS] replay reproduces the frozen edge list: G_eval_0019  503 edges
+[PASS] replay reproduces the frozen edge list: G_eval_0020  458 edges
+[PASS] replay reproduces the frozen edge list: G_eval_0021  414 edges
+[PASS] replay reproduces the frozen edge list: G_eval_0022  434 edges
+[PASS] replay reproduces the frozen edge list: G_eval_0023  537 edges
+[PASS] replay reproduces the frozen edge list: G_eval_0024  532 edges
+[PASS] replay reproduces the frozen edge list: C_0010  436 edges
+[PASS] replay reproduces the frozen edge list: C_0011  415 edges
+[PASS] replay reproduces the frozen edge list: C_0012  517 edges
+[PASS] provenance.json's planted_labels == the replayed labels, all 15  15/15 agree
+[PASS] surface A: no label spelling in any file under suite/** (any extension)  62 files scanned; hits: []
+[PASS] surface B: no label spelling in any candidate-facing view (60 graphs)  60 views; hits: []
+[PASS] surface B: every view carries exactly schema/graph_id/family/n/edges  {('edges', 'family', 'graph_id', 'n', 'schema')}
+[PASS] surface C (literal substring, the audit's own method): the only file in the task tree carrying a true label spelling is the label store  20417 files scanned; carriers: {}
+[PASS] surface C (whitespace-normalised): the label store is the only carrier  20417 files; carriers: {k: len(v) graphs for k, v in ...} -> {"a0/tasks/maxcut/generators/provenance.json": 15}
+[PASS] surface A (whitespace-normalised): suite/** is still clean  []
+[PASS] control: a reformatted copy of the labels is invisible to the literal scan  literal hits=0, normalised hits=1
+
+23/23 checks pass

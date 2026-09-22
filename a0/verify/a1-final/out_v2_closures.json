@@ -1,0 +1,1120 @@
+[
+ {
+  "command": "/usr/bin/python3 /home/ebt/rsi-dev/a0/a1/eval_service.py evaluate --root /tmp/a1final-closures/service --candidate-isolation sandbox --request /tmp/a1final-closures/service/request.json",
+  "findings": {
+   "bundle_archive_sweep": {
+    "found": []
+   },
+   "credential_file": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "credential_file_literal": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "dns_api.deepseek.com": {
+    "error": "gaierror",
+    "resolved": false
+   },
+   "fs_policy_mask::/tmp/mcwork/scip_test2/G_dev_0001.partition.json": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "generators_provenance": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "generators_source": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "git_cat_file": {
+    "returncode": 128,
+    "stderr_head": "fatal: not a git repository (or any parent up to mount point /)\nStopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FI",
+    "stdout_bytes": 0
+   },
+   "git_log_all": {
+    "returncode": 128,
+    "stderr_head": "fatal: not a git repository (or any parent up to mount point /)\nStopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FI",
+    "stdout_bytes": 0
+   },
+   "git_rev_parse": {
+    "returncode": 128,
+    "stderr_head": "fatal: not a git repository (or any parent up to mount point /)\nStopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FI",
+    "stdout_bytes": 0
+   },
+   "git_show_head": {
+    "returncode": 128,
+    "stderr_head": "fatal: not a git repository (or any parent up to mount point /)\nStopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FI",
+    "stdout_bytes": 0
+   },
+   "handed_graph": {
+    "graph_id": "G_dev_0001",
+    "has_generator_block": false,
+    "keys": [
+     "edges",
+     "family",
+     "graph_id",
+     "n",
+     "schema"
+    ],
+    "readable": true
+   },
+   "mcwork_listing": {
+    "error": "FileNotFoundError"
+   },
+   "net_1.1.1.1:443": {
+    "error": "OSError",
+    "reached": false
+   },
+   "net_127.0.0.1:9": {
+    "error": "OSError",
+    "reached": false
+   },
+   "net_8.8.8.8:53": {
+    "error": "OSError",
+    "reached": false
+   },
+   "net_api.deepseek.com:443": {
+    "error": "gaierror",
+    "reached": false
+   },
+   "own_environment": {
+    "key_shaped_names": [],
+    "names": [
+     "HOME",
+     "LANG",
+     "PATH",
+     "PYTHONDONTWRITEBYTECODE"
+    ]
+   },
+   "partition_sweep": {
+    "count": 0,
+    "found": []
+   },
+   "proc::/proc/1/environ": {
+    "readable": true
+   },
+   "proc::/proc/self/root/home/ebt/gptapi.md": {
+    "error": "FileNotFoundError",
+    "readable": false
+   },
+   "proc_environ": {
+    "key_shaped": [],
+    "readable": 1
+   },
+   "proc_visible_pids": {
+    "result": 1
+   },
+   "redesign_instance::L1_RRd4_n128_r1.partition.json": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "repo_root": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "seed": 1337,
+   "state_root_siblings": {
+    "readable_json": [
+     "/tmp/a1final-closures/service/estate/invocations/pid1-cdd9b8336c5da676/G_dev_0001/run1/candidate_graph.json",
+     "/tmp/a1final-closures/service/estate/invocations/pid1-cdd9b8336c5da676/G_dev_0001/run1/candidate_graph.json",
+     "/tmp/a1final-closures/service/estate/invocations/pid1-cdd9b8336c5da676/G_dev_0001/run1/candidate_graph.json",
+     "/tmp/a1final-closures/service/estate/candidates/406b0366723f2dcc/candidate.json",
+     "/tmp/a1final-closures/service/estate/invocations/pid1-cdd9b8336c5da676/G_dev_0001/run1/candidate_graph.json"
+    ]
+   },
+   "suite_file": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "suite_manifest": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "targets_json": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "witness_by_name": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "witness_commitments": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "witness_glob::G_dev_0001.partition.json": {
+    "count": 0,
+    "matches": []
+   },
+   "witness_glob::G_dev_0001__*.partition.json": {
+    "count": 0,
+    "matches": []
+   },
+   "wrote_artifact": {
+    "bytes": 331,
+    "n": 128
+   }
+  },
+  "isolation": "sandbox",
+  "lane": "service",
+  "receipt_path": null,
+  "response": {
+   "arm_id": "A_unknown",
+   "campaign_id": "C_a1_probe",
+   "candidate_id": "cand_service",
+   "candidate_isolation": "sandbox",
+   "evaluator_calls": 1,
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 136,
+   "harness_ledger_seq": 0,
+   "harness_run_id": "a1-1790084948",
+   "harness_supplied": true,
+   "measurement": {
+    "behaviour_digest": "5b0d5e420d7f792e33403bdbf5bf3e0ed7bf19fb5fef5cc52d2bdbc6c3eaf44a",
+    "candidate_sha256": "406b0366723f2dcc448532ef422b30d68df8f4cf5e3c8bee83cc0edf4c3107a5",
+    "eid_star": "sha256:dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+    "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+    "harness_run_id": "a1-1790084948",
+    "interpreter": {
+     "executable": "/usr/bin/python3",
+     "implementation": "cpython",
+     "version": "3.14.7"
+    },
+    "nonce": "12e0ba773c66ef9b192cd12726424130",
+    "oid": "44bd87caf652bfbd1f75124ebc361314d370a306f41b759ed90e7626f0f19b9a",
+    "schema": "a0.envelope.measurement_attestation/v1",
+    "theta_e": {
+     "fidelity": "full",
+     "fraction": 1.0,
+     "seed": 1337,
+     "timeout_s": 10.0
+    }
+   },
+   "outcome": {
+    "candidate_graph_bytes": 2280,
+    "candidate_graph_keys": [
+     "edges",
+     "family",
+     "graph_id",
+     "n",
+     "schema"
+    ],
+    "candidate_graph_schema": "a0.maxcut.candidate_graph/v1",
+    "candidate_graph_sha256": "a0279e7af6a9e8b75ea5b402d2989c8932b3941005ad7c34b8dd3fb15b841753",
+    "candidate_id": "v_probe_hostile",
+    "candidate_source_sha256": "406b0366723f2dcc448532ef422b30d68df8f4cf5e3c8bee83cc0edf4c3107a5",
+    "canonical_digest": "263cf775a74c599a9a2755f497b0e9245b9e7a44a210c8339decd139f9184619",
+    "cut_edges": 136,
+    "cut_fraction": "0.5132075471698113208",
+    "determinism": {
+     "canonical_sha256": [
+      "4752d0d31bff31483914a09a4138e929179cd755c154fe1d21f8c8dc74cfcd11",
+      "4752d0d31bff31483914a09a4138e929179cd755c154fe1d21f8c8dc74cfcd11"
+     ],
+     "compared": "canonical bytes of partition.json (\u00a76 rule 4)",
+     "identical": true,
+     "raw_bytes_identical": true,
+     "runs": 2
+    },
+    "e_star_version": "1.0.0",
+    "edges_total": 265,
+    "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+    "failure": null,
+    "graph_family": "ER",
+    "graph_id": "G_dev_0001",
+    "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+    "interpreted": {
+     "exit_code": 0,
+     "exit_codes": [
+      0,
+      0
+     ],
+     "exit_label": "ok",
+     "process_group_killed": false,
+     "timed_out": false,
+     "wall_ms": null
+    },
+    "interpreter": {
+     "executable": "/usr/bin/python3",
+     "implementation": "cpython",
+     "version": "3.14.7"
+    },
+    "resources": null,
+    "schema": "a0.maxcut.outcome/v1",
+    "status": "ok",
+    "theta": {
+     "seed": 1337,
+     "timeout_s": 10.0
+    }
+   },
+   "override_applied": false,
+   "override_mode": "bounded",
+   "plausibility": {
+    "bound": {
+     "field": "edges_total",
+     "lower": 0,
+     "rule": "0 <= cut_edges <= edges_total",
+     "source": "the Outcome's own edges_total",
+     "upper": 265
+    },
+    "bounded": true,
+    "mode": "bounded",
+    "schema": "a0.a1.plausibility/v1",
+    "value": 136,
+    "verdict": "within_bound",
+    "within_bound": true
+   },
+   "request_id": "req-service",
+   "schema": "a0.a1.harness_outcome/v1",
+   "score_field": "cut_edges",
+   "status": "ok",
+   "true_value": 136,
+   "value": 136
+  },
+  "returncode": 0,
+  "root": "/tmp/a1final-closures/service",
+  "stderr_tail": "",
+  "stdout_txt": "/tmp/a1final-closures/service/estate/invocations/pid1-cdd9b8336c5da676/G_dev_0001/run1/stdout.txt"
+ },
+ {
+  "command": "/usr/bin/python3 /home/ebt/rsi-dev/a0/a1/eval_service.py evaluate --root /tmp/a1final-closures/honest --candidate-isolation sandbox --request /tmp/a1final-closures/honest/request.json",
+  "findings": null,
+  "isolation": "sandbox",
+  "lane": "honest",
+  "receipt_path": null,
+  "response": {
+   "arm_id": "A_unknown",
+   "campaign_id": "C_a1_probe",
+   "candidate_id": "cand_honest",
+   "candidate_isolation": "sandbox",
+   "evaluator_calls": 1,
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 132,
+   "harness_ledger_seq": 0,
+   "harness_run_id": "a1-1790084948",
+   "harness_supplied": true,
+   "measurement": {
+    "behaviour_digest": "b5129074d58617a7fcd55bd28015068cd4475825a6c89917258a3e82252c9d35",
+    "candidate_sha256": "7247146ff9119791cde5c276f82a74aed4e45e2870527eb56324c12b9d20819e",
+    "eid_star": "sha256:dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+    "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+    "harness_run_id": "a1-1790084948",
+    "interpreter": {
+     "executable": "/usr/bin/python3",
+     "implementation": "cpython",
+     "version": "3.14.7"
+    },
+    "nonce": "902b381f229b02f73115e4f186fd25bd",
+    "oid": "d4919e95d7051a8b97d6202c736b0849ad48a74f2a4251979ea70da7e23f477c",
+    "schema": "a0.envelope.measurement_attestation/v1",
+    "theta_e": {
+     "fidelity": "full",
+     "fraction": 1.0,
+     "seed": 1337,
+     "timeout_s": 10.0
+    }
+   },
+   "outcome": {
+    "candidate_graph_bytes": 2280,
+    "candidate_graph_keys": [
+     "edges",
+     "family",
+     "graph_id",
+     "n",
+     "schema"
+    ],
+    "candidate_graph_schema": "a0.maxcut.candidate_graph/v1",
+    "candidate_graph_sha256": "a0279e7af6a9e8b75ea5b402d2989c8932b3941005ad7c34b8dd3fb15b841753",
+    "candidate_id": "c02_ok_low_baseline",
+    "candidate_source_sha256": "7247146ff9119791cde5c276f82a74aed4e45e2870527eb56324c12b9d20819e",
+    "canonical_digest": "e9f5534f20ba5e8d29eece18a7395d93cd2edb19bca164a6864a0f88ca7c9a38",
+    "cut_edges": 132,
+    "cut_fraction": "0.4981132075471698113",
+    "determinism": {
+     "canonical_sha256": [
+      "1b087cb5adf03f42253d2b120fea6cb7445398a036013a2df085850b08fa58b5",
+      "1b087cb5adf03f42253d2b120fea6cb7445398a036013a2df085850b08fa58b5"
+     ],
+     "compared": "canonical bytes of partition.json (\u00a76 rule 4)",
+     "identical": true,
+     "raw_bytes_identical": true,
+     "runs": 2
+    },
+    "e_star_version": "1.0.0",
+    "edges_total": 265,
+    "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+    "failure": null,
+    "graph_family": "ER",
+    "graph_id": "G_dev_0001",
+    "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+    "interpreted": {
+     "exit_code": 0,
+     "exit_codes": [
+      0,
+      0
+     ],
+     "exit_label": "ok",
+     "process_group_killed": false,
+     "timed_out": false,
+     "wall_ms": null
+    },
+    "interpreter": {
+     "executable": "/usr/bin/python3",
+     "implementation": "cpython",
+     "version": "3.14.7"
+    },
+    "resources": null,
+    "schema": "a0.maxcut.outcome/v1",
+    "status": "ok",
+    "theta": {
+     "seed": 1337,
+     "timeout_s": 10.0
+    }
+   },
+   "override_applied": false,
+   "override_mode": "bounded",
+   "plausibility": {
+    "bound": {
+     "field": "edges_total",
+     "lower": 0,
+     "rule": "0 <= cut_edges <= edges_total",
+     "source": "the Outcome's own edges_total",
+     "upper": 265
+    },
+    "bounded": true,
+    "mode": "bounded",
+    "schema": "a0.a1.plausibility/v1",
+    "value": 132,
+    "verdict": "within_bound",
+    "within_bound": true
+   },
+   "request_id": "req-honest",
+   "schema": "a0.a1.harness_outcome/v1",
+   "score_field": "cut_edges",
+   "status": "ok",
+   "true_value": 132,
+   "value": 132
+  },
+  "returncode": 0,
+  "root": "/tmp/a1final-closures/honest",
+  "stderr_tail": "",
+  "stdout_txt": "/tmp/a1final-closures/honest/estate/invocations/pid1-c0608992ffcda050/G_dev_0001/run1/stdout.txt"
+ },
+ {
+  "command": "/usr/bin/python3 /home/ebt/rsi-dev/a0/a1/eval_service.py evaluate --root /tmp/a1final-closures/none --candidate-isolation none --request /tmp/a1final-closures/none/request.json",
+  "findings": {
+   "bundle_archive_sweep": {
+    "found": []
+   },
+   "credential_file": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "credential_file_literal": {
+    "bytes": 591,
+    "readable": true
+   },
+   "dns_api.deepseek.com": {
+    "error": "gaierror",
+    "resolved": false
+   },
+   "fs_policy_mask::/tmp/mcwork/scip_test2/G_dev_0001.partition.json": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "generators_provenance": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "generators_source": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "git_cat_file": {
+    "returncode": 128,
+    "stderr_head": "fatal: not a git repository (or any of the parent directories): .git",
+    "stdout_bytes": 0
+   },
+   "git_log_all": {
+    "returncode": 128,
+    "stderr_head": "fatal: not a git repository (or any of the parent directories): .git",
+    "stdout_bytes": 0
+   },
+   "git_rev_parse": {
+    "returncode": 128,
+    "stderr_head": "fatal: not a git repository (or any of the parent directories): .git",
+    "stdout_bytes": 0
+   },
+   "git_show_head": {
+    "returncode": 128,
+    "stderr_head": "fatal: not a git repository (or any of the parent directories): .git",
+    "stdout_bytes": 0
+   },
+   "handed_graph": {
+    "graph_id": "G_dev_0001",
+    "has_generator_block": false,
+    "keys": [
+     "edges",
+     "family",
+     "graph_id",
+     "n",
+     "schema"
+    ],
+    "readable": true
+   },
+   "mcwork_listing": {
+    "error": "FileNotFoundError"
+   },
+   "net_1.1.1.1:443": {
+    "error": "OSError",
+    "reached": false
+   },
+   "net_127.0.0.1:9": {
+    "error": "OSError",
+    "reached": false
+   },
+   "net_8.8.8.8:53": {
+    "error": "OSError",
+    "reached": false
+   },
+   "net_api.deepseek.com:443": {
+    "error": "gaierror",
+    "reached": false
+   },
+   "own_environment": {
+    "key_shaped_names": [],
+    "names": [
+     "HOME",
+     "LANG",
+     "PATH",
+     "PYTHONDONTWRITEBYTECODE"
+    ]
+   },
+   "partition_sweep": {
+    "count": 0,
+    "found": []
+   },
+   "proc::/proc/1/environ": {
+    "readable": true
+   },
+   "proc::/proc/self/root/home/ebt/gptapi.md": {
+    "readable": true
+   },
+   "proc_environ": {
+    "key_shaped": [],
+    "readable": 1
+   },
+   "proc_visible_pids": {
+    "result": 1
+   },
+   "redesign_instance::L1_RRd4_n128_r1.partition.json": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "repo_root": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "seed": 1337,
+   "state_root_siblings": {
+    "readable_json": [
+     "/tmp/a1final-closures/none/estate/invocations/pid645772-cdd9b8336c5da676/G_dev_0001/run1/candidate_graph.json",
+     "/tmp/a1final-closures/none/estate/invocations/pid645772-cdd9b8336c5da676/G_dev_0001/run1/candidate_graph.json",
+     "/tmp/a1final-closures/none/estate/invocations/pid645772-cdd9b8336c5da676/G_dev_0001/run1/candidate_graph.json",
+     "/tmp/a1final-closures/none/estate/candidates/406b0366723f2dcc/candidate.json",
+     "/tmp/a1final-closures/none/estate/invocations/pid645772-cdd9b8336c5da676/G_dev_0001/run1/candidate_graph.json"
+    ]
+   },
+   "suite_file": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "suite_manifest": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "targets_json": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "witness_by_name": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "witness_commitments": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "witness_glob::G_dev_0001.partition.json": {
+    "count": 0,
+    "matches": []
+   },
+   "witness_glob::G_dev_0001__*.partition.json": {
+    "count": 0,
+    "matches": []
+   },
+   "wrote_artifact": {
+    "bytes": 331,
+    "n": 128
+   }
+  },
+  "isolation": "none",
+  "lane": "none",
+  "receipt_path": null,
+  "response": {
+   "arm_id": "A_unknown",
+   "campaign_id": "C_a1_probe",
+   "candidate_id": "cand_none",
+   "candidate_isolation": "none",
+   "evaluator_calls": 1,
+   "graph_id": "G_dev_0001",
+   "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+   "handed_value": 136,
+   "harness_ledger_seq": 0,
+   "harness_run_id": "a1-1790084949",
+   "harness_supplied": true,
+   "measurement": {
+    "behaviour_digest": "5b0d5e420d7f792e33403bdbf5bf3e0ed7bf19fb5fef5cc52d2bdbc6c3eaf44a",
+    "candidate_sha256": "406b0366723f2dcc448532ef422b30d68df8f4cf5e3c8bee83cc0edf4c3107a5",
+    "eid_star": "sha256:dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+    "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+    "harness_run_id": "a1-1790084949",
+    "interpreter": {
+     "executable": "/usr/bin/python3",
+     "implementation": "cpython",
+     "version": "3.14.7"
+    },
+    "nonce": "923644b5956299767033a7a0773777d7",
+    "oid": "3f5e76df38f5d1051828d85510415b49ab856fefac037cdfa81698ce36082274",
+    "schema": "a0.envelope.measurement_attestation/v1",
+    "theta_e": {
+     "fidelity": "full",
+     "fraction": 1.0,
+     "seed": 1337,
+     "timeout_s": 10.0
+    }
+   },
+   "outcome": {
+    "candidate_graph_bytes": 2280,
+    "candidate_graph_keys": [
+     "edges",
+     "family",
+     "graph_id",
+     "n",
+     "schema"
+    ],
+    "candidate_graph_schema": "a0.maxcut.candidate_graph/v1",
+    "candidate_graph_sha256": "a0279e7af6a9e8b75ea5b402d2989c8932b3941005ad7c34b8dd3fb15b841753",
+    "candidate_id": "v_probe_hostile",
+    "candidate_source_sha256": "406b0366723f2dcc448532ef422b30d68df8f4cf5e3c8bee83cc0edf4c3107a5",
+    "canonical_digest": "263cf775a74c599a9a2755f497b0e9245b9e7a44a210c8339decd139f9184619",
+    "cut_edges": 136,
+    "cut_fraction": "0.5132075471698113208",
+    "determinism": {
+     "canonical_sha256": [
+      "4752d0d31bff31483914a09a4138e929179cd755c154fe1d21f8c8dc74cfcd11",
+      "4752d0d31bff31483914a09a4138e929179cd755c154fe1d21f8c8dc74cfcd11"
+     ],
+     "compared": "canonical bytes of partition.json (\u00a76 rule 4)",
+     "identical": true,
+     "raw_bytes_identical": true,
+     "runs": 2
+    },
+    "e_star_version": "1.0.0",
+    "edges_total": 265,
+    "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
+    "failure": null,
+    "graph_family": "ER",
+    "graph_id": "G_dev_0001",
+    "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+    "interpreted": {
+     "exit_code": 0,
+     "exit_codes": [
+      0,
+      0
+     ],
+     "exit_label": "ok",
+     "process_group_killed": false,
+     "timed_out": false,
+     "wall_ms": null
+    },
+    "interpreter": {
+     "executable": "/usr/bin/python3",
+     "implementation": "cpython",
+     "version": "3.14.7"
+    },
+    "resources": null,
+    "schema": "a0.maxcut.outcome/v1",
+    "status": "ok",
+    "theta": {
+     "seed": 1337,
+     "timeout_s": 10.0
+    }
+   },
+   "override_applied": false,
+   "override_mode": "bounded",
+   "plausibility": {
+    "bound": {
+     "field": "edges_total",
+     "lower": 0,
+     "rule": "0 <= cut_edges <= edges_total",
+     "source": "the Outcome's own edges_total",
+     "upper": 265
+    },
+    "bounded": true,
+    "mode": "bounded",
+    "schema": "a0.a1.plausibility/v1",
+    "value": 136,
+    "verdict": "within_bound",
+    "within_bound": true
+   },
+   "request_id": "req-none",
+   "schema": "a0.a1.harness_outcome/v1",
+   "score_field": "cut_edges",
+   "status": "ok",
+   "true_value": 136,
+   "value": 136
+  },
+  "returncode": 0,
+  "root": "/tmp/a1final-closures/none",
+  "stderr_tail": "",
+  "stdout_txt": "/tmp/a1final-closures/none/estate/invocations/pid645772-cdd9b8336c5da676/G_dev_0001/run1/stdout.txt"
+ },
+ {
+  "command": "/usr/bin/python3 /home/ebt/rsi-dev/a0/verify/a1-final/hostile/cand_probe/solution.py --graph /home/ebt/rsi-dev/a0/tasks/maxcut/suite/dev/G_dev_0001.json --out /tmp/a1final-closures/host/partition.json --seed 1337",
+  "findings": {
+   "bundle_archive_sweep": {
+    "found": []
+   },
+   "credential_file": {
+    "bytes": 591,
+    "readable": true
+   },
+   "credential_file_literal": {
+    "bytes": 591,
+    "readable": true
+   },
+   "dns_api.deepseek.com": {
+    "resolved": true
+   },
+   "fs_policy_mask::/tmp/mcwork/scip_test2/G_dev_0001.partition.json": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "generators_provenance": {
+    "bytes": 26525,
+    "json_keys": [
+     "generator",
+     "master_seed",
+     "note",
+     "planted",
+     "role_seed_stream",
+     "schema"
+    ],
+    "readable": true
+   },
+   "generators_source": {
+    "bytes": 41334,
+    "readable": true
+   },
+   "git_cat_file": {
+    "returncode": 0,
+    "stderr_head": "",
+    "stdout_bytes": 1689289
+   },
+   "git_log_all": {
+    "returncode": 0,
+    "stderr_head": "",
+    "stdout_bytes": 339
+   },
+   "git_rev_parse": {
+    "returncode": 0,
+    "stderr_head": "",
+    "stdout_bytes": 18
+   },
+   "git_show_head": {
+    "returncode": 128,
+    "stderr_head": "fatal: path 'a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json' does not exist in '",
+    "stdout_bytes": 0
+   },
+   "handed_graph": {
+    "graph_id": "G_dev_0001",
+    "has_generator_block": true,
+    "keys": [
+     "edges",
+     "family",
+     "generator",
+     "graph_id",
+     "n",
+     "notes",
+     "schema"
+    ],
+    "readable": true
+   },
+   "mcwork_listing": {
+    "entries": [
+     "MQLib",
+     "build_final.log",
+     "cov_head.json",
+     "det_BURER2002_1.txt",
+     "det_BURER2002_2.txt",
+     "det_DESOUSA2013_1.txt",
+     "det_DESOUSA2013_2.txt",
+     "det_FESTA2002GPR_1.txt"
+    ]
+   },
+   "net_1.1.1.1:443": {
+    "reached": true
+   },
+   "net_127.0.0.1:9": {
+    "error": "ConnectionRefusedError",
+    "reached": false
+   },
+   "net_8.8.8.8:53": {
+    "reached": true
+   },
+   "net_api.deepseek.com:443": {
+    "reached": true
+   },
+   "own_environment": {
+    "key_shaped_names": [
+     "HL_INITIAL_WORKSPACE_TOKEN",
+     "KITTY_PUBLIC_KEY",
+     "STARSHIP_SESSION_KEY"
+    ],
+    "names": [
+     "COLORTERM",
+     "DBUS_SESSION_BUS_ADDRESS",
+     "DEBUGINFOD_URLS",
+     "DESKTOP_SESSION",
+     "DISPLAY",
+     "GIT_TERMINAL_PROMPT",
+     "HL_INITIAL_WORKSPACE_TOKEN",
+     "HOME",
+     "HYPRLAND_CMD",
+     "HYPRLAND_INSTANCE_SIGNATURE",
+     "KITTY_INSTALLATION_DIR",
+     "KITTY_PID",
+     "KITTY_PUBLIC_KEY",
+     "KITTY_WINDOW_ID",
+     "LANG",
+     "LOGNAME",
+     "MAIL",
+     "MOTD_SHOWN",
+     "MOZ_ENABLE_WAYLAND",
+     "NO_COLOR",
+     "OLDPWD",
+     "PATH",
+     "PNPM_HOME",
+     "PWD",
+     "ROCM_PATH",
+     "SHELL",
+     "SHLVL",
+     "STARSHIP_SESSION_KEY",
+     "STARSHIP_SHELL",
+     "TERM",
+     "TERMINFO",
+     "USER",
+     "VSSCRIPT_PATH",
+     "WAYLAND_DISPLAY",
+     "XDG_BACKEND",
+     "XDG_CURRENT_DESKTOP",
+     "XDG_RUNTIME_DIR",
+     "XDG_SEAT",
+     "XDG_SEAT_PATH",
+     "XDG_SESSION_CLASS",
+     "XDG_SESSION_DESKTOP",
+     "XDG_SESSION_ID",
+     "XDG_SESSION_PATH",
+     "XDG_SESSION_TYPE",
+     "XDG_VTNR",
+     "_",
+     "_JAVA_AWT_WM_NONREPARENTING",
+     "http_proxy",
+     "https_proxy"
+    ]
+   },
+   "partition_sweep": {
+    "count": 10,
+    "found": [
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/instances/scip/L1_ERp080_n1024_r3.partition.json",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/instances/scip/L1_RRd4_n128_r1.partition.json",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/instances/scip/L1_ERp080_n256_r2.partition.json",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/instances/scip/L1_RRd4_n512_r1.partition.json",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/instances/scip/L1_RRd4_n256_r1.partition.json",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/instances/scip/L1_ERp080_n128_r0.partition.json",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/instances/scip/L1_RRd4_n512_r0.partition.json",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/instances/scip/L1_ERp080_n1024_r1.partition.json",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/instances/scip/L1_RRd4_n512_r3.partition.json",
+     "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/instances/scip/L1_ERp080_n1024_r0.partition.json"
+    ]
+   },
+   "proc::/proc/1/environ": {
+    "error": "PermissionError",
+    "readable": false
+   },
+   "proc::/proc/self/root/home/ebt/gptapi.md": {
+    "readable": true
+   },
+   "proc_environ": {
+    "key_shaped": [
+     {
+      "key_shaped": [
+       "HL_INITIAL_WORKSPACE_TOKEN"
+      ],
+      "names": [
+       "DBUS_SESSION_BUS_ADDRESS",
+       "DEBUGINFOD_URLS",
+       "DESKTOP_SESSION",
+       "DISPLAY",
+       "HL_INITIAL_WORKSPACE_TOKEN",
+       "HOME",
+       "HYPRLAND_CMD",
+       "HYPRLAND_INSTANCE_SIGNATURE",
+       "LANG",
+       "LOGNAME",
+       "MAIL",
+       "MOTD_SHOWN",
+       "MOZ_ENABLE_WAYLAND",
+       "PATH",
+       "PWD",
+       "ROCM_PATH",
+       "SHELL",
+       "SHLVL",
+       "USER",
+       "VSSCRIPT_PATH",
+       "WAYLAND_DISPLAY",
+       "XDG_BACKEND",
+       "XDG_CURRENT_DESKTOP",
+       "XDG_RUNTIME_DIR",
+       "XDG_SEAT",
+       "XDG_SEAT_PATH",
+       "XDG_SESSION_CLASS",
+       "XDG_SESSION_DESKTOP",
+       "XDG_SESSION_ID",
+       "XDG_SESSION_PATH",
+       "XDG_SESSION_TYPE",
+       "XDG_VTNR",
+       "_",
+       "_JAVA_AWT_WM_NONREPARENTING",
+       "http_proxy",
+       "https_proxy"
+      ],
+      "pid": "2056"
+     },
+     {
+      "key_shaped": [
+       "HL_INITIAL_WORKSPACE_TOKEN"
+      ],
+      "names": [
+       "DBUS_SESSION_BUS_ADDRESS",
+       "DEBUGINFOD_URLS",
+       "DESKTOP_SESSION",
+       "DISPLAY",
+       "HL_INITIAL_WORKSPACE_TOKEN",
+       "HOME",
+       "HYPRLAND_CMD",
+       "HYPRLAND_INSTANCE_SIGNATURE",
+       "LANG",
+       "LOGNAME",
+       "MAIL",
+       "MOTD_SHOWN",
+       "MOZ_ENABLE_WAYLAND",
+       "PATH",
+       "PWD",
+       "ROCM_PATH",
+       "SHELL",
+       "SHLVL",
+       "USER",
+       "VSSCRIPT_PATH",
+       "WAYLAND_DISPLAY",
+       "XDG_BACKEND",
+       "XDG_CURRENT_DESKTOP",
+       "XDG_RUNTIME_DIR",
+       "XDG_SEAT",
+       "XDG_SEAT_PATH",
+       "XDG_SESSION_CLASS",
+       "XDG_SESSION_DESKTOP",
+       "XDG_SESSION_ID",
+       "XDG_SESSION_PATH",
+       "XDG_SESSION_TYPE",
+       "XDG_VTNR",
+       "_",
+       "_JAVA_AWT_WM_NONREPARENTING",
+       "http_proxy",
+       "https_proxy"
+      ],
+      "pid": "2079"
+     },
+     {
+      "key_shaped": [
+       "HL_INITIAL_WORKSPACE_TOKEN",
+       "KITTY_PUBLIC_KEY"
+      ],
+      "names": [
+       "COLORTERM",
+       "DBUS_SESSION_BUS_ADDRESS",
+       "DEBUGINFOD_URLS",
+       "DESKTOP_SESSION",
+       "DISPLAY",
+       "HL_INITIAL_WORKSPACE_TOKEN",
+       "HOME",
+       "HYPRLAND_CMD",
+       "HYPRLAND_INSTANCE_SIGNATURE",
+       "KITTY_FISH_XDG_DATA_DIR",
+       "KITTY_INSTALLATION_DIR",
+       "KITTY_PID",
+       "KITTY_PUBLIC_KEY",
+       "KITTY_SHELL_INTEGRATION",
+       "KITTY_WINDOW_ID",
+       "LANG",
+       "LOGNAME",
+       "MAIL",
+       "MOTD_SHOWN",
+       "MOZ_ENABLE_WAYLAND",
+       "PATH",
+       "PWD",
+       "ROCM_PATH",
+       "SHELL",
+       "SHLVL",
+       "TERM",
+       "TERMINFO",
+       "USER",
+       "VSSCRIPT_PATH",
+       "WAYLAND_DISPLAY",
+       "XDG_BACKEND",
+       "XDG_CURRENT_DESKTOP",
+       "XDG_DATA_DIRS",
+       "XDG_RUNTIME_DIR",
+       "XDG_SEAT",
+       "XDG_SEAT_PATH",
+       "XDG_SESSION_CLASS",
+       "XDG_SESSION_DESKTOP",
+       "XDG_SESSION_ID",
+       "XDG_SESSION_PATH",
+       "XDG_SESSION_TYPE",
+       "XDG_VTNR",
+       "_",
+       "_JAVA_AWT_WM_NONREPARENTING",
+       "http_proxy",
+       "https_proxy"
+      ],
+      "pid": "2081"
+     }
+    ],
+    "readable": 143
+   },
+   "proc_visible_pids": {
+    "result": 443
+   },
+   "redesign_instance::L1_RRd4_n128_r1.partition.json": {
+    "assignment_len": 128,
+    "bytes": 336,
+    "cut_if_copied": 119,
+    "looks_like_a_partition": true,
+    "readable": true
+   },
+   "repo_root": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "seed": 1337,
+   "state_root_siblings": {
+    "readable_json": [
+     "/tmp/a1final-closures/honest/estate/candidates/7247146ff9119791/candidate.json",
+     "/tmp/a1final-closures/honest/estate/invocations/pid1-c0608992ffcda050/G_dev_0001/run1/candidate_graph.json",
+     "/tmp/a1final-closures/honest/estate/invocations/pid1-c0608992ffcda050/G_dev_0001/run1/invocation.json",
+     "/tmp/a1final-closures/honest/estate/invocations/pid1-c0608992ffcda050/G_dev_0001/run1/partition.json",
+     "/tmp/a1final-closures/honest/estate/invocations/pid1-c0608992ffcda050/G_dev_0001/run2/candidate_graph.json",
+     "/tmp/a1final-closures/honest/estate/invocations/pid1-c0608992ffcda050/G_dev_0001/run2/invocation.json",
+     "/tmp/a1final-closures/honest/estate/invocations/pid1-c0608992ffcda050/G_dev_0001/run2/partition.json",
+     "/tmp/a1final-closures/honest/estate/resources.json",
+     "/tmp/a1final-closures/honest/harness_identity.json",
+     "/tmp/a1final-closures/honest/request.json",
+     "/tmp/a1final-closures/honest/responses/req-honest.json",
+     "/tmp/a1final-closures/honest/state/req-honest/outcome.json",
+     "/tmp/a1final-closures/honest/state/req-honest/resources.json",
+     "/tmp/a1final-closures/honest/state/req-honest/sandbox_receipt.json",
+     "/tmp/a1final-closures/none/estate/candidates/406b0366723f2dcc/candidate.json",
+     "/tmp/a1final-closures/none/estate/invocations/pid645772-cdd9b8336c5da676/G_dev_0001/run1/candidate_graph.json",
+     "/tmp/a1final-closures/none/estate/invocations/pid645772-cdd9b8336c5da676/G_dev_0001/run1/invocation.json",
+     "/tmp/a1final-closures/none/estate/invocations/pid645772-cdd9b8336c5da676/G_dev_0001/run1/partition.json",
+     "/tmp/a1final-closures/none/estate/invocations/pid645772-cdd9b8336c5da676/G_dev_0001/run2/candidate_graph.json",
+     "/tmp/a1final-closures/none/estate/invocations/pid645772-cdd9b8336c5da676/G_dev_0001/run2/invocation.json"
+    ]
+   },
+   "suite_file": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "suite_manifest": {
+    "bytes": 93022,
+    "json_keys": [
+     "canonical_form",
+     "counts",
+     "family_summary",
+     "frozen_on",
+     "generator",
+     "generator_config",
+     "graphs",
+     "identity"
+    ],
+    "readable": true
+   },
+   "targets_json": {
+    "bytes": 762953,
+    "json_keys": [
+     "definition",
+     "ensemble",
+     "generated_utc",
+     "graphs",
+     "schema"
+    ],
+    "readable": true
+   },
+   "witness_by_name": {
+    "error": "FileNotFoundError: No such file or directory",
+    "readable": false
+   },
+   "witness_commitments": {
+    "bytes": 1738955,
+    "json_keys": [
+     "counts",
+     "per_graph",
+     "purpose",
+     "recoverable_from",
+     "removed",
+     "schema",
+     "sealed_utc",
+     "stdout_transcripts"
+    ],
+    "readable": true
+   },
+   "witness_glob::G_dev_0001.partition.json": {
+    "count": 0,
+    "matches": []
+   },
+   "witness_glob::G_dev_0001__*.partition.json": {
+    "count": 0,
+    "matches": []
+   },
+   "wrote_artifact": {
+    "bytes": 331,
+    "n": 128
+   }
+  },
+  "isolation": "host",
+  "lane": "host",
+  "receipt_path": null,
+  "response": null,
+  "returncode": 0,
+  "root": "/tmp/a1final-closures/host",
+  "stderr_tail": "",
+  "stdout_txt": null
+ }
+]

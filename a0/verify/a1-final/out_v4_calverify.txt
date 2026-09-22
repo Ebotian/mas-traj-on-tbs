@@ -1,0 +1,10 @@
+PASS freeze               procedure 68af13211ab88aad… · 12 calibration graphs verified against the manifest · caps 1200000/300000 CEq
+PASS tests                24 passed in 0.05s
+PASS budget               byte-identical from the evidence · vector CEq_max=1966519 N_E,max=725 T_wall=1800s
+PASS ledgers              C_calib_A_simpleloop: 47 rows, ceq 370881 · C_calib_A_kapso: 48 rows, ceq 52992 · root ledger.jsonl == concat (95 rows)
+PASS meter-evidence       in-namespace metered call: ceq=68 (usage {'completion_tokens': 8, 'prompt_cache_hit_tokens': 0, 'prompt_cache_miss_tokens': 36}), re-derived by a0/meter/verify_ledger.py · counter-example: unmetered row, reason=upstream_http_401_no_usage, ceq=null, budget stopped (budget_exhausted:unmetered_model_call)
+PASS reduction            131 published files, none uses an objective value on a calibration graph as data
+PASS budget-loads         a0/a1/budget.Budget(T_wall_sec=1800.0, N_eval_max=725, CEq_max=1966519, P=1)
+PASS f-properties         V1–V7 hold · monotone+bounded+variance reported+total · A_kapso: margins 92.2/37.5 min · A_simpleloop: margins 37.5/73.3 min
+SKIP rehearsal            the free closed-topology rehearsal (opt in with --with-rehearsal)
+verdict: pass

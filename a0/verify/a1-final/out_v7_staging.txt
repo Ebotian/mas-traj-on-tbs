@@ -1,0 +1,16 @@
+[PASS] (a) four modes -> one candidate_source_sha256  {'7247146ff9119791cde5c276f82a74aed4e45e2870527eb56324c12b9d20819e'}
+[PASS] (a) four modes -> one canonical_digest  {'d70430a00541d9bb1046dc878980ed4c4b22c0444196bd3c13a78dc3dfc55dd2'}
+[PASS] (a) four modes -> byte-identical Outcome files  [1411, 1411, 1411, 1411] bytes each
+[PASS] (a) the run is a real ok with a real number  statuses {'ok'} cut 261
+[PASS] (a) E*'s own candidate digest recomputes over the same directory  7247146ff9119791 files=['candidate.json', 'solution.py']
+[PASS] (b) the evaluator wrote the handed document into its state dir  /tmp/tmppxfoqlsh/view/estate/invocations/pid640512-c0608992ffcda050/G_dev_0019/run1/candidate_graph.json
+[PASS] (b) the handed view omits the generator block  keys ['edges', 'family', 'graph_id', 'n', 'schema']
+[PASS] (b) the handed view omits notes and carries nothing else  edges equal to the suite file: True
+[PASS] (b) the suite file *does* carry the generator block (so this is a real difference)  suite keys ['edges', 'family', 'generator', 'graph_id', 'n', 'notes', 'schema']
+[PASS] (b) Outcome.graph_sha256 == sha256 of the suite file  f38353e0d8bd93bd vs f38353e0d8bd93bd
+[PASS] (b) Outcome.candidate_graph_sha256 == sha256 of the handed view  30b9ca30f5e97817 vs 30b9ca30f5e97817
+[PASS] (b) the two hashes are different documents
+[PASS] (b) cut_edges was recomputed from the suite bytes, not the view  edges_total 505 == |E| of the suite file
+[PASS] (b') on a Planted graph the handed view carries no generator block either  view ['edges', 'family', 'graph_id', 'n', 'schema']
+
+14/14 checks pass

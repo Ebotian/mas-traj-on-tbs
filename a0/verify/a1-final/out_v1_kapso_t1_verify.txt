@@ -1,0 +1,244 @@
+
+
+
+
+
+{
+ "verdict": "fail",
+ "steps": {
+  "tree": false,
+  "binding": false,
+  "dryrun": false,
+  "rehearse": false,
+  "tests": false
+ },
+ "evidence": [
+  "dryrun_t1.json",
+  "live_t1.json"
+ ]
+}
+
+--- tree failed (exit 5) ---
+{
+ "eid_star": "7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec",
+ "files": {
+  "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+  "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
+ },
+ "fingerprint_matches_record": true,
+ "locator_rebuild_matches_committed": false,
+ "manifest_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+ "manifest_fingerprint_source": "kapso.execution.evaluation_integrity.manifest_fingerprint (imported)",
+ "pass": false,
+ "recorded_manifest_fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+ "schema": "a0.kapso_t1.tree_check/v1",
+ "tree_dir": "/home/ebt/rsi-dev/a0/a1/kapso_t1/tree",
+ "tree_files": [
+  "kapso_eval.py",
+  "a0_locator.json"
+ ],
+ "wrapper_matches_source": true
+}
+
+
+--- binding failed (exit 5) ---
+3eb4b973b0177da926e9a6d94198a",
+  "EvaluatorSource": "1bfee86896824ef01d0e8d82700d5d17b4134e1ff804522333bf055fe7946591",
+  "MetricDefinition": "0ba2145a5e480c31f40da7297b32382f4648da69ecc4d0e879fc2fa68f119349"
+ },
+ "eid_star_file": "/home/ebt/rsi-dev/a0/a1/T1-EID.json",
+ "eid_star_task": "maxcut-t1",
+ "evaluator": {
+  "dir": "/home/ebt/rsi-dev/a0/tasks/maxcut",
+  "entry": "e_star.py",
+  "helper": "e_star_child.py",
+  "python": "/usr/bin/python3",
+  "source_records": [
+   {
+    "path": "e_star.py",
+    "sha256": "f67ecd41bd769e41e57e1812ce60d544b6894071cd7849bccaa83a2163b614f6",
+    "size": 53788
+   },
+   {
+    "path": "e_star_child.py",
+    "sha256": "fdcf425c1d41650da8eaeffe28c30b9ec1461b45570d91b487a98c10fb6263ad",
+    "size": 35924
+   }
+  ]
+ },
+ "metric": {
+  "direction": "maximize",
+  "epsilon": 0.0,
+  "failure_semantics": "invalid/error/timeout carry cut_edges: null \u2014 never 0; a legitimate 0 is reported as 0",
+  "name": "cut_edges",
+  "objective": {
+   "aggregation": "fractions.Fraction over integers",
+   "authoritative": "integer",
+   "direction": "maximize",
+   "display_only": "cut_fraction",
+   "name": "cut_edges",
+   "unit": "edges",
+   "weighted": false
+  }
+ },
+ "mode_config": "/home/ebt/rsi-dev/a0/a1/kapso_t1/config/mode.maxcut.yaml",
+ "pass": false,
+ "registered_tree": "/home/ebt/rsi-dev/a0/a1/kapso_t1/tree",
+ "runtime": "kapso",
+ "schema": "a0.kapso_t1.eid_binding/v1",
+ "task_id": "T1-maxcut",
+ "theta_e_canonical": {
+  "seed": 1337,
+  "timeout_s": 10.0
+ }
+}
+
+
+--- dryrun failed (exit 5) ---
+_instances_are_in_the_workspace_and_sha_checked": true,
+  "no_holdout_bytes_are_in_the_workspace": true,
+  "the_dev_instances_are_kapsos_registered_protected_data": true,
+  "a_rewritten_dev_graph_scores_nothing": true,
+  "a_doctored_registered_tree_scores_nothing": true,
+  "a_drifted_e_star_is_refused_by_the_tree": true
+ },
+ "failed": [
+  "the_tree_check_passes",
+  "kapsos_own_registration_equals_the_t1_tree_fingerprint",
+  "the_score_of_record_is_the_harness_s",
+  "the_score_of_record_is_not_what_e_star_measured",
+  "selection_follows_the_harnesss_number_not_the_true_ranking"
+ ],
+ "nodes": [
+  {
+   "node_id": 0,
+   "score": 3.0,
+   "valid": true
+  },
+  {
+   "node_id": 1,
+   "score": 777777.0,
+   "valid": true
+  },
+  {
+   "node_id": 2,
+   "score": 3.0,
+   "valid": true
+  },
+  {
+   "node_id": 3,
+   "score": null,
+   "valid": false
+  }
+ ],
+ "best": {
+  "node_id": 1,
+  "branch_name": "generic_exp_1",
+  "score": 777777.0
+ },
+ "harness_ledger": [
+  {
+   "candidate_id": "c01_ok_high_pc",
+   "true_value": 207,
+   "handed_value": 3,
+   "override_applied": true
+  },
+  {
+   "candidate_id": "c02_ok_low_baseline",
+   "true_value": 132,
+   "handed_value": null,
+   "override_applied": false
+  },
+  {
+   "candidate_id": "c01_ok_high_pc",
+   "true_value": 207,
+   "handed_value": 3,
+   "override_applied": true
+  },
+  {
+   "candidate_id": "c03_ok_zero_all_one_side",
+   "true_value": 0,
+   "handed_value": 0,
+   "override_applied": false
+  }
+ ],
+ "out": "/tmp/a1t1-verify/dryrun/dryrun_t1.json"
+}
+
+
+--- rehearse failed (exit 5) ---
+{
+ "verdict": "fail",
+ "checks": {
+  "the_tree_in_the_run_is_the_t1_stub": true,
+  "kapsos_registration_equals_the_t1_tree_fingerprint": true,
+  "the_harness_ledger_is_keyed_by_the_candidate": true,
+  "no_holdout_bytes_are_in_the_workspace": true,
+  "the_score_of_record_comes_from_the_harness": true,
+  "the_score_of_record_is_the_harness_s_value": false,
+  "the_session_could_not_substitute_its_own_number": false,
+  "the_last_manifest_line_is_the_harness_s": true,
+  "the_granted_class_triple_is_the_runtimes": true,
+  "selection_follows_the_harnesss_number": false,
+  "the_meter_s_own_verifier_re_derives_every_row": true,
+  "the_topology_blocks_direct_egress": true,
+  "the_budget_is_within_its_limits": true,
+  "the_model_call_was_skipped_on_purpose": true
+ },
+ "failed": [
+  "the_score_of_record_is_the_harness_s_value",
+  "the_session_could_not_substitute_its_own_number",
+  "selection_follows_the_harnesss_number"
+ ],
+ "meter_summary": {
+  "rows": 0,
+  "ceq": 0,
+  "unmetered": 0,
+  "ledger": "/tmp/a1t1-verify/rehearse/kapso_t1/meter/ledger.jsonl"
+ },
+ "harness_ledger": [
+  {
+   "candidate_id": "c01_ok_high_pc",
+   "true_value": 207,
+   "handed_value": 3,
+   "override_applied": true
+  },
+  {
+   "candidate_id": "c02_ok_low_baseline",
+   "true_value": 132,
+   "handed_value": null,
+   "override_applied": false
+  }
+ ],
+ "arm_state_score_of_record": 3.0,
+ "session_claimed": 777777.0,
+ "out": "/tmp/a1t1-verify/rehearse/kapso_t1/live_t1.json"
+}
+
+
+--- tests failed (exit 1) ---
+       "cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1"
+        )
+E       AssertionError: assert '7ce9e72f36a0...2810a35b4a5ec' == 'cddfa64ead57...a6b49b7a78ab1'
+E         
+E         - cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1
+E         + 7ce9e72f36a0d1541431024ea86c5d537b9f66b384ab74e85232810a35b4a5ec
+
+a0/a1/kapso_t1/tests/test_kapso_t1.py:62: AssertionError
+_____________ test_the_stub_echoes_the_grant_and_measures_nothing ______________
+
+    def test_the_stub_echoes_the_grant_and_measures_nothing():
+        candidate = t1_binding.load_config().candidate_set
+        proc = _run_stub("--fidelity", "fast", "--fraction", "0.15", "--seed", "4242",
+                         "--candidate", str(Path(candidate).parent / "c02_ok_low_baseline"))
+>       assert proc.returncode == 0
+E       AssertionError: assert 3 == 0
+E        +  where 3 = CompletedProcess(args=['/usr/bin/python3', '/home/ebt/rsi-dev/a0/a1/kapso_t1/tree/kapso_eval.py', '--fidelity', 'fast'...e0f81ad8bbb723d20e8f7fa0bdebbb0 recorded in EID* (cddfa64ead571bbb09daa458c6b514377fba32e62612f5c2e17a6b49b7a78ab1)\n').returncode
+
+a0/a1/kapso_t1/tests/test_kapso_t1.py:138: AssertionError
+=========================== short test summary info ============================
+FAILED a0/a1/kapso_t1/tests/test_kapso_t1.py::test_the_binding_carries_t1_and_the_frozen_evaluator
+FAILED a0/a1/kapso_t1/tests/test_kapso_t1.py::test_the_stub_echoes_the_grant_and_measures_nothing
+2 failed, 7 passed in 0.16s
+
+rc=5
