@@ -27,6 +27,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from canonical import cut_fraction_display, file_sha256, load_graph  # noqa: E402
+from fractions import Fraction  # noqa: E402
 from run_ensemble import HEURISTICS, SEEDS, TIME_LIMIT_S  # noqa: E402
 
 
@@ -253,6 +254,12 @@ def main():
             "R_ensemble": best,
             "R_source_is_ensemble": True,
             "R_fraction_display": cut_fraction_display(best, ok[0]["edges_total"]),
+            "R_fraction_exact": "%d/%d" % (Fraction(best, ok[0]["edges_total"]).numerator,
+                                           Fraction(best, ok[0]["edges_total"]).denominator),
+            "R_fraction_exact_note": "R_i / |E_i|, reduced; this is the authoritative "
+                                     "fraction -- R_fraction_display is a decimal "
+                                     "display field and no verdict may use it "
+                                     "(INTERFACE.md section 5)",
             "R_source": {"heuristic": src["heuristic"], "seed": src["seed"],
                          "run_id": "%s__%s__s%d" % (gid, src["heuristic"], src["seed"]),
                          "partition_sha256": src["partition_sha256"],
@@ -310,11 +317,17 @@ def main():
             entry["opt_certified"] = False
             entry["opt_note"] = "upper bounds not computed in this build"
         graphs[gid] = entry
-        print("%-14s R=%-5s U=%-6s OPT=%s (%.0fs)"
-              % (gid, entry["R"], entry.get("U"), entry.get("OPT"),
-                 time.time() - t0), flush=True)
 
     merge_scip(graphs, args.scip, HERE)
+
+    # print only after the SCIP pass: before it, `U` and `OPT` are still the
+    # relaxation-only values and a reader would reasonably misread them
+    for gid in sorted(graphs):
+        e = graphs[gid]
+        print("%-14s R=%-5s U=%-6s OPT=%-5s %s (%.0fs)"
+              % (gid, e.get("R"), e.get("U"), e.get("OPT"),
+                 "certified" if e.get("opt_certified") else "feasible-only",
+                 time.time() - t0), flush=True)
 
     doc = {
         "schema": "a0.maxcut.references/v1",

@@ -68,14 +68,21 @@ any selection (`INTERFACE.md` §9), and `targets.json` labels every entry with i
 `role` so a consumer can filter them out in one line.
 
 **Top-up pass.** The 18 graphs whose optimality SCIP did not certify additionally
-received 6 runs of **300 s** each (the three heuristics that reach `R_i` on every
-graph, two seeds; `tools/resume.sh` step 4). Those records live in
-`logs_topup/`, never overwriting the 30 s records in `logs/`, and
+received 6 runs of **120 s** each — a 4x budget, from the three heuristics that
+reach `R_i` on every graph, two seeds (`tools/resume.sh` step 4). Those records
+live in `logs_topup/`, never overwriting the 30 s records in `logs/`, and
 `targets.json` folds them into the same `R_i` maximum while recording
-`budgets_applied_s` and `R_from_topup` per graph. The purpose is not to raise
-`R_i` — it is to test the 30 s result: if a 10x budget cannot beat `R_i` either,
-`R_i` is at or very near the optimum, which is exactly what the certification
-pass left open on those graphs.
+`budgets_applied_s`, `largest_budget_that_reached_R_s` and `R_from_topup` per
+graph. The purpose is not to raise `R_i` — it is to test the 30 s result.
+
+**Measured outcome: no improvement on any of the 18 graphs.** The top-up's best
+value equalled `R_i` exactly on all 18, and never exceeded it. On several graphs
+the 120 s run produced a *byte-identical* partition to the 30 s run (same
+`partition_sha256`, e.g. `G_dev_0005`), i.e. MQLib had already converged well
+inside 30 s and the extra budget changed nothing but the wall clock. That is the
+strongest statement available for those graphs short of a certificate: 31 runs
+reach `R_i` (25 of the 30 short runs, from 5 distinct heuristics, plus all 6 of
+the long ones) and not one run in either budget regime beats it.
 
 `DESOUSA2013` never reaches `R_i` on any of the 60 graphs — it is systematically
 the weakest of the six (e.g. 300 vs. `R_i = 338` on `G_dev_0003`, a certified
@@ -226,3 +233,30 @@ is not evidence. They must never be injected into an agent workspace, context,
 prompt, or any path an A1 arm can read — `INTERFACE.md` §12 forbids exactly
 that. `targets.json` itself carries only scalars, which is what a `rho_i`
 computation needs.
+
+## 8. Headline numbers to compare against
+
+From the current `targets.json` (60 graphs, all `n = 128`, 15 per family):
+
+| quantity | value |
+|---|---|
+| ensemble runs recorded `ok` | **1800 / 1800** (60 graphs x 30) |
+| aggregate `R` | `sum R_i = 18495` over `sum |E_i| = 23868`, i.e. **685/884** |
+| dev subset | 24 graphs, `sum R = 7472` over `sum |E| = 9654` (3736/4827) |
+| eval subset | 24 graphs, `sum R = 7406` over `sum |E| = 9563` |
+| certified `OPT_i` | **42 / 60** (dev 16/24, eval 17/24, calibration 9/12) |
+| uncertified graphs, remaining gap `U_i - R_i` | min 10, max 26, mean 19.7 edges (3-8 %) |
+| graphs where `U_i < R_i` (a bound bug) | **0** |
+| graphs missing a `U_i` | **0** |
+| re-verification of `R_i` | **60/60 PASS**, 1499 tie-witness partitions recomputed |
+| `R_i` source heuristic | `BURER2002` on all 60 (25 of 30 runs per graph tie at `R_i`) |
+| top-up runs at 4x budget that beat `R_i` | **0 / 108** |
+
+`DESOUSA2013` contributes to none of the 60 maxima (see §3); the other five
+heuristics each reach `R_i` on all 18 uncertified graphs.
+
+The one command that decides whether to believe the table:
+
+```bash
+python3 tools/verify_targets.py --quiet    # -> PASS, exit 0
+```

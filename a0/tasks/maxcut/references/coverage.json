@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-22T09:00:37Z",
+  "generated_utc": "2026-09-22T09:19:40Z",
   "headline_budget_per_graph": {
     "certification": {
       "formulation": "edge MIP + triangle odd-cycle inequalities",
@@ -38,16 +38,17 @@
         "FESTA2002GPR",
         "LAGUNA2009HCE"
       ],
+      "history": "a first attempt at 300 s was abandoned before writing any record, because 108 runs at that budget would not have finished inside this window; 120 s keeps full graph coverage, which the assignment ranks above depth",
       "on": "the 18 graphs whose optimality SCIP did not certify",
-      "parallelism": 11,
-      "purpose": "test whether the 30 s reference R_i is converged; a 10x budget that fails to beat R_i is evidence that R_i is at or very near the optimum, which is exactly the unresolved case the certification pass left open",
+      "parallelism": 12,
+      "purpose": "test whether the 30 s reference R_i is converged; a 4x budget that fails to beat R_i is evidence that R_i is at or very near the optimum, which is exactly the unresolved case the certification pass left open.  Measured outcome: no graph improved, and on every one of the 18 graphs the top-up best equalled R_i exactly",
       "runs_per_graph": 6,
       "seeds": [
         1337,
         65521
       ],
       "separate_outdir": "logs_topup (the primary 30 s records in logs/ are never overwritten, so the two budget regimes stay distinguishable)",
-      "time_limit_s_per_run": 300.0
+      "time_limit_s_per_run": 120.0
     },
     "upper_bounds": {
       "bm_iters": 3000,
@@ -179,7 +180,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900030
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720015
+      },
       "family": "ER",
       "graph_sha256": "0e3f49d6ec062ba5ca4ce84323e3f035fa9bf807a02d9f4ad9d070c69be2d36e",
       "graph_sha256_matches_targets": true,
@@ -515,7 +532,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900048
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720016
+      },
       "family": "Planted",
       "graph_sha256": "7107d3cd0a930fcfcd4fa5cec6abbd91fd3b5bebc4dfc6c6e28e260af1e86c20",
       "graph_sha256_matches_targets": true,
@@ -611,7 +644,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900043
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720014
+      },
       "family": "Planted",
       "graph_sha256": "204c62f040b44b21cc7182bcfc2c789f5c6b5a41b9a74f131cdfdbea432ed415",
       "graph_sha256_matches_targets": true,
@@ -851,7 +900,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900054
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720014
+      },
       "family": "ER",
       "graph_sha256": "545769f217e02ba4fbc92ddcc71a08ff0a77e8efbabc36196f45a8c1622babbe",
       "graph_sha256_matches_targets": true,
@@ -899,7 +964,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900065
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720012
+      },
       "family": "ER",
       "graph_sha256": "ecc150196acb7449dddd1a9d460215cfd6cec9316db279188728b191bdf0af6a",
       "graph_sha256_matches_targets": true,
@@ -1427,7 +1508,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900051
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720012
+      },
       "family": "BA",
       "graph_sha256": "631a1e5f5b6f78b6832614ea4cb27243ef9daeacf21ca7ad6388a7856cfeadaf",
       "graph_sha256_matches_targets": true,
@@ -1475,7 +1572,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900058
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720014
+      },
       "family": "BA",
       "graph_sha256": "5d239715a8f57394da83379cd1667e907c56810feff89b52a89dc4735de777b1",
       "graph_sha256_matches_targets": true,
@@ -1523,7 +1636,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900072
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720014
+      },
       "family": "Planted",
       "graph_sha256": "f38353e0d8bd93bdd6e83d86961b8ad4efc9170d7ce521ca2bead2df7eadda03",
       "graph_sha256_matches_targets": true,
@@ -1571,7 +1700,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900072
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720011
+      },
       "family": "Planted",
       "graph_sha256": "e4b435c89e9e3a6c6969748edf8b8c9c5a44e275357737c233244dec86192ae5",
       "graph_sha256_matches_targets": true,
@@ -1667,7 +1812,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900052
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720016
+      },
       "family": "Planted",
       "graph_sha256": "87989f83eaff51c481f21103aa9c1b9085542bd2fdad9fa9e3dd8999751a0c3e",
       "graph_sha256_matches_targets": true,
@@ -1763,7 +1924,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900062
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720014
+      },
       "family": "Planted",
       "graph_sha256": "8ea3091cd8485325d1868e67bdde13a8d4aae40a9590fcc46095e9f531458b67",
       "graph_sha256_matches_targets": true,
@@ -2003,7 +2180,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900058
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720015
+      },
       "family": "ER",
       "graph_sha256": "5429ebf76888593ff0289169d257b811adb2bf8f087735f7df2fbc106b88f215",
       "graph_sha256_matches_targets": true,
@@ -2051,7 +2244,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900061
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720012
+      },
       "family": "ER",
       "graph_sha256": "2092f3f481e2d2f787df91b70e20b1e513ff184720e59c42ed7d255e2784c48e",
       "graph_sha256_matches_targets": true,
@@ -2579,7 +2788,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900063
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720012
+      },
       "family": "BA",
       "graph_sha256": "0ccaef5923e0c5de3424a3ed0880d0647e6a24f4aa1f20eca1a5d92b4296b742",
       "graph_sha256_matches_targets": true,
@@ -2627,7 +2852,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900064
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720015
+      },
       "family": "BA",
       "graph_sha256": "26309b9d1d322ebe7cec4a7c9b05414935a19129b902c01c4e72c22006694db4",
       "graph_sha256_matches_targets": true,
@@ -2675,7 +2916,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900058
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720012
+      },
       "family": "Planted",
       "graph_sha256": "ce92ed83e52a8ddd22a694f7d8f4af2c9f6b367a35420b8832219d606fb79144",
       "graph_sha256_matches_targets": true,
@@ -2867,7 +3124,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900059
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720010
+      },
       "family": "Planted",
       "graph_sha256": "7b40c996df18ae10fd5baa656a9a2feaedc42aa7bf92d137d85b689d528f29cc",
       "graph_sha256_matches_targets": true,
@@ -2915,7 +3188,23 @@
         "runs_ok": 30,
         "wall_ms_total": 900048
       },
-      "ensemble_topup": null,
+      "ensemble_topup": {
+        "heuristics": [
+          "BURER2002",
+          "FESTA2002GPR",
+          "LAGUNA2009HCE"
+        ],
+        "runs_ok": 6,
+        "runs_scheduled": 6,
+        "seeds": [
+          1337,
+          65521
+        ],
+        "time_limit_s_per_run": [
+          120.0
+        ],
+        "wall_ms_total": 720006
+      },
       "family": "Planted",
       "graph_sha256": "bf8f1b6f10ca09e7ec6a9b685925f74b4535c03ac99fa359911bb1e684816637",
       "graph_sha256_matches_targets": true,
@@ -2944,7 +3233,7 @@
   "reductions": {
     "any": false,
     "history": "An earlier window did not finish in time; nothing was reduced then either -- the 1800 primary run records already on disk are the full sweep, and the resume only had to assemble them.",
-    "statement": "No budget was reduced relative to the headline, and no graph was dropped. All 60 graphs (48 dev+eval as required, plus the 12 calibration graphs) received the full ensemble budget of 6 heuristics x 5 seeds x 30 s = 30 runs, plus a 120 s SCIP attempt, plus the upper-bound computation. The 18 uncertified graphs additionally received 6 runs of 300 s each."
+    "statement": "No budget was reduced relative to the headline, and no graph was dropped. All 60 graphs (48 dev+eval as required, plus the 12 calibration graphs) received the full ensemble budget of 6 heuristics x 5 seeds x 30 s = 30 runs, plus a 120 s SCIP attempt, plus the upper-bound computation. The 18 uncertified graphs additionally received 6 runs of 120 s each (3 heuristics x 2 seeds)."
   },
   "schema": "a0.maxcut.references.coverage/v1",
   "suite": {
@@ -2976,6 +3265,6 @@
       "certified_optimal": 42,
       "not_certified": 18
     },
-    "topup_runs_ok_total": 0
+    "topup_runs_ok_total": 108
   }
 }

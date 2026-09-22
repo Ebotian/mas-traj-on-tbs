@@ -183,16 +183,22 @@ def main():
                 "on": "the 18 graphs whose optimality SCIP did not certify",
                 "heuristics": ["BURER2002", "FESTA2002GPR", "LAGUNA2009HCE"],
                 "seeds": [1337, 65521],
-                "time_limit_s_per_run": 300.0,
+                "time_limit_s_per_run": 120.0,
                 "runs_per_graph": 6,
-                "parallelism": 11,
+                "parallelism": 12,
                 "purpose": "test whether the 30 s reference R_i is converged; a "
-                           "10x budget that fails to beat R_i is evidence that R_i "
+                           "4x budget that fails to beat R_i is evidence that R_i "
                            "is at or very near the optimum, which is exactly the "
-                           "unresolved case the certification pass left open",
+                           "unresolved case the certification pass left open."
+                           "  Measured outcome: no graph improved, and on every one "
+                           "of the 18 graphs the top-up best equalled R_i exactly",
                 "separate_outdir": "logs_topup (the primary 30 s records in logs/ "
                                    "are never overwritten, so the two budget "
                                    "regimes stay distinguishable)",
+                "history": "a first attempt at 300 s was abandoned before writing "
+                           "any record, because 108 runs at that budget would not "
+                           "have finished inside this window; 120 s keeps full "
+                           "graph coverage, which the assignment ranks above depth",
             },
             "certification": {
                 "on": "all 60 graphs",
@@ -219,7 +225,7 @@ def main():
                          "budget of 6 heuristics x 5 seeds x 30 s = 30 runs, plus a "
                          "120 s SCIP attempt, plus the upper-bound computation. The "
                          "18 uncertified graphs additionally received 6 runs of "
-                         "300 s each.",
+                         "120 s each (3 heuristics x 2 seeds).",
             "history": "An earlier window did not finish in time; nothing was "
                        "reduced then either -- the 1800 primary run records already "
                        "on disk are the full sweep, and the resume only had to "
