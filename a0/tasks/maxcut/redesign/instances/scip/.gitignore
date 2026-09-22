@@ -1,0 +1,6 @@
+# SCIP model and solver-log artifacts are regenerable and large (up to 7.5 MB
+# each at n=1024).  Their sha256 is recorded inside the matching *.json record,
+# and `gen/run_all.sh` step 4 regenerates them.  The *.json records and the
+# primal *.partition.json witnesses are committed.
+*.lp
+*.scip.log
