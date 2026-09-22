@@ -1,0 +1,153 @@
+{
+ "schema": "a0.a1.calibration.pilot_procedure/v1",
+ "frozen_on": "2026-09-22",
+ "authority": {
+  "clauses": [
+   "a0/tasks/maxcut/INTERFACE.md §9 (calibration and the pre-registered mapping)",
+   "a0/tasks/maxcut/INTERFACE.md §7 (tau = min(30s, max(10s, 10 x p99)))",
+   "a0/tasks/maxcut/INTERFACE.md §8 (CEq and the meter ledger)"
+  ],
+  "plan_item": "A1 plan item 7: run the calibration pilot and freeze B_hard",
+  "plan_doc": "a0/A1-INTERIM.md §1 row 7"
+ },
+ "procedure": {
+  "document": "PILOT-PROCEDURE.md",
+  "document_sha256": "68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2",
+  "runner": "pilot.py",
+  "freeze_rule": "the procedure document and this file were committed before any process read a suite/calibration/** byte; the runner refuses to start a pilot when the document does not hash to document_sha256, and every output records both hashes",
+  "order_of_operations": [
+   "1. write and commit PILOT-PROCEDURE.md + pilot_procedure.json (this file)",
+   "2. run the pilot (one bounded campaign per arm on the calibration graphs)",
+   "3. apply f mechanically to the measured telemetry -> B_hard.json"
+  ],
+  "not_used_for_selection": true
+ },
+ "graph_set": {
+  "role": "calibration",
+  "suite_root": "a0/tasks/maxcut/suite",
+  "manifest": "a0/tasks/maxcut/suite/manifest.json",
+  "graphs": 12,
+  "order": "ascending graph_id (C_0001 … C_0012), as the manifest lists them",
+  "identity": "each graph file's sha256 must equal manifest.graphs[i].graph_sha256 (the manifest is the identity source; generator seeds are not)",
+  "passes_max": 2,
+  "selection_caveat": "the calibration set is used for resource rates only; no calibration graph informs any choice among candidates, arms or thresholds (INTERFACE.md §9)"
+ },
+ "model": {
+  "requested": "deepseek-flash",
+  "temperature": 0,
+  "provider": "deepseek",
+  "route": "plaintext http to the campaign's a0/meter port; TLS onward from the proxy"
+ },
+ "theta": {
+  "seed": 1337,
+  "timeout_s": 10.0,
+  "fidelity": "none",
+  "fraction": "none",
+  "note": "timeout_s is the gate workstream's frozen tau (section 7 floor); the pilot runs with it and re-measures the latency distribution without changing it"
+ },
+ "campaign_ids": {
+  "A_simpleloop": "C_calib_A_simpleloop",
+  "A_kapso": "C_calib_A_kapso"
+ },
+ "arms": {
+  "A_simpleloop": {
+   "runtime": "simpleloop",
+   "substrate": "ours",
+   "entry": "a0/runtimes/simpleloop/.venv/bin/python -m a0_adapter run",
+   "solver": "deepseek",
+   "loop": {"kind": "iterations", "max_iterations": 3},
+   "model_calls_per_unit": 2,
+   "evals_per_unit": 3,
+   "max_tokens_per_call": 2048,
+   "graph_in_prompt": true,
+   "note": "iteration 0 is the frozen C* baseline c02_ok_low_baseline and makes no model call; iterations 1 and 2 call the declared deepseek lane and are evaluated by the harness"
+  },
+  "A_kapso": {
+   "runtime": "kapso",
+   "substrate": "third_party",
+   "entry": "a0/runtimes/kapso/.venv/bin/python a0/a1/calibration/pilot.py kapso-inner",
+   "tree": "a0/a1/kapso_t1/tree (EID_r = manifest:6b1d6fcc…)",
+   "loop": {"kind": "rounds", "rounds": 2},
+   "model_calls_per_unit": 2,
+   "evals_per_unit": 2,
+   "max_tokens_per_call": 256,
+   "graph_in_prompt": false,
+   "note": "the T1 configuration of a0/a1/kapso_t1: the implementation seam writes a frozen C*(T1) member and the ideation seam makes the real metered call per round; the second round's call is NOT memoised (the probe memoised it to save cents; a rate measurement must observe the arm's call pattern)"
+  }
+ },
+ "caps": {
+  "note": "pilot-enforced, declared before the run; read by a0/a1/budget.py::BudgetEnforcer from the meter ledger, the harness evaluation ledger and the harness clock before each unit",
+  "A_simpleloop": {"T_wall_sec": 900.0, "CEq_max": 1200000, "N_E_max": 288},
+  "A_kapso": {"T_wall_sec": 900.0, "CEq_max": 300000, "N_E_max": 192},
+  "P_concurrency": 1,
+  "a_priori_reasoning": {
+   "A_simpleloop": "the adapter's --model-max-tokens 2048 bounds one call at 4*2048 = 8192 completion-CEq plus a prompt bounded by the graph's edge list (<= 636 edges ~ 3k tokens) -> <= ~12000 CEq per call; 48 planned calls ~ 576000; the cap is ~2x that a-priori bound",
+   "A_kapso": "max_tokens 256 bounds one call at 1024 + miss <= ~5000 CEq; 48 planned calls ~ 240000; the cap is ~1.25x that a-priori bound",
+   "N_E": "4x the planned 72 / 48 evaluations, so a runaway on the evaluation lane is caught even when CEq stays low"
+  }
+ },
+ "telemetry": {
+  "T_r": "harness monotonic seconds from the launch of unit 1 to the exit of the last unit",
+  "CEq_r": "sum of ceq over the a0/meter ledger rows of the campaign with unmetered=false",
+  "N_E_r": "rows in the harness evaluation ledger for the campaign",
+  "q_r": "60 * CEq_r / T_r  [CEq/min]",
+  "e_r": "60 * N_E_r / T_r    [evals/min]",
+  "unit": "one arm session on one calibration graph",
+  "variance": {
+   "per_unit": "n, mean, sample sd (n-1), cv, min, median, max over the 24 units of a complete 2-pass campaign, from ts-attributed per-unit CEq and N_E",
+   "per_window": {"window_sec": 60, "anchor": "the arm's launch epoch", "max_and_mean_use": "full windows only; a trailing partial window is reported but excluded"},
+   "percentile": "nearest rank: the ceil(p*n)-th smallest value (the gate workstream's tau_calibration.py convention)"
+  },
+  "latency": {
+   "candidate_ms": "interpreted.wall_ms of the harness-authored Outcome (the candidate child process)",
+   "e_star_sec": "wall_sec of the harness ledger row (the whole E* invocation)",
+   "tau_cross_check": "compare 10 * p99(candidate_ms) against the frozen tau = 10.0 s; report, never change"
+  }
+ },
+ "mapping": {
+  "name": "f",
+  "formula": "T_wall_sec = 1800; q_r = 60*CEq_r/T_r; e_r = 60*N_E_r/T_r; CEq_max = min(ceil((5/4) * 30 * max_r(q_r)), CEQ_CEILING); N_evaluatorCalls = min(ceil((5/4) * 30 * max_r(e_r)), N_E_CEILING); P_concurrency = 1",
+  "T_wall_sec": 1800,
+  "window_minutes": 30,
+  "factor": {"numerator": 5, "denominator": 4},
+  "CEQ_CEILING": 5000000,
+  "N_E_CEILING": 5000,
+  "P_concurrency": 1,
+  "max_over": "the two pilot arms",
+  "arithmetic": "exact rationals (fractions.Fraction) for q_r and e_r; the only integer rounding is a single ceil at the end of each coordinate",
+  "required_properties": {
+   "monotone": "non-decreasing in every q_r and e_r; the clamp is a min with a constant, which preserves monotonicity; checked by evaluating f on the measured rates scaled by 0.5x, 1x, 2x, 4x",
+   "bounded": "T_wall_sec = 1800; CEq_max <= CEQ_CEILING; N_evaluatorCalls <= N_E_CEILING; P_concurrency = 1",
+   "variance_reported": "B_hard.json embeds the per-unit and per-window statistics of both arms; apply refuses to write a B_hard whose telemetry lacks them",
+   "total": "defined for any finite telemetry with T_r > 0"
+  },
+  "ceiling_justification": {
+   "CEQ_CEILING": "5,000,000 CEq is ~0.6M completion tokens — cents at deepseek-flash prices, and one campaign spending more than that would be a different design than the one being budgeted; the clamp exists so a pathological pilot rate cannot freeze an unbounded budget",
+   "N_E_CEILING": "5,000 E* evaluations at the measured per-evaluation cost would already exceed T_wall on the evaluation lane alone"
+  }
+ },
+ "stopping_rule": [
+  "passes_max = 2 complete passes over the 12 calibration graphs (workload_complete = true)",
+  "T_pilot,wall = 900 s of harness monotonic time",
+  "the arm's CEq_max or N_E_max exceeded, as read by the BudgetEnforcer before launching the next unit",
+  "a unit failing so that the workload is meaningless (the arm cannot run in the closed topology)"
+ ],
+ "validity_conditions": {
+  "V1": "sha256(PILOT-PROCEDURE.md) == procedure.document_sha256",
+  "V2": "every graph used matched manifest.graphs[i].graph_sha256",
+  "V3": "zero unmetered gaps in the pilot campaigns' meter rows and a0/meter/verify_ledger.py exits 0",
+  "V4": "T_r > 0, at least 12 units completed per arm, and T_r >= 120 s",
+  "V5": "every metered row reports model_reported == deepseek-flash",
+  "V6": "every harness evaluation row names a calibration graph sha256",
+  "V7": "campaign_id and arm_id match the frozen names",
+  "refusal": "apply writes B_hard_REFUSED.json naming the failed conditions instead of a B_hard; a low rate is never an invalidity"
+ },
+ "diagnostics_required_in_the_report": {
+  "D1": "margin_CEq_minutes = CEq_max / q_r, compared against T_wall = 30 min",
+  "D2": "margin_NE_minutes = N_evaluatorCalls / e_r, compared against T_wall",
+  "D3": "worst_window_ratio = max_window_rate / mean_rate, per arm and quantity; > 1.25 means an observed spike, sustained, could bind the guardrail before T_wall",
+  "D4": "the tau cross-check (10 * p99 candidate ms vs the frozen 10 s)",
+  "D5": "the CEq composition: per-call CEq (min/median/max) and the completion-token distribution"
+ },
+ "not_used_for_selection": true
+}
