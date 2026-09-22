@@ -12,6 +12,12 @@ event that drove it, and those two live in different per-kind files
 run's merged stream, and ``validate-run`` takes a run directory, using the
 merged ``<runtime>.<run_id>.all.jsonl`` when the adapter wrote it and otherwise
 composing the same stream from the three per-kind files in ``event_seq`` order.
+
+``--metric`` names the metric definition file a run's contract lists under
+``MetricDefinition``.  When that definition declares a ``range``, every score the
+run publishes for the metric -- the Outcome's own field and the scalar
+``search_signal`` -- must lie inside it (finding D-A1-10).  A metric that
+declares no range is not bounded, because the validator must not invent one.
 """
 
 from __future__ import annotations
@@ -52,6 +58,118 @@ COUNTED_FAILURES = ("search_failed", "resolve_failed", "comprehension_failed", "
 _FORBIDDEN_OUTCOME_FIELDS = ("scalar", "scalarized", "search_signal", "score_scalar")
 
 
+def _is_number(value) -> bool:
+    """True for a JSON number. ``bool`` is an ``int`` in Python but not a score."""
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def find_metric_definition(doc):
+    """Locate the object that describes a metric inside a definition file.
+
+    ``metric.json`` nests it under ``metric``; an EID* record nests the same file
+    under its own path.  Anything carrying both ``name`` and ``direction`` is a
+    metric definition, so a recursive search reads either shape.
+    """
+    if isinstance(doc, dict):
+        if "name" in doc and "direction" in doc:
+            return doc
+        for value in doc.values():
+            found = find_metric_definition(value)
+            if found is not None:
+                return found
+    elif isinstance(doc, list):
+        for value in doc:
+            found = find_metric_definition(value)
+            if found is not None:
+                return found
+    return None
+
+
+def load_metric_definitions(paths) -> list[dict]:
+    """Load the metric definitions a run's contract names (``--metric``).
+
+    Each entry is ``{"name", "task", "range", "source"}``.  ``range`` is ``None``
+    when the definition declares none -- the validator never invents a bound, so
+    such a metric is checked for nothing.
+    """
+    definitions: list[dict] = []
+    for raw in paths or ():
+        path = Path(raw)
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except FileNotFoundError:
+            raise ValueError(f"{path}: no such metric definition file") from None
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"{path}: not valid JSON ({exc.msg})") from None
+        metric = find_metric_definition(doc)
+        if metric is None:
+            raise ValueError(f"{path}: no metric definition (an object with 'name' and "
+                             f"'direction')")
+        name = metric.get("name")
+        if not isinstance(name, str) or not name:
+            raise ValueError(f"{path}: metric definition has no usable 'name'")
+        declared = metric.get("range")
+        rng = None
+        if declared is not None:
+            if (not isinstance(declared, list) or len(declared) != 2
+                    or not all(_is_number(v) for v in declared)):
+                raise ValueError(f"{path}: metric {name!r} declares a range that is not "
+                                 f"[low, high]: {declared!r}")
+            if declared[0] > declared[1]:
+                raise ValueError(f"{path}: metric {name!r} declares the range "
+                                 f"[{declared[0]!r}, {declared[1]!r}] with low > high")
+            rng = (declared[0], declared[1])
+        task = doc.get("task") if isinstance(doc, dict) else None
+        definitions.append({"name": name,
+                            "task": task if isinstance(task, str) and task else None,
+                            "range": rng,
+                            "source": str(path)})
+    return definitions
+
+
+def _metric_is_in_force(definition: dict, event: dict) -> bool:
+    """A definition with no task of its own is in force for every event."""
+    task = definition["task"]
+    return task is None or task == event.get("task")
+
+
+def metric_range_errors(event: dict, definitions=None) -> list[str]:
+    """Bound the score a score event publishes for a metric by the metric's range.
+
+    Finding D-A1-10: the range a metric file declares was compared against
+    nothing, so a trace whose every score was ``9999`` validated cleanly although
+    the metric is declared over ``[0.0, 0.785...]``.  Two published values carry
+    that metric: the Outcome's own field and the scalar ``search_signal`` the
+    runtime acts on.  Both are checked here.
+
+    Enforced only when the caller names the definition in force (the file the
+    run's contract lists under ``MetricDefinition``), and only when that
+    definition actually declares a ``range``: a metric that declares none is not
+    given an invented bound.  A ``search_signal`` that is not a number (a PyTree
+    or an archive descriptor) is not a scalar score and is left alone.
+    """
+    if event.get("trace") != "score" or not definitions:
+        return []
+    outcome = event.get("outcome")
+    fields = outcome.get("fields") if isinstance(outcome, dict) else None
+    errors: list[str] = []
+    for definition in definitions:
+        rng = definition["range"]
+        if rng is None or not _metric_is_in_force(definition, event):
+            continue
+        low, high = rng
+        name, source = definition["name"], definition["source"]
+        bound = f"[{low!r}, {high!r}] declared by metric {name!r} ({source})"
+        if isinstance(fields, dict):
+            value = fields.get(name)
+            if _is_number(value) and not (low <= value <= high):
+                errors.append(f"outcome.fields.{name} {value!r} is outside the range {bound}")
+        signal = event.get("search_signal")
+        if _is_number(signal) and not (low <= signal <= high):
+            errors.append(f"search_signal {signal!r} is outside the range {bound}")
+    return errors
+
+
 def load_schema(path: Path = SCHEMA_PATH) -> dict:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
@@ -67,7 +185,7 @@ def schema_errors(event: dict, validator: Draft202012Validator | None = None) ->
             for err in sorted(validator.iter_errors(event), key=lambda e: list(e.absolute_path))]
 
 
-def semantic_errors(event: dict) -> list[str]:
+def semantic_errors(event: dict, metric_definitions=None) -> list[str]:
     errs: list[str] = []
 
     eid_star = event.get("eid_star")
@@ -138,11 +256,15 @@ def semantic_errors(event: dict) -> list[str]:
             if isinstance(calls_cap, int) and isinstance(calls, int) and calls > calls_cap:
                 errs.append(f"N_evaluatorCalls {calls} exceeds the hard budget {calls_cap}")
 
+    errs += metric_range_errors(event, metric_definitions)
+
     return errs
 
 
-def validate_event(event: dict, validator: Draft202012Validator | None = None) -> list[str]:
-    return schema_errors(event, validator) + semantic_errors(event)
+def validate_event(event: dict, validator: Draft202012Validator | None = None,
+                   metric_definitions=None) -> list[str]:
+    return (schema_errors(event, validator)
+            + semantic_errors(event, metric_definitions))
 
 
 def load_jsonl(path: Path) -> tuple[list[tuple[int, dict]], list[str]]:
@@ -211,17 +333,17 @@ def stream_errors(events: list[dict]) -> list[str]:
     return errors
 
 
-def validate_stream(path: Path) -> tuple[list[str], list[dict]]:
+def validate_stream(path: Path, metric_definitions=None) -> tuple[list[str], list[dict]]:
     events, errors = load_jsonl(path)
     validator = make_validator()
     for lineno, event in events:
-        for err in validate_event(event, validator):
+        for err in validate_event(event, validator, metric_definitions):
             errors.append(f"line {lineno}: {err}")
     errors += stream_errors([e for _, e in events])
     return errors, [e for _, e in events]
 
 
-def validate_composed(paths: list[Path]) -> tuple[list[str], list[dict]]:
+def validate_composed(paths: list[Path], metric_definitions=None) -> tuple[list[str], list[dict]]:
     """Validate a run assembled from its per-kind files, in ``event_seq`` order.
 
     Produces the same verdict as validating the merged stream, so a runtime that
@@ -239,14 +361,15 @@ def validate_composed(paths: list[Path]) -> tuple[list[str], list[dict]]:
 
     validator = make_validator()
     for _seq, index, lineno, event in rows:
-        for err in validate_event(event, validator):
+        for err in validate_event(event, validator, metric_definitions):
             errors.append(f"{paths[index].name}:{lineno}: {err}")
     events = [row[3] for row in rows]
     errors += stream_errors(events)
     return errors, events
 
 
-def validate_events_only(path: Path, expected_kind: str | None = None) -> tuple[list[str], int]:
+def validate_events_only(path: Path, expected_kind: str | None = None,
+                         metric_definitions=None) -> tuple[list[str], int]:
     """Event-level checks for one per-kind file, without cross-file resolution.
 
     ``expected_kind`` enforces that a per-kind file holds only its own kind of
@@ -256,7 +379,7 @@ def validate_events_only(path: Path, expected_kind: str | None = None) -> tuple[
     loaded, errors = load_jsonl(path)
     validator = make_validator()
     for lineno, event in loaded:
-        for err in validate_event(event, validator):
+        for err in validate_event(event, validator, metric_definitions):
             errors.append(f"line {lineno}: {err}")
         if expected_kind is not None and event.get("trace") != expected_kind:
             errors.append(f"line {lineno}: per-kind file for {expected_kind!r} carries a "
@@ -282,7 +405,7 @@ def run_components(traces_dir: Path) -> dict[tuple[str, str], dict[str, Path]]:
     return groups
 
 
-def validate_run_dir(run_dir: Path) -> int:
+def validate_run_dir(run_dir: Path, metric_definitions=None) -> int:
     traces_dir = run_dir / "traces" if (run_dir / "traces").is_dir() else run_dir
     groups = run_components(traces_dir)
     if not groups:
@@ -293,16 +416,18 @@ def validate_run_dir(run_dir: Path) -> int:
     for (runtime, run_id), files in sorted(groups.items()):
         merged = files.get(MERGED_KIND)
         if merged is not None:
-            source, errors, events = f"merged {merged.name}", *validate_stream(merged)
+            source, errors, events = (f"merged {merged.name}",
+                                      *validate_stream(merged, metric_definitions))
         else:
             parts = [files[kind] for kind in KINDS if kind in files]
             source = "composed from " + "+".join(p.name for p in parts)
-            errors, events = validate_composed(parts)
+            errors, events = validate_composed(parts, metric_definitions)
         per_file: list[str] = []
         for kind in KINDS:
             if kind not in files:
                 continue
-            file_errors, count = validate_events_only(files[kind], expected_kind=kind)
+            file_errors, count = validate_events_only(files[kind], expected_kind=kind,
+                                                      metric_definitions=metric_definitions)
             errors += [f"{files[kind].name}: {err}" for err in file_errors]
             per_file.append(f"{kind}={count}" + ("" if not file_errors else "/ERR"))
         total_errors += len(errors)
@@ -336,7 +461,7 @@ def count_failure_stages(events) -> dict[str, int]:
 
 
 def _cmd_validate(args) -> int:
-    errors, events = validate_stream(Path(args.trace))
+    errors, events = validate_stream(Path(args.trace), args.metric_definitions)
     if errors:
         for err in errors:
             print(f"INVALID {err}")
@@ -347,7 +472,7 @@ def _cmd_validate(args) -> int:
 
 
 def _cmd_stats(args) -> int:
-    errors, events = validate_stream(Path(args.trace))
+    errors, events = validate_stream(Path(args.trace), args.metric_definitions)
     counts = count_failure_stages(events)
     print(f"events              {len(events)}")
     print(f"schema/semantic errors {len(errors)}")
@@ -364,7 +489,12 @@ def _cmd_stats(args) -> int:
 
 
 def _cmd_validate_run(args) -> int:
-    return validate_run_dir(Path(args.run_dir))
+    return validate_run_dir(Path(args.run_dir), args.metric_definitions)
+
+
+METRIC_HELP = ("a metric definition file the run's contract names (repeatable). When it "
+               "declares a 'range', every score the run publishes for that metric must lie "
+               "inside it; a metric that declares none is not bounded")
 
 
 def main(argv=None) -> int:
@@ -373,15 +503,23 @@ def main(argv=None) -> int:
     p = sub.add_parser("validate", help="schema + semantic checks over one jsonl trace; "
                                         "for a run's traces point this at the merged .all.jsonl")
     p.add_argument("--trace", required=True)
+    p.add_argument("--metric", action="append", metavar="PATH", help=METRIC_HELP)
     p.set_defaults(fn=_cmd_validate)
     p = sub.add_parser("validate-run", help="validate every run under a run directory "
                                             "(or its traces/ directory) as one stream each")
     p.add_argument("--run-dir", required=True)
+    p.add_argument("--metric", action="append", metavar="PATH", help=METRIC_HELP)
     p.set_defaults(fn=_cmd_validate_run)
     p = sub.add_parser("stats", help="failure-stage counters and per-runtime event counts")
     p.add_argument("--trace", required=True)
+    p.add_argument("--metric", action="append", metavar="PATH", help=METRIC_HELP)
     p.set_defaults(fn=_cmd_stats)
     args = parser.parse_args(argv)
+    try:
+        args.metric_definitions = load_metric_definitions(args.metric)
+    except ValueError as exc:
+        print(f"cannot read metric definition: {exc}", file=sys.stderr)
+        return 2
     try:
         return args.fn(args)
     except FileNotFoundError as exc:

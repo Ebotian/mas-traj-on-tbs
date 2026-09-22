@@ -19,7 +19,8 @@ against one shared, frozen evaluator identity.
 | `trace_validate.py` | schema + semantic validator, run-level validator, and failure-stage counter |
 | `adapter_contract.md` | the frozen interface each runtime adapter implements (CLI, exit codes, score source, `C*`, closure probe) |
 | `fixtures/traces/good.jsonl` | a valid 11-event stream covering all three traces and all four runtimes |
-| `tests/` | 84 tests: recomputability, single-input sensitivity, malformed-input rejection, the pinned plumbing `EID*`, run-level trace validation |
+| `fixtures/traces/out_of_range.jsonl` | the same stream with every score at `9999`: the D-A1-10 regression (valid without a metric definition, refused with `--metric` supplied) |
+| `tests/` | 93 tests: recomputability, single-input sensitivity, malformed-input rejection, the pinned plumbing `EID*`, run-level trace validation, metric-range bounding |
 | `out/plumbing.EID.json`, `out/sample.EID.json` | generated EID* documents |
 
 Nothing here imports KAPSO, EvE or Loreley; `evalcontract.py` uses the standard library only
@@ -187,8 +188,9 @@ silently redefining the identity (`test_fixture_eid_star_is_frozen`).
 ```
 
 ```
-..............................................................           [100%]
-83 passed, 1 skipped in 0.46s
+......................................s................................. [ 77%]
+.....................                                                    [100%]
+92 passed, 1 skipped in 0.51s
 ```
 
 The acceptance-critical tests, run verbosely:
@@ -271,6 +273,28 @@ Rejected cases, each with a dedicated test
 duplicate `event_id`, a selection referencing a missing score event, one run carrying two
 different `EID*` values).
 
+**A score is bounded by the metric that declares its range** (finding D-A1-10). Name the metric
+definition the run's contract lists under `MetricDefinition` and every score the run publishes for
+that metric — the Outcome's own field and the scalar `search_signal` — must lie inside its
+declared `range`:
+
+```bash
+./.venv/bin/python trace_validate.py validate \
+    --trace fixtures/traces/out_of_range.jsonl --metric fixtures/sample/metric.json
+```
+
+```
+INVALID line 2: outcome.fields.coverage 9999 is outside the range [0.0, 0.7853981633974483] declared by metric 'coverage' (fixtures/sample/metric.json)
+INVALID line 2: search_signal 9999 is outside the range [0.0, 0.7853981633974483] declared by metric 'coverage' (fixtures/sample/metric.json)
+...
+14 error(s) in 11 event(s)
+```
+
+`fixtures/traces/out_of_range.jsonl` is `good.jsonl` with every score at `9999`; without
+`--metric` it still validates (`valid: 11 event(s)`), because the validator will not invent a bound
+a definition does not declare — a metric with no `range`, and a definition declared for another
+`task`, are both left unbounded. `--metric` is available on `validate`, `validate-run` and `stats`.
+
 ---
 
 ## 6. Invocation downstream adapters must use
@@ -290,6 +314,11 @@ python /home/ebt/rsi-dev/a0/contract/trace_validate.py validate-run --run-dir <r
 python /home/ebt/rsi-dev/a0/contract/trace_validate.py validate --trace <run_dir>/traces/<runtime>.<run_id>.all.jsonl
 python /home/ebt/rsi-dev/a0/contract/trace_validate.py stats    --trace <merged stream>
 ```
+
+Add `--metric <the file the run's contract lists under MetricDefinition>` to bound every published
+score by that metric's declared `range` (§5, finding D-A1-10). It is optional and additive: a
+caller that omits it validates exactly as before, and a metric that declares no range is not
+bounded.
 
 Adapter run command and its exit-code table: `adapter_contract.md` §3.
 Closure probe: `adapter_contract.md` §7.

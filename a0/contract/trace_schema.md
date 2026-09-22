@@ -45,6 +45,10 @@ contract, not of the reader.
   otherwise composing the same stream from the three per-kind files in `event_seq` order, and
   additionally checks each per-kind file for event-level validity and kind purity.
 
+  Both commands (and `stats`) also take `--metric <path>` — the metric definition file the run's
+  contract lists under `MetricDefinition` — which bounds every published score by the metric's
+  declared `range` (§5, §8).
+
 * `<run_dir>` **must be outside any candidate worktree or any directory that a
   `git checkout` / archive extraction can restore** (protocol hard constraint 2, `plan:547`).
   KAPSO's `kapso_evaluation/` is exactly such a directory — do not put traces there.
@@ -199,6 +203,17 @@ from it.
 `applies` ∈ `{scalar, pytree, multiobjective}`. `spec_hash` is the sha256 of the frozen `F_r`
 declaration, so two events claiming the same `fr.name` can be compared field-by-field.
 
+**The score is bounded by the metric's declared range** (finding D-A1-10). `search_signal` is the
+value the runtime optimizes, and when the metric in force declares a `range` that value must lie
+inside it — the range was previously compared against nothing, so a stream whose every score was
+`9999` validated cleanly although its metric declares `[0.0, 0.785...]`. `--metric <path>` names
+the definition (the file the run's contract lists under `MetricDefinition`, e.g.
+`fixtures/sample/metric.json`) and both published numbers are checked: the Outcome's own field
+named by the metric and the scalar `search_signal`. Two deliberate limits: a metric that declares
+no `range` is **not** bounded, and a definition that names a `task` other than the event's is not
+in force for it — the validator never invents a bound. A non-scalar `search_signal` (a PyTree or an
+archive descriptor, and not a score) is left alone.
+
 **`evaluator_evidence`** — the two false-green traps (`plan:551-552`) become machine-detectable:
 
 | `status` | When | Extra requirement |
@@ -270,10 +285,14 @@ event, so that cached and fresh work are separable (`plan:612` on Loreley's
 ```bash
 ./.venv/bin/python trace_validate.py validate --trace fixtures/traces/good.jsonl
 ./.venv/bin/python trace_validate.py stats    --trace fixtures/traces/good.jsonl
+# with the metric definition in force, the published scores are bounded by its range
+./.venv/bin/python trace_validate.py validate --trace fixtures/traces/good.jsonl \
+    --metric fixtures/sample/metric.json
 ```
 
 Exit codes: `0` clean, `1` invalid (each problem printed as `INVALID line N: …`), `2` the file
-could not be read.
+could not be read — or the metric definition named by `--metric` could not be (absent, not JSON, no
+metric object, or a `range` that is not `[low, high]`).
 
 Rejected beyond the JSON Schema: `eid_r.derives_from_eid_star ≠ eid_star`; a `null` `theta_E`
 parameter with no declared default; a scalarized `outcome`; `synthesized_failure`/`timeout`
@@ -281,4 +300,7 @@ without `detail`; `cache_hit` without `cached_from_run_id`; a chosen candidate t
 `considered`; `concurrency.observed_max > cap`; a stage outside the enum; a `failure_stage`
 without `failure_detail`; duplicate `event_id`; a selection referencing a score event that is not
 in the stream; one `run_id` carrying two different `eid_star` values; malformed JSON on a line; a
-file whose last line has no trailing newline.
+file whose last line has no trailing newline; and, when `--metric` names a definition that declares
+a `range`, a published score for that metric outside it — `fixtures/traces/out_of_range.jsonl` is
+the regression fixture (every score `9999`), rejected by 14 messages once the metric is named and
+still valid without one.

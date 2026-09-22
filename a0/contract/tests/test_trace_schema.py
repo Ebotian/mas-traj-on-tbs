@@ -13,6 +13,9 @@ sys.path.insert(0, str(CONTRACT_DIR))
 import trace_validate as tv  # noqa: E402
 
 GOOD = CONTRACT_DIR / "fixtures" / "traces" / "good.jsonl"
+OUT_OF_RANGE = CONTRACT_DIR / "fixtures" / "traces" / "out_of_range.jsonl"
+METRIC = CONTRACT_DIR / "fixtures" / "sample" / "metric.json"
+DECLARED_RANGE = "[0.0, 0.7853981633974483]"
 
 
 def load_good():
@@ -272,3 +275,109 @@ def test_schema_file_is_the_one_under_version_control():
     assert set(schema["$defs"]["failureStage"]["enum"]) == set(tv.FAILURE_STAGES)
     assert tv.COUNTED_FAILURES == ("search_failed", "resolve_failed",
                                    "comprehension_failed", "mechanism_mismatch")
+
+
+# --------------------------------------------------------------------------
+# the score is bounded by the metric's declared range (finding D-A1-10)
+# --------------------------------------------------------------------------
+
+
+def metric_definitions(*paths):
+    return tv.load_metric_definitions([str(p) for p in paths])
+
+
+def test_out_of_range_stream_is_rejected_when_the_metric_is_named():
+    errors, events = tv.validate_stream(OUT_OF_RANGE, metric_definitions(METRIC))
+    assert len(events) == 11
+    assert any(f"search_signal 9999 is outside the range {DECLARED_RANGE} "
+               f"declared by metric 'coverage'" in e for e in errors)
+    assert any("outcome.fields.coverage 9999 is outside the range" in e for e in errors)
+    # one message per offence, on each of the seven score lines
+    assert sum("search_signal" in e for e in errors) == 7
+
+
+def test_out_of_range_stream_went_unnoticed_before_the_metric_was_named():
+    """The bound is opt-in: without the definition in force nothing can be bounded."""
+    errors, _ = tv.validate_stream(OUT_OF_RANGE)
+    assert errors == []
+
+
+def test_the_same_stream_passes_when_its_scores_are_in_range():
+    errors, _ = tv.validate_stream(GOOD, metric_definitions(METRIC))
+    assert errors == []
+
+
+def test_a_metric_that_declares_no_range_is_not_given_an_invented_bound(tmp_path, capsys):
+    unbounded = tmp_path / "unbounded-metric.json"
+    unbounded.write_text(json.dumps({"task": "circle-packing",
+                                     "metric": {"name": "coverage", "direction": "maximize"}}),
+                         encoding="utf-8")
+    assert metric_definitions(unbounded)[0]["range"] is None
+    errors, _ = tv.validate_stream(OUT_OF_RANGE, metric_definitions(unbounded))
+    assert errors == []
+    assert tv.main(["validate", "--trace", str(OUT_OF_RANGE),
+                    "--metric", str(unbounded)]) == 0
+    assert "valid: 11 event(s)" in capsys.readouterr().out
+
+
+def test_a_metric_declared_for_another_task_does_not_bind(tmp_path):
+    other = tmp_path / "other-task-metric.json"
+    other.write_text(json.dumps({"task": "maxcut",
+                                 "metric": {"name": "cut_fraction", "direction": "maximize",
+                                            "range": [0.0, 1.0]}}), encoding="utf-8")
+    errors, _ = tv.validate_stream(OUT_OF_RANGE, metric_definitions(other))
+    assert errors == []
+    assert metric_definitions(other)[0]["task"] == "maxcut"
+
+
+def test_a_non_scalar_search_signal_is_not_a_bounded_score():
+    """Loreley's multiobjective signal is an archive descriptor, not a score."""
+    events = load_good()
+    definitions = metric_definitions(METRIC)
+    loreley = find(events, "lor-run004-s-i0-c1")
+    assert isinstance(loreley["search_signal"], dict)
+    assert tv.semantic_errors(loreley, definitions) == []
+
+
+def test_metric_range_check_survives_the_cli_and_the_run_directory(tmp_path, capsys):
+    assert tv.main(["validate", "--trace", str(OUT_OF_RANGE),
+                    "--metric", str(METRIC)]) == 1
+    out = capsys.readouterr().out
+    assert f"search_signal 9999 is outside the range {DECLARED_RANGE}" in out
+    assert "14 error(s) in 11 event(s)" in out
+
+    run_dir = split_run(tmp_path, [json.loads(line) for line in
+                                   OUT_OF_RANGE.read_text(encoding="utf-8").splitlines()])
+    assert tv.validate_run_dir(run_dir, metric_definitions(METRIC)) == 1
+    assert "is outside the range" in capsys.readouterr().out
+    assert tv.validate_run_dir(run_dir) == 0
+
+
+def test_malformed_metric_definition_is_refused(tmp_path, capsys):
+    missing = tmp_path / "absent.json"
+    assert tv.main(["validate", "--trace", str(GOOD), "--metric", str(missing)]) == 2
+    assert "no such metric definition file" in capsys.readouterr().err
+
+    broken = tmp_path / "broken-metric.json"
+    broken.write_text(json.dumps({"metric": {"name": "coverage", "direction": "maximize",
+                                             "range": [1.0, 0.0]}}), encoding="utf-8")
+    with pytest.raises(ValueError, match="low > high"):
+        metric_definitions(broken)
+
+    unreadable = tmp_path / "not-a-metric.json"
+    unreadable.write_text(json.dumps({"hello": "world"}), encoding="utf-8")
+    with pytest.raises(ValueError, match="no metric definition"):
+        metric_definitions(unreadable)
+
+    assert tv.main(["validate-run", "--run-dir", str(tmp_path / "nothing"),
+                    "--metric", str(unreadable)]) == 2
+    assert "cannot read metric definition" in capsys.readouterr().err
+
+
+def test_load_metric_definitions_reads_the_contracts_file():
+    (definition,) = metric_definitions(METRIC)
+    assert definition["name"] == "coverage"
+    assert definition["task"] == "circle-packing"
+    assert definition["range"] == (0.0, 0.7853981633974483)
+    assert definition["source"] == str(METRIC)
+    assert metric_definitions() == []
