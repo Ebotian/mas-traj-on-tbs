@@ -64,6 +64,14 @@ def describe(candidate_dir):
     }
 
 
+def candidate_dirs():
+    """Every candidate this directory freezes: the baseline, the contract PC, and
+    the truncation variants (each its own timestamped entry)."""
+    dirs = [HERE / "baseline", HERE / "pc"]
+    dirs += sorted(p for p in (HERE / "variants").glob("*") if (p / "solution.py").is_file())
+    return dirs
+
+
 def freeze():
     document = {
         "schema": "a0.maxcut.positive_control.manifest/v1",
@@ -73,7 +81,7 @@ def freeze():
             "source_sha256 is e_star_child.candidate_source_digest over files[], "
             "i.e. exactly the candidate_source_sha256 E* stamps into every Outcome"
         ),
-        "candidates": [describe(HERE / "baseline"), describe(HERE / "pc")],
+        "candidates": [describe(d) for d in candidate_dirs()],
     }
     MANIFEST.write_text(json.dumps(document, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return document
@@ -88,8 +96,9 @@ def check():
     frozen = json.loads(MANIFEST.read_text(encoding="utf-8"))
     by_dir = {entry["dir"]: entry for entry in frozen["candidates"]}
 
-    for name in ("baseline", "pc"):
-        live = describe(HERE / name)
+    for directory in candidate_dirs():
+        name = directory.name
+        live = describe(directory)
         old = by_dir.get(name)
         if old is None:
             identity_failures.append(f"{name}: not in the frozen manifest")
@@ -99,6 +108,10 @@ def check():
                 f"{name}: source_sha256 {live['source_sha256']} != frozen {old['source_sha256']}")
         if {f["path"]: f["sha256"] for f in live["files"]} != {f["path"]: f["sha256"] for f in old["files"]}:
             identity_failures.append(f"{name}: file set or per-file sha256 changed")
+
+    missing = sorted(set(by_dir) - {d.name for d in candidate_dirs()})
+    if missing:
+        identity_failures.append(f"frozen but gone: {missing}")
 
     # ---- b_i == C*(T1)'s c02, through the real ABI ---------------------------
     baseline_spec = e_star_child.resolve_candidate(HERE / "baseline")

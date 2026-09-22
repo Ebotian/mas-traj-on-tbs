@@ -1,0 +1,282 @@
+{
+  "authority": "INTERFACE.md section 7 (tau = min(30s, max(10s, 10 x p99))) and section 9",
+  "binding_clause": "the 10 s floor",
+  "graph_set": "calibration",
+  "graphs": 12,
+  "measurement_seed": 1337,
+  "measurement_tau_s": 30.0,
+  "p99_definition": "nearest rank: the ceil(0.99 * n)-th smallest value of the pooled sample",
+  "per_candidate": [
+    {
+      "candidate": "b_i",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/positive_control/baseline",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 24.0,
+        "min": 21.0,
+        "n": 24,
+        "p50": 22.0,
+        "p95": 24.0,
+        "p99": 24.0
+      }
+    },
+    {
+      "candidate": "PC_i",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/positive_control/pc",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 140.0,
+        "min": 53.0,
+        "n": 24,
+        "p50": 97.0,
+        "p95": 140.0,
+        "p99": 140.0
+      }
+    },
+    {
+      "candidate": "PC_k25",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/positive_control/variants/pc_exchange_k25",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 93.0,
+        "min": 47.0,
+        "n": 24,
+        "p50": 67.0,
+        "p95": 93.0,
+        "p99": 93.0
+      }
+    },
+    {
+      "candidate": "PC_k10",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/positive_control/variants/pc_exchange_k10",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 53.0,
+        "min": 32.0,
+        "n": 24,
+        "p50": 40.0,
+        "p95": 52.0,
+        "p99": 53.0
+      }
+    },
+    {
+      "candidate": "PC_k05",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/positive_control/variants/pc_exchange_k05",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 38.0,
+        "min": 27.0,
+        "n": 24,
+        "p50": 32.0,
+        "p95": 38.0,
+        "p99": 38.0
+      }
+    },
+    {
+      "candidate": "PC_k02",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/positive_control/variants/pc_exchange_k02",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 29.0,
+        "min": 25.0,
+        "n": 24,
+        "p50": 27.0,
+        "p95": 29.0,
+        "p99": 29.0
+      }
+    },
+    {
+      "candidate": "PC_k01",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/positive_control/variants/pc_exchange_k01",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 28.0,
+        "min": 24.0,
+        "n": 24,
+        "p50": 25.0,
+        "p95": 27.0,
+        "p99": 28.0
+      }
+    },
+    {
+      "candidate": "C*_c01",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c01_ok_high_pc",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 25.0,
+        "min": 22.0,
+        "n": 24,
+        "p50": 23.0,
+        "p95": 24.0,
+        "p99": 25.0
+      }
+    },
+    {
+      "candidate": "C*_c02",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c02_ok_low_baseline",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 24.0,
+        "min": 22.0,
+        "n": 24,
+        "p50": 22.0,
+        "p95": 23.0,
+        "p99": 24.0
+      }
+    },
+    {
+      "candidate": "C*_c03",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c03_ok_zero_all_one_side",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 24.0,
+        "min": 21.0,
+        "n": 24,
+        "p50": 22.0,
+        "p95": 23.0,
+        "p99": 24.0
+      }
+    },
+    {
+      "candidate": "C*_c04",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c04_tie_a_pc_optimum",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 25.0,
+        "min": 22.0,
+        "n": 24,
+        "p50": 23.0,
+        "p95": 24.0,
+        "p99": 25.0
+      }
+    },
+    {
+      "candidate": "C*_c05",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c05_tie_b_pc_complement",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 24.0,
+        "min": 22.0,
+        "n": 24,
+        "p50": 23.0,
+        "p95": 24.0,
+        "p99": 24.0
+      }
+    },
+    {
+      "candidate": "C*_c18",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c18_ok_inflation_attempt",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 24.0,
+        "min": 21.0,
+        "n": 24,
+        "p50": 23.0,
+        "p95": 23.0,
+        "p99": 24.0
+      }
+    },
+    {
+      "candidate": "C*_c20",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c20_env_probe",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 24.0,
+        "min": 21.0,
+        "n": 24,
+        "p50": 22.0,
+        "p95": 23.0,
+        "p99": 24.0
+      }
+    },
+    {
+      "candidate": "C*_c21",
+      "candidate_dir": "/home/ebt/rsi-dev/a0/tasks/maxcut/candidates/c21_ok_parity_probe",
+      "graphs": 12,
+      "invocations": 24,
+      "statuses": [
+        "ok"
+      ],
+      "summary_ms": {
+        "max": 23.0,
+        "min": 21.0,
+        "n": 24,
+        "p50": 22.0,
+        "p95": 22.0,
+        "p99": 23.0
+      }
+    }
+  ],
+  "pooled": {
+    "max": 140.0,
+    "min": 21.0,
+    "n": 360,
+    "p50": 24.0,
+    "p95": 87.0,
+    "p99": 136.0
+  },
+  "schema": "a0.maxcut.tau_calibration/v1",
+  "selection_caveat": "the calibration set is used for latency only; no calibration graph informs any choice among candidates (INTERFACE.md section 9)",
+  "tau_band": {
+    "max": 30.0,
+    "min": 10.0
+  },
+  "tau_s": 10.0,
+  "ten_times_p99_ms": 1360.0
+}

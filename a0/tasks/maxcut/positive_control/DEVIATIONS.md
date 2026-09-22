@@ -112,7 +112,8 @@ pins enter `candidate_source_sha256` (`d3c12b54…`). That is intended — the p
 **Consequence for the later experiment.** This directory contains NetworkX
 source. The assignment says the PC's source is never given to a searching agent
 and that PC is not the B0+ experiment. Anything that materialises candidate
-directories into an agent's workspace must exclude `positive_control/pc/`.
+directories into an agent's workspace must exclude `positive_control/pc/` and
+`positive_control/variants/`.
 
 ---
 
@@ -131,16 +132,78 @@ reproducible offline is the sha256: `793419aa…` for `maxcut.py`, `ec29aaa9…`
 `networkx/__init__.py`, plus the commit sha and the exact `pip` command in
 `README.md` §6.
 
+**Addendum (2026-09-22, later in the round).** `github.com` became intermittently
+unreachable while this work continued, which is why `bootstrap_pin.sh` now has a
+PyPI fallback — and why the fallback is accepted only when the installed
+`maxcut.py` is byte-identical to the pin, so the *check* is the pin's sha256
+rather than the route it arrived by. The fallback branch was exercised once (it
+succeeded and produced the same digest); the primary git route is the one the
+recorded install used.
+
+---
+
+## D-PC-7 — `pc/solution.py` gained one line (`MAX_SWAPS = None`), and the digest moved with it
+
+**What.** The truncation lever needed the same code stopped early. Rather than
+five hand-maintained near-copies, `pc/solution.py` carries the knob and
+`make_variants.py` generates each variant by replacing exactly one line:
+
+```
+MAX_SWAPS = None   ->   MAX_SWAPS = K
+```
+
+`make_variants.py --check` verifies that the diff between a variant and
+`pc/solution.py` is exactly that one line, so the relationship is mechanical.
+Consequences, all recorded:
+
+| | |
+|---|---|
+| `PC_i`'s `candidate_source_sha256` | `d3c12b54… → 25de3e5d…` |
+| `candidate_source_sha256` of `b_i` | unchanged (`6bfd919e…`) |
+| behaviour of the contract's `PC_i` | **unchanged** — `None` is the pin, and all 48 dev+eval `cut_edges` are identical to the pre-edit outcomes |
+| pin equality | still `PASS` — `verify_pc_identity.py`, C3, 64 graphs |
+| downstream | every stored Outcome for `pc/` was re-run at the same time, and `DEVIATIONS.md` in `../gates/` records the field-level diff of the verdicts (5 identity leaves, 0 decision leaves) |
+
+**Why this is a re-freeze and not a silent edit.** The digest other artifacts key
+on changed, so keeping the old verdicts would have left them claiming to describe
+bytes that no longer exist. The re-run is what makes the verdicts true again, and
+the diff is what shows the numbers did not move.
+
+---
+
+## D-PC-8 — the candidate entries are mode `0644` again
+
+`positive_control/{baseline,pc}/solution.py` were `chmod +x`'ed after the first
+gate run, which is what exposed the `E*` launch defect (the staged copy is
+content-only, mode `0644`, so the `X_OK` branch could never succeed —
+`redesign/DEVIATIONS.md` D-RD-1, fixed in `E*` commit `6dd717c2`). The entries
+are now `0644`, matching `C*(T1)`'s convention and removing the trap for the next
+reader, and `E*` launches every candidate through its own interpreter regardless
+of mode or shebang, so the mode is not part of any identity (`candidate_files`
+digests content only). Nothing in the frozen manifest changed: the digest was
+identical at `0755` and at `0644`, which is itself the evidence that the mode was
+never part of the identity.
+
 ---
 
 ## Considered and deliberately not done
 
 * **No model spend.** The assignment allows none for this task, and none was
   used: no API call was made and no key was read.
-* **The calibration set is not used.** §9 forbids using
+* **No `k` was adopted.** `variants/` supplies frozen candidates and
+  `../gates/REVISION-PROPOSAL.md` supplies the measured curve; choosing the
+  artifact the contract calls `PC_i` is a contract revision and belongs to the
+  contract author. `pc/` is still the contract's `PC_i` and the gate's verdict
+  for it is still `NOT_ADMISSIBLE`.
+* **The calibration set is used for latency only.** §9 forbids using
   `suite/calibration/**` for anything but resource rates, and a gate is a
-  selection-adjacent judgement, so `gate_runner.py` never touches it.
+  selection-adjacent judgement, so `gate_runner.py` and `seed_sensitivity.py`
+  never touch it. `../gates/tau_calibration.py` does, because §9 names the
+  "candidate latency distribution (p99 → τ)" as one of the things the calibration
+  set exists for; it measures latency and takes no part in any choice.
 * **`eval` is not used to decide anything.** Its numbers exist, are reported,
-  and are written to a *separate* file (`gates/verdict.eval.json`), so §12's
-  "eval must not enter any visible path" is not weakened by the fact that the
-  gate runner is capable of reading it.
+  and are written to *separate* files (`verdict.eval.json`,
+  `verdict.eval.pc_exchange_k*.json`), so §12's "eval must not enter any visible
+  path" is not weakened by the fact that the gate runner is capable of reading
+  it. `../gates/REVISION-PROPOSAL.md` §3.2 uses eval for exactly one thing: to
+  show that a candidate which passes on dev can fail on unseen instances.

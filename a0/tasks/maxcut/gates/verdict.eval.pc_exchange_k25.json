@@ -1,0 +1,1428 @@
+{
+  "artifacts": {
+    "baseline_candidate": "positive_control/baseline",
+    "baseline_source_sha256": "6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97",
+    "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+    "pc_source_sha256": "43a03d0d3e7268ae7ce4b554bad227896e4b4331ae76ee2e51e9d0d417509aeb",
+    "positive_control_candidate": "positive_control/variants/pc_exchange_k25",
+    "positive_control_identity_report": "positive_control/pc_identity_report.json"
+  },
+  "counts": {
+    "graphs": 24,
+    "scored": 24,
+    "unscored": 0
+  },
+  "delta_gate": {
+    "families_pass": true,
+    "families_passing": [
+      "BA",
+      "ER",
+      "Planted",
+      "RR"
+    ],
+    "families_required": 3,
+    "families_total": 4,
+    "overall_mean": {
+      "decimal": "0.202023485",
+      "denominator": 127955635239057048941519232000,
+      "numerator": 25850043359062457615131857229
+    },
+    "overall_mean_min": {
+      "decimal": "0.030000000",
+      "denominator": 100,
+      "numerator": 3
+    },
+    "overall_pass": true,
+    "per_family": {
+      "BA": {
+        "graphs": 6,
+        "mean": {
+          "decimal": "0.208206900",
+          "denominator": 2561625,
+          "numerator": 533348
+        },
+        "scored": 6
+      },
+      "ER": {
+        "graphs": 6,
+        "mean": {
+          "decimal": "0.194105565",
+          "denominator": 810081649675980,
+          "numerator": 157241355902773
+        },
+        "scored": 6
+      },
+      "Planted": {
+        "graphs": 6,
+        "mean": {
+          "decimal": "0.172534948",
+          "denominator": 52791187755159,
+          "numerator": 9108324828245
+        },
+        "scored": 6
+      },
+      "RR": {
+        "graphs": 6,
+        "mean": {
+          "decimal": "0.233246528",
+          "denominator": 11520,
+          "numerator": 2687
+        },
+        "scored": 6
+      }
+    },
+    "per_family_mean_min": {
+      "decimal": "0.020000000",
+      "denominator": 50,
+      "numerator": 1
+    },
+    "per_stratum": {
+      "BA:m2": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.256916996",
+          "denominator": 253,
+          "numerator": 65
+        }
+      },
+      "BA:m3": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.203703704",
+          "denominator": 54,
+          "numerator": 11
+        }
+      },
+      "BA:m5": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.164000000",
+          "denominator": 250,
+          "numerator": 41
+        }
+      },
+      "ER:p030": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.243514132",
+          "denominator": 63754,
+          "numerator": 15525
+        }
+      },
+      "ER:p050": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.178135937",
+          "denominator": 144008,
+          "numerator": 25653
+        }
+      },
+      "ER:p080": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.160666624",
+          "denominator": 941160,
+          "numerator": 151213
+        }
+      },
+      "Planted:k2sym": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.178787537",
+          "denominator": 115187,
+          "numerator": 20594
+        }
+      },
+      "Planted:k3asym": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.152504165",
+          "denominator": 10203,
+          "numerator": 1556
+        }
+      },
+      "Planted:k4sym": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.186313141",
+          "denominator": 44919,
+          "numerator": 8369
+        }
+      },
+      "RR:d3": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.239583333",
+          "denominator": 96,
+          "numerator": 23
+        }
+      },
+      "RR:d4": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.238281250",
+          "denominator": 256,
+          "numerator": 61
+        }
+      },
+      "RR:d5": {
+        "graphs": 2,
+        "mean": {
+          "decimal": "0.221875000",
+          "denominator": 320,
+          "numerator": 71
+        }
+      }
+    },
+    "unscored": [],
+    "verdict": "PASS"
+  },
+  "gate_config_sha256": "171c23d89dd59e5c83868acff8526ab42b94e6d7b1fd37a7a3a04246a30c452f",
+  "gate_config_status": "PRE-REGISTERED",
+  "graph_set": "eval",
+  "pending_command": null,
+  "proposed_repair": {
+    "rho_gate": {
+      "failing_families": [
+        "BA",
+        "ER"
+      ],
+      "proposal": "the PC is closing too much of the gap on these families, so the substrate has nothing left to earn: re-draw those strata at a density where the reference ensemble and the PC separate (sparser graphs leave comparatively more for local search to miss).",
+      "requires_re_freezing": [
+        "the affected graph files and suite/manifest.json",
+        "references/targets.json for those graphs",
+        "the reference ensemble run, since R_i is per graph"
+      ]
+    }
+  },
+  "rho_gate": {
+    "families_pass": false,
+    "families_passing": [
+      "Planted",
+      "RR"
+    ],
+    "families_required": 3,
+    "families_total": 4,
+    "global_median": {
+      "decimal": "0.301162791",
+      "denominator": 860,
+      "numerator": 259
+    },
+    "global_median_min": {
+      "decimal": "0.300000000",
+      "denominator": 10,
+      "numerator": 3
+    },
+    "global_pass": true,
+    "graphs_scored": 24,
+    "per_family": {
+      "BA": {
+        "graphs": 6,
+        "median": {
+          "decimal": "0.286579457",
+          "denominator": 4128,
+          "numerator": 1183
+        }
+      },
+      "ER": {
+        "graphs": 6,
+        "median": {
+          "decimal": "0.282087874",
+          "denominator": 23124,
+          "numerator": 6523
+        }
+      },
+      "Planted": {
+        "graphs": 6,
+        "median": {
+          "decimal": "0.322781655",
+          "denominator": 4012,
+          "numerator": 1295
+        }
+      },
+      "RR": {
+        "graphs": 6,
+        "median": {
+          "decimal": "0.348086124",
+          "denominator": 836,
+          "numerator": 291
+        }
+      }
+    },
+    "per_family_median_min": {
+      "decimal": "0.300000000",
+      "denominator": 10,
+      "numerator": 3
+    },
+    "per_stratum": {
+      "BA:m2": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.286579457",
+          "denominator": 4128,
+          "numerator": 1183
+        }
+      },
+      "BA:m3": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.316378066",
+          "denominator": 2772,
+          "numerator": 877
+        }
+      },
+      "BA:m5": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.230760563",
+          "denominator": 8875,
+          "numerator": 2048
+        }
+      },
+      "ER:p030": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.284688347",
+          "denominator": 7380,
+          "numerator": 2101
+        }
+      },
+      "ER:p050": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.296813187",
+          "denominator": 9100,
+          "numerator": 2701
+        }
+      },
+      "ER:p080": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.269173164",
+          "denominator": 45402,
+          "numerator": 12221
+        }
+      },
+      "Planted:k2sym": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.322781655",
+          "denominator": 4012,
+          "numerator": 1295
+        }
+      },
+      "Planted:k3asym": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.328861789",
+          "denominator": 2460,
+          "numerator": 809
+        }
+      },
+      "Planted:k4sym": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.293103448",
+          "denominator": 58,
+          "numerator": 17
+        }
+      },
+      "RR:d3": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.370488722",
+          "denominator": 5320,
+          "numerator": 1971
+        }
+      },
+      "RR:d4": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.314898990",
+          "denominator": 3960,
+          "numerator": 1247
+        }
+      },
+      "RR:d5": {
+        "graphs": 2,
+        "median": {
+          "decimal": "0.317799353",
+          "denominator": 1545,
+          "numerator": 491
+        }
+      }
+    },
+    "verdict": "FAIL"
+  },
+  "role_of_set": "diagnostic",
+  "rows": [
+    {
+      "T": 217,
+      "T_source": "OPT_certified",
+      "b": 127,
+      "b_cut_fraction": "0.500000000",
+      "baseline_headroom": {
+        "decimal": "0.414746544",
+        "denominator": 217,
+        "numerator": 90
+      },
+      "baseline_headroom_display": "0.414746544",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.251968504",
+        "denominator": 127,
+        "numerator": 32
+      },
+      "delta_display": "0.251968504",
+      "delta_exact": "32/127",
+      "edges": 254,
+      "family": "ER",
+      "graph_id": "G_eval_0001",
+      "graph_sha256": "0ec1485f9e8e9030daf591b193b30baee69409862198b056f43d73a1152517db",
+      "headroom_closed": {
+        "decimal": "0.711111111",
+        "denominator": 45,
+        "numerator": 32
+      },
+      "headroom_closed_display": "0.711111111",
+      "headroom_closed_exact": "32/45",
+      "p": 191,
+      "p_cut_fraction": "0.751968504",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.288888889",
+        "denominator": 45,
+        "numerator": 13
+      },
+      "rho_display": "0.288888889",
+      "rho_exact": "13/45",
+      "scored": true,
+      "stratum": "p030"
+    },
+    {
+      "T": 210,
+      "T_source": "OPT_certified",
+      "b": 128,
+      "b_cut_fraction": "0.509960159",
+      "baseline_headroom": {
+        "decimal": "0.390476190",
+        "denominator": 105,
+        "numerator": 41
+      },
+      "baseline_headroom_display": "0.390476190",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.235059761",
+        "denominator": 251,
+        "numerator": 59
+      },
+      "delta_display": "0.235059761",
+      "delta_exact": "59/251",
+      "edges": 251,
+      "family": "ER",
+      "graph_id": "G_eval_0002",
+      "graph_sha256": "28f91de77e5b7786fa614eb34b2700cf234b5c1b01786133307e886da152925f",
+      "headroom_closed": {
+        "decimal": "0.719512195",
+        "denominator": 82,
+        "numerator": 59
+      },
+      "headroom_closed_display": "0.719512195",
+      "headroom_closed_exact": "59/82",
+      "p": 187,
+      "p_cut_fraction": "0.745019920",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.280487805",
+        "denominator": 82,
+        "numerator": 23
+      },
+      "rho_display": "0.280487805",
+      "rho_exact": "23/82",
+      "scored": true,
+      "stratum": "p030"
+    },
+    {
+      "T": 304,
+      "T_source": "OPT_certified",
+      "b": 213,
+      "b_cut_fraction": "0.556135770",
+      "baseline_headroom": {
+        "decimal": "0.299342105",
+        "denominator": 304,
+        "numerator": 91
+      },
+      "baseline_headroom_display": "0.299342105",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.148825065",
+        "denominator": 383,
+        "numerator": 57
+      },
+      "delta_display": "0.148825065",
+      "delta_exact": "57/383",
+      "edges": 383,
+      "family": "ER",
+      "graph_id": "G_eval_0003",
+      "graph_sha256": "af86028590a1d6ae2d9fcea5ced0181ede6c2db35eae819a9795fe0ca474770c",
+      "headroom_closed": {
+        "decimal": "0.626373626",
+        "denominator": 91,
+        "numerator": 57
+      },
+      "headroom_closed_display": "0.626373626",
+      "headroom_closed_exact": "57/91",
+      "p": 270,
+      "p_cut_fraction": "0.704960836",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.373626374",
+        "denominator": 91,
+        "numerator": 34
+      },
+      "rho_display": "0.373626374",
+      "rho_exact": "34/91",
+      "scored": true,
+      "stratum": "p050"
+    },
+    {
+      "T": 296,
+      "T_source": "OPT_certified",
+      "b": 196,
+      "b_cut_fraction": "0.521276596",
+      "baseline_headroom": {
+        "decimal": "0.337837838",
+        "denominator": 74,
+        "numerator": 25
+      },
+      "baseline_headroom_display": "0.337837838",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.207446809",
+        "denominator": 188,
+        "numerator": 39
+      },
+      "delta_display": "0.207446809",
+      "delta_exact": "39/188",
+      "edges": 376,
+      "family": "ER",
+      "graph_id": "G_eval_0004",
+      "graph_sha256": "14ad84ede77d4a9a49abd8e26cb660df3e067fb08beef3e644d8f85b8fc55bde",
+      "headroom_closed": {
+        "decimal": "0.780000000",
+        "denominator": 50,
+        "numerator": 39
+      },
+      "headroom_closed_display": "0.780000000",
+      "headroom_closed_exact": "39/50",
+      "p": 274,
+      "p_cut_fraction": "0.728723404",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.220000000",
+        "denominator": 50,
+        "numerator": 11
+      },
+      "rho_display": "0.220000000",
+      "rho_exact": "11/50",
+      "scored": true,
+      "stratum": "p050"
+    },
+    {
+      "T": 511,
+      "T_source": "R_feasible_reference",
+      "b": 350,
+      "b_cut_fraction": "0.490883590",
+      "baseline_headroom": {
+        "decimal": "0.315068493",
+        "denominator": 73,
+        "numerator": 23
+      },
+      "baseline_headroom_display": "0.315068493",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.168302945",
+        "denominator": 713,
+        "numerator": 120
+      },
+      "delta_display": "0.168302945",
+      "delta_exact": "120/713",
+      "edges": 713,
+      "family": "ER",
+      "graph_id": "G_eval_0005",
+      "graph_sha256": "5429ebf76888593ff0289169d257b811adb2bf8f087735f7df2fbc106b88f215",
+      "headroom_closed": {
+        "decimal": "0.745341615",
+        "denominator": 161,
+        "numerator": 120
+      },
+      "headroom_closed_display": "0.745341615",
+      "headroom_closed_exact": "120/161",
+      "p": 470,
+      "p_cut_fraction": "0.659186536",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.254658385",
+        "denominator": 161,
+        "numerator": 41
+      },
+      "rho_display": "0.254658385",
+      "rho_exact": "41/161",
+      "scored": true,
+      "stratum": "p080"
+    },
+    {
+      "T": 478,
+      "T_source": "R_feasible_reference",
+      "b": 337,
+      "b_cut_fraction": "0.510606061",
+      "baseline_headroom": {
+        "decimal": "0.294979079",
+        "denominator": 478,
+        "numerator": 141
+      },
+      "baseline_headroom_display": "0.294979079",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.153030303",
+        "denominator": 660,
+        "numerator": 101
+      },
+      "delta_display": "0.153030303",
+      "delta_exact": "101/660",
+      "edges": 660,
+      "family": "ER",
+      "graph_id": "G_eval_0006",
+      "graph_sha256": "2092f3f481e2d2f787df91b70e20b1e513ff184720e59c42ed7d255e2784c48e",
+      "headroom_closed": {
+        "decimal": "0.716312057",
+        "denominator": 141,
+        "numerator": 101
+      },
+      "headroom_closed_display": "0.716312057",
+      "headroom_closed_exact": "101/141",
+      "p": 438,
+      "p_cut_fraction": "0.663636364",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.283687943",
+        "denominator": 141,
+        "numerator": 40
+      },
+      "rho_display": "0.283687943",
+      "rho_exact": "40/141",
+      "scored": true,
+      "stratum": "p080"
+    },
+    {
+      "T": 177,
+      "T_source": "OPT_certified",
+      "b": 107,
+      "b_cut_fraction": "0.557291667",
+      "baseline_headroom": {
+        "decimal": "0.395480226",
+        "denominator": 177,
+        "numerator": 70
+      },
+      "baseline_headroom_display": "0.395480226",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.223958333",
+        "denominator": 192,
+        "numerator": 43
+      },
+      "delta_display": "0.223958333",
+      "delta_exact": "43/192",
+      "edges": 192,
+      "family": "RR",
+      "graph_id": "G_eval_0007",
+      "graph_sha256": "1b925539cdb38d16734cba483c8767e0d116500bf7497639c14cc216617086af",
+      "headroom_closed": {
+        "decimal": "0.614285714",
+        "denominator": 70,
+        "numerator": 43
+      },
+      "headroom_closed_display": "0.614285714",
+      "headroom_closed_exact": "43/70",
+      "p": 150,
+      "p_cut_fraction": "0.781250000",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.385714286",
+        "denominator": 70,
+        "numerator": 27
+      },
+      "rho_display": "0.385714286",
+      "rho_exact": "27/70",
+      "scored": true,
+      "stratum": "d3"
+    },
+    {
+      "T": 175,
+      "T_source": "OPT_certified",
+      "b": 99,
+      "b_cut_fraction": "0.515625000",
+      "baseline_headroom": {
+        "decimal": "0.434285714",
+        "denominator": 175,
+        "numerator": 76
+      },
+      "baseline_headroom_display": "0.434285714",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.255208333",
+        "denominator": 192,
+        "numerator": 49
+      },
+      "delta_display": "0.255208333",
+      "delta_exact": "49/192",
+      "edges": 192,
+      "family": "RR",
+      "graph_id": "G_eval_0008",
+      "graph_sha256": "fd1d5c07338fe673b86f0a70c346d189ae3cb14edfd42c1d87bf0912500666c8",
+      "headroom_closed": {
+        "decimal": "0.644736842",
+        "denominator": 76,
+        "numerator": 49
+      },
+      "headroom_closed_display": "0.644736842",
+      "headroom_closed_exact": "49/76",
+      "p": 148,
+      "p_cut_fraction": "0.770833333",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.355263158",
+        "denominator": 76,
+        "numerator": 27
+      },
+      "rho_display": "0.355263158",
+      "rho_exact": "27/76",
+      "scored": true,
+      "stratum": "d3"
+    },
+    {
+      "T": 218,
+      "T_source": "OPT_certified",
+      "b": 130,
+      "b_cut_fraction": "0.507812500",
+      "baseline_headroom": {
+        "decimal": "0.403669725",
+        "denominator": 109,
+        "numerator": 44
+      },
+      "baseline_headroom_display": "0.403669725",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.226562500",
+        "denominator": 128,
+        "numerator": 29
+      },
+      "delta_display": "0.226562500",
+      "delta_exact": "29/128",
+      "edges": 256,
+      "family": "RR",
+      "graph_id": "G_eval_0009",
+      "graph_sha256": "a499c1ab72416c1d2992e856de4e09f20b088f91d03264f363331be4b088c1b6",
+      "headroom_closed": {
+        "decimal": "0.659090909",
+        "denominator": 44,
+        "numerator": 29
+      },
+      "headroom_closed_display": "0.659090909",
+      "headroom_closed_exact": "29/44",
+      "p": 188,
+      "p_cut_fraction": "0.734375000",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.340909091",
+        "denominator": 44,
+        "numerator": 15
+      },
+      "rho_display": "0.340909091",
+      "rho_exact": "15/44",
+      "scored": true,
+      "stratum": "d4"
+    },
+    {
+      "T": 218,
+      "T_source": "OPT_certified",
+      "b": 128,
+      "b_cut_fraction": "0.500000000",
+      "baseline_headroom": {
+        "decimal": "0.412844037",
+        "denominator": 109,
+        "numerator": 45
+      },
+      "baseline_headroom_display": "0.412844037",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.250000000",
+        "denominator": 4,
+        "numerator": 1
+      },
+      "delta_display": "0.250000000",
+      "delta_exact": "1/4",
+      "edges": 256,
+      "family": "RR",
+      "graph_id": "G_eval_0010",
+      "graph_sha256": "6ca4597fbfd03eb314faeb29f9ae6b7c0d5485e622ebe1fedebd7af93576352c",
+      "headroom_closed": {
+        "decimal": "0.711111111",
+        "denominator": 45,
+        "numerator": 32
+      },
+      "headroom_closed_display": "0.711111111",
+      "headroom_closed_exact": "32/45",
+      "p": 192,
+      "p_cut_fraction": "0.750000000",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.288888889",
+        "denominator": 45,
+        "numerator": 13
+      },
+      "rho_display": "0.288888889",
+      "rho_exact": "13/45",
+      "scored": true,
+      "stratum": "d4"
+    },
+    {
+      "T": 262,
+      "T_source": "OPT_certified",
+      "b": 157,
+      "b_cut_fraction": "0.490625000",
+      "baseline_headroom": {
+        "decimal": "0.400763359",
+        "denominator": 262,
+        "numerator": 105
+      },
+      "baseline_headroom_display": "0.400763359",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.240625000",
+        "denominator": 320,
+        "numerator": 77
+      },
+      "delta_display": "0.240625000",
+      "delta_exact": "77/320",
+      "edges": 320,
+      "family": "RR",
+      "graph_id": "G_eval_0011",
+      "graph_sha256": "a8234ece640fbba264f6df89ae0e0df9d50dfcd95cc75fd1c928413652a1923b",
+      "headroom_closed": {
+        "decimal": "0.733333333",
+        "denominator": 15,
+        "numerator": 11
+      },
+      "headroom_closed_display": "0.733333333",
+      "headroom_closed_exact": "11/15",
+      "p": 234,
+      "p_cut_fraction": "0.731250000",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.266666667",
+        "denominator": 15,
+        "numerator": 4
+      },
+      "rho_display": "0.266666667",
+      "rho_exact": "4/15",
+      "scored": true,
+      "stratum": "d5"
+    },
+    {
+      "T": 266,
+      "T_source": "OPT_certified",
+      "b": 163,
+      "b_cut_fraction": "0.509375000",
+      "baseline_headroom": {
+        "decimal": "0.387218045",
+        "denominator": 266,
+        "numerator": 103
+      },
+      "baseline_headroom_display": "0.387218045",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.203125000",
+        "denominator": 64,
+        "numerator": 13
+      },
+      "delta_display": "0.203125000",
+      "delta_exact": "13/64",
+      "edges": 320,
+      "family": "RR",
+      "graph_id": "G_eval_0012",
+      "graph_sha256": "d64604a1f13cfd7d7f3c6a96559a6d0182805607e87b6fde1256d65bef5e550b",
+      "headroom_closed": {
+        "decimal": "0.631067961",
+        "denominator": 103,
+        "numerator": 65
+      },
+      "headroom_closed_display": "0.631067961",
+      "headroom_closed_exact": "65/103",
+      "p": 228,
+      "p_cut_fraction": "0.712500000",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.368932039",
+        "denominator": 103,
+        "numerator": 38
+      },
+      "rho_display": "0.368932039",
+      "rho_exact": "38/103",
+      "scored": true,
+      "stratum": "d5"
+    },
+    {
+      "T": 211,
+      "T_source": "OPT_certified",
+      "b": 115,
+      "b_cut_fraction": "0.454545455",
+      "baseline_headroom": {
+        "decimal": "0.454976303",
+        "denominator": 211,
+        "numerator": 96
+      },
+      "baseline_headroom_display": "0.454976303",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.276679842",
+        "denominator": 253,
+        "numerator": 70
+      },
+      "delta_display": "0.276679842",
+      "delta_exact": "70/253",
+      "edges": 253,
+      "family": "BA",
+      "graph_id": "G_eval_0013",
+      "graph_sha256": "a1989a39f18015ee8c67e7d5a4b1cf2ccd42b45aca416b4c4c2ddac1705f32b3",
+      "headroom_closed": {
+        "decimal": "0.729166667",
+        "denominator": 48,
+        "numerator": 35
+      },
+      "headroom_closed_display": "0.729166667",
+      "headroom_closed_exact": "35/48",
+      "p": 185,
+      "p_cut_fraction": "0.731225296",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.270833333",
+        "denominator": 48,
+        "numerator": 13
+      },
+      "rho_display": "0.270833333",
+      "rho_exact": "13/48",
+      "scored": true,
+      "stratum": "m2"
+    },
+    {
+      "T": 212,
+      "T_source": "OPT_certified",
+      "b": 126,
+      "b_cut_fraction": "0.498023715",
+      "baseline_headroom": {
+        "decimal": "0.405660377",
+        "denominator": 106,
+        "numerator": 43
+      },
+      "baseline_headroom_display": "0.405660377",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.237154150",
+        "denominator": 253,
+        "numerator": 60
+      },
+      "delta_display": "0.237154150",
+      "delta_exact": "60/253",
+      "edges": 253,
+      "family": "BA",
+      "graph_id": "G_eval_0014",
+      "graph_sha256": "f5fe0dc98f5b8abcd055ef2e3312cd5084bf5bebdb6343c9baf6d515aabce095",
+      "headroom_closed": {
+        "decimal": "0.697674419",
+        "denominator": 43,
+        "numerator": 30
+      },
+      "headroom_closed_display": "0.697674419",
+      "headroom_closed_exact": "30/43",
+      "p": 186,
+      "p_cut_fraction": "0.735177866",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.302325581",
+        "denominator": 43,
+        "numerator": 13
+      },
+      "rho_display": "0.302325581",
+      "rho_exact": "13/43",
+      "scored": true,
+      "stratum": "m2"
+    },
+    {
+      "T": 295,
+      "T_source": "OPT_certified",
+      "b": 169,
+      "b_cut_fraction": "0.447089947",
+      "baseline_headroom": {
+        "decimal": "0.427118644",
+        "denominator": 295,
+        "numerator": 126
+      },
+      "baseline_headroom_display": "0.427118644",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.230158730",
+        "denominator": 126,
+        "numerator": 29
+      },
+      "delta_display": "0.230158730",
+      "delta_exact": "29/126",
+      "edges": 378,
+      "family": "BA",
+      "graph_id": "G_eval_0015",
+      "graph_sha256": "acbb79170fc4902a5d7c4602ff51e847da077274d60614a1702c4c29d8f5cc48",
+      "headroom_closed": {
+        "decimal": "0.690476190",
+        "denominator": 42,
+        "numerator": 29
+      },
+      "headroom_closed_display": "0.690476190",
+      "headroom_closed_exact": "29/42",
+      "p": 256,
+      "p_cut_fraction": "0.677248677",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.309523810",
+        "denominator": 42,
+        "numerator": 13
+      },
+      "rho_display": "0.309523810",
+      "rho_exact": "13/42",
+      "scored": true,
+      "stratum": "m3"
+    },
+    {
+      "T": 294,
+      "T_source": "OPT_certified",
+      "b": 195,
+      "b_cut_fraction": "0.515873016",
+      "baseline_headroom": {
+        "decimal": "0.336734694",
+        "denominator": 98,
+        "numerator": 33
+      },
+      "baseline_headroom_display": "0.336734694",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.177248677",
+        "denominator": 378,
+        "numerator": 67
+      },
+      "delta_display": "0.177248677",
+      "delta_exact": "67/378",
+      "edges": 378,
+      "family": "BA",
+      "graph_id": "G_eval_0016",
+      "graph_sha256": "e35415472ba6c88bd2a4a22f24ad704ec9808ea4a5e4e408118663b1bec51d63",
+      "headroom_closed": {
+        "decimal": "0.676767677",
+        "denominator": 99,
+        "numerator": 67
+      },
+      "headroom_closed_display": "0.676767677",
+      "headroom_closed_exact": "67/99",
+      "p": 262,
+      "p_cut_fraction": "0.693121693",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.323232323",
+        "denominator": 99,
+        "numerator": 32
+      },
+      "rho_display": "0.323232323",
+      "rho_exact": "32/99",
+      "scored": true,
+      "stratum": "m3"
+    },
+    {
+      "T": 445,
+      "T_source": "R_feasible_reference",
+      "b": 303,
+      "b_cut_fraction": "0.484800000",
+      "baseline_headroom": {
+        "decimal": "0.319101124",
+        "denominator": 445,
+        "numerator": 142
+      },
+      "baseline_headroom_display": "0.319101124",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.169600000",
+        "denominator": 625,
+        "numerator": 106
+      },
+      "delta_display": "0.169600000",
+      "delta_exact": "106/625",
+      "edges": 625,
+      "family": "BA",
+      "graph_id": "G_eval_0017",
+      "graph_sha256": "0ccaef5923e0c5de3424a3ed0880d0647e6a24f4aa1f20eca1a5d92b4296b742",
+      "headroom_closed": {
+        "decimal": "0.746478873",
+        "denominator": 71,
+        "numerator": 53
+      },
+      "headroom_closed_display": "0.746478873",
+      "headroom_closed_exact": "53/71",
+      "p": 409,
+      "p_cut_fraction": "0.654400000",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.253521127",
+        "denominator": 71,
+        "numerator": 18
+      },
+      "rho_display": "0.253521127",
+      "rho_exact": "18/71",
+      "scored": true,
+      "stratum": "m5"
+    },
+    {
+      "T": 446,
+      "T_source": "R_feasible_reference",
+      "b": 321,
+      "b_cut_fraction": "0.513600000",
+      "baseline_headroom": {
+        "decimal": "0.280269058",
+        "denominator": 446,
+        "numerator": 125
+      },
+      "baseline_headroom_display": "0.280269058",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.158400000",
+        "denominator": 625,
+        "numerator": 99
+      },
+      "delta_display": "0.158400000",
+      "delta_exact": "99/625",
+      "edges": 625,
+      "family": "BA",
+      "graph_id": "G_eval_0018",
+      "graph_sha256": "26309b9d1d322ebe7cec4a7c9b05414935a19129b902c01c4e72c22006694db4",
+      "headroom_closed": {
+        "decimal": "0.792000000",
+        "denominator": 125,
+        "numerator": 99
+      },
+      "headroom_closed_display": "0.792000000",
+      "headroom_closed_exact": "99/125",
+      "p": 420,
+      "p_cut_fraction": "0.672000000",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.208000000",
+        "denominator": 125,
+        "numerator": 26
+      },
+      "rho_display": "0.208000000",
+      "rho_exact": "26/125",
+      "scored": true,
+      "stratum": "m5"
+    },
+    {
+      "T": 377,
+      "T_source": "R_feasible_reference",
+      "b": 241,
+      "b_cut_fraction": "0.479125249",
+      "baseline_headroom": {
+        "decimal": "0.360742706",
+        "denominator": 377,
+        "numerator": 136
+      },
+      "baseline_headroom_display": "0.360742706",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.182902584",
+        "denominator": 503,
+        "numerator": 92
+      },
+      "delta_display": "0.182902584",
+      "delta_exact": "92/503",
+      "edges": 503,
+      "family": "Planted",
+      "graph_id": "G_eval_0019",
+      "graph_sha256": "ce92ed83e52a8ddd22a694f7d8f4af2c9f6b367a35420b8832219d606fb79144",
+      "headroom_closed": {
+        "decimal": "0.676470588",
+        "denominator": 34,
+        "numerator": 23
+      },
+      "headroom_closed_display": "0.676470588",
+      "headroom_closed_exact": "23/34",
+      "p": 333,
+      "p_cut_fraction": "0.662027833",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.323529412",
+        "denominator": 34,
+        "numerator": 11
+      },
+      "rho_display": "0.323529412",
+      "rho_exact": "11/34",
+      "scored": true,
+      "stratum": "k2sym"
+    },
+    {
+      "T": 352,
+      "T_source": "OPT_certified",
+      "b": 234,
+      "b_cut_fraction": "0.510917031",
+      "baseline_headroom": {
+        "decimal": "0.335227273",
+        "denominator": 176,
+        "numerator": 59
+      },
+      "baseline_headroom_display": "0.335227273",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.174672489",
+        "denominator": 229,
+        "numerator": 40
+      },
+      "delta_display": "0.174672489",
+      "delta_exact": "40/229",
+      "edges": 458,
+      "family": "Planted",
+      "graph_id": "G_eval_0020",
+      "graph_sha256": "3c8ffe91686d8fd8061995fba40ea596314a977ca4d9aa9ba2da259f59e724fd",
+      "headroom_closed": {
+        "decimal": "0.677966102",
+        "denominator": 59,
+        "numerator": 40
+      },
+      "headroom_closed_display": "0.677966102",
+      "headroom_closed_exact": "40/59",
+      "p": 314,
+      "p_cut_fraction": "0.685589520",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.322033898",
+        "denominator": 59,
+        "numerator": 19
+      },
+      "rho_display": "0.322033898",
+      "rho_exact": "19/59",
+      "scored": true,
+      "stratum": "k2sym"
+    },
+    {
+      "T": 321,
+      "T_source": "OPT_certified",
+      "b": 205,
+      "b_cut_fraction": "0.495169082",
+      "baseline_headroom": {
+        "decimal": "0.361370717",
+        "denominator": 321,
+        "numerator": 116
+      },
+      "baseline_headroom_display": "0.361370717",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.185990338",
+        "denominator": 414,
+        "numerator": 77
+      },
+      "delta_display": "0.185990338",
+      "delta_exact": "77/414",
+      "edges": 414,
+      "family": "Planted",
+      "graph_id": "G_eval_0021",
+      "graph_sha256": "5f36a093a4b58d4a67b118ff9e9941a5bc517ed400f3749b27b8ee3ea1a92514",
+      "headroom_closed": {
+        "decimal": "0.663793103",
+        "denominator": 116,
+        "numerator": 77
+      },
+      "headroom_closed_display": "0.663793103",
+      "headroom_closed_exact": "77/116",
+      "p": 282,
+      "p_cut_fraction": "0.681159420",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.336206897",
+        "denominator": 116,
+        "numerator": 39
+      },
+      "rho_display": "0.336206897",
+      "rho_exact": "39/116",
+      "scored": true,
+      "stratum": "k4sym"
+    },
+    {
+      "T": 332,
+      "T_source": "OPT_certified",
+      "b": 224,
+      "b_cut_fraction": "0.516129032",
+      "baseline_headroom": {
+        "decimal": "0.325301205",
+        "denominator": 83,
+        "numerator": 27
+      },
+      "baseline_headroom_display": "0.325301205",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.186635945",
+        "denominator": 434,
+        "numerator": 81
+      },
+      "delta_display": "0.186635945",
+      "delta_exact": "81/434",
+      "edges": 434,
+      "family": "Planted",
+      "graph_id": "G_eval_0022",
+      "graph_sha256": "e32f647ad091eaa8fa8ffc2b748caac8005512e3bb552e925ab7b33a559e2bc8",
+      "headroom_closed": {
+        "decimal": "0.750000000",
+        "denominator": 4,
+        "numerator": 3
+      },
+      "headroom_closed_display": "0.750000000",
+      "headroom_closed_exact": "3/4",
+      "p": 305,
+      "p_cut_fraction": "0.702764977",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.250000000",
+        "denominator": 4,
+        "numerator": 1
+      },
+      "rho_display": "0.250000000",
+      "rho_exact": "1/4",
+      "scored": true,
+      "stratum": "k4sym"
+    },
+    {
+      "T": 396,
+      "T_source": "R_feasible_reference",
+      "b": 273,
+      "b_cut_fraction": "0.508379888",
+      "baseline_headroom": {
+        "decimal": "0.310606061",
+        "denominator": 132,
+        "numerator": 41
+      },
+      "baseline_headroom_display": "0.310606061",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.147113594",
+        "denominator": 537,
+        "numerator": 79
+      },
+      "delta_display": "0.147113594",
+      "delta_exact": "79/537",
+      "edges": 537,
+      "family": "Planted",
+      "graph_id": "G_eval_0023",
+      "graph_sha256": "7b40c996df18ae10fd5baa656a9a2feaedc42aa7bf92d137d85b689d528f29cc",
+      "headroom_closed": {
+        "decimal": "0.642276423",
+        "denominator": 123,
+        "numerator": 79
+      },
+      "headroom_closed_display": "0.642276423",
+      "headroom_closed_exact": "79/123",
+      "p": 352,
+      "p_cut_fraction": "0.655493482",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.357723577",
+        "denominator": 123,
+        "numerator": 44
+      },
+      "rho_display": "0.357723577",
+      "rho_exact": "44/123",
+      "scored": true,
+      "stratum": "k3asym"
+    },
+    {
+      "T": 393,
+      "T_source": "R_feasible_reference",
+      "b": 273,
+      "b_cut_fraction": "0.513157895",
+      "baseline_headroom": {
+        "decimal": "0.305343511",
+        "denominator": 131,
+        "numerator": 40
+      },
+      "baseline_headroom_display": "0.305343511",
+      "baseline_status": "ok",
+      "delta": {
+        "decimal": "0.157894737",
+        "denominator": 19,
+        "numerator": 3
+      },
+      "delta_display": "0.157894737",
+      "delta_exact": "3/19",
+      "edges": 532,
+      "family": "Planted",
+      "graph_id": "G_eval_0024",
+      "graph_sha256": "bf8f1b6f10ca09e7ec6a9b685925f74b4535c03ac99fa359911bb1e684816637",
+      "headroom_closed": {
+        "decimal": "0.700000000",
+        "denominator": 10,
+        "numerator": 7
+      },
+      "headroom_closed_display": "0.700000000",
+      "headroom_closed_exact": "7/10",
+      "p": 357,
+      "p_cut_fraction": "0.671052632",
+      "pc_status": "ok",
+      "rho": {
+        "decimal": "0.300000000",
+        "denominator": 10,
+        "numerator": 3
+      },
+      "rho_display": "0.300000000",
+      "rho_exact": "3/10",
+      "scored": true,
+      "stratum": "k3asym"
+    }
+  ],
+  "saturation_no_go": {
+    "baseline_headroom_median": {
+      "decimal": "0.361056711",
+      "denominator": 121017,
+      "numerator": 43694
+    },
+    "baseline_headroom_median_min": {
+      "decimal": "0.050000000",
+      "denominator": 20,
+      "numerator": 1
+    },
+    "baseline_headroom_min": {
+      "decimal": "0.280269058",
+      "denominator": 446,
+      "numerator": 125
+    },
+    "graphs_with_zero_headroom": [],
+    "no_go": false,
+    "verdict": "PASS"
+  },
+  "schema": "a0.maxcut.gate_verdict/v1",
+  "targets": {
+    "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json",
+    "sha256": "0919d7a4b41455ce504678c615d6a266666b5767435a4e6061982c780470d79c",
+    "status": "PRESENT"
+  },
+  "task": "a0/tasks/maxcut",
+  "theta": {
+    "seed": 1337,
+    "timeout_s": 10.0
+  },
+  "values_emitted_for_recompute_rho": {
+    "baseline": "/home/ebt/rsi-dev/a0/tasks/maxcut/gates/values/eval.baseline.json",
+    "pc_exchange_k25": "/home/ebt/rsi-dev/a0/tasks/maxcut/gates/values/eval.pc_exchange_k25.json"
+  },
+  "verdict": "NOT_ADMISSIBLE"
+}

@@ -1,0 +1,99 @@
+{
+  "before_revision": "HEAD",
+  "documents": [
+    {
+      "clean": true,
+      "decision_fields_moved": [],
+      "differing_leaf_fields": 5,
+      "identity_fields_moved": [
+        {
+          "after": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+          "before": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+          "field": ".artifacts.evaluator_source_sha256"
+        },
+        {
+          "after": "25de3e5d496198d74c7427de0d4504a0f3e49e8056c154d8eb8197648bcfb901",
+          "before": "d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f",
+          "field": ".artifacts.pc_source_sha256"
+        },
+        {
+          "after": "171c23d89dd59e5c83868acff8526ab42b94e6d7b1fd37a7a3a04246a30c452f",
+          "before": "1ff12031562031c879c86e177c2a685a5508632f1ecbf409ff650661223a30a0",
+          "field": ".gate_config_sha256"
+        },
+        {
+          "after": "0919d7a4b41455ce504678c615d6a266666b5767435a4e6061982c780470d79c",
+          "before": "cd802eb80c3461a5672d653b97a098ab55f36bf4b79c42072f2cbea55cec9939",
+          "field": ".targets.sha256"
+        },
+        {
+          "after": 10.0,
+          "before": 30.0,
+          "field": ".theta.timeout_s"
+        }
+      ],
+      "status": "compared",
+      "verdict": "gates/verdict.dev.json",
+      "verdict_value_after": "NOT_ADMISSIBLE",
+      "verdict_value_before": "NOT_ADMISSIBLE"
+    },
+    {
+      "clean": true,
+      "decision_fields_moved": [],
+      "differing_leaf_fields": 5,
+      "identity_fields_moved": [
+        {
+          "after": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
+          "before": "08281d21e6e84a79dfebd895d7653b517c1e08e7ea8784fe485532dd5db59c4d",
+          "field": ".artifacts.evaluator_source_sha256"
+        },
+        {
+          "after": "25de3e5d496198d74c7427de0d4504a0f3e49e8056c154d8eb8197648bcfb901",
+          "before": "d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f",
+          "field": ".artifacts.pc_source_sha256"
+        },
+        {
+          "after": "171c23d89dd59e5c83868acff8526ab42b94e6d7b1fd37a7a3a04246a30c452f",
+          "before": "1ff12031562031c879c86e177c2a685a5508632f1ecbf409ff650661223a30a0",
+          "field": ".gate_config_sha256"
+        },
+        {
+          "after": "0919d7a4b41455ce504678c615d6a266666b5767435a4e6061982c780470d79c",
+          "before": "cd802eb80c3461a5672d653b97a098ab55f36bf4b79c42072f2cbea55cec9939",
+          "field": ".targets.sha256"
+        },
+        {
+          "after": 10.0,
+          "before": 30.0,
+          "field": ".theta.timeout_s"
+        }
+      ],
+      "status": "compared",
+      "verdict": "gates/verdict.eval.json",
+      "verdict_value_after": "NOT_ADMISSIBLE",
+      "verdict_value_before": "NOT_ADMISSIBLE"
+    },
+    {
+      "note": "not present at HEAD",
+      "status": "no_frozen_copy",
+      "verdict": "gates/verdict.dev.pc_exchange_k10.json"
+    }
+  ],
+  "identity_leaf_allowlist": [
+    "baseline_source_sha256",
+    "candidate_source_sha256",
+    "canonical_digest",
+    "evaluator_source_sha256",
+    "exit_codes",
+    "gate_config_sha256",
+    "graph_sha256",
+    "path",
+    "pc_source_sha256",
+    "raw_bytes_identical",
+    "sha256",
+    "timeout_s"
+  ],
+  "rule": "a re-freeze is clean when every differing leaf field is an identity field and the verdict value is unchanged",
+  "schema": "a0.maxcut.refreeze_evidence/v1",
+  "verdict": "CLEAN"
+}

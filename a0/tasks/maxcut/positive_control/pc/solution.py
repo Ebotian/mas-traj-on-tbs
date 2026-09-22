@@ -47,6 +47,16 @@ byte-for-byte.  The orientation convention
 
 is part of the identity: the complement of b_i has the same cut value but a
 different search trajectory, so it is fixed here and nowhere else.
+
+**The one addition to the pin: ``MAX_SWAPS``.** ``None`` means "run to a local
+optimum", i.e. exactly the pin.  An integer truncates the descent after that many
+*accepted improving swaps*, which is §7's budget argument applied to the
+artifact itself rather than to the harness: a weaker but still published
+procedure.  ``None`` is this file's value, so the contract's `PC_i` is unchanged;
+the truncated variants are byte-identical copies of this file with that one line
+changed, generated and frozen by ``../make_variants.py``.  Which truncation (if
+any) replaces `PC_i` is a contract decision, not a local one — see
+``../../gates/REVISION-PROPOSAL.md``.
 """
 
 import argparse
@@ -55,6 +65,10 @@ import random
 
 MASK64 = (1 << 64) - 1
 BACKBONE = 0xA5A5A5A5A5A5A5A5
+
+#: `None` == the pin, run to a local optimum.  An int K stops after K accepted
+#: improving swaps (the truncation lever; see the module docstring).
+MAX_SWAPS = None
 
 
 # --------------------------------------------------------------------------- #
@@ -100,14 +114,23 @@ def cut_size(edges, cut):
 # one_exchange, transcribed from the pin
 # --------------------------------------------------------------------------- #
 
-def one_exchange(n, edges, initial_cut, seed):
-    """Pinned source: ``pinned/networkx_maxcut_b69beb2c.py``, lines 118-143."""
+def one_exchange(n, edges, initial_cut, seed, max_swaps=None):
+    """Pinned source: ``pinned/networkx_maxcut_b69beb2c.py``, lines 118-143.
+
+    ``max_swaps=None`` is the pin verbatim.  An integer stops the loop once that
+    many *accepted improving* swaps have been applied; the stop is checked at the
+    top of the round, so the round that finds no improvement still terminates the
+    loop the pin's way.
+    """
     if initial_cut is None:
         initial_cut = set()
     cut = set(initial_cut)
     current_cut_size = cut_size(edges, cut)
     rounds = 0
+    accepted = 0
     while True:
+        if max_swaps is not None and accepted >= max_swaps:
+            break
         nodes = list(range(n))          # G.nodes(), insertion order 0..n-1
         # Shuffling the nodes ensures random tie-breaks in the following call to max
         seed.shuffle(nodes)
@@ -123,6 +146,7 @@ def one_exchange(n, edges, initial_cut, seed):
         if potential_cut_size > current_cut_size:
             cut = potential_cut
             current_cut_size = potential_cut_size
+            accepted += 1
         else:
             break
 
@@ -147,18 +171,21 @@ def emit_partition(path, graph_id, assignment):
         handle.write(text)
 
 
-def run(graph_path, seed):
+def run(graph_path, seed, max_swaps=None):
     """One PC run.  Returns a dict, so nothing depends on tuple order."""
+    if max_swaps is None:
+        max_swaps = MAX_SWAPS
     graph_id, n, edges = load_graph(graph_path)
     assignment = baseline_assignment(n, seed)
     initial_cut = {v for v in range(n) if assignment[v] == 1}
-    value, cut, rounds = one_exchange(n, edges, initial_cut, random.Random(int(seed)))
+    value, cut, rounds = one_exchange(n, edges, initial_cut, random.Random(int(seed)), max_swaps)
     return {
         "graph_id": graph_id,
         "assignment": [1 if v in cut else 0 for v in range(n)],
         "cut_value": value,
         "baseline_assignment": assignment,
         "rounds": rounds,
+        "max_swaps": max_swaps,
     }
 
 

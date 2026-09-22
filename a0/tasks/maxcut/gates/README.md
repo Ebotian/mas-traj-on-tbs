@@ -36,21 +36,62 @@ This is not a measurement accident:
   nothing is being silently dropped and nothing non-`ok` is folded in as `0`
   (§6 rule 5);
 * both candidates are `determinism.identical: true` on every graph (§6 rule 4);
-* the longest PC invocation observed was `472 ms` against `τ = 30 s`, and there
+* the longest PC invocation observed was `472 ms` against `τ = 10 s`, and there
   were `0` timeouts, so no result is a budget artefact;
 * no stratum of the frozen suite reaches a median `ρ` of `0.30`, on either set
   (best: `RR:d4` `0.287` dev / `0.258` eval; `ER:p080` `0.274` dev / `0.137`
-  eval), so re-balancing the existing strata cannot rescue the gate — the
-  instances themselves have to change;
+  eval), so re-balancing the existing strata cannot rescue the gate (§2 records
+  what was measured afterwards: re-drawing the suite does not work either, and a
+  weaker positive control does);
 * the ρ numbers agree exactly, graph by graph, with
   `../references/recompute_rho.py` run over the same E* Outcomes.
+
+**Re-frozen twice on 2026-09-22, with no number moved.** Both verdicts were
+regenerated because two *dependencies* changed: `E*` was fixed (its
+`evaluator_source_sha256` moved `08281d21… → 4afff01f…`, `DEVIATIONS.md`
+D-GATE-10) and `θ` was derived instead of guessed (`τ 30 s → 10 s`, D-GATE-4 /
+D-GATE-11); `references/targets.json` was also revised underneath by its owner
+(D-GATE-12). `refreeze.evidence.py` diffs each verdict as committed against the
+verdict on disk and classifies every differing leaf field:
+
+| verdict | differing leaf fields | identity | decision | verdict value |
+|---|---|---|---|---|
+| `verdict.dev.json` | 5 | 5 | **0** | unchanged |
+| `verdict.eval.json` | 5 | 5 | **0** | unchanged |
+
+`refreeze.evidence.json`, verdict `CLEAN`. This is the point of calling it a
+re-freeze rather than a drift: the artifacts that produced the earlier digits no
+longer exist, every digit is the same, and the difference is machine-checked
+rather than asserted.
+
+**The gate is satisfiable, and the decision it needs is not mine to make.** The
+same frozen runner, pointed at a weaker positive control (`--pc
+../positive_control/variants/pc_exchange_k10`), returns `ADMISSIBLE` on dev *and*
+eval with both bars cleared by ≥ 2×. Whether the contract should call that
+artifact `PC_i` is a **contract revision**, and `REVISION-PROPOSAL.md` is the
+document that puts the measured curve, the posterior-freedom declaration and the
+re-freeze checklist in front of whoever owns it. Nothing is adopted: the default
+run still evaluates the contract's `PC_i` and still says `NOT_ADMISSIBLE`.
 
 ## 2. The pre-registered branch: what to change, and what that re-freezes
 
 Not relaxing the gate. The three parts of the gate and their thresholds live in
-`gate_config.json`, which is frozen *before* execution and whose sha256
-(`1ff12031562031c879c86e177c2a685a5508632f1ecbf409ff650661223a30a0`) is recorded
-inside every verdict — so "the gate was not moved" is checkable, not asserted.
+`gate_config.json`, which is frozen *before* execution and whose sha256 is
+recorded inside every verdict — so "the gate was not moved" is checkable, not
+asserted. (Its current digest is `79a27789…`; the earlier verdicts carry
+`1ff12031…`, and the only difference between those two config revisions is `θ`,
+which the same verdicts record. No threshold changed.)
+
+>> **This section is superseded for the *choice of lever*, and kept for the
+>> record.** It proposed re-drawing two strata at larger `n`. That lever was then
+>> measured by another workstream and **ruled out**: `ρ` is flat in `n` for
+>> `ER:p080` (`0.1768 → 0.1338` over `n = 128 → 1024`), `RR:d4` gains only
+>> `≈0.03` of `ρ` at 8× the size against an instance-to-instance swing of `≈0.10`,
+>> and at `n ≥ 512` the frozen PC itself exceeds `τ` (`redesign/LEVERS.md` §3, §6).
+>> The lever that was measured to work is a weaker-but-still-published positive
+>> control, and the decision it needs is written up in
+>> **`REVISION-PROPOSAL.md`**. The re-freeze checklist at the end of this section
+>> still applies, and `REVISION-PROPOSAL.md` §8 supersedes it in detail.
 
 **Which knob is wrong.** Write the gate as a product of two measured factors:
 
@@ -158,11 +199,25 @@ under `outcomes/dev/`, and exits `0` for `ADMISSIBLE`, `2` for `PENDING`,
 `1` for `NOT_ADMISSIBLE`. Nothing outside this directory and
 `../positive_control/` is written; the frozen suite is read-only.
 
+**Any candidate can be the positive control** (`--pc <dir>`, D-GATE-14). Its
+directory name selects its Outcome directory and its verdict file names, so the
+contract PC's frozen file names are untouched and a variant lands beside them:
+
+```bash
+# the recommended truncation, on both sets (proposal only -- nothing is adopted)
+python3 gates/gate_runner.py --set dev  --pc positive_control/variants/pc_exchange_k10
+python3 gates/gate_runner.py --set eval --pc positive_control/variants/pc_exchange_k10
+
+# the whole strength curve, both sets, per family, plus the redesign cross-check
+python3 gates/strength_table.py
+```
+
 Full re-verification, including the eval diagnostic and the pin:
 
 ```bash
 cd a0/tasks/maxcut
 python3 positive_control/build.py --check
+python3 positive_control/make_variants.py --check
 sh positive_control/bootstrap_pin.sh
 python3 positive_control/verify_pc_identity.py \
     --reference-python positive_control/.venv-pin/bin/python \
@@ -170,22 +225,27 @@ python3 positive_control/verify_pc_identity.py \
 python3 gates/gate_runner.py                 # dev: the gate, exit 1
 python3 gates/gate_runner.py --set eval      # diagnostic, separate files
 python3 gates/seed_sensitivity.py --set dev  # is the verdict seed luck? no
+python3 gates/tau_calibration.py             # derive tau per section 7 (10 s)
+python3 gates/strength_table.py              # PC strength -> Delta/rho, both sets
+python3 gates/refreeze_evidence.py --before HEAD   # re-freeze moved no decision
 python3 references/recompute_rho.py --targets references/targets.json \
     --baseline gates/values/dev.baseline.json \
     --positive-control gates/values/dev.positive-control.json \
     --out gates/rho_crosscheck.dev.json      # the sibling's own ρ implementation
 ```
 
-`--force` re-runs E* instead of reusing cached Outcomes. The gate runner needs
-only `python3`; the venv is needed only by the identity verification, because
-`../positive_control/pc/solution.py` is self-contained.
+`--force` re-runs E* instead of reusing cached Outcomes; without it, a cached
+Outcome is re-run automatically when it was produced by a different E*, from
+different candidate bytes, or at a different `θ` (D-GATE-13). The gate runner
+needs only `python3`; the venv is needed only by the identity verification,
+because `../positive_control/pc/solution.py` is self-contained.
 
 ## 4. How the measurement is taken
 
 * **The evaluator is the authority.** This runner never computes a cut. For every
   (candidate, graph) it invokes `../e_star.py evaluate` — the harness-owned E*,
-  `evaluator_source_sha256 08281d21…` — with the pre-registered
-  `θ = (seed 1337, τ 30 s)`, and reads `cut_edges` out of the frozen Outcome. A
+  `evaluator_source_sha256 4afff01f…` — with the frozen
+  `θ = (seed 1337, τ 10 s)`, and reads `cut_edges` out of the frozen Outcome. A
   candidate never reports its own score here either (§4, §5).
 * **Exact arithmetic only.** `Δ`, `ρ`, the medians and the family means are
   `fractions.Fraction`; every decimal in the reports is a display field. No float
@@ -193,12 +253,13 @@ only `python3`; the venv is needed only by the identity verification, because
 * **Unscored is not zero.** A graph whose `b_i` or `p_i` is not `ok` is excluded
   from every mean and listed in `unscored` (§6 rule 5). On these runs there were
   none.
-* **Where the numbers are.** `verdict.{dev,eval}.json` — verdict, gates,
+* **Where the numbers are.** `verdict.<set>[.<pc>].json` — verdict, gates,
   per-graph rows, per-family and per-stratum reductions, artifact digests, the
-  gate-config digest and the targets digest. `verdict.{dev,eval}.md` — the same
-  as a table. `values/<set>.{baseline,positive-control}.json` — the E* Outcomes
-  in the shape `../references/recompute_rho.py` accepts, which is how the sibling
-  implementation was used as a cross-check.
+  gate-config digest and the targets digest. The matching `.md` is the same as a
+  table. `values/<set>.<candidate>.json` — the E* Outcomes in the shape
+  `../references/recompute_rho.py` accepts, which is how the sibling
+  implementation was used as a cross-check. `strength_table.{json,md}` — the
+  curve across all six positive controls.
 
 ## 5. Diagnostics that guard the verdict
 
@@ -212,6 +273,16 @@ only `python3`; the venv is needed only by the identity verification, because
   workstream's own implementation of `ρ`, over the same inputs. Every per-graph
   `ρ_exact` and `T_i` agrees; its mean headroom closed `0.8257795790943124`
   matches this runner's exact figure.
+* **`tau_calibration.json`** — the §7 derivation of `θ.timeout_s` from the
+  calibration set over the candidates the task runs: pooled p99 `133 ms`,
+  `10 × p99 = 1.33 s`, so the 10 s floor binds and `τ = 10 s` (D-GATE-4, closed).
+* **`strength_table.json`** — the PC strength curve for both sets with per-family
+  detail, and the **re-verification of `redesign/`**: 6 variants, 60 fields,
+  largest difference `4.98e-10` (float rendering of exact rationals), 0 gate-count
+  mismatches.
+* **`refreeze.evidence.json`** — every re-freeze diffed field by field, with
+  identity fields and decision fields separated: 5 identity leaves, 0 decision
+  leaves, `CLEAN`.
 * **`positive_control/pc_identity_report.json`** — the artifact under test really
   is the pinned NetworkX `one_exchange`, not an approximation of it (§1 of that
   README).
@@ -222,5 +293,11 @@ It is a **task-admissibility pre-gate**, run by us, offline, before any campaign
 exists. It is not the B0+ experiment (which asks whether a substrate can exploit
 an *injected* artifact and needs the evaluator, budget enforcement and unseen
 instances to answer that), it is not an arm of any campaign, and the PC's source
-is never given to a searching agent. No model spend was involved: the CEq ledger
-(§8) is untouched because no model call was made.
+is never given to a searching agent — including the truncation variants, which
+are the same NetworkX source with one line changed. No model spend was involved:
+the CEq ledger (§8) is untouched because no model call was made.
+
+It is also **not a chooser**. It measures six positive controls and reports which
+pass; it does not decide which one the contract should use, and the default run
+still evaluates the contract's own `PC_i`. That decision, its posterior-freedom
+declaration and its re-freeze checklist are in `REVISION-PROPOSAL.md`.

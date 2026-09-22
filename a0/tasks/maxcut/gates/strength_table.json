@@ -1,0 +1,579 @@
+{
+  "authority": "a0/tasks/maxcut/INTERFACE.md; thresholds from gates/gate_config.json",
+  "purpose": "the measured curve a contract decision needs: how much objective a PC produces, and how much headroom it leaves behind",
+  "redesign_crosscheck": {
+    "agree": true,
+    "comparison": [
+      {
+        "agree": true,
+        "count_mismatches": {},
+        "field_differences": {},
+        "fields_compared": 10,
+        "largest_difference_field": "median_rho",
+        "max_abs_diff": 4.732361169601518e-10,
+        "our_candidate": "pc_exchange_k01",
+        "redesign_variant": "exchange_k1"
+      },
+      {
+        "agree": true,
+        "count_mismatches": {},
+        "field_differences": {},
+        "fields_compared": 10,
+        "largest_difference_field": "median_rho",
+        "max_abs_diff": 4.401425890421251e-10,
+        "our_candidate": "pc_exchange_k10",
+        "redesign_variant": "exchange_k10"
+      },
+      {
+        "agree": true,
+        "count_mismatches": {},
+        "field_differences": {},
+        "fields_compared": 10,
+        "largest_difference_field": "mean_delta",
+        "max_abs_diff": 1.4221437222294853e-10,
+        "our_candidate": "pc_exchange_k02",
+        "redesign_variant": "exchange_k2"
+      },
+      {
+        "agree": true,
+        "count_mismatches": {},
+        "field_differences": {},
+        "fields_compared": 10,
+        "largest_difference_field": "mean_delta",
+        "max_abs_diff": 2.6863250512931813e-10,
+        "our_candidate": "pc_exchange_k25",
+        "redesign_variant": "exchange_k25"
+      },
+      {
+        "agree": true,
+        "count_mismatches": {},
+        "field_differences": {},
+        "fields_compared": 10,
+        "largest_difference_field": "median_rho",
+        "max_abs_diff": 4.0445946591916027e-10,
+        "our_candidate": "pc_exchange_k05",
+        "redesign_variant": "exchange_k5"
+      },
+      {
+        "agree": true,
+        "count_mismatches": {},
+        "field_differences": {},
+        "fields_compared": 10,
+        "largest_difference_field": "mean_delta",
+        "max_abs_diff": 4.983310153416909e-10,
+        "our_candidate": "pc",
+        "redesign_variant": "exchange_opt"
+      }
+    ],
+    "graph_set": "dev",
+    "max_abs_diff_across_all_fields": 4.983310153416909e-10,
+    "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/redesign/lever_data.json",
+    "problems": [],
+    "status": "COMPARED",
+    "tolerance": 1e-09,
+    "variants_compared": 6
+  },
+  "rows": [
+    {
+      "delta_families_passing": 4,
+      "delta_families_total": 4,
+      "delta_gate": "PASS",
+      "delta_overall_mean": 0.247942608,
+      "delta_overall_min": 0.03,
+      "graph_set": "dev",
+      "max_swaps": null,
+      "pc_source_sha256": "25de3e5d496198d74c7427de0d4504a0f3e49e8056c154d8eb8197648bcfb901",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.242886767,
+          "median_rho": 0.151771337
+        },
+        "ER": {
+          "mean_delta": 0.224297843,
+          "median_rho": 0.205096074
+        },
+        "Planted": {
+          "mean_delta": 0.220332352,
+          "median_rho": 0.152553329
+        },
+        "RR": {
+          "mean_delta": 0.304253472,
+          "median_rho": 0.143627451
+        }
+      },
+      "positive_control": "pc",
+      "rho_families_passing": 0,
+      "rho_families_total": 4,
+      "rho_gate": "FAIL",
+      "rho_global_median": 0.158819629,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "NOT_ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.dev.json"
+    },
+    {
+      "delta_families_passing": 4,
+      "delta_families_total": 4,
+      "delta_gate": "PASS",
+      "delta_overall_mean": 0.238448095,
+      "delta_overall_min": 0.03,
+      "graph_set": "eval",
+      "max_swaps": null,
+      "pc_source_sha256": "25de3e5d496198d74c7427de0d4504a0f3e49e8056c154d8eb8197648bcfb901",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.241433359,
+          "median_rho": 0.169191919
+        },
+        "ER": {
+          "mean_delta": 0.217676363,
+          "median_rho": 0.178126622
+        },
+        "Planted": {
+          "mean_delta": 0.205793771,
+          "median_rho": 0.180555556
+        },
+        "RR": {
+          "mean_delta": 0.288888889,
+          "median_rho": 0.19479889
+        }
+      },
+      "positive_control": "pc",
+      "rho_families_passing": 0,
+      "rho_families_total": 4,
+      "rho_gate": "FAIL",
+      "rho_global_median": 0.178715729,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "NOT_ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.eval.json"
+    },
+    {
+      "delta_families_passing": 1,
+      "delta_families_total": 4,
+      "delta_gate": "FAIL",
+      "delta_overall_mean": 0.018221497,
+      "delta_overall_min": 0.03,
+      "graph_set": "dev",
+      "max_swaps": 1,
+      "pc_source_sha256": "69cbaccde91cbcbd7f19730c6c64328e9b4192b2a42b4257c5affe0a495727b2",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.026140039,
+          "median_rho": 0.912356322
+        },
+        "ER": {
+          "mean_delta": 0.01641419,
+          "median_rho": 0.940123488
+        },
+        "Planted": {
+          "mean_delta": 0.014706759,
+          "median_rho": 0.94316448
+        },
+        "RR": {
+          "mean_delta": 0.015625,
+          "median_rho": 0.957980226
+        }
+      },
+      "positive_control": "pc_exchange_k01",
+      "rho_families_passing": 4,
+      "rho_families_total": 4,
+      "rho_gate": "PASS",
+      "rho_global_median": 0.940123488,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "NOT_ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.dev.pc_exchange_k01.json"
+    },
+    {
+      "delta_families_passing": 1,
+      "delta_families_total": 4,
+      "delta_gate": "FAIL",
+      "delta_overall_mean": 0.017982784,
+      "delta_overall_min": 0.03,
+      "graph_set": "eval",
+      "max_swaps": 1,
+      "pc_source_sha256": "69cbaccde91cbcbd7f19730c6c64328e9b4192b2a42b4257c5affe0a495727b2",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.024261525,
+          "median_rho": 0.914333333
+        },
+        "ER": {
+          "mean_delta": 0.016628173,
+          "median_rho": 0.941561885
+        },
+        "Planted": {
+          "mean_delta": 0.015416437,
+          "median_rho": 0.943055556
+        },
+        "RR": {
+          "mean_delta": 0.015625,
+          "median_rho": 0.955050505
+        }
+      },
+      "positive_control": "pc_exchange_k01",
+      "rho_families_passing": 4,
+      "rho_families_total": 4,
+      "rho_gate": "PASS",
+      "rho_global_median": 0.942883023,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "NOT_ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.eval.pc_exchange_k01.json"
+    },
+    {
+      "delta_families_passing": 4,
+      "delta_families_total": 4,
+      "delta_gate": "PASS",
+      "delta_overall_mean": 0.032882006,
+      "delta_overall_min": 0.03,
+      "graph_set": "dev",
+      "max_swaps": 2,
+      "pc_source_sha256": "ce125f72f1d95efdf1d80ef1a66686e9693ea95389b8cd4a2ba24385302187c0",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.044610112,
+          "median_rho": 0.857407407
+        },
+        "ER": {
+          "mean_delta": 0.028934164,
+          "median_rho": 0.895644283
+        },
+        "Planted": {
+          "mean_delta": 0.026733749,
+          "median_rho": 0.895064083
+        },
+        "RR": {
+          "mean_delta": 0.03125,
+          "median_rho": 0.915960452
+        }
+      },
+      "positive_control": "pc_exchange_k02",
+      "rho_families_passing": 4,
+      "rho_families_total": 4,
+      "rho_gate": "PASS",
+      "rho_global_median": 0.895644283,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.dev.pc_exchange_k02.json"
+    },
+    {
+      "delta_families_passing": 4,
+      "delta_families_total": 4,
+      "delta_gate": "PASS",
+      "delta_overall_mean": 0.033074123,
+      "delta_overall_min": 0.03,
+      "graph_set": "eval",
+      "max_swaps": 2,
+      "pc_source_sha256": "ce125f72f1d95efdf1d80ef1a66686e9693ea95389b8cd4a2ba24385302187c0",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.042698586,
+          "median_rho": 0.862232558
+        },
+        "ER": {
+          "mean_delta": 0.03036923,
+          "median_rho": 0.89543251
+        },
+        "Planted": {
+          "mean_delta": 0.027978677,
+          "median_rho": 0.890740741
+        },
+        "RR": {
+          "mean_delta": 0.03125,
+          "median_rho": 0.91010101
+        }
+      },
+      "positive_control": "pc_exchange_k02",
+      "rho_families_passing": 4,
+      "rho_families_total": 4,
+      "rho_gate": "PASS",
+      "rho_global_median": 0.894196025,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.eval.pc_exchange_k02.json"
+    },
+    {
+      "delta_families_passing": 4,
+      "delta_families_total": 4,
+      "delta_gate": "PASS",
+      "delta_overall_mean": 0.069657568,
+      "delta_overall_min": 0.03,
+      "graph_set": "dev",
+      "max_swaps": 5,
+      "pc_source_sha256": "8085adcf9f46d0a3b8a89ede85f3ed9631935f2527f32d2f64be69ee6c5f8b74",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.081255807,
+          "median_rho": 0.741666667
+        },
+        "ER": {
+          "mean_delta": 0.061584062,
+          "median_rho": 0.780736564
+        },
+        "Planted": {
+          "mean_delta": 0.060269568,
+          "median_rho": 0.768700265
+        },
+        "RR": {
+          "mean_delta": 0.075520833,
+          "median_rho": 0.806020067
+        }
+      },
+      "positive_control": "pc_exchange_k05",
+      "rho_families_passing": 4,
+      "rho_families_total": 4,
+      "rho_gate": "PASS",
+      "rho_global_median": 0.77514908,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.dev.pc_exchange_k05.json"
+    },
+    {
+      "delta_families_passing": 4,
+      "delta_families_total": 4,
+      "delta_gate": "PASS",
+      "delta_overall_mean": 0.070199653,
+      "delta_overall_min": 0.03,
+      "graph_set": "eval",
+      "max_swaps": 5,
+      "pc_source_sha256": "8085adcf9f46d0a3b8a89ede85f3ed9631935f2527f32d2f64be69ee6c5f8b74",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.07998584,
+          "median_rho": 0.728686869
+        },
+        "ER": {
+          "mean_delta": 0.064238499,
+          "median_rho": 0.763141948
+        },
+        "Planted": {
+          "mean_delta": 0.059751357,
+          "median_rho": 0.763469753
+        },
+        "RR": {
+          "mean_delta": 0.076822917,
+          "median_rho": 0.781746032
+        }
+      },
+      "positive_control": "pc_exchange_k05",
+      "rho_families_passing": 4,
+      "rho_families_total": 4,
+      "rho_gate": "PASS",
+      "rho_global_median": 0.762308313,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.eval.pc_exchange_k05.json"
+    },
+    {
+      "delta_families_passing": 4,
+      "delta_families_total": 4,
+      "delta_gate": "PASS",
+      "delta_overall_mean": 0.116584858,
+      "delta_overall_min": 0.03,
+      "graph_set": "dev",
+      "max_swaps": 10,
+      "pc_source_sha256": "ee49eba0798028532c2bcf084b56b137e19937a827105da97c75ed5a01e759da",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.126273825,
+          "median_rho": 0.57037037
+        },
+        "ER": {
+          "mean_delta": 0.106846106,
+          "median_rho": 0.621900508
+        },
+        "Planted": {
+          "mean_delta": 0.101969501,
+          "median_rho": 0.605106101
+        },
+        "RR": {
+          "mean_delta": 0.13125,
+          "median_rho": 0.634533898
+        }
+      },
+      "positive_control": "pc_exchange_k10",
+      "rho_families_passing": 4,
+      "rho_families_total": 4,
+      "rho_gate": "PASS",
+      "rho_global_median": 0.615639328,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.dev.pc_exchange_k10.json"
+    },
+    {
+      "delta_families_passing": 4,
+      "delta_families_total": 4,
+      "delta_gate": "PASS",
+      "delta_overall_mean": 0.116426731,
+      "delta_overall_min": 0.03,
+      "graph_set": "eval",
+      "max_swaps": 10,
+      "pc_source_sha256": "ee49eba0798028532c2bcf084b56b137e19937a827105da97c75ed5a01e759da",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.124991884,
+          "median_rho": 0.558869949
+        },
+        "ER": {
+          "mean_delta": 0.111285384,
+          "median_rho": 0.583919945
+        },
+        "Planted": {
+          "mean_delta": 0.099742157,
+          "median_rho": 0.605994516
+        },
+        "RR": {
+          "mean_delta": 0.1296875,
+          "median_rho": 0.628047465
+        }
+      },
+      "positive_control": "pc_exchange_k10",
+      "rho_families_passing": 4,
+      "rho_families_total": 4,
+      "rho_gate": "PASS",
+      "rho_global_median": 0.600847458,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.eval.pc_exchange_k10.json"
+    },
+    {
+      "delta_families_passing": 4,
+      "delta_families_total": 4,
+      "delta_gate": "PASS",
+      "delta_overall_mean": 0.204898135,
+      "delta_overall_min": 0.03,
+      "graph_set": "dev",
+      "max_swaps": 25,
+      "pc_source_sha256": "43a03d0d3e7268ae7ce4b554bad227896e4b4331ae76ee2e51e9d0d417509aeb",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.208497388,
+          "median_rho": 0.263101193
+        },
+        "ER": {
+          "mean_delta": 0.190449978,
+          "median_rho": 0.327450571
+        },
+        "Planted": {
+          "mean_delta": 0.176547953,
+          "median_rho": 0.322402132
+        },
+        "RR": {
+          "mean_delta": 0.244097222,
+          "median_rho": 0.347641857
+        }
+      },
+      "positive_control": "pc_exchange_k25",
+      "rho_families_passing": 3,
+      "rho_families_total": 4,
+      "rho_gate": "PASS",
+      "rho_global_median": 0.325902583,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.dev.pc_exchange_k25.json"
+    },
+    {
+      "delta_families_passing": 4,
+      "delta_families_total": 4,
+      "delta_gate": "PASS",
+      "delta_overall_mean": 0.202023485,
+      "delta_overall_min": 0.03,
+      "graph_set": "eval",
+      "max_swaps": 25,
+      "pc_source_sha256": "43a03d0d3e7268ae7ce4b554bad227896e4b4331ae76ee2e51e9d0d417509aeb",
+      "per_family": {
+        "BA": {
+          "mean_delta": 0.2082069,
+          "median_rho": 0.286579457
+        },
+        "ER": {
+          "mean_delta": 0.194105565,
+          "median_rho": 0.282087874
+        },
+        "Planted": {
+          "mean_delta": 0.172534948,
+          "median_rho": 0.322781655
+        },
+        "RR": {
+          "mean_delta": 0.233246528,
+          "median_rho": 0.348086124
+        }
+      },
+      "positive_control": "pc_exchange_k25",
+      "rho_families_passing": 2,
+      "rho_families_total": 4,
+      "rho_gate": "FAIL",
+      "rho_global_median": 0.301162791,
+      "rho_global_min": 0.3,
+      "saturation": "PASS",
+      "task_verdict": "NOT_ADMISSIBLE",
+      "theta": {
+        "seed": 1337,
+        "timeout_s": 10.0
+      },
+      "verdict_path": "gates/verdict.eval.pc_exchange_k25.json"
+    }
+  ],
+  "schema": "a0.maxcut.pc_strength_table/v1",
+  "thresholds": {
+    "delta_family_mean_min": 0.02,
+    "delta_overall_mean_min": 0.03,
+    "families_required": 3,
+    "families_total": 4,
+    "rho_family_median_min": 0.3,
+    "rho_global_median_min": 0.3
+  }
+}

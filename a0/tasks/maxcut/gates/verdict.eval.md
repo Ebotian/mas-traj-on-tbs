@@ -1,4 +1,4 @@
-# gate report — set `eval`, seed 1337, tau 30.0 s
+# gate report — set `eval`, positive control `positive_control/pc`, seed 1337, tau 10.0 s
 
 | gate | verdict | detail |
 |---|---|---|

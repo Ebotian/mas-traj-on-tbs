@@ -52,13 +52,17 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 MAXCUT = HERE.parent
+sys.path.insert(0, str(MAXCUT))
+
+import e_star_child  # noqa: E402  (E*'s own candidate resolver, for cache validation)
+
 E_STAR = MAXCUT / "e_star.py"
 SUITE = MAXCUT / "suite"
 DEFAULT_TARGETS = MAXCUT / "references" / "targets.json"
 CONFIG = HERE / "gate_config.json"
 
 BASELINE = MAXCUT / "positive_control" / "baseline"
-PC = MAXCUT / "positive_control" / "pc"
+DEFAULT_PC = MAXCUT / "positive_control" / "pc"
 
 CANDIDATE_LABEL = {"baseline": "b_i", "pc": "p_i"}
 
@@ -126,16 +130,65 @@ def outcome_path(candidate, graph_set, graph_id, tag=""):
     return HERE / "outcomes" / Path(*middle) / candidate / f"{graph_id}.outcome.json"
 
 
-def evaluate(candidate, graph_set, graph, seed, timeout_s, force, tag=""):
-    """Return E*'s Outcome for one (candidate, graph).  Cached unless --force."""
-    path = outcome_path(candidate, graph_set, graph["graph_id"], tag)
+def current_evaluator_digest():
+    """E*'s own `evaluator_source_sha256` (§5), asked of E* rather than assumed."""
+    proc = subprocess.run([sys.executable, str(E_STAR), "digest", "--value-only"],
+                          capture_output=True, text=True)
+    digest = proc.stdout.strip()
+    if not digest or len(digest) != 64:
+        raise SystemExit("could not read E*'s digest")
+    return digest
+
+
+def cache_is_current(outcome, seed, timeout_s, evaluator_digest, candidate_digest=None):
+    """A cached Outcome is evidence only if it was produced by *this* E*, from
+    *these* candidate bytes, at *this* theta.
+
+    The cache path is keyed by (graph set, candidate, graph), which is right for
+    re-reading a frozen measurement and wrong for noticing that a dependency
+    moved.  On 2026-09-22 the evaluator's source digest changed (the D-T1-10
+    launch fix) and every stored Outcome's `canonical_digest` with it, which made
+    the committed verdicts stale until they were re-run by hand.  Checking these
+    fields turns that into an automatic re-run.
+    """
+    theta = outcome.get("theta") or {}
+    if int(theta.get("seed", -1)) != int(seed):
+        return False
+    if float(theta.get("timeout_s", -1.0)) != float(timeout_s):
+        return False
+    if outcome.get("evaluator_source_sha256") != evaluator_digest:
+        return False
+    if candidate_digest is not None and outcome.get("candidate_source_sha256") != candidate_digest:
+        return False
+    return True
+
+
+def evaluate(candidate_name, candidate_dir, graph_set, graph, seed, timeout_s, force, tag="",
+             evaluator_digest=None, candidate_digest=None):
+    """Return E*'s Outcome for one (candidate, graph).
+
+    Cached unless `--force`, or unless the cached record was produced by a
+    different evaluator, from different candidate bytes, or at a different theta
+    (`cache_is_current`).
+
+    `candidate_name` is the candidate directory's own name, so a run with the
+    default PC and a run with a truncation variant share the `baseline/` Outcomes
+    instead of recomputing them -- and cannot accidentally use two different
+    baselines.
+    """
+    path = outcome_path(candidate_name, graph_set, graph["graph_id"], tag)
     if path.is_file() and not force:
-        return json.loads(path.read_text(encoding="utf-8"))
+        cached = json.loads(path.read_text(encoding="utf-8"))
+        if evaluator_digest is None or cache_is_current(cached, seed, timeout_s, evaluator_digest,
+                                                        candidate_digest):
+            return cached
+        print(f"cache stale ({candidate_name} {graph['graph_id']}): re-running E*",
+              file=sys.stderr)
     path.parent.mkdir(parents=True, exist_ok=True)
-    state_tag = f"{graph_set}-{tag}-{candidate}" if tag else f"{graph_set}-{candidate}"
+    state_tag = f"{graph_set}-{tag}-{candidate_name}" if tag else f"{graph_set}-{candidate_name}"
     command = [
         sys.executable, str(E_STAR), "evaluate",
-        "--candidate", str(BASELINE if candidate == "baseline" else PC),
+        "--candidate", str(candidate_dir),
         "--graph", graph["path"],
         "--seed", str(seed),
         "--timeout", str(timeout_s),
@@ -144,17 +197,25 @@ def evaluate(candidate, graph_set, graph, seed, timeout_s, force, tag=""):
     ]
     subprocess.run(command, capture_output=True, text=True)
     if not path.is_file():
-        raise SystemExit(f"E* wrote no Outcome for {candidate} {graph['graph_id']}")
+        raise SystemExit(f"E* wrote no Outcome for {candidate_name} {graph['graph_id']}")
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def collect(graph_set, seed, timeout_s, force, tag=""):
+def collect(graph_set, seed, timeout_s, force, pc_dir=None, tag=""):
+    """One Outcome per (role, graph).  Roles are `baseline` and `pc`; `pc` is
+    whatever directory `--pc` names."""
+    pc_dir = Path(pc_dir) if pc_dir else DEFAULT_PC
+    evaluator_digest = current_evaluator_digest()
+    roles = {"baseline": BASELINE, "pc": pc_dir}
+    digests = {role: e_star_child.resolve_candidate(directory)["source_sha256"]
+               for role, directory in roles.items()}
     graphs = suite_graphs(graph_set)
-    outcomes = {"baseline": {}, "pc": {}}
+    outcomes = {role: {} for role in roles}
     for graph in graphs:
-        for candidate in ("baseline", "pc"):
-            outcomes[candidate][graph["graph_id"]] = evaluate(
-                candidate, graph_set, graph, seed, timeout_s, force, tag)
+        for role, directory in roles.items():
+            outcomes[role][graph["graph_id"]] = evaluate(
+                directory.name, directory, graph_set, graph, seed, timeout_s, force, tag,
+                evaluator_digest, digests[role])
     return graphs, outcomes
 
 
@@ -339,7 +400,7 @@ def jsonify(value):
     return value
 
 
-def emit_values(graph_set, outcomes, graphs):
+def emit_values(graph_set, outcomes, graphs, pc_name="pc"):
     """Write the two value files in the shape `references/recompute_rho.py` accepts.
 
     The sibling workstream already owns an implementation of the rho definition
@@ -347,18 +408,25 @@ def emit_values(graph_set, outcomes, graphs):
     accepted input is a document with an `outcomes` list of INTERFACE.md §5
     records, so emitting from here costs nothing and lets the gate be
     cross-checked by that script instead of only by this one.
+
+    The default PC keeps the historical file name (`<set>.positive-control.json`);
+    a variant is written under its own directory name so two PCs never overwrite
+    each other's values.
     """
     written = {}
-    for candidate, label in (("baseline", "baseline"), ("pc", "positive-control")):
-        records = [outcomes[candidate][graph["graph_id"]] for graph in graphs]
+    pc_label = "positive-control" if pc_name == "pc" else pc_name
+    for role, label in (("baseline", "baseline"), ("pc", pc_label)):
+        records = [outcomes[role][graph["graph_id"]] for graph in graphs]
         path = HERE / "values" / f"{graph_set}.{label}.json"
         path.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             "schema": "a0.maxcut.values/v1",
             "graph_set": graph_set,
-            "role": CANDIDATE_LABEL[candidate],
-            "source": "E* Outcomes, a0/tasks/maxcut/gates/outcomes/%s/%s/*.outcome.json"
-                      % (graph_set, candidate),
+            "role": CANDIDATE_LABEL[role],
+            "candidate_dir_name": pc_name if role == "pc" else "baseline",
+            "candidate_source_sha256": records[0].get("candidate_source_sha256"),
+            "source": "E* Outcomes, a0/tasks/maxcut/gates/outcomes/%s/<candidate dir>/*.outcome.json"
+                      % graph_set,
             "outcomes": records,
         }
         path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -369,6 +437,7 @@ def emit_values(graph_set, outcomes, graphs):
 def human_table(verdict, rows):
     lines = []
     lines.append(f"# gate report — set `{verdict['graph_set']}`, "
+                 f"positive control `{verdict['artifacts']['positive_control_candidate']}`, "
                  f"seed {verdict['theta']['seed']}, tau {verdict['theta']['timeout_s']} s")
     lines.append("")
     lines.append("| gate | verdict | detail |")
@@ -488,6 +557,11 @@ def main():
     parser.add_argument("--set", dest="graph_set", default=None,
                         help="graph set to decide on (default: gate_config.sets.gate)")
     parser.add_argument("--targets", default=str(DEFAULT_TARGETS))
+    parser.add_argument("--pc", default=None,
+                        help="candidate directory to use as the positive control "
+                             "(default: positive_control/pc).  Its name selects the "
+                             "Outcome and verdict file names, so variants never "
+                             "overwrite the contract PC's frozen verdicts.")
     parser.add_argument("--force", action="store_true", help="re-run E* instead of using cached Outcomes")
     parser.add_argument("--out", default=None)
     parser.add_argument("--table-out", default=None)
@@ -498,6 +572,9 @@ def main():
     graph_set = args.graph_set or config["sets"]["gate"]
     seed = int(config["theta"]["seed"])
     timeout_s = float(config["theta"]["timeout_s"])
+    pc_dir = Path(args.pc).resolve() if args.pc else DEFAULT_PC
+    pc_name = pc_dir.name
+    pc_key = f".{pc_name}" if pc_name != "pc" else ""
 
     targets_path = Path(args.targets)
     targets_by_graph = {}
@@ -509,8 +586,8 @@ def main():
         targets_status = "PRESENT"
         targets_sha = sha256_file(targets_path)
 
-    graphs, outcomes = collect(graph_set, seed, timeout_s, args.force)
-    values = emit_values(graph_set, outcomes, graphs)
+    graphs, outcomes = collect(graph_set, seed, timeout_s, args.force, pc_dir)
+    values = emit_values(graph_set, outcomes, graphs, pc_name)
     rows = delta_rows(graphs, outcomes, targets_by_graph)
 
     delta = delta_gate(rows, config)
@@ -536,7 +613,8 @@ def main():
         "gate_config_status": config["status"],
         "artifacts": {
             "baseline_candidate": "positive_control/baseline",
-            "positive_control_candidate": "positive_control/pc",
+            "positive_control_candidate": str(pc_dir.relative_to(MAXCUT))
+            if str(pc_dir).startswith(str(MAXCUT)) else str(pc_dir),
             "evaluator_source_sha256": outcomes["pc"][graphs[0]["graph_id"]].get("evaluator_source_sha256"),
             "baseline_source_sha256": outcomes["baseline"][graphs[0]["graph_id"]].get("candidate_source_sha256"),
             "pc_source_sha256": outcomes["pc"][graphs[0]["graph_id"]].get("candidate_source_sha256"),
@@ -554,19 +632,19 @@ def main():
         "saturation_no_go": saturation,
         "verdict": overall,
         "pending_command": None if targets_status == "PRESENT" else (
-            f"python3 gates/gate_runner.py --set {graph_set} --targets "
-            f"{DEFAULT_TARGETS} --out gates/verdict.{graph_set}.json "
-            f"--table-out gates/verdict.{graph_set}.md"),
+            f"python3 gates/gate_runner.py --set {graph_set}"
+            f"{' --pc ' + str(pc_dir) if pc_name != 'pc' else ''} "
+            f"--targets {DEFAULT_TARGETS}"),
         "proposed_repair": proposed_repair({"delta_gate": delta, "rho_gate": rho,
                                             "saturation_no_go": saturation}),
         "rows": rows,
     }
     document = jsonify(verdict)
     text = json.dumps(document, indent=2, sort_keys=True) + "\n"
-    out_path = Path(args.out) if args.out else HERE / f"verdict.{graph_set}.json"
+    out_path = Path(args.out) if args.out else HERE / f"verdict.{graph_set}{pc_key}.json"
     out_path.write_text(text, encoding="utf-8")
     table = human_table(verdict, rows)
-    table_path = Path(args.table_out) if args.table_out else HERE / f"verdict.{graph_set}.md"
+    table_path = Path(args.table_out) if args.table_out else HERE / f"verdict.{graph_set}{pc_key}.md"
     table_path.write_text(table, encoding="utf-8")
 
     if not args.quiet:

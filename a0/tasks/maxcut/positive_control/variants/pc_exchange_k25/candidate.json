@@ -1,0 +1,23 @@
+{
+  "candidate_id": "pc_exchange_k25",
+  "derived_from": {
+    "max_swaps": 25,
+    "one_line_changed": "MAX_SWAPS = None -> MAX_SWAPS = 25",
+    "pin": {
+      "commit": "b69beb2c4f6e480aaca4b0de7b4883f2b9f1030b",
+      "maxcut_py_sha256": "793419aac0d000051ab9f9e2f9a0c9018d94cc871a8c385131d8fe01ca9590fb",
+      "pinned_file": "positive_control/pc/pinned/networkx_maxcut_b69beb2c.py",
+      "repository": "https://github.com/networkx/networkx"
+    },
+    "template": "positive_control/pc/solution.py"
+  },
+  "expected": {
+    "failure_kind": null,
+    "status": "ok"
+  },
+  "kind": "ok",
+  "purpose": "PC truncation variant: the pinned NetworkX one_exchange applied to b_i, stopped after 25 accepted improving swap(s). Identical to positive_control/pc/solution.py except for the MAX_SWAPS line. A *proposed* alternative to the contract's PC_i; which truncation (if any) is adopted is a contract decision -- see gates/REVISION-PROPOSAL.md.",
+  "role": "positive-control-alternative",
+  "schema": "a0.maxcut.candidate/v1",
+  "version": "1.0.0"
+}

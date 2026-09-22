@@ -9,22 +9,34 @@ Owner: the positive-control workstream of `a0/tasks/maxcut/`. Authority:
 | path | what it is |
 |---|---|
 | `baseline/solution.py` | **`b_i`** — one seeded uniform random bisection. A §4 candidate, nothing else |
-| `pc/solution.py` | **`PC_i`** — NetworkX `one_exchange(G_i, initial_cut=b_i, seed=s_i)`, transliterated from the pin |
+| `pc/solution.py` | **`PC_i`** — NetworkX `one_exchange(G_i, initial_cut=b_i, seed=s_i)`, transliterated from the pin. `MAX_SWAPS = None` means "run to a local optimum", i.e. the pin |
 | `pc/pinned/networkx_maxcut_b69beb2c.py` | the pinned upstream file, verbatim (`793419aa…`) |
 | `pc/pinned/networkx_init_b69beb2c.py` | the pinned commit's `networkx/__init__.py` (`3.7.1rc0.dev0`), verbatim |
-| `manifest.json` | the frozen identity of both candidates: every file's sha256 *and* the whole-candidate `source_sha256` E* uses |
+| `variants/pc_exchange_k{01,02,05,10,25}/` | the same candidate with `MAX_SWAPS` set to `k`: the truncation lever, as frozen §4 candidates. **Proposals, not the contract's PC** — see `../gates/REVISION-PROPOSAL.md` |
+| `make_variants.py` | `--write` / `--check`: generates the variants from `pc/solution.py` and verifies each differs from it by exactly one line |
+| `manifest.json` | the frozen identity of every candidate above: each file's sha256 *and* the whole-candidate `source_sha256` E* uses |
 | `build.py` | `--freeze` / `--check`: re-derive the manifest with E*'s own resolver, and cross-check `b_i` against `C*(T1)`'s `c02` through the real ABI |
 | `verify_pc_identity.py` | runs the transliteration and a real pinned NetworkX side by side, over the whole suite; writes `pc_identity_report.json` |
 | `reference_one_exchange.py` | the reference arm of the above: run by an interpreter that has NetworkX, prints what it did (including the sha256 of the `maxcut.py` it actually loaded) |
 | `bootstrap_pin.sh` | builds `.venv-pin` from the pinned commit (PyPI fallback accepted only if the `maxcut.py` is byte-identical) |
 | `pc_identity_report.json` | the frozen evidence: `PASS`, 64 graphs, six checks |
 
-Two frozen identities, in one line each:
+Frozen identities, one line each:
 
 ```
-b_i   source_sha256  6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97
-PC_i  source_sha256  d3c12b54999415a199bdcd1c9bfed715a8e28147014a14083fe0bd502be3987f
+b_i              6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97
+PC_i             25de3e5d496198d74c7427de0d4504a0f3e49e8056c154d8eb8197648bcfb901
+pc_exchange_k01  69cbaccde91cbcbd7f19730c6c64328e9b4192b2a42b4257c5affe0a495727b2
+pc_exchange_k02  ce125f72f1d95efdf1d80ef1a66686e9693ea95389b8cd4a2ba24385302187c0
+pc_exchange_k05  8085adcf9f46d0a3b8a89ede85f3ed9631935f2527f32d2f64be69ee6c5f8b74
+pc_exchange_k10  ee49eba0798028532c2bcf084b56b137e19937a827105da97c75ed5a01e759da
+pc_exchange_k25  43a03d0d3e7268ae7ce4b554bad227896e4b4331ae76ee2e51e9d0d417509aeb
 ```
+
+`PC_i`'s digest moved from `d3c12b54…` on 2026-09-22 when `MAX_SWAPS` was added
+to its source (`DEVIATIONS.md` D-PC-7). The addition is inert for the contract's
+PC — `None` is the pin — and that was verified rather than asserted: the same
+`cut_edges` on all 48 dev+eval graphs, and the pin-equality check still `PASS`.
 
 ## 2. The pin
 
@@ -57,9 +69,16 @@ algorithm, not NetworkX's — see `DEVIATIONS.md` D-PC-2.
 ```python
 assignment = splitmix64(n, seed ^ 0xA5A5A5A5A5A5A5A5)      # == b_i, byte for byte
 initial_cut = {v for v in range(n) if assignment[v] == 1}   # the orientation, frozen
-value, cut, rounds = one_exchange(n, edges, initial_cut, random.Random(seed))
+value, cut, rounds = one_exchange(n, edges, initial_cut, random.Random(seed), MAX_SWAPS)
 emit_partition([1 if v in cut else 0 for v in range(n)])
 ```
+
+`MAX_SWAPS = None` runs the loop to a local optimum, which is the pin verbatim.
+`MAX_SWAPS = k` stops it after `k` *accepted improving* swaps, checked at the top
+of the round so the round that finds no improvement still terminates the loop the
+pin's way. The `k` variants are the truncation lever measured in
+`../gates/strength_table.json`; they are frozen candidates here, but adopting one
+as the contract's `PC_i` is a contract revision and has not happened.
 
 No score is written to the artifact: §3's partition is the only output, and E*
 recomputes `cut_edges` from the graph and that partition (§5, §6).
@@ -72,6 +91,9 @@ cd a0/tasks/maxcut/positive_control
 # identity of the frozen trees, and b_i == C*(T1) c02 on all 60 frozen graphs,
 # both through §4's real ABI
 python3 build.py --check
+
+# the truncations are the frozen PC with one line changed -- verified, not asserted
+python3 make_variants.py --check
 
 # the pin, and the transliteration against the real thing
 sh bootstrap_pin.sh

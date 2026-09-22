@@ -6,8 +6,9 @@
   "note": "These numbers are frozen before the runner is executed and must not be relaxed after seeing a result. If a gate fails, the branch is: report the failing path, propose the minimal suite change, and say what must be re-frozen. See DEVIATIONS.md for the two places where the assignment left the scale of a quantity open and this file had to choose one.",
   "theta": {
     "seed": 1337,
-    "timeout_s": 30.0,
-    "comment": "INTERFACE.md section 4's --seed and section 7's tau (the section 7 band maximum; no calibration p99 is frozen in this repository yet, see DEVIATIONS.md D-GATE-4)."
+    "timeout_s": 10.0,
+    "comment": "INTERFACE.md section 4's --seed, and section 7's tau DERIVED rather than assumed since the 2026-09-22 re-freeze: tau = min(30 s, max(10 s, 10 x p99)) with p99 measured on the calibration set over the candidates the task actually runs (baseline, PC, its truncations, C*(T1)'s ok rows). Pooled p99 = 133-136 ms over two runs, so 10 x p99 = 1.33-1.36 s and the 10 s floor binds: tau = 10 s. This replaces the earlier 30 s, which was the band maximum with no p99 behind it (D-GATE-4, now closed). Evidence: tau_calibration.json.",
+    "tau_evidence": "tau_calibration.json"
   },
   "sets": {
     "gate": "dev",
