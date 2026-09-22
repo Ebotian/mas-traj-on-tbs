@@ -198,3 +198,26 @@ stated in the script, not hidden.
 files, both of which this pass owns, and it was found by re-running the check after
 committing rather than by reading it.
 
+## D-HYG-12 — the checker's raw output was moved out of the repository
+
+The first revision of `run_all.sh` wrote its raw output (including
+`--check-citations`' JSON, which records `HEAD`) into
+`a0/verify/a1-hygiene/out/`. Those files were committed, and then a post-commit run
+of the script — the very run that verifies the commit — rewrote
+`out/out_h5_citations.json` with the new `HEAD`, leaving the tree dirty. That is the
+same defect this pass exists to remove: *a documented command that silently rewrites
+its own committed evidence*, which is exactly what
+`a0/tasks/maxcut/gates/restamp_evidence.py` was faulted for in
+`a0/verify/a1-delta/REPORT.md` §3. Found by running the script after committing, not
+by reading it.
+
+**What changed.** Raw output now goes outside the repository
+(`$A1_HYGIENE_OUT`, default `${TMPDIR:-/tmp}/a1-hygiene-out`, wiped at the start of
+each run), and the committed `out/` directory was removed. Two consecutive runs
+leave `git status` empty. The only files the script may touch are the two the
+reduction steps own — `redesign/out/l2_results.json` and `redesign/lever_data.json`
+— and only because `gen/run_l2.py` and `gen/make_lever_data.py` write to fixed
+paths; the script backs each up, compares byte-for-byte, and **restores and fails**
+on a drift, so it cannot degrade them either.
+
+

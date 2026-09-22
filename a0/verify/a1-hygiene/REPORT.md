@@ -76,7 +76,7 @@ re-run at the committed revision: **6/6, rc 0, tree clean afterwards**.
 | `a0/tasks/maxcut/redesign/out/HISTORY.json` | **new** — the machine-readable marker: superseded + current digests, `measured_against`, per-directory counts, all 276 paths with their `canonical_digest`, `files_sha256` |
 | `a0/tasks/maxcut/redesign/DEVIATIONS.md` | **new entry D-RD-9** — why the digests are labelled and not re-stamped |
 | `a0/tasks/maxcut/redesign/LEVERS.md` | §7's artifact table gains `HISTORY.md`/`out/HISTORY.json` and `DEVIATIONS.md` → `D-RD-1 … D-RD-9`, plus a short "read this before you compare digests" paragraph |
-| `a0/verify/a1-hygiene/{REPORT.md,DEVIATIONS.md,run_all.sh,h1_history.py,out/*}` | **new** — this record, the checker and its raw output |
+| `a0/verify/a1-hygiene/{REPORT.md,DEVIATIONS.md,run_all.sh,h1_history.py}` | **new** — this record and the checker. Raw output is written outside the repository (`$A1_HYGIENE_OUT`, default `/tmp/a1-hygiene-out`): step 5's report records `HEAD`, so a committed copy would be rewritten by every run — see D-HYG-12 |
 
 Nothing else was touched. In particular: no Outcome under `redesign/out/**` was
 edited (all 276 still recompute their own `canonical_digest`), no threshold file was

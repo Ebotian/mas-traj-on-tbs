@@ -6,13 +6,23 @@
 # It runs **nothing of the lever study**: `gen/run_l2.py` without `--force` reuses
 # the stored Outcomes rather than re-invoking `E*`, and both reductions are compared
 # byte-for-byte with the committed files, so a drift is reported instead of written.
-# Exit 0 iff every check passes; raw output lands in a0/verify/a1-hygiene/out/.
+# Exit 0 iff every check passes.
+#
+# Raw output goes **outside the repository** (`$A1_HYGIENE_OUT`, default
+# `/tmp/a1-hygiene-out`), deliberately: step 5's report records `HEAD`, so a copy
+# committed under a0/verify/a1-hygiene/out/ would be rewritten by every run — the
+# same "the documented command rewrites its own committed evidence" defect this
+# pass exists to remove. The only files this script may touch are the two the
+# reduction steps own, and only if they come back **byte-identical**; a drift is
+# restored and reported as a failure.
 set -u
 cd "$(dirname "$0")/../../.." || exit 1       # -> repository root (this file is 3 levels down)
 HERE=a0/verify/a1-hygiene
-OUT="$HERE/out"
 REDESIGN=a0/tasks/maxcut/redesign
+OUT="${A1_HYGIENE_OUT:-${TMPDIR:-/tmp}/a1-hygiene-out}"
+rm -rf "$OUT"
 mkdir -p "$OUT"
+echo "raw output (not in the repository): $OUT"
 fail=0
 report() { printf '\n== %s ==\n' "$1"; }
 
