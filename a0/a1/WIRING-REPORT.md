@@ -21,11 +21,12 @@ The re-runnable entry point is `python3 a0/a1/verify.py`; the paid runs are
 | 3 | The runtime cannot substitute its own number | **CONFIRMED** | same file, two checks: with no harness identity the adapter exits 3 without running; with the service stopped mid-run every candidate is `error/harness_outcome_missing`, `search_signal: null`, champion `null`, exit 8 |
 | 4 | KAPSO's score of record is the harness's number, written **after** the session | **CONFIRMED** | `evidence/wiring_kapso.json` (7/7) and `evidence/live_kapso.json` (10/10): node.score = 2.4519205208433132 = the harness's value, while the session printed its own line claiming 9.75 |
 | 5 | KAPSO's class triple is derived from the runtime, not hardcoded | **CONFIRMED** | under a `fast/0.15` grant the derived line is adopted and a hardcoded `full/1.0/1337` line returns `None` (silently discarded, `registered_evaluation.py:87-99`) |
+| 5b | The T1 registered evaluation tree is an `AID_r` factor at full resolution | **CONFIRMED** | `declarations/AID_r.A_kapso.json`: `runtime.registered_evaluation_tree` = `manifest:6b1d6fcc…` recomputed from the tree's bytes and cross-checked against `a0/a1/kapso_t1/binding.json` (D-A1-6) |
 | 6 | One real campaign per arm ran through the meter, inside the closed topology | **CONFIRMED** | `evidence/live_simpleloop.json`, `evidence/live_kapso.json` |
-| 7 | Every upstream call has a ledger row with a real `CEq`; a missing-usage response is `unmetered` | **CONFIRMED** | `evidence/live_controls.json` (6/6); rows cross-checked against the repair hop's own log |
+| 7 | Every upstream call has a ledger row with a real `CEq`; a missing-usage response is `unmetered` | **CONFIRMED** | `evidence/live_controls.json` (6/6) and both live arms; rows cross-checked against the proxy's per-call sidecar and re-derived by `a0/meter/verify_ledger.py` |
 | 8 | No unmetered model call is possible | **CONFIRMED** | same file: direct egress blocked from inside `unshare -rn`; non-allowlisted destination 403'd; a call without the campaign token 403'd and booked against that campaign; an induced upstream response without usage booked `unmetered` and stops the campaign |
 | 9 | The A1 skeleton exists and its decisions are executable | **CONFIRMED** | `evidence/skeleton_dryrun.json` (25/25 checks) |
-| 10 | The two arms can be compared on T1's `Δ` today | **NOT SATISFIED** | D-A1-2: KAPSO's adapter is still wired to the plumbing task; the wiring and the ordering rule are task-independent and are verified, the retarget is not done |
+| 10 | The two arms can be compared on T1's `Δ` today | **MOSTLY** | the KAPSO T1 retarget exists — `a0/a1/kapso_t1/` (another workstream) delivers the T1 registered tree, the max-cut `EidStar` binding and the T1 arm, with its own live evidence (15/15), and this directory now pins that tree in `AID_r.A_kapso.json` (D-A1-6). What is still missing for a *campaign* is the calibration pilot and the frozen `B_hard` (`INTERFACE.md` §9). See D-A1-2 for which live evidence belongs to which configuration |
 
 ---
 
@@ -112,28 +113,33 @@ condition on what KAPSO-based numbers may be used as evidence for.
 
 ## 4. The live-session probe
 
-Topology: `runtime ─plaintext─▶ meter_proxy (campaign port) ─▶ repair hop ─TLS─▶ api.deepseek.com`,
+Topology: `runtime ─plaintext─▶ meter_proxy (campaign port) ─TLS─▶ api.deepseek.com`,
 with the runtime inside `unshare -rn` reaching the meter only over a unix socket
-that the filesystem — not the network — carries. Model `deepseek-flash`,
+that the filesystem — not the network — carries. (A compensating framing hop sat
+between the meter and the provider for the first round of this work; `a0/meter`
+commit `86987235` fixed the proxy, the hop was deleted, and D-A1-3 records both.) Model `deepseek-flash`,
 temperature 0.
 
 | | SimpleLoop (T1 max-cut) | KAPSO (plumbing; D-A1-2) |
 |---|---|---|
 | campaign id | `C_live_simpleloop` | `C_live_kapso` |
 | model calls (meter rows) | 1 | 1 |
-| tokens (meter, authoritative) | miss 1192, hit 0, completion 602 | miss 80, hit 0, completion 256 |
-| `CEq` | 3600 | 1104 |
+| tokens (meter, authoritative) | hit 1024, miss 168, completion 2048 | miss 80, hit 0, completion 256 |
+| `CEq` | 8380 | 1104 |
 | harness `E*` calls | 2 (baseline 132; `ds_i001` 0) | 1 (node0 2.4519205208433132) |
 | score of record | 132, `score_source=harness` | 2.4519205208433132, `score_source=harness` |
 | session's own claim | n/a | 9.75 (printed by the session, **not** recorded) |
-| checks | 8/8 pass | 10/10 pass |
+| checks | 9/9 pass | 11/11 pass |
 
 **(a)** the score of record equals the harness's handed value in both arms.
 **(b)** ordering: KAPSO's node carries three manifest lines and the harness's is
 last (`last_line_is_the_harness_s = true`); the session's claim of 9.75 is
 recorded in the artifact and is *not* the score.
-**(c)** one row per upstream call, each with an integer `CEq > 0`, cross-checked
-against the repair hop's own log of requests that left the machine (1 == 1, 1 == 1).
+**(c)** one row per upstream call, each with an integer `CEq > 0`. The row count is
+cross-checked against the proxy's own per-call sidecar (an independent count of
+the calls it handled: 1 == 1 in both arms) and every metered row is re-derived by
+the meter's own `verify_ledger.py` (exit 0 in both arms), so the ledger is checked
+by something other than its consumer.
 **(d)** see §5.
 
 ---
@@ -158,11 +164,15 @@ against the repair hop's own log of requests that left the machine (1 == 1, 1 ==
 
 * **Identity.** `CampaignID = (TaskID, BlockID, ArmID, ReplicateID)`; changing any
   one component changes the key.
-* **The causal-role rule.** `a0/a1/declaration.py` builds `CID` (14 factors: T1's
+* **The causal-role rule.** `a0/a1/declaration.py` builds `CID` (13 factors: T1's
   `EID*`, `e_star.py`, `e_star_child.py`, the suite and candidate-set manifests,
-  the harness service, the ABI, the token issuer, the topology, the meter mode and
-  its repair hop, the failure semantics, the model route, the measurement protocol)
-  and one `AID_r` per arm. The audit passes on the real declaration, fails on an
+  the harness service, the ABI, the token issuer, the topology, the meter mode,
+  the failure semantics, the model route, the measurement protocol) and one
+  `AID_r` per arm. The KAPSO arm's declares the **T1 registered evaluation tree**
+  (`runtime.registered_evaluation_tree` = `manifest:6b1d6fcc…`, plus its exact
+  per-file map), adopted per D-A1-6; the SimpleLoop arm's declares the same factor
+  as "no registration mechanism", so the mechanism difference is explicit rather
+  than an asymmetry in the paperwork. The audit passes on the real declaration, fails on an
   object named nowhere, and fails on a `CID` factor that drifted.
 * **Budget.** All four stop conditions fire as designed (wall clock, `CEq`,
   evaluator calls, and an unobservable usage gap); a policy refusal is counted but
@@ -174,3 +184,20 @@ against the repair hop's own log of requests that left the machine (1 == 1, 1 ==
   block cannot be completed, and it is replaced by a new block.
 * **Preflight.** The campaign skeleton passes on the real artifacts and refuses to
   construct when the instance is missing rather than defaulting.
+
+### The `AID_r` for the KAPSO arm (what changed in this revision)
+
+Adopted per D-A1-6, from `a0/a1/kapso_t1`'s D-KT1-7:
+
+| factor | identity |
+|---|---|
+| `runtime.registered_evaluation_tree` | `value:{eid_r: manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301, native_scheme: manifest_fingerprint, fingerprint_rule: KAPSO's own, tree: a0/a1/kapso_t1/tree, binding: a0/a1/kapso_t1/binding.json}` |
+| `runtime.registered_evaluation_tree_files` | `value:{"a0_locator.json": "5a0c99ff…", "kapso_eval.py": "6759ef05…"}` |
+
+A byte in either file changes the factor; the fingerprint is recomputed here and
+disagreement with that directory's `binding.json` fails the audit
+(`registered_tree_disagreement`). `A_simpleloop` declares the same factor name with
+`{mechanism: "none"}`, so the arm-varying set is
+`{runtime.grant_triple, runtime.outcome_lane, runtime.registered_evaluation_tree,
+runtime.substrate}` and the mechanism difference between the arms is on the face of
+the declaration instead of being an absence.

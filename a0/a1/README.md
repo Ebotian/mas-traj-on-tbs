@@ -30,20 +30,18 @@ The paid runs are **not** re-run by that command (they spend money). They are
 | `budget.py` | the `B_hard` enforcer: meter ledger + harness eval ledger + wall clock, fail-closed |
 | `blocks.py` | the randomised complete block scheduler, with block-level invalidation on outage |
 | `topology.py` | the closed topology: `unshare -rn` plus a unix-socket hop to the campaign's metered port |
-| `meter_runner.py` | one metering listener per campaign, the model client, and the declared repair hop (D-A1-3) |
-| `meter_body_repair.py` | the compensating hop for `a0/meter`'s missing request framing (D-A1-3) |
+| `meter_runner.py` | one metering listener per campaign and the model client; the proxy's own ledger verifier and per-call sidecar are read from here |
 | `skeleton.py` | the campaign skeleton: identity + boundary + budget + one arm's run |
 | `verify.py`, `tests/` | the re-runnable check entry point and the unit invariants |
 | `probes/` | the three model-free probes and the paid live probe |
-| `evidence/` | the committed output of every probe |
-| `probes/../evidence/` | not a typo: probes write to `/tmp`, and the committed copy is the evidence |
+| `evidence/` | the committed output of every probe (probes write to `/tmp`; the committed copy is the evidence) |
 
 ## The boundary, in one picture
 
 ```
                         HARNESS (this directory)
   ┌──────────────────────────────────────────────────────────────┐
-  │ meter_proxy (one port per campaign) ── repair hop ──▶ provider│
+  │ meter_proxy (one port per campaign) ──plaintext/TLS──▶ provider│
   │        ▲                                                      │
   │        │ unix socket                                          │
   │ eval_service: runs E*, authors the Outcome, issues the token   │
@@ -64,4 +62,10 @@ The paid runs are **not** re-run by that command (they spend money). They are
   `evalcontract.py` from a spec; the run-level trace validator is unchanged and
   SimpleLoop's traces keep their frozen shape.
 * **`a0/meter/`** — the ledger schema, the `CEq` formula and the one-port-per-
-  campaign attribution are used as they are; `a0/a1/budget.py` only reads rows.
+  campaign attribution are used as they are; `a0/a1/budget.py` only reads rows,
+  and the probes call the meter's own `verify_ledger.py` so a ledger is checked by
+  something other than its consumer.
+* **`a0/a1/kapso_t1/`** — another workstream's T1 registered evaluation tree. Its
+  identity is adopted into the KAPSO arm's `AID_r` (`runtime
+  .registered_evaluation_tree`, `…_files`), recomputed from the tree's bytes here
+  and cross-checked against that directory's `binding.json`; see D-A1-6.

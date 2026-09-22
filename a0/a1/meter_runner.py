@@ -6,7 +6,9 @@ Two responsibilities, both on the *harness* side of the boundary:
   campaign, on exactly one port, with the ledger and the ``AID_r`` fragment in
   the campaign's own directory.  The proxy's startup is fail-closed
   (``a0/meter/README.md`` §4), so "the proxy is up" already means "it can book
-  what it spends".
+  what it spends".  The upstream leg goes straight to the provider: a framing
+  defect made a compensating hop necessary here until `a0/meter` `86987235`
+  fixed it, and that hop is gone (`a0/a1/DEVIATIONS.md` D-A1-3).
 * ``chat_completion`` — the model call itself, in the standard library, against
   a caller-supplied ``base_url``.  The A1 runtime's only model access is this
   call against ``http://127.0.0.1:<campaign port>/v1``.
@@ -57,68 +59,6 @@ def canonical_host_path(path: Optional[Path]) -> Optional[str]:
 
 
 @dataclass
-class MeterBodyRepairHop:
-    """The declared framing-repair hop (see ``a0/a1/meter_body_repair.py``).
-
-    `a0/meter/meter_proxy.py` sends the upstream request with no framing header,
-    so every real provider call comes back `400` and is booked `unmetered`. This
-    hop restores `Content-Length` *below* the meter, so the ledger row is a real
-    `ceq` from a real provider response while `a0/meter/` stays untouched
-    (`a0/a1/DEVIATIONS.md` D-A1-3).
-    """
-
-    work_dir: Path
-    upstream: str = "https://api.deepseek.com"
-    repair_script: Path = REPO_ROOT / "a0" / "a1" / "meter_body_repair.py"
-    python: Path = field(default_factory=lambda: Path(sys.executable))
-    process: Optional[subprocess.Popen] = None
-
-    def __post_init__(self) -> None:
-        self.work_dir = Path(self.work_dir).resolve()
-        self.work_dir.mkdir(parents=True, exist_ok=True)
-        self.ready_file = self.work_dir / "repair.ready"
-        self.log_path = self.work_dir / "repair.jsonl"
-        self.console = self.work_dir / "repair.console.txt"
-
-    def start(self, *, timeout: float = 20.0) -> int:
-        if self.ready_file.exists():
-            self.ready_file.unlink()
-        self.process = subprocess.Popen(
-            [str(self.python), str(self.repair_script), "--port", "0",
-             "--upstream", self.upstream, "--log", str(self.log_path),
-             "--ready-file", str(self.ready_file)],
-            stdout=self.console.open("wb"), stderr=subprocess.STDOUT,
-            stdin=subprocess.DEVNULL,
-        )
-        deadline = time.monotonic() + timeout
-        while time.monotonic() < deadline:
-            if self.ready_file.is_file():
-                return int(self.ready_file.read_text().strip())
-            if self.process.poll() is not None:
-                raise MeterError(
-                    f"the repair hop exited {self.process.returncode}: "
-                    f"{self.console.read_text(errors='replace')[-400:]}"
-                )
-            time.sleep(0.05)
-        raise MeterError("the repair hop did not become ready")
-
-    def stop(self) -> None:
-        if self.process is not None and self.process.poll() is None:
-            self.process.terminate()
-            try:
-                self.process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                self.process.kill()
-                self.process.wait()
-
-    def records(self) -> List[dict]:
-        if not self.log_path.is_file():
-            return []
-        return [json.loads(line) for line in self.log_path.read_text(encoding="utf-8").splitlines()
-                if line.strip()]
-
-
-@dataclass
 class MeterProxy:
     """A single-campaign metering listener."""
 
@@ -134,14 +74,8 @@ class MeterProxy:
     #: When False the client may not send the token, which is how the
     #: attribution-refusal control is produced.
     issue_token: bool = True
-    #: Route the upstream leg through the declared framing-repair hop
-    #: (`a0/a1/DEVIATIONS.md` D-A1-3). Without it `a0/meter` sends every real
-    #: request unframed and every real call is booked `unmetered`.
-    use_body_repair: bool = True
-    repair_upstream: str = DEFAULT_UPSTREAM
     process: Optional[subprocess.Popen] = None
     ready: bool = False
-    hop: Optional[MeterBodyRepairHop] = None
 
     def __post_init__(self) -> None:
         self.work_dir = Path(self.work_dir).resolve()
@@ -149,11 +83,6 @@ class MeterProxy:
         self.port = self.port or free_port()
         if self.issue_token and not self.token:
             self.token = secrets.token_urlsafe(24)
-        if self.use_body_repair:
-            self.hop = MeterBodyRepairHop(work_dir=self.work_dir / "repair",
-                                          upstream=self.repair_upstream)
-            self.upstream_base = f"http://127.0.0.1:PLACEHOLDER"
-            self.allowlist = "127.0.0.1"
         self.ledger = self.work_dir / "ledger.jsonl"
         self.events = self.work_dir / "events.jsonl"
         self.aid_out = self.work_dir / "meter.aid.json"
@@ -181,10 +110,6 @@ class MeterProxy:
         ] + (["--token", str(self.token)] if self.token else [])
 
     def start(self, *, timeout: float = 20.0) -> None:
-        if self.hop is not None:
-            hop_port = self.hop.start()
-            self.upstream_base = f"http://127.0.0.1:{hop_port}"
-            self.allowlist = "127.0.0.1"
         if self.ready_file.exists():
             self.ready_file.unlink()
         console = self.console.open("wb")
@@ -212,22 +137,39 @@ class MeterProxy:
             except subprocess.TimeoutExpired:
                 self.process.kill()
                 self.process.wait()
-        if self.hop is not None:
-            self.hop.stop()
 
     def aid(self) -> dict:
-        aid = json.loads(self.aid_out.read_text(encoding="utf-8"))
-        if self.hop is not None:
-            aid["body_repair"] = {
-                "declared_in": "a0/a1/DEVIATIONS.md D-A1-3",
-                "why": ("a0/meter/meter_proxy.py forwards the upstream request with no "
-                        "Content-Length (HOP_BY_HOP strips it; http.client does not re-add it), "
-                        "so every real provider call answers 400 and is booked unmetered"),
-                "hop": "a0/a1/meter_body_repair.py",
-                "hop_log": str(self.hop.log_path),
-                "dials": self.repair_upstream,
-            }
-        return aid
+        return json.loads(self.aid_out.read_text(encoding="utf-8"))
+
+    def call_events(self) -> List[dict]:
+        """The proxy's own per-call sidecar, one `kind: "call"` record per upstream call.
+
+        `a0/meter/README.md` §2 is explicit that the sidecar is *diagnostic and
+        never authoritative* for spend. It is used here for the one thing it is
+        good for: an independent count of the calls the proxy handled, so the
+        ledger can be checked for a missing row rather than trusted.
+        """
+        path = Path(self.events)
+        if not path.is_file():
+            return []
+        return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()
+                if line.strip()]
+
+    def verify_ledger(self) -> dict:
+        """Run `a0/meter/verify_ledger.py` over this campaign's ledger.
+
+        A ledger that only its author can check is not evidence: that program
+        recomputes every metered row's `ceq` from the row's own usage and asserts
+        the frozen key set and order.
+        """
+        script = REPO_ROOT / "a0" / "meter" / "verify_ledger.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), str(self.ledger), "--json"],
+            capture_output=True, text=True, cwd=str(REPO_ROOT),
+        )
+        return {"returncode": proc.returncode,
+                "stdout": (proc.stdout or "").strip()[-2000:],
+                "stderr": (proc.stderr or "").strip()[-800:]}
 
     def ledger_summary(self) -> dict:
         rows = 0

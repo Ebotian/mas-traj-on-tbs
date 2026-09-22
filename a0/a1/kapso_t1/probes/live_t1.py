@@ -14,7 +14,7 @@ printed or written):
 
 Topology, identical to `a0/a1/probes/live_probe.py`'s:
 
-    runtime ─plaintext─▶ meter_proxy (campaign port) ─▶ repair hop ─TLS─▶ api.deepseek.com
+    runtime ─plaintext─▶ meter_proxy (campaign port) ─TLS─▶ api.deepseek.com
 
 with the runtime inside `unshare -rn` reaching the meter only over a unix socket that
 the filesystem — not the network — carries. Model `deepseek-flash`, temperature 0.
@@ -37,7 +37,8 @@ Checks, from recorded state only (11 of them; see `checks` in the artifact):
 (c) the parent selection follows the harness's number — with 9999 handed to the true-low
     candidate and 3 to the true-high one, the second node's parent is the 9999 node;
 (d) the meter ledger has one row per upstream call, each with an integer `CEq > 0`,
-    cross-checked against the repair hop's own log of requests that left the machine;
+    cross-checked against the proxy's own per-call sidecar and re-derived by
+    `a0/meter/verify_ledger.py`;
 (e) the closed topology blocks direct egress from inside the namespace while the
     campaign's metered port is reachable.
 """
@@ -227,7 +228,10 @@ class LiveT1Campaign:
             json.loads(state_path.read_text(encoding="utf-8")) if state_path.is_file() else {}
         )
         report["meter_ledger_rows"] = _rows(self.meter.ledger)
-        report["repair_records"] = self.meter.hop.records() if self.meter.hop is not None else []
+        report["meter_call_events"] = [
+            event for event in self.meter.call_events() if event.get("kind") == "call"
+        ]
+        report["meter_verify_ledger"] = self.meter.verify_ledger()
         report["harness_ledger_rows"] = _rows(self.harness_root / "ledger.jsonl")
         report["meter_summary"] = self.meter.ledger_summary()
         report["budget_check"] = self.enforcer.check(label="after-live-t1-run")
@@ -320,9 +324,11 @@ class LiveT1Campaign:
                 isinstance(row.get("ceq"), int) and row["ceq"] > 0 for row in model_rows
             ),
             "the_ledger_has_one_row_per_upstream_call": (
-                bool(report.get("repair_records"))
-                and len(model_rows)
-                == len([row for row in report["repair_records"] if row.get("status")])
+                bool(report.get("meter_call_events"))
+                and len(model_rows) == len(report["meter_call_events"])
+            ),
+            "the_meter_s_own_verifier_re_derives_every_row": (
+                (report.get("meter_verify_ledger") or {}).get("returncode") == 0
             ),
             "the_topology_blocks_direct_egress": (
                 report["topology_probe"].get("_negative_controls_blocked") is True

@@ -15,6 +15,7 @@ sys.path.insert(0, str(REPO_ROOT / "a0" / "runtimes" / "kapso"))
 
 from a0.a1.blocks import BlockError, BlockScheduler  # noqa: E402
 from a0.a1.budget import Budget, BudgetEnforcer, BudgetError, read_meter_ledger  # noqa: E402
+from a0.a1 import declaration  # noqa: E402
 from a0.a1.causal import AID, CID, CampaignID, Factor, audit  # noqa: E402
 from a0.a1.eval_service import HarnessEvalService, _apply_override, _value_at  # noqa: E402
 from a0_adapter.harness_manifest import (  # noqa: E402
@@ -181,3 +182,56 @@ def test_the_harness_line_is_appended_so_it_is_the_last_one():
     amend_evaluation_output(node, "KAPSO_EVAL_MANIFEST {\"score\": 2.5}")
     last = node.evaluation_output.strip().splitlines()[-1]
     assert json.loads(last.split(" ", 1)[1])["score"] == 2.5
+
+
+# ---------------------------------------------------------------------------
+# the meter's framing defect and the workaround that was removed
+# ---------------------------------------------------------------------------
+def test_the_repair_hop_is_gone_and_is_no_longer_a_cid_factor():
+    """The hop compensated for a defect `a0/meter` 86987235 fixed (D-A1-3)."""
+    assert not (REPO_ROOT / "a0" / "a1" / "meter_body_repair.py").exists()
+    cid = declaration.build()["cid"]
+    assert "harness.meter_body_repair" not in cid.factors
+    assert (REPO_ROOT / "a0" / "a1" / "meter_body_repair.py").exists() is False
+
+
+def test_the_meter_proxy_supervisor_has_no_hop_hook():
+    from a0.a1.meter_runner import MeterProxy
+
+    proxy = MeterProxy(campaign_id="C", arm_id="A", work_dir=Path("/tmp/a1-test-meter"))
+    assert not hasattr(proxy, "hop")
+    assert "hop" not in MeterProxy.__dataclass_fields__
+
+
+# ---------------------------------------------------------------------------
+# the T1 registered evaluation tree in AID_r
+# ---------------------------------------------------------------------------
+def test_the_kapso_arm_declares_the_t1_registered_tree():
+    aids = {aid.campaign.arm_id: aid for aid in declaration.build()["aids"]}
+    kapso = aids["A_kapso"]
+    factor = kapso.factors["runtime.registered_evaluation_tree"]
+    tree = declaration.registered_tree()
+    assert factor.value["eid_r"] == tree["identity"]["eid_r"]
+    assert factor.value["eid_r"] == f"manifest:{tree['fingerprint']}"
+    assert kapso.factors["runtime.registered_evaluation_tree_files"].value == tree["files"]
+    # and the recomputation is the same number another workstream published
+    binding = json.loads((REPO_ROOT / "a0/a1/kapso_t1/binding.json").read_text())
+    assert tree["fingerprint"] == binding["eid_r_value"]
+
+
+def test_the_other_arm_declares_the_absence_rather_than_leaving_a_gap():
+    aids = {aid.campaign.arm_id: aid for aid in declaration.build()["aids"]}
+    factor = aids["A_simpleloop"].factors["runtime.registered_evaluation_tree"]
+    assert factor.value["mechanism"] == "none"
+
+
+def test_a_registered_tree_that_disagrees_with_the_binding_fails_the_audit(tmp_path, monkeypatch):
+    tree_dir = tmp_path / "tree"
+    tree_dir.mkdir()
+    (tree_dir / "kapso_eval.py").write_text("# not the published bytes\n", encoding="utf-8")
+    (tree_dir / "a0_locator.json").write_text("{}\n", encoding="utf-8")
+    monkeypatch.setattr(declaration, "KAPSO_T1_TREE", tree_dir)
+    result = declaration.write(tmp_path / "out")
+    kinds = {problem["kind"] for problem in result["problems"]}
+    assert "registered_tree_disagreement" in kinds
+    assert result["verdict"] == "fail"

@@ -5,12 +5,15 @@
    "runtime.checkout",
    "runtime.grant_triple",
    "runtime.outcome_lane",
+   "runtime.registered_evaluation_tree",
+   "runtime.registered_evaluation_tree_files",
    "runtime.substrate"
   ],
   "A_simpleloop": [
    "runtime.grant_triple",
    "runtime.outcome_lane",
    "runtime.policy",
+   "runtime.registered_evaluation_tree",
    "runtime.source",
    "runtime.substrate"
   ]
@@ -22,6 +25,7 @@
  "arm_varying_factors": [
   "runtime.grant_triple",
   "runtime.outcome_lane",
+  "runtime.registered_evaluation_tree",
   "runtime.substrate"
  ],
  "arms": [
@@ -40,8 +44,22 @@
    "task_id": "T1-maxcut"
   }
  ],
- "cid_factors": 14,
+ "cid_factors": 13,
  "problems": [],
+ "registered_tree": {
+  "files": {
+   "a0_locator.json": "5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616",
+   "kapso_eval.py": "6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467"
+  },
+  "fingerprint": "6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+  "identity": {
+   "binding": "a0/a1/kapso_t1/binding.json",
+   "eid_r": "manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301",
+   "fingerprint_rule": "KAPSO's own: sha256(json.dumps(manifest, sort_keys=True, separators=(',',':'))) - execution/evaluation_integrity.py:112-119",
+   "native_scheme": "manifest_fingerprint",
+   "tree": "a0/a1/kapso_t1/tree"
+  }
+ },
  "schema": "a0.a1.causal_audit/v1",
  "task_id": "T1-maxcut",
  "verdict": "pass"

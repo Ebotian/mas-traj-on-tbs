@@ -31,6 +31,18 @@
    "note": "the post-session manifest write; the ordering IS the attribution",
    "role": "aid_r"
   },
+  "runtime.registered_evaluation_tree": {
+   "identity": "value:{\"binding\":\"a0/a1/kapso_t1/binding.json\",\"eid_r\":\"manifest:6b1d6fccf78d1b94f0bb2fa3e200e5ff224aa4b8575148914499a2f083bc5301\",\"fingerprint_rule\":\"KAPSO's own: sha256(json.dumps(manifest, sort_keys=True, separators=(',',':'))) - execution/evaluation_integrity.py:112-119\",\"native_scheme\":\"manifest_fingerprint\",\"tree\":\"a0/a1/kapso_t1/tree\"}",
+   "name": "runtime.registered_evaluation_tree",
+   "note": "KAPSO's registered evaluator for T1; EID_r = manifest_fingerprint(tree). Recomputed from a0/a1/kapso_t1/tree/ by declaration.py, and cross-checked against a0/a1/kapso_t1/binding.json.",
+   "role": "aid_r"
+  },
+  "runtime.registered_evaluation_tree_files": {
+   "identity": "value:{\"a0_locator.json\":\"5a0c99fff908c274ed2b1d54eea7318c53b257e26364a18a94f996e484ce6616\",\"kapso_eval.py\":\"6759ef0559341fb94427ca485a77f49c2149470a4ecf2c2fbff1e13636c31467\"}",
+   "name": "runtime.registered_evaluation_tree_files",
+   "note": "the fingerprint's inputs (KAPSO's own rule: sha256 over json.dumps(manifest, sort_keys=True, separators=(',',':'))). One byte in either file changes this factor.",
+   "role": "aid_r"
+  },
   "runtime.substrate": {
    "identity": "value:{\"name\":\"kapso\",\"origin\":\"third party\"}",
    "name": "runtime.substrate",

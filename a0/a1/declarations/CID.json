@@ -23,12 +23,6 @@
    "note": "a0/envelope's OID binding, issued per response",
    "role": "cid"
   },
-  "harness.meter_body_repair": {
-   "identity": "sha256:abb3035b16a0358e9768e2f3e40f85714919910336f6ba7436864e7b2c73ae90",
-   "name": "harness.meter_body_repair",
-   "note": "declared compensating hop for a0/meter's missing request framing (a0/a1/DEVIATIONS.md D-A1-3): the proxy forwards the upstream request with no Content-Length, so every real call answers 400 and is booked unmetered. Remove this factor when a0/meter is fixed.",
-   "role": "cid"
-  },
   "harness.meter_mode": {
    "identity": "value:{\"allowlist\":[\"api.deepseek.com\"],\"ceq_formula\":\"miss + floor(hit*2/100) + 4*completion\",\"mode\":\"plaintext_base_url\",\"row_schema\":\"a0.meter.call/v1\"}",
    "name": "harness.meter_mode",

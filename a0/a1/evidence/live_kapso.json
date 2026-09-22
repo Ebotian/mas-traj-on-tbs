@@ -5,12 +5,12 @@
   "/home/ebt/rsi-dev/a0/a1/probes/live_probe.py",
   "kapso-inner",
   "--out-dir",
-  "/tmp/a1/live/kapso",
+  "/tmp/a1/live2/kapso",
   "--base-url",
-  "http://127.0.0.1:47017/v1",
-  "--meter-token=rLSnZEJGE5MXNdUT7iQHeug40qc93cYk",
+  "http://127.0.0.1:35367/v1",
+  "--meter-token=cvubG4pawah3kZW6cvKDmGxuKmKzBj-F",
   "--run-dir",
-  "/tmp/a1/live/kapso/run"
+  "/tmp/a1/live2/kapso/run"
  ],
  "arm_exit_code": 0,
  "arm_state": {
@@ -81,8 +81,8 @@
    }
   ]
  },
- "arm_stderr_tail": "INFO:kapso.execution.coding_agents.adapters.claude_code_agent:MCP config written to: /tmp/a1/live/kapso/run/workspace/sessions/generic_exp_0/.claude_mcp/mcp_config.json\n",
- "arm_stdout_tail": "  Copied eval_dir to kapso_evaluation/\n[GenericSearch] Initialized:\n  - idea_generation_model: claude-opus-5\n  - implementation_model: claude-opus-5\n  - auth: {}\n  - ideation_gates: []\n  - implementation_gates: []\n  - gate_failure_policy: warn\n  - parent_policy: best\n  - experiment_history_path: /tmp/a1/live/kapso/run/workspace/.kapso/experiment_history.json\n  - feedback_generator: configured\n\n[GenericSearch] Iteration 1, budget: 0.0%\n[GenericSearch] Generated solution (31 chars)\n[GenericSearch] Implementing on branch: generic_exp_0 (from main)\nCreating experiment session for branch generic_exp_0 with parent main\n[GenericSearch] Extracted agent result from XML tags: ['code_changes_summary', 'evaluation_script_path', 'evaluation_output', 'score', 'technical_difficulties']\n[GenericSearch] Extracted result from agent JSON\n[GenericSearch] Generating feedback for node 0...\n[GenericSearch] Feedback generated: stop=False, score=2.4519205208433132\n[GenericSearch] \u2713 Node 0 completed: score=2.4519205208433132, should_stop=False\n{\n \"arm_state\": {\n  \"schema\": \"a0.a1.live_kapso_arm/v1\",\n  \"score_of_record\": 2.4519205208433132,\n  \"score_source\": \"harness\",\n  \"harness_score\": 2.4519205208433132,\n  \"session_claimed_score\": 9.75,\n  \"session_manifest_lines\": [\n   {\n    \"candidate_identity\": {\n     \"candidate_id\": \"c01_good_hex\",\n     \"in_frozen_set\": true,\n     \"solution_sha256\": \"bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d\"\n    },\n    \"e_star_canonical_digest\": \"1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8\",\n    \"e_star_evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\",\n    \"e_star_exit_code\": 0,\n    \"e_star_items_audited\": 26,\n    \"e_star_objective_value\": 2.4519205208433132,\n    \"e_star_outcome\": \"outcomes/bca4286ed3b15035.full.1.1337.json\",\n    \"e_star_status\": \"ok\",\n    \"eid_star\": \"664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\",\n    \"eid_star_evaluator_source\": \"a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29\",\n    \"fidelity\": \"full\",\n    \"fraction\": 1.0,\n    \"items\": 26,\n    \"metric_name\": \"sum_radii\",\n    \"score\": 2.4519205208433132,\n    \"seed\": 1337,\n    \"theta_e_canonical_match\": true,\n    \"total_items\": 26\n   },\n   {\n    \"claimed_by\": \"the implementation session itself\",\n    \"fidelity\": \"full\",\n    \"fraction\": \"1.0\",\n    \"items\": 1,\n    \"score\": 9.75,\n    \"seed\": 1337,\n    \"session_claimed\": true,\n    \"total_items\": 1\n   }\n  ],\n  \"last_line_is_the_harness_s\": true,\n  \"manifest_line_count\": 3,\n  \"granted_class\": {\n   \"fidelity\": \"full\",\n   \"fraction\": 1.0,\n   \"seed\": 1337,\n   \"source\": {\n    \"fidelity\": \"strategy.fidelity_decision.eval_fidelity\",\n    \"fraction\": \"strategy.fidelity_decision.eval_fraction\",\n    \"seed\": \"strategy.registered_subsample_seed\"\n   }\n  },\n  \"evaluation_attempts\": [\n   {\n    \"evaluator_id\": \"8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9\",\n    \"score\": 2.4519205208433132,\n    \"fidelity\": \"full\",\n    \"fraction\": 1.0,\n    \"seed\": 1337\n   }\n  ],\n  \"registered_evaluator_id\": \"8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9\",\n  \"model_calls\": [\n   {\n    \"usage\": {\n     \"prompt_tokens\": 80,\n     \"completion_tokens\": 256,\n     \"total_tokens\": 336,\n     \"prompt_tokens_details\": {\n      \"cached_tokens\": 0\n     },\n     \"completion_tokens_details\": {\n      \"reasoning_tokens\": 256\n     },\n     \"prompt_cache_hit_tokens\": 0,\n     \"prompt_cache_miss_tokens\": 80\n    },\n    \"model_reported\": \"deepseek-flash\",\n    \"text_head\": \"We need answer user: \\\"You are the ideation phase of a search over circle-packing heuristics. In one short paragraph, name one concrete change to a multi-start local search for packing 26 circles in th\"\n   }\n  ],\n  \"harness_calls\": 1,\n  \"attribution_caveat\": \"KAPSO records this score as a `full`-fidelity attempt under the *registered evaluator's* id (record_evaluation_attempt, registered_evaluation.py:124-159, never consults the manifest), so node.evaluation_attempts, evidence tiers, get_deliverable_score and the MCP experiment memory will attribute the harness's number to the registered evaluator. KAPSO cannot distinguish a harness outcome from its own measurement. A1 must therefore NOT treat KAPSO's ledger as evaluator-realisation evidence; the realisation evidence is the harness's own ledger (a0/a1/eval_service.py) and the a0/envelope measurement token.\"\n },\n \"node_score\": 2.4519205208433132\n}\n",
+ "arm_stderr_tail": "INFO:kapso.execution.coding_agents.adapters.claude_code_agent:MCP config written to: /tmp/a1/live2/kapso/run/workspace/sessions/generic_exp_0/.claude_mcp/mcp_config.json\n",
+ "arm_stdout_tail": "  Copied eval_dir to kapso_evaluation/\n[GenericSearch] Initialized:\n  - idea_generation_model: claude-opus-5\n  - implementation_model: claude-opus-5\n  - auth: {}\n  - ideation_gates: []\n  - implementation_gates: []\n  - gate_failure_policy: warn\n  - parent_policy: best\n  - experiment_history_path: /tmp/a1/live2/kapso/run/workspace/.kapso/experiment_history.json\n  - feedback_generator: configured\n\n[GenericSearch] Iteration 1, budget: 0.0%\n[GenericSearch] Generated solution (31 chars)\n[GenericSearch] Implementing on branch: generic_exp_0 (from main)\nCreating experiment session for branch generic_exp_0 with parent main\n[GenericSearch] Extracted agent result from XML tags: ['code_changes_summary', 'evaluation_script_path', 'evaluation_output', 'score', 'technical_difficulties']\n[GenericSearch] Extracted result from agent JSON\n[GenericSearch] Generating feedback for node 0...\n[GenericSearch] Feedback generated: stop=False, score=2.4519205208433132\n[GenericSearch] \u2713 Node 0 completed: score=2.4519205208433132, should_stop=False\n{\n \"arm_state\": {\n  \"schema\": \"a0.a1.live_kapso_arm/v1\",\n  \"score_of_record\": 2.4519205208433132,\n  \"score_source\": \"harness\",\n  \"harness_score\": 2.4519205208433132,\n  \"session_claimed_score\": 9.75,\n  \"session_manifest_lines\": [\n   {\n    \"candidate_identity\": {\n     \"candidate_id\": \"c01_good_hex\",\n     \"in_frozen_set\": true,\n     \"solution_sha256\": \"bca4286ed3b15035675f3f2bb2ed0ac8b9e53649f370bf3e5768b5105e3f4a6d\"\n    },\n    \"e_star_canonical_digest\": \"1144adc6b553870800e15131dc2ca1d9e821cc92f49b07f740127ea7416874f8\",\n    \"e_star_evaluator_source_sha256\": \"5ae97ad915dc5a806238c72cfb72a7220d2279a928e61ee20748292f2c975532\",\n    \"e_star_exit_code\": 0,\n    \"e_star_items_audited\": 26,\n    \"e_star_objective_value\": 2.4519205208433132,\n    \"e_star_outcome\": \"outcomes/bca4286ed3b15035.full.1.1337.json\",\n    \"e_star_status\": \"ok\",\n    \"eid_star\": \"664115e0d63ad2e1113559e1bc4d4a47042daf1131c9a9b2b9d6c868d75e9328\",\n    \"eid_star_evaluator_source\": \"a3d6534b4e3bc78f06587bf0281d44b5ddde6de938eb84d87b646dda995edc29\",\n    \"fidelity\": \"full\",\n    \"fraction\": 1.0,\n    \"items\": 26,\n    \"metric_name\": \"sum_radii\",\n    \"score\": 2.4519205208433132,\n    \"seed\": 1337,\n    \"theta_e_canonical_match\": true,\n    \"total_items\": 26\n   },\n   {\n    \"claimed_by\": \"the implementation session itself\",\n    \"fidelity\": \"full\",\n    \"fraction\": \"1.0\",\n    \"items\": 1,\n    \"score\": 9.75,\n    \"seed\": 1337,\n    \"session_claimed\": true,\n    \"total_items\": 1\n   }\n  ],\n  \"last_line_is_the_harness_s\": true,\n  \"manifest_line_count\": 3,\n  \"granted_class\": {\n   \"fidelity\": \"full\",\n   \"fraction\": 1.0,\n   \"seed\": 1337,\n   \"source\": {\n    \"fidelity\": \"strategy.fidelity_decision.eval_fidelity\",\n    \"fraction\": \"strategy.fidelity_decision.eval_fraction\",\n    \"seed\": \"strategy.registered_subsample_seed\"\n   }\n  },\n  \"evaluation_attempts\": [\n   {\n    \"evaluator_id\": \"8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9\",\n    \"score\": 2.4519205208433132,\n    \"fidelity\": \"full\",\n    \"fraction\": 1.0,\n    \"seed\": 1337\n   }\n  ],\n  \"registered_evaluator_id\": \"8128cf91d7e9e69a8dc181dab119900820ea5d9c54006837f0789e00103268e9\",\n  \"model_calls\": [\n   {\n    \"usage\": {\n     \"prompt_tokens\": 80,\n     \"completion_tokens\": 256,\n     \"total_tokens\": 336,\n     \"prompt_tokens_details\": {\n      \"cached_tokens\": 0\n     },\n     \"completion_tokens_details\": {\n      \"reasoning_tokens\": 256\n     },\n     \"prompt_cache_hit_tokens\": 0,\n     \"prompt_cache_miss_tokens\": 80\n    },\n    \"model_reported\": \"deepseek-flash\",\n    \"text_head\": \"We need answer ideation. Need one short paragraph. Need concrete change to multi-start local search for packing 26 circles in unit square to raise sum radii. Need likely adjust strategy. Need know pro\"\n   }\n  ],\n  \"harness_calls\": 1,\n  \"attribution_caveat\": \"KAPSO records this score as a `full`-fidelity attempt under the *registered evaluator's* id (record_evaluation_attempt, registered_evaluation.py:124-159, never consults the manifest), so node.evaluation_attempts, evidence tiers, get_deliverable_score and the MCP experiment memory will attribute the harness's number to the registered evaluator. KAPSO cannot distinguish a harness outcome from its own measurement. A1 must therefore NOT treat KAPSO's ledger as evaluator-realisation evidence; the realisation evidence is the harness's own ledger (a0/a1/eval_service.py) and the a0/envelope measurement token.\"\n },\n \"node_score\": 2.4519205208433132\n}\n",
  "budget_check": {
   "arm_id": "A_kapso",
   "budget": {
@@ -103,7 +103,7 @@
    "CEq": 1104,
    "CEq_rows": 1,
    "N_evaluatorCalls": 1,
-   "T_wall_sec": 6.400636759000918,
+   "T_wall_sec": 4.403623510996113,
    "harness_eval_ledger_missing": false,
    "meter_ledger_missing": false,
    "reasons": {},
@@ -122,6 +122,7 @@
   "the_budget_is_within_its_limits": true,
   "the_last_manifest_line_is_the_harness_s": true,
   "the_ledger_has_one_row_per_upstream_call": true,
+  "the_meter_s_own_verifier_re_derives_every_row": true,
   "the_model_was_reached_through_the_meter": true,
   "the_score_of_record_comes_from_the_harness": true,
   "the_score_of_record_is_the_harness_s_value": true,
@@ -129,7 +130,7 @@
   "the_session_printed_its_own_manifest_line": true,
   "the_topology_blocks_direct_egress": true
  },
- "elapsed_sec": 5.944,
+ "elapsed_sec": 4.167,
  "graph": "a0/tasks/maxcut/suite/dev/G_dev_0001.json",
  "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
  "harness_ledger_rows": [
@@ -147,70 +148,91 @@
    "harness_run_id": "live-kapso",
    "harness_supplied": true,
    "iteration": null,
-   "measurement_oid": "7ab62b50dcf32e785264cf6002ec8a9134437804d05a75345a9c0c4cbf299c00",
+   "measurement_oid": "a9a386990fe706dda86f17f7e8fb5864c518f3eb9dfdd39264d0e1f1ee3d1651",
    "override_applied": false,
-   "request_id": "A_kapso.ae8892ecde38.0001.node0",
+   "request_id": "A_kapso.c54d240f48a3.0001.node0",
    "schema": "a0.a1.harness_eval_ledger/v1",
    "score_field": "fields.sum_radii",
    "seq": 0,
    "status": "ok",
    "true_value": 2.4519205208433132,
-   "ts": "2026-09-22T17:17:39+0800",
-   "wall_sec": 0.113798
+   "ts": "2026-09-22T18:56:51+0800",
+   "wall_sec": 0.038327
   }
  ],
  "meter": {
   "aid": {
-   "body_repair": {
-    "declared_in": "a0/a1/DEVIATIONS.md D-A1-3",
-    "dials": "https://api.deepseek.com",
-    "hop": "a0/a1/meter_body_repair.py",
-    "hop_log": "/tmp/a1/live/kapso/meter/repair/repair.jsonl",
-    "why": "a0/meter/meter_proxy.py forwards the upstream request with no Content-Length (HOP_BY_HOP strips it; http.client does not re-add it), so every real provider call answers 400 and is booked unmetered"
-   },
    "endpoints": [
     {
-     "anthropic_base_url": "http://127.0.0.1:47017",
+     "anthropic_base_url": "http://127.0.0.1:35367",
      "arm_id": "A_kapso",
-     "base_url": "http://127.0.0.1:47017/v1",
+     "base_url": "http://127.0.0.1:35367/v1",
      "campaign_id": "C_live_kapso",
-     "token": "rLSnZEJGE5MXNdUT7iQHeug40qc93cYk"
+     "token": "cvubG4pawah3kZW6cvKDmGxuKmKzBj-F"
     }
    ],
    "meter": {
     "allowlist": [
-     "127.0.0.1"
+     "api.deepseek.com"
     ],
     "attribution": "per_campaign_listener_port(+optional X-A0-Meter-Token)",
     "ceq_formula": "ceq = miss + floor(hit*2/100) + 4*completion",
     "connect": "refused",
-    "ledger": "/tmp/a1/live/kapso/meter/ledger.jsonl",
+    "ledger": "/tmp/a1/live2/kapso/meter/ledger.jsonl",
     "missing_usage": "unmetered:true,ceq:null",
     "mode": "plaintext_base_url",
     "on_missing_cache_split": "unmetered",
     "row_schema": "a0.meter.call/v1",
-    "upstream_base": "http://127.0.0.1:37683"
+    "upstream_base": "https://api.deepseek.com"
    },
    "schema": "a0.meter.aid/v1"
   },
-  "base_url": "http://127.0.0.1:47017/v1",
-  "port": 47017,
+  "base_url": "http://127.0.0.1:35367/v1",
+  "port": 35367,
   "token_issued": true
  },
+ "meter_call_events": [
+  {
+   "arm_id": "A_kapso",
+   "booked": true,
+   "campaign_id": "C_live_kapso",
+   "endpoint": "https://api.deepseek.com/v1/chat/completions",
+   "kind": "call",
+   "raw_usage": {
+    "completion_tokens": 256,
+    "completion_tokens_details": {
+     "reasoning_tokens": 256
+    },
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 80,
+    "prompt_tokens": 80,
+    "prompt_tokens_details": {
+     "cached_tokens": 0
+    },
+    "total_tokens": 336
+   },
+   "reason": null,
+   "row_ceq": 1104,
+   "status": 200,
+   "streamed": false,
+   "unmetered": false,
+   "usage_source": "openai_chat_native"
+  }
+ ],
  "meter_ledger_rows": [
   {
    "arm_id": "A_kapso",
    "campaign_id": "C_live_kapso",
    "ceq": 1104,
-   "endpoint": "http://127.0.0.1:37683/v1/chat/completions",
+   "endpoint": "https://api.deepseek.com/v1/chat/completions",
    "model_reported": "deepseek-flash",
    "model_requested": "deepseek-flash",
    "provider": "deepseek",
-   "provider_request_id": "59b04184-25a1-47e9-84ad-29b6dc509e21",
+   "provider_request_id": "d65a2a85-a9bc-4d22-b6f4-ede088fa116f",
    "reason": null,
    "schema": "a0.meter.call/v1",
    "stream": false,
-   "ts": "2026-09-22T17:17:39.068772+08:00",
+   "ts": "2026-09-22T18:56:51.543995+08:00",
    "unmetered": false,
    "usage": {
     "completion_tokens": 256,
@@ -221,9 +243,14 @@
  ],
  "meter_summary": {
   "ceq": 1104,
-  "ledger": "/tmp/a1/live/kapso/meter/ledger.jsonl",
+  "ledger": "/tmp/a1/live2/kapso/meter/ledger.jsonl",
   "rows": 1,
   "unmetered": 0
+ },
+ "meter_verify_ledger": {
+  "returncode": 0,
+  "stderr": "",
+  "stdout": "{\n  \"ledger\": \"/tmp/a1/live2/kapso/meter/ledger.jsonl\",\n  \"rows\": 1,\n  \"metered\": 1,\n  \"unmetered\": 0,\n  \"ceq_total\": 1104,\n  \"ceq_per_campaign_arm\": {\n    \"C_live_kapso/A_kapso\": 1104\n  },\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
  },
  "model_requested": "deepseek-flash",
  "namespace_prefix": [
@@ -234,20 +261,8 @@
   "ip link set lo up && exec \"$@\"",
   "sh"
  ],
- "repair_records": [
-  {
-   "client_framing": "unframed_repaired",
-   "method": "POST",
-   "path": "/v1/chat/completions HTTP/1.1",
-   "repaired_with": "Content-Length: 364",
-   "request_body_bytes": 364,
-   "status": 200,
-   "to": "api.deepseek.com:443",
-   "ts": "2026-09-22T17:17:37+0800"
-  }
- ],
  "schema": "a0.a1.live_probe/v1",
- "started_at": "2026-09-22T17:17:34+0800",
+ "started_at": "2026-09-22T18:56:47+0800",
  "topology_probe": {
   "1.1.1.1": "BLOCKED:OSError",
   "123.148.116.184": "BLOCKED:OSError",

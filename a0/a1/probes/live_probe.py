@@ -277,7 +277,10 @@ class LiveCampaign:
         # -- the arm's own recorded state ----------------------------------
         report["arm_state"] = self._arm_state()
         report["meter_ledger_rows"] = _ledger_rows(self.meter.ledger)
-        report["repair_records"] = self.meter.hop.records() if self.meter.hop is not None else []
+        report["meter_call_events"] = [
+            event for event in self.meter.call_events() if event.get("kind") == "call"
+        ]
+        report["meter_verify_ledger"] = self.meter.verify_ledger()
         report["harness_ledger_rows"] = _ledger_rows(self.harness.ledger_path)
         report["budget_check"] = self.enforcer.check(label="after-live-run")
         report["meter_summary"] = self.meter.ledger_summary()
@@ -366,14 +369,17 @@ class LiveCampaign:
             "every_metered_row_has_a_real_ceq": bool(model_rows) and all(
                 isinstance(row.get("ceq"), int) and row["ceq"] > 0 for row in model_rows
             ),
-            # Cross-checked against the repair hop's own log, which counts the
-            # requests that actually left this machine: one ledger row per
-            # upstream call, or the meter has a hole.
+            # Cross-checked against the proxy's own per-call sidecar (an
+            # independent count of the calls it handled) and against the meter's
+            # own ledger verifier, which re-derives every metered row's `ceq`
+            # from that row's usage. A ledger that is missing a row, or whose
+            # arithmetic is wrong, fails here rather than being trusted.
             "the_ledger_has_one_row_per_upstream_call": (
-                bool(report.get("repair_records"))
-                and len(model_rows) == len(
-                    [row for row in report["repair_records"] if row.get("status")]
-                )
+                bool(report.get("meter_call_events"))
+                and len(model_rows) == len(report["meter_call_events"])
+            ),
+            "the_meter_s_own_verifier_re_derives_every_row": (
+                (report.get("meter_verify_ledger") or {}).get("returncode") == 0
             ),
             "the_score_of_record_is_the_harness_s_value": (
                 score is not None and harness_value is not None and score == harness_value
@@ -651,7 +657,8 @@ def controls(out_dir: Path) -> dict:
 
     rows = _ledger_rows(meter.ledger)
     report["meter_ledger_rows"] = rows
-    report["repair_records"] = meter.hop.records() if meter.hop is not None else []
+    report["meter_call_events"] = [e for e in meter.call_events() if e.get("kind") == "call"]
+    report["meter_verify_ledger"] = meter.verify_ledger()
     report["checks"] = {
         "the_topology_refuses_a_direct_attempt": report["direct_attempt_inside_namespace"].startswith(
             "BLOCKED"
@@ -705,7 +712,7 @@ def _induced_unmetered(out: Path) -> dict:
             time.sleep(0.1)
         rows = _ledger_rows(meter.ledger)
         result["row"] = rows[-1] if rows else None
-        result["repair_records"] = meter.hop.records() if meter.hop is not None else []
+        result["meter_call_events"] = [e for e in meter.call_events() if e.get("kind") == "call"]
     finally:
         meter.stop()
     if result["row"] is not None:
