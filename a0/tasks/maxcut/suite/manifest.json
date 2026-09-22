@@ -1,0 +1,3974 @@
+{
+  "canonical_form": "json.dumps(obj, sort_keys=True, separators=(\",\", \":\"), ensure_ascii=True) + \"\\n\"",
+  "counts": {
+    "calibration": 12,
+    "dev": 24,
+    "eval": 24,
+    "total": 60
+  },
+  "family_summary": {
+    "BA": {
+      "generator": "ba_preferential",
+      "graphs": 12,
+      "strata": [
+        {
+          "components_max": 1,
+          "components_min": 1,
+          "degree_max": 39,
+          "degree_min": 2,
+          "edges_max": 253,
+          "edges_min": 253,
+          "edges_total": 1012,
+          "graphs": 4,
+          "isolated_total": 0,
+          "mean_degree_avg": "3.9531",
+          "params": {
+            "m": 2,
+            "model": "barabasi_albert",
+            "seed_graph": "complete_graph_on_m+1"
+          },
+          "stratum": "m2"
+        },
+        {
+          "components_max": 1,
+          "components_min": 1,
+          "degree_max": 50,
+          "degree_min": 3,
+          "edges_max": 378,
+          "edges_min": 378,
+          "edges_total": 1512,
+          "graphs": 4,
+          "isolated_total": 0,
+          "mean_degree_avg": "5.9063",
+          "params": {
+            "m": 3,
+            "model": "barabasi_albert",
+            "seed_graph": "complete_graph_on_m+1"
+          },
+          "stratum": "m3"
+        },
+        {
+          "components_max": 1,
+          "components_min": 1,
+          "degree_max": 43,
+          "degree_min": 5,
+          "edges_max": 625,
+          "edges_min": 625,
+          "edges_total": 2500,
+          "graphs": 4,
+          "isolated_total": 0,
+          "mean_degree_avg": "9.7656",
+          "params": {
+            "m": 5,
+            "model": "barabasi_albert",
+            "seed_graph": "complete_graph_on_m+1"
+          },
+          "stratum": "m5"
+        }
+      ]
+    },
+    "ER": {
+      "generator": "er_gnp",
+      "graphs": 12,
+      "strata": [
+        {
+          "components_max": 6,
+          "components_min": 1,
+          "degree_max": 10,
+          "degree_min": 0,
+          "edges_max": 265,
+          "edges_min": 251,
+          "edges_total": 1035,
+          "graphs": 4,
+          "isolated_total": 8,
+          "mean_degree_avg": "4.043",
+          "params": {
+            "model": "gnp",
+            "p": "0.030",
+            "p_den": 1000,
+            "p_num": 30
+          },
+          "stratum": "p030"
+        },
+        {
+          "components_max": 3,
+          "components_min": 1,
+          "degree_max": 14,
+          "degree_min": 0,
+          "edges_max": 433,
+          "edges_min": 376,
+          "edges_total": 1577,
+          "graphs": 4,
+          "isolated_total": 2,
+          "mean_degree_avg": "6.1602",
+          "params": {
+            "model": "gnp",
+            "p": "0.050",
+            "p_den": 1000,
+            "p_num": 50
+          },
+          "stratum": "p050"
+        },
+        {
+          "components_max": 1,
+          "components_min": 1,
+          "degree_max": 21,
+          "degree_min": 2,
+          "edges_max": 713,
+          "edges_min": 642,
+          "edges_total": 2711,
+          "graphs": 4,
+          "isolated_total": 0,
+          "mean_degree_avg": "10.5898",
+          "params": {
+            "model": "gnp",
+            "p": "0.080",
+            "p_den": 1000,
+            "p_num": 80
+          },
+          "stratum": "p080"
+        }
+      ]
+    },
+    "Planted": {
+      "generator": "planted_partition",
+      "graphs": 12,
+      "strata": [
+        {
+          "components_max": 2,
+          "components_min": 1,
+          "degree_max": 17,
+          "degree_min": 0,
+          "edges_max": 516,
+          "edges_min": 458,
+          "edges_total": 1982,
+          "graphs": 4,
+          "isolated_total": 1,
+          "mean_degree_avg": "7.7422",
+          "params": {
+            "community_sizes": [
+              64,
+              64
+            ],
+            "k": 2,
+            "model": "planted_partition",
+            "p_in": "0.100",
+            "p_in_den": 1000,
+            "p_in_num": 100,
+            "p_out": "0.020",
+            "p_out_den": 1000,
+            "p_out_num": 20
+          },
+          "stratum": "k2sym"
+        },
+        {
+          "components_max": 2,
+          "components_min": 1,
+          "degree_max": 14,
+          "degree_min": 0,
+          "edges_max": 447,
+          "edges_min": 414,
+          "edges_total": 1710,
+          "graphs": 4,
+          "isolated_total": 1,
+          "mean_degree_avg": "6.6797",
+          "params": {
+            "community_sizes": [
+              32,
+              32,
+              32,
+              32
+            ],
+            "k": 4,
+            "model": "planted_partition",
+            "p_in": "0.150",
+            "p_in_den": 1000,
+            "p_in_num": 150,
+            "p_out": "0.020",
+            "p_out_den": 1000,
+            "p_out_num": 20
+          },
+          "stratum": "k4sym"
+        },
+        {
+          "components_max": 1,
+          "components_min": 1,
+          "degree_max": 17,
+          "degree_min": 1,
+          "edges_max": 549,
+          "edges_min": 488,
+          "edges_total": 2106,
+          "graphs": 4,
+          "isolated_total": 0,
+          "mean_degree_avg": "8.2266",
+          "params": {
+            "community_sizes": [
+              64,
+              40,
+              24
+            ],
+            "k": 3,
+            "model": "planted_partition",
+            "p_in": "0.120",
+            "p_in_den": 1000,
+            "p_in_num": 120,
+            "p_out": "0.030",
+            "p_out_den": 1000,
+            "p_out_num": 30
+          },
+          "stratum": "k3asym"
+        }
+      ]
+    },
+    "RR": {
+      "generator": "rr_pairing",
+      "graphs": 12,
+      "strata": [
+        {
+          "components_max": 1,
+          "components_min": 1,
+          "degree_max": 3,
+          "degree_min": 3,
+          "edges_max": 192,
+          "edges_min": 192,
+          "edges_total": 768,
+          "graphs": 4,
+          "isolated_total": 0,
+          "mean_degree_avg": "3",
+          "params": {
+            "d": 3,
+            "model": "random_regular"
+          },
+          "stratum": "d3"
+        },
+        {
+          "components_max": 1,
+          "components_min": 1,
+          "degree_max": 4,
+          "degree_min": 4,
+          "edges_max": 256,
+          "edges_min": 256,
+          "edges_total": 1024,
+          "graphs": 4,
+          "isolated_total": 0,
+          "mean_degree_avg": "4",
+          "params": {
+            "d": 4,
+            "model": "random_regular"
+          },
+          "stratum": "d4"
+        },
+        {
+          "components_max": 1,
+          "components_min": 1,
+          "degree_max": 5,
+          "degree_min": 5,
+          "edges_max": 320,
+          "edges_min": 320,
+          "edges_total": 1280,
+          "graphs": 4,
+          "isolated_total": 0,
+          "mean_degree_avg": "5",
+          "params": {
+            "d": 5,
+            "model": "random_regular"
+          },
+          "stratum": "d5"
+        }
+      ]
+    }
+  },
+  "frozen_on": "2026-09-22",
+  "generator": {
+    "name": "generators/maxcut_suite.py",
+    "source_sha256": "7fac15234ae57ab922095d933affaec10f1d14457cdec57642befab9b876a4c2",
+    "version": "1.0.0"
+  },
+  "generator_config": {
+    "families": [
+      {
+        "family": "ER",
+        "generator": "er_gnp",
+        "rationale": "Uniform random graph G(n,p); the reference regime with no structure to exploit. p is kept in the sparse half so a random partition stays near 1/2 and the objective is not nearly saturated.",
+        "strata": [
+          {
+            "params": {
+              "model": "gnp",
+              "p": "0.030",
+              "p_den": 1000,
+              "p_num": 30
+            },
+            "stratum": "p030"
+          },
+          {
+            "params": {
+              "model": "gnp",
+              "p": "0.050",
+              "p_den": 1000,
+              "p_num": 50
+            },
+            "stratum": "p050"
+          },
+          {
+            "params": {
+              "model": "gnp",
+              "p": "0.080",
+              "p_den": 1000,
+              "p_num": 80
+            },
+            "stratum": "p080"
+          }
+        ]
+      },
+      {
+        "family": "RR",
+        "generator": "rr_pairing",
+        "rationale": "Exactly d-regular graphs, so the degree sequence carries no signal at all: whatever a solver finds comes from the arrangement, not from hub structure. d in {3,4,5} is the classic hard band for Max-Cut.",
+        "strata": [
+          {
+            "params": {
+              "d": 3,
+              "model": "random_regular"
+            },
+            "stratum": "d3"
+          },
+          {
+            "params": {
+              "d": 4,
+              "model": "random_regular"
+            },
+            "stratum": "d4"
+          },
+          {
+            "params": {
+              "d": 5,
+              "model": "random_regular"
+            },
+            "stratum": "d5"
+          }
+        ]
+      },
+      {
+        "family": "BA",
+        "generator": "ba_preferential",
+        "rationale": "Preferential attachment gives a heavy-tailed degree distribution and high-degree hubs; a solver that only reasons about average degree is penalised. m in {2,3,5} spans mean degree about 4 to about 10.",
+        "strata": [
+          {
+            "params": {
+              "m": 2,
+              "model": "barabasi_albert",
+              "seed_graph": "complete_graph_on_m+1"
+            },
+            "stratum": "m2"
+          },
+          {
+            "params": {
+              "m": 3,
+              "model": "barabasi_albert",
+              "seed_graph": "complete_graph_on_m+1"
+            },
+            "stratum": "m3"
+          },
+          {
+            "params": {
+              "m": 5,
+              "model": "barabasi_albert",
+              "seed_graph": "complete_graph_on_m+1"
+            },
+            "stratum": "m5"
+          }
+        ]
+      },
+      {
+        "family": "Planted",
+        "generator": "planted_partition",
+        "rationale": "Community structure where a non-trivial partition is known to the generator. p_in/p_out ratios of 4-7x make the structure real but not readable off a degree histogram; the label permutation is random so the partition cannot be inferred from the community sizes alone.",
+        "strata": [
+          {
+            "params": {
+              "community_sizes": [
+                64,
+                64
+              ],
+              "k": 2,
+              "model": "planted_partition",
+              "p_in": "0.100",
+              "p_in_den": 1000,
+              "p_in_num": 100,
+              "p_out": "0.020",
+              "p_out_den": 1000,
+              "p_out_num": 20
+            },
+            "stratum": "k2sym"
+          },
+          {
+            "params": {
+              "community_sizes": [
+                32,
+                32,
+                32,
+                32
+              ],
+              "k": 4,
+              "model": "planted_partition",
+              "p_in": "0.150",
+              "p_in_den": 1000,
+              "p_in_num": 150,
+              "p_out": "0.020",
+              "p_out_den": 1000,
+              "p_out_num": 20
+            },
+            "stratum": "k4sym"
+          },
+          {
+            "params": {
+              "community_sizes": [
+                64,
+                40,
+                24
+              ],
+              "k": 3,
+              "model": "planted_partition",
+              "p_in": "0.120",
+              "p_in_den": 1000,
+              "p_in_num": 120,
+              "p_out": "0.030",
+              "p_out_den": 1000,
+              "p_out_num": 30
+            },
+            "stratum": "k3asym"
+          }
+        ]
+      }
+    ],
+    "frozen_on": "2026-09-22",
+    "master_seed": 20260922,
+    "n": 128,
+    "notes": [
+      "dev and eval draw `reps` independent instances from every (family, stratum) cell; the role is part of the sha256 seed derivation, so no two graphs in the suite share a stream.",
+      "calibration draws one instance per (family, stratum) cell, i.e. 12 graphs, and enters no algorithmic selection (INTERFACE.md section 9).",
+      "Probability parameters are exact rationals (p_num/p_den); the decimal spelling is display only.",
+      "Changing master_seed (or any param) produces a different suite with the same procedure: `build --master-seed N --suite <other dir>`."
+    ],
+    "reps": {
+      "calibration": 1,
+      "dev": 2,
+      "eval": 2
+    },
+    "schema": "a0.maxcut.suite.config/v1",
+    "suite_version": "1.0.0"
+  },
+  "graphs": [
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "1": 8,
+          "10": 1,
+          "2": 14,
+          "3": 27,
+          "4": 34,
+          "5": 18,
+          "6": 13,
+          "7": 7,
+          "8": 4,
+          "9": 2
+        },
+        "max": 10,
+        "mean": "4.140625",
+        "mean_fraction": [
+          265,
+          64
+        ],
+        "median": "4",
+        "min": 1,
+        "std_floor": "1.844478",
+        "sum": 530
+      },
+      "edge_set_sha256": "7cb82a1467f51a8f23288051305590f5fd70f163a0a62d0ae19e4d195bf55283",
+      "edges": 265,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.030",
+          "p_den": 1000,
+          "p_num": 30
+        },
+        "seed": 11688815060946779192,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0001",
+      "graph_sha256": "94c713897fc1c5d4fba63e2212a5746c50e4726f67a8452e0a3ee5b0249063d6",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0001.json",
+      "role": "dev",
+      "stratum": "p030"
+    },
+    {
+      "components": {
+        "connected": false,
+        "count": 2,
+        "largest": 127,
+        "sizes": [
+          127,
+          1
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "0": 1,
+          "1": 6,
+          "10": 1,
+          "2": 18,
+          "3": 31,
+          "4": 18,
+          "5": 25,
+          "6": 16,
+          "7": 6,
+          "8": 4,
+          "9": 2
+        },
+        "max": 10,
+        "mean": "4.140625",
+        "mean_fraction": [
+          265,
+          64
+        ],
+        "median": "4",
+        "min": 0,
+        "std_floor": "1.902853",
+        "sum": 530
+      },
+      "edge_set_sha256": "ac4cebf57ddd7b1ccf9b154afbb265d0462dcb85bcb0895e6a0f78c575e60a20",
+      "edges": 265,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.030",
+          "p_den": 1000,
+          "p_num": 30
+        },
+        "seed": 18289274882342664138,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0002",
+      "graph_sha256": "e979e1fbfedc18de7647eb5c3376c169db8753d19c5d1dc17e5955ed9c35c23f",
+      "isolated_nodes": 1,
+      "n": 128,
+      "path": "dev/G_dev_0002.json",
+      "role": "dev",
+      "stratum": "p030"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "1": 2,
+          "10": 12,
+          "11": 4,
+          "12": 2,
+          "13": 1,
+          "2": 3,
+          "3": 5,
+          "4": 11,
+          "5": 17,
+          "6": 20,
+          "7": 25,
+          "8": 16,
+          "9": 10
+        },
+        "max": 13,
+        "mean": "6.765625",
+        "mean_fraction": [
+          433,
+          64
+        ],
+        "median": "7",
+        "min": 1,
+        "std_floor": "2.373303",
+        "sum": 866
+      },
+      "edge_set_sha256": "465788e28f0d7be9c0b33cdb51a5b17dd4dac46a8f805a4d46e054ca66e7eeeb",
+      "edges": 433,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.050",
+          "p_den": 1000,
+          "p_num": 50
+        },
+        "seed": 417917710433829879,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0003",
+      "graph_sha256": "6fbf68ab1e87548335d741e2d4deb59fbe0bb53321de6de5f051cda6de85a01f",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0003.json",
+      "role": "dev",
+      "stratum": "p050"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "1": 1,
+          "10": 7,
+          "11": 3,
+          "12": 1,
+          "2": 3,
+          "3": 10,
+          "4": 25,
+          "5": 19,
+          "6": 20,
+          "7": 17,
+          "8": 14,
+          "9": 8
+        },
+        "max": 12,
+        "mean": "6.015625",
+        "mean_fraction": [
+          385,
+          64
+        ],
+        "median": "6",
+        "min": 1,
+        "std_floor": "2.253415",
+        "sum": 770
+      },
+      "edge_set_sha256": "238ee0b5aeaa46fcd53ef61ba3e497d847f01195e13c8cd79273d948f1cc406a",
+      "edges": 385,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.050",
+          "p_den": 1000,
+          "p_num": 50
+        },
+        "seed": 13905876955090537676,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0004",
+      "graph_sha256": "65f480bbe6a0031d5c4421bd1821e1c5485503b86e7ef076e1421d420e36997b",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0004.json",
+      "role": "dev",
+      "stratum": "p050"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 12,
+          "11": 13,
+          "12": 20,
+          "13": 17,
+          "14": 7,
+          "15": 7,
+          "16": 7,
+          "19": 2,
+          "3": 1,
+          "6": 8,
+          "7": 14,
+          "8": 14,
+          "9": 6
+        },
+        "max": 19,
+        "mean": "10.875",
+        "mean_fraction": [
+          87,
+          8
+        ],
+        "median": "11",
+        "min": 3,
+        "std_floor": "3.079671",
+        "sum": 1392
+      },
+      "edge_set_sha256": "eea0018150d620d0993d2e411587cd107046f328f5f54d1340c0fbd3cd14d8a3",
+      "edges": 696,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.080",
+          "p_den": 1000,
+          "p_num": 80
+        },
+        "seed": 6688062751906282070,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0005",
+      "graph_sha256": "545769f217e02ba4fbc92ddcc71a08ff0a77e8efbabc36196f45a8c1622babbe",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0005.json",
+      "role": "dev",
+      "stratum": "p080"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 17,
+          "11": 13,
+          "12": 15,
+          "13": 9,
+          "14": 6,
+          "15": 9,
+          "17": 2,
+          "3": 2,
+          "4": 4,
+          "5": 2,
+          "6": 7,
+          "7": 10,
+          "8": 11,
+          "9": 21
+        },
+        "max": 17,
+        "mean": "10.03125",
+        "mean_fraction": [
+          321,
+          32
+        ],
+        "median": "10",
+        "min": 3,
+        "std_floor": "2.973680",
+        "sum": 1284
+      },
+      "edge_set_sha256": "8a8d9f73ee1afe5eaa5be796b45df08788bbb08a650aaeae0a52f88a7058e33a",
+      "edges": 642,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.080",
+          "p_den": 1000,
+          "p_num": 80
+        },
+        "seed": 5240569964253167767,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0006",
+      "graph_sha256": "ecc150196acb7449dddd1a9d460215cfd6cec9316db279188728b191bdf0af6a",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0006.json",
+      "role": "dev",
+      "stratum": "p080"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "3": 128
+        },
+        "max": 3,
+        "mean": "3",
+        "mean_fraction": [
+          3,
+          1
+        ],
+        "median": "3",
+        "min": 3,
+        "std_floor": "0.000000",
+        "sum": 384
+      },
+      "edge_set_sha256": "9bb5cc97e26720d6e0364d56e73972a882543d689fa867943098393d88b7913b",
+      "edges": 192,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 3,
+          "model": "random_regular"
+        },
+        "seed": 17880788323555729133,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0007",
+      "graph_sha256": "a0d1888b8b6e4ddf5b97b42e0b9eca8478ca1876f2f54e6190e1d6986a9d73e1",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0007.json",
+      "role": "dev",
+      "stratum": "d3"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "3": 128
+        },
+        "max": 3,
+        "mean": "3",
+        "mean_fraction": [
+          3,
+          1
+        ],
+        "median": "3",
+        "min": 3,
+        "std_floor": "0.000000",
+        "sum": 384
+      },
+      "edge_set_sha256": "5826d9ed681e39c9416bdffcb45106da8eec87f2617ca2337012f5d732f7c9e1",
+      "edges": 192,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 3,
+          "model": "random_regular"
+        },
+        "seed": 15990272345575364146,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0008",
+      "graph_sha256": "d6bbec3db24b5f3c6cd191ad0a367ae4b81d0f53ea9043264514af3080b8c7ee",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0008.json",
+      "role": "dev",
+      "stratum": "d3"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "4": 128
+        },
+        "max": 4,
+        "mean": "4",
+        "mean_fraction": [
+          4,
+          1
+        ],
+        "median": "4",
+        "min": 4,
+        "std_floor": "0.000000",
+        "sum": 512
+      },
+      "edge_set_sha256": "b70dec6587b821584bfa501b14845019ca51f15e76828340fe73ca257d238271",
+      "edges": 256,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 4,
+          "model": "random_regular"
+        },
+        "seed": 10749508940733141227,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0009",
+      "graph_sha256": "65dc0e1d0211d53eacd94d83ed23218f036f2187ed75a75aee5a282e9f016916",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0009.json",
+      "role": "dev",
+      "stratum": "d4"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "4": 128
+        },
+        "max": 4,
+        "mean": "4",
+        "mean_fraction": [
+          4,
+          1
+        ],
+        "median": "4",
+        "min": 4,
+        "std_floor": "0.000000",
+        "sum": 512
+      },
+      "edge_set_sha256": "04c51f1fb840d88860d42172f8d0ac1ee9b3d180bea3e4bbbb29929e2c501ec3",
+      "edges": 256,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 4,
+          "model": "random_regular"
+        },
+        "seed": 9832305326115869206,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0010",
+      "graph_sha256": "8d432a4a5c41e1209fece0dff2a8fec9e21c5a7a18616af906bec4975e1e486a",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0010.json",
+      "role": "dev",
+      "stratum": "d4"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "5": 128
+        },
+        "max": 5,
+        "mean": "5",
+        "mean_fraction": [
+          5,
+          1
+        ],
+        "median": "5",
+        "min": 5,
+        "std_floor": "0.000000",
+        "sum": 640
+      },
+      "edge_set_sha256": "a815501c6a596ccd183740eff450217e9b8c40ed4164b1304d63f55292cbec9f",
+      "edges": 320,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 5,
+          "model": "random_regular"
+        },
+        "seed": 2580911700877764124,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0011",
+      "graph_sha256": "5d573e57f92635ecc0ad8558c2f91bb3dfdb5da1a6e0a18b361b94714b9fb5ea",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0011.json",
+      "role": "dev",
+      "stratum": "d5"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "5": 128
+        },
+        "max": 5,
+        "mean": "5",
+        "mean_fraction": [
+          5,
+          1
+        ],
+        "median": "5",
+        "min": 5,
+        "std_floor": "0.000000",
+        "sum": 640
+      },
+      "edge_set_sha256": "0c636848b774660b5b9d9412a7fc2d0a0a2414be9750a6ef5adab142c9e4d5b6",
+      "edges": 320,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 5,
+          "model": "random_regular"
+        },
+        "seed": 6378860871926263841,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0012",
+      "graph_sha256": "0dd6d936c0fde4e3f7bb9673d567777a210ea501d953612e1b16197140992c1a",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0012.json",
+      "role": "dev",
+      "stratum": "d5"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 1,
+          "12": 1,
+          "14": 1,
+          "19": 1,
+          "2": 60,
+          "23": 1,
+          "3": 31,
+          "39": 1,
+          "4": 12,
+          "5": 6,
+          "6": 3,
+          "7": 4,
+          "8": 2,
+          "9": 4
+        },
+        "max": 39,
+        "mean": "3.953125",
+        "mean_fraction": [
+          253,
+          64
+        ],
+        "median": "3",
+        "min": 2,
+        "std_floor": "4.390791",
+        "sum": 506
+      },
+      "edge_set_sha256": "557bf66d4c3e71404a5aad0d3b1d9e4af66a16fefa6ff4b103ccb6ea2bc0d37e",
+      "edges": 253,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 2,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 9569816532978710673,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0013",
+      "graph_sha256": "9f9e6b1c22a747bd25d0de2b24dca8bd0e56537dff5f32c7040f512f8b8d738a",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0013.json",
+      "role": "dev",
+      "stratum": "m2"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 1,
+          "12": 2,
+          "14": 1,
+          "16": 1,
+          "2": 64,
+          "20": 1,
+          "27": 1,
+          "28": 1,
+          "3": 27,
+          "4": 12,
+          "5": 7,
+          "6": 4,
+          "7": 1,
+          "8": 1,
+          "9": 4
+        },
+        "max": 28,
+        "mean": "3.953125",
+        "mean_fraction": [
+          253,
+          64
+        ],
+        "median": "2.5",
+        "min": 2,
+        "std_floor": "4.145515",
+        "sum": 506
+      },
+      "edge_set_sha256": "cd06ce9b21f625ba730afea2533b544aa5770f5e4fedd8bef2d2733cc96af23a",
+      "edges": 253,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 2,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 7071388948998611393,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0014",
+      "graph_sha256": "e2910c706c433fc93873cf69c3b4bdef4a8a5c82d5055f98d7e47954f6575085",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0014.json",
+      "role": "dev",
+      "stratum": "m2"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 2,
+          "11": 1,
+          "12": 2,
+          "13": 3,
+          "15": 2,
+          "16": 1,
+          "18": 1,
+          "20": 1,
+          "25": 1,
+          "27": 1,
+          "29": 2,
+          "3": 56,
+          "4": 23,
+          "5": 10,
+          "6": 9,
+          "7": 4,
+          "8": 5,
+          "9": 4
+        },
+        "max": 29,
+        "mean": "5.90625",
+        "mean_fraction": [
+          189,
+          32
+        ],
+        "median": "4",
+        "min": 3,
+        "std_floor": "5.156060",
+        "sum": 756
+      },
+      "edge_set_sha256": "49961fe3ddda4e0220ff8ee3fd95f618e6f9a51fa78a8e33d47e7bcb2f405492",
+      "edges": 378,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 3,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 12079325153684786851,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0015",
+      "graph_sha256": "82e820ec5f0945387eb0e865bd77b1f9c69fed04f19a60d1b91fa08f1ef97bdf",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0015.json",
+      "role": "dev",
+      "stratum": "m3"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 3,
+          "11": 1,
+          "12": 2,
+          "13": 4,
+          "17": 1,
+          "19": 1,
+          "22": 1,
+          "26": 2,
+          "3": 52,
+          "30": 2,
+          "4": 19,
+          "5": 17,
+          "6": 13,
+          "7": 7,
+          "8": 2,
+          "9": 1
+        },
+        "max": 30,
+        "mean": "5.90625",
+        "mean_fraction": [
+          189,
+          32
+        ],
+        "median": "4",
+        "min": 3,
+        "std_floor": "5.171190",
+        "sum": 756
+      },
+      "edge_set_sha256": "8b54036863da0cfb0e3a83ced71ecbb6cf7b75301cbe411ee47b23fa40a41fc4",
+      "edges": 378,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 3,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 7231004955649420908,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0016",
+      "graph_sha256": "4f673d95a7b42d904459ba323f1ca90ea03c19642fdaf25fcfc5e1b33c7a3062",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0016.json",
+      "role": "dev",
+      "stratum": "m3"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 4,
+          "12": 2,
+          "13": 1,
+          "14": 4,
+          "15": 2,
+          "16": 2,
+          "17": 1,
+          "18": 1,
+          "19": 1,
+          "20": 1,
+          "22": 1,
+          "23": 2,
+          "24": 1,
+          "26": 1,
+          "27": 1,
+          "28": 2,
+          "29": 1,
+          "31": 1,
+          "35": 1,
+          "36": 1,
+          "40": 1,
+          "5": 35,
+          "6": 24,
+          "7": 14,
+          "8": 15,
+          "9": 8
+        },
+        "max": 40,
+        "mean": "9.765625",
+        "mean_fraction": [
+          625,
+          64
+        ],
+        "median": "7",
+        "min": 5,
+        "std_floor": "7.297778",
+        "sum": 1250
+      },
+      "edge_set_sha256": "086cfa14493e9c807b0e66f05f92b5388e7ee207a19bf6a5be67481196054609",
+      "edges": 625,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 5,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 14473068303064248234,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0017",
+      "graph_sha256": "631a1e5f5b6f78b6832614ea4cb27243ef9daeacf21ca7ad6388a7856cfeadaf",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0017.json",
+      "role": "dev",
+      "stratum": "m5"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 5,
+          "11": 8,
+          "12": 5,
+          "13": 5,
+          "15": 2,
+          "16": 1,
+          "17": 1,
+          "18": 2,
+          "19": 1,
+          "20": 1,
+          "21": 2,
+          "29": 2,
+          "30": 1,
+          "31": 2,
+          "32": 1,
+          "33": 1,
+          "34": 1,
+          "35": 1,
+          "5": 36,
+          "6": 24,
+          "7": 13,
+          "8": 9,
+          "9": 4
+        },
+        "max": 35,
+        "mean": "9.765625",
+        "mean_fraction": [
+          625,
+          64
+        ],
+        "median": "7",
+        "min": 5,
+        "std_floor": "7.077124",
+        "sum": 1250
+      },
+      "edge_set_sha256": "79b03205936ed530865f53ab0e54540f0109f83a8abf29b8230457b85ed39f07",
+      "edges": 625,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 5,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 8103274213193827111,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0018",
+      "graph_sha256": "5d239715a8f57394da83379cd1667e907c56810feff89b52a89dc4735de777b1",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0018.json",
+      "role": "dev",
+      "stratum": "m5"
+    },
+    {
+      "components": {
+        "connected": false,
+        "count": 2,
+        "largest": 127,
+        "sizes": [
+          127,
+          1
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "0": 1,
+          "10": 12,
+          "11": 9,
+          "12": 5,
+          "13": 2,
+          "14": 3,
+          "15": 1,
+          "2": 2,
+          "3": 3,
+          "4": 9,
+          "5": 10,
+          "6": 10,
+          "7": 20,
+          "8": 20,
+          "9": 21
+        },
+        "max": 15,
+        "mean": "7.890625",
+        "mean_fraction": [
+          505,
+          64
+        ],
+        "median": "8",
+        "min": 0,
+        "std_floor": "2.710611",
+        "sum": 1010
+      },
+      "edge_set_sha256": "4e26556cacc04abb471c5bfb8da4c6a682003de65c5cbfd66690deef5a7e80f8",
+      "edges": 505,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            64,
+            64
+          ],
+          "k": 2,
+          "model": "planted_partition",
+          "p_in": "0.100",
+          "p_in_den": 1000,
+          "p_in_num": 100,
+          "p_out": "0.020",
+          "p_out_den": 1000,
+          "p_out_num": 20
+        },
+        "seed": 2710780250033404024,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0019",
+      "graph_sha256": "f38353e0d8bd93bdd6e83d86961b8ad4efc9170d7ce521ca2bead2df7eadda03",
+      "isolated_nodes": 1,
+      "n": 128,
+      "path": "dev/G_dev_0019.json",
+      "role": "dev",
+      "stratum": "k2sym"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 9,
+          "11": 8,
+          "12": 5,
+          "13": 6,
+          "14": 3,
+          "15": 2,
+          "3": 4,
+          "4": 6,
+          "5": 10,
+          "6": 17,
+          "7": 21,
+          "8": 24,
+          "9": 13
+        },
+        "max": 15,
+        "mean": "8.0625",
+        "mean_fraction": [
+          129,
+          16
+        ],
+        "median": "8",
+        "min": 3,
+        "std_floor": "2.697655",
+        "sum": 1032
+      },
+      "edge_set_sha256": "dfb72ca36a59b1851ae8b994447b754a1a1ed4cee97c43ff2881e1be98712881",
+      "edges": 516,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            64,
+            64
+          ],
+          "k": 2,
+          "model": "planted_partition",
+          "p_in": "0.100",
+          "p_in_den": 1000,
+          "p_in_num": 100,
+          "p_out": "0.020",
+          "p_out_den": 1000,
+          "p_out_num": 20
+        },
+        "seed": 13740039378329510762,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0020",
+      "graph_sha256": "e4b435c89e9e3a6c6969748edf8b8c9c5a44e275357737c233244dec86192ae5",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0020.json",
+      "role": "dev",
+      "stratum": "k2sym"
+    },
+    {
+      "components": {
+        "connected": false,
+        "count": 2,
+        "largest": 127,
+        "sizes": [
+          127,
+          1
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "0": 1,
+          "1": 1,
+          "10": 5,
+          "11": 5,
+          "12": 2,
+          "2": 2,
+          "3": 11,
+          "4": 8,
+          "5": 20,
+          "6": 26,
+          "7": 18,
+          "8": 12,
+          "9": 17
+        },
+        "max": 12,
+        "mean": "6.484375",
+        "mean_fraction": [
+          415,
+          64
+        ],
+        "median": "6",
+        "min": 0,
+        "std_floor": "2.355128",
+        "sum": 830
+      },
+      "edge_set_sha256": "fdb14dcb796e22826f68a1c2665ae619695002119dd096d4c20872ae220ee9cb",
+      "edges": 415,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            32,
+            32,
+            32,
+            32
+          ],
+          "k": 4,
+          "model": "planted_partition",
+          "p_in": "0.150",
+          "p_in_den": 1000,
+          "p_in_num": 150,
+          "p_out": "0.020",
+          "p_out_den": 1000,
+          "p_out_num": 20
+        },
+        "seed": 18112764881569756678,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0021",
+      "graph_sha256": "8985adfdccbccad1ca9d9ba79f4829b78970cb05b261d2328aac92f923aa4425",
+      "isolated_nodes": 1,
+      "n": 128,
+      "path": "dev/G_dev_0021.json",
+      "role": "dev",
+      "stratum": "k4sym"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 8,
+          "11": 6,
+          "12": 3,
+          "13": 1,
+          "14": 1,
+          "2": 1,
+          "3": 7,
+          "4": 12,
+          "5": 15,
+          "6": 22,
+          "7": 22,
+          "8": 17,
+          "9": 13
+        },
+        "max": 14,
+        "mean": "6.984375",
+        "mean_fraction": [
+          447,
+          64
+        ],
+        "median": "7",
+        "min": 2,
+        "std_floor": "2.378235",
+        "sum": 894
+      },
+      "edge_set_sha256": "7e2055586cd999210290caf61840c3e496ba42a07b4a2c5e5ada36d8a3fb82e6",
+      "edges": 447,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            32,
+            32,
+            32,
+            32
+          ],
+          "k": 4,
+          "model": "planted_partition",
+          "p_in": "0.150",
+          "p_in_den": 1000,
+          "p_in_num": 150,
+          "p_out": "0.020",
+          "p_out_den": 1000,
+          "p_out_num": 20
+        },
+        "seed": 1045655587783600780,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0022",
+      "graph_sha256": "87989f83eaff51c481f21103aa9c1b9085542bd2fdad9fa9e3dd8999751a0c3e",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0022.json",
+      "role": "dev",
+      "stratum": "k4sym"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "1": 1,
+          "10": 12,
+          "11": 13,
+          "12": 4,
+          "13": 2,
+          "15": 1,
+          "2": 2,
+          "3": 6,
+          "4": 11,
+          "5": 11,
+          "6": 12,
+          "7": 14,
+          "8": 19,
+          "9": 20
+        },
+        "max": 15,
+        "mean": "7.625",
+        "mean_fraction": [
+          61,
+          8
+        ],
+        "median": "8",
+        "min": 1,
+        "std_floor": "2.707050",
+        "sum": 976
+      },
+      "edge_set_sha256": "754fc9a7912b5e3f0891a772982b5a2550ac67208e00c7e9c24e8abfa5ea1c24",
+      "edges": 488,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            64,
+            40,
+            24
+          ],
+          "k": 3,
+          "model": "planted_partition",
+          "p_in": "0.120",
+          "p_in_den": 1000,
+          "p_in_num": 120,
+          "p_out": "0.030",
+          "p_out_den": 1000,
+          "p_out_num": 30
+        },
+        "seed": 4799881627501118463,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0023",
+      "graph_sha256": "b3890fd842f84a32190e2129a75d84c6b3c0b078b8b56b8bc5647f0ef63c84a4",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0023.json",
+      "role": "dev",
+      "stratum": "k3asym"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 9,
+          "11": 19,
+          "12": 10,
+          "13": 7,
+          "14": 3,
+          "15": 1,
+          "16": 1,
+          "2": 2,
+          "3": 4,
+          "4": 5,
+          "5": 6,
+          "6": 17,
+          "7": 17,
+          "8": 15,
+          "9": 12
+        },
+        "max": 16,
+        "mean": "8.578125",
+        "mean_fraction": [
+          549,
+          64
+        ],
+        "median": "8",
+        "min": 2,
+        "std_floor": "2.962287",
+        "sum": 1098
+      },
+      "edge_set_sha256": "a0ee8fa5f0778a12828d6100849d4a9d9fde50f840e7600da9d30884bda5e3bb",
+      "edges": 549,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            64,
+            40,
+            24
+          ],
+          "k": 3,
+          "model": "planted_partition",
+          "p_in": "0.120",
+          "p_in_den": 1000,
+          "p_in_num": 120,
+          "p_out": "0.030",
+          "p_out_den": 1000,
+          "p_out_num": 30
+        },
+        "seed": 1207576178457844361,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_dev_0024",
+      "graph_sha256": "8ea3091cd8485325d1868e67bdde13a8d4aae40a9590fcc46095e9f531458b67",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "dev/G_dev_0024.json",
+      "role": "dev",
+      "stratum": "k3asym"
+    },
+    {
+      "components": {
+        "connected": false,
+        "count": 3,
+        "largest": 126,
+        "sizes": [
+          126,
+          1,
+          1
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "0": 2,
+          "1": 7,
+          "2": 20,
+          "3": 25,
+          "4": 28,
+          "5": 23,
+          "6": 11,
+          "7": 6,
+          "8": 3,
+          "9": 3
+        },
+        "max": 9,
+        "mean": "3.96875",
+        "mean_fraction": [
+          127,
+          32
+        ],
+        "median": "4",
+        "min": 0,
+        "std_floor": "1.862195",
+        "sum": 508
+      },
+      "edge_set_sha256": "b2508cfd032373c7cbfad2ce7a33eea6073e47b1246255ee6ac9ea5b1da5e996",
+      "edges": 254,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.030",
+          "p_den": 1000,
+          "p_num": 30
+        },
+        "seed": 1862154433841361988,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0001",
+      "graph_sha256": "0ec1485f9e8e9030daf591b193b30baee69409862198b056f43d73a1152517db",
+      "isolated_nodes": 2,
+      "n": 128,
+      "path": "eval/G_eval_0001.json",
+      "role": "eval",
+      "stratum": "p030"
+    },
+    {
+      "components": {
+        "connected": false,
+        "count": 6,
+        "largest": 123,
+        "sizes": [
+          123,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "0": 5,
+          "1": 8,
+          "10": 1,
+          "2": 18,
+          "3": 24,
+          "4": 24,
+          "5": 22,
+          "6": 13,
+          "7": 12,
+          "8": 1
+        },
+        "max": 10,
+        "mean": "3.921875",
+        "mean_fraction": [
+          251,
+          64
+        ],
+        "median": "4",
+        "min": 0,
+        "std_floor": "1.938948",
+        "sum": 502
+      },
+      "edge_set_sha256": "e39a7b54e4180e73bf8060c09ef3718caec53bfc862652e7149273f4ebe8876d",
+      "edges": 251,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.030",
+          "p_den": 1000,
+          "p_num": 30
+        },
+        "seed": 17956531129792028200,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0002",
+      "graph_sha256": "28f91de77e5b7786fa614eb34b2700cf234b5c1b01786133307e886da152925f",
+      "isolated_nodes": 5,
+      "n": 128,
+      "path": "eval/G_eval_0002.json",
+      "role": "eval",
+      "stratum": "p030"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "1": 2,
+          "10": 3,
+          "11": 1,
+          "12": 1,
+          "14": 1,
+          "2": 6,
+          "3": 8,
+          "4": 16,
+          "5": 21,
+          "6": 23,
+          "7": 22,
+          "8": 16,
+          "9": 8
+        },
+        "max": 14,
+        "mean": "5.984375",
+        "mean_fraction": [
+          383,
+          64
+        ],
+        "median": "6",
+        "min": 1,
+        "std_floor": "2.225506",
+        "sum": 766
+      },
+      "edge_set_sha256": "45ae8619723e05d9415fd3f9c1107491c688e7afc75e3e7138de062d7e217bf6",
+      "edges": 383,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.050",
+          "p_den": 1000,
+          "p_num": 50
+        },
+        "seed": 6659457918240039709,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0003",
+      "graph_sha256": "af86028590a1d6ae2d9fcea5ced0181ede6c2db35eae819a9795fe0ca474770c",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0003.json",
+      "role": "eval",
+      "stratum": "p050"
+    },
+    {
+      "components": {
+        "connected": false,
+        "count": 3,
+        "largest": 126,
+        "sizes": [
+          126,
+          1,
+          1
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "0": 2,
+          "1": 1,
+          "10": 5,
+          "11": 1,
+          "12": 1,
+          "13": 1,
+          "14": 1,
+          "2": 4,
+          "3": 12,
+          "4": 16,
+          "5": 26,
+          "6": 19,
+          "7": 18,
+          "8": 16,
+          "9": 5
+        },
+        "max": 14,
+        "mean": "5.875",
+        "mean_fraction": [
+          47,
+          8
+        ],
+        "median": "6",
+        "min": 0,
+        "std_floor": "2.401171",
+        "sum": 752
+      },
+      "edge_set_sha256": "68c53419946e63d6b66c4812477b275c8e0249a260b1683c8541bb25e8a2f445",
+      "edges": 376,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.050",
+          "p_den": 1000,
+          "p_num": 50
+        },
+        "seed": 1557810440886814996,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0004",
+      "graph_sha256": "14ad84ede77d4a9a49abd8e26cb660df3e067fb08beef3e644d8f85b8fc55bde",
+      "isolated_nodes": 2,
+      "n": 128,
+      "path": "eval/G_eval_0004.json",
+      "role": "eval",
+      "stratum": "p050"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 13,
+          "11": 22,
+          "12": 12,
+          "13": 12,
+          "14": 10,
+          "15": 6,
+          "16": 6,
+          "17": 4,
+          "18": 1,
+          "21": 1,
+          "4": 2,
+          "5": 2,
+          "6": 3,
+          "7": 4,
+          "8": 13,
+          "9": 17
+        },
+        "max": 21,
+        "mean": "11.140625",
+        "mean_fraction": [
+          713,
+          64
+        ],
+        "median": "11",
+        "min": 4,
+        "std_floor": "3.053518",
+        "sum": 1426
+      },
+      "edge_set_sha256": "acb1052c81ea8b1c47464aa72f21d18de23f0151987d7c77e1072dba39f53916",
+      "edges": 713,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.080",
+          "p_den": 1000,
+          "p_num": 80
+        },
+        "seed": 10339760038078006154,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0005",
+      "graph_sha256": "5429ebf76888593ff0289169d257b811adb2bf8f087735f7df2fbc106b88f215",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0005.json",
+      "role": "eval",
+      "stratum": "p080"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 18,
+          "11": 23,
+          "12": 12,
+          "13": 10,
+          "14": 6,
+          "15": 5,
+          "16": 3,
+          "17": 2,
+          "2": 1,
+          "3": 1,
+          "4": 1,
+          "5": 3,
+          "6": 2,
+          "7": 8,
+          "8": 17,
+          "9": 16
+        },
+        "max": 17,
+        "mean": "10.3125",
+        "mean_fraction": [
+          165,
+          16
+        ],
+        "median": "10",
+        "min": 2,
+        "std_floor": "2.777560",
+        "sum": 1320
+      },
+      "edge_set_sha256": "f1472a321d30c8c147d4a59973ecafa78516465d4736a08b1da1e5fead7586d2",
+      "edges": 660,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.080",
+          "p_den": 1000,
+          "p_num": 80
+        },
+        "seed": 8944892367059743685,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0006",
+      "graph_sha256": "2092f3f481e2d2f787df91b70e20b1e513ff184720e59c42ed7d255e2784c48e",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0006.json",
+      "role": "eval",
+      "stratum": "p080"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "3": 128
+        },
+        "max": 3,
+        "mean": "3",
+        "mean_fraction": [
+          3,
+          1
+        ],
+        "median": "3",
+        "min": 3,
+        "std_floor": "0.000000",
+        "sum": 384
+      },
+      "edge_set_sha256": "a547fe5904bda8983d4eefe65026df37ab108729d579bdcfb1337c573fec26af",
+      "edges": 192,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 3,
+          "model": "random_regular"
+        },
+        "seed": 9407106325649283022,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0007",
+      "graph_sha256": "1b925539cdb38d16734cba483c8767e0d116500bf7497639c14cc216617086af",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0007.json",
+      "role": "eval",
+      "stratum": "d3"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "3": 128
+        },
+        "max": 3,
+        "mean": "3",
+        "mean_fraction": [
+          3,
+          1
+        ],
+        "median": "3",
+        "min": 3,
+        "std_floor": "0.000000",
+        "sum": 384
+      },
+      "edge_set_sha256": "c0772c60761676c025ec5d1ceaecd50c7c8465cb00d50095520e102db5bc9edc",
+      "edges": 192,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 3,
+          "model": "random_regular"
+        },
+        "seed": 14984144361942569059,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0008",
+      "graph_sha256": "fd1d5c07338fe673b86f0a70c346d189ae3cb14edfd42c1d87bf0912500666c8",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0008.json",
+      "role": "eval",
+      "stratum": "d3"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "4": 128
+        },
+        "max": 4,
+        "mean": "4",
+        "mean_fraction": [
+          4,
+          1
+        ],
+        "median": "4",
+        "min": 4,
+        "std_floor": "0.000000",
+        "sum": 512
+      },
+      "edge_set_sha256": "fb37a20564e29dda8aab28a1f652db51806ef3dbaa6ad222c2901b813c836b33",
+      "edges": 256,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 4,
+          "model": "random_regular"
+        },
+        "seed": 14085475133560543422,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0009",
+      "graph_sha256": "a499c1ab72416c1d2992e856de4e09f20b088f91d03264f363331be4b088c1b6",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0009.json",
+      "role": "eval",
+      "stratum": "d4"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "4": 128
+        },
+        "max": 4,
+        "mean": "4",
+        "mean_fraction": [
+          4,
+          1
+        ],
+        "median": "4",
+        "min": 4,
+        "std_floor": "0.000000",
+        "sum": 512
+      },
+      "edge_set_sha256": "09d3e92c4df2e3a6e1509521efacc85f197d2653e80aef17ee0a46f2cd4fddd3",
+      "edges": 256,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 4,
+          "model": "random_regular"
+        },
+        "seed": 11059916192139509219,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0010",
+      "graph_sha256": "6ca4597fbfd03eb314faeb29f9ae6b7c0d5485e622ebe1fedebd7af93576352c",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0010.json",
+      "role": "eval",
+      "stratum": "d4"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "5": 128
+        },
+        "max": 5,
+        "mean": "5",
+        "mean_fraction": [
+          5,
+          1
+        ],
+        "median": "5",
+        "min": 5,
+        "std_floor": "0.000000",
+        "sum": 640
+      },
+      "edge_set_sha256": "d83a5ec2e92c236ca855d9434a37ed0b8219ffdff7b7a4f8d151e476bccfb6ae",
+      "edges": 320,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 5,
+          "model": "random_regular"
+        },
+        "seed": 8569569134924680292,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0011",
+      "graph_sha256": "a8234ece640fbba264f6df89ae0e0df9d50dfcd95cc75fd1c928413652a1923b",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0011.json",
+      "role": "eval",
+      "stratum": "d5"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "5": 128
+        },
+        "max": 5,
+        "mean": "5",
+        "mean_fraction": [
+          5,
+          1
+        ],
+        "median": "5",
+        "min": 5,
+        "std_floor": "0.000000",
+        "sum": 640
+      },
+      "edge_set_sha256": "334dca32d0a868c62a02fce248c53716a18109818ac654307c7445e2546d3511",
+      "edges": 320,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 5,
+          "model": "random_regular"
+        },
+        "seed": 6891455814049017880,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0012",
+      "graph_sha256": "d64604a1f13cfd7d7f3c6a96559a6d0182805607e87b6fde1256d65bef5e550b",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0012.json",
+      "role": "eval",
+      "stratum": "d5"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 2,
+          "12": 1,
+          "15": 1,
+          "19": 1,
+          "2": 53,
+          "20": 1,
+          "22": 1,
+          "27": 1,
+          "3": 34,
+          "4": 14,
+          "5": 11,
+          "6": 5,
+          "7": 2,
+          "8": 1
+        },
+        "max": 27,
+        "mean": "3.953125",
+        "mean_fraction": [
+          253,
+          64
+        ],
+        "median": "3",
+        "min": 2,
+        "std_floor": "3.854500",
+        "sum": 506
+      },
+      "edge_set_sha256": "571e17c51943da4ad383c8555cb512ae6c10e7a78677ac8e3d584efc71da30b4",
+      "edges": 253,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 2,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 15530829544696448365,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0013",
+      "graph_sha256": "a1989a39f18015ee8c67e7d5a4b1cf2ccd42b45aca416b4c4c2ddac1705f32b3",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0013.json",
+      "role": "eval",
+      "stratum": "m2"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 1,
+          "11": 1,
+          "14": 1,
+          "16": 1,
+          "19": 1,
+          "2": 68,
+          "29": 1,
+          "3": 22,
+          "32": 1,
+          "4": 10,
+          "5": 6,
+          "6": 7,
+          "7": 4,
+          "8": 3,
+          "9": 1
+        },
+        "max": 32,
+        "mean": "3.953125",
+        "mean_fraction": [
+          253,
+          64
+        ],
+        "median": "2",
+        "min": 2,
+        "std_floor": "4.329873",
+        "sum": 506
+      },
+      "edge_set_sha256": "da2c089bd56401285a30b5c3c84be65e8e7a5d78af01da82f66167211cbb2d74",
+      "edges": 253,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 2,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 2689300584571945466,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0014",
+      "graph_sha256": "f5fe0dc98f5b8abcd055ef2e3312cd5084bf5bebdb6343c9baf6d515aabce095",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0014.json",
+      "role": "eval",
+      "stratum": "m2"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 4,
+          "11": 2,
+          "12": 2,
+          "15": 2,
+          "17": 1,
+          "18": 1,
+          "22": 1,
+          "23": 1,
+          "24": 1,
+          "3": 45,
+          "4": 28,
+          "5": 17,
+          "50": 1,
+          "6": 10,
+          "7": 5,
+          "8": 4,
+          "9": 3
+        },
+        "max": 50,
+        "mean": "5.90625",
+        "mean_fraction": [
+          189,
+          32
+        ],
+        "median": "4",
+        "min": 3,
+        "std_floor": "5.589383",
+        "sum": 756
+      },
+      "edge_set_sha256": "1faba59f9a9e191312c2abbfe0185f2b990853a252c36c1a63a62d5a18c127f5",
+      "edges": 378,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 3,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 14395467857980747012,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0015",
+      "graph_sha256": "acbb79170fc4902a5d7c4602ff51e847da077274d60614a1702c4c29d8f5cc48",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0015.json",
+      "role": "eval",
+      "stratum": "m3"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "11": 2,
+          "12": 2,
+          "13": 2,
+          "14": 1,
+          "17": 1,
+          "21": 1,
+          "23": 1,
+          "24": 1,
+          "26": 2,
+          "3": 52,
+          "30": 1,
+          "33": 1,
+          "4": 28,
+          "5": 15,
+          "6": 7,
+          "7": 6,
+          "8": 2,
+          "9": 3
+        },
+        "max": 33,
+        "mean": "5.90625",
+        "mean_fraction": [
+          189,
+          32
+        ],
+        "median": "4",
+        "min": 3,
+        "std_floor": "5.578190",
+        "sum": 756
+      },
+      "edge_set_sha256": "fe240af59d5ee774021be79a80bf49ede5a2c1608dc1d356b553d9909d45fe19",
+      "edges": 378,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 3,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 18021109870703779983,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0016",
+      "graph_sha256": "e35415472ba6c88bd2a4a22f24ad704ec9808ea4a5e4e408118663b1bec51d63",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0016.json",
+      "role": "eval",
+      "stratum": "m3"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 4,
+          "11": 4,
+          "12": 7,
+          "13": 2,
+          "14": 3,
+          "15": 2,
+          "16": 1,
+          "17": 1,
+          "18": 3,
+          "19": 3,
+          "23": 3,
+          "24": 1,
+          "26": 1,
+          "29": 1,
+          "32": 1,
+          "33": 1,
+          "39": 2,
+          "5": 33,
+          "6": 21,
+          "7": 19,
+          "8": 10,
+          "9": 5
+        },
+        "max": 39,
+        "mean": "9.765625",
+        "mean_fraction": [
+          625,
+          64
+        ],
+        "median": "7",
+        "min": 5,
+        "std_floor": "6.876686",
+        "sum": 1250
+      },
+      "edge_set_sha256": "0852a8024e295e0f5a0141eefeccc4c2042343f44fdec6206efc26631a993173",
+      "edges": 625,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 5,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 2055357551481747141,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0017",
+      "graph_sha256": "0ccaef5923e0c5de3424a3ed0880d0647e6a24f4aa1f20eca1a5d92b4296b742",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0017.json",
+      "role": "eval",
+      "stratum": "m5"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 11,
+          "11": 9,
+          "12": 3,
+          "13": 1,
+          "14": 1,
+          "15": 1,
+          "16": 3,
+          "19": 2,
+          "20": 1,
+          "21": 1,
+          "22": 1,
+          "26": 1,
+          "32": 2,
+          "34": 1,
+          "35": 1,
+          "36": 2,
+          "43": 1,
+          "5": 33,
+          "6": 21,
+          "7": 14,
+          "8": 11,
+          "9": 7
+        },
+        "max": 43,
+        "mean": "9.765625",
+        "mean_fraction": [
+          625,
+          64
+        ],
+        "median": "7",
+        "min": 5,
+        "std_floor": "7.343666",
+        "sum": 1250
+      },
+      "edge_set_sha256": "9ae973f68f9f91e9077df23b4aec6ea681f1eccb36bdd0ba6b3a5fe8cfac27d0",
+      "edges": 625,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 5,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 4216399467355456182,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0018",
+      "graph_sha256": "26309b9d1d322ebe7cec4a7c9b05414935a19129b902c01c4e72c22006694db4",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0018.json",
+      "role": "eval",
+      "stratum": "m5"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "1": 1,
+          "10": 13,
+          "11": 12,
+          "12": 4,
+          "13": 1,
+          "14": 2,
+          "15": 1,
+          "17": 1,
+          "2": 1,
+          "3": 3,
+          "4": 11,
+          "5": 7,
+          "6": 14,
+          "7": 21,
+          "8": 23,
+          "9": 13
+        },
+        "max": 17,
+        "mean": "7.859375",
+        "mean_fraction": [
+          503,
+          64
+        ],
+        "median": "8",
+        "min": 1,
+        "std_floor": "2.706284",
+        "sum": 1006
+      },
+      "edge_set_sha256": "77c6154e404f9b58c21d8e79e29a420cfff8d35a9a0cc170c9a2898fea344369",
+      "edges": 503,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            64,
+            64
+          ],
+          "k": 2,
+          "model": "planted_partition",
+          "p_in": "0.100",
+          "p_in_den": 1000,
+          "p_in_num": 100,
+          "p_out": "0.020",
+          "p_out_den": 1000,
+          "p_out_num": 20
+        },
+        "seed": 1104884150344291150,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0019",
+      "graph_sha256": "ce92ed83e52a8ddd22a694f7d8f4af2c9f6b367a35420b8832219d606fb79144",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0019.json",
+      "role": "eval",
+      "stratum": "k2sym"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "1": 1,
+          "10": 12,
+          "11": 8,
+          "12": 3,
+          "13": 2,
+          "15": 1,
+          "2": 1,
+          "3": 7,
+          "4": 11,
+          "5": 16,
+          "6": 20,
+          "7": 16,
+          "8": 19,
+          "9": 11
+        },
+        "max": 15,
+        "mean": "7.15625",
+        "mean_fraction": [
+          229,
+          32
+        ],
+        "median": "7",
+        "min": 1,
+        "std_floor": "2.596384",
+        "sum": 916
+      },
+      "edge_set_sha256": "5825018e27d872160dac3e95b7aff153b15201c67fb64ef82cc9ad9ed005874f",
+      "edges": 458,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            64,
+            64
+          ],
+          "k": 2,
+          "model": "planted_partition",
+          "p_in": "0.100",
+          "p_in_den": 1000,
+          "p_in_num": 100,
+          "p_out": "0.020",
+          "p_out_den": 1000,
+          "p_out_num": 20
+        },
+        "seed": 14147014089001544631,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0020",
+      "graph_sha256": "3c8ffe91686d8fd8061995fba40ea596314a977ca4d9aa9ba2da259f59e724fd",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0020.json",
+      "role": "eval",
+      "stratum": "k2sym"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "1": 1,
+          "10": 3,
+          "11": 4,
+          "12": 3,
+          "2": 4,
+          "3": 11,
+          "4": 8,
+          "5": 11,
+          "6": 34,
+          "7": 16,
+          "8": 24,
+          "9": 9
+        },
+        "max": 12,
+        "mean": "6.46875",
+        "mean_fraction": [
+          207,
+          32
+        ],
+        "median": "6",
+        "min": 1,
+        "std_floor": "2.256717",
+        "sum": 828
+      },
+      "edge_set_sha256": "ebe193fb2b70d106c0d0b5b1872e583f5a7ce16cc9ffe61748cbc0b26520b1e3",
+      "edges": 414,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            32,
+            32,
+            32,
+            32
+          ],
+          "k": 4,
+          "model": "planted_partition",
+          "p_in": "0.150",
+          "p_in_den": 1000,
+          "p_in_num": 150,
+          "p_out": "0.020",
+          "p_out_den": 1000,
+          "p_out_num": 20
+        },
+        "seed": 12042282828695831721,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0021",
+      "graph_sha256": "5f36a093a4b58d4a67b118ff9e9941a5bc517ed400f3749b27b8ee3ea1a92514",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0021.json",
+      "role": "eval",
+      "stratum": "k4sym"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 8,
+          "11": 4,
+          "12": 1,
+          "13": 1,
+          "2": 2,
+          "3": 3,
+          "4": 15,
+          "5": 19,
+          "6": 26,
+          "7": 14,
+          "8": 18,
+          "9": 17
+        },
+        "max": 13,
+        "mean": "6.78125",
+        "mean_fraction": [
+          217,
+          32
+        ],
+        "median": "6",
+        "min": 2,
+        "std_floor": "2.186383",
+        "sum": 868
+      },
+      "edge_set_sha256": "ea417e2537451d0b5d55aee50d38df97eacc9a0655555b96f34cf7e5130ede38",
+      "edges": 434,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            32,
+            32,
+            32,
+            32
+          ],
+          "k": 4,
+          "model": "planted_partition",
+          "p_in": "0.150",
+          "p_in_den": 1000,
+          "p_in_num": 150,
+          "p_out": "0.020",
+          "p_out_den": 1000,
+          "p_out_num": 20
+        },
+        "seed": 6382362943575511640,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0022",
+      "graph_sha256": "e32f647ad091eaa8fa8ffc2b748caac8005512e3bb552e925ab7b33a559e2bc8",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0022.json",
+      "role": "eval",
+      "stratum": "k4sym"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 14,
+          "11": 9,
+          "12": 11,
+          "13": 6,
+          "14": 3,
+          "15": 1,
+          "16": 2,
+          "17": 1,
+          "2": 2,
+          "3": 4,
+          "4": 8,
+          "5": 7,
+          "6": 20,
+          "7": 16,
+          "8": 12,
+          "9": 12
+        },
+        "max": 17,
+        "mean": "8.390625",
+        "mean_fraction": [
+          537,
+          64
+        ],
+        "median": "8",
+        "min": 2,
+        "std_floor": "3.162856",
+        "sum": 1074
+      },
+      "edge_set_sha256": "6d6912992722b304a0cef87533db917d326a4790640a6d26946a7d2e26bbf899",
+      "edges": 537,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            64,
+            40,
+            24
+          ],
+          "k": 3,
+          "model": "planted_partition",
+          "p_in": "0.120",
+          "p_in_den": 1000,
+          "p_in_num": 120,
+          "p_out": "0.030",
+          "p_out_den": 1000,
+          "p_out_num": 30
+        },
+        "seed": 9911445532992495544,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0023",
+      "graph_sha256": "7b40c996df18ae10fd5baa656a9a2feaedc42aa7bf92d137d85b689d528f29cc",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0023.json",
+      "role": "eval",
+      "stratum": "k3asym"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 7,
+          "11": 17,
+          "12": 11,
+          "13": 5,
+          "14": 2,
+          "15": 4,
+          "2": 1,
+          "3": 5,
+          "4": 11,
+          "5": 8,
+          "6": 12,
+          "7": 21,
+          "8": 14,
+          "9": 10
+        },
+        "max": 15,
+        "mean": "8.3125",
+        "mean_fraction": [
+          133,
+          16
+        ],
+        "median": "8",
+        "min": 2,
+        "std_floor": "3.094223",
+        "sum": 1064
+      },
+      "edge_set_sha256": "b7048d6a9e0ff886c5791bef3d66659edc4e9420f1841d339480b108969811e4",
+      "edges": 532,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            64,
+            40,
+            24
+          ],
+          "k": 3,
+          "model": "planted_partition",
+          "p_in": "0.120",
+          "p_in_den": 1000,
+          "p_in_num": 120,
+          "p_out": "0.030",
+          "p_out_den": 1000,
+          "p_out_num": 30
+        },
+        "seed": 16234306853548337309,
+        "version": "1.0.0"
+      },
+      "graph_id": "G_eval_0024",
+      "graph_sha256": "bf8f1b6f10ca09e7ec6a9b685925f74b4535c03ac99fa359911bb1e684816637",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "eval/G_eval_0024.json",
+      "role": "eval",
+      "stratum": "k3asym"
+    },
+    {
+      "components": {
+        "connected": false,
+        "count": 2,
+        "largest": 127,
+        "sizes": [
+          127,
+          1
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "0": 1,
+          "1": 14,
+          "10": 1,
+          "2": 16,
+          "3": 28,
+          "4": 28,
+          "5": 14,
+          "6": 18,
+          "7": 6,
+          "9": 2
+        },
+        "max": 10,
+        "mean": "3.828125",
+        "mean_fraction": [
+          245,
+          64
+        ],
+        "median": "4",
+        "min": 0,
+        "std_floor": "1.887911",
+        "sum": 490
+      },
+      "edge_set_sha256": "dd969058571b9c0d7b7eaba084cf7925d791d8e42bb1a04f8712e3899d6710ff",
+      "edges": 245,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.030",
+          "p_den": 1000,
+          "p_num": 30
+        },
+        "seed": 7969978513413158592,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0001",
+      "graph_sha256": "8c23cbb224a31dbea8ccf28fb6db7b26d182f72c3abada9354a247d13cb7ad29",
+      "isolated_nodes": 1,
+      "n": 128,
+      "path": "calibration/C_0001.json",
+      "role": "calibration",
+      "stratum": "p030"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "1": 2,
+          "10": 5,
+          "11": 1,
+          "12": 3,
+          "2": 10,
+          "3": 11,
+          "4": 16,
+          "5": 17,
+          "6": 24,
+          "7": 14,
+          "8": 12,
+          "9": 13
+        },
+        "max": 12,
+        "mean": "5.90625",
+        "mean_fraction": [
+          189,
+          32
+        ],
+        "median": "6",
+        "min": 1,
+        "std_floor": "2.469936",
+        "sum": 756
+      },
+      "edge_set_sha256": "19ad2c4eb0fa2c31e1fb4ebb71adb3243fae73aa3abbc708ed786fec1cf34f4d",
+      "edges": 378,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.050",
+          "p_den": 1000,
+          "p_num": 50
+        },
+        "seed": 7559906713061645203,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0002",
+      "graph_sha256": "99710028c7d66594d3c6bd7620855c02412f9c2f78efdaa7b0ff2448333c255f",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "calibration/C_0002.json",
+      "role": "calibration",
+      "stratum": "p050"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 20,
+          "11": 15,
+          "12": 8,
+          "13": 15,
+          "14": 2,
+          "15": 6,
+          "16": 2,
+          "17": 2,
+          "4": 2,
+          "5": 9,
+          "6": 5,
+          "7": 7,
+          "8": 15,
+          "9": 20
+        },
+        "max": 17,
+        "mean": "9.9375",
+        "mean_fraction": [
+          159,
+          16
+        ],
+        "median": "10",
+        "min": 4,
+        "std_floor": "2.868879",
+        "sum": 1272
+      },
+      "edge_set_sha256": "4c36b30fd06d06b4a7cfbc4b45e5e28660f095e17b84d67bdf2fd455f2e0178a",
+      "edges": 636,
+      "family": "ER",
+      "generator": {
+        "name": "er_gnp",
+        "params": {
+          "model": "gnp",
+          "p": "0.080",
+          "p_den": 1000,
+          "p_num": 80
+        },
+        "seed": 10704346571011113564,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0003",
+      "graph_sha256": "0e3f49d6ec062ba5ca4ce84323e3f035fa9bf807a02d9f4ad9d070c69be2d36e",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "calibration/C_0003.json",
+      "role": "calibration",
+      "stratum": "p080"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "3": 128
+        },
+        "max": 3,
+        "mean": "3",
+        "mean_fraction": [
+          3,
+          1
+        ],
+        "median": "3",
+        "min": 3,
+        "std_floor": "0.000000",
+        "sum": 384
+      },
+      "edge_set_sha256": "96ed1be6b16b1187c9e954bf94c31b05f3f8b048705d0cd64f12da6cc838816f",
+      "edges": 192,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 3,
+          "model": "random_regular"
+        },
+        "seed": 6521567538684796204,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0004",
+      "graph_sha256": "0431a497c0462ffe44b697cdfeb265e76c56e64f1670eb1607eb232daa79a17e",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "calibration/C_0004.json",
+      "role": "calibration",
+      "stratum": "d3"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "4": 128
+        },
+        "max": 4,
+        "mean": "4",
+        "mean_fraction": [
+          4,
+          1
+        ],
+        "median": "4",
+        "min": 4,
+        "std_floor": "0.000000",
+        "sum": 512
+      },
+      "edge_set_sha256": "b1c587e9bc78d3ac131a08fa0c127b1c57bb3c7dc533ad335a6fe16d12c0b1ef",
+      "edges": 256,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 4,
+          "model": "random_regular"
+        },
+        "seed": 11964271448873000187,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0005",
+      "graph_sha256": "385256224954c6ce9a84e05264f09c754a86b6bed6f4b0bd41b369f301086c17",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "calibration/C_0005.json",
+      "role": "calibration",
+      "stratum": "d4"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "5": 128
+        },
+        "max": 5,
+        "mean": "5",
+        "mean_fraction": [
+          5,
+          1
+        ],
+        "median": "5",
+        "min": 5,
+        "std_floor": "0.000000",
+        "sum": 640
+      },
+      "edge_set_sha256": "1efe5db045f35b9d778305be9956b4430fe591c9253637972c5346dce9b693f0",
+      "edges": 320,
+      "family": "RR",
+      "generator": {
+        "name": "rr_pairing",
+        "params": {
+          "d": 5,
+          "model": "random_regular"
+        },
+        "seed": 4214058937073828296,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0006",
+      "graph_sha256": "b42f39d3431800fd9d7988131d6fa786c0b91fd26abf7ef5fafb55dc9f17394e",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "calibration/C_0006.json",
+      "role": "calibration",
+      "stratum": "d5"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "14": 1,
+          "16": 1,
+          "17": 1,
+          "18": 1,
+          "19": 1,
+          "2": 62,
+          "21": 1,
+          "3": 21,
+          "4": 14,
+          "5": 7,
+          "6": 8,
+          "7": 7,
+          "8": 1,
+          "9": 2
+        },
+        "max": 21,
+        "mean": "3.953125",
+        "mean_fraction": [
+          253,
+          64
+        ],
+        "median": "3",
+        "min": 2,
+        "std_floor": "3.490745",
+        "sum": 506
+      },
+      "edge_set_sha256": "c61a560266d2e2b941462ca8c8db595a675789d2ae22bda35d1c2a5415c6ac31",
+      "edges": 253,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 2,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 81491076433803753,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0007",
+      "graph_sha256": "12b53751d29caf1c7fa9333ccfb5bbeb1da9b96d096e0b6433431642b0cca4ee",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "calibration/C_0007.json",
+      "role": "calibration",
+      "stratum": "m2"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 7,
+          "11": 2,
+          "12": 1,
+          "14": 1,
+          "15": 1,
+          "16": 1,
+          "22": 2,
+          "3": 49,
+          "30": 2,
+          "4": 29,
+          "42": 1,
+          "5": 15,
+          "6": 8,
+          "7": 2,
+          "8": 2,
+          "9": 5
+        },
+        "max": 42,
+        "mean": "5.90625",
+        "mean_fraction": [
+          189,
+          32
+        ],
+        "median": "4",
+        "min": 3,
+        "std_floor": "5.610310",
+        "sum": 756
+      },
+      "edge_set_sha256": "e09403f9a8bba067b33e85466ef38a3d640e5741f1168ddc968f06879923a642",
+      "edges": 378,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 3,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 424079409837433903,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0008",
+      "graph_sha256": "39504232beff0c326cca31e883a365d0711d3d42add1b173386b35dc7d7233ce",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "calibration/C_0008.json",
+      "role": "calibration",
+      "stratum": "m3"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 3,
+          "11": 5,
+          "12": 4,
+          "13": 1,
+          "14": 5,
+          "15": 4,
+          "16": 2,
+          "18": 1,
+          "19": 2,
+          "20": 1,
+          "23": 2,
+          "25": 1,
+          "26": 1,
+          "27": 1,
+          "30": 1,
+          "35": 1,
+          "36": 2,
+          "39": 1,
+          "5": 34,
+          "6": 24,
+          "7": 14,
+          "8": 8,
+          "9": 10
+        },
+        "max": 39,
+        "mean": "9.765625",
+        "mean_fraction": [
+          625,
+          64
+        ],
+        "median": "7",
+        "min": 5,
+        "std_floor": "7.031718",
+        "sum": 1250
+      },
+      "edge_set_sha256": "fde994b6da65dcfcae63fe6a750aba6d16a16b31de0d74fdbc4432af12e0e6e9",
+      "edges": 625,
+      "family": "BA",
+      "generator": {
+        "name": "ba_preferential",
+        "params": {
+          "m": 5,
+          "model": "barabasi_albert",
+          "seed_graph": "complete_graph_on_m+1"
+        },
+        "seed": 15810076018410972105,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0009",
+      "graph_sha256": "045f75500fc44e2c8fcf314309de6924a5d710be768e269efeed901ff37fad03",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "calibration/C_0009.json",
+      "role": "calibration",
+      "stratum": "m5"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "10": 6,
+          "11": 5,
+          "12": 5,
+          "2": 4,
+          "3": 5,
+          "4": 14,
+          "5": 13,
+          "6": 22,
+          "7": 25,
+          "8": 15,
+          "9": 14
+        },
+        "max": 12,
+        "mean": "6.8125",
+        "mean_fraction": [
+          109,
+          16
+        ],
+        "median": "7",
+        "min": 2,
+        "std_floor": "2.347704",
+        "sum": 872
+      },
+      "edge_set_sha256": "8c49bbef38a806a54a6e30eeeabf56c8b9915350f4abbdda0b1ceb45a4525b02",
+      "edges": 436,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            64,
+            64
+          ],
+          "k": 2,
+          "model": "planted_partition",
+          "p_in": "0.100",
+          "p_in_den": 1000,
+          "p_in_num": 100,
+          "p_out": "0.020",
+          "p_out_den": 1000,
+          "p_out_num": 20
+        },
+        "seed": 12365602302982858284,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0010",
+      "graph_sha256": "7107d3cd0a930fcfcd4fa5cec6abbd91fd3b5bebc4dfc6c6e28e260af1e86c20",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "calibration/C_0010.json",
+      "role": "calibration",
+      "stratum": "k2sym"
+    },
+    {
+      "components": {
+        "connected": true,
+        "count": 1,
+        "largest": 128,
+        "sizes": [
+          128
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "1": 1,
+          "10": 4,
+          "11": 6,
+          "12": 2,
+          "2": 3,
+          "3": 8,
+          "4": 17,
+          "5": 19,
+          "6": 15,
+          "7": 23,
+          "8": 15,
+          "9": 15
+        },
+        "max": 12,
+        "mean": "6.484375",
+        "mean_fraction": [
+          415,
+          64
+        ],
+        "median": "7",
+        "min": 1,
+        "std_floor": "2.348484",
+        "sum": 830
+      },
+      "edge_set_sha256": "ad8ccf05ba16b2856c6363c0895686fbd4801a629c20b089a34b58ee2c25693c",
+      "edges": 415,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            32,
+            32,
+            32,
+            32
+          ],
+          "k": 4,
+          "model": "planted_partition",
+          "p_in": "0.150",
+          "p_in_den": 1000,
+          "p_in_num": 150,
+          "p_out": "0.020",
+          "p_out_den": 1000,
+          "p_out_num": 20
+        },
+        "seed": 7032164315778358518,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0011",
+      "graph_sha256": "04bebec51fb43c0fccd8b56da7045868629ce49caa5aecf49ece98f60628c6e6",
+      "isolated_nodes": 0,
+      "n": 128,
+      "path": "calibration/C_0011.json",
+      "role": "calibration",
+      "stratum": "k4sym"
+    },
+    {
+      "components": {
+        "connected": false,
+        "count": 3,
+        "largest": 126,
+        "sizes": [
+          126,
+          1,
+          1
+        ]
+      },
+      "degree": {
+        "histogram": {
+          "0": 2,
+          "10": 11,
+          "11": 9,
+          "12": 5,
+          "13": 6,
+          "14": 1,
+          "15": 1,
+          "16": 2,
+          "18": 2,
+          "2": 1,
+          "3": 7,
+          "4": 7,
+          "5": 11,
+          "6": 14,
+          "7": 11,
+          "8": 19,
+          "9": 19
+        },
+        "max": 18,
+        "mean": "8.078125",
+        "mean_fraction": [
+          517,
+          64
+        ],
+        "median": "8",
+        "min": 0,
+        "std_floor": "3.310988",
+        "sum": 1034
+      },
+      "edge_set_sha256": "461b91d12b51318f6fbdc96dcb50e11ccf409970a9812bc165410ed866d9e741",
+      "edges": 517,
+      "family": "Planted",
+      "generator": {
+        "name": "planted_partition",
+        "params": {
+          "community_sizes": [
+            64,
+            40,
+            24
+          ],
+          "k": 3,
+          "model": "planted_partition",
+          "p_in": "0.120",
+          "p_in_den": 1000,
+          "p_in_num": 120,
+          "p_out": "0.030",
+          "p_out_den": 1000,
+          "p_out_num": 30
+        },
+        "seed": 17573595261295861258,
+        "version": "1.0.0"
+      },
+      "graph_id": "C_0012",
+      "graph_sha256": "204c62f040b44b21cc7182bcfc2c789f5c6b5a41b9a74f131cdfdbea432ed415",
+      "isolated_nodes": 2,
+      "n": 128,
+      "path": "calibration/C_0012.json",
+      "role": "calibration",
+      "stratum": "k3asym"
+    }
+  ],
+  "identity": "graph identity = sha256 of the canonical bytes of <role>/<graph_id>.json; generator.seed is provenance only and no verdict may reference it (INTERFACE.md \u00a72)",
+  "n": 128,
+  "roles": {
+    "calibration": "resource-rate calibration only (INTERFACE.md \u00a79); MUST NOT be used for any algorithmic selection",
+    "dev": "visible development instances; may inform development work",
+    "eval": "frozen hold-out; evaluated once at the end, never injected into an agent workspace"
+  },
+  "schema": "a0.maxcut.suite.manifest/v1",
+  "separation": {
+    "overlap_check": {
+      "edge_set_sha256": {
+        "distinct": 60,
+        "total": 60
+      },
+      "graph_sha256": {
+        "distinct": 60,
+        "total": 60
+      }
+    },
+    "sampling": "dev, eval and calibration are independent draws: each (role, family, stratum, rep) slot gets its own sha256-derived stream keyed by the role"
+  },
+  "suite_version": "1.0.0"
+}

@@ -1,0 +1,60 @@
+{
+  "schema": "a0.maxcut.suite.config/v1",
+  "suite_version": "1.0.0",
+  "frozen_on": "2026-09-22",
+  "n": 128,
+  "master_seed": 20260922,
+  "reps": {
+    "dev": 2,
+    "eval": 2,
+    "calibration": 1
+  },
+  "notes": [
+    "dev and eval draw `reps` independent instances from every (family, stratum) cell; the role is part of the sha256 seed derivation, so no two graphs in the suite share a stream.",
+    "calibration draws one instance per (family, stratum) cell, i.e. 12 graphs, and enters no algorithmic selection (INTERFACE.md section 9).",
+    "Probability parameters are exact rationals (p_num/p_den); the decimal spelling is display only.",
+    "Changing master_seed (or any param) produces a different suite with the same procedure: `build --master-seed N --suite <other dir>`."
+  ],
+  "families": [
+    {
+      "family": "ER",
+      "generator": "er_gnp",
+      "rationale": "Uniform random graph G(n,p); the reference regime with no structure to exploit. p is kept in the sparse half so a random partition stays near 1/2 and the objective is not nearly saturated.",
+      "strata": [
+        {"stratum": "p030", "params": {"model": "gnp", "p": "0.030", "p_num": 30, "p_den": 1000}},
+        {"stratum": "p050", "params": {"model": "gnp", "p": "0.050", "p_num": 50, "p_den": 1000}},
+        {"stratum": "p080", "params": {"model": "gnp", "p": "0.080", "p_num": 80, "p_den": 1000}}
+      ]
+    },
+    {
+      "family": "RR",
+      "generator": "rr_pairing",
+      "rationale": "Exactly d-regular graphs, so the degree sequence carries no signal at all: whatever a solver finds comes from the arrangement, not from hub structure. d in {3,4,5} is the classic hard band for Max-Cut.",
+      "strata": [
+        {"stratum": "d3", "params": {"model": "random_regular", "d": 3}},
+        {"stratum": "d4", "params": {"model": "random_regular", "d": 4}},
+        {"stratum": "d5", "params": {"model": "random_regular", "d": 5}}
+      ]
+    },
+    {
+      "family": "BA",
+      "generator": "ba_preferential",
+      "rationale": "Preferential attachment gives a heavy-tailed degree distribution and high-degree hubs; a solver that only reasons about average degree is penalised. m in {2,3,5} spans mean degree about 4 to about 10.",
+      "strata": [
+        {"stratum": "m2", "params": {"model": "barabasi_albert", "m": 2, "seed_graph": "complete_graph_on_m+1"}},
+        {"stratum": "m3", "params": {"model": "barabasi_albert", "m": 3, "seed_graph": "complete_graph_on_m+1"}},
+        {"stratum": "m5", "params": {"model": "barabasi_albert", "m": 5, "seed_graph": "complete_graph_on_m+1"}}
+      ]
+    },
+    {
+      "family": "Planted",
+      "generator": "planted_partition",
+      "rationale": "Community structure where a non-trivial partition is known to the generator. p_in/p_out ratios of 4-7x make the structure real but not readable off a degree histogram; the label permutation is random so the partition cannot be inferred from the community sizes alone.",
+      "strata": [
+        {"stratum": "k2sym", "params": {"model": "planted_partition", "k": 2, "community_sizes": [64, 64], "p_in": "0.100", "p_in_num": 100, "p_in_den": 1000, "p_out": "0.020", "p_out_num": 20, "p_out_den": 1000}},
+        {"stratum": "k4sym", "params": {"model": "planted_partition", "k": 4, "community_sizes": [32, 32, 32, 32], "p_in": "0.150", "p_in_num": 150, "p_in_den": 1000, "p_out": "0.020", "p_out_num": 20, "p_out_den": 1000}},
+        {"stratum": "k3asym", "params": {"model": "planted_partition", "k": 3, "community_sizes": [64, 40, 24], "p_in": "0.120", "p_in_num": 120, "p_in_den": 1000, "p_out": "0.030", "p_out_num": 30, "p_out_den": 1000}}
+      ]
+    }
+  ]
+}
