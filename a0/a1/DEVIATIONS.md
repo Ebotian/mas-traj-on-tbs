@@ -371,6 +371,9 @@ exactly `R` — on a certified instance, the optimum.
    namespace; the result is written to `<out>/sandbox_receipt.json`.
    `--candidate-isolation none` exists for a labelled control run and says so in
    `harness_identity.json` and on every response (`labelled_unsafe: true`).
+   "Replaced by an empty tmpfs" was not true of a root the *host* already mounts
+   as tmpfs — this host's `/tmp` — until D-A1-14; that is where the sentence was
+   wrong and what it now measures.
 
 **Is `--net-isolate` sufficient? No — measured, not argued.**
 `a0/a1/probes/hostile_candidate.py` runs one hostile candidate (it tries the
@@ -380,7 +383,7 @@ number, not the candidate's story, is the evidence:
 
 | lane | network | `~/gptapi.md` | reference witnesses | key in `/proc` | harness score |
 |---|---|---|---|---|---|
-| `raw_pre_fix` (HEAD's `E*`, no flags) | **REACHED** | readable | **30 read, best used** | **found** | **224 = R = OPT** |
+| `raw_pre_fix` (the **pinned** `75403e8c` `E*`, no flags) | **REACHED** | readable | **30 read, best used** | **found** | **224 = R = OPT** |
 | `service_net_isolate_only` (`--candidate-isolation none`) | BLOCKED | **readable** | **30 read, best used** | — | **224** |
 | `service_sandbox` (the default) | BLOCKED | not readable | 0 visible | not found | 0 (its honest fallback) |
 | working-tree `E*` inside the sandbox | BLOCKED | not readable | 0 visible | not found | 0 |
@@ -389,13 +392,17 @@ number, not the candidate's story, is the evidence:
 third row is the point: the lane still *measures* (status `ok`, a real Outcome,
 `cut_edges = 0` for the all-zeros fallback) while every attack fails.
 
-> **Superseded — read D-A1-13.** This table is the measurement as it stood at
-> `4b94503e`, when the answers were still in the tree. `baf13884` removed them and
-> made `HEAD`'s `E*` mask the task directory, so the two "open" lanes above can no
-> longer be shown open: the same probe now reports **9/13**, with the four failing
-> checks being exactly the positive controls of rows 1–2. The sandboxed rows are
-> unchanged. `git show 4b94503e:a0/a1/evidence/hostile_candidate.json` retrieves
-> the recorded 13/13.
+> **How the two "open" rows are still shown open.** Between `baf13884` and
+> `8057c1ce` they were not: the probe took its before-side evaluator from `HEAD`,
+> which by then carried the closure, and the witnesses it copies had been removed
+> from the tree, so the four positive controls failed and the probe reported
+> **9/13** (D-A1-13). `8057c1ce` pinned the before side to `75403e8c` — that
+> revision's evaluator by `git show`, its witnesses for the handed graph by `git
+> archive`, byte-checked against that revision's own blobs, placed under a root
+> the probe has *measured* the fixed lane unable to read, and deleted when the run
+> ends. The current artifact is therefore 13/13 with both sides real; the 9/13
+> recording stays retrievable as `git show 3bff97b6:a0/a1/evidence/hostile_candidate.json`
+> and the 13/13 of the first recording as `git show 4b94503e:…`.
 
 **INTERFACE change proposed, for the coordinator.** `INTERFACE.md` §12 forbids
 letting the eval set into "any path a candidate can read" and §4 says a candidate
@@ -599,13 +606,15 @@ tests 26 passed, `live_controls` 6/6. Spend for this round: **9484 `CEq`**
 artifacts and the status of each are listed in `a0/a1/evidence/README.md`;
 nothing in the directory still asserts `eccd859c…`.
 
-**A finding I did not repair — the hostile probe is now 9/13.** Four of its
-thirteen checks are *positive controls* that assert the leak is **real** in the
-open lanes: `the_pre_fix_lane_reads_the_key_file_and_the_answers`,
+**A finding that was open at this revision, and is now closed — the hostile
+probe read 9/13 here.** Four of its thirteen checks are *positive controls* that
+assert the leak is **real** in the open lanes:
+`the_pre_fix_lane_reads_the_key_file_and_the_answers`,
 `the_copied_witness_scores_exactly_R`,
 `net_isolate_alone_leaves_the_filesystem_open`, and
 `the_process_view_leak_is_real_in_the_open_lane_and_closed_in_the_service_lanes`.
-They now fail, and the cause is the closure itself, in two halves:
+They failed at this revision, and the cause was the closure itself, in two
+halves:
 
 * the lane the probe calls `raw_pre_fix` extracts `E*` **from `HEAD`**
   (`extract_pre_fix`), on the assumption that `HEAD` is pre-fix. After `baf13884`
@@ -615,23 +624,159 @@ They now fail, and the cause is the closure itself, in two halves:
 * the stored witnesses the probe copies were deleted from the tree by the same
   commit, so there is nothing to copy even in a genuinely unconfined lane.
 
-What the probe exists to establish is unaffected and still measured: in the
+What the probe exists to establish was unaffected and still measured: in the
 `sandboxed` lane the network is `BLOCKED`, `~/gptapi.md` is not readable, zero
 answer files are visible, no key variable is found in any readable
 `/proc/*/environ`, and the harness still books the candidate's honest fallback
-(`status ok`, `cut_edges 0`). What is lost is the **contrast** — the closure is no
-longer measured against a real attack, and `the_sandbox_closes_the_filesystem`
+(`status ok`, `cut_edges 0`). What was lost was the **contrast** — the closure was
+no longer measured against a real attack, and `the_sandbox_closes_the_filesystem`
 would pass just as well against a tree that never had answers in it.
 
-I have not edited the probe, because which revision its before-side should name
-is a scoping decision about pre-registered evidence, not a refresh — the same
-class of decision as the bounded-round positive control, and the coordinator's to
-make. The repair, if it is wanted, is one line: give `extract_pre_fix` a pinned
-revision (the last pre-closure commit, `75403e8c`, which is also the revision the
-13/13 recording was made at) and record it in the artifact, so the before-side is
-once again "a fixed, named revision" as its docstring intends. A guard check that
-the before-side bytes differ from the current evaluator's would keep the control
-from silently degrading a third time.
+**Closed at `8057c1ce`, which is a revision after this one.** That commit (the
+probe's author, not this workstream) gave `extract_pre_fix` the pinned revision
+`75403e8c` — the last pre-closure commit, and the revision the first 13/13
+recording was made at — and materialised that revision's witnesses for the handed
+graph by `git archive`, byte-checked against its own blobs, so there is again
+something real to copy. It also added the guard this note asked for:
+`extract_pre_fix` refuses to run when the pin stops meaning "before" (the pin must
+be an ancestor of `HEAD`, and its `E*` must not be byte-identical to the current
+one). The probe is back to 13/13, with both sides real
+(`a0/a1/evidence/hostile_candidate.json`, whose `before_side` and `after_side`
+blocks now name their revisions separately). Read D-A1-8's table with that: rows
+1–2 are measures of the *pinned* revision, not of `HEAD`. One thing that commit
+did **not** settle, and D-A1-14 does: the root the probe's before-side
+reproduction is placed under. At `8057c1ce` the probe chose that root by
+measurement, because the lane's `/tmp` was readable — see D-A1-14.
+
+## D-A1-14 — **INTERFACE** — the candidate lane's `/tmp` was the host's `/tmp`
+
+**What was wrong.** `candidate_sandbox._hide` asked the lane's own mount table
+whether a root was *already* a tmpfs and, if it was, counted it as hidden and
+skipped the mount. On this host `/tmp` is a tmpfs mount, so the branch fired for
+exactly the root that needed hiding: the candidate lane's `/tmp` **was the host's
+`/tmp`**, and the receipt still listed `/tmp` among the hidden roots. Measured on
+the unfixed module, from the lane itself:
+
+```console
+$ python3 -c '… prefix([python3, "-c", "print(exists(/tmp/<canary>))"])'   # before this fix
+READABLE                    # a file written into the host's /tmp, read from inside the lane
+entries in the lane's /tmp: 314   # the host's /tmp
+```
+
+The frozen `/tmp` claim survived only because `a0/tasks/maxcut/e_star_child.py`
+masks `/tmp` and `/var/tmp` itself, unconditionally, before it execs a candidate
+(`fs_isolation_wrapper`). That mask is the *task*'s mechanism inside `E*`. The
+harness's own boundary — the one that is supposed to hold whatever the evaluator
+does, and the one `harness_identity.candidate_isolation` advertises — was not
+doing what it said, and anything in the host's `/tmp` that `E*` did not
+individually mask was readable by a candidate.
+
+**How it surfaced.** Not from the receipt: the receipt was consistent with the
+documentation, because the documentation was the same mistake in prose. It
+surfaced when the hostile probe was re-pinned (`8057c1ce`), whose author had to
+choose a root for the before-side's reproduction by *measuring* the lane
+(`lane_can_see_into`), found `/tmp` VISIBLE, and recorded the reason in the
+commit message and in the artifact's `lane_visibility` note. The earlier
+verifier had read the same receipt and recorded that it had not audited
+`_hide` (`a0/verify/a1-final/REPORT.md` §3, last row).
+
+**What was done — in `a0/a1/candidate_sandbox.py`, no threshold touched.**
+
+* `_hide` mounts a fresh tmpfs over **every** existing hidden root,
+  unconditionally. A root the host already mounted is not a root that is already
+  hidden; it is a root that is still the host's, and stacking a tmpfs over it is
+  legal and is what hides it.
+* The mount is then verified, and the verification is of the *filesystem the
+  candidate would read*, not of the mount table's opinion: the covering mount
+  must be a tmpfs this namespace did not have before (a new mount id), the
+  root's `st_dev` must have changed, and the root must be empty. Any of those
+  failing exits `3` and the harness refuses to measure.
+* **Fail-closed on topology.** `_mount_records` is the only reader of
+  `/proc/self/mountinfo`; a mount table that cannot be read is now a
+  `SandboxError` rather than an empty table. Demonstrated:
+
+  ```console
+  $ unshare -rmnpf --mount-proc python3 a0/a1/candidate_sandbox.py enter --hide /proc -- /bin/true
+  candidate_sandbox: refusing to run: cannot read this namespace's own mount table
+    ([Errno 2] No such file or directory: '/proc/self/mountinfo'); the lane's topology
+    is unknown, so the harness must not measure
+  rc=3        # receipt written with pass: false
+  ```
+
+* The receipt now carries the measurement, so this cannot go back to being an
+  intention: `hiding` records, per root, the covering mount id / `st_dev` /
+  entry count before and after the mount, and whether the host already had a
+  mount there. For `/tmp` on this host one run reads `mount_id 551, device 35,
+  313 entries` → `mount_id 560, device 94, 0 entries`; the mount ids and device
+  numbers are per-namespace and differ run to run, which is why the check is a
+  *change* rather than a constant — what has to hold every time is that the id
+  moved, the device changed and the root came back empty.
+* `_self_check` re-tests the same question *after* the allow-list has been bound
+  back (`hidden_roots_are_the_filesystems_this_lane_made`), so a restored input
+  cannot quietly put the host's filesystem back under a hidden root.
+* Four unit tests pin it (`a0/a1/tests/test_a1.py`): a root the host already
+  mounted is still replaced; a mount that does not take is a refusal; an
+  unreadable mount table is a refusal; and the covering mount of a path is the
+  stacked one.
+
+**Evidence, all re-run after the change** (model-free, **0 `CEq`**):
+
+| command | result |
+|---|---|
+| the canary above, re-run | `NOT-READABLE`, `entries 0` |
+| `python3 a0/a1/probes/hostile_candidate.py` | `pass`, **13/13**, `lane_visibility` **`/tmp: hidden`** (was VISIBLE) |
+| `python3 a0/a1/verify.py` | `pass`, **6/6** / rc 0 |
+| `python3 a0/a1/probes/score_bound.py` | `pass`, **7/7** |
+| `python3 a0/a1/probes/skeleton_dryrun.py` | `pass`, **25/25** |
+| `python3 -m pytest a0/a1/tests -q` | **30 passed** (26 before) |
+| `python3 a0/a1/calibration/verify.py --with-rehearsal` | `pass`, rehearsal included (`8 evaluations, 0 CEq`) |
+
+**Which digests moved, and which did not.** `a0/a1/candidate_sandbox.py`
+`fd234f699de9…` → `f9caa4e015ca…`. It is recorded in two places, and both were
+refreshed at the final bytes — the first run of this evidence was made against an
+intermediate revision of the same file and was re-run, rather than shipped, when
+the module's last edit moved its digest: CID's `harness.candidate_lane_isolation` factor
+(`a0/a1/declarations/CID.json`, re-derived by `declaration.py build`) and the
+sandbox receipt/identity embedded in `a0/a1/evidence/hostile_candidate.json`
+(re-run). **`EID*` did not move**: `e_star.py`/`e_star_child.py` bytes are
+untouched, `evaluator_source_sha256` is still `dc6969ec…` and `EID*` still
+recomputes to `7ce9e72f…` (`verify.py`'s `t1-eid` step, 14/14 checks). So
+`a0/a1/kapso_t1/` does **not** need another re-freeze on account of this change —
+its own outstanding re-freeze is a separate, in-flight workstream's (that
+directory now has the sibling's uncommitted edits in the shared tree, and the
+`AID_r.A_kapso.json`/`causal_audit.json` in `a0/a1/declarations/` derive from
+them; this commit leaves those two files alone).
+
+**Two consequences worth naming, neither repaired here.**
+
+1. `a0/a1/calibration/evidence/{simpleloop,kapso}/pilot_arm.json` embed a harness
+   identity that records the *old* sandbox module sha (`fd234f69…`). They are the
+   paid pilot's artifacts, that directory is frozen and not this workstream's, and
+   re-running the pilot would spend money; the recorded digest is now history.
+   What it cannot be mistaken for is a claim about the current bytes: the file it
+   describes is the sandbox, and the calibration's own verifier re-derives
+   everything it claims from the ledgers (`verify.py --with-rehearsal` is green).
+2. A sandbox receipt whose path is under a hidden root and *not* in the
+   invocation's allow-list is now written, but into the lane's own tmpfs — i.e.
+   it is lost, where before it landed in the host's `/tmp` by accident. The only
+   caller is `eval_service.py`, which passes `<out_dir>/sandbox_receipt.json`
+   with `out_dir` in the allow-list, so the receipt is bound back and read from
+   the host (`verify.py`'s `wiring-*` and `score_bound` steps all assert on it).
+
+**`references/witnesses/fs_policy.json` — unchanged, and that is the right
+answer.** Its `extra_masks` entry `/tmp/mcwork` is the *task's* policy, applied
+by `E*`'s own wrapper to answer stores that live outside the repository; it must
+hold whether or not the harness lane exists, because `E*` can be invoked outside
+the harness (the hostile probe's before side does exactly that). The harness
+lane's fresh tmpfs over `/tmp` covers that path inside the service lane as well —
+belt and braces, not a replacement. Nothing in that file was edited, and nothing
+in it should be: it is frozen, and it is the maxcut workstream's.
+
+**What this does not close.** The lane still hides four specific roots; a
+candidate still reads `/usr`, `/lib`, `/etc` and `/dev`, and a secret placed
+under one of those is still readable (stated in the module docstring and
+repeated below). The verification is of the four roots named, not of "everything
+the host can see".
 
 ## What still cannot be enforced without root
 

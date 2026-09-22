@@ -19,7 +19,9 @@ spawns) inside one unprivileged namespace stack:
    unshare -rmnpf --mount-proc        user + mount + net + pid namespace
      ├─ mount --make-rprivate /      nothing propagates back to the host
      ├─ stage the allow-list         bind the invocation's own inputs aside
-     ├─ hide the roots               tmpfs over /home, /tmp, /var/tmp, /run/user
+     ├─ hide the roots               a fresh tmpfs over each of /home, /tmp,
+     │                               /var/tmp, /run/user — mounted even when the
+     │                               host already mounts one of them, then checked
      ├─ restore the allow-list       bind the inputs back at their real paths
      └─ exec E*                      which runs the candidate twice
 ```
@@ -30,12 +32,20 @@ Three closures, each of them a separate thing that can be probed:
   loopback, so `api.deepseek.com`, `1.1.1.1` and every other destination are
   unreachable.  `E*` is additionally given `--net-isolate`, so the candidate gets
   a namespace of its own *inside* that one.
-* **filesystem** — the hidden roots are empty tmpfs mounts.  Everything the
-  invocation legitimately needs is bind-mounted back, so a candidate sees
-  exactly: its own staged bytes, the one graph it was handed, its scratch, the
-  invocation's state directory, and the interpreter.  `graph.json`'s siblings
-  (`suite/eval/**`, `references/logs/partitions/**`, the generators) are not
-  there to read.
+* **filesystem** — a fresh empty tmpfs is mounted over **every** hidden root,
+  unconditionally, and the mount is then *verified to be this namespace's own*
+  before anything is exec'd: the covering mount must be a tmpfs with a new mount
+  id, the root's `st_dev` must have changed, and the root must be empty.  The
+  reason is measured, not hypothetical: this host mounts `/tmp` as tmpfs, and an
+  earlier revision of `_hide` read that as "already hidden" and skipped the
+  mount — so the candidate lane's `/tmp` *was* the host's `/tmp`, and a control
+  the hostile probe had placed there was readable from inside the lane.  A root
+  that is already a tmpfs is exactly the root that still has to be replaced.
+  Everything the invocation legitimately needs is bind-mounted back, so a
+  candidate sees exactly: its own staged bytes, the one graph it was handed, its
+  scratch, the invocation's state directory, and the interpreter.  `graph.json`'s
+  siblings (`suite/eval/**`, `references/logs/partitions/**`, the generators) are
+  not there to read.
 * **processes** — a fresh PID namespace plus a fresh `/proc`, so the candidate
   cannot enumerate the host's processes or read another process's
   `/proc/<pid>/environ`.  That matters because the *runtime* holds the provider
@@ -43,12 +53,14 @@ Three closures, each of them a separate thing that can be probed:
   of `/proc/<arm pid>/environ` and spend outside the meter even with the
   filesystem closed.
 
-**Fail-closed.**  If `unshare` is missing, if a mount fails, or if the
-namespace's own self-check finds the network reachable, or a hidden root not
-actually hidden, or no PID namespace, the sandbox exits non-zero and the
-harness refuses to measure.  The self-check's result is written to a receipt
-(`--receipt <path>`) *before* `E*` is exec'd, so "the candidate ran in a closed
-lane" is recorded evidence rather than an intention.
+**Fail-closed.**  If `unshare` is missing, if a mount fails, if the lane's own
+mount table cannot be read (no topology, no measurement), if a fresh tmpfs does
+not actually become the filesystem at a hidden root, or if the namespace's own
+self-check finds the network reachable, or a hidden root not actually hidden, or
+no PID namespace, the sandbox exits non-zero and the harness refuses to measure.
+The self-check's result is written to a receipt (`--receipt <path>`) *before*
+`E*` is exec'd, so "the candidate ran in a closed lane" is recorded evidence
+rather than an intention.
 
 **Residual, stated rather than implied.**  This is a mount/PID/network namespace
 boundary, not a virtual machine: the candidate still shares the kernel and the
@@ -271,28 +283,113 @@ def _stage_allow(stage: Path, allow: Sequence[Path]) -> List[Dict[str, Any]]:
     return staged
 
 
-def _mount_table() -> Dict[str, str]:
-    """`mount point -> filesystem type`, from this namespace's own mountinfo."""
-    table: Dict[str, str] = {}
-    for line in Path("/proc/self/mountinfo").read_text(encoding="utf-8").splitlines():
-        left, _, right = line.partition(" - ")
+def _mount_records() -> Dict[str, Dict[str, Any]]:
+    """`mount point -> the mount covering it`, from this namespace's own mountinfo.
+
+    A path can carry several stacked mounts (that is exactly how a root is
+    hidden: a tmpfs is mounted *over* whatever was there), and mountinfo lists
+    them outermost first, so the last record for a mount point is the one a
+    process at that path actually resolves.  That record — its mount id, which
+    distinguishes a stacked mount from the one underneath it — is what makes
+    "did my mount take effect?" answerable.
+
+    Fail-closed: a mount table that cannot be read is a refusal to measure, not
+    an empty table.  Without it the lane's topology is unknown, and an unknown
+    topology is the one thing this module must never treat as a boundary.
+    """
+    try:
+        text = Path("/proc/self/mountinfo").read_text(encoding="utf-8")
+    except OSError as exc:
+        raise SandboxError(
+            f"cannot read this namespace's own mount table ({exc}); the lane's topology "
+            "is unknown, so the harness must not measure"
+        )
+    return _parse_mountinfo(text)
+
+
+def _parse_mountinfo(text: str) -> Dict[str, Dict[str, Any]]:
+    records: Dict[str, Dict[str, Any]] = {}
+    for line in text.splitlines():
+        left, separator, right = line.partition(" - ")
         fields = left.split()
-        if len(fields) < 5 or not right:
+        tail = right.split()
+        if len(fields) < 5 or not separator or not tail:
             continue
-        table[fields[4].replace("\\040", " ")] = right.split()[0]
-    return table
+        records[fields[4].replace("\\040", " ")] = {
+            "mount_id": fields[0],
+            "parent_mount_id": fields[1],
+            "fstype": tail[0],
+            "source": tail[1] if len(tail) > 1 else None,
+        }
+    return records
 
 
-def _hide(roots: Sequence[Path]) -> List[str]:
-    hidden: List[str] = []
+def _mount_table() -> Dict[str, str]:
+    """`mount point -> filesystem type` of the mount covering it."""
+    return {point: record["fstype"] for point, record in _mount_records().items()}
+
+
+def _root_state(root: Path) -> Dict[str, Any]:
+    """What this namespace sees at `root` right now: its covering mount, its
+    device, and how many entries it holds (a count, never a name: what the host
+    keeps in a scratch root is not this module's to record)."""
+    try:
+        device = root.stat().st_dev
+        entries = len(os.listdir(root))
+    except OSError as exc:
+        raise SandboxError(f"cannot inspect the hidden root {root}: {exc}")
+    return {"mount": _mount_records().get(str(root)), "device": device, "entries": entries}
+
+
+def _hide(roots: Sequence[Path]) -> List[Dict[str, Any]]:
+    """Replace every hidden root with a fresh, empty tmpfs of this namespace's own.
+
+    **The mount is unconditional, and that is the repair.**  This function used
+    to ask the mount table whether the root was *already* a tmpfs and skip the
+    mount when it was.  On a host that mounts `/tmp` as tmpfs — this one does —
+    that skipped the mount for exactly the root that most needed it, and left
+    the candidate lane reading the *host's* `/tmp` while the receipt still
+    listed `/tmp` as hidden (measured: a canary placed in the host's `/tmp` was
+    readable from inside the lane, and `a0/a1/probes/hostile_candidate.py` had
+    to choose `/var/tmp` for its control).  A root the host already mounted is
+    not a root that is already hidden; it is a root that is still the host's.
+    Stacking a tmpfs over it is legal, cheap, and hides it.
+
+    The mount is not trusted either.  What the candidate sees is the *filesystem
+    at that path*, so that is what is checked: the covering mount must now be a
+    tmpfs, it must be a mount this namespace did not have before (a new mount
+    id), the root's `st_dev` must have changed, and the root must be empty.
+    Any of those failing is a refusal to measure — never a lane that runs
+    because the mount table happened to name the right filesystem type.
+    """
+    hidden: List[Dict[str, Any]] = []
     for root in roots:
         if not root.is_dir():
             continue
-        if _mount_table().get(str(root)) == "tmpfs":
-            hidden.append(str(root))  # already hidden: idempotent
-            continue
+        before = _root_state(root)
         mount("tmpfs", str(root), "tmpfs", MS_NOSUID | MS_NODEV, TEMPORARY_FS_OPTIONS)
-        hidden.append(str(root))
+        after = _root_state(root)
+        covering = after["mount"]
+        replaced = (
+            covering is not None
+            and covering["fstype"] == "tmpfs"
+            and (before["mount"] is None
+                 or covering["mount_id"] != before["mount"]["mount_id"])
+            and after["device"] != before["device"]
+            and after["entries"] == 0
+        )
+        if not replaced:
+            raise SandboxError(
+                f"the fresh tmpfs over {root} is not the filesystem the lane sees "
+                f"(before {before}, after {after}): a candidate would read the host's "
+                f"{root}, so the harness must not measure"
+            )
+        hidden.append({
+            "root": str(root),
+            "before": before,
+            "after": after,
+            "the_host_already_mounted_something_here": before["mount"] is not None,
+        })
     return hidden
 
 
@@ -352,10 +449,27 @@ def _pid_namespace_state() -> Dict[str, Any]:
     }
 
 
-def _self_check(hidden: Sequence[Path], *, probe_host: str = "api.deepseek.com") -> Dict[str, Any]:
-    """Probe the boundary from inside it, before `E*` is allowed to run."""
+def _self_check(hidden: Sequence[Dict[str, Any]],
+                *, probe_host: str = "api.deepseek.com") -> Dict[str, Any]:
+    """Probe the boundary from inside it, before `E*` is allowed to run.
+
+    `hidden` is `_hide`'s own record, so this is a *second* look at the same
+    question after the allow-list has been bound back: a restored input must not
+    have put the host's filesystem back under a hidden root.  The test is the
+    root's device, which is the filesystem a candidate would actually read —
+    "mountinfo says tmpfs" is the check that failed to notice the hole.
+    """
     table = _mount_table()
-    not_hidden = [str(root) for root in hidden if table.get(str(root)) != "tmpfs"]
+    not_hidden = [str(entry["root"]) for entry in hidden
+                  if table.get(str(entry["root"])) != "tmpfs"]
+    not_ours: List[str] = []
+    for entry in hidden:
+        try:
+            state = _root_state(Path(entry["root"]))
+        except SandboxError:
+            state = None  # a root that cannot be inspected is not one this lane made
+        if state is None or state["device"] == entry["before"]["device"]:
+            not_ours.append(str(entry["root"]))
     try:
         socket.create_connection((probe_host, 443), timeout=2).close()
         egress = "REACHED"
@@ -365,6 +479,8 @@ def _self_check(hidden: Sequence[Path], *, probe_host: str = "api.deepseek.com")
     return {
         "hidden_roots_are_tmpfs": not not_hidden,
         "not_hidden": not_hidden,
+        "hidden_roots_are_the_filesystems_this_lane_made": not not_ours,
+        "roots_back_on_the_hosts_filesystem": not_ours,
         "egress": egress,
         "egress_is_blocked": egress.startswith("BLOCKED"),
         "pid_namespace": pid,
@@ -411,14 +527,17 @@ def enter(argv: Optional[List[str]] = None) -> int:
         # that already exists.
         mount("none", "/", None, MS_REC | MS_PRIVATE, None)
         staged = _stage_allow(_stage_dir(), allow)
-        hidden_now = _hide(hidden)
-        restored = _restore(staged, hidden)
+        hiding = _hide(hidden)
+        hidden_now = [Path(entry["root"]) for entry in hiding]
+        restored = _restore(staged, hidden_now)
         receipt["staged"] = staged
-        receipt["hidden_roots"] = hidden_now
+        receipt["hidden_roots"] = [str(root) for root in hidden_now]
+        receipt["hiding"] = hiding
         receipt["restored"] = restored
-        self_check = _self_check([Path(root) for root in hidden_now])
+        self_check = _self_check(hiding)
         receipt["self_check"] = self_check
         if not (self_check["hidden_roots_are_tmpfs"]
+                and self_check["hidden_roots_are_the_filesystems_this_lane_made"]
                 and self_check["egress_is_blocked"]
                 and self_check["pid_namespace_is_private"]):
             raise SandboxError(f"the lane's self-check failed: {self_check}")
@@ -445,6 +564,8 @@ def describe() -> Dict[str, Any]:
         "refuses_to_run_when": [
             "`unshare` is not on PATH",
             "a mount fails",
+            "this namespace's own mount table cannot be read (no topology)",
+            "a hidden root's filesystem is not a fresh tmpfs of this lane's own",
             "a hidden root is not actually a tmpfs inside the lane",
             "the network is reachable from inside the lane",
             "there is no PID namespace",

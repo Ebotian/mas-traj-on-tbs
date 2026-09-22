@@ -225,6 +225,82 @@ def test_turning_the_candidate_lane_off_is_labelled(tmp_path):
 
 
 # ---------------------------------------------------------------------------
+# the candidate lane's hiding: a root the host already mounted is still replaced
+# ---------------------------------------------------------------------------
+def _fake_mount_state(monkeypatch, sandbox, *, takes: bool):
+    """A `mount` that either replaces the filesystem or silently does nothing."""
+    mounted = {"value": False}
+    calls = []
+
+    def fake_mount(source, target, fstype=None, flags=0, data=None):
+        calls.append({"source": source, "target": str(target), "fstype": fstype})
+        if takes:
+            mounted["value"] = True
+
+    def fake_state(root):
+        return {
+            # the host's own tmpfs mount, before; a stacked mount of ours, after
+            "mount": {"mount_id": "2" if mounted["value"] else "1", "fstype": "tmpfs"},
+            "device": 2 if mounted["value"] else 1,
+            "entries": 0 if mounted["value"] else 313,
+        }
+
+    monkeypatch.setattr(sandbox, "mount", fake_mount)
+    monkeypatch.setattr(sandbox, "_root_state", fake_state)
+    return calls
+
+
+def test_a_root_the_host_already_mounted_as_tmpfs_is_still_replaced(monkeypatch):
+    """The measured defect: an existing tmpfs mount was read as "already hidden"."""
+    from a0.a1 import candidate_sandbox as sandbox
+
+    root = Path("/tmp")
+    calls = _fake_mount_state(monkeypatch, sandbox, takes=True)
+    hiding = sandbox._hide([root])
+    assert [call["target"] for call in calls] == [str(root)]
+    assert calls[0]["fstype"] == "tmpfs"
+    assert hiding[0]["the_host_already_mounted_something_here"] is True
+    assert hiding[0]["after"]["device"] != hiding[0]["before"]["device"]
+
+
+def test_a_mount_that_does_not_take_is_a_refusal(tmp_path, monkeypatch):
+    """Fail-closed: "mountinfo says tmpfs" is not evidence that the mount happened."""
+    from a0.a1 import candidate_sandbox as sandbox
+
+    _fake_mount_state(monkeypatch, sandbox, takes=False)
+    with pytest.raises(sandbox.SandboxError):
+        sandbox._hide([Path("/tmp")])
+
+
+def test_an_unreadable_mount_table_is_a_refusal(monkeypatch):
+    """No topology, no measurement: the lane's mount table is not optional."""
+    from a0.a1 import candidate_sandbox as sandbox
+
+    class _Unreadable:
+        def __init__(self, *_args, **_kwargs):
+            pass
+
+        def read_text(self, **_kwargs):
+            raise OSError(13, "Permission denied")
+
+    monkeypatch.setattr(sandbox, "Path", _Unreadable)
+    with pytest.raises(sandbox.SandboxError):
+        sandbox._mount_records()
+
+
+def test_the_covering_mount_is_the_stacked_one():
+    """A path carries the mounts stacked on it; the last record is the visible one."""
+    from a0.a1 import candidate_sandbox as sandbox
+
+    host = "469 345 0:35 / /tmp rw,nosuid,nodev shared:111 - tmpfs tmpfs rw,usrquota"
+    ours = "473 469 0:44 / /tmp rw,nosuid,nodev - tmpfs tmpfs rw,mode=1777"
+    records = sandbox._parse_mountinfo("\n".join([host, ours]))
+    assert records["/tmp"]["mount_id"] == "473"
+    assert records["/tmp"]["fstype"] == "tmpfs"
+    assert sandbox._mount_table()["/tmp"] == "tmpfs"
+
+
+# ---------------------------------------------------------------------------
 # KAPSO's manifest contract
 # ---------------------------------------------------------------------------
 def _strategy(fidelity="full", fraction=1.0, seed=1337):

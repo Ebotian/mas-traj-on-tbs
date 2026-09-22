@@ -24,8 +24,12 @@ the candidate-facing redaction — landed *after* that re-freeze, so `EID*` move
 second time (`eccd859c…` → `7ce9e72f…`) and every free and paid artifact was
 produced once more, in one sitting, against that revision (D-A1-13). One of the
 maxcut worker's closures also removed the stored witnesses from the tree, which
-is why the hostile probe's *positive controls* now fail while its sandboxed lane
-stays closed; D-A1-13 names the four checks and what restoring the control takes.
+made the hostile probe's *positive controls* fail for a round; `8057c1ce` pinned
+that probe's before side to the last pre-closure revision and they are real
+again (D-A1-13, closing note). A later fix, D-A1-14, changed the candidate
+sandbox's own bytes — a `/tmp` the host already mounted as tmpfs is now replaced
+like any other root — so `hostile_candidate.json` was re-run once more and is the
+only artifact here that moved with it. `EID*` did not move for that.
 
 ---
 
@@ -45,8 +49,8 @@ stays closed; D-A1-13 names the four checks and what restoring the control takes
 | 8 | No unmetered model call is possible | **CONFIRMED** | same file: direct egress blocked from inside `unshare -rn`; non-allowlisted destination 403'd; a call without the campaign token 403'd and booked against that campaign; an induced upstream response without usage booked `unmetered` and stops the campaign |
 | 9 | The A1 skeleton exists and its decisions are executable | **CONFIRMED** | `evidence/skeleton_dryrun.json` (25/25 checks) |
 | 10 | The two arms can be compared on T1's `Δ` today | **MOSTLY** | the KAPSO T1 retarget exists — `a0/a1/kapso_t1/` (another workstream) delivers the T1 registered tree, the max-cut `EidStar` binding and the T1 arm, with its own live evidence (15/15), and this directory now pins that tree in `AID_r.A_kapso.json` (D-A1-6). What is still missing for a *campaign* is the calibration pilot and the frozen `B_hard` (`INTERFACE.md` §9). See D-A1-2 for which live evidence belongs to which configuration |
-| 11 | A **hostile** candidate cannot reach the network, read the reference answer store or the key, or read another process's environment | **CONFIRMED for the sandboxed lane** (the probe's own positive controls are stale — D-A1-13) | `evidence/hostile_candidate.json` **9/13**: in the sandboxed lane the network is `BLOCKED:gaierror`, `~/gptapi.md` is not readable, 0 answer files are visible, no key variable is found in any readable `/proc/*/environ`, and the harness still books the candidate's honest fallback (`status ok`, `cut_edges 0`). The four failing checks assert the leak is *real* in the open lanes; they fail because `HEAD`'s `E*` now closes it inside the evaluator as well |
-| 12 | `--net-isolate` alone is **not** sufficient for the candidate lane | **DEMONSTRATED WHEN MEASURED, NOT MEASURABLE NOW — D-A1-13** | same file, lane `service_net_isolate_only`: the network is closed (`BLOCKED:gaierror`), but the probe can no longer show the filesystem half as open, because the evaluator it extracts from `HEAD` now masks the task directory itself. The recorded demonstration is `git show 4b94503e:a0/a1/evidence/hostile_candidate.json` |
+| 11 | A **hostile** candidate cannot reach the network, read the reference answer store or the key, or read another process's environment | **CONFIRMED** | `evidence/hostile_candidate.json` **13/13**: in the sandboxed lane the network is `BLOCKED:gaierror`, `~/gptapi.md` is not readable, 0 answer files are visible, no key variable is found in any readable `/proc/*/environ`, and the harness still books the candidate's honest fallback (`status ok`, `cut_edges 0`). The four positive-control checks are real again because the before side is pinned to `75403e8c` (`8057c1ce`, D-A1-13) |
+| 12 | `--net-isolate` alone is **not** sufficient for the candidate lane | **CONFIRMED** | same file, lane `service_net_isolate_only`: the network is closed (`BLOCKED:gaierror`) while `~/gptapi.md` is readable and all 30 of the pinned revision's witnesses for the handed graph are read and one of them is used, so the harness books 224 = `R` = OPT — the filesystem half is demonstrably still open with `--net-isolate` alone |
 | 13 | A harness-supplied score is bounded by the task, and an out-of-bound one is refused by default | **CONFIRMED** | `evidence/score_bound.json` (7/7): `9999` and `-5` refused (`value: null`, `failure.kind: implausible_override`, booked `override_rejected`), `200` published, and `9999` published **labelled** only under `--override-mode labelled_implausible` |
 | 14 | The harness is not launched with, and does not hand down, a provider credential | **CONFIRMED** | `eval_service.py:_evaluator_environment` (four keys) and the sanitized launch in `probes/live_probe.py`/`skeleton.py`; the hostile probe finds the canary variable in no readable `/proc/*/environ` in the sandboxed lane |
 | 15 | Every recorded artifact describes the current evaluator bytes | **CONFIRMED** | `evidence/README.md`'s refreshed/historical table: every free and paid artifact was re-run after the last edit to `E*` (D-A1-13); `python3 a0/a1/verify.py` 6/6 |
@@ -245,39 +249,40 @@ the graph the verifier used, through this service.
   own route-less network namespace because the *harness* says so;
 * `E*` itself now runs inside `a0/a1/candidate_sandbox.py`: `unshare -rmnpf
   --mount-proc` (user + mount + network + PID namespace), `/home`, `/tmp`,
-  `/var/tmp` and `/run/user` replaced by empty tmpfs mounts, and the invocation's
+  `/var/tmp` and `/run/user` **replaced by a fresh tmpfs of the lane's own** —
+  mounted even where the host already mounts one, and verified by a new mount id,
+  a changed `st_dev` and an empty root, because "already a tmpfs" on this host
+  meant `/tmp` was still the *host's* (D-A1-14) — and the invocation's
   own inputs bound back — the evaluator's two files, the interpreter's
   installations, the one graph the request names, the candidate's bytes, and the
   state/out directory. The lane's self-check runs before `E*` is exec'd and
   refuses to measure otherwise; its receipt is written to
   `<out>/sandbox_receipt.json` and quoted in the evidence.
 
-**Is `--net-isolate` enough? When it was measured, no.** The committed run at
-`4b94503e` (`git show 4b94503e:a0/a1/evidence/hostile_candidate.json`, 13/13)
-takes one hostile candidate — it tries the network, `~/gptapi.md`, every readable
-`/proc/*/environ`, and the stored witnesses, and *uses* the best witness it can
-read as its answer — through four lanes. The number in the last column is the
-harness's own, not the candidate's story:
+**Is `--net-isolate` enough? No — measured.** The committed run
+(`a0/a1/evidence/hostile_candidate.json`, **13/13**) takes one hostile candidate —
+it tries the network, `~/gptapi.md`, every readable `/proc/*/environ`, and the
+stored witnesses, and *uses* the best witness it can read as its answer — through
+four lanes. The number in the last column is the harness's own, not the
+candidate's story:
 
 | lane | network | `~/gptapi.md` | witnesses | key in `/proc` | harness score |
 |---|---|---|---|---|---|
-| `raw_pre_fix` (`E*` at `HEAD`, no flags) | **REACHED** | readable | **30 read, best used** | **found** | **224 = R = OPT** |
+| `raw_pre_fix` (the **pinned** `75403e8c` `E*`, no flags) | **REACHED** | readable | **30 read, best used** | **found** | **224 = R = OPT** |
 | `service_net_isolate_only` (`--candidate-isolation none`) | BLOCKED | **readable** | **30 read, best used** | — | **224** |
 | `service_sandbox` (the default) | BLOCKED | not readable | 0 visible | not found | 0 (its honest fallback) |
 | working-tree `E*` inside the sandbox | BLOCKED | not readable | 0 visible | not found | 0 |
 
-**The same probe now reports 9/13, and the four failures are its own positive
-controls** (`a0/a1/evidence/hostile_candidate.json`). The lane it calls
-`raw_pre_fix` extracts `E*` from `HEAD`, and `HEAD` now carries the maxcut
-worker's candidate-facing redaction and filesystem mask, so that lane no longer
-reads the answers or finds the canary environment, and `--net-isolate`-only no
-longer leaves the filesystem open. What the probe exists to show is unaffected:
-the **sandboxed** lane is still closed on every axis (`BLOCKED:gaierror`, no
-readable `~/gptapi.md`, 0 answer files, no key variable, and an honest
-`cut_edges = 0` with `status ok`). What is lost is the *contrast* — the closure is
-no longer measured against a real attack. D-A1-13 gives the one-line repair
-(re-point the before-side at a pinned pre-closure revision) and leaves the
-decision to the coordinator.
+The before side is a **pinned revision**, not `HEAD`: earlier the probe took its
+open-lane evaluator from `HEAD`, which by then carried the closure, and the
+witnesses it copies had been removed from the tree — that combination is why the
+probe read 9/13 for a round (D-A1-13). `8057c1ce` pinned the evaluator to
+`75403e8c` and materialises that revision's witnesses for the handed graph, so
+both positive controls are real again and the artifact above is 13/13. The
+sandboxed lane is closed on every axis: `BLOCKED:gaierror`, no readable
+`~/gptapi.md`, 0 answer files visible, no key variable in any readable
+`/proc/*/environ`, and an honest `cut_edges = 0` with `status ok`. Since D-A1-14
+the lane's `/tmp` is its own filesystem too, not the host's.
 
 The third row is the claim: every attack fails **and the lane still measures**
 (status `ok`, a real Outcome, `cut_edges = 0` for the all-zeros fallback). The

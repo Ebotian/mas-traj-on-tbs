@@ -44,9 +44,13 @@ byte-checked against the revision's own git blobs, they are only the handed
 graph's (never the rest of the store, whose `eval` witnesses stay out of every
 visible path per §12), they are put only where the lane has been *measured* unable
 to read them, and they are deleted when the run ends. (The measurement is not
-ceremony: this host mounts `/tmp` as tmpfs, the lane treats an existing tmpfs as
-already hidden, so the lane's `/tmp` is the host's — a reproduction left there
-would be readable by the lane it is the control for.) The after side is `HEAD`;
+ceremony, and it has already earned its place once: this host mounts `/tmp` as
+tmpfs, and the lane used to treat an existing tmpfs mount as already hidden, so
+the lane's `/tmp` *was* the host's `/tmp` and a reproduction left there was
+readable from inside the lane it was the control for. `_hide` now replaces such
+a root like any other, and `/tmp` measures hidden; the probe still asks rather
+than assumes, because the lane's receipt lists what it *meant* to hide.) The
+after side is `HEAD`;
 `extract_pre_fix` refuses to run at all if the pinned evaluator is byte-identical
 to the current one, or if the pin is not an ancestor of `HEAD`.
 
@@ -516,11 +520,16 @@ def lane_sees(path: Path) -> bool:
     """Is `path` visible inside the candidate lane? Asked of the lane itself.
 
     The lane's receipt records which roots it *meant* to hide; this asks the only
-    question the probe depends on. It has to be asked: a root the host already
-    mounts as tmpfs is treated by the lane as already hidden, and this host's
-    `/tmp` is one, so the lane's `/tmp` is the host's `/tmp`. A reproduction of
-    the answers placed there would be readable by the very lane it is the control
-    for — and the closure checks would pass while the contrast was gone.
+    question the probe depends on. It has to be asked, because it is the check
+    that caught the lane lying about itself: this host mounts `/tmp` as tmpfs,
+    the lane used to read an existing tmpfs mount as "already hidden" and skip
+    the mount, so the lane's `/tmp` was the host's `/tmp` and a reproduction of
+    the answers placed there was readable by the very lane it was the control
+    for — the closure checks would have passed while the contrast was gone.
+    `_hide` now replaces every root with a tmpfs of its own and verifies the
+    replacement (a new mount id, a changed `st_dev`, an empty root), so `/tmp`
+    measures hidden here too; the probe keeps asking rather than reading it off
+    the lane's documentation.
     """
     sandbox = candidate_sandbox_module()
     if not sandbox.available():
@@ -628,10 +637,14 @@ def main(argv: Optional[list] = None) -> int:
                                      if visibility[str(root)] is False else "not testable here")
                          for root in STORE_ROOT_CANDIDATES},
             "store_root": str(store_dir.parent),
-            "note": "the lane's receipt lists /home /tmp /var/tmp /run/user as hidden, and that is "
-                    "what it means to hide: /tmp is mounted tmpfs by the host here, the lane treats "
-                    "an existing tmpfs mount as already hidden, so this lane's /tmp is the host's "
-                    "/tmp. The before side's reproduction is therefore placed under the first root "
+            "note": "the lane's receipt lists /home /tmp /var/tmp /run/user as hidden, but a list "
+                    "is not a measurement, so each root is asked directly: a fresh directory is "
+                    "made under it and the lane is asked whether it exists. This is how the lane's "
+                    "own defect was found — /tmp is mounted tmpfs by the host here, and the lane "
+                    "used to treat an existing tmpfs mount as already hidden and skip the mount, "
+                    "so the lane's /tmp was the host's /tmp and this canary read VISIBLE. `_hide` "
+                    "now replaces every root with a verified tmpfs of the lane's own, and /tmp "
+                    "measures hidden. The before side's reproduction is placed under the first root "
                     "this measurement finds hidden; the probe refuses to run when there is none.",
         },
         "before_side": {

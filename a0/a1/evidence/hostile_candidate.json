@@ -12,13 +12,13 @@
    "sha256": "f67ecd41bd769e41e57e1812ce60d544b6894071cd7849bccaa83a2163b614f6"
   },
   "revision": "HEAD",
-  "revision_full": "3bff97b6de32f8185f08685224ffc01e93670f6c"
+  "revision_full": "654d5da255a12dc40763b1a511d7247a832a3d99"
  },
  "before_side": {
   "answer_store": {
    "blobs_verified": 30,
    "files": 30,
-   "path": "/var/tmp/a0-a1-hostile-633867",
+   "path": "/var/tmp/a0-a1-hostile-738352",
    "relative": "a0/tasks/maxcut/references/logs/partitions",
    "removed_after_the_lanes": true,
    "removed_when_the_run_ends": true,
@@ -44,7 +44,7 @@
      "e_star_child.py": true
     },
     "revision": "HEAD",
-    "revision_full": "3bff97b6de32f8185f08685224ffc01e93670f6c"
+    "revision_full": "654d5da255a12dc40763b1a511d7247a832a3d99"
    },
    "files": {
     "e_star.py": {
@@ -112,7 +112,7 @@
     "e_star_child.py": true
    },
    "revision": "HEAD",
-   "revision_full": "3bff97b6de32f8185f08685224ffc01e93670f6c"
+   "revision_full": "654d5da255a12dc40763b1a511d7247a832a3d99"
   },
   "files": {
    "e_star.py": {
@@ -137,10 +137,10 @@
  "lane_visibility": {
   "measured": {
    "/home/ebt": "hidden",
-   "/tmp": "VISIBLE",
+   "/tmp": "hidden",
    "/var/tmp": "hidden"
   },
-  "note": "the lane's receipt lists /home /tmp /var/tmp /run/user as hidden, and that is what it means to hide: /tmp is mounted tmpfs by the host here, the lane treats an existing tmpfs mount as already hidden, so this lane's /tmp is the host's /tmp. The before side's reproduction is therefore placed under the first root this measurement finds hidden; the probe refuses to run when there is none.",
+  "note": "the lane's receipt lists /home /tmp /var/tmp /run/user as hidden, but a list is not a measurement, so each root is asked directly: a fresh directory is made under it and the lane is asked whether it exists. This is how the lane's own defect was found \u2014 /tmp is mounted tmpfs by the host here, and the lane used to treat an existing tmpfs mount as already hidden and skip the mount, so the lane's /tmp was the host's /tmp and this canary read VISIBLE. `_hide` now replaces every root with a verified tmpfs of the lane's own, and /tmp measures hidden. The before side's reproduction is placed under the first root this measurement finds hidden; the probe refuses to run when there is none.",
   "question": "can a candidate inside the lane read a fresh directory under the root?",
   "store_root": "/var/tmp"
  },
@@ -191,7 +191,7 @@
         "examples": [],
         "files_readable": 0,
         "files_visible": 0,
-        "glob": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__*.partition.json",
+        "glob": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__*.partition.json",
         "label": "75403e8c",
         "revision": "75403e8c"
        }
@@ -220,14 +220,14 @@
       }
      }
     },
-    "cwd": "/tmp/a1/hostile/current_evaluator_sandboxed/harness/estate/invocations/pid1-4be98ee52d3986f6/G_dev_0001/run2/scratch",
+    "cwd": "/tmp/a1/hostile/current_evaluator_sandboxed/harness/estate/invocations/pid1-22285e90d65a26b4/G_dev_0001/run2/scratch",
     "graph_id": "G_dev_0001",
-    "graph_path": "/tmp/a1/hostile/current_evaluator_sandboxed/harness/estate/invocations/pid1-4be98ee52d3986f6/G_dev_0001/run2/candidate_graph.json",
+    "graph_path": "/tmp/a1/hostile/current_evaluator_sandboxed/harness/estate/invocations/pid1-22285e90d65a26b4/G_dev_0001/run2/candidate_graph.json",
     "report_copies": [
-     "/tmp/a1/hostile/current_evaluator_sandboxed/harness/estate/invocations/pid1-4be98ee52d3986f6/G_dev_0001/run1/hostile_report.json",
-     "/tmp/a1/hostile/current_evaluator_sandboxed/harness/estate/invocations/pid1-4be98ee52d3986f6/G_dev_0001/run2/hostile_report.json"
+     "/tmp/a1/hostile/current_evaluator_sandboxed/harness/estate/invocations/pid1-22285e90d65a26b4/G_dev_0001/run1/hostile_report.json",
+     "/tmp/a1/hostile/current_evaluator_sandboxed/harness/estate/invocations/pid1-22285e90d65a26b4/G_dev_0001/run2/hostile_report.json"
     ],
-    "report_path": "/tmp/a1/hostile/current_evaluator_sandboxed/harness/estate/invocations/pid1-4be98ee52d3986f6/G_dev_0001/run2/hostile_report.json",
+    "report_path": "/tmp/a1/hostile/current_evaluator_sandboxed/harness/estate/invocations/pid1-22285e90d65a26b4/G_dev_0001/run2/hostile_report.json",
     "uid": 0,
     "used": "all_zeros"
    },
@@ -252,7 +252,7 @@
      "labelled_unsafe": false,
      "mechanism": "unshare -rmnpf --mount-proc (user+mount+network+pid namespace)",
      "module": "a0/a1/candidate_sandbox.py",
-     "module_sha256": "fd234f699de9c372134dcf0a06014c4c29806affba42d29d299995c7eac7efd9",
+     "module_sha256": "f9caa4e015cab6e43291d63248ec390a7ba3c410666fbf4b7a4cdf9dd56fd015",
      "net_isolate_flag": true,
      "network": "fresh netns with no route; E* is additionally given --net-isolate",
      "processes": "fresh pid namespace and a fresh /proc: no other process is visible",
@@ -263,7 +263,7 @@
     "eid_star": "sha256:dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
     "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
     "harness_run_id": "hostile",
-    "nonce": "b3500866f8fdd12323238af832f721c7",
+    "nonce": "4eb277bf8825684cd2606609a162590f",
     "override": {},
     "override_mode": "bounded",
     "owns_evaluation": true,
@@ -286,7 +286,7 @@
       "sha256": "fdcf425c1d41650da8eaeffe28c30b9ec1461b45570d91b487a98c10fb6263ad"
      }
     ],
-    "started_at": "2026-09-22T21:39:57+0800",
+    "started_at": "2026-09-22T22:18:00+0800",
     "theta_e": {
      "fidelity": "full",
      "fraction": 1.0,
@@ -299,7 +299,7 @@
     "campaign_id": "C_hostile",
     "candidate_id": "hostile_probe",
     "candidate_isolation": "sandbox",
-    "candidate_source_sha256": "f0fb2c6864b26d2fdb971aa356ebcc689949c6d324970039f3bfc935bd8d7b6f",
+    "candidate_source_sha256": "c2f1c9b5c9c81d40033db37baa6bf932d764c1c8b2d976ef4ea13dc1f05e3178",
     "e_star_exit_code": 0,
     "evaluator": "maxcut",
     "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
@@ -309,7 +309,7 @@
     "harness_run_id": "hostile",
     "harness_supplied": true,
     "iteration": 1,
-    "measurement_oid": "744a8f31adaff05567323e9ce548e546b439315cf7988db152e559c1bfc3ae46",
+    "measurement_oid": "b7afdb6d75ff493fed078cea7f8c5973c6f5e1e8b025f8aeed64d856add7891d",
     "override_applied": false,
     "override_mode": "bounded",
     "plausibility": {
@@ -333,8 +333,8 @@
     "seq": 0,
     "status": "ok",
     "true_value": 0,
-    "ts": "2026-09-22T21:39:57+0800",
-    "wall_sec": 0.159066
+    "ts": "2026-09-22T22:18:00+0800",
+    "wall_sec": 0.156589
    },
    "response": {
     "arm_id": "A_probe",
@@ -349,8 +349,8 @@
     "harness_run_id": "hostile",
     "harness_supplied": true,
     "measurement": {
-     "behaviour_digest": "6976dca2249966ebf18344debee4b54a7926ec902ffb2401121ec8c4393bc180",
-     "candidate_sha256": "f0fb2c6864b26d2fdb971aa356ebcc689949c6d324970039f3bfc935bd8d7b6f",
+     "behaviour_digest": "3d2275048f1ce0efa36fcd6110524f7748bbd1547ae981465c3005edb61a63a8",
+     "candidate_sha256": "c2f1c9b5c9c81d40033db37baa6bf932d764c1c8b2d976ef4ea13dc1f05e3178",
      "eid_star": "sha256:dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
      "evaluator_source_sha256": "dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00",
      "harness_run_id": "hostile",
@@ -359,8 +359,8 @@
       "implementation": "cpython",
       "version": "3.14.7"
      },
-     "nonce": "b3500866f8fdd12323238af832f721c7",
-     "oid": "744a8f31adaff05567323e9ce548e546b439315cf7988db152e559c1bfc3ae46",
+     "nonce": "4eb277bf8825684cd2606609a162590f",
+     "oid": "b7afdb6d75ff493fed078cea7f8c5973c6f5e1e8b025f8aeed64d856add7891d",
      "schema": "a0.envelope.measurement_attestation/v1",
      "theta_e": {
       "fidelity": "full",
@@ -381,8 +381,8 @@
      "candidate_graph_schema": "a0.maxcut.candidate_graph/v1",
      "candidate_graph_sha256": "a0279e7af6a9e8b75ea5b402d2989c8932b3941005ad7c34b8dd3fb15b841753",
      "candidate_id": "hostile_probe",
-     "candidate_source_sha256": "f0fb2c6864b26d2fdb971aa356ebcc689949c6d324970039f3bfc935bd8d7b6f",
-     "canonical_digest": "febd54a746f3d7320dc0f8b3f13f75a470de85bdb18568a195cec9cf9bffc05d",
+     "candidate_source_sha256": "c2f1c9b5c9c81d40033db37baa6bf932d764c1c8b2d976ef4ea13dc1f05e3178",
+     "canonical_digest": "e1e6b8a97624394163d28207f366d156480c0ce425b4a92c7ed01e5b24a11715",
      "cut_edges": 0,
      "cut_fraction": "0.0000000000000000000",
      "determinism": {
@@ -493,6 +493,89 @@
      "/var/tmp",
      "/run/user"
     ],
+    "hiding": [
+     {
+      "after": {
+       "device": 85,
+       "entries": 0,
+       "mount": {
+        "fstype": "tmpfs",
+        "mount_id": "482",
+        "parent_mount_id": "345",
+        "source": "tmpfs"
+       }
+      },
+      "before": {
+       "device": 66307,
+       "entries": 1,
+       "mount": null
+      },
+      "root": "/home",
+      "the_host_already_mounted_something_here": false
+     },
+     {
+      "after": {
+       "device": 86,
+       "entries": 0,
+       "mount": {
+        "fstype": "tmpfs",
+        "mount_id": "483",
+        "parent_mount_id": "469",
+        "source": "tmpfs"
+       }
+      },
+      "before": {
+       "device": 35,
+       "entries": 328,
+       "mount": {
+        "fstype": "tmpfs",
+        "mount_id": "469",
+        "parent_mount_id": "345",
+        "source": "tmpfs"
+       }
+      },
+      "root": "/tmp",
+      "the_host_already_mounted_something_here": true
+     },
+     {
+      "after": {
+       "device": 88,
+       "entries": 0,
+       "mount": {
+        "fstype": "tmpfs",
+        "mount_id": "485",
+        "parent_mount_id": "345",
+        "source": "tmpfs"
+       }
+      },
+      "before": {
+       "device": 66307,
+       "entries": 7,
+       "mount": null
+      },
+      "root": "/var/tmp",
+      "the_host_already_mounted_something_here": false
+     },
+     {
+      "after": {
+       "device": 89,
+       "entries": 0,
+       "mount": {
+        "fstype": "tmpfs",
+        "mount_id": "486",
+        "parent_mount_id": "386",
+        "source": "tmpfs"
+       }
+      },
+      "before": {
+       "device": 28,
+       "entries": 1,
+       "mount": null
+      },
+      "root": "/run/user",
+      "the_host_already_mounted_something_here": false
+     }
+    ],
     "pass": true,
     "pid": 1,
     "restored": [
@@ -507,6 +590,7 @@
     "self_check": {
      "egress": "BLOCKED:gaierror",
      "egress_is_blocked": true,
+     "hidden_roots_are_the_filesystems_this_lane_made": true,
      "hidden_roots_are_tmpfs": true,
      "not_hidden": [],
      "pid_namespace": {
@@ -518,7 +602,8 @@
        1
       ]
      },
-     "pid_namespace_is_private": true
+     "pid_namespace_is_private": true,
+     "roots_back_on_the_hosts_filesystem": []
     },
     "staged": [
      {
@@ -598,11 +683,11 @@
      "proc_environ": {
       "key_variables_found": [
        {
-        "pid": "633903",
+        "pid": "738394",
         "variable": "DEEPSEEK_API_KEY"
        }
       ],
-      "visible_pid_count": 443,
+      "visible_pid_count": 449,
       "visible_pids_head": [
        "1",
        "100",
@@ -616,28 +701,28 @@
      },
      "references": {
       "best_cut": 224,
-      "best_path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json",
+      "best_path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json",
       "best_store": "75403e8c",
       "examples": [
        {
         "cut": 224,
-        "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json"
+        "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json"
        },
        {
         "cut": 224,
-        "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s2718.partition.json"
+        "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s2718.partition.json"
        },
        {
         "cut": 224,
-        "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s31415.partition.json"
+        "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s31415.partition.json"
        },
        {
         "cut": 224,
-        "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s4242.partition.json"
+        "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s4242.partition.json"
        },
        {
         "cut": 224,
-        "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s65521.partition.json"
+        "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s65521.partition.json"
        }
       ],
       "files_readable": 30,
@@ -655,32 +740,32 @@
        },
        {
         "best_cut": 224,
-        "best_path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json",
+        "best_path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json",
         "examples": [
          {
           "cut": 224,
-          "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json"
+          "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json"
          },
          {
           "cut": 224,
-          "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s2718.partition.json"
+          "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s2718.partition.json"
          },
          {
           "cut": 224,
-          "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s31415.partition.json"
+          "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s31415.partition.json"
          },
          {
           "cut": 224,
-          "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s4242.partition.json"
+          "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s4242.partition.json"
          },
          {
           "cut": 224,
-          "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s65521.partition.json"
+          "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s65521.partition.json"
          }
         ],
         "files_readable": 30,
         "files_visible": 30,
-        "glob": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__*.partition.json",
+        "glob": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__*.partition.json",
         "label": "75403e8c",
         "revision": "75403e8c"
        }
@@ -706,11 +791,11 @@
       "git_objects": {
        "pattern": "/home/ebt/rsi-dev/.git/objects/*/*",
        "sample": [
-        "/home/ebt/rsi-dev/.git/objects/info/commit-graph",
-        "/home/ebt/rsi-dev/.git/objects/info/packs",
-        "/home/ebt/rsi-dev/.git/objects/pack/multi-pack-index"
+        "/home/ebt/rsi-dev/.git/objects/03/911c7812a9e6fb0fe98b504ef105c726cbf86c",
+        "/home/ebt/rsi-dev/.git/objects/0b/b11ec67f230191fdeddc2a9c6921b8e2ca61fb",
+        "/home/ebt/rsi-dev/.git/objects/10/e93083269a4d5d00c418483c3ba7dac313585d"
        ],
-       "visible": 15
+       "visible": 52
       },
       "reference_targets": {
        "pattern": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json",
@@ -721,21 +806,21 @@
       }
      }
     },
-    "cwd": "/tmp/a1/hostile/raw_pre_fix/estate/invocations/pid633903-4be98ee52d3986f6/G_dev_0001/run2/scratch",
+    "cwd": "/tmp/a1/hostile/raw_pre_fix/estate/invocations/pid738394-22285e90d65a26b4/G_dev_0001/run2/scratch",
     "graph_id": "G_dev_0001",
     "graph_path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/dev/G_dev_0001.json",
     "report_copies": [
-     "/tmp/a1/hostile/raw_pre_fix/estate/invocations/pid633903-4be98ee52d3986f6/G_dev_0001/run1/hostile_report.json",
-     "/tmp/a1/hostile/raw_pre_fix/estate/invocations/pid633903-4be98ee52d3986f6/G_dev_0001/run2/hostile_report.json"
+     "/tmp/a1/hostile/raw_pre_fix/estate/invocations/pid738394-22285e90d65a26b4/G_dev_0001/run1/hostile_report.json",
+     "/tmp/a1/hostile/raw_pre_fix/estate/invocations/pid738394-22285e90d65a26b4/G_dev_0001/run2/hostile_report.json"
     ],
-    "report_path": "/tmp/a1/hostile/raw_pre_fix/estate/invocations/pid633903-4be98ee52d3986f6/G_dev_0001/run2/hostile_report.json",
+    "report_path": "/tmp/a1/hostile/raw_pre_fix/estate/invocations/pid738394-22285e90d65a26b4/G_dev_0001/run2/hostile_report.json",
     "uid": 1000,
     "used": "copied_reference_partition"
    },
    "outcome": {
     "candidate_id": "hostile_probe",
-    "candidate_source_sha256": "f0fb2c6864b26d2fdb971aa356ebcc689949c6d324970039f3bfc935bd8d7b6f",
-    "canonical_digest": "c5deab0d204b22bf5be1061fe820533822d871afdbca40288e1991882dd62ea4",
+    "candidate_source_sha256": "c2f1c9b5c9c81d40033db37baa6bf932d764c1c8b2d976ef4ea13dc1f05e3178",
+    "canonical_digest": "e17d22a33594d3473b4dbac514770f61907e96616486fff869d26a96f087480f",
     "cut_edges": 224,
     "cut_fraction": "0.8452830188679245283",
     "determinism": {
@@ -799,7 +884,7 @@
      },
      "proc_environ": {
       "key_variables_found": [],
-      "visible_pid_count": 444,
+      "visible_pid_count": 450,
       "visible_pids_head": [
        "1",
        "100",
@@ -813,28 +898,28 @@
      },
      "references": {
       "best_cut": 224,
-      "best_path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json",
+      "best_path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json",
       "best_store": "75403e8c",
       "examples": [
        {
         "cut": 224,
-        "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json"
+        "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json"
        },
        {
         "cut": 224,
-        "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s2718.partition.json"
+        "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s2718.partition.json"
        },
        {
         "cut": 224,
-        "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s31415.partition.json"
+        "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s31415.partition.json"
        },
        {
         "cut": 224,
-        "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s4242.partition.json"
+        "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s4242.partition.json"
        },
        {
         "cut": 224,
-        "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s65521.partition.json"
+        "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s65521.partition.json"
        }
       ],
       "files_readable": 30,
@@ -852,32 +937,32 @@
        },
        {
         "best_cut": 224,
-        "best_path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json",
+        "best_path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json",
         "examples": [
          {
           "cut": 224,
-          "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json"
+          "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s1337.partition.json"
          },
          {
           "cut": 224,
-          "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s2718.partition.json"
+          "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s2718.partition.json"
          },
          {
           "cut": 224,
-          "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s31415.partition.json"
+          "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s31415.partition.json"
          },
          {
           "cut": 224,
-          "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s4242.partition.json"
+          "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s4242.partition.json"
          },
          {
           "cut": 224,
-          "path": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s65521.partition.json"
+          "path": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__BURER2002__s65521.partition.json"
          }
         ],
         "files_readable": 30,
         "files_visible": 30,
-        "glob": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__*.partition.json",
+        "glob": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__*.partition.json",
         "label": "75403e8c",
         "revision": "75403e8c"
        }
@@ -903,11 +988,11 @@
       "git_objects": {
        "pattern": "/home/ebt/rsi-dev/.git/objects/*/*",
        "sample": [
-        "/home/ebt/rsi-dev/.git/objects/info/commit-graph",
-        "/home/ebt/rsi-dev/.git/objects/info/packs",
-        "/home/ebt/rsi-dev/.git/objects/pack/multi-pack-index"
+        "/home/ebt/rsi-dev/.git/objects/03/911c7812a9e6fb0fe98b504ef105c726cbf86c",
+        "/home/ebt/rsi-dev/.git/objects/0b/b11ec67f230191fdeddc2a9c6921b8e2ca61fb",
+        "/home/ebt/rsi-dev/.git/objects/10/e93083269a4d5d00c418483c3ba7dac313585d"
        ],
-       "visible": 15
+       "visible": 52
       },
       "reference_targets": {
        "pattern": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json",
@@ -918,14 +1003,14 @@
       }
      }
     },
-    "cwd": "/tmp/a1/hostile/service_net_isolate_only/harness/estate/invocations/pid633928-4be98ee52d3986f6/G_dev_0001/run2/scratch",
+    "cwd": "/tmp/a1/hostile/service_net_isolate_only/harness/estate/invocations/pid738401-22285e90d65a26b4/G_dev_0001/run2/scratch",
     "graph_id": "G_dev_0001",
     "graph_path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/dev/G_dev_0001.json",
     "report_copies": [
-     "/tmp/a1/hostile/service_net_isolate_only/harness/estate/invocations/pid633928-4be98ee52d3986f6/G_dev_0001/run1/hostile_report.json",
-     "/tmp/a1/hostile/service_net_isolate_only/harness/estate/invocations/pid633928-4be98ee52d3986f6/G_dev_0001/run2/hostile_report.json"
+     "/tmp/a1/hostile/service_net_isolate_only/harness/estate/invocations/pid738401-22285e90d65a26b4/G_dev_0001/run1/hostile_report.json",
+     "/tmp/a1/hostile/service_net_isolate_only/harness/estate/invocations/pid738401-22285e90d65a26b4/G_dev_0001/run2/hostile_report.json"
     ],
-    "report_path": "/tmp/a1/hostile/service_net_isolate_only/harness/estate/invocations/pid633928-4be98ee52d3986f6/G_dev_0001/run2/hostile_report.json",
+    "report_path": "/tmp/a1/hostile/service_net_isolate_only/harness/estate/invocations/pid738401-22285e90d65a26b4/G_dev_0001/run2/hostile_report.json",
     "uid": 0,
     "used": "copied_reference_partition"
    },
@@ -944,7 +1029,7 @@
     "eid_star": "sha256:4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
     "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
     "harness_run_id": "hostile",
-    "nonce": "6c73aaab66f34a7e9c2bb687b7496f4c",
+    "nonce": "61460585fc7f7f0119568b6d130991dd",
     "override": {},
     "override_mode": "bounded",
     "owns_evaluation": true,
@@ -967,7 +1052,7 @@
       "sha256": "c08f0c36973cecb7624c54c70b82906d8a323517ef100cad2ab31877f92edd0f"
      }
     ],
-    "started_at": "2026-09-22T21:39:56+0800",
+    "started_at": "2026-09-22T22:17:59+0800",
     "theta_e": {
      "fidelity": "full",
      "fraction": 1.0,
@@ -980,7 +1065,7 @@
     "campaign_id": "C_hostile",
     "candidate_id": "hostile_probe",
     "candidate_isolation": "none",
-    "candidate_source_sha256": "f0fb2c6864b26d2fdb971aa356ebcc689949c6d324970039f3bfc935bd8d7b6f",
+    "candidate_source_sha256": "c2f1c9b5c9c81d40033db37baa6bf932d764c1c8b2d976ef4ea13dc1f05e3178",
     "e_star_exit_code": 0,
     "evaluator": "maxcut",
     "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
@@ -990,7 +1075,7 @@
     "harness_run_id": "hostile",
     "harness_supplied": true,
     "iteration": 1,
-    "measurement_oid": "2b7ab668ef5a18715968a98ccddee16b6da49fa90b2e5cfa332c703659dc84d0",
+    "measurement_oid": "f0931f0052b1b792aaba72eeeb1175f7cf4cb5855934d3d630570955eff33bf4",
     "override_applied": false,
     "override_mode": "bounded",
     "plausibility": {
@@ -1014,8 +1099,8 @@
     "seq": 0,
     "status": "ok",
     "true_value": 224,
-    "ts": "2026-09-22T21:39:57+0800",
-    "wall_sec": 0.07799
+    "ts": "2026-09-22T22:17:59+0800",
+    "wall_sec": 0.079002
    },
    "response": {
     "arm_id": "A_probe",
@@ -1030,8 +1115,8 @@
     "harness_run_id": "hostile",
     "harness_supplied": true,
     "measurement": {
-     "behaviour_digest": "262c710fcf3591cd0e69535f00c81e4ac8a358555db7acd65fa050f524fd5944",
-     "candidate_sha256": "f0fb2c6864b26d2fdb971aa356ebcc689949c6d324970039f3bfc935bd8d7b6f",
+     "behaviour_digest": "accf06e9dafd89d116e619e9305c35617d280a6b4c6c7a74838193f5065a609a",
+     "candidate_sha256": "c2f1c9b5c9c81d40033db37baa6bf932d764c1c8b2d976ef4ea13dc1f05e3178",
      "eid_star": "sha256:4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
      "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
      "harness_run_id": "hostile",
@@ -1040,8 +1125,8 @@
       "implementation": "cpython",
       "version": "3.14.7"
      },
-     "nonce": "6c73aaab66f34a7e9c2bb687b7496f4c",
-     "oid": "2b7ab668ef5a18715968a98ccddee16b6da49fa90b2e5cfa332c703659dc84d0",
+     "nonce": "61460585fc7f7f0119568b6d130991dd",
+     "oid": "f0931f0052b1b792aaba72eeeb1175f7cf4cb5855934d3d630570955eff33bf4",
      "schema": "a0.envelope.measurement_attestation/v1",
      "theta_e": {
       "fidelity": "full",
@@ -1052,8 +1137,8 @@
     },
     "outcome": {
      "candidate_id": "hostile_probe",
-     "candidate_source_sha256": "f0fb2c6864b26d2fdb971aa356ebcc689949c6d324970039f3bfc935bd8d7b6f",
-     "canonical_digest": "c5deab0d204b22bf5be1061fe820533822d871afdbca40288e1991882dd62ea4",
+     "candidate_source_sha256": "c2f1c9b5c9c81d40033db37baa6bf932d764c1c8b2d976ef4ea13dc1f05e3178",
+     "canonical_digest": "e17d22a33594d3473b4dbac514770f61907e96616486fff869d26a96f087480f",
      "cut_edges": 224,
      "cut_fraction": "0.8452830188679245283",
      "determinism": {
@@ -1143,7 +1228,7 @@
       "visible_pid_count": 2,
       "visible_pids_head": [
        "1",
-       "21"
+       "22"
       ]
      },
      "references": {
@@ -1170,7 +1255,7 @@
         "examples": [],
         "files_readable": 0,
         "files_visible": 0,
-        "glob": "/var/tmp/a0-a1-hostile-633867/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__*.partition.json",
+        "glob": "/var/tmp/a0-a1-hostile-738352/a0/tasks/maxcut/references/logs/partitions/G_dev_0001__*.partition.json",
         "label": "75403e8c",
         "revision": "75403e8c"
        }
@@ -1199,14 +1284,14 @@
       }
      }
     },
-    "cwd": "/tmp/a1/hostile/service_sandbox/harness/estate/invocations/pid1-4be98ee52d3986f6/G_dev_0001/run2/scratch",
+    "cwd": "/tmp/a1/hostile/service_sandbox/harness/estate/invocations/pid1-22285e90d65a26b4/G_dev_0001/run2/scratch",
     "graph_id": "G_dev_0001",
     "graph_path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/dev/G_dev_0001.json",
     "report_copies": [
-     "/tmp/a1/hostile/service_sandbox/harness/estate/invocations/pid1-4be98ee52d3986f6/G_dev_0001/run1/hostile_report.json",
-     "/tmp/a1/hostile/service_sandbox/harness/estate/invocations/pid1-4be98ee52d3986f6/G_dev_0001/run2/hostile_report.json"
+     "/tmp/a1/hostile/service_sandbox/harness/estate/invocations/pid1-22285e90d65a26b4/G_dev_0001/run1/hostile_report.json",
+     "/tmp/a1/hostile/service_sandbox/harness/estate/invocations/pid1-22285e90d65a26b4/G_dev_0001/run2/hostile_report.json"
     ],
-    "report_path": "/tmp/a1/hostile/service_sandbox/harness/estate/invocations/pid1-4be98ee52d3986f6/G_dev_0001/run2/hostile_report.json",
+    "report_path": "/tmp/a1/hostile/service_sandbox/harness/estate/invocations/pid1-22285e90d65a26b4/G_dev_0001/run2/hostile_report.json",
     "uid": 0,
     "used": "all_zeros"
    },
@@ -1231,7 +1316,7 @@
      "labelled_unsafe": false,
      "mechanism": "unshare -rmnpf --mount-proc (user+mount+network+pid namespace)",
      "module": "a0/a1/candidate_sandbox.py",
-     "module_sha256": "fd234f699de9c372134dcf0a06014c4c29806affba42d29d299995c7eac7efd9",
+     "module_sha256": "f9caa4e015cab6e43291d63248ec390a7ba3c410666fbf4b7a4cdf9dd56fd015",
      "net_isolate_flag": true,
      "network": "fresh netns with no route; E* is additionally given --net-isolate",
      "processes": "fresh pid namespace and a fresh /proc: no other process is visible",
@@ -1242,7 +1327,7 @@
     "eid_star": "sha256:4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
     "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
     "harness_run_id": "hostile",
-    "nonce": "75ba66b8efa7b4feb76e50985d52cc50",
+    "nonce": "223059045b98f952c00af415c4564703",
     "override": {},
     "override_mode": "bounded",
     "owns_evaluation": true,
@@ -1265,7 +1350,7 @@
       "sha256": "c08f0c36973cecb7624c54c70b82906d8a323517ef100cad2ab31877f92edd0f"
      }
     ],
-    "started_at": "2026-09-22T21:39:57+0800",
+    "started_at": "2026-09-22T22:17:59+0800",
     "theta_e": {
      "fidelity": "full",
      "fraction": 1.0,
@@ -1278,7 +1363,7 @@
     "campaign_id": "C_hostile",
     "candidate_id": "hostile_probe",
     "candidate_isolation": "sandbox",
-    "candidate_source_sha256": "f0fb2c6864b26d2fdb971aa356ebcc689949c6d324970039f3bfc935bd8d7b6f",
+    "candidate_source_sha256": "c2f1c9b5c9c81d40033db37baa6bf932d764c1c8b2d976ef4ea13dc1f05e3178",
     "e_star_exit_code": 0,
     "evaluator": "maxcut",
     "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
@@ -1288,7 +1373,7 @@
     "harness_run_id": "hostile",
     "harness_supplied": true,
     "iteration": 1,
-    "measurement_oid": "305ad89ea7dbc270fa9372cf375893329602b6596bfc426ec21a1ac4507a44c2",
+    "measurement_oid": "1abb7e72f19a6f8b8109fee6fe97cfd7ea5e57e58f2507c6a436011e59762a0d",
     "override_applied": false,
     "override_mode": "bounded",
     "plausibility": {
@@ -1312,8 +1397,8 @@
     "seq": 0,
     "status": "ok",
     "true_value": 0,
-    "ts": "2026-09-22T21:39:57+0800",
-    "wall_sec": 0.127903
+    "ts": "2026-09-22T22:17:59+0800",
+    "wall_sec": 0.131603
    },
    "response": {
     "arm_id": "A_probe",
@@ -1328,8 +1413,8 @@
     "harness_run_id": "hostile",
     "harness_supplied": true,
     "measurement": {
-     "behaviour_digest": "d9144280f942251ff2e8ae37f0f13c159ee597d673e838c648301e4f6887ed8b",
-     "candidate_sha256": "f0fb2c6864b26d2fdb971aa356ebcc689949c6d324970039f3bfc935bd8d7b6f",
+     "behaviour_digest": "f1628f2e99d4e02ed2a871736644b775066aa02202c40ce1da3e565d3628953c",
+     "candidate_sha256": "c2f1c9b5c9c81d40033db37baa6bf932d764c1c8b2d976ef4ea13dc1f05e3178",
      "eid_star": "sha256:4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
      "evaluator_source_sha256": "4afff01f8a73479b2cb548686b4ae31c50100699057d3fad512f7a6aabb4a23a",
      "harness_run_id": "hostile",
@@ -1338,8 +1423,8 @@
       "implementation": "cpython",
       "version": "3.14.7"
      },
-     "nonce": "75ba66b8efa7b4feb76e50985d52cc50",
-     "oid": "305ad89ea7dbc270fa9372cf375893329602b6596bfc426ec21a1ac4507a44c2",
+     "nonce": "223059045b98f952c00af415c4564703",
+     "oid": "1abb7e72f19a6f8b8109fee6fe97cfd7ea5e57e58f2507c6a436011e59762a0d",
      "schema": "a0.envelope.measurement_attestation/v1",
      "theta_e": {
       "fidelity": "full",
@@ -1350,8 +1435,8 @@
     },
     "outcome": {
      "candidate_id": "hostile_probe",
-     "candidate_source_sha256": "f0fb2c6864b26d2fdb971aa356ebcc689949c6d324970039f3bfc935bd8d7b6f",
-     "canonical_digest": "e2fedee168bf872f758efe0b173a8e41e26e4b8a9f6376ee2dc13d37f5c7af96",
+     "candidate_source_sha256": "c2f1c9b5c9c81d40033db37baa6bf932d764c1c8b2d976ef4ea13dc1f05e3178",
+     "canonical_digest": "42e1d5fe165bd673d988e72b6d3929352f34b9cc994f9bd22a6fbe44f4520d28",
      "cut_edges": 0,
      "cut_fraction": "0.0000000000000000000",
      "determinism": {
@@ -1462,6 +1547,89 @@
      "/var/tmp",
      "/run/user"
     ],
+    "hiding": [
+     {
+      "after": {
+       "device": 85,
+       "entries": 0,
+       "mount": {
+        "fstype": "tmpfs",
+        "mount_id": "482",
+        "parent_mount_id": "345",
+        "source": "tmpfs"
+       }
+      },
+      "before": {
+       "device": 66307,
+       "entries": 1,
+       "mount": null
+      },
+      "root": "/home",
+      "the_host_already_mounted_something_here": false
+     },
+     {
+      "after": {
+       "device": 86,
+       "entries": 0,
+       "mount": {
+        "fstype": "tmpfs",
+        "mount_id": "483",
+        "parent_mount_id": "469",
+        "source": "tmpfs"
+       }
+      },
+      "before": {
+       "device": 35,
+       "entries": 328,
+       "mount": {
+        "fstype": "tmpfs",
+        "mount_id": "469",
+        "parent_mount_id": "345",
+        "source": "tmpfs"
+       }
+      },
+      "root": "/tmp",
+      "the_host_already_mounted_something_here": true
+     },
+     {
+      "after": {
+       "device": 88,
+       "entries": 0,
+       "mount": {
+        "fstype": "tmpfs",
+        "mount_id": "485",
+        "parent_mount_id": "345",
+        "source": "tmpfs"
+       }
+      },
+      "before": {
+       "device": 66307,
+       "entries": 7,
+       "mount": null
+      },
+      "root": "/var/tmp",
+      "the_host_already_mounted_something_here": false
+     },
+     {
+      "after": {
+       "device": 89,
+       "entries": 0,
+       "mount": {
+        "fstype": "tmpfs",
+        "mount_id": "486",
+        "parent_mount_id": "386",
+        "source": "tmpfs"
+       }
+      },
+      "before": {
+       "device": 28,
+       "entries": 1,
+       "mount": null
+      },
+      "root": "/run/user",
+      "the_host_already_mounted_something_here": false
+     }
+    ],
     "pass": true,
     "pid": 1,
     "restored": [
@@ -1476,6 +1644,7 @@
     "self_check": {
      "egress": "BLOCKED:gaierror",
      "egress_is_blocked": true,
+     "hidden_roots_are_the_filesystems_this_lane_made": true,
      "hidden_roots_are_tmpfs": true,
      "not_hidden": [],
      "pid_namespace": {
@@ -1487,7 +1656,8 @@
        1
       ]
      },
-     "pid_namespace_is_private": true
+     "pid_namespace_is_private": true,
+     "roots_back_on_the_hosts_filesystem": []
     },
     "staged": [
      {
@@ -1546,7 +1716,7 @@
    "home_secret_readable": true,
    "key_variables_found": [
     {
-     "pid": "633903",
+     "pid": "738394",
      "variable": "DEEPSEEK_API_KEY"
     }
    ],

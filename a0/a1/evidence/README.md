@@ -11,26 +11,42 @@ a whole differ only in per-run identifiers (the harness's nonce, the measurement
 OIDs, the ledger sequence rows, `elapsed_sec` and `merged_stream_sha256`). Those
 are per-run by construction — a nonce that repeated would be the defect.
 
-One exception, and it is the reason `hostile_candidate.json` is `fail`: four of
-its checks assert that the *open* lanes really can read the answers and the key,
-and those assertions depend on what `HEAD` contains, not on this directory. They
-were true when the committed bytes were recorded and are false now that the
-maxcut worker removed the stored witnesses (D-A1-13). Re-running the probe
-reproduces its 9/13 faithfully; what it cannot reproduce is a leak that the tree
-no longer contains.
+Every artifact here is `pass` at its own check count. There was one exception
+between `baf13884` and `8057c1ce`: `hostile_candidate.json` read `9/13`, because
+four of its checks assert that the *open* lanes really can read the answers and
+the key, and the probe was taking its before-side evaluator from `HEAD` (which by
+then carried the closure) while the witnesses it copies had been removed from the
+tree (D-A1-13). `8057c1ce` pinned the before side to `75403e8c` — that revision's
+evaluator, that revision's witnesses for the handed graph, byte-checked against
+its own git blobs — so the four positive controls are real again and the file
+committed here is the probe's **13/13**. The 9/13 recording is at
+`git show 3bff97b6:a0/a1/evidence/hostile_candidate.json`.
 
 ## Refreshed against one revision, file by file
 
 `EID*` moved a **second** time when two further commits to `E*` landed (the
 candidate-staging fix, then the candidate-facing redaction); `DEVIATIONS.md`
 D-A1-13 records both digests and the reason. Every artifact in this directory was
-produced *after* the last of those commits, in one sitting, so the set describes
-one revision: `EID*` = `7ce9e72f…`, `evaluator_source_sha256` = `dc6969ec…`.
+produced *after* the last of those commits, so the set describes one evaluator:
+`EID*` = `7ce9e72f…`, `evaluator_source_sha256` = `dc6969ec…`.
+
+**One file has since been refreshed on its own, and this is why it had to be.**
+`hostile_candidate.json` is the only artifact here that embeds the harness's
+`candidate_isolation` identity, and that identity carries
+`module_sha256` = the digest of `a0/a1/candidate_sandbox.py`. D-A1-14 changed that
+file's bytes (`fd234f69…` → `f9caa4e015ca…`, the lane now hides a `/tmp` the host
+already mounts as tmpfs), so this artifact was re-run after it: it is now
+`f9caa4e0…`, and its `lane_visibility` reads **`/tmp: hidden`** where it read
+`VISIBLE`. No other artifact here records a digest of any file D-A1-14 touched —
+they record `E*`'s (`dc6969ec…`, unmoved), the graph's and the run's — so no
+other file was refreshed, and none needed to be. The paid artifacts are
+untouched by that change for the same reason: they record the lane's *mode*
+(`"sandbox"`), not the sandbox module's digest.
 
 The older versions are **not** duplicated here. They are the committed bytes at
-`4b94503e` (the round that closed the verifier's findings) and at `75403e8c` (the
-round that followed the first re-freeze), retrievable with
-`git show <commit>:a0/a1/evidence/<file>`.
+`8057c1ce` (the 9/13 and pre-D-A1-14 round), at `4b94503e` (the round that closed
+the verifier's findings) and at `75403e8c` (the round that followed the first
+re-freeze), retrievable with `git show <commit>:a0/a1/evidence/<file>`.
 
 | file | status | why |
 |---|---|---|
@@ -41,7 +57,7 @@ round that followed the first re-freeze), retrievable with
 | `wiring_kapso.json` | **refreshed** (free) | as above |
 | `skeleton_dryrun.json` | **refreshed** (free) | now records `eid_star=7ce9e72f…` |
 | `score_bound.json` | **refreshed** (free) | records `dc6969ec…` |
-| `hostile_candidate.json` | **refreshed, verdict changed to 9/13** | the four failing checks are the probe's own positive controls, invalidated by the maxcut worker's witness removal — see D-A1-13. This is the only artifact here whose verdict is not `pass`, and it is reported rather than repaired |
+| `hostile_candidate.json` | **refreshed, 13/13** | re-run after D-A1-14 changed the sandbox module it embeds; it is the only artifact here that carries that digest. Both sides are real again: the before side is the pinned `75403e8c` evaluator against that revision's witnesses (`8057c1ce`, D-A1-13), and `lane_visibility` now reads `/tmp: hidden` |
 
 | file | produced by | checks | cost |
 |---|---|---|---|
@@ -49,7 +65,7 @@ round that followed the first re-freeze), retrievable with
 | `wiring_kapso.json` | `a0/runtimes/kapso/.venv/bin/python a0/a1/probes/wiring_kapso.py` | 7/7 | none |
 | `skeleton_dryrun.json` | `python3 a0/a1/probes/skeleton_dryrun.py` | 25/25 | none |
 | `score_bound.json` | `python3 a0/a1/probes/score_bound.py` | 7/7 | none |
-| `hostile_candidate.json` | `python3 a0/a1/probes/hostile_candidate.py` | **9/13** | none (TCP connect attempts and one byte of a file, no model call) |
+| `hostile_candidate.json` | `python3 a0/a1/probes/hostile_candidate.py` | **13/13** | none (TCP connect attempts and one byte of a file, no model call) |
 | `live_controls.json` | `python3 a0/a1/probes/live_probe.py controls` | 6/6 | none (refusals and one 400) |
 | `live_simpleloop.json` | `python3 a0/a1/probes/live_probe.py arm --arm simpleloop` | 9/9 | 1 model call |
 | `live_kapso.json` | `python3 a0/a1/probes/live_probe.py arm --arm kapso` | 11/11 | 1 model call |
@@ -93,6 +109,12 @@ live artifact as `meter_verify_ledger`). For this round it re-derived `ceq_total
 The token counts of this round are identical to the previous round's refresh —
 same prompts, same deterministic decoding — but this is a **second** paid round:
 each arm was called once more and these are new ledger rows, not the old ones.
+
+**The D-A1-14 refresh added no spend at all: `0 CEq`.** It re-ran model-free
+probes only (`hostile_candidate`, `score_bound`, `skeleton_dryrun`, `verify.py`
+and the unit tests) and re-derived the declarations; no paid probe was re-run and
+no ledger row was written. The rows above are still the whole of this directory's
+spend.
 
 Earlier rounds of this workstream spent more: the first live round on the pre-fix
 meter (SimpleLoop attempts at `CEq` 8310, 9382, 3600; KAPSO attempts at 1104 and

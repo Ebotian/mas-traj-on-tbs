@@ -24,7 +24,7 @@ The paid runs are **not** re-run by that command (they spend money). They are
 | path | what it is |
 |---|---|
 | `eval_service.py` | **the harness-owned evaluation service**: the only process that runs `E*`, for `maxcut` or `circle-packing`. Writes the Outcome, binds it to an `a0/envelope` measurement token, books a row, then publishes. Bounds every published score by the task (`0 ≤ cut_edges ≤ |E|`) and runs the candidate lane in the sandbox below |
-| `candidate_sandbox.py` | **the candidate lane's boundary**: `unshare -rmnpf --mount-proc` with the repository/home hidden by tmpfs and the invocation's own inputs bound back; a self-check that refuses to measure if the lane is not closed. See D-A1-8 |
+| `candidate_sandbox.py` | **the candidate lane's boundary**: `unshare -rmnpf --mount-proc` with every hidden root — including one the host already mounts, e.g. its `/tmp` — replaced by a fresh tmpfs the lane verifies as its own, and the invocation's own inputs bound back; a self-check that refuses to measure if the lane is not closed. See D-A1-8 and D-A1-14 |
 | `t1_eid.py` / `T1-EID.json` / `T1.contract.json` | T1's frozen evaluator identity `EID*` = `7ce9e72f…`, built by `a0/contract/evalcontract.py` from a spec (see D-A1-1; the re-freezes are D-A1-7 and D-A1-13). `write` and `build` are the same command |
 | `causal.py` | `CampaignID = (TaskID, BlockID, ArmID, ReplicateID)`, `CID` / `AID_r`, and the causal-role rule as an executable audit |
 | `declaration.py` / `declarations/` | the CID and the two arms' `AID_r`, rebuilt from the repository, plus the audit verdict |
