@@ -192,7 +192,6 @@ def test_the_repair_hop_is_gone_and_is_no_longer_a_cid_factor():
     assert not (REPO_ROOT / "a0" / "a1" / "meter_body_repair.py").exists()
     cid = declaration.build()["cid"]
     assert "harness.meter_body_repair" not in cid.factors
-    assert (REPO_ROOT / "a0" / "a1" / "meter_body_repair.py").exists() is False
 
 
 def test_the_meter_proxy_supervisor_has_no_hop_hook():

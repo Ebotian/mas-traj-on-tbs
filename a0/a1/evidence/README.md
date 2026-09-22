@@ -59,12 +59,11 @@ runtime's self-report is diagnostic only).
 meter's own `verify_ledger.py` re-derives from each row's usage (recorded in every
 live artifact as `meter_verify_ledger`).
 
-Earlier rounds of this workstream spent more than the table above: a first live
-round on the pre-fix meter (two SimpleLoop attempts, `CEq` 8310 and 9382, plus a
-KAPSO attempt at 1104), and the model-free attempts that found the framing defect.
-The session's whole-model total is on the order of **35,000 `CEq`** — still a few
-cents at any flash-tier price. No price is asserted here, because none was
-measured.
+Earlier rounds of this workstream spent more than the table above: the first live
+round on the pre-fix meter (SimpleLoop attempts at `CEq` 8310, 9382, 3600; KAPSO
+attempts at 1104 and 1104) and the model-free calls that found the framing defect
+(69, 14). The session's whole-model total is **≈33,100 `CEq`** — still a few cents
+at any flash-tier price. No price is asserted here, because none was measured.
 
 **No claim about model quality.** One call per arm is not a search. What the two
 live files establish is the *measurement chain*: who produced the number, that it
