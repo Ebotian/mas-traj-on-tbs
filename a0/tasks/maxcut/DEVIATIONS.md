@@ -62,27 +62,35 @@ contributes a number.
 
 ---
 
-## D-T1-3 — §4's `<entry>` is realized with the evaluator's own interpreter as a prefix
+## D-T1-3 — §4's `<entry>` is realized as `<interpreter> <entry>`, never as `execve` on the file
 
 **Clause.** §4: `argv: <entry> --graph <abs graph.json> --out <abs partition.json> --seed <int>`.
 
-**What was done.** `<entry>` is the candidate's program file. For a program that
-is not a `#!`-executable, the harness prepends an absolute interpreter (its own
-`sys.executable`, or a list declared as `exec` in the candidate's optional
-`candidate.json`), so the candidate's `argv[1:]` is precisely §4's list. A file
-that is executable *and* starts with `#!` is executed directly, with no prefix.
+**What was done.** `<entry>` is the candidate's program file. The harness
+prepends an absolute launcher — its own `sys.executable`, or the list declared as
+`exec` in the candidate's optional `candidate.json` — so the candidate's own
+argument vector is precisely §4's list. A candidate that really is a
+self-executing program declares `"exec": []` and is then `execve`'d directly.
 
-**Why.** `execve` on a bare `.py` file without a shebang fails. A shebang
-(`#!/usr/bin/env python3`) would introduce a PATH dependency in the very ABI
-whose §4 forbids depending on PATH, and an absolute-path shebang would not be
-portable. Prepending the harness's own interpreter keeps the invocation
-deterministic and PATH-independent, and it keeps the *frozen* part of the ABI —
-the argument vector the candidate sees — exactly as written.
+**Why this is consistent with §4's literal text, not just a convenience.**
 
-**Note.** This is why the observed child `argv[0]` is an interpreter path and
-`argv[1]` is the candidate program. Recorded, not hidden: every invocation's
-full argv is in `<state>/invocations/**/invocation.json` and in the resources
-sidecar.
+1. §4 mandates `PYTHONDONTWRITEBYTECODE=1` in the candidate's environment — a
+   variable only a CPython process reads. §4 therefore presupposes the harness
+   supplies the interpreter. Under `execve` of a `#!/usr/bin/env python3` script
+   the harness supplies nothing; the *shebang* does, and it does so through PATH.
+2. §4 forbids candidates depending on PATH, and §4 sets `PATH` to a minimal set.
+   Reading (a) makes the harness's own ability to launch a candidate depend on
+   that PATH (`env python3` must resolve), i.e. it puts PATH in the trust path of
+   a clause that exists to take PATH out of it.
+3. What the candidate sees in `sys.argv` under this reading is exactly
+   `<entry> --graph … --out … --seed …` — §4 verbatim. The OS-level `argv[0]`
+   is the launcher; the interface writes the *candidate's* argv, which is what
+   the candidate can observe.
+
+**Note.** Every invocation's full OS-level argv is recorded in
+`<state>/invocations/**/invocation.json` and in the resources sidecar, so the
+realization is auditable rather than implied. See D-T1-10 for why inferring
+direct execution from a mode bit was not merely a stylistic choice but a defect.
 
 ---
 
@@ -208,6 +216,100 @@ aggregate document is written either way, with `counts` recording the truth.
 
 **Why.** A uniform exit table means one shell idiom works for both commands. The
 document, not the exit code, is the record.
+
+---
+
+## D-T1-10 — the launch was inferred from the entry's mode bit; it is now a function of bytes alone
+
+**What was wrong.** `resolve_candidate` chose the launch by inspecting the entry's
+mode and `#!` line:
+
+```python
+elif os.access(entry_path, os.X_OK) and entry_path.read_bytes()[:2] == b"#!":
+    exec_prefix = []          # execve the file directly
+else:
+    exec_prefix = [sys.executable]
+```
+
+but `stage_candidate` runs a copy of the candidate that carries **content only**
+(`{path, bytes, sha256}`), created with `write_bytes` and therefore mode `0644`.
+So the decision was taken on one file and the execution performed on another. The
+`X_OK` branch could therefore never succeed: it always produced
+
+```
+failure=candidate_entry_failed: PermissionError: [Errno 13] Permission denied:
+  <state>/candidates/6bfd919ed73c49db/solution.py
+```
+
+**Why it is a real defect, not a rough edge.** The mode bit is not part of the
+candidate's identity: §2 makes the *file's sha256* the data identity, and
+`candidate_source_sha256` digests content only. A byte-identical candidate could
+therefore be `ok` or `error` according to a bit no digest covers, and both
+Outcomes would carry the *same* `candidate_source_sha256`. That is precisely the
+class of silent, unreproducible disagreement (i)/(ii) exist to prevent.
+`positive_control/{baseline,pc}/solution.py` were `chmod +x`ed after the gate ran
+and E* stopped being able to measure the frozen candidates at all
+(`redesign/DEVIATIONS.md` D-RD-1).
+
+**What was done.**
+
+* The inferred branch is **gone**. The default launch is
+  `[sys.executable, <staged entry>, …]` — D-T1-3 — for every candidate,
+  regardless of its mode or its first two bytes.
+* `"exec": []` in `candidate.json` remains as an *explicit* opt-in for a
+  candidate that really is a self-executing program. `stage_candidate` then
+  copies the source file modes into the staged copy and checks the staged entry's
+  executable bit, so a declared direct execution is either honoured or reported
+  precisely, never as a bare `PermissionError`.
+
+**Which reading of §4 this picks, and why.** Reading (b), "the harness supplies
+the interpreter", for the three reasons in D-T1-3. Decisive additional evidence:
+the gate's own recorded invocation, from the run whose verdict it froze, shows
+the gate used exactly this path —
+
+```
+gates/e-star-state/dev-s3-baseline/resources.json:
+  argv[0] = "/usr/bin/python3"
+  argv[1] = ".../dev-s3-baseline/candidates/6bfd919ed73c49db/solution.py"
+```
+
+— and the gate's staged copy of that candidate is mode `0644` (mtime 17:03, i.e.
+before the 17:08 `chmod`). The frozen verdicts were therefore produced by (b), so
+(b) is the only choice that *restores* reproducibility; preserving the mode and
+execve-ing (reading (a)) would have silently changed what is launched relative to
+the frozen table, and would make a byte-identical candidate's verdict depend on an
+untracked bit.
+
+**Blast radius: none.** `conformance.expected.json` is byte-identical before and
+after the fix — all 21 C\*(T1) verdicts are unchanged, because every member of
+C\*(T1) is mode `0644` and never entered the broken branch. All 48 gate rows
+(2 candidates × 24 dev graphs) reproduce exactly (`status`, `cut_edges`,
+`candidate_source_sha256`), and a forced re-run of the gate in a `/tmp` sandbox
+reproduces `verdict = NOT_ADMISSIBLE` with zero differing row fields.
+
+**Regression test.** `test_candidate_staging.py` (also wired in as conformance
+probe `p7_candidate_staging`). It fails on the pre-fix evaluator, and its failure
+is the defect in one line: the two byte-identical fixtures report the same
+`candidate_source_sha256` while their `cut_edges` are `136` and `null`.
+
+## D-T1-11 — `gates/values/*.json` was rewritten once, by accident, and restored
+
+Not an interface deviation: a footprint to declare. To test the coordinator's
+question about `gate_runner.py --force` I ran the gate in a `/tmp` sandbox whose
+`gates/values/` was a **symlink** to the real one. `gate_runner.emit_values`
+writes `HERE/values/<set>.<role>.json`, so the sandbox's run wrote through the
+symlink into `a0/tasks/maxcut/gates/values/{dev.baseline,dev.positive-control}.json`.
+
+* Content impact: none. `git diff` showed the only differing fields are
+  `canonical_digest` and `evaluator_source_sha256`, which necessarily change when
+  `e_star.py` is edited; all 24 rows' `cut_edges` and `candidate_source_sha256`
+  were identical.
+* Remediation: both files were restored with `git checkout --`, and `git status
+  a0/tasks/maxcut/gates` is clean. Their content is byte-identical to what the
+  gate owner committed; their **mtime is newer** (the restore rewrote them), which
+  is the only residue.
+* Re-done properly: the sandbox now holds a real *copy* of `values/`, and a second
+  forced run touched nothing outside `/tmp`.
 
 ---
 

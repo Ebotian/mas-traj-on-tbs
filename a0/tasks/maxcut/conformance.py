@@ -37,6 +37,10 @@ from fractions import Fraction
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+
+import test_candidate_staging  # noqa: E402  (the D-T1-10 regression, one implementation)
+
 E_STAR = HERE / "e_star.py"
 CANDIDATES = HERE / "candidates"
 EXPECTED_PATH = HERE / "conformance.expected.json"
@@ -551,6 +555,28 @@ def probe_input_tampering_detected(rows: list[dict[str, object]]) -> dict[str, o
     }
 
 
+def probe_candidate_staging(graph: dict[str, object], work: Path) -> dict[str, object]:
+    """D-T1-10 regression, run as part of the standing conformance.
+
+    Asserting the defect stays fixed in the *live* tree is the whole point: the
+    defect was a launch decision made from a file attribute the candidate's
+    identity does not cover, and no amount of reading the source reliably catches
+    a recurrence.  The implementation lives in `test_candidate_staging.py` so
+    there is one copy; this is a second entry point, not a second test.
+    """
+    result = test_candidate_staging.run_checks(
+        E_STAR, Path(str(graph["path"])), work / "staging-regression",
+    )
+    return {
+        "ok": bool(result["ok"]),
+        "claim": result["claim"],
+        "implementation": "test_candidate_staging.py (run standalone with `--e-star <path>`)",
+        "cases": [
+            {"name": item["name"], "ok": item["ok"], "claim": item["claim"]} for item in result["cases"]
+        ],
+    }
+
+
 def probe_identity(rows: list[dict[str, object]]) -> dict[str, object]:
     mismatched = [
         row["candidate_id"] for row in rows
@@ -609,6 +635,7 @@ def main(argv: list[str] | None = None) -> int:
         "p4_network_independence": probe_network(graph, work),
         "p5_child_environment": probe_environment(graph, work),
         "p6_exact_aggregation": probe_exact_aggregation(work),
+        "p7_candidate_staging": probe_candidate_staging(graph, work),
     }
     checks = {
         "c_identity": probe_identity(rows),

@@ -58,6 +58,7 @@ import hashlib
 import json
 import os
 import shutil
+import stat
 import sys
 import tempfile
 from fractions import Fraction
@@ -723,10 +724,18 @@ def stage_candidate(spec: Mapping[str, Any], state_dir: Path) -> dict[str, Any]:
     and a candidate could be swapped underneath a frozen measurement.  The copy
     is content-addressed by `candidate_source_sha256`, and the copy's own digest
     is re-derived and compared before anything is measured.
+
+    Content is the *only* thing carried across by default.  The one exception is
+    a candidate that declared `exec: []` in its `candidate.json`, i.e. asked to
+    be executed directly rather than through an interpreter (D-T1-10): for those,
+    the source file modes are copied too and the staged entry's executable bit is
+    checked here, so the declared launch is either honoured or reported as a
+    precise error instead of surfacing as a bare `PermissionError` at spawn time.
     """
     source = Path(str(spec["candidate_dir"]))
     target = Path(state_dir) / "candidates" / str(spec["source_sha256"])[:16]
     target.mkdir(parents=True, exist_ok=True)
+    preserve_mode = not spec["exec_prefix"]
     for item in spec["source_files"]:  # type: ignore[index]
         data = (source / str(item["path"])).read_bytes()
         if sha256_bytes(data) != item["sha256"]:
@@ -735,12 +744,19 @@ def stage_candidate(spec: Mapping[str, Any], state_dir: Path) -> dict[str, Any]:
         destination.parent.mkdir(parents=True, exist_ok=True)
         if not destination.is_file() or destination.read_bytes() != data:
             destination.write_bytes(data)
+        if preserve_mode:
+            os.chmod(destination, stat.S_IMODE((source / str(item["path"])).stat().st_mode))
     staged = dict(spec)
     staged["candidate_dir"] = str(target)
     staged["entry_path"] = str((target / str(spec["entry"])).resolve())
     staged["source_files"] = child.candidate_files(target)
     if child.candidate_source_digest(staged["source_files"]) != spec["source_sha256"]:
         raise ValueError("the staged candidate's digest does not match the measured candidate's digest")
+    if preserve_mode and not os.access(staged["entry_path"], os.X_OK):
+        raise ValueError(
+            f"{spec['candidate_id']} declares direct execution (`exec: []`) but the staged entry "
+            f"{staged['entry_path']} is not executable"
+        )
     return staged
 
 

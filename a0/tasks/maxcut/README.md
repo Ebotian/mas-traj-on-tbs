@@ -13,7 +13,8 @@ extend the interface, with the justification.
 | `e_star_child.py` | the candidate subprocess loader: §4's argv/cwd/env, §7's process-group `SIGKILL` at tau, §4's exit-code table |
 | `candidates/` | **C\*(T1)**: 21 fixed candidates with frozen bytes and sha256 (`candidates/manifest.json`) |
 | `build_candidates.py` | writes/verifies the C\*(T1) tree from its frozen sources |
-| `conformance.py` | runs all of C\*(T1) through E\*, freezes the verdict table, and executes the six proofs |
+| `conformance.py` | runs all of C\*(T1) through E\*, freezes the verdict table, and executes the six proofs plus the standing checks |
+| `test_candidate_staging.py` | regression test for D-T1-10 (the launch must be a function of the candidate's bytes alone); also reached as conformance probe `p7_candidate_staging` |
 | `conformance.expected.json` | the frozen table: `(status, cut_edges, failure.kind)` per candidate |
 | `conformance.report.json` | the most recent full run, with all probe evidence |
 | `graphs_tmp/` | task-owned **temporary** graphs (stand-ins generated before `suite/` landed) and the exact-aggregation demonstration sets |
@@ -52,10 +53,18 @@ python3 e_star.py aggregate --candidate candidates/c01_ok_high_pc \
 # the frozen verdict table
 python3 build_candidates.py --check
 python3 conformance.py --check
+
+# the launch-integrity regression on its own (D-T1-10)
+python3 test_candidate_staging.py
 ```
 
 `--check` exits 0 when every row still reproduces and all probes pass. `--freeze`
 regenerates the table; only do that when the change is intended.
+
+`test_candidate_staging.py --e-star <path>` runs the same regression against a
+*different* evaluator, which is how the defect was shown to be caught: pointed at
+the pre-fix bytes (`git show <rev>:a0/tasks/maxcut/{e_star,e_star_child}.py`) it
+fails, pointed at the working tree it passes.
 
 ## What the run produced
 
@@ -86,7 +95,34 @@ The six required proofs, all `PASS`:
 Plus, beyond the list: `c19`'s forked grandchild keeps a heartbeat file growing
 until tau and never beats again afterwards (the *process group* was killed);
 `c17`'s input tampering is reported as `input_tampered` with no number; `c18`
-inflates its input to 272 and is measured at the true 136.
+inflates its input to 272 and is measured at the true 136; and
+`p7_candidate_staging` pins the launch invariant of D-T1-10.
+
+## The frozen positive-control candidates
+
+`positive_control/{baseline,pc}/solution.py` are mode `0755` with a `#!` line.
+Until D-T1-10 was fixed they could not be evaluated at all — but with the fix they
+evaluate, and their numbers land exactly on the gate's recorded ones:
+
+| candidate | launched as | status | `cut_edges` on `G_dev_0001` | `candidate_source_sha256` | gate recorded |
+|---|---|---|---|---|---|
+| `positive_control/baseline` | `/usr/bin/python3 <staged>/solution.py …` | `ok` | 132 | `6bfd919e…` | 132 / `6bfd919e…` |
+| `positive_control/pc` | `/usr/bin/python3 <staged>/solution.py …` | `ok` | 212 | `d3c12b54…` | 212 / `d3c12b54…` |
+
+The byte-identical mirrors under `redesign/frozen_mirror/` give the same
+`status`, the same `cut_edges` and the same `candidate_source_sha256`, so the
+mirror and the frozen original are now interchangeable — which is what makes the
+mirror redundant rather than wrong (it is **not** deleted here; it is another
+workstream's directory).
+
+Over the whole grid (2 candidates × 24 dev graphs, seed 1337, tau 30 s), **48/48**
+of the gate's recorded rows reproduce exactly on `(status, cut_edges,
+candidate_source_sha256)`, and a forced re-run of `gates/gate_runner.py` itself —
+in a `/tmp` sandbox, so nothing under `gates/` is written — yields
+`verdict = NOT_ADMISSIBLE` with `delta_gate`, `rho_gate`, `saturation_no_go`,
+`counts` all identical to `gates/verdict.dev.json` and **zero** differing row
+fields. (That exit code is the gate's own `NOT_ADMISSIBLE` return, not an error:
+`gate_runner.main` returns `{"ADMISSIBLE": 0, "PENDING": 2}.get(overall, 1)`.)
 
 ## C\*(T1) coverage of §10
 

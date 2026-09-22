@@ -186,10 +186,29 @@ def resolve_candidate(candidate: str | os.PathLike[str]) -> dict[str, Any]:
         if not isinstance(declared_exec, list) or not all(isinstance(part, str) for part in declared_exec):
             raise CandidateResolutionError("candidate.json `exec` must be a list of strings")
         exec_prefix = list(declared_exec)
-    elif os.access(entry_path, os.X_OK) and entry_path.read_bytes()[:2] == b"#!":
-        exec_prefix = []  # a self-describing executable: run it as §4 writes it
+        exec_mode = "declared"
     else:
+        # §4's `<entry>` is realized as `<interpreter> <entry>`, never as execve
+        # on the file.  Two reasons, one textual and one structural.
+        #
+        # Textual: §4 mandates `PYTHONDONTWRITEBYTECODE=1` in the candidate's
+        # environment, a variable only a CPython process reads.  §4 therefore
+        # presupposes the harness supplies the interpreter, and the candidate's
+        # own argv (what it reads in `sys.argv`) is exactly `<entry> --graph ...
+        # --out ... --seed ...`, which is what §4 writes.
+        #
+        # Structural: inferring "run it directly" from the entry's mode bit made
+        # the *launch* depend on something the candidate's identity does not
+        # cover.  §2 makes the file's sha256 the data identity; a mode bit is not
+        # in it, and it is not carried into the staged copy that is actually
+        # executed (`e_star.stage_candidate`).  So two byte-identical candidates
+        # could be `ok` and `error` respectively while both Outcomes carried the
+        # same `candidate_source_sha256` -- the failure DEVIATIONS.md D-T1-10
+        # records.  `exec: []` remains available for a candidate that really is a
+        # self-executing program, but it must be *declared*, in which case the
+        # mode is preserved into the staged copy and checked there.
         exec_prefix = [sys.executable]
+        exec_mode = "interpreter"
 
     files = candidate_files(directory)
     return {
@@ -199,6 +218,7 @@ def resolve_candidate(candidate: str | os.PathLike[str]) -> dict[str, Any]:
         "entry_path": str(entry_path),
         "entry_sha256": sha256_bytes(entry_path.read_bytes()),
         "exec_prefix": exec_prefix,
+        "exec_mode": exec_mode,
         "source_files": files,
         "source_sha256": candidate_source_digest(files),
         "metadata": metadata,
