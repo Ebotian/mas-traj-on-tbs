@@ -13,14 +13,15 @@ explicitly labelled as a reference value and not a proven optimum").
 | `targets.json` | **the deliverable.** Per graph: `R`, its source `(heuristic, seed)`, all ties, `OPT`/`opt_certified`, `U` and the individual bounds behind it |
 | `coverage.json` | **the budget ledger.** Per graph: which runs were scheduled, at what time limit, how many succeeded, plus the SCIP and upper-bound budgets. Derived from the artifacts, not asserted |
 | `logs/runs/*.json` | one record per (graph, heuristic, seed): recomputed integer cut, partition sha256, wall time, MQLib's own reported value, exit code |
-| `logs/partitions/*.json` | the canonical `a0.maxcut.partition/v1` that witnesses `R_i` |
-| `logs/raw/*.stdout.txt` | MQLib's verbatim stdout for that run |
-| `logs_topup/*` | the same three sub-directories for the 300 s top-up pass on the graphs SCIP did not certify (`tools/resume.sh` step 4) |
+| `witnesses/commitments.json` | **what remains of the witnesses**: per witness the graph id, run id, sha256 of the file bytes, sha256 of the canonical bytes and the recomputed cut. The vectors themselves are not in this repository — see §7 |
+| `witnesses/fs_policy.json` | answer stores outside this repository that the evaluator masks from a candidate; found by `leak-proof/run_leak_probe.py` |
+| `leak-proof/` | the hostile candidate, the probe that runs it in three environments, and its recorded output |
+| `logs_topup/*` | the same per-run records for the 300 s top-up pass on the graphs SCIP did not certify (`tools/resume.sh` step 4) |
 | `ub/*.json` | the rigorous upper-bound computation per graph: spectral, SDP dual, Burer–Monteiro certificate, and the parameters they were run at |
 | `scip/*.json`, `scip/*.scip.log`, `scip/*.lp` | the exact-certification attempt (SCIP) and its MIP model |
 | `recompute_rho.py` | computes `rho_i = (T_i - p_i)/(T_i - b_i)` exactly, from a baseline and a positive-control value |
 | `build/PROVENANCE.json`, `build/build_mqlib.sh` | clone URL, commit pin, build command, patches, binary/source digests |
-| `tools/` | the generator, driver, independent evaluator, upper bounds, coverage builder, and the targets builder |
+| `tools/` | the generator, driver, independent evaluator, upper bounds, coverage builder, the targets builder, and `seal_witnesses.py` |
 | `tools/resume.sh` | the interrupt-safe driver: reruns only what is missing (see §6) |
 | `smoke/` | five self-generated canonical graphs used to validate the pipeline before the suite existed |
 
@@ -218,21 +219,51 @@ python3 tools/build_targets.py --logs logs --manifest ../suite/manifest.json \
 python3 tools/build_coverage.py --manifest ../suite/manifest.json --out coverage.json
 ```
 
-To re-verify a single `R_i` from scratch, without trusting the driver:
+To re-verify a single `R_i` from scratch, without trusting the driver, you need
+that witness's bytes. They are not in this repository (§7); the check that *is*
+available from the repository alone is the commitment check, and it is part of
+`tools/verify_targets.py`. With a retained copy of the removed tree:
 
 ```bash
-python3 tools/verify_partition.py ../suite/dev/G_dev_0001.json \
-    logs/partitions/G_dev_0001__BURER2002__s1337.partition.json
+python3 tools/verify_targets.py --witnesses /path/to/retained-copy   # full recomputation
+python3 tools/seal_witnesses.py verify --corpus /path/to/retained-copy
 ```
 
-## 7. Handling warning
+## 7. Handling warning — and what was done about it
 
-`logs/partitions/**` and `scip/*` contain **near-optimal partitions of eval
-graphs**. They are stored because a reference value that cannot be re-verified
-is not evidence. They must never be injected into an agent workspace, context,
-prompt, or any path an A1 arm can read — `INTERFACE.md` §12 forbids exactly
-that. `targets.json` itself carries only scalars, which is what a `rho_i`
-computation needs.
+`logs/partitions/**`, `logs/raw/**` and `scip/*` contained **near-optimal
+partitions of eval graphs**: the answer to the hold-out, one file per graph, at a
+predictable path. Keeping them was a deliberate choice (a reference value that
+cannot be re-verified is not evidence) and it was wrong: the independent verifier
+scored exactly `R = OPT = 217` on `G_eval_0001` by copying
+`logs/partitions/G_eval_0001__*.partition.json`, through `e_star.py` *and*
+through `a0/a1/eval_service.py` (`a0/verify/a1-testbed/REPORT.md` §2c).
+
+The vectors were therefore removed from the repository and replaced by
+commitments (`tools/seal_witnesses.py`, `DEVIATIONS.md` D9):
+
+* `witnesses/commitments.json` — per witness: graph id, run id, file sha256,
+  canonical-bytes sha256, recomputed cut, `|E|`;
+* the per-run records under `logs/runs/**` and `logs_topup/runs/**` still commit
+  to each run's `partition_sha256`, `raw_stdout_sha256` and recomputed
+  `cut_edges`, so `R = max over run records` is still checkable from the repo;
+* `tools/verify_targets.py` re-verifies from bytes when a corpus is supplied, and
+  otherwise checks every witness against its commitment.
+
+Two residuals, stated in numbers rather than adjectives:
+
+1. **Git history.** The bytes were committed before the removal, so
+   `git show <rev>:<path_removed>` returns them until the history is rewritten
+   (`git filter-repo`, a coordinator decision). The evaluator masks `.git` and
+   this directory from the candidate for exactly that reason (D-T1-12 in
+   `../DEVIATIONS.md`), and `leak-proof/run_leak_probe.py` measures the attempt.
+2. **Copies outside this directory.** `witnesses/fs_policy.json` lists the ones
+   the leak probe found — `/tmp/mcwork/scip_test2/G_dev_0001.partition.json`
+   scores 224 = R = OPT, and `det_*.txt` there carries MQLib `Solution:` lines
+   for `G_dev_0003` — plus the fact that the credential file `~/gptapi.md` is
+   readable by the same uid (that one is the model-budget lane's, not this
+   directory's). `e_star.py` masks every path in that file; deleting them is
+   better than masking them.
 
 ## 8. Headline numbers to compare against
 
@@ -248,7 +279,7 @@ From the current `targets.json` (60 graphs, all `n = 128`, 15 per family):
 | uncertified graphs, remaining gap `U_i - R_i` | min 10, max 26, mean 19.7 edges (3-8 %) |
 | graphs where `U_i < R_i` (a bound bug) | **0** |
 | graphs missing a `U_i` | **0** |
-| re-verification of `R_i` | **60/60 PASS**, 1499 tie-witness partitions recomputed |
+| re-verification of `R_i` | **60/60 PASS**, 1499 tie-witness partitions recomputed from bytes before the seal (`tools/verify_targets.py`); the seal keeps the commitments, see §7 |
 | `R_i` source heuristic | `BURER2002` on all 60 (25 of 30 runs per graph tie at `R_i`) |
 | top-up runs at 4x budget that beat `R_i` | **0 / 108** |
 
@@ -259,4 +290,14 @@ The one command that decides whether to believe the table:
 
 ```bash
 python3 tools/verify_targets.py --quiet    # -> PASS, exit 0
+```
+
+It prints how many witnesses were recomputed from bytes and how many were checked
+against their sealed commitment, so the two are not confused (§7).
+
+To see what a candidate can reach from inside its sandbox, and what it gets if it
+can reach the answer store, run the probe (it does not spend anything):
+
+```bash
+python3 leak-proof/run_leak_probe.py --modes prefix,open,fixed
 ```

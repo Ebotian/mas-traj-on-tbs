@@ -131,3 +131,59 @@ a consumer to assume wrongly: this table guarantees that every `R_i` can be
 **re-verified** (recompute the cut from the stored `graph.json` +
 `partition.json`, independently of MQLib), not that re-running the driver
 reproduces the same bytes.
+
+## D9 — the witness partitions are removed from this repository; only commitments remain
+
+**What changed.** `logs/partitions/**`, `logs_topup/partitions/**`,
+`scip/*.partition.json` and the MQLib stdout transcripts in `logs/raw/**` and
+`logs_topup/raw/**` are gone from the working tree. `witnesses/commitments.json`
+records, for each of the 1968 witnesses and 1908 transcripts, the graph id, the
+run id, the sha256 of the file bytes, the sha256 of the canonical bytes and the
+recomputed cut; `targets.json`, `coverage.json` and the per-run records under
+`logs/runs/**` and `logs_topup/runs/**` are unchanged.
+
+**Why.** `INTERFACE.md` §12 forbids eval from entering "any path a candidate can
+read", and §7 of this directory's README treats the stored partitions as
+dangerous but keeps them. The independent verifier measured what that costs
+(`a0/verify/a1-testbed/REPORT.md` §2c): a candidate that copies
+`references/logs/partitions/G_eval_0001__*.partition.json` scores exactly
+`R = OPT = 217` on the hold-out, through `e_star.py` and through
+`a0/a1/eval_service.py`. Permissions cannot be the control here — every process
+runs as one uid without root — so the only non-obscurity control is for the
+vector not to exist.
+
+**What is lost, stated plainly.** `R_i` can no longer be recomputed *from this
+repository alone*; a third party re-verifies the values and the commitments
+(`tools/verify_targets.py`), and re-verifies witnesses from bytes only if they
+are handed a retained copy (`tools/verify_targets.py --witnesses <dir>`,
+`tools/seal_witnesses.py verify --corpus <dir>`). This is a real reduction in
+re-computability, accepted because the alternative is a hold-out whose answers
+are on disk. Two consequences a consumer must know:
+
+1. **The bytes are still in git history.** They were committed before this
+   change, so `git show <rev>:<path_removed>` returns them until the history is
+   rewritten. Removing them from the *tree* is not removing them from the
+   *repository*, and only the coordinator can authorise a `git filter-repo`.
+   `e_star.py` masks `.git` and this directory from the candidate for exactly
+   that reason (D-T1-12 in `../DEVIATIONS.md`).
+2. **Copies outside this directory are outside this directory's control.**
+   `witnesses/fs_policy.json` lists the ones the leak probe found (`/tmp/mcwork`:
+   `scip_test2/G_dev_0001.partition.json` scores 224 = R = OPT, plus MQLib stdout
+   with `Solution:` lines); `e_star.py` masks each of them.
+
+**Procedure.** `tools/seal_witnesses.py audit` recomputes every witness and
+cross-checks it against the run records, the SCIP records and `targets.json`
+(60/60 graphs: per-graph maximum == `R`, every file sha256 == the value its run
+record commits to). `seal --apply` writes the commitments and deletes the files;
+it refuses to run while any cross-check fails.
+
+## D10 — the "one command to believe the table" now has two modes
+
+`tools/verify_targets.py` used to read `logs/partitions/**` unconditionally. It
+now checks each witness against its sealed commitment when the vector is absent,
+and recomputes from bytes when it is present (the default before the seal) or
+when `--witnesses <dir>` names a retained copy. The check that `R` is the maximum
+over the per-run records stays in both modes, and so do the `U >= R` and
+`OPT ⇔ certified` checks. The printed summary says which mode ran and how many
+witnesses were recomputed from bytes, so a reader cannot mistake a
+commitment-check for a recomputation.

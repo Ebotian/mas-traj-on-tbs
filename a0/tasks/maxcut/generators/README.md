@@ -9,7 +9,8 @@ identity and from every verdict.
 |---|---|
 | `maxcut_suite.py` | the whole tool: deterministic generators, canonical writer, verifier, reporter |
 | `config.json` | the frozen suite configuration: master seed, families, strata, parameters, reps |
-| `provenance.json` | per-graph seed + **the Planted families' node labels** (kept out of `suite/`) |
+| `provenance.json` | per-graph seed + **the Planted families' node labels**, derived from the frozen files by `audit_labels.py refresh` |
+| `audit_labels.py` | the label audit: recorded labels == regenerated labels, no spelling of them in `suite/**` or in the candidate-facing view |
 | `nontriviality_probe.json` | NON-NORMATIVE diagnostic: random / 1-exchange cut fractions per graph |
 | `FREEZE.json` | the commit that froze `suite/`, the generator source digest, and the manifest digest |
 | `DEVIATIONS.md` | where this workstream departs from `INTERFACE.md`, or an explicit statement that it does not |
@@ -241,15 +242,47 @@ suite is rebuilt — that is intentional: the manifest claims which revision pro
  "planted_community_sizes": [64, 64]}
 ```
 
-**Why the labels are here and not in `suite/`.** `graph.json` is handed to candidate programs
-(`INTERFACE.md` §3), so the planted partition would be a leaked solution. It is therefore a
-*provenance* artifact: available to the study, invisible to candidates. `verify`'s leakage scan keeps
-that true, and `suite/README.md` records the grep a third party can run instead of trusting it.
+**The record is derived from the frozen file, and the audit says so.** `audit_labels.py refresh`
+regenerates each Planted graph's edge list *and* label vector from that graph's own `generator` block
+with the frozen generator, refuses to continue unless the edges reproduce the file byte-for-byte, and
+writes the labels. An earlier revision of this file was **stale** — its seeds and vectors belonged to
+a previous revision of the seed derivation and matched none of the 15 shipped graphs, which made
+`verify`'s leakage scan search for vectors no file contains (finding F4;
+`generators/DEVIATIONS.md` §4, `a0/verify/a1-testbed/REPORT.md` §2b).
 
-`generator.seed` and the distribution parameters (`community_sizes`, `p_in`, `p_out`) *are* in
-`graph.json`: `INTERFACE.md` §2 requires the generator's distribution parameters there, and they
-reveal nothing — the sizes are the label multiset, not the assignment, and the assignment is a random
-permutation of it.
+**The honest statement of what is secret.** Nothing about the planted partition is *secret*: §2 keeps
+`generator.params` + `generator.seed` in `graph.json` because that block is what makes regeneration a
+check, so anyone holding the suite file and this generator can recompute the labels. What must hold —
+and what the study actually needs — is that **the bytes handed to a candidate carry no `generator`
+block at all**: `e_star.py` writes a candidate-facing view containing exactly
+`schema, graph_id, family, n, edges` into the candidate's private run directory, masks `suite/**` from
+the child, and records both digests in the Outcome (`graph_sha256` for the suite file,
+`candidate_graph_sha256` for the handed bytes). The audit checks the view as well as the suite:
+
+```console
+$ python3 a0/tasks/maxcut/generators/audit_labels.py verify
+planted graphs: 15
+provenance records: 15
+suite JSON files scanned with 15 x 6 label spellings: 61, hits: 0
+candidate-facing views checked: 60 (keys == ['schema', 'graph_id', 'family', 'n', 'edges'])
+PASS: the recorded labels are the labels of the frozen graphs, no spelling of them appears in
+suite/**/*.json, and the candidate-facing view carries only schema/graph_id/family/n/edges
+NOTE: the suite file itself still reproduces the labels (that is what makes regeneration a check);
+the evaluator masks suite/** from a candidate and hands the view instead
+```
+
+Run it against the pre-fix `provenance.json` and it fails on all 15 graphs — which is the check that
+`maxcut_suite.py verify`'s `leakage_*` counters never provided on their own. Those counters are still
+meaningful now, because they search the corrected vectors.
+
+`audit_labels.py` is a separate file on purpose: `suite/manifest.json` records
+`generator.source_sha256`, so editing `maxcut_suite.py` would break `verify`'s `generator_revision`
+check and move the suite's frozen identity. `maxcut_suite.py` is byte-identical to the frozen
+revision.
+
+`suite/README.md` §5 (frozen, and therefore not editable here) still describes the older, weaker
+claim — "the labels are absent from `suite/`" — and quotes the older needles. It is superseded by the
+statement above; `generators/DEVIATIONS.md` §4 records the discrepancy.
 
 ---
 

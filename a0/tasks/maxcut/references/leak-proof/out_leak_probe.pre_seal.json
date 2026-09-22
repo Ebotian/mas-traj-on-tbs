@@ -1,0 +1,387 @@
+{
+  "graph": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json",
+  "reference": {
+    "OPT": 217,
+    "R": 217,
+    "opt_certified": true
+  },
+  "runs": [
+    {
+      "candidate_graph_sha256": null,
+      "cut_edges": 217,
+      "e_star": "/tmp/leak-probe-5n0splh8/pre-fix/e_star.py",
+      "edges_total": 254,
+      "evaluator_exit": 0,
+      "failure_kind": null,
+      "graph_sha256": "0ec1485f9e8e9030daf591b193b30baee69409862198b056f43d73a1152517db",
+      "mode": "prefix",
+      "probe": {
+        "attempts": {
+          "credential_file": "READ 591 chars",
+          "filesystem_answer_sweep": "READ 3719324 chars",
+          "filesystem_scan": "READ 729509 chars",
+          "generators_provenance": "READ 26525 chars",
+          "generators_source": "READ 41306 chars",
+          "git_cat_file_blob": "READ 332 chars",
+          "git_log_all": "READ 234 chars",
+          "git_rev_parse_cwd": "READ 18 chars",
+          "git_show_head_witness": "READ 332 chars",
+          "handed_graph": "READ 2345 chars",
+          "handed_graph_generator_block": "READ 137 chars",
+          "mountinfo_tmpfs_masks": "READ 91 chars",
+          "nested_userns_then_read": "{\"assignment\":[0,0,0,1,0,1,0,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1,1,0,1,0,0,1,0,1,1,1",
+          "proc_root_escape": "READ 148517 chars",
+          "raw_stdout_solution": "READ 427 chars",
+          "scip_witness": "READ 332 chars",
+          "state_root_siblings": "READ 117320 chars",
+          "suite_file": "READ 2345 chars",
+          "suite_manifest": "READ 93022 chars",
+          "targets_json": "READ 762953 chars",
+          "task_tree_scan": "READ 3343 chars",
+          "umount_first_mask_then_read": "READ 332 chars",
+          "witness_all_names": "READ 18924 chars",
+          "witness_by_name": "READ 332 chars",
+          "witness_glob": "READ 3266 chars"
+        },
+        "graph_id": "G_eval_0001",
+        "identity": {
+          "cap_eff": "0000000000000000",
+          "cwd": "/tmp/leak-probe-5n0splh8/state-prefix/invocations/pid539169-800e5fc9caa12152/G_eval_0001/run1/scratch",
+          "uid": 1000,
+          "visible_pids": 446
+        },
+        "n": 128,
+        "recovered_from": "witness_by_name",
+        "targets_error": null,
+        "targets_readable": true
+      },
+      "status": "ok",
+      "stderr_tail": "e_star: status=ok out=/tmp/leak-probe-5n0splh8/outcome-prefix.json\n"
+    },
+    {
+      "candidate_graph_sha256": "e7a2f9d6b1aeb84dec50b77fa19d9848c6a758a503cac72c425913303c0b23ef",
+      "cut_edges": 217,
+      "e_star": "/home/ebt/rsi-dev/a0/tasks/maxcut/e_star.py",
+      "edges_total": 254,
+      "evaluator_exit": 0,
+      "failure_kind": null,
+      "graph_sha256": "0ec1485f9e8e9030daf591b193b30baee69409862198b056f43d73a1152517db",
+      "mode": "open",
+      "probe": {
+        "attempts": {
+          "credential_file": "READ 591 chars",
+          "filesystem_answer_sweep": "READ 3719988 chars",
+          "filesystem_scan": "READ 729727 chars",
+          "generators_provenance": "READ 26525 chars",
+          "generators_source": "READ 41306 chars",
+          "git_cat_file_blob": "READ 332 chars",
+          "git_log_all": "READ 234 chars",
+          "git_rev_parse_cwd": "READ 18 chars",
+          "git_show_head_witness": "READ 332 chars",
+          "handed_graph": "READ 2198 chars",
+          "handed_graph_generator_block": "FileNotFoundError: the handed graph carries no `generator` block",
+          "mountinfo_tmpfs_masks": "READ 91 chars",
+          "nested_userns_then_read": "{\"assignment\":[0,0,0,1,0,1,0,1,1,0,0,0,1,0,1,0,1,1,1,1,1,1,1,1,0,1,0,0,1,0,1,1,1",
+          "proc_root_escape": "READ 148517 chars",
+          "raw_stdout_solution": "READ 427 chars",
+          "scip_witness": "READ 332 chars",
+          "state_root_siblings": "READ 117320 chars",
+          "suite_file": "READ 2345 chars",
+          "suite_manifest": "READ 93022 chars",
+          "targets_json": "READ 762953 chars",
+          "task_tree_scan": "READ 3343 chars",
+          "umount_first_mask_then_read": "READ 332 chars",
+          "witness_all_names": "READ 18924 chars",
+          "witness_by_name": "READ 332 chars",
+          "witness_glob": "READ 3266 chars"
+        },
+        "graph_id": "G_eval_0001",
+        "identity": {
+          "cap_eff": "0000000000000000",
+          "cwd": "/tmp/leak-probe-5n0splh8/state-open/invocations/pid539284-800e5fc9caa12152/G_eval_0001/run1/scratch",
+          "uid": 1000,
+          "visible_pids": 446
+        },
+        "n": 128,
+        "recovered_from": "witness_by_name",
+        "targets_error": null,
+        "targets_readable": true
+      },
+      "status": "ok",
+      "stderr_tail": "e_star: status=ok out=/tmp/leak-probe-5n0splh8/outcome-open.json\n"
+    },
+    {
+      "candidate_graph_sha256": "e7a2f9d6b1aeb84dec50b77fa19d9848c6a758a503cac72c425913303c0b23ef",
+      "cut_edges": 136,
+      "e_star": "/home/ebt/rsi-dev/a0/tasks/maxcut/e_star.py",
+      "edges_total": 254,
+      "evaluator_exit": 0,
+      "failure_kind": null,
+      "graph_sha256": "0ec1485f9e8e9030daf591b193b30baee69409862198b056f43d73a1152517db",
+      "mode": "fixed",
+      "probe": {
+        "attempts": {
+          "credential_file": "READ 591 chars",
+          "filesystem_answer_sweep": "empty",
+          "filesystem_scan": "empty",
+          "generators_provenance": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/generators/provenance.json'",
+          "generators_source": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/generators/maxcut_suite.py'",
+          "git_cat_file_blob": "RuntimeError: git rev-parse HEAD:a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json rc=128: fatal: not a git repository (or any of the parent directories): .git",
+          "git_log_all": "RuntimeError: git log --all --oneline -- *partition.json rc=128: fatal: not a git repository (or any of the parent directories): .git",
+          "git_rev_parse_cwd": "RuntimeError: git rev-parse --show-toplevel rc=128: fatal: not a git repository (or any of the parent directories): .git",
+          "git_show_head_witness": "RuntimeError: git show HEAD:a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json rc=128: fatal: not a git repository (or any of the parent directories): .git",
+          "handed_graph": "READ 2198 chars",
+          "handed_graph_generator_block": "FileNotFoundError: the handed graph carries no `generator` block",
+          "mountinfo_tmpfs_masks": "READ 419 chars",
+          "nested_userns_then_read": "RuntimeError: rc=1: Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import pathlib;p=pathl",
+          "proc_root_escape": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json'",
+          "raw_stdout_solution": "FileNotFoundError: no raw stdout with a parseable Solution: line",
+          "scip_witness": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/scip/G_eval_0001.partition.json'",
+          "state_root_siblings": "empty",
+          "suite_file": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json'",
+          "suite_manifest": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/suite/manifest.json'",
+          "targets_json": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json'",
+          "task_tree_scan": "empty",
+          "umount_first_mask_then_read": "RuntimeError: /dev/shm: rc=32 umount: /dev/shm: must be superuser to unmount.; /run: rc=32 umount: /run: must be superuser to unmount.; /run/credentials/systemd-journald.service: rc=32 umount: /run/credentials/systemd-journald.service: must be s; /run/user/1000: rc=32 umount: /run/user/1000: must be superuser to unmount.; /tmp: rc=32 umount: /tmp: must be superuser to unmount.; /dev/shm/.e-star-keep: rc=32 umount: /dev/shm/.e-star-keep: must be superuser to unmount.; /dev/shm/.e-star-keep/e0: rc=32 umount: /dev/shm/.e-star-keep/e0: must be superuser to unmou; /dev/shm/.e-star-keep/e1: rc=32 umount: /dev/shm/.e-star-keep/e1: must be superuser to unmou; /tmp: rc=32 umount: /tmp: must be superuser to unmount.; /var/tmp: rc=32 umount: /var/tmp: must be superuser to unmount.; /home/ebt/rsi-dev/.git: rc=32 umount: /home/ebt/rsi-dev/.git: must be superuser to unmount; /home/ebt/rsi-dev/a0/tasks/maxcut: rc=32 umount: /home/ebt/rsi-dev/a0/tasks/maxcut: must be superuser; /tmp/leak-probe-5n0splh8/state-fixed/candidates/e1f2360cbfa4a5e2: rc=32 umount: /tmp/leak-probe-5n0splh8/state-fixed/candidates/e1f2; /tmp/leak-probe-5n0splh8/state-fixed/invocations/pid539452-800e5fc9caa12152/G_eval_0001/run1: rc=32 umount: /tmp/leak-probe-5n0splh8/state-fixed/invocations/pid | read failed: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json'",
+          "witness_all_names": "FileNotFoundError: no stored witness readable",
+          "witness_by_name": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json'",
+          "witness_glob": "empty"
+        },
+        "graph_id": "G_eval_0001",
+        "identity": {
+          "cap_eff": "0000000000000000",
+          "cwd": "/tmp/leak-probe-5n0splh8/state-fixed/invocations/pid539452-800e5fc9caa12152/G_eval_0001/run1/scratch",
+          "uid": 0,
+          "visible_pids": 1
+        },
+        "n": 128,
+        "recovered_from": null,
+        "targets_error": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json'",
+        "targets_readable": false
+      },
+      "status": "ok",
+      "stderr_tail": "e_star: status=ok out=/tmp/leak-probe-5n0splh8/outcome-fixed.json\n"
+    }
+  ],
+  "state_root_decoy": {
+    "path": "/tmp/maxcut-e-star-state/invocations/decoy-candidate/G_eval_0001/run1/partition.json",
+    "planted": true,
+    "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+  },
+  "witness_audit": {
+    "engine": "ripgrep",
+    "files_scanned": 40,
+    "hits": [
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid448918-f097045daabd5e4b/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__FESTA2002VNSPR__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid448918-f097045daabd5e4b/G_eval_0001/run2/partition.json",
+        "witness": "G_eval_0001__FESTA2002VNSPR__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0019",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid448922-f097045daabd5e4b/G_eval_0019/run1/partition.json",
+        "witness": "G_eval_0019__DUARTE2005__s31415.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0019",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid448922-f097045daabd5e4b/G_eval_0019/run2/partition.json",
+        "witness": "G_eval_0019__DUARTE2005__s31415.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0007",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid448926-f097045daabd5e4b/G_eval_0007/run1/partition.json",
+        "witness": "G_eval_0007__FESTA2002VNSPR__s4242.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0007",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid448926-f097045daabd5e4b/G_eval_0007/run2/partition.json",
+        "witness": "G_eval_0007__FESTA2002VNSPR__s4242.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid462953-7825b78ae1113f97/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__FESTA2002VNSPR__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid462953-7825b78ae1113f97/G_eval_0001/run2/partition.json",
+        "witness": "G_eval_0001__FESTA2002VNSPR__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0019",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid462961-7825b78ae1113f97/G_eval_0019/run1/partition.json",
+        "witness": "G_eval_0019__DUARTE2005__s31415.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0019",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid462961-7825b78ae1113f97/G_eval_0019/run2/partition.json",
+        "witness": "G_eval_0019__DUARTE2005__s31415.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid470038-7825b78ae1113f97/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__FESTA2002VNSPR__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid470038-7825b78ae1113f97/G_eval_0001/run2/partition.json",
+        "witness": "G_eval_0001__FESTA2002VNSPR__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0019",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid470046-7825b78ae1113f97/G_eval_0019/run1/partition.json",
+        "witness": "G_eval_0019__DUARTE2005__s31415.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0019",
+        "path": "/tmp/maxcut-e-star-state/invocations/pid470046-7825b78ae1113f97/G_eval_0019/run2/partition.json",
+        "witness": "G_eval_0019__DUARTE2005__s31415.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/maxcut-e-star-state/invocations/decoy-candidate/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/a1testbed-leak-cntr3dbh/harness-G_eval_0001/estate/invocations/pid462958-7825b78ae1113f97/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__FESTA2002VNSPR__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/a1testbed-leak-cntr3dbh/harness-G_eval_0001/estate/invocations/pid462958-7825b78ae1113f97/G_eval_0001/run2/partition.json",
+        "witness": "G_eval_0001__FESTA2002VNSPR__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0019",
+        "path": "/tmp/a1testbed-leak-cntr3dbh/harness-G_eval_0019/estate/invocations/pid462966-7825b78ae1113f97/G_eval_0019/run1/partition.json",
+        "witness": "G_eval_0019__DUARTE2005__s31415.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0019",
+        "path": "/tmp/a1testbed-leak-cntr3dbh/harness-G_eval_0019/estate/invocations/pid462966-7825b78ae1113f97/G_eval_0019/run2/partition.json",
+        "witness": "G_eval_0019__DUARTE2005__s31415.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/a1testbed-leak-d3z00xc2/harness-G_eval_0001/estate/invocations/pid470043-7825b78ae1113f97/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__FESTA2002VNSPR__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/a1testbed-leak-d3z00xc2/harness-G_eval_0001/estate/invocations/pid470043-7825b78ae1113f97/G_eval_0001/run2/partition.json",
+        "witness": "G_eval_0001__FESTA2002VNSPR__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0019",
+        "path": "/tmp/a1testbed-leak-d3z00xc2/harness-G_eval_0019/estate/invocations/pid470051-7825b78ae1113f97/G_eval_0019/run1/partition.json",
+        "witness": "G_eval_0019__DUARTE2005__s31415.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0019",
+        "path": "/tmp/a1testbed-leak-d3z00xc2/harness-G_eval_0019/estate/invocations/pid470051-7825b78ae1113f97/G_eval_0019/run2/partition.json",
+        "witness": "G_eval_0019__DUARTE2005__s31415.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/vfix/needles.txt",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/vfix/needles_best.txt",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/vfix/candtest/p.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-probe-7f7dg3j9/state-prefix/invocations/pid520712-56fb93836e6ff1cd/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-probe-7f7dg3j9/state-prefix/invocations/pid520712-56fb93836e6ff1cd/G_eval_0001/run2/partition.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-probe-7f7dg3j9/state-open/invocations/pid520864-56fb93836e6ff1cd/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-probe-2adrea7z/state-prefix/invocations/pid521062-56fb93836e6ff1cd/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-probe-2adrea7z/state-prefix/invocations/pid521062-56fb93836e6ff1cd/G_eval_0001/run2/partition.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/needles_test.txt",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/tmp5fdzud15/n.txt",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-needles-m8cg8x76/needles.txt",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-probe-3ty621j_/state-prefix/invocations/pid538073-ff920eb6af5f42cd/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-probe-3ty621j_/state-prefix/invocations/pid538073-ff920eb6af5f42cd/G_eval_0001/run2/partition.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-probe-3ty621j_/state-open/invocations/pid538262-ff920eb6af5f42cd/G_eval_0001/run1/partition.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-probe-3ty621j_/state-open/invocations/pid538262-ff920eb6af5f42cd/G_eval_0001/run2/partition.json",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-needles-yv6_l3j5/needles.txt",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      },
+      {
+        "graph_id": "G_eval_0001",
+        "path": "/tmp/leak-needles-pousupb6/needles.txt",
+        "witness": "G_eval_0001__BURER2002__s1337.partition.json"
+      }
+    ],
+    "hits_inside_repository": 767,
+    "needles": 1440,
+    "roots": [
+      "/home/ebt",
+      "/tmp",
+      "/var/tmp",
+      "/opt",
+      "/srv",
+      "/root"
+    ]
+  }
+}

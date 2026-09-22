@@ -1,0 +1,83 @@
+verification transcript — every check this workstream re-ran
+date: 2026-09-22T12:47:26Z
+tree: the commit that contains this transcript (single commit on 4b94503e)
+evaluator_source_sha256: dc6969ec9934ab660cf8ecd7073cf325a15c7d416140afd00a3d782cfe799d00
+
+==============================================================================
+$ python3 a0/tasks/maxcut/generators/maxcut_suite.py verify
+  manifest_ids                 1
+  role_disjoint                1
+graphs verified: 60
+PASS: canonical identity, structure, regeneration, statistics, disjointness and leakage all clean
+
+==============================================================================
+$ python3 a0/tasks/maxcut/generators/audit_labels.py verify
+planted graphs: 15
+provenance records: 15
+suite JSON files scanned with 15 x 6 label spellings: 61, hits: 0
+candidate-facing views checked: 60 (keys == ['schema', 'graph_id', 'family', 'n', 'edges'])
+PASS: the recorded labels are the labels of the frozen graphs, no spelling of them appears in suite/**/*.json, and the candidate-facing view carries only schema/graph_id/family/n/edges
+NOTE: the suite file itself still reproduces the labels (that is what makes regeneration a check); the evaluator masks suite/** from a candidate and hands the view instead
+
+==============================================================================
+$ python3 a0/tasks/maxcut/references/tools/verify_targets.py --quiet
+
+checked 60 graphs, 0 witnesses recomputed from bytes, 1499 checked against their sealed commitment
+sealed commitments: 1968 witnesses over 60 graphs; per-graph maximum == R on 60/60
+  the vectors themselves are not in this repository: tools/seal_witnesses.py verify --corpus <dir> re-verifies a retained copy
+certified OPT: 42/60
+PASS: every R is a re-verified cut (recomputed from bytes where the witness is present, from its sealed commitment otherwise), every tie is real, U >= R everywhere
+
+==============================================================================
+$ python3 a0/tasks/maxcut/references/tools/verify_targets.py --quiet --witnesses <retained corpus>
+    (corpus built with: git archive HEAD a0/tasks/maxcut/references/{logs,logs_topup,scip} | tar -x --strip-components=4 -C <dir>)
+checked 60 graphs, 1499 witnesses recomputed from bytes, 0 checked against their sealed commitment
+sealed commitments: 1968 witnesses over 60 graphs; per-graph maximum == R on 60/60
+  the vectors themselves are not in this repository: tools/seal_witnesses.py verify --corpus <dir> re-verifies a retained copy
+certified OPT: 42/60
+PASS: every R is a re-verified cut, every tie is real, U >= R everywhere
+
+==============================================================================
+$ python3 a0/tasks/maxcut/references/tools/seal_witnesses.py verify --corpus <retained corpus>
+witnesses: 1968 committed, 1908 transcripts
+per-graph commitments checked: 60
+corpus: /tmp/vfix/corpus, 1968 witnesses recomputed
+PASS: every recorded maximum equals targets.json's R; every supplied witness matches its commitment and its cut
+
+==============================================================================
+$ python3 a0/tasks/maxcut/test_candidate_staging.py
+graph : /home/ebt/rsi-dev/a0/tasks/maxcut/suite/dev/G_dev_0001.json
+  PASS  no_executable_bit_evaluates
+  PASS  executable_bit_does_not_change_launch
+  PASS  mode_bit_is_not_identity
+  PASS  declared_exec_prefix_used_once
+  PASS  declared_self_exec_preserves_mode
+VERDICT: PASS
+
+==============================================================================
+$ python3 a0/tasks/maxcut/conformance.py --check
+graph            : G_dev_0001 (frozen-suite, sha256 94c713897fc1c5d4…)
+candidates       : 21
+rows             : no drift
+  PASS  p1_cwd_path_independence
+  PASS  p2_determinism
+  PASS  p3_failure_semantics
+  PASS  p4_network_independence
+  PASS  p5_child_environment
+  PASS  p6_exact_aggregation
+  PASS  p7_candidate_staging
+  PASS  c_identity
+  PASS  c_ordered_pair
+  PASS  c_tie_pair
+  PASS  c_legitimate_zero
+  PASS  c_process_group
+  PASS  c_inflation_attempt
+  PASS  c_input_tampering_detected
+report           : /home/ebt/rsi-dev/a0/tasks/maxcut/conformance.report.json
+VERDICT: PASS
+
+==============================================================================
+$ python3 a0/tasks/maxcut/references/leak-proof/run_leak_probe.py --modes fixed
+      witness_glob                     empty
+  witness audit: skipped -- the witness store is empty (already sealed?)
+raw output: /home/ebt/rsi-dev/a0/tasks/maxcut/references/leak-proof/out_leak_probe.json

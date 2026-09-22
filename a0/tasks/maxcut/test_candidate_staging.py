@@ -29,6 +29,7 @@ To see the test fail on the unfixed evaluator, run it against the frozen bytes:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -122,11 +123,47 @@ def evaluate(e_star: Path, candidate: Path, graph: Path, work: Path, tag: str) -
         "status": outcome["status"],
         "cut_edges": outcome["cut_edges"],
         "candidate_source_sha256": outcome["candidate_source_sha256"],
+        "candidate_graph_sha256": outcome.get("candidate_graph_sha256"),
+        "graph_sha256": outcome.get("graph_sha256"),
         "failure_kind": (outcome["failure"] or {}).get("kind"),
         "failure_detail": (outcome["failure"] or {}).get("detail"),
         "evaluator_exit": completed.returncode,
         "argv": (resources.get("runs") or [{}])[0].get("argv"),
     }
+
+
+def handed_graph_problem(arguments: list[str], graph: Path, tag: str) -> list[str]:
+    """The `--graph` the candidate is handed must be *the graph under test*.
+
+    Since the answer-leak fix (`e_star.py::write_candidate_view`, DEVIATIONS.md
+    D-T1-12) that argument is no longer the suite file's own path: E* writes the
+    five §2 keys -- no `generator` block, which reproduces the Planted partition,
+    and no `notes` -- into the private run directory and hands *that*.  The claim
+    this test exists for is unchanged, so it is checked on the new object: the
+    handed file must be an absolute path, must carry the same `graph_id`, `n` and
+    `edges` as the graph under test, and must not carry the distribution block.
+    """
+    handed = Path(arguments[3])
+    problems: list[str] = []
+    if not handed.is_absolute() or not handed.is_file():
+        return [f"{tag}: --graph is not an absolute, existing path: {arguments[3]}"]
+    try:
+        suite_document = json.loads(graph.read_text(encoding="utf-8"))
+        handed_document = json.loads(handed.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"{tag}: the handed graph cannot be read as JSON: {exc}"]
+    if handed == graph.resolve():
+        problems.append(f"{tag}: the candidate was handed the suite file itself: {arguments[3]}")
+    if (
+        handed_document.get("graph_id"), handed_document.get("n"), handed_document.get("edges")
+    ) != (
+        suite_document.get("graph_id"), suite_document.get("n"), suite_document.get("edges")
+    ):
+        problems.append(f"{tag}: the handed graph is not the graph under test: {arguments[3]}")
+    for key in ("generator", "notes"):
+        if key in handed_document:
+            problems.append(f"{tag}: the handed graph still carries {key!r}: {arguments[3]}")
+    return problems
 
 
 def launch_shape(arguments: list[str] | None, graph: Path, tag: str) -> tuple[dict, list[str]]:
@@ -151,14 +188,21 @@ def launch_shape(arguments: list[str] | None, graph: Path, tag: str) -> tuple[di
         problems.append(f"{tag}: the entry appears more than once in argv: {arguments}")
     if arguments[2::2] != ["--graph", "--out", "--seed"] or len(arguments) != 8:
         problems.append(f"{tag}: argv is not §4's list after the launcher: {arguments}")
-    if arguments[3] != str(graph.resolve()):
-        problems.append(f"{tag}: --graph is not the absolute graph path: {arguments[3]}")
+    else:
+        problems.extend(handed_graph_problem(arguments, graph, tag))
+    handed_path = Path(arguments[3])
     shape = {
         "launcher": launcher,
         "entry_basename": os.path.basename(entry),
         "argument_count": len(arguments),
         "flags": arguments[2::2],
-        "graph": arguments[3],
+        # The handed path itself necessarily differs between two runs (a private
+        # run directory per run, exactly like `--out`); what must be identical is
+        # the *object* handed over -- the same file name carrying the same bytes.
+        "graph_basename": os.path.basename(arguments[3]),
+        "graph_sha256": (
+            hashlib.sha256(handed_path.read_bytes()).hexdigest() if handed_path.is_file() else None
+        ),
         "seed": arguments[7],
     }
     return shape, problems

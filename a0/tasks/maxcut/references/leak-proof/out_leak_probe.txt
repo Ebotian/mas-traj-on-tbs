@@ -1,0 +1,31 @@
+graph G_eval_0001.json: R=217 OPT=217 |E|=254
+  fixed   status=ok       cut_edges=136 recovered_from=None -> no answer recovered
+      credential_file                  READ 591 chars
+      filesystem_answer_sweep          empty
+      filesystem_scan                  empty
+      generators_provenance            FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/generators/provenance.json'
+      generators_source                FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/generators/maxcut_suite.py'
+      git_cat_file_blob                RuntimeError: git rev-parse HEAD:a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json rc=128: fatal: not a git repository (or any of the parent directories): .git
+      git_log_all                      RuntimeError: git log --all --oneline -- *partition.json rc=128: fatal: not a git repository (or any of the parent directories): .git
+      git_rev_parse_cwd                RuntimeError: git rev-parse --show-toplevel rc=128: fatal: not a git repository (or any of the parent directories): .git
+      git_show_head_witness            RuntimeError: git show HEAD:a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json rc=128: fatal: not a git repository (or any of the parent directories): .git
+      handed_graph                     READ 2198 chars
+      handed_graph_generator_block     FileNotFoundError: the handed graph carries no `generator` block
+      mountinfo_tmpfs_masks            READ 419 chars
+      nested_userns_then_read          RuntimeError: rc=1: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import pathlib;p=pathl
+      proc_root_escape                 FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json'
+      raw_stdout_solution              FileNotFoundError: no raw stdout with a parseable Solution: line
+      scip_witness                     FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/scip/G_eval_0001.partition.json'
+      state_root_siblings              empty
+      suite_file                       FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json'
+      suite_manifest                   FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/suite/manifest.json'
+      targets_json                     FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json'
+      task_tree_scan                   empty
+      umount_first_mask_then_read      RuntimeError: /dev/shm: rc=32 umount: /dev/shm: must be superuser to unmount.; /run: rc=32 umount: /run: must be superuser to unmount.; /run/credentials/systemd-journald.service: rc=32 umount: /run/credentials/systemd-journald.service: must be s; /run/user/1000: rc=32 umount: /run/user/1000: must be superuser to unmount.; /tmp: rc=32 umount: /tmp: must be superuser to unmount.; /dev/shm/.e-star-keep: rc=32 umount: /dev/shm/.e-star-keep: must be superuser to unmount.; /dev/shm/.e-star-keep/e0: rc=32 umount: /dev/shm/.e-star-keep/e0: must be superuser to unmou; /dev/shm/.e-star-keep/e1: rc=32 umount: /dev/shm/.e-star-keep/e1: must be superuser to unmou; /tmp: rc=32 umount: /tmp: must be superuser to unmount.; /var/tmp: rc=32 umount: /var/tmp: must be superuser to unmount.; /home/ebt/rsi-dev/.git: rc=32 umount: /home/ebt/rsi-dev/.git: must be superuser to unmount; /home/ebt/rsi-dev/a0/tasks/maxcut: rc=32 umount: /home/ebt/rsi-dev/a0/tasks/maxcut: must be superuser; /tmp/leak-probe-6wotgy9t/state-fixed/candidates/ad12b0995f084ea1: rc=32 umount: /tmp/leak-probe-6wotgy9t/state-fixed/candidates/ad12; /tmp/leak-probe-6wotgy9t/state-fixed/invocations/pid542124-a97ec8f879cad50c/G_eval_0001/run1: rc=32 umount: /tmp/leak-probe-6wotgy9t/state-fixed/invocations/pid | read failed: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json'
+      witness_all_names                FileNotFoundError: no stored witness readable
+      witness_by_name                  FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json'
+      witness_glob                     empty
+  witness audit: skipped -- the witness store is empty (already sealed?)
+raw output: /home/ebt/rsi-dev/a0/tasks/maxcut/references/leak-proof/out_leak_probe.json

@@ -1,0 +1,70 @@
+{
+  "graph": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json",
+  "reference": {
+    "OPT": 217,
+    "R": 217,
+    "opt_certified": true
+  },
+  "runs": [
+    {
+      "candidate_graph_sha256": "e7a2f9d6b1aeb84dec50b77fa19d9848c6a758a503cac72c425913303c0b23ef",
+      "cut_edges": 136,
+      "e_star": "/home/ebt/rsi-dev/a0/tasks/maxcut/e_star.py",
+      "edges_total": 254,
+      "evaluator_exit": 0,
+      "failure_kind": null,
+      "graph_sha256": "0ec1485f9e8e9030daf591b193b30baee69409862198b056f43d73a1152517db",
+      "mode": "fixed",
+      "probe": {
+        "attempts": {
+          "credential_file": "READ 591 chars",
+          "filesystem_answer_sweep": "empty",
+          "filesystem_scan": "empty",
+          "generators_provenance": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/generators/provenance.json'",
+          "generators_source": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/generators/maxcut_suite.py'",
+          "git_cat_file_blob": "RuntimeError: git rev-parse HEAD:a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json rc=128: fatal: not a git repository (or any of the parent directories): .git",
+          "git_log_all": "RuntimeError: git log --all --oneline -- *partition.json rc=128: fatal: not a git repository (or any of the parent directories): .git",
+          "git_rev_parse_cwd": "RuntimeError: git rev-parse --show-toplevel rc=128: fatal: not a git repository (or any of the parent directories): .git",
+          "git_show_head_witness": "RuntimeError: git show HEAD:a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json rc=128: fatal: not a git repository (or any of the parent directories): .git",
+          "handed_graph": "READ 2198 chars",
+          "handed_graph_generator_block": "FileNotFoundError: the handed graph carries no `generator` block",
+          "mountinfo_tmpfs_masks": "READ 419 chars",
+          "nested_userns_then_read": "RuntimeError: rc=1: Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import pathlib;p=pathl",
+          "proc_root_escape": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json'",
+          "raw_stdout_solution": "FileNotFoundError: no raw stdout with a parseable Solution: line",
+          "scip_witness": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/scip/G_eval_0001.partition.json'",
+          "state_root_siblings": "empty",
+          "suite_file": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json'",
+          "suite_manifest": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/suite/manifest.json'",
+          "targets_json": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json'",
+          "task_tree_scan": "empty",
+          "umount_first_mask_then_read": "RuntimeError: /dev/shm: rc=32 umount: /dev/shm: must be superuser to unmount.; /run: rc=32 umount: /run: must be superuser to unmount.; /run/credentials/systemd-journald.service: rc=32 umount: /run/credentials/systemd-journald.service: must be s; /run/user/1000: rc=32 umount: /run/user/1000: must be superuser to unmount.; /tmp: rc=32 umount: /tmp: must be superuser to unmount.; /dev/shm/.e-star-keep: rc=32 umount: /dev/shm/.e-star-keep: must be superuser to unmount.; /dev/shm/.e-star-keep/e0: rc=32 umount: /dev/shm/.e-star-keep/e0: must be superuser to unmou; /dev/shm/.e-star-keep/e1: rc=32 umount: /dev/shm/.e-star-keep/e1: must be superuser to unmou; /tmp: rc=32 umount: /tmp: must be superuser to unmount.; /var/tmp: rc=32 umount: /var/tmp: must be superuser to unmount.; /home/ebt/rsi-dev/.git: rc=32 umount: /home/ebt/rsi-dev/.git: must be superuser to unmount; /home/ebt/rsi-dev/a0/tasks/maxcut: rc=32 umount: /home/ebt/rsi-dev/a0/tasks/maxcut: must be superuser; /tmp/leak-probe-_344aldl/state-fixed/candidates/dc6d6d1da7f43b00: rc=32 umount: /tmp/leak-probe-_344aldl/state-fixed/candidates/dc6d; /tmp/leak-probe-_344aldl/state-fixed/invocations/pid555818-c689b3bf90be826d/G_eval_0001/run1: rc=32 umount: /tmp/leak-probe-_344aldl/state-fixed/invocations/pid | read failed: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json'",
+          "witness_all_names": "FileNotFoundError: no stored witness readable",
+          "witness_by_name": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/logs/partitions/G_eval_0001__BURER2002__s1337.partition.json'",
+          "witness_glob": "empty"
+        },
+        "graph_id": "G_eval_0001",
+        "identity": {
+          "cap_eff": "0000000000000000",
+          "cwd": "/tmp/leak-probe-_344aldl/state-fixed/invocations/pid555818-c689b3bf90be826d/G_eval_0001/run1/scratch",
+          "uid": 0,
+          "visible_pids": 1
+        },
+        "n": 128,
+        "recovered_from": null,
+        "targets_error": "FileNotFoundError: [Errno 2] No such file or directory: '/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json'",
+        "targets_readable": false
+      },
+      "status": "ok",
+      "stderr_tail": "e_star: status=ok out=/tmp/leak-probe-_344aldl/outcome-fixed.json\n"
+    }
+  ],
+  "state_root_decoy": {
+    "planted": false,
+    "reason": "no stored witness is readable (already sealed?)"
+  },
+  "witness_audit": {
+    "hits": [],
+    "skipped": "the witness store is empty (already sealed?)"
+  }
+}

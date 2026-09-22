@@ -1,0 +1,9 @@
+Composition with the lane-level sandbox (a0/a1/candidate_sandbox.py, landed in parallel):
+the lane runs E* inside unshare -rmnpf; e_star_child.py builds a namespace of its own inside that.
+Positive control — a frozen C*(T1) candidate must still be measured correctly.
+
+c01_ok_high_pc             G_dev_0001     status=ok handed=207 true=207 failure=None
+c01_ok_high_pc             G_eval_0001    status=ok handed=205 true=205 failure=None
+c12_error_exit30           G_dev_0001     status=error handed=None true=None failure=None
+G_dev_0001 / c01 is the frozen conformance row: 207.
+work /tmp/compose-nikngwvv

@@ -72,3 +72,52 @@ what I emit, and none of it is specified by `INTERFACE.md`.
 * **`ER p=0.030` instances are occasionally fragmented** (up to 6 components, all but the giant one
   being singletons). This is a property of the sparse regime, kept deliberately: it is the regime with
   the most headroom (§3 of `generators/README.md`).
+
+## 4. `provenance.json` was stale; it is now derived from the frozen files (finding F4)
+
+**What was wrong.** `INTERFACE.md` §2 lets a graph carry a `generator` block of
+*distribution* parameters, and `suite/README.md` §5 promises that the Planted
+families' label vectors are absent from the candidate-readable surface. The
+promise was checked by searching `suite/**/*.json` for the vectors recorded in
+`generators/provenance.json` — but those vectors were **not the labels of any
+shipped graph**. Measured before this change (`a0/verify/a1-testbed/REPORT.md`
+§2b): for all 15 Planted graphs the recorded `seed` differs from the graph's
+`generator.seed` (e.g. `G_dev_0019`: provenance `10591771958253030697`, graph
+`2710780250033404024`), the recorded vectors carry no community structure
+(intra/inter density 0.062/0.062 against a declared `p_in/p_out` of 0.100/0.020),
+and `master_seed` read `777` while the suite was built at `20260922`. The check
+was green because it searched for vectors no shipped graph contains.
+
+**What it is now.** `audit_labels.py refresh` regenerates each Planted graph's
+edge list *and* label vector from that graph's own frozen `generator` block with
+the frozen generator, refuses to proceed unless the edges reproduce the file
+byte-for-byte, and writes the labels into `provenance.json`. So the recorded
+labels are the labels of the graph on disk — or the tool fails.
+
+**Why a new file instead of editing `maxcut_suite.py`.** `suite/manifest.json`
+records `generator.source_sha256`, and `maxcut_suite.py verify` fails if the file
+on disk hashes differently. Editing it would break the frozen suite's own
+identity check, so the audit moved to `generators/audit_labels.py` and
+`maxcut_suite.py` is byte-identical. `maxcut_suite.py verify`'s own
+`leakage_*` counters are *not* inert any more either: with the corrected
+provenance they now search for the true label vectors.
+
+**What the audit checks** (`python3 generators/audit_labels.py verify`):
+1. every recorded label vector equals the vector the frozen file regenerates, and
+   every recorded seed equals the graph's `generator.seed` (this check fails
+   against the old `provenance.json` — that is how F4 was reproduced);
+2. no spelling of the true labels (compact/spaced 0/1, compact/spaced `±1`,
+   decimal bitmask or per-class bitmasks, class-membership lists) occurs in
+   `suite/**/*.json` — 61 files, 15 x 6 needles, 0 hits;
+3. the *candidate-facing view* of every graph carries exactly
+   `{schema, graph_id, family, n, edges}` and no `generator`/`notes`, and no
+   spelling of the true labels appears in it.
+
+**The honest limitation, restated.** The suite file itself still reproduces the
+labels: §2 keeps the `generator` block because that is what makes regeneration a
+check, and the block plus the frozen generator *is* the label vector. The
+property the study needs is therefore not "the labels are absent from the suite"
+but "the labels are absent from what a candidate is handed". That is now the
+checked statement: `e_star.py` hands over `candidate_graph_document()` and masks
+`suite/**` from the child. `suite/README.md` §5 (frozen, uneditable) still
+describes the old, weaker claim; this section supersedes it.

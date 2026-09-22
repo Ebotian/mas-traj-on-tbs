@@ -1,0 +1,29 @@
+{
+  "schema": "a0.maxcut.fs_policy/v1",
+  "note": [
+    "Additional paths E* masks from a candidate, on top of its own policy (the task",
+    "directory, the repository's .git, the state roots, and the directory the input",
+    "graph was read from). They are answer stores that live *outside* this",
+    "repository, so neither E* nor the A1 harness can derive them: a reference-build",
+    "scratch tree, an exported corpus, a copied state directory.",
+    "",
+    "Every entry below was found by `references/leak-proof/run_leak_probe.py`, which",
+    "scans the filesystem for the stored witness partitions by their bytes and",
+    "reports each hit with the cut it scores. Deleting such a tree is always better",
+    "than masking it; masking is what this file can do without touching a path",
+    "outside the task directory. A path that no longer exists is skipped and",
+    "reported in the invocation record (`isolation.skipped_masks`).",
+    "",
+    "A malformed file is a hard error: the policy must never be silently dropped."
+  ],
+  "found_on": "2026-09-22",
+  "extra_masks": [
+    "/tmp/mcwork"
+  ],
+  "found": {
+    "/tmp/mcwork/scip_test2/G_dev_0001.partition.json": "scores 224 = R = OPT on G_dev_0001 (dev)",
+    "/tmp/mcwork/scip_test2/G_dev_0005.partition.json": "SCIP primal solution for G_dev_0005 (dev)",
+    "/tmp/mcwork/det_*.txt": "MQLib stdout with a `Solution:` line (e.g. G_dev_0003, dev)",
+    "/tmp/mcwork/smoke_logs/partitions/*": "witnesses of the pre-suite smoke graphs (not the frozen suite)"
+  }
+}

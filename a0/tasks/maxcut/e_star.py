@@ -57,7 +57,6 @@ import argparse
 import hashlib
 import json
 import os
-import shutil
 import stat
 import sys
 import tempfile
@@ -288,6 +287,54 @@ def recompute_cut_edges(edges: Sequence[tuple[int, int]], assignment: Sequence[i
 
 
 # --------------------------------------------------------------------------- #
+# the candidate-facing view of the graph (§2 distribution provenance is not input)
+# --------------------------------------------------------------------------- #
+
+#: §2's `generator` block carries *distribution* parameters -- and, for the
+#: Planted family, the seed that reproduces the planted partition exactly.  The
+#: block is provenance for the harness (it is what makes regeneration a check),
+#: never an input: §2 itself says `generator.seed` "不得被任何判定引用".
+#:
+#: A candidate is therefore handed the graph *without* it.  The frozen suite files
+#: stay byte-identical (their sha256 is the data identity, and every hash-keyed
+#: artifact -- `suite/manifest.json`, `references/targets.json`, the gate,
+#: C*(T1)'s table -- keeps its value), and the Outcome records both digests: the
+#: suite bytes and the bytes actually handed over.
+CANDIDATE_GRAPH_KEYS = ("schema", "graph_id", "family", "n", "edges")
+
+
+def candidate_graph_document(graph: Mapping[str, Any]) -> dict[str, Any]:
+    """The one document a candidate is given: identity, shape and the edge list."""
+    return {
+        "schema": SCHEMA_GRAPH,
+        "graph_id": str(graph["graph_id"]),
+        "family": str(graph["family"]),
+        "n": int(graph["n"]),
+        "edges": [[int(u), int(v)] for u, v in graph["edges"]],
+    }
+
+
+def write_candidate_view(graph: Mapping[str, Any], directory: Path) -> dict[str, Any]:
+    """Write the candidate-facing view beside the run it belongs to.
+
+    The view lives in the private run directory, not next to the suite file: the
+    loader masks the suite from the candidate, so the view is the *only* graph a
+    candidate can read, and its bytes are what `candidate_graph_sha256` digests.
+    """
+    document = candidate_graph_document(graph)
+    payload = canonical_json(document).encode("ascii")
+    path = Path(directory) / "candidate_graph.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(payload)
+    return {
+        "path": str(path),
+        "sha256": sha256_bytes(payload),
+        "bytes_len": len(payload),
+        "keys": sorted(document),
+    }
+
+
+# --------------------------------------------------------------------------- #
 # the candidate artifact (§3) and §6's decision rules
 # --------------------------------------------------------------------------- #
 
@@ -349,6 +396,8 @@ def evaluate_graph(
     source_digest: str,
     delta: str,
     net_isolate: bool = False,
+    fs_isolate: bool = False,
+    extra_mask: Sequence[str] = (),
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Run one candidate twice on one graph and decide the §6 verdict.
 
@@ -361,12 +410,17 @@ def evaluate_graph(
     Determinism is compared on the **canonical bytes** of the parsed partition
     (§3's own canonical form), which is what §6 rule 4 names.  The raw-bytes
     comparison is recorded as a diagnostic only.
+
+    What the candidate is handed is `write_candidate_view`'s bytes -- §2's five
+    keys, no `generator` block -- while `cut_edges` is always recomputed from the
+    harness's own frozen copy of the *suite* bytes.
     """
     graph_id = str(graph["graph_id"])
     base = Path(state_dir) / "invocations" / delta / graph_id
     parsed: list[dict[str, Any]] = []
     observations: list[dict[str, Any]] = []
     raw_partitions: list[bytes | None] = []
+    views: list[dict[str, Any]] = []
 
     for index in (1, 2):
         run_dir = base / f"run{index}"
@@ -374,14 +428,19 @@ def evaluate_graph(
         run_dir.mkdir(parents=True, exist_ok=True)
         if out_path.exists():
             out_path.unlink()
+        view = write_candidate_view(graph, run_dir)
+        views.append(view)
         observation = child.run_invocation(
             spec=spec,
-            graph_path=Path(graph["path"]),
+            graph_path=Path(view["path"]),
             out_path=out_path,
             seed=seed,
             timeout_s=timeout_s,
             scratch=run_dir / "scratch",
             net_isolate=net_isolate,
+            fs_isolate=fs_isolate,
+            state_dir=Path(state_dir),
+            extra_mask=extra_mask,
         )
         observations.append(observation)
         (run_dir / "stdout.txt").write_text(observation["stdout_tail"], encoding="utf-8")
@@ -397,13 +456,21 @@ def evaluate_graph(
     if status == STATUS_OK:
         cut = recompute_cut_edges(graph["edges"], parsed[0]["assignment"])
 
-    tampered = sha256_bytes(Path(graph["path"]).read_bytes()) != graph["sha256"]
-    if tampered:
+    # Input integrity, on both files: the suite bytes the number is computed from,
+    # and the bytes actually handed to the candidate.
+    suite_tampered = sha256_bytes(Path(graph["path"]).read_bytes()) != graph["sha256"]
+    handed_tampered = any(
+        Path(view["path"]).is_file() and sha256_bytes(Path(view["path"]).read_bytes()) != view["sha256"]
+        for view in views
+    )
+    if suite_tampered or handed_tampered:
         status = STATUS_ERROR
         cut = None
+        which = "graph.json" if suite_tampered else "the candidate-facing graph view"
         failure = {
             "kind": "input_tampered",
-            "detail": "graph.json changed while the candidate ran; the frozen copy was used for recomputation",
+            "detail": f"{which} changed while the candidate ran; the frozen copy was used for "
+                      "recomputation",
         }
 
     canonical_partitions = [p.get("canonical_bytes") for p in parsed]
@@ -444,6 +511,13 @@ def evaluate_graph(
             "executable": sys.executable,
         },
         "theta": {"seed": int(seed), "timeout_s": float(timeout_s)},
+        # The two identities of the input: the frozen suite file the number is
+        # recomputed from, and the bytes the candidate was actually handed
+        # (`graph_sha256` is the former; this block is the latter).
+        "candidate_graph_sha256": views[0]["sha256"],
+        "candidate_graph_bytes": views[0]["bytes_len"],
+        "candidate_graph_keys": views[0]["keys"],
+        "candidate_graph_schema": "a0.maxcut.candidate_graph/v1",
         "determinism": {
             "runs": 2,
             "compared": "canonical bytes of partition.json (§6 rule 4)",
@@ -466,6 +540,9 @@ def evaluate_graph(
         "graph_id": graph_id,
         "candidate_id": spec["candidate_id"],
         "candidate_source_sha256": spec["source_sha256"],
+        "graph_sha256": graph["sha256"],
+        "candidate_graph_sha256": views[0]["sha256"],
+        "fs_isolate": bool(fs_isolate),
         "theta": {"seed": int(seed), "timeout_s": float(timeout_s)},
         "runs": [
             {
@@ -476,9 +553,12 @@ def evaluate_graph(
                 "timed_out": observation["timed_out"],
                 "process_group_killed": observation["process_group_killed"],
                 "spawn_error": observation["spawn_error"],
+                "isolation_error": observation.get("isolation_error"),
                 "scratch": observation["cwd"],
                 "env": observation["env"],
                 "argv": observation["argv"],
+                "graph_path": observation["graph_path"],
+                "isolation": observation.get("isolation"),
             }
             for index, observation in enumerate(observations)
         ],
@@ -514,6 +594,12 @@ def _decide(
                     "(§7: a timeout is not an exit code)"
                 ),
             }
+    for observation in observations:
+        if observation.get("isolation_error"):
+            # The harness could not build the topology it promised.  That is a
+            # harness failure: it is neither the candidate's fault nor a number,
+            # and §6 rule 5 forbids turning it into one.
+            return STATUS_ERROR, {"kind": "harness_error", "detail": str(observation["isolation_error"])}
     for observation in observations:
         if observation["spawn_error"]:
             return STATUS_ERROR, {"kind": "candidate_entry_failed", "detail": str(observation["spawn_error"])}
@@ -705,6 +791,29 @@ def _state_root(args: argparse.Namespace) -> Path:
     return root
 
 
+#: Optional, task-owned list of *additional* paths to mask from a candidate.  It
+#: exists because the answer stores are not all inside this repository: a rebuild
+#: scratch tree, an exported corpus or a copied state directory is still readable
+#: by the candidate, and neither E* nor the A1 harness can enumerate those from
+#: first principles.  `references/leak-proof/run_leak_probe.py` scans for them and
+#: writes what it finds here; a missing file means "no extras", a malformed one is
+#: a hard error (the policy must never be silently ignored).
+FS_POLICY_PATH = HERE / "references" / "witnesses" / "fs_policy.json"
+
+
+def extra_mask_paths() -> list[str]:
+    path = FS_POLICY_PATH
+    if not path.is_file():
+        return []
+    try:
+        document = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise GraphInvalid(f"{path} is not valid JSON: {exc}") from exc
+    if not isinstance(document, dict) or not isinstance(document.get("extra_masks", []), list):
+        raise GraphInvalid(f"{path} must be an object with a list `extra_masks`")
+    return [str(item) for item in document.get("extra_masks", [])]
+
+
 def _delta_tag(spec: Mapping[str, Any], seed: int, timeout_s: float) -> str:
     payload = {
         "candidate_source_sha256": spec["source_sha256"],
@@ -774,20 +883,34 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
         return EVALUATOR_EXIT_CODES[STATUS_ERROR]
 
     state_dir = _state_root(args)
-    if args.net_isolate and shutil.which("unshare") is None:
-        print("e_star: --net-isolate was requested but `unshare` is not on PATH; refusing to measure "
+    if args.net_isolate and child.tool_path("unshare") is None:
+        print("e_star: --net-isolate was requested but `unshare` is not installed; refusing to measure "
               "in an open topology", file=sys.stderr)
         return EVALUATOR_EXIT_CODES[STATUS_ERROR]
+    if args.fs_isolate:
+        available, why = child.isolation_available()
+        if not available:
+            print(f"e_star: filesystem isolation is on by default but {why}; pass --no-fs-isolate only "
+                  "with a documented reason -- without it a candidate can read the reference solutions, "
+                  "the suite's generator blocks and the git objects", file=sys.stderr)
+            return EVALUATOR_EXIT_CODES[STATUS_ERROR]
     try:
         spec = stage_candidate(spec, state_dir)
     except ValueError as exc:
         print(f"e_star: {exc}", file=sys.stderr)
         return EVALUATOR_EXIT_CODES[STATUS_ERROR]
     delta = f"pid{os.getpid()}-{_delta_tag(spec, args.seed, args.timeout)}"
+    try:
+        masks = list(args.fs_mask) + extra_mask_paths()
+    except GraphInvalid as exc:
+        print(f"e_star: {exc}", file=sys.stderr)
+        return EVALUATOR_EXIT_CODES[STATUS_ERROR]
     outcome, resources = evaluate_graph(
         graph=graph, spec=spec, seed=int(args.seed), timeout_s=float(args.timeout),
         state_dir=state_dir, source_digest=source_digest, delta=delta,
         net_isolate=bool(args.net_isolate),
+        fs_isolate=bool(args.fs_isolate),
+        extra_mask=masks,
     )
 
     out_path = Path(args.out).expanduser()
@@ -815,6 +938,8 @@ def cmd_evaluate(args: argparse.Namespace) -> int:
         "status": outcome["status"],
         "cut_edges": outcome["cut_edges"],
         "edges_total": outcome["edges_total"],
+        "candidate_graph_sha256": outcome["candidate_graph_sha256"],
+        "fs_isolate": bool(args.fs_isolate),
         "failure_kind": None if outcome["failure"] is None else outcome["failure"]["kind"],
         "canonical_digest": outcome["canonical_digest"],
     }
@@ -840,9 +965,20 @@ def cmd_aggregate(args: argparse.Namespace) -> int:
         return EVALUATOR_EXIT_CODES[STATUS_ERROR]
 
     state_dir = _state_root(args)
+    if args.fs_isolate:
+        available, why = child.isolation_available()
+        if not available:
+            print(f"e_star: filesystem isolation is on by default but {why}; pass --no-fs-isolate only "
+                  "with a documented reason", file=sys.stderr)
+            return EVALUATOR_EXIT_CODES[STATUS_ERROR]
     try:
         spec = stage_candidate(spec, state_dir)
     except ValueError as exc:
+        print(f"e_star: {exc}", file=sys.stderr)
+        return EVALUATOR_EXIT_CODES[STATUS_ERROR]
+    try:
+        masks = list(args.fs_mask) + extra_mask_paths()
+    except GraphInvalid as exc:
         print(f"e_star: {exc}", file=sys.stderr)
         return EVALUATOR_EXIT_CODES[STATUS_ERROR]
     delta = f"agg-pid{os.getpid()}-{_delta_tag(spec, args.seed, args.timeout)}"
@@ -852,6 +988,9 @@ def cmd_aggregate(args: argparse.Namespace) -> int:
         outcome, resources = evaluate_graph(
             graph=graph, spec=spec, seed=int(args.seed), timeout_s=float(args.timeout),
             state_dir=state_dir, source_digest=source_digest, delta=delta,
+            net_isolate=bool(args.net_isolate),
+            fs_isolate=bool(args.fs_isolate),
+            extra_mask=masks,
         )
         outcomes.append(outcome)
         per_graph_resources.append(resources)
@@ -922,6 +1061,22 @@ def cmd_digest(args: argparse.Namespace) -> int:
         "failure_stage_mapping_source": "a0/contract/selection/simpleloop.selection.json",
         "determinism_rule": "§6 rule 4: canonical bytes of partition.json over two invocations",
         "aggregate_arithmetic": "fractions.Fraction; cut_edges integers authoritative; cut_fraction display only",
+        "candidate_input": {
+            "view": "the candidate is handed `candidate_graph.json`, written into its private run "
+                    "directory: §2's keys minus `generator` and `notes`",
+            "view_keys": list(CANDIDATE_GRAPH_KEYS),
+            "suite_identity": "graph_sha256 (sha256 of the frozen suite file; the bytes `cut_edges` is "
+                              "recomputed from)",
+            "handed_identity": "candidate_graph_sha256 (sha256 of the bytes actually handed over)",
+            "fs_isolate_default": child.FS_ISOLATE_DEFAULT,
+            "fs_isolate_mechanism": "unshare --user --map-root-user --mount --pid --fork --mount-proc "
+                                    "with a tmpfs over every answer store, then setpriv to drop the "
+                                    "whole capability set before exec; fail-closed",
+            "fs_mask_policy": "the task directory (suite/references/generators and every e-star-state "
+                              "under it), the repository's .git, the state roots, and the directory the "
+                              "input graph was read from; the child's own run directory and interpreter "
+                              "are bound back in",
+        },
     }
     if getattr(args, "value_only", False):
         print(payload["evaluator_source_sha256"])
@@ -951,6 +1106,17 @@ def build_parser() -> argparse.ArgumentParser:
              "Additive flag; see DEVIATIONS.md D-T1-5.",
     )
     evaluate.add_argument(
+        "--no-fs-isolate", dest="fs_isolate", action="store_false", default=child.FS_ISOLATE_DEFAULT,
+        help="do NOT take the answer stores away from the candidate.  On by default: the candidate is "
+             "started in a private user+mount+PID namespace with the repository, its `.git` and the "
+             "state roots masked, and with every capability dropped.  Fail-closed if the topology "
+             "cannot be built.  See DEVIATIONS.md D-T1-12.",
+    )
+    evaluate.add_argument(
+        "--fs-mask", action="append", default=[], metavar="PATH",
+        help="mask one more path from the candidate (repeatable); additive to the default policy",
+    )
+    evaluate.add_argument(
         "--state-dir", default=None,
         help="state root for run records (default: <tmp>/maxcut-e-star-state); never inside a candidate",
     )
@@ -967,6 +1133,18 @@ def build_parser() -> argparse.ArgumentParser:
     aggregate.add_argument(
         "--suite-root", default=None,
         help=f"root holding <graph-set>/ (default: {DEFAULT_SUITE_ROOT}); additive flag, see DEVIATIONS.md",
+    )
+    aggregate.add_argument(
+        "--net-isolate", action="store_true",
+        help="as for `evaluate`: run every invocation in a route-less network namespace",
+    )
+    aggregate.add_argument(
+        "--no-fs-isolate", dest="fs_isolate", action="store_false", default=child.FS_ISOLATE_DEFAULT,
+        help="as for `evaluate`: do NOT mask the answer stores from the candidate",
+    )
+    aggregate.add_argument(
+        "--fs-mask", action="append", default=[], metavar="PATH",
+        help="mask one more path from the candidate (repeatable)",
     )
     aggregate.set_defaults(func=cmd_aggregate)
 

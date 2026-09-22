@@ -1,0 +1,9 @@
+The verifier's own leak candidates (a0/verify/a1-testbed/cand_{replay,provenance,reference}),
+re-run against the fixed tree.  Before the fix these booked 217 = R = OPT on G_eval_0001 and
+89/505 on G_dev_0019's planted replay (REPORT.md §2a/§2c).
+
+planted replay (dev19)       E* status=error    cut=None fail=candidate_crashed | lane handed=None true=None status=error | R=377 OPT=None
+stale provenance (dev19)     E* status=error    cut=None fail=candidate_crashed | lane handed=None true=None status=error | R=377 OPT=None
+stored witness (eval1)       E* status=error    cut=None fail=candidate_crashed | lane handed=None true=None status=error | R=217 OPT=217
+stored witness (eval19)      E* status=error    cut=None fail=candidate_crashed | lane handed=None true=None status=error | R=377 OPT=None
+work /tmp/vfix-verifier-k0718qce
