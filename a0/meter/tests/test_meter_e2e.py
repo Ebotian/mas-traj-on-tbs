@@ -69,6 +69,30 @@ def test_the_request_framing_checks_are_present_and_not_vacuous(selftest_run):
     assert payload["proxy_sha256"] == digest, "checks.json does not describe this proxy"
 
 
+def test_the_unparseable_error_labelling_checks_are_present_and_not_vacuous(selftest_run):
+    """A non-2xx whose body is not JSON must name its status, and the 2xx reasons stay distinct.
+
+    Named here so a future edit cannot quietly drop the checks that pin the label, the way the
+    framing checks are named above. `report.txt` is read as well, because the point of these
+    checks is the *detail* -- the reason string actually booked.
+    """
+    payload = selftest_run["checks"]
+    names = {c["name"]: c for c in payload["checks"]}
+    expected = {
+        "S13b": "upstream_http_502_no_usage",
+        "S13c": "upstream_http_429_no_usage",
+        "S13d": "unparseable_response_body",
+        "S13e": "empty_response_body",
+    }
+    for prefix, reason in expected.items():
+        matches = [c for name, c in names.items() if name.startswith(prefix)]
+        assert matches, "selftest lost the %s check" % prefix
+        assert matches[0]["ok"], matches[0]
+        assert reason in matches[0]["detail"], matches[0]["detail"]
+    report = open(os.path.join(selftest_run["out"], "report.txt"), encoding="utf-8").read()
+    assert "S13b" in report and "upstream_http_502_no_usage" in report
+
+
 def test_ledger_verifier_agrees_on_the_real_ledger(selftest_run):
     ledger = os.path.join(selftest_run["out"], "ledger.jsonl")
     proc = subprocess.run([sys.executable, os.path.join(METER, "verify_ledger.py"), ledger,

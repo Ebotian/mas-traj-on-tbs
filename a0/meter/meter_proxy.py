@@ -622,12 +622,18 @@ def handle_request(conn: socket.socket, peer: str, campaign: Campaign, svc: Serv
         payload = json_or_none(body_bytes) if body_bytes else None
         ident = identify_fields(payload)
         outcome = usage_from_json_body(payload, anthropic_route, cfg)
-        if outcome.usage is None and outcome.unmetered_reason == "no_usage_field_in_response":
-            if not body_bytes:
-                outcome = UsageOutcome(None, "none", "empty_response_body", None)
-            elif status >= 400:
+        if outcome.usage is None:
+            # A body that yields no usage says nothing about the status by itself, and an audit
+            # reads the status off the row. So a non-2xx must name it -- whether the body was
+            # JSON without a `usage` object or not JSON at all (a gateway page, a truncated
+            # body). `unparseable_response_body` alone cannot tell a 401 from a 500.
+            no_usage_reason = outcome.unmetered_reason in ("no_usage_field_in_response",
+                                                           "unparseable_response_body")
+            if status >= 400 and no_usage_reason:
                 outcome = UsageOutcome(None, "none", "upstream_http_%d_no_usage" % status,
                                        outcome.raw)
+            elif not body_bytes:
+                outcome = UsageOutcome(None, "none", "empty_response_body", None)
         svc.bump("metered" if outcome.usage is not None else "unmetered")
         commit_nonstream(svc, conn, campaign, endpoint, model_requested,
                          ident["model"] or None, ident["request_id"] or request_id_header,

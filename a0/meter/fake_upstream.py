@@ -104,6 +104,18 @@ SCENARIOS = {
     # An HTTP error body, which never carries usage.
     "error-401": {"mode": "json", "status": 401, "body": {
         "error": {"message": "Authentication Fails", "type": "authentication_error"}}},
+    # A non-2xx whose body is not JSON at all: a gateway's HTML page, an auth proxy's text.
+    # Nothing in the body names the status, so the row must.
+    "error-502-html": {"mode": "raw", "status": 502, "content_type": "text/html",
+                       "body": b"<html><body><h1>502 Bad Gateway</h1></body></html>"},
+    "error-429-text": {"mode": "raw", "status": 429, "content_type": "text/plain",
+                       "body": b"rate limited: slow down"},
+    # A 2xx whose body is not JSON: the reason must stay `unparseable_response_body`.
+    "ok-200-notjson": {"mode": "raw", "status": 200, "content_type": "text/plain",
+                       "body": b"not json at all"},
+    # A 2xx with an empty body: the reason must be `empty_response_body`.
+    "ok-200-empty": {"mode": "raw", "status": 200, "content_type": "application/json",
+                     "body": b""},
 }
 
 CHAT_CHUNKS = [
@@ -292,6 +304,16 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(raw)
 
+    def _send_raw(self, status: int, body: bytes, content_type: str) -> None:
+        """Answer with bytes that are deliberately not JSON, to exercise the unparseable path."""
+        self.send_response(status)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("x-request-id", "fake-req-%d" % int(time.time() * 1000))
+        self.send_header("Connection", "close")
+        self.end_headers()
+        self.wfile.write(body)
+
     def _flush_chunked(self, data: bytes) -> None:
         """Write one HTTP/1.1 chunk and flush it, so the proxy can forward it immediately."""
         self.wfile.write(b"%x\r\n" % len(data) + data + b"\r\n")
@@ -394,6 +416,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return
         if spec["mode"] == "json":
             self._send_json(spec.get("status", 200), spec["body"])
+            return
+        if spec["mode"] == "raw":
+            self._send_raw(spec.get("status", 200), spec["body"],
+                           spec.get("content_type", "application/octet-stream"))
             return
         kind = spec["kind"]
         if kind == "chat_stream":

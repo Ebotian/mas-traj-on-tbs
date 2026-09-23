@@ -60,7 +60,8 @@ capture shows the 98-byte body arriving under a head with no `Content-Length` an
 `Transfer-Encoding`, answered `400`, booked `unmetered`. The after capture shows
 `Content-Length: 98` (and, for the chunked client, `Transfer-Encoding: chunked` with the same
 decoded body) and two metered rows. `evidence/selftest_on_prefix_proxy.txt` is the same selftest
-run against the pre-fix revision: **36/65**, exit 1, versus 65/65 for this one.
+run against the pre-fix revision: **36/65**, exit 1, versus 65/65 for this one at the time (the
+suite has since grown to 69 checks; the four new ones pin the non-2xx error labelling).
 
 **Why the selftest missed it for 55/55.** `fake_upstream.py` read the body length from
 `content-length`, got zero bytes, and answered from its scenario default; every check asserted on
@@ -119,7 +120,7 @@ this component exists to close. Reasons this implementation emits:
 | reason | meaning |
 |---|---|
 | `no_usage_field_in_response` | 2xx response with no `usage` object |
-| `upstream_http_<code>_no_usage` | non-2xx response; error bodies do not carry usage |
+| `upstream_http_<code>_no_usage` | non-2xx response that yields no usage — whether the error body is JSON without a `usage` object, or not JSON at all (a gateway page, plain text); the row always names the status |
 | `empty_response_body` | 2xx with an empty body |
 | `usage_present_without_cache_split` | prompt total reported, cache split not (`--on-missing-cache-split unmetered`) |
 | `stream_truncated_before_usage[:<err>]` | the stream ended (or errored) before any *final* usage event |
@@ -233,10 +234,10 @@ the fake upstream sleeping 0.4 s before it emits usage.
 cd a0/meter
 
 # Everything behavioural, against a local fake upstream. No model call, no spend.
-python3 selftest.py --out evidence          # 65/65 checks; writes evidence/*
+python3 selftest.py --out evidence          # 69/69 checks; writes evidence/*
 
 # The same thing under pytest (unit + end-to-end + the raw TCP tap proof)
-python3 -m pytest tests -q                  # 64 passed
+python3 -m pytest tests -q                  # 66 passed
 
 # The wire-level framing proof, on its own (raw socket capture of the upstream leg)
 python3 raw_tap.py --proof --out evidence --label after

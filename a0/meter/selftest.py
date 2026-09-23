@@ -300,6 +300,10 @@ def main(argv: list[str] | None = None) -> int:
     H1R = {"X-Fake-Scenario": "responses-stream", "X-A0-Meter-Token": "tok-C1", **AUTH}
     H1G = {"X-Fake-Scenario": "generic-nosplit", "X-A0-Meter-Token": "tok-C1", **AUTH}
     H1E = {"X-Fake-Scenario": "error-401", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1EH = {"X-Fake-Scenario": "error-502-html", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1ET = {"X-Fake-Scenario": "error-429-text", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1NJ = {"X-Fake-Scenario": "ok-200-notjson", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1NE = {"X-Fake-Scenario": "ok-200-empty", "X-A0-Meter-Token": "tok-C1", **AUTH}
     H2 = {"X-Fake-Scenario": "chat-usage-ns", "X-A0-Meter-Token": "tok-C2", **AUTH}
 
     def rows() -> list[dict]:
@@ -550,6 +554,37 @@ def main(argv: list[str] | None = None) -> int:
           and row["reason"] == "upstream_http_401_no_usage", 
           "status=%d reason=%r" % (status, row["reason"]))
 
+    print("\n=== S13b a non-2xx body that is not JSON still names its status ===")
+    # The defect: this used to book `unparseable_response_body`, the same reason a 2xx non-JSON
+    # body gets, so the row did not name the status and a reader could not tell a 401 from a 500.
+    status, _, _ = post(p1, "/v1/chat/completions", {"model": "deepseek-flash"}, H1EH)
+    row = last()
+    check("S13b a 502 with an HTML body is booked as a gap that names the status",
+          status == 502 and row["unmetered"] is True and row["usage"] is None
+          and row["ceq"] is None and row["reason"] == "upstream_http_502_no_usage",
+          "status=%d reason=%r unmetered=%r" % (status, row["reason"], row["unmetered"]))
+    s13b_row = row
+    status, _, _ = post(p1, "/v1/chat/completions", {"model": "deepseek-flash"}, H1ET)
+    row = last()
+    check("S13c a 429 with a plain-text body is booked as a gap that names the status",
+          status == 429 and row["unmetered"] is True
+          and row["reason"] == "upstream_http_429_no_usage",
+          "status=%d reason=%r" % (status, row["reason"]))
+
+    print("\n=== S13d the 2xx reasons stay distinct from the non-2xx one ===")
+    status, _, _ = post(p1, "/v1/chat/completions", {"model": "deepseek-flash"}, H1NJ)
+    row = last()
+    check("S13d a 2xx body that is not JSON stays unparseable_response_body",
+          status == 200 and row["unmetered"] is True
+          and row["reason"] == "unparseable_response_body",
+          "status=%d reason=%r" % (status, row["reason"]))
+    status, _, _ = post(p1, "/v1/chat/completions", {"model": "deepseek-flash"}, H1NE)
+    row = last()
+    check("S13e a 2xx empty body is empty_response_body, not the non-2xx reason",
+          status == 200 and row["unmetered"] is True
+          and row["reason"] == "empty_response_body",
+          "status=%d reason=%r" % (status, row["reason"]))
+
     print("\n=== S14 provider-reported tokens never enter the row ===")
     call_records = [e for e in events_log if e.get("kind") == "call"]
     check("S14 sidecar keeps the raw provider usage for audit",
@@ -591,7 +626,8 @@ def main(argv: list[str] | None = None) -> int:
 
     print("\n=== S17 no spend: nothing in this run left the host ===")
     forwarded_prefixes = ("no_usage_field_in_response", "upstream_http_", "stream_",
-                          "empty_response_body", "usage_present_without_cache_split")
+                          "empty_response_body", "unparseable_response_body",
+                          "usage_present_without_cache_split")
     forwarded_rows = [r for r in all_rows
                       if r["reason"] is None or str(r["reason"]).startswith(forwarded_prefixes)]
     bad_endpoints = [r["endpoint"] for r in forwarded_rows
@@ -729,6 +765,7 @@ def main(argv: list[str] | None = None) -> int:
         "S7a_connect_refused": refusal_rows[0],
         "S7b_non_allowlisted_host_refused": refusal_rows[1],
         "S11_stream_truncated_before_usage": s11_row,
+        "S13b_non_2xx_unparseable_body_names_status": s13b_row,
     }
     with open(os.path.join(out, "highlights.json"), "w", encoding="utf-8") as handle:
         json.dump(highlights, handle, indent=2)

@@ -1,8 +1,8 @@
 {
-  "passed": 65,
-  "total": 65,
+  "passed": 69,
+  "total": 69,
   "proxy_under_test": "/home/ebt/rsi-dev/a0/meter/meter_proxy.py",
-  "proxy_sha256": "0aa928bed0847e6cddba08e858016c3cbf1a9cd99ef688fccc532d5c7114115c",
+  "proxy_sha256": "89f7bac46033fda5cf3c28074be138e7d6c23fad6e702284b21a1954dc1d6ebb",
   "checks": [
     {
       "name": "S1 http 200",
@@ -42,7 +42,7 @@
     {
       "name": "S2 content reached the client before usage existed",
       "ok": true,
-      "detail": "content at 0.045s, usage at 0.407s"
+      "detail": "content at 0.042s, usage at 0.403s"
     },
     {
       "name": "S2 client received the terminator after the row was durable",
@@ -82,7 +82,7 @@
     {
       "name": "S4 anthropic path routed",
       "ok": true,
-      "detail": "https://127.0.0.1:60165/anthropic/v1/messages"
+      "detail": "https://127.0.0.1:44417/anthropic/v1/messages"
     },
     {
       "name": "S5 usage merged from message_start + message_delta",
@@ -220,6 +220,26 @@
       "detail": "status=401 reason='upstream_http_401_no_usage'"
     },
     {
+      "name": "S13b a 502 with an HTML body is booked as a gap that names the status",
+      "ok": true,
+      "detail": "status=502 reason='upstream_http_502_no_usage' unmetered=True"
+    },
+    {
+      "name": "S13c a 429 with a plain-text body is booked as a gap that names the status",
+      "ok": true,
+      "detail": "status=429 reason='upstream_http_429_no_usage'"
+    },
+    {
+      "name": "S13d a 2xx body that is not JSON stays unparseable_response_body",
+      "ok": true,
+      "detail": "status=200 reason='unparseable_response_body'"
+    },
+    {
+      "name": "S13e a 2xx empty body is empty_response_body, not the non-2xx reason",
+      "ok": true,
+      "detail": "status=200 reason='empty_response_body'"
+    },
+    {
       "name": "S14 sidecar keeps the raw provider usage for audit",
       "ok": true,
       "detail": "sidecar call records=18"
@@ -247,7 +267,7 @@
     {
       "name": "S15 both endpoint shapes are published",
       "ok": true,
-      "detail": "{\"anthropic_base_url\": \"http://127.0.0.1:42315\", \"arm_id\": \"A_base\", \"base_url\": \"http://127.0.0.1:42315/v1\", \"campaign_id\": \"C_0001\", \"token\": \"tok-C1\"}"
+      "detail": "{\"anthropic_base_url\": \"http://127.0.0.1:60141\", \"arm_id\": \"A_base\", \"base_url\": \"http://127.0.0.1:60141/v1\", \"campaign_id\": \"C_0001\", \"token\": \"tok-C1\"}"
     },
     {
       "name": "S16 start refused, non-zero exit",
@@ -302,17 +322,17 @@
     {
       "name": "S18e every body-bearing request in the whole run was framed, whole and parseable",
       "ok": true,
-      "detail": "audited=22 offenders=[]"
+      "detail": "audited=26 offenders=[]"
     },
     {
       "name": "S18f every forwarded request carried a credential",
       "ok": true,
-      "detail": "audited=22"
+      "detail": "audited=26"
     },
     {
       "name": "S18g every ledger row written so far still re-derives, including the ones added here",
       "ok": true,
-      "detail": "rows=26 bad=[]"
+      "detail": "rows=30 bad=[]"
     },
     {
       "name": "S19a an unframed body is refused by the proxy (400), not guessed at",
@@ -327,7 +347,7 @@
     {
       "name": "S19c nothing unframed ever reached the upstream",
       "ok": true,
-      "detail": "upstream log lines 22 -> 22"
+      "detail": "upstream log lines 26 -> 26"
     }
   ]
 }
