@@ -1,0 +1,1508 @@
+{
+ "allow_under_hidden_root": {
+  "parsed": {
+   "hidden_sibling_readable": false,
+   "marker": "visible",
+   "tmp_root_listing": [
+    "a0a1-epistemic-hidden-root"
+   ],
+   "workspace_listing": [
+    "marker.txt"
+   ]
+  },
+  "result": {
+   "argv": [
+    "/usr/bin/unshare",
+    "-rmnpf",
+    "--mount-proc",
+    "/usr/bin/python3",
+    "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+    "enter",
+    "--hide",
+    "/home",
+    "--hide",
+    "/tmp",
+    "--hide",
+    "/var/tmp",
+    "--hide",
+    "/run/user",
+    "--allow",
+    "/tmp/a0a1-epistemic-hidden-root/workspace",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--allow",
+    "/usr",
+    "--allow",
+    "/usr/bin/python3",
+    "--",
+    "/usr/bin/python3",
+    "-c",
+    "import json, os\nws = '/tmp/a0a1-epistemic-hidden-root/workspace'\nout = {\n  'workspace_listing': sorted(os.listdir(ws)),\n  'marker': open(os.path.join(ws, 'marker.txt')).read(),\n  'tmp_root_listing': sorted(os.listdir('/tmp'))[:8],\n  'hidden_sibling_readable': os.path.exists('/tmp/a0a1-epistemic-hidden-root/secret.txt'),\n}\nprint(json.dumps(out))"
+   ],
+   "returncode": 0,
+   "seconds": 0.065,
+   "stderr": "",
+   "stdout": "{\"workspace_listing\": [\"marker.txt\"], \"marker\": \"visible\", \"tmp_root_listing\": [\"a0a1-epistemic-hidden-root\"], \"hidden_sibling_readable\": false}\n",
+   "timed_out": false
+  },
+  "workspace": "/tmp/a0a1-epistemic-hidden-root/workspace",
+  "workspace_on_host": true
+ },
+ "canary_leak": {
+  "home_canary_on_host": false,
+  "note": "inside the lane the host's /tmp and /home are fresh tmpfs; a write there must not reach the host",
+  "result": {
+   "argv": [
+    "/usr/bin/unshare",
+    "-rmnpf",
+    "--mount-proc",
+    "/usr/bin/python3",
+    "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+    "enter",
+    "--hide",
+    "/home",
+    "--hide",
+    "/tmp",
+    "--hide",
+    "/var/tmp",
+    "--hide",
+    "/run/user",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--allow",
+    "/usr",
+    "--allow",
+    "/usr/bin/python3",
+    "--",
+    "/usr/bin/python3",
+    "-c",
+    "open('/tmp/.a0a1_epistemic_leak_canary','w').write('escaped');open('/home/.a0a1_epistemic_leak_canary','w').write('escaped');print('written')"
+   ],
+   "returncode": 0,
+   "seconds": 0.059,
+   "stderr": "",
+   "stdout": "written\n",
+   "timed_out": false
+  },
+  "tmp_canary_on_host": false
+ },
+ "codex_workspace_write_inside": {
+  "lane_argv": {
+   "argv": [
+    "codex",
+    "exec",
+    "--sandbox",
+    "workspace-write",
+    "--skip-git-repo-check",
+    "--color",
+    "never",
+    "--output-last-message",
+    "/dev/shm/a0a1-epistemic/session/main/workspace/ww_last.txt",
+    "-m",
+    "deepseek-flash",
+    "-c",
+    "model_reasoning_effort=\"low\""
+   ],
+   "derived_from_source": false,
+   "rendered_by": "/home/ebt/rsi-dev/a0/runtimes/kapso/.venv/bin/python",
+   "source": "a0/a1/kapso_t1 lane -> kapso codex_agent.py::_exec_command"
+  },
+  "result": {
+   "argv": [
+    "/usr/bin/unshare",
+    "-rmnpf",
+    "--mount-proc",
+    "/usr/bin/python3",
+    "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+    "enter",
+    "--hide",
+    "/home",
+    "--hide",
+    "/tmp",
+    "--hide",
+    "/var/tmp",
+    "--hide",
+    "/run/user",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/codex_home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--allow",
+    "/usr",
+    "--allow",
+    "/usr/bin/python3",
+    "--",
+    "codex",
+    "exec",
+    "--sandbox",
+    "workspace-write",
+    "--skip-git-repo-check",
+    "--color",
+    "never",
+    "--output-last-message",
+    "/dev/shm/a0a1-epistemic/session/main/workspace/ww_last.txt",
+    "-m",
+    "deepseek-flash",
+    "-c",
+    "model_reasoning_effort=\"low\""
+   ],
+   "returncode": null,
+   "seconds": 40.016,
+   "stderr": "Reading prompt from stdin...\nOpenAI Codex v0.155.1\n--------\nworkdir: /dev/shm/a0a1-epistemic/session/main/workspace\nmodel: deepseek-flash\nprovider: meter\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0cc4b-4845-7cc2-ae1c-6a39a59c6f44\n--------\nuser\nsay nothing\nwarning: Model metadata for `deepseek-flash` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.\nERROR: Reconnecting... waiting for network\nERROR: Reconnecting... waiting for network\nERROR: Reconnecting... waiting for network\n",
+   "stdout": "",
+   "timed_out": true
+  }
+ },
+ "latency": {
+  "bare_python_seconds": [
+   0.007,
+   0.007,
+   0.006
+  ],
+  "in_namespace_seconds": [
+   0.062,
+   0.058,
+   0.058
+  ],
+  "median_added_seconds": 0.051
+ },
+ "model": "deepseek-flash",
+ "nested_and_proc": {
+  "parsed": {
+   "all_visible_share_my_mountns": true,
+   "child_mountns_sees_home_entries": "0",
+   "nested_mountns": {
+    "rc": 0,
+    "stderr": ""
+   },
+   "nested_userns": {
+    "rc": 0,
+    "stderr": ""
+   },
+   "proc1_root_lists": [
+    "bin",
+    "boot",
+    "dev",
+    "etc",
+    "home",
+    "lib",
+    "lib64",
+    "lost+found"
+   ],
+   "visible_pid_count": 2,
+   "visible_pids": [
+    1,
+    12
+   ]
+  },
+  "result": {
+   "argv": [
+    "/usr/bin/unshare",
+    "-rmnpf",
+    "--mount-proc",
+    "/usr/bin/python3",
+    "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+    "enter",
+    "--hide",
+    "/home",
+    "--hide",
+    "/tmp",
+    "--hide",
+    "/var/tmp",
+    "--hide",
+    "/run/user",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--allow",
+    "/usr",
+    "--allow",
+    "/usr/bin/python3",
+    "--",
+    "/usr/bin/python3",
+    "-c",
+    "\nimport json, os, subprocess, sys\nout = {}\n# nested user namespace\np = subprocess.run([\"unshare\", \"-r\", \"true\"], capture_output=True, text=True)\nout[\"nested_userns\"] = {\"rc\": p.returncode, \"stderr\": p.stderr.strip()[:160]}\n# nested mount namespace\np = subprocess.run([\"unshare\", \"-m\", \"true\"], capture_output=True, text=True)\nout[\"nested_mountns\"] = {\"rc\": p.returncode, \"stderr\": p.stderr.strip()[:160]}\n# another mount namespace + hide check: a child that unshares mount ns still sees the hidden /home\np = subprocess.run([\"unshare\", \"-m\", \"sh\", \"-c\", \"ls /home | wc -l\"], capture_output=True, text=True)\nout[\"child_mountns_sees_home_entries\"] = p.stdout.strip()\n# /proc: how many pids, and are they all our own mount namespace?\npids = sorted(int(n) for n in os.listdir(\"/proc\") if n.isdigit())\nout[\"visible_pids\"] = pids[:16]\nout[\"visible_pid_count\"] = len(pids)\ntry:\n    mine = os.stat(\"/proc/self/ns/mnt\").st_ino\n    out[\"all_visible_share_my_mountns\"] = all(\n        os.stat(f\"/proc/{p}/ns/mnt\").st_ino == mine for p in pids)\nexcept OSError as exc:\n    out[\"mountns_check_error\"] = type(exc).__name__\n# can we see the host root through /proc/1/root ?\ntry:\n    out[\"proc1_root_lists\"] = sorted(os.listdir(\"/proc/1/root\"))[:8]\nexcept OSError as exc:\n    out[\"proc1_root_error\"] = type(exc).__name__\nprint(json.dumps(out))\n"
+   ],
+   "returncode": 0,
+   "seconds": 0.069,
+   "stderr": "",
+   "stdout": "{\"nested_userns\": {\"rc\": 0, \"stderr\": \"\"}, \"nested_mountns\": {\"rc\": 0, \"stderr\": \"\"}, \"child_mountns_sees_home_entries\": \"0\", \"visible_pids\": [1, 12], \"visible_pid_count\": 2, \"all_visible_share_my_mountns\": true, \"proc1_root_lists\": [\"bin\", \"boot\", \"dev\", \"etc\", \"home\", \"lib\", \"lib64\", \"lost+found\"]}\n",
+   "timed_out": false
+  }
+ },
+ "reachability_no_meter": {
+  "host_control": {
+   "commitments_json": {
+    "exists_on_host": true,
+    "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json"
+   },
+   "dot_git": {
+    "exists_on_host": true,
+    "path": "/home/ebt/rsi-dev/.git"
+   },
+   "eval_graph": {
+    "exists_on_host": true,
+    "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json"
+   },
+   "gptapi_md": {
+    "exists_on_host": true,
+    "path": "/home/ebt/gptapi.md"
+   },
+   "repo": {
+    "exists_on_host": true,
+    "path": "/home/ebt/rsi-dev"
+   },
+   "targets_json": {
+    "exists_on_host": true,
+    "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json"
+   }
+  },
+  "inside": {
+   "binaries": {
+    "claude": {
+     "binary": "claude",
+     "resolved": "/usr/bin/claude",
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "2.1.278 (Claude Code)"
+    },
+    "codex": {
+     "binary": "codex",
+     "resolved": "/usr/bin/codex",
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "codex-cli 0.155.1"
+    }
+   },
+   "can_write_home": true,
+   "can_write_workspace": true,
+   "cwd": "/home/ebt/rsi-dev",
+   "egress": {
+    "1.1.1.1": "BLOCKED:OSError",
+    "123.148.116.184": "BLOCKED:OSError",
+    "8.8.8.8": "BLOCKED:OSError",
+    "dns:api.deepseek.com": "BLOCKED:gaierror"
+   },
+   "forbidden": {
+    "/home/ebt/.claude": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/.claude"
+     }
+    },
+    "/home/ebt/.codex": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/.codex"
+     }
+    },
+    "/home/ebt/gptapi.md": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/gptapi.md"
+     }
+    },
+    "/home/ebt/rsi-dev": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/rsi-dev"
+     }
+    },
+    "/home/ebt/rsi-dev/.git": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/rsi-dev/.git"
+     }
+    },
+    "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json"
+     }
+    },
+    "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json"
+     }
+    },
+    "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json"
+     }
+    },
+    "/tmp/maxcut": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/tmp/maxcut"
+     }
+    }
+   },
+   "git_route": {
+    "executed": false,
+    "reason": "repo path is not present inside the lane",
+    "repo": "/home/ebt/rsi-dev"
+   },
+   "home_env": "/dev/shm/a0a1-epistemic/session/main/home",
+   "listings": {
+    "/home": {
+     "entries": [],
+     "exists": true,
+     "path": "/home"
+    },
+    "/home/ebt": {
+     "entries": null,
+     "exists": false,
+     "path": "/home/ebt"
+    },
+    "/tmp": {
+     "entries": [],
+     "exists": true,
+     "path": "/tmp"
+    }
+   },
+   "nproc_visible": 12,
+   "pid": 12,
+   "uid": 0
+  },
+  "probe_deployed_at": "/dev/shm/a0a1-epistemic/session/main/probe_inside.py",
+  "receipt": {
+   "allow_requested": [
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "/usr",
+    "/usr/bin/python3"
+   ],
+   "command": [
+    "/usr/bin/python3",
+    "/dev/shm/a0a1-epistemic/session/main/probe_inside.py",
+    "--repo-root",
+    "/home/ebt/rsi-dev",
+    "--session-home",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--workspace",
+    "/dev/shm/a0a1-epistemic/session/main/workspace"
+   ],
+   "hidden_roots": [
+    "/home",
+    "/tmp",
+    "/var/tmp",
+    "/run/user"
+   ],
+   "hidden_roots_requested": [
+    "/home",
+    "/tmp",
+    "/var/tmp",
+    "/run/user"
+   ],
+   "hiding": [
+    {
+     "after": {
+      "device": 94,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "563",
+       "parent_mount_id": "488",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 66307,
+      "entries": 1,
+      "mount": null
+     },
+     "root": "/home",
+     "the_host_already_mounted_something_here": false
+    },
+    {
+     "after": {
+      "device": 95,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "564",
+       "parent_mount_id": "554",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 35,
+      "entries": 371,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "554",
+       "parent_mount_id": "488",
+       "source": "tmpfs"
+      }
+     },
+     "root": "/tmp",
+     "the_host_already_mounted_something_here": true
+    },
+    {
+     "after": {
+      "device": 96,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "565",
+       "parent_mount_id": "488",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 66307,
+      "entries": 6,
+      "mount": null
+     },
+     "root": "/var/tmp",
+     "the_host_already_mounted_something_here": false
+    },
+    {
+     "after": {
+      "device": 97,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "566",
+       "parent_mount_id": "549",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 28,
+      "entries": 1,
+      "mount": null
+     },
+     "root": "/run/user",
+     "the_host_already_mounted_something_here": false
+    }
+   ],
+   "loopback": {
+    "ok": true,
+    "returncode": 0,
+    "stderr": ""
+   },
+   "meter": null,
+   "meter_port": null,
+   "pass": true,
+   "pid": 1,
+   "relay_sock": null,
+   "restored": [],
+   "schema": "a0.a1.session_sandbox/v1",
+   "self_check": {
+    "egress": "BLOCKED:gaierror",
+    "egress_is_blocked": true,
+    "hidden_roots_are_the_filesystems_this_lane_made": true,
+    "hidden_roots_are_tmpfs": true,
+    "not_hidden": [],
+    "pid_namespace": {
+     "is_private": true,
+     "nspid_columns": 1,
+     "self_pid": 1,
+     "visible_pid_count": 1,
+     "visible_pids": [
+      1
+     ]
+    },
+    "pid_namespace_is_private": true,
+    "roots_back_on_the_hosts_filesystem": []
+   },
+   "staged": [
+    {
+     "kind": "dir",
+     "path": "/dev/shm/a0a1-epistemic/session/main/home",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/0"
+    },
+    {
+     "kind": "dir",
+     "path": "/dev/shm/a0a1-epistemic/session/main/workspace",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/1"
+    },
+    {
+     "kind": "dir",
+     "path": "/usr",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/2"
+    },
+    {
+     "kind": "file",
+     "path": "/usr/bin/python3",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/3/file"
+    }
+   ],
+   "uid": 0
+  },
+  "receipt_path": "/dev/shm/a0a1-epistemic/session/main/receipt.json",
+  "result": {
+   "argv": [
+    "/usr/bin/unshare",
+    "-rmnpf",
+    "--mount-proc",
+    "/usr/bin/python3",
+    "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+    "enter",
+    "--hide",
+    "/home",
+    "--hide",
+    "/tmp",
+    "--hide",
+    "/var/tmp",
+    "--hide",
+    "/run/user",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--allow",
+    "/usr",
+    "--allow",
+    "/usr/bin/python3",
+    "--receipt",
+    "/dev/shm/a0a1-epistemic/session/main/receipt.json",
+    "--",
+    "/usr/bin/python3",
+    "/dev/shm/a0a1-epistemic/session/main/probe_inside.py",
+    "--repo-root",
+    "/home/ebt/rsi-dev",
+    "--session-home",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--workspace",
+    "/dev/shm/a0a1-epistemic/session/main/workspace"
+   ],
+   "returncode": 0,
+   "seconds": 0.092,
+   "stderr": "",
+   "stdout": "{\n \"binaries\": {\n  \"claude\": {\n   \"binary\": \"claude\",\n   \"resolved\": \"/usr/bin/claude\",\n   \"returncode\": 0,\n   \"stderr\": \"\",\n   \"stdout\": \"2.1.278 (Claude Code)\"\n  },\n  \"codex\": {\n   \"binary\": \"codex\",\n   \"resolved\": \"/usr/bin/codex\",\n   \"returncode\": 0,\n   \"stderr\": \"\",\n   \"stdout\": \"codex-cli 0.155.1\"\n  }\n },\n \"can_write_home\": true,\n \"can_write_workspace\": true,\n \"cwd\": \"/home/ebt/rsi-dev\",\n \"egress\": {\n  \"1.1.1.1\": \"BLOCKED:OSError\",\n  \"123.148.116.184\": \"BLOCKED:OSError\",\n  \"8.8.8.8\": \"BLOCKED:OSError\",\n  \"dns:api.deepseek.com\": \"BLOCKED:gaierror\"\n },\n \"forbidden\": {\n  \"/home/ebt/.claude\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/.claude\"\n   }\n  },\n  \"/home/ebt/.codex\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/.codex\"\n   }\n  },\n  \"/home/ebt/gptapi.md\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/gptapi.md\"\n   }\n  },\n  \"/home/ebt/rsi-dev\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev\"\n   }\n  },\n  \"/home/ebt/rsi-dev/.git\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/.git\"\n   }\n  },\n  \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json\"\n   }\n  },\n  \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json\"\n   }\n  },\n  \"/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json\"\n   }\n  },\n  \"/tmp/maxcut\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/tmp/maxcut\"\n   }\n  }\n },\n \"git_route\": {\n  \"executed\": false,\n  \"reason\": \"repo path is not present inside the lane\",\n  \"repo\": \"/home/ebt/rsi-dev\"\n },\n \"home_env\": \"/dev/shm/a0a1-epistemic/session/main/home\",\n \"listings\": {\n  \"/home\": {\n   \"entries\": [],\n   \"exists\": true,\n   \"path\": \"/home\"\n  },\n  \"/home/ebt\": {\n   \"entries\": null,\n   \"exists\": false,\n   \"path\": \"/home/ebt\"\n  },\n  \"/tmp\": {\n   \"entries\": [],\n   \"exists\": true,\n   \"path\": \"/tmp\"\n  }\n },\n \"nproc_visible\": 12,\n \"pid\": 12,\n \"uid\": 0\n}\n",
+   "timed_out": false
+  }
+ },
+ "reachability_with_meter": {
+  "host_control": {
+   "commitments_json": {
+    "exists_on_host": true,
+    "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json"
+   },
+   "dot_git": {
+    "exists_on_host": true,
+    "path": "/home/ebt/rsi-dev/.git"
+   },
+   "eval_graph": {
+    "exists_on_host": true,
+    "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json"
+   },
+   "gptapi_md": {
+    "exists_on_host": true,
+    "path": "/home/ebt/gptapi.md"
+   },
+   "repo": {
+    "exists_on_host": true,
+    "path": "/home/ebt/rsi-dev"
+   },
+   "targets_json": {
+    "exists_on_host": true,
+    "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json"
+   }
+  },
+  "inside": {
+   "binaries": {
+    "claude": {
+     "binary": "claude",
+     "resolved": "/usr/bin/claude",
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "2.1.278 (Claude Code)"
+    },
+    "codex": {
+     "binary": "codex",
+     "resolved": "/usr/bin/codex",
+     "returncode": 0,
+     "stderr": "",
+     "stdout": "codex-cli 0.155.1"
+    }
+   },
+   "can_write_home": true,
+   "can_write_workspace": true,
+   "cwd": "/home/ebt/rsi-dev",
+   "egress": {
+    "1.1.1.1": "BLOCKED:OSError",
+    "123.148.116.184": "BLOCKED:OSError",
+    "8.8.8.8": "BLOCKED:OSError",
+    "dns:api.deepseek.com": "BLOCKED:gaierror"
+   },
+   "forbidden": {
+    "/home/ebt/.claude": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/.claude"
+     }
+    },
+    "/home/ebt/.codex": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/.codex"
+     }
+    },
+    "/home/ebt/gptapi.md": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/gptapi.md"
+     }
+    },
+    "/home/ebt/rsi-dev": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/rsi-dev"
+     }
+    },
+    "/home/ebt/rsi-dev/.git": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/rsi-dev/.git"
+     }
+    },
+    "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json"
+     }
+    },
+    "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json"
+     }
+    },
+    "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json"
+     }
+    },
+    "/tmp/maxcut": {
+     "read": {
+      "exists": false,
+      "open_error": "FileNotFoundError",
+      "opened": false,
+      "path": "/tmp/maxcut"
+     }
+    }
+   },
+   "git_route": {
+    "executed": false,
+    "reason": "repo path is not present inside the lane",
+    "repo": "/home/ebt/rsi-dev"
+   },
+   "home_env": "/dev/shm/a0a1-epistemic/session/main/home",
+   "listings": {
+    "/home": {
+     "entries": [],
+     "exists": true,
+     "path": "/home"
+    },
+    "/home/ebt": {
+     "entries": null,
+     "exists": false,
+     "path": "/home/ebt"
+    },
+    "/tmp": {
+     "entries": [],
+     "exists": true,
+     "path": "/tmp"
+    }
+   },
+   "meter": {
+    "body_prefix": "Authentication Fails (governor)",
+    "port": 60775,
+    "reachable": true,
+    "status": 401
+   },
+   "nproc_visible": 12,
+   "pid": 15,
+   "uid": 0
+  },
+  "probe_deployed_at": "/dev/shm/a0a1-epistemic/session/main/probe_inside.py",
+  "receipt": {
+   "allow_requested": [
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "/usr",
+    "/usr/bin/python3",
+    "/dev/shm/a0a1-epistemic/session/main/relay"
+   ],
+   "command": [
+    "/usr/bin/python3",
+    "/dev/shm/a0a1-epistemic/session/main/probe_inside.py",
+    "--repo-root",
+    "/home/ebt/rsi-dev",
+    "--session-home",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--workspace",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--meter-port",
+    "60775"
+   ],
+   "hidden_roots": [
+    "/home",
+    "/tmp",
+    "/var/tmp",
+    "/run/user"
+   ],
+   "hidden_roots_requested": [
+    "/home",
+    "/tmp",
+    "/var/tmp",
+    "/run/user"
+   ],
+   "hiding": [
+    {
+     "after": {
+      "device": 94,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "564",
+       "parent_mount_id": "488",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 66307,
+      "entries": 1,
+      "mount": null
+     },
+     "root": "/home",
+     "the_host_already_mounted_something_here": false
+    },
+    {
+     "after": {
+      "device": 95,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "565",
+       "parent_mount_id": "554",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 35,
+      "entries": 371,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "554",
+       "parent_mount_id": "488",
+       "source": "tmpfs"
+      }
+     },
+     "root": "/tmp",
+     "the_host_already_mounted_something_here": true
+    },
+    {
+     "after": {
+      "device": 96,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "566",
+       "parent_mount_id": "488",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 66307,
+      "entries": 6,
+      "mount": null
+     },
+     "root": "/var/tmp",
+     "the_host_already_mounted_something_here": false
+    },
+    {
+     "after": {
+      "device": 97,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "567",
+       "parent_mount_id": "549",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 28,
+      "entries": 1,
+      "mount": null
+     },
+     "root": "/run/user",
+     "the_host_already_mounted_something_here": false
+    }
+   ],
+   "loopback": {
+    "ok": true,
+    "returncode": 0,
+    "stderr": ""
+   },
+   "meter": {
+    "port": 60775,
+    "reachable": true
+   },
+   "meter_port": 60775,
+   "pass": true,
+   "pid": 1,
+   "relay_sock": "/dev/shm/a0a1-epistemic/session/main/relay/NS_PROBE.sock",
+   "restored": [],
+   "schema": "a0.a1.session_sandbox/v1",
+   "self_check": {
+    "egress": "BLOCKED:gaierror",
+    "egress_is_blocked": true,
+    "hidden_roots_are_the_filesystems_this_lane_made": true,
+    "hidden_roots_are_tmpfs": true,
+    "not_hidden": [],
+    "pid_namespace": {
+     "is_private": true,
+     "nspid_columns": 1,
+     "self_pid": 1,
+     "visible_pid_count": 1,
+     "visible_pids": [
+      1
+     ]
+    },
+    "pid_namespace_is_private": true,
+    "roots_back_on_the_hosts_filesystem": []
+   },
+   "staged": [
+    {
+     "kind": "dir",
+     "path": "/dev/shm/a0a1-epistemic/session/main/home",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/0"
+    },
+    {
+     "kind": "dir",
+     "path": "/dev/shm/a0a1-epistemic/session/main/workspace",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/1"
+    },
+    {
+     "kind": "dir",
+     "path": "/usr",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/2"
+    },
+    {
+     "kind": "file",
+     "path": "/usr/bin/python3",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/3/file"
+    },
+    {
+     "kind": "dir",
+     "path": "/dev/shm/a0a1-epistemic/session/main/relay",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/4"
+    }
+   ],
+   "uid": 0
+  },
+  "receipt_path": "/dev/shm/a0a1-epistemic/session/main/receipt.json",
+  "result": {
+   "argv": [
+    "/usr/bin/unshare",
+    "-rmnpf",
+    "--mount-proc",
+    "/usr/bin/python3",
+    "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+    "enter",
+    "--hide",
+    "/home",
+    "--hide",
+    "/tmp",
+    "--hide",
+    "/var/tmp",
+    "--hide",
+    "/run/user",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--allow",
+    "/usr",
+    "--allow",
+    "/usr/bin/python3",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/relay",
+    "--meter-port",
+    "60775",
+    "--relay-sock",
+    "/dev/shm/a0a1-epistemic/session/main/relay/NS_PROBE.sock",
+    "--receipt",
+    "/dev/shm/a0a1-epistemic/session/main/receipt.json",
+    "--",
+    "/usr/bin/python3",
+    "/dev/shm/a0a1-epistemic/session/main/probe_inside.py",
+    "--repo-root",
+    "/home/ebt/rsi-dev",
+    "--session-home",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--workspace",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--meter-port",
+    "60775"
+   ],
+   "returncode": 0,
+   "seconds": 0.378,
+   "stderr": "",
+   "stdout": "{\n \"binaries\": {\n  \"claude\": {\n   \"binary\": \"claude\",\n   \"resolved\": \"/usr/bin/claude\",\n   \"returncode\": 0,\n   \"stderr\": \"\",\n   \"stdout\": \"2.1.278 (Claude Code)\"\n  },\n  \"codex\": {\n   \"binary\": \"codex\",\n   \"resolved\": \"/usr/bin/codex\",\n   \"returncode\": 0,\n   \"stderr\": \"\",\n   \"stdout\": \"codex-cli 0.155.1\"\n  }\n },\n \"can_write_home\": true,\n \"can_write_workspace\": true,\n \"cwd\": \"/home/ebt/rsi-dev\",\n \"egress\": {\n  \"1.1.1.1\": \"BLOCKED:OSError\",\n  \"123.148.116.184\": \"BLOCKED:OSError\",\n  \"8.8.8.8\": \"BLOCKED:OSError\",\n  \"dns:api.deepseek.com\": \"BLOCKED:gaierror\"\n },\n \"forbidden\": {\n  \"/home/ebt/.claude\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/.claude\"\n   }\n  },\n  \"/home/ebt/.codex\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/.codex\"\n   }\n  },\n  \"/home/ebt/gptapi.md\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/gptapi.md\"\n   }\n  },\n  \"/home/ebt/rsi-dev\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev\"\n   }\n  },\n  \"/home/ebt/rsi-dev/.git\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/.git\"\n   }\n  },\n  \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json\"\n   }\n  },\n  \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json\"\n   }\n  },\n  \"/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json\"\n   }\n  },\n  \"/tmp/maxcut\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/tmp/maxcut\"\n   }\n  }\n },\n \"git_route\": {\n  \"executed\": false,\n  \"reason\": \"repo path is not present inside the lane\",\n  \"repo\": \"/home/ebt/rsi-dev\"\n },\n \"home_env\": \"/dev/shm/a0a1-epistemic/session/main/home\",\n \"listings\": {\n  \"/home\": {\n   \"entries\": [],\n   \"exists\": true,\n   \"path\": \"/home\"\n  },\n  \"/home/ebt\": {\n   \"entries\": null,\n   \"exists\": false,\n   \"path\": \"/home/ebt\"\n  },\n  \"/tmp\": {\n   \"entries\": [],\n   \"exists\": true,\n   \"path\": \"/tmp\"\n  }\n },\n \"meter\": {\n  \"body_prefix\": \"Authentication Fails (governor)\",\n  \"port\": 60775,\n  \"reachable\": true,\n  \"status\": 401\n },\n \"nproc_visible\": 12,\n \"pid\": 15,\n \"uid\": 0\n}\n",
+   "timed_out": false
+  }
+ },
+ "real_claude_call": {
+  "ledger_summary": {
+   "ceq": 17399,
+   "ledger": "/dev/shm/a0a1-epistemic/meter/NS_CLAUDE/ledger.jsonl",
+   "rows": 2,
+   "unmetered": 1
+  },
+  "result": {
+   "argv": [
+    "/usr/bin/unshare",
+    "-rmnpf",
+    "--mount-proc",
+    "/usr/bin/python3",
+    "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+    "enter",
+    "--hide",
+    "/home",
+    "--hide",
+    "/tmp",
+    "--hide",
+    "/var/tmp",
+    "--hide",
+    "/run/user",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/claude_cfg",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--allow",
+    "/usr",
+    "--allow",
+    "/usr/bin/python3",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/relay",
+    "--meter-port",
+    "40513",
+    "--relay-sock",
+    "/dev/shm/a0a1-epistemic/session/main/relay/NS_CLAUDE.sock",
+    "--",
+    "/usr/bin/claude",
+    "-p",
+    "Reply with the single word OK.",
+    "--output-format",
+    "json"
+   ],
+   "returncode": 0,
+   "seconds": 2.46,
+   "stderr": "[claude-code:unrecognized_model] {\"model\":\"deepseek-flash\",\"query_source\":\"sdk\"}\n",
+   "stdout": "{\"duration_api_ms\":2145,\"stop_reason\":\"end_turn\",\"session_id\":\"a46d95d2-a420-47bb-8d2b-4c868c2e1a74\",\"total_cost_usd\":0.087005,\"usage\":{\"input_tokens\":17391,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":2,\"output_tokens_details\":{\"thinking_tokens\":0},\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"service_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"deepseek-flash\":{\"inputTokens\":17391,\"outputTokens\":2,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.087005,\"contextWindow\":128000,\"maxOutputTokens\":32000,\"thinkingTokens\":0,\"canonicalModel\":\"deepseek-flash\",\"provider\":\"firstParty\",\"costBasis\":\"unknown\"}},\"permission_denials\":[],\"terminal_reason\":\"completed\",\"fast_mode_state\":\"off\",\"fast_mode_disabled_reason\":\"sdk_opt_in_required\",\"subagent_stats\":{\"spawned\":0,\"requested\":{\"background\":0,\"foreground\":0,\"unset\":0},\"started_in_background\":0,\"max_depth\":0,\"spawned_by_subagents\":0,\"completed\":0,\"failed\":0,\"killed\":{\"parent\":0,\"user\":0,\"system\":0},\"refused\":{\"depth_limit\":0,\"concurrency_limit\":0,\"budget\":0},\"by_type\":{}},\"is_error\":false,\"num_turns\":1,\"subtype\":\"success\",\"api_error_status\":null,\"result\":\"OK\",\"ttft_ms\":2179,\"type\":\"result\",\"duration_ms\":2200,\"uuid\":\"9520c403-71cd-4a4a-b8ab-0ec45bf6e5b5\",\"ttft_stream_ms\":1030,\"time_to_request_ms\":55,\"first_content_frame_ms\":1030,\"queued_turn_count\":0,\"result_index\":0}\n",
+   "timed_out": false
+  },
+  "verify": {
+   "returncode": 0,
+   "stderr": "",
+   "stdout": "{\n  \"ledger\": \"/dev/shm/a0a1-epistemic/meter/NS_CLAUDE/ledger.jsonl\",\n  \"rows\": 2,\n  \"metered\": 1,\n  \"unmetered\": 1,\n  \"ceq_total\": 17399,\n  \"ceq_per_campaign_arm\": {\n    \"NS_CLAUDE/A_ns\": 17399\n  },\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
+  }
+ },
+ "real_codex_call": {
+  "lane_argv": {
+   "argv": [
+    "codex",
+    "exec",
+    "--sandbox",
+    "danger-full-access",
+    "--skip-git-repo-check",
+    "--color",
+    "never",
+    "--output-last-message",
+    "/dev/shm/a0a1-epistemic/session/main/workspace/codex_last.txt",
+    "-m",
+    "deepseek-flash",
+    "-c",
+    "model_reasoning_effort=\"low\""
+   ],
+   "derived_from_source": false,
+   "rendered_by": "/home/ebt/rsi-dev/a0/runtimes/kapso/.venv/bin/python",
+   "source": "a0/a1/kapso_t1 lane -> kapso codex_agent.py::_exec_command"
+  },
+  "lane_argv_used": [
+   "codex",
+   "exec",
+   "--sandbox",
+   "danger-full-access",
+   "--skip-git-repo-check",
+   "--color",
+   "never",
+   "--output-last-message",
+   "/dev/shm/a0a1-epistemic/session/main/workspace/codex_last.txt",
+   "-m",
+   "deepseek-flash",
+   "-c",
+   "model_reasoning_effort=\"low\""
+  ],
+  "last_message": "OK",
+  "ledger_rows": [
+   {
+    "arm_id": "A_ns",
+    "campaign_id": "NS_CODEX",
+    "ceq": 1020,
+    "endpoint": "https://api.deepseek.com/v1/responses",
+    "model_reported": "deepseek-flash",
+    "model_requested": "deepseek-flash",
+    "provider": "deepseek",
+    "provider_request_id": "98f211d1-2481-4463-88b8-7010deca3ffc",
+    "reason": null,
+    "schema": "a0.meter.call/v1",
+    "stream": true,
+    "ts": "2026-09-23T11:25:29.454286+08:00",
+    "unmetered": false,
+    "usage": {
+     "completion_tokens": 2,
+     "prompt_cache_hit_tokens": 7808,
+     "prompt_cache_miss_tokens": 856
+    }
+   }
+  ],
+  "ledger_summary": {
+   "ceq": 1020,
+   "ledger": "/dev/shm/a0a1-epistemic/meter/NS_CODEX/ledger.jsonl",
+   "rows": 1,
+   "unmetered": 0
+  },
+  "receipt": {
+   "allow_requested": [
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "/dev/shm/a0a1-epistemic/session/main/codex_home",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "/usr",
+    "/usr/bin/python3",
+    "/dev/shm/a0a1-epistemic/session/main/relay"
+   ],
+   "command": [
+    "codex",
+    "exec",
+    "--sandbox",
+    "danger-full-access",
+    "--skip-git-repo-check",
+    "--color",
+    "never",
+    "--output-last-message",
+    "/dev/shm/a0a1-epistemic/session/main/workspace/codex_last.txt",
+    "-m",
+    "deepseek-flash",
+    "-c",
+    "model_reasoning_effort=\"low\""
+   ],
+   "hidden_roots": [
+    "/home",
+    "/tmp",
+    "/var/tmp",
+    "/run/user"
+   ],
+   "hidden_roots_requested": [
+    "/home",
+    "/tmp",
+    "/var/tmp",
+    "/run/user"
+   ],
+   "hiding": [
+    {
+     "after": {
+      "device": 62,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "477",
+       "parent_mount_id": "306",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 66307,
+      "entries": 1,
+      "mount": null
+     },
+     "root": "/home",
+     "the_host_already_mounted_something_here": false
+    },
+    {
+     "after": {
+      "device": 76,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "478",
+       "parent_mount_id": "466",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 35,
+      "entries": 371,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "466",
+       "parent_mount_id": "306",
+       "source": "tmpfs"
+      }
+     },
+     "root": "/tmp",
+     "the_host_already_mounted_something_here": true
+    },
+    {
+     "after": {
+      "device": 84,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "479",
+       "parent_mount_id": "306",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 66307,
+      "entries": 6,
+      "mount": null
+     },
+     "root": "/var/tmp",
+     "the_host_already_mounted_something_here": false
+    },
+    {
+     "after": {
+      "device": 85,
+      "entries": 0,
+      "mount": {
+       "fstype": "tmpfs",
+       "mount_id": "480",
+       "parent_mount_id": "364",
+       "source": "tmpfs"
+      }
+     },
+     "before": {
+      "device": 28,
+      "entries": 1,
+      "mount": null
+     },
+     "root": "/run/user",
+     "the_host_already_mounted_something_here": false
+    }
+   ],
+   "loopback": {
+    "ok": true,
+    "returncode": 0,
+    "stderr": ""
+   },
+   "meter": {
+    "port": 47401,
+    "reachable": true
+   },
+   "meter_port": 47401,
+   "pass": true,
+   "pid": 1,
+   "relay_sock": "/dev/shm/a0a1-epistemic/session/main/relay/NS_CODEX.sock",
+   "restored": [],
+   "schema": "a0.a1.session_sandbox/v1",
+   "self_check": {
+    "egress": "BLOCKED:gaierror",
+    "egress_is_blocked": true,
+    "hidden_roots_are_the_filesystems_this_lane_made": true,
+    "hidden_roots_are_tmpfs": true,
+    "not_hidden": [],
+    "pid_namespace": {
+     "is_private": true,
+     "nspid_columns": 1,
+     "self_pid": 1,
+     "visible_pid_count": 1,
+     "visible_pids": [
+      1
+     ]
+    },
+    "pid_namespace_is_private": true,
+    "roots_back_on_the_hosts_filesystem": []
+   },
+   "staged": [
+    {
+     "kind": "dir",
+     "path": "/dev/shm/a0a1-epistemic/session/main/home",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/0"
+    },
+    {
+     "kind": "dir",
+     "path": "/dev/shm/a0a1-epistemic/session/main/codex_home",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/1"
+    },
+    {
+     "kind": "dir",
+     "path": "/dev/shm/a0a1-epistemic/session/main/workspace",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/2"
+    },
+    {
+     "kind": "dir",
+     "path": "/usr",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/3"
+    },
+    {
+     "kind": "file",
+     "path": "/usr/bin/python3",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/4/file"
+    },
+    {
+     "kind": "dir",
+     "path": "/dev/shm/a0a1-epistemic/session/main/relay",
+     "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/5"
+    }
+   ],
+   "uid": 0
+  },
+  "result": {
+   "argv": [
+    "/usr/bin/unshare",
+    "-rmnpf",
+    "--mount-proc",
+    "/usr/bin/python3",
+    "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+    "enter",
+    "--hide",
+    "/home",
+    "--hide",
+    "/tmp",
+    "--hide",
+    "/var/tmp",
+    "--hide",
+    "/run/user",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/codex_home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--allow",
+    "/usr",
+    "--allow",
+    "/usr/bin/python3",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/relay",
+    "--meter-port",
+    "47401",
+    "--relay-sock",
+    "/dev/shm/a0a1-epistemic/session/main/relay/NS_CODEX.sock",
+    "--receipt",
+    "/dev/shm/a0a1-epistemic/session/main/codex_receipt.json",
+    "--",
+    "codex",
+    "exec",
+    "--sandbox",
+    "danger-full-access",
+    "--skip-git-repo-check",
+    "--color",
+    "never",
+    "--output-last-message",
+    "/dev/shm/a0a1-epistemic/session/main/workspace/codex_last.txt",
+    "-m",
+    "deepseek-flash",
+    "-c",
+    "model_reasoning_effort=\"low\""
+   ],
+   "returncode": 0,
+   "seconds": 1.388,
+   "stderr": "Reading prompt from stdin...\nOpenAI Codex v0.155.1\n--------\nworkdir: /dev/shm/a0a1-epistemic/session/main/workspace\nmodel: deepseek-flash\nprovider: meter\napproval: never\nsandbox: danger-full-access\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0cc4c-00d7-7ee0-aad2-b1cdf4ddd7e5\n--------\nuser\nReply with the single word OK.\nwarning: Model metadata for `deepseek-flash` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.\ncodex\nOK\ntokens used\n858\n",
+   "stdout": "OK\n",
+   "timed_out": false
+  },
+  "verify": {
+   "returncode": 0,
+   "stderr": "",
+   "stdout": "{\n  \"ledger\": \"/dev/shm/a0a1-epistemic/meter/NS_CODEX/ledger.jsonl\",\n  \"rows\": 1,\n  \"metered\": 1,\n  \"unmetered\": 0,\n  \"ceq_total\": 1020,\n  \"ceq_per_campaign_arm\": {\n    \"NS_CODEX/A_ns\": 1020\n  },\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
+  }
+ },
+ "real_codex_resume": {
+  "codeword_recalled": true,
+  "first": {
+   "argv": [
+    "/usr/bin/unshare",
+    "-rmnpf",
+    "--mount-proc",
+    "/usr/bin/python3",
+    "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+    "enter",
+    "--hide",
+    "/home",
+    "--hide",
+    "/tmp",
+    "--hide",
+    "/var/tmp",
+    "--hide",
+    "/run/user",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/codex_home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--allow",
+    "/usr",
+    "--allow",
+    "/usr/bin/python3",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/relay",
+    "--meter-port",
+    "59609",
+    "--relay-sock",
+    "/dev/shm/a0a1-epistemic/session/main/relay/NS_CODEX_RESUME.sock",
+    "--",
+    "codex",
+    "exec",
+    "--sandbox",
+    "danger-full-access",
+    "--skip-git-repo-check",
+    "--color",
+    "never",
+    "--output-last-message",
+    "/dev/shm/a0a1-epistemic/session/main/workspace/resume_last.txt",
+    "-m",
+    "deepseek-flash",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "--json"
+   ],
+   "returncode": 0,
+   "seconds": 1.124,
+   "stderr": "Reading prompt from stdin...\n",
+   "stdout": "{\"type\":\"thread.started\",\"thread_id\":\"01a0cc4c-147c-7531-9ce8-cb4676d80c62\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"error\",\"message\":\"Model metadata for `deepseek-flash` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.\"}}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_1\",\"type\":\"agent_message\",\"text\":\"OK\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":8669,\"cached_input_tokens\":8448,\"cache_write_input_tokens\":0,\"output_tokens\":2,\"reasoning_output_tokens\":0}}\n",
+   "timed_out": false
+  },
+  "fresh_lane_argv": {
+   "argv": [
+    "codex",
+    "exec",
+    "--sandbox",
+    "danger-full-access",
+    "--skip-git-repo-check",
+    "--color",
+    "never",
+    "--output-last-message",
+    "/dev/shm/a0a1-epistemic/session/main/workspace/resume_last.txt",
+    "-m",
+    "deepseek-flash",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "--json"
+   ],
+   "derived_from_source": false,
+   "rendered_by": "/home/ebt/rsi-dev/a0/runtimes/kapso/.venv/bin/python",
+   "source": "a0/a1/kapso_t1 lane -> kapso codex_agent.py::_exec_command"
+  },
+  "ledger_summary": {
+   "ceq": 821,
+   "ledger": "/dev/shm/a0a1-epistemic/meter/NS_CODEX_RESUME/ledger.jsonl",
+   "rows": 2,
+   "unmetered": 0
+  },
+  "second": {
+   "argv": [
+    "/usr/bin/unshare",
+    "-rmnpf",
+    "--mount-proc",
+    "/usr/bin/python3",
+    "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+    "enter",
+    "--hide",
+    "/home",
+    "--hide",
+    "/tmp",
+    "--hide",
+    "/var/tmp",
+    "--hide",
+    "/run/user",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/codex_home",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "--allow",
+    "/usr",
+    "--allow",
+    "/usr/bin/python3",
+    "--allow",
+    "/dev/shm/a0a1-epistemic/session/main/relay",
+    "--meter-port",
+    "59609",
+    "--relay-sock",
+    "/dev/shm/a0a1-epistemic/session/main/relay/NS_CODEX_RESUME.sock",
+    "--",
+    "codex",
+    "exec",
+    "--sandbox",
+    "danger-full-access",
+    "--skip-git-repo-check",
+    "--color",
+    "never",
+    "--output-last-message",
+    "/dev/shm/a0a1-epistemic/session/main/workspace/resume_last.txt",
+    "-m",
+    "deepseek-flash",
+    "-c",
+    "model_reasoning_effort=\"low\"",
+    "--json",
+    "resume",
+    "01a0cc4c-147c-7531-9ce8-cb4676d80c62",
+    "-"
+   ],
+   "returncode": 0,
+   "seconds": 1.12,
+   "stderr": "",
+   "stdout": "{\"type\":\"thread.started\",\"thread_id\":\"01a0cc4c-147c-7531-9ce8-cb4676d80c62\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_0\",\"type\":\"error\",\"message\":\"Model metadata for `deepseek-flash` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.\"}}\n{\"type\":\"turn.started\"}\n{\"type\":\"item.completed\",\"item\":{\"id\":\"item_1\",\"type\":\"agent_message\",\"text\":\"MARLIN7\"}}\n{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":17357,\"cached_input_tokens\":16896,\"cache_write_input_tokens\":0,\"output_tokens\":6,\"reasoning_output_tokens\":0}}\n",
+   "timed_out": false
+  },
+  "thread_id": "01a0cc4c-147c-7531-9ce8-cb4676d80c62"
+ },
+ "repo_root": "/home/ebt/rsi-dev",
+ "schema": "a0.a1.epistemic_ns/probe/v1",
+ "session_root": "/dev/shm/a0a1-epistemic"
+}

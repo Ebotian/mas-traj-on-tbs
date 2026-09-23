@@ -1,0 +1,49 @@
+{
+ "parsed": {
+  "hidden_sibling_readable": false,
+  "marker": "visible",
+  "tmp_root_listing": [
+   "a0a1-epistemic-hidden-root"
+  ],
+  "workspace_listing": [
+   "marker.txt"
+  ]
+ },
+ "result": {
+  "argv": [
+   "/usr/bin/unshare",
+   "-rmnpf",
+   "--mount-proc",
+   "/usr/bin/python3",
+   "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+   "enter",
+   "--hide",
+   "/home",
+   "--hide",
+   "/tmp",
+   "--hide",
+   "/var/tmp",
+   "--hide",
+   "/run/user",
+   "--allow",
+   "/tmp/a0a1-epistemic-hidden-root/workspace",
+   "--allow",
+   "/dev/shm/a0a1-epistemic/session/main/home",
+   "--allow",
+   "/usr",
+   "--allow",
+   "/usr/bin/python3",
+   "--",
+   "/usr/bin/python3",
+   "-c",
+   "import json, os\nws = '/tmp/a0a1-epistemic-hidden-root/workspace'\nout = {\n  'workspace_listing': sorted(os.listdir(ws)),\n  'marker': open(os.path.join(ws, 'marker.txt')).read(),\n  'tmp_root_listing': sorted(os.listdir('/tmp'))[:8],\n  'hidden_sibling_readable': os.path.exists('/tmp/a0a1-epistemic-hidden-root/secret.txt'),\n}\nprint(json.dumps(out))"
+  ],
+  "returncode": 0,
+  "seconds": 0.065,
+  "stderr": "",
+  "stdout": "{\"workspace_listing\": [\"marker.txt\"], \"marker\": \"visible\", \"tmp_root_listing\": [\"a0a1-epistemic-hidden-root\"], \"hidden_sibling_readable\": false}\n",
+  "timed_out": false
+ },
+ "workspace": "/tmp/a0a1-epistemic-hidden-root/workspace",
+ "workspace_on_host": true
+}

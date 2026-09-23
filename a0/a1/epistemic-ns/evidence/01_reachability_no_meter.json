@@ -1,0 +1,365 @@
+{
+ "host_control": {
+  "commitments_json": {
+   "exists_on_host": true,
+   "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json"
+  },
+  "dot_git": {
+   "exists_on_host": true,
+   "path": "/home/ebt/rsi-dev/.git"
+  },
+  "eval_graph": {
+   "exists_on_host": true,
+   "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json"
+  },
+  "gptapi_md": {
+   "exists_on_host": true,
+   "path": "/home/ebt/gptapi.md"
+  },
+  "repo": {
+   "exists_on_host": true,
+   "path": "/home/ebt/rsi-dev"
+  },
+  "targets_json": {
+   "exists_on_host": true,
+   "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json"
+  }
+ },
+ "inside": {
+  "binaries": {
+   "claude": {
+    "binary": "claude",
+    "resolved": "/usr/bin/claude",
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "2.1.278 (Claude Code)"
+   },
+   "codex": {
+    "binary": "codex",
+    "resolved": "/usr/bin/codex",
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "codex-cli 0.155.1"
+   }
+  },
+  "can_write_home": true,
+  "can_write_workspace": true,
+  "cwd": "/home/ebt/rsi-dev",
+  "egress": {
+   "1.1.1.1": "BLOCKED:OSError",
+   "123.148.116.184": "BLOCKED:OSError",
+   "8.8.8.8": "BLOCKED:OSError",
+   "dns:api.deepseek.com": "BLOCKED:gaierror"
+  },
+  "forbidden": {
+   "/home/ebt/.claude": {
+    "read": {
+     "exists": false,
+     "open_error": "FileNotFoundError",
+     "opened": false,
+     "path": "/home/ebt/.claude"
+    }
+   },
+   "/home/ebt/.codex": {
+    "read": {
+     "exists": false,
+     "open_error": "FileNotFoundError",
+     "opened": false,
+     "path": "/home/ebt/.codex"
+    }
+   },
+   "/home/ebt/gptapi.md": {
+    "read": {
+     "exists": false,
+     "open_error": "FileNotFoundError",
+     "opened": false,
+     "path": "/home/ebt/gptapi.md"
+    }
+   },
+   "/home/ebt/rsi-dev": {
+    "read": {
+     "exists": false,
+     "open_error": "FileNotFoundError",
+     "opened": false,
+     "path": "/home/ebt/rsi-dev"
+    }
+   },
+   "/home/ebt/rsi-dev/.git": {
+    "read": {
+     "exists": false,
+     "open_error": "FileNotFoundError",
+     "opened": false,
+     "path": "/home/ebt/rsi-dev/.git"
+    }
+   },
+   "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json": {
+    "read": {
+     "exists": false,
+     "open_error": "FileNotFoundError",
+     "opened": false,
+     "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json"
+    }
+   },
+   "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json": {
+    "read": {
+     "exists": false,
+     "open_error": "FileNotFoundError",
+     "opened": false,
+     "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json"
+    }
+   },
+   "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json": {
+    "read": {
+     "exists": false,
+     "open_error": "FileNotFoundError",
+     "opened": false,
+     "path": "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json"
+    }
+   },
+   "/tmp/maxcut": {
+    "read": {
+     "exists": false,
+     "open_error": "FileNotFoundError",
+     "opened": false,
+     "path": "/tmp/maxcut"
+    }
+   }
+  },
+  "git_route": {
+   "executed": false,
+   "reason": "repo path is not present inside the lane",
+   "repo": "/home/ebt/rsi-dev"
+  },
+  "home_env": "/dev/shm/a0a1-epistemic/session/main/home",
+  "listings": {
+   "/home": {
+    "entries": [],
+    "exists": true,
+    "path": "/home"
+   },
+   "/home/ebt": {
+    "entries": null,
+    "exists": false,
+    "path": "/home/ebt"
+   },
+   "/tmp": {
+    "entries": [],
+    "exists": true,
+    "path": "/tmp"
+   }
+  },
+  "nproc_visible": 12,
+  "pid": 12,
+  "uid": 0
+ },
+ "probe_deployed_at": "/dev/shm/a0a1-epistemic/session/main/probe_inside.py",
+ "receipt": {
+  "allow_requested": [
+   "/dev/shm/a0a1-epistemic/session/main/home",
+   "/dev/shm/a0a1-epistemic/session/main/workspace",
+   "/usr",
+   "/usr/bin/python3"
+  ],
+  "command": [
+   "/usr/bin/python3",
+   "/dev/shm/a0a1-epistemic/session/main/probe_inside.py",
+   "--repo-root",
+   "/home/ebt/rsi-dev",
+   "--session-home",
+   "/dev/shm/a0a1-epistemic/session/main/home",
+   "--workspace",
+   "/dev/shm/a0a1-epistemic/session/main/workspace"
+  ],
+  "hidden_roots": [
+   "/home",
+   "/tmp",
+   "/var/tmp",
+   "/run/user"
+  ],
+  "hidden_roots_requested": [
+   "/home",
+   "/tmp",
+   "/var/tmp",
+   "/run/user"
+  ],
+  "hiding": [
+   {
+    "after": {
+     "device": 94,
+     "entries": 0,
+     "mount": {
+      "fstype": "tmpfs",
+      "mount_id": "563",
+      "parent_mount_id": "488",
+      "source": "tmpfs"
+     }
+    },
+    "before": {
+     "device": 66307,
+     "entries": 1,
+     "mount": null
+    },
+    "root": "/home",
+    "the_host_already_mounted_something_here": false
+   },
+   {
+    "after": {
+     "device": 95,
+     "entries": 0,
+     "mount": {
+      "fstype": "tmpfs",
+      "mount_id": "564",
+      "parent_mount_id": "554",
+      "source": "tmpfs"
+     }
+    },
+    "before": {
+     "device": 35,
+     "entries": 371,
+     "mount": {
+      "fstype": "tmpfs",
+      "mount_id": "554",
+      "parent_mount_id": "488",
+      "source": "tmpfs"
+     }
+    },
+    "root": "/tmp",
+    "the_host_already_mounted_something_here": true
+   },
+   {
+    "after": {
+     "device": 96,
+     "entries": 0,
+     "mount": {
+      "fstype": "tmpfs",
+      "mount_id": "565",
+      "parent_mount_id": "488",
+      "source": "tmpfs"
+     }
+    },
+    "before": {
+     "device": 66307,
+     "entries": 6,
+     "mount": null
+    },
+    "root": "/var/tmp",
+    "the_host_already_mounted_something_here": false
+   },
+   {
+    "after": {
+     "device": 97,
+     "entries": 0,
+     "mount": {
+      "fstype": "tmpfs",
+      "mount_id": "566",
+      "parent_mount_id": "549",
+      "source": "tmpfs"
+     }
+    },
+    "before": {
+     "device": 28,
+     "entries": 1,
+     "mount": null
+    },
+    "root": "/run/user",
+    "the_host_already_mounted_something_here": false
+   }
+  ],
+  "loopback": {
+   "ok": true,
+   "returncode": 0,
+   "stderr": ""
+  },
+  "meter": null,
+  "meter_port": null,
+  "pass": true,
+  "pid": 1,
+  "relay_sock": null,
+  "restored": [],
+  "schema": "a0.a1.session_sandbox/v1",
+  "self_check": {
+   "egress": "BLOCKED:gaierror",
+   "egress_is_blocked": true,
+   "hidden_roots_are_the_filesystems_this_lane_made": true,
+   "hidden_roots_are_tmpfs": true,
+   "not_hidden": [],
+   "pid_namespace": {
+    "is_private": true,
+    "nspid_columns": 1,
+    "self_pid": 1,
+    "visible_pid_count": 1,
+    "visible_pids": [
+     1
+    ]
+   },
+   "pid_namespace_is_private": true,
+   "roots_back_on_the_hosts_filesystem": []
+  },
+  "staged": [
+   {
+    "kind": "dir",
+    "path": "/dev/shm/a0a1-epistemic/session/main/home",
+    "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/0"
+   },
+   {
+    "kind": "dir",
+    "path": "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/1"
+   },
+   {
+    "kind": "dir",
+    "path": "/usr",
+    "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/2"
+   },
+   {
+    "kind": "file",
+    "path": "/usr/bin/python3",
+    "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/3/file"
+   }
+  ],
+  "uid": 0
+ },
+ "receipt_path": "/dev/shm/a0a1-epistemic/session/main/receipt.json",
+ "result": {
+  "argv": [
+   "/usr/bin/unshare",
+   "-rmnpf",
+   "--mount-proc",
+   "/usr/bin/python3",
+   "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+   "enter",
+   "--hide",
+   "/home",
+   "--hide",
+   "/tmp",
+   "--hide",
+   "/var/tmp",
+   "--hide",
+   "/run/user",
+   "--allow",
+   "/dev/shm/a0a1-epistemic/session/main/home",
+   "--allow",
+   "/dev/shm/a0a1-epistemic/session/main/workspace",
+   "--allow",
+   "/usr",
+   "--allow",
+   "/usr/bin/python3",
+   "--receipt",
+   "/dev/shm/a0a1-epistemic/session/main/receipt.json",
+   "--",
+   "/usr/bin/python3",
+   "/dev/shm/a0a1-epistemic/session/main/probe_inside.py",
+   "--repo-root",
+   "/home/ebt/rsi-dev",
+   "--session-home",
+   "/dev/shm/a0a1-epistemic/session/main/home",
+   "--workspace",
+   "/dev/shm/a0a1-epistemic/session/main/workspace"
+  ],
+  "returncode": 0,
+  "seconds": 0.092,
+  "stderr": "",
+  "stdout": "{\n \"binaries\": {\n  \"claude\": {\n   \"binary\": \"claude\",\n   \"resolved\": \"/usr/bin/claude\",\n   \"returncode\": 0,\n   \"stderr\": \"\",\n   \"stdout\": \"2.1.278 (Claude Code)\"\n  },\n  \"codex\": {\n   \"binary\": \"codex\",\n   \"resolved\": \"/usr/bin/codex\",\n   \"returncode\": 0,\n   \"stderr\": \"\",\n   \"stdout\": \"codex-cli 0.155.1\"\n  }\n },\n \"can_write_home\": true,\n \"can_write_workspace\": true,\n \"cwd\": \"/home/ebt/rsi-dev\",\n \"egress\": {\n  \"1.1.1.1\": \"BLOCKED:OSError\",\n  \"123.148.116.184\": \"BLOCKED:OSError\",\n  \"8.8.8.8\": \"BLOCKED:OSError\",\n  \"dns:api.deepseek.com\": \"BLOCKED:gaierror\"\n },\n \"forbidden\": {\n  \"/home/ebt/.claude\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/.claude\"\n   }\n  },\n  \"/home/ebt/.codex\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/.codex\"\n   }\n  },\n  \"/home/ebt/gptapi.md\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/gptapi.md\"\n   }\n  },\n  \"/home/ebt/rsi-dev\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev\"\n   }\n  },\n  \"/home/ebt/rsi-dev/.git\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/.git\"\n   }\n  },\n  \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json\"\n   }\n  },\n  \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json\"\n   }\n  },\n  \"/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json\"\n   }\n  },\n  \"/tmp/maxcut\": {\n   \"read\": {\n    \"exists\": false,\n    \"open_error\": \"FileNotFoundError\",\n    \"opened\": false,\n    \"path\": \"/tmp/maxcut\"\n   }\n  }\n },\n \"git_route\": {\n  \"executed\": false,\n  \"reason\": \"repo path is not present inside the lane\",\n  \"repo\": \"/home/ebt/rsi-dev\"\n },\n \"home_env\": \"/dev/shm/a0a1-epistemic/session/main/home\",\n \"listings\": {\n  \"/home\": {\n   \"entries\": [],\n   \"exists\": true,\n   \"path\": \"/home\"\n  },\n  \"/home/ebt\": {\n   \"entries\": null,\n   \"exists\": false,\n   \"path\": \"/home/ebt\"\n  },\n  \"/tmp\": {\n   \"entries\": [],\n   \"exists\": true,\n   \"path\": \"/tmp\"\n  }\n },\n \"nproc_visible\": 12,\n \"pid\": 12,\n \"uid\": 0\n}\n",
+  "timed_out": false
+ }
+}

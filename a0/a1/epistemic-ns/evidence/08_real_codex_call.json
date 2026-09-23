@@ -1,0 +1,312 @@
+{
+ "lane_argv": {
+  "argv": [
+   "codex",
+   "exec",
+   "--sandbox",
+   "danger-full-access",
+   "--skip-git-repo-check",
+   "--color",
+   "never",
+   "--output-last-message",
+   "/dev/shm/a0a1-epistemic/session/main/workspace/codex_last.txt",
+   "-m",
+   "deepseek-flash",
+   "-c",
+   "model_reasoning_effort=\"low\""
+  ],
+  "derived_from_source": false,
+  "rendered_by": "/home/ebt/rsi-dev/a0/runtimes/kapso/.venv/bin/python",
+  "source": "a0/a1/kapso_t1 lane -> kapso codex_agent.py::_exec_command"
+ },
+ "lane_argv_used": [
+  "codex",
+  "exec",
+  "--sandbox",
+  "danger-full-access",
+  "--skip-git-repo-check",
+  "--color",
+  "never",
+  "--output-last-message",
+  "/dev/shm/a0a1-epistemic/session/main/workspace/codex_last.txt",
+  "-m",
+  "deepseek-flash",
+  "-c",
+  "model_reasoning_effort=\"low\""
+ ],
+ "last_message": "OK",
+ "ledger_rows": [
+  {
+   "arm_id": "A_ns",
+   "campaign_id": "NS_CODEX",
+   "ceq": 1020,
+   "endpoint": "https://api.deepseek.com/v1/responses",
+   "model_reported": "deepseek-flash",
+   "model_requested": "deepseek-flash",
+   "provider": "deepseek",
+   "provider_request_id": "98f211d1-2481-4463-88b8-7010deca3ffc",
+   "reason": null,
+   "schema": "a0.meter.call/v1",
+   "stream": true,
+   "ts": "2026-09-23T11:25:29.454286+08:00",
+   "unmetered": false,
+   "usage": {
+    "completion_tokens": 2,
+    "prompt_cache_hit_tokens": 7808,
+    "prompt_cache_miss_tokens": 856
+   }
+  }
+ ],
+ "ledger_summary": {
+  "ceq": 1020,
+  "ledger": "/dev/shm/a0a1-epistemic/meter/NS_CODEX/ledger.jsonl",
+  "rows": 1,
+  "unmetered": 0
+ },
+ "receipt": {
+  "allow_requested": [
+   "/dev/shm/a0a1-epistemic/session/main/home",
+   "/dev/shm/a0a1-epistemic/session/main/codex_home",
+   "/dev/shm/a0a1-epistemic/session/main/workspace",
+   "/usr",
+   "/usr/bin/python3",
+   "/dev/shm/a0a1-epistemic/session/main/relay"
+  ],
+  "command": [
+   "codex",
+   "exec",
+   "--sandbox",
+   "danger-full-access",
+   "--skip-git-repo-check",
+   "--color",
+   "never",
+   "--output-last-message",
+   "/dev/shm/a0a1-epistemic/session/main/workspace/codex_last.txt",
+   "-m",
+   "deepseek-flash",
+   "-c",
+   "model_reasoning_effort=\"low\""
+  ],
+  "hidden_roots": [
+   "/home",
+   "/tmp",
+   "/var/tmp",
+   "/run/user"
+  ],
+  "hidden_roots_requested": [
+   "/home",
+   "/tmp",
+   "/var/tmp",
+   "/run/user"
+  ],
+  "hiding": [
+   {
+    "after": {
+     "device": 62,
+     "entries": 0,
+     "mount": {
+      "fstype": "tmpfs",
+      "mount_id": "477",
+      "parent_mount_id": "306",
+      "source": "tmpfs"
+     }
+    },
+    "before": {
+     "device": 66307,
+     "entries": 1,
+     "mount": null
+    },
+    "root": "/home",
+    "the_host_already_mounted_something_here": false
+   },
+   {
+    "after": {
+     "device": 76,
+     "entries": 0,
+     "mount": {
+      "fstype": "tmpfs",
+      "mount_id": "478",
+      "parent_mount_id": "466",
+      "source": "tmpfs"
+     }
+    },
+    "before": {
+     "device": 35,
+     "entries": 371,
+     "mount": {
+      "fstype": "tmpfs",
+      "mount_id": "466",
+      "parent_mount_id": "306",
+      "source": "tmpfs"
+     }
+    },
+    "root": "/tmp",
+    "the_host_already_mounted_something_here": true
+   },
+   {
+    "after": {
+     "device": 84,
+     "entries": 0,
+     "mount": {
+      "fstype": "tmpfs",
+      "mount_id": "479",
+      "parent_mount_id": "306",
+      "source": "tmpfs"
+     }
+    },
+    "before": {
+     "device": 66307,
+     "entries": 6,
+     "mount": null
+    },
+    "root": "/var/tmp",
+    "the_host_already_mounted_something_here": false
+   },
+   {
+    "after": {
+     "device": 85,
+     "entries": 0,
+     "mount": {
+      "fstype": "tmpfs",
+      "mount_id": "480",
+      "parent_mount_id": "364",
+      "source": "tmpfs"
+     }
+    },
+    "before": {
+     "device": 28,
+     "entries": 1,
+     "mount": null
+    },
+    "root": "/run/user",
+    "the_host_already_mounted_something_here": false
+   }
+  ],
+  "loopback": {
+   "ok": true,
+   "returncode": 0,
+   "stderr": ""
+  },
+  "meter": {
+   "port": 47401,
+   "reachable": true
+  },
+  "meter_port": 47401,
+  "pass": true,
+  "pid": 1,
+  "relay_sock": "/dev/shm/a0a1-epistemic/session/main/relay/NS_CODEX.sock",
+  "restored": [],
+  "schema": "a0.a1.session_sandbox/v1",
+  "self_check": {
+   "egress": "BLOCKED:gaierror",
+   "egress_is_blocked": true,
+   "hidden_roots_are_the_filesystems_this_lane_made": true,
+   "hidden_roots_are_tmpfs": true,
+   "not_hidden": [],
+   "pid_namespace": {
+    "is_private": true,
+    "nspid_columns": 1,
+    "self_pid": 1,
+    "visible_pid_count": 1,
+    "visible_pids": [
+     1
+    ]
+   },
+   "pid_namespace_is_private": true,
+   "roots_back_on_the_hosts_filesystem": []
+  },
+  "staged": [
+   {
+    "kind": "dir",
+    "path": "/dev/shm/a0a1-epistemic/session/main/home",
+    "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/0"
+   },
+   {
+    "kind": "dir",
+    "path": "/dev/shm/a0a1-epistemic/session/main/codex_home",
+    "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/1"
+   },
+   {
+    "kind": "dir",
+    "path": "/dev/shm/a0a1-epistemic/session/main/workspace",
+    "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/2"
+   },
+   {
+    "kind": "dir",
+    "path": "/usr",
+    "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/3"
+   },
+   {
+    "kind": "file",
+    "path": "/usr/bin/python3",
+    "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/4/file"
+   },
+   {
+    "kind": "dir",
+    "path": "/dev/shm/a0a1-epistemic/session/main/relay",
+    "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/5"
+   }
+  ],
+  "uid": 0
+ },
+ "result": {
+  "argv": [
+   "/usr/bin/unshare",
+   "-rmnpf",
+   "--mount-proc",
+   "/usr/bin/python3",
+   "/home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py",
+   "enter",
+   "--hide",
+   "/home",
+   "--hide",
+   "/tmp",
+   "--hide",
+   "/var/tmp",
+   "--hide",
+   "/run/user",
+   "--allow",
+   "/dev/shm/a0a1-epistemic/session/main/home",
+   "--allow",
+   "/dev/shm/a0a1-epistemic/session/main/codex_home",
+   "--allow",
+   "/dev/shm/a0a1-epistemic/session/main/workspace",
+   "--allow",
+   "/usr",
+   "--allow",
+   "/usr/bin/python3",
+   "--allow",
+   "/dev/shm/a0a1-epistemic/session/main/relay",
+   "--meter-port",
+   "47401",
+   "--relay-sock",
+   "/dev/shm/a0a1-epistemic/session/main/relay/NS_CODEX.sock",
+   "--receipt",
+   "/dev/shm/a0a1-epistemic/session/main/codex_receipt.json",
+   "--",
+   "codex",
+   "exec",
+   "--sandbox",
+   "danger-full-access",
+   "--skip-git-repo-check",
+   "--color",
+   "never",
+   "--output-last-message",
+   "/dev/shm/a0a1-epistemic/session/main/workspace/codex_last.txt",
+   "-m",
+   "deepseek-flash",
+   "-c",
+   "model_reasoning_effort=\"low\""
+  ],
+  "returncode": 0,
+  "seconds": 1.388,
+  "stderr": "Reading prompt from stdin...\nOpenAI Codex v0.155.1\n--------\nworkdir: /dev/shm/a0a1-epistemic/session/main/workspace\nmodel: deepseek-flash\nprovider: meter\napproval: never\nsandbox: danger-full-access\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0cc4c-00d7-7ee0-aad2-b1cdf4ddd7e5\n--------\nuser\nReply with the single word OK.\nwarning: Model metadata for `deepseek-flash` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.\ncodex\nOK\ntokens used\n858\n",
+  "stdout": "OK\n",
+  "timed_out": false
+ },
+ "verify": {
+  "returncode": 0,
+  "stderr": "",
+  "stdout": "{\n  \"ledger\": \"/dev/shm/a0a1-epistemic/meter/NS_CODEX/ledger.jsonl\",\n  \"rows\": 1,\n  \"metered\": 1,\n  \"unmetered\": 0,\n  \"ceq_total\": 1020,\n  \"ceq_per_campaign_arm\": {\n    \"NS_CODEX/A_ns\": 1020\n  },\n  \"failures\": [],\n  \"formula\": \"ceq = miss + floor(hit*2/100) + 4*completion\"\n}"
+ }
+}

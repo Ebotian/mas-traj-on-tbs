@@ -1,0 +1,21 @@
+#!/bin/sh
+# Reference launcher shim (part of the PROPOSAL, not wired into any lane config).
+#
+# A harness that puts this directory first on the coding agent child's PATH makes
+# every `codex` the driver launches run inside `session_sandbox`'s mount+net+PID
+# namespace -- the repository, `.git`, `~/gptapi.md` and the answer stores hidden --
+# with no edit to the upstream KAPSO adapter, which resolves `codex` by name.
+#
+# Contract (set by the driver on the child environment):
+#   A0_EPISTEMIC_NS_REAL_CODEX  absolute path of the real CLI   (default /usr/bin/codex)
+#   A0_EPISTEMIC_NS_PORT        the campaign's metered port      (omit => no meter)
+#   A0_EPISTEMIC_NS_SOCK        the host relay's unix socket
+#   A0_EPISTEMIC_NS_RECEIPT     where to write the boundary receipt
+#   HOME / CODEX_HOME           bound back into the lane; $PWD is the workspace
+#
+# A0_EPISTEMIC_NS_REAL_CODEX must be absolute: inside the lane `codex` resolves to
+# this shim again (the shim directory is on PATH), so the shim would recurse.
+set -eu
+: "${A0_EPISTEMIC_NS_REAL_CODEX:=/usr/bin/codex}"
+export A0_EPISTEMIC_NS_REAL_CODEX
+exec python3 /home/ebt/rsi-dev/a0/a1/epistemic-ns/session_sandbox.py shim -- "$@"

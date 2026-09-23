@@ -1,0 +1,186 @@
+{
+ "allow_requested": [
+  "/dev/shm/a0a1-epistemic/shimtest/workspace",
+  "/dev/shm/a0a1-epistemic/shimtest/home",
+  "/dev/shm/a0a1-epistemic/shimtest/codex_home",
+  "/usr",
+  "/usr/bin/python3",
+  "/dev/shm/a0a1-epistemic/shimtest/relay"
+ ],
+ "command": [
+  "/usr/bin/codex",
+  "exec",
+  "--sandbox",
+  "danger-full-access",
+  "--skip-git-repo-check",
+  "--color",
+  "never",
+  "--output-last-message",
+  "/dev/shm/a0a1-epistemic/shimtest/workspace/last.txt",
+  "-m",
+  "deepseek-flash",
+  "-c",
+  "model_reasoning_effort=\"low\""
+ ],
+ "hidden_roots": [
+  "/home",
+  "/tmp",
+  "/var/tmp",
+  "/run/user"
+ ],
+ "hidden_roots_requested": [
+  "/home",
+  "/tmp",
+  "/var/tmp",
+  "/run/user"
+ ],
+ "hiding": [
+  {
+   "after": {
+    "device": 62,
+    "entries": 0,
+    "mount": {
+     "fstype": "tmpfs",
+     "mount_id": "477",
+     "parent_mount_id": "306",
+     "source": "tmpfs"
+    }
+   },
+   "before": {
+    "device": 66307,
+    "entries": 1,
+    "mount": null
+   },
+   "root": "/home",
+   "the_host_already_mounted_something_here": false
+  },
+  {
+   "after": {
+    "device": 76,
+    "entries": 0,
+    "mount": {
+     "fstype": "tmpfs",
+     "mount_id": "478",
+     "parent_mount_id": "466",
+     "source": "tmpfs"
+    }
+   },
+   "before": {
+    "device": 35,
+    "entries": 371,
+    "mount": {
+     "fstype": "tmpfs",
+     "mount_id": "466",
+     "parent_mount_id": "306",
+     "source": "tmpfs"
+    }
+   },
+   "root": "/tmp",
+   "the_host_already_mounted_something_here": true
+  },
+  {
+   "after": {
+    "device": 84,
+    "entries": 0,
+    "mount": {
+     "fstype": "tmpfs",
+     "mount_id": "479",
+     "parent_mount_id": "306",
+     "source": "tmpfs"
+    }
+   },
+   "before": {
+    "device": 66307,
+    "entries": 6,
+    "mount": null
+   },
+   "root": "/var/tmp",
+   "the_host_already_mounted_something_here": false
+  },
+  {
+   "after": {
+    "device": 85,
+    "entries": 0,
+    "mount": {
+     "fstype": "tmpfs",
+     "mount_id": "480",
+     "parent_mount_id": "364",
+     "source": "tmpfs"
+    }
+   },
+   "before": {
+    "device": 28,
+    "entries": 1,
+    "mount": null
+   },
+   "root": "/run/user",
+   "the_host_already_mounted_something_here": false
+  }
+ ],
+ "loopback": {
+  "ok": true,
+  "returncode": 0,
+  "stderr": ""
+ },
+ "meter": {
+  "port": 45085,
+  "reachable": true
+ },
+ "meter_port": 45085,
+ "pass": true,
+ "pid": 1,
+ "relay_sock": "/dev/shm/a0a1-epistemic/shimtest/relay/s.sock",
+ "restored": [],
+ "schema": "a0.a1.session_sandbox/v1",
+ "self_check": {
+  "egress": "BLOCKED:gaierror",
+  "egress_is_blocked": true,
+  "hidden_roots_are_the_filesystems_this_lane_made": true,
+  "hidden_roots_are_tmpfs": true,
+  "not_hidden": [],
+  "pid_namespace": {
+   "is_private": true,
+   "nspid_columns": 1,
+   "self_pid": 1,
+   "visible_pid_count": 1,
+   "visible_pids": [
+    1
+   ]
+  },
+  "pid_namespace_is_private": true,
+  "roots_back_on_the_hosts_filesystem": []
+ },
+ "staged": [
+  {
+   "kind": "dir",
+   "path": "/dev/shm/a0a1-epistemic/shimtest/workspace",
+   "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/0"
+  },
+  {
+   "kind": "dir",
+   "path": "/dev/shm/a0a1-epistemic/shimtest/home",
+   "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/1"
+  },
+  {
+   "kind": "dir",
+   "path": "/dev/shm/a0a1-epistemic/shimtest/codex_home",
+   "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/2"
+  },
+  {
+   "kind": "dir",
+   "path": "/usr",
+   "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/3"
+  },
+  {
+   "kind": "file",
+   "path": "/usr/bin/python3",
+   "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/4/file"
+  },
+  {
+   "kind": "dir",
+   "path": "/dev/shm/a0a1-epistemic/shimtest/relay",
+   "stage": "/dev/shm/.a0a1-candidate-sandbox/pid1/5"
+  }
+ ],
+ "uid": 0
+}
