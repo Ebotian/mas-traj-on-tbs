@@ -174,11 +174,25 @@ Note the row count is **not** the call count: three `codex exec` invocations pro
 because the tool loop is two model turns (tool call, then final answer) and a metering boundary that
 collapsed them into one number would be losing a fact. This is the ledger behaving correctly.
 
-The 11 `unmetered` rows are **by design and are themselves evidence**: 10 are my probe's
-`GET /v1/models` calls, correctly refused `403 attribution_token_mismatch` (the probe deliberately
-sends no token) or booked `unmetered` with a named reason when they did reach the upstream; and the
-rest are the `host_header_not_allowlisted` / `path_not_routed` refusals of §5.4. None is an estimate
-and none is a zero.
+The 11 `unmetered` rows are **by design and are themselves evidence**. They are exactly:
+
+| count | reason | what produced it |
+|---|---|---|
+| 5 | `attribution_token_mismatch` | `GET /v1/models` from the probe and from §5.4, deliberately sent with no token |
+| 2 | `host_header_not_allowlisted:example.com` / `:api.openai.com` | §5.4's non-allowlisted destinations |
+| 3 | `path_not_routed:/var/lib/a0ec/ledger.jsonl`, `:/ledger.jsonl`, `:/../../var/…` | §5.4 asking the meter for the ledger itself |
+| 1 | `unparseable_response_body` | the one §5.4 request that *did* reach the upstream — `GET https://api.deepseek.com/v1/models` with a valid token but no `Authorization` — whose error body is not JSON |
+
+None is an estimate and none is a zero.
+
+*Observation, offered as such because `a0/meter/` is not this mechanism's directory and I did not
+change it:* for a **non-2xx** response whose body does not parse as JSON, `meter_proxy.py:624-629`
+books `unparseable_response_body`, the same reason it uses for a 2xx body that is not JSON, rather
+than the `upstream_http_<code>_no_usage` it books when the body *is* JSON and merely lacks a usage
+object. Both are honest unmetered rows with a named reason — no score is invented and none is lost
+— so this is a labelling nuance, not an accounting hole. It is worth a line only because the
+distinction between "the provider answered 401" and "the provider answered something unreadable" is
+the kind of thing a budget audit wants to be able to read off a ledger row.
 
 The session really works: `A0EC-C1-OK`, `A0EC-C2-OK` (both exit 0), and a **tool loop** —
 
