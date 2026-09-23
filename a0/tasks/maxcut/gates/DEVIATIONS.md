@@ -271,19 +271,23 @@ overrides everything.
 
 ## D-GATE-14 — `--pc`: the runner now evaluates any candidate as the positive control
 
-`gate_runner.py` takes `--pc <dir>` (default `positive_control/pc`). The
-candidate's directory name selects its Outcome directory and its verdict file
-names, so:
+`gate_runner.py` takes `--pc <dir>`. It defaulted to `positive_control/pc` until
+2026-09-23, when the contract adopted `k = 10` and the default moved to
+`positive_control/variants/pc_exchange_k10` (D-GATE-18). The candidate's
+directory name selects its Outcome directory and its verdict file names, so:
 
-* a variant's run reuses the baseline's Outcomes instead of recomputing them —
-  and cannot accidentally pair one PC's value with another baseline's;
-* the contract PC's frozen file names are unchanged (`verdict.dev.json`,
-  `values/dev.positive-control.json`), so nothing already published moved;
-* a variant writes `verdict.dev.pc_exchange_k10.json` and
-  `values/dev.pc_exchange_k10.json`, side by side with the contract PC's.
+* a run reuses the baseline's Outcomes instead of recomputing them — and cannot
+  accidentally pair one PC's value with another baseline's;
+* each PC keeps its own frozen file names, so no PC's published verdicts are
+  overwritten by another's (the superseded `verdict.dev.json`,
+  `values/dev.positive-control.json` are still on disk, for the `PC_∞` control);
+* `verdict.dev.pc_exchange_k10.json` / `values/dev.pc_exchange_k10.json` are the
+  adopted contract PC's files today — that name is what path stability required
+  when the default was re-pointed (D-GATE-18).
 
-This is additive: with no `--pc` the runner behaves exactly as before, which the
-field-level diff in D-GATE-11 confirms.
+This was additive to the runner's logic: `--pc` changes only which directory is
+resolved and which file names follow, which the field-level diff in D-GATE-11
+confirms.
 
 ---
 
@@ -371,11 +375,11 @@ reviewer should re-run); `python3 gates/refreeze_evidence.py --before 7bf8a14b`
 
 ## Deliberately *not* done this round
 
-* **No `k` was adopted.** `REVISION-PROPOSAL.md` supplies the curve and a
-  recommendation; choosing the artifact the contract calls `PC_i` is a contract
-  revision and belongs to the contract author. The gate's verdict for the
-  contract PC is still `NOT_ADMISSIBLE` and is still what a caller gets by
-  default.
+* **No `k` was adopted *in that round*.** `REVISION-PROPOSAL.md` supplied the
+  curve and a recommendation; choosing the artifact the contract calls `PC_i` was
+  a contract revision and belonged to the contract author. It was taken on
+  2026-09-23 — see D-GATE-18 — so this bullet is history: the gate's verdict for
+  the contract PC is now `ADMISSIBLE` and that is what a caller gets by default.
 * **No threshold was touched.** `Δ` (`0.03` / `0.02` / 3-of-4), `ρ`
   (`0.30` / `0.30` / 3-of-4) and the saturation veto are byte-identical to the
   pre-registered values; `gate_config.json`'s only change is `θ` and the comment
@@ -456,3 +460,72 @@ digest moved.
 pre-rebuild tree (`7bf8a14b`) plus a binding re-stamped to its bytes: the audit
 fails with `registered_tree_eid_mismatch`, while the honest tree passes. The full
 A1 entry point (`a0/a1/verify.py`) stays green.
+
+## D-GATE-18 — the contract adopted `k = 10`: the gate's default control moved
+
+**The decision.** On 2026-09-23 the coordinator adopted the bounded-round variant
+`pc_exchange_k10` as the contract's `PC_i`, on the evidence and under the
+criterion in `REVISION-PROPOSAL.md` §2/§3/§6 (now §6.1, ADOPTED). The revision
+record is `../positive_control/PC-REVISION.md`. Nothing about the gate itself
+moved: no threshold in `gate_config.json`, no suite graph, no line of `E*`, no
+target reference.
+
+**What changed, and only this.** `gate_runner.py`'s `DEFAULT_PC` was re-pointed
+from `positive_control/pc` to `positive_control/variants/pc_exchange_k10`.
+
+**Why the candidate's *location* was not changed.** `REVISION-PROPOSAL.md` §8.2
+had suggested promoting the variant by moving it into `positive_control/pc/`.
+That was measured to be the wrong move: the candidate directory's *name* keys the
+Outcome paths and the verdict file names, so moving it would have rewritten every
+stored record for the contract PC — `cut_edges`, `Δ`, `ρ`, the two verdicts — a
+*decision* change. Re-pointing the default instead leaves every stored decision
+where it was and makes the already-measured `verdict.*.pc_exchange_k10.*` the
+adopted verdict, byte for byte.
+
+**Verified by execution.** With the new default,
+
+```
+$ python3 gates/gate_runner.py --set dev    # → ADMISSIBLE, Δ 0.116584858, ρ 0.615639328, 4/4 families
+$ python3 gates/gate_runner.py --set eval   # → ADMISSIBLE, Δ 0.116426731, ρ 0.600847458, 4/4 families
+$ git status --short -- a0/tasks/maxcut/gates a0/tasks/maxcut/positive_control
+ M a0/tasks/maxcut/gates/gate_runner.py
+```
+
+i.e. the re-run rewrote no Outcome and no verdict. The identity instruments
+agree: `restamp_evidence.py` → `576/576` Outcomes and `12/12` verdicts differ
+from `7bf8a14b` in identity leaves only, **0 decision leaves**, `CLEAN`;
+`refreeze_evidence.py` → `12/12`, one identity leaf each, `0` decision leaves,
+`CLEAN`.
+
+**The superseded control is kept.** `positive_control/pc/`, its bytes, its
+`pc_identity_report.json` and its verdicts `verdict.{dev,eval}.json` (still
+`NOT_ADMISSIBLE`) are untouched, and
+`python3 gates/gate_runner.py --set dev --pc positive_control/pc` reproduces
+them. `../positive_control/HISTORY.md` is the index.
+
+**Reported, not applied.** `INTERFACE.md` — the contract's interface authority —
+does not define `PC_i` at all (`grep -n "PC_i\|one_exchange\|positive_control"
+INTERFACE.md` returns nothing), so the adoption creates a contract gap that only
+its owner can close. The exact before/after text is in
+`../positive_control/PC-REVISION.md` §7.
+
+**Two stored diagnostics still carry the superseded control's numbers. Not
+regenerated here, and deliberately named.** Both read the PC through
+`gate_runner.DEFAULT_PC`, so the default they were measured against has moved
+underneath them:
+
+* `seed_sensitivity.dev.json` — its rows are the `PC_∞` control's
+  (`Δ 0.247942608`, `ρ 0.158819629` at the frozen seed), while its own note
+  points a reader at "the single frozen seed's verdict in `verdict.<set>.json`",
+  which is now the `k = 10` file. Regenerating it would add ~192 tagged Outcome
+  files (`outcomes/dev/s{0,1,2,3}/pc_exchange_k10/…`) that this revision has no
+  need for, so the file is left as the `PC_∞` diagnostic it is — **read its rows
+  as `PC_∞` rows.**
+* `tau_calibration.json` — its candidate map labels `"PC_i"` →
+  `positive_control/pc`. The derivation is unaffected: the pooled p99 is
+  `133–136 ms`, so `10 × p99` is below the §7 floor and `τ = 10 s` binds at every
+  `k` (`REVISION-PROPOSAL.md` §7). **Read its `"PC_i"` key as `PC_∞`.**
+
+Neither is a gate input: `gate_config.json` carries `τ`, not these files. Both
+are listed here so that the label drift is visible rather than latent. Re-running
+either under the adopted control is a follow-up, not part of this revision.

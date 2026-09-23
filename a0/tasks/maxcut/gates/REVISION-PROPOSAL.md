@@ -1,10 +1,30 @@
 # `gates/REVISION-PROPOSAL.md` — replacing `PC_i`, for the contract author to decide
 
-**Status: PROPOSAL. Nothing here is applied. The gate as frozen still returns
-`NOT_ADMISSIBLE` for the contract's positive control.**
+**Status: DECIDED — `k = 10` ADOPTED on 2026-09-23. The proposal below is kept
+as the pre-decision record.**
+The contract's positive control is now `positive_control/variants/pc_exchange_k10`
+(the pinned `one_exchange`, stopped after 10 accepted improving swaps), and the
+gate reads it by default. The gate as revised returns **`ADMISSIBLE` on dev and
+on eval**, both bars cleared by ≥ 2× in 4/4 families:
+
+| set | verdict | Δ mean | ρ median | families (Δ / ρ) | artifact |
+|---|---|---|---|---|---|
+| dev | **`ADMISSIBLE`** | `0.116584858` | `0.615639328` | 4/4 / 4/4 | `verdict.dev.pc_exchange_k10.json` |
+| eval | **`ADMISSIBLE`** | `0.116426731` | `0.600847458` | 4/4 / 4/4 | `verdict.eval.pc_exchange_k10.json` |
+
+The unbounded local-optimum control is kept as labelled history at
+`positive_control/pc/`; its verdicts `verdict.dev.json` / `verdict.eval.json`
+still read `NOT_ADMISSIBLE` and are unchanged. See
+`../positive_control/PC-REVISION.md` for the revision record and
+`../positive_control/HISTORY.md` for the index. **No threshold, no suite graph
+and no line of `E*` was changed by the adoption**; the revision moved the
+identity of the artifact and nothing else (`§8.0`).
+
 Owner: the gate/positive-control workstream. Authority: `../INTERFACE.md` (v1.1).
-This document decides nothing; it puts a measured curve and the declaration that
-must accompany it in front of the person who owns the contract.
+Sections 1–7 are the measured curve and the declaration that were put in front
+of the person who owns the contract, kept verbatim as the record of what was
+decided and on what evidence. Section 6 is the section that names `k = 10`; the
+decision has been taken there and is restated here.
 
 ---
 
@@ -243,6 +263,33 @@ rather than a three-quarters-of-nothing one, `k = 10` is. **I would not pick
 instance-to-instance variation) **and would not pick `k = 25`** (it fails the
 gate on unseen instances).
 
+### 6.1 Decision: `k = 10` is ADOPTED — 2026-09-23
+
+The coordinator adopted `k = 10`. The recommendation above is now the decision,
+and the re-freeze checklist in §8 has been discharged.
+
+| item | value |
+|---|---|
+| adopted control | `positive_control/variants/pc_exchange_k10/` (`pc_exchange_k10`) |
+| `source_sha256` | `ee49eba0798028532c2bcf084b56b137e19937a827105da97c75ed5a01e759da` |
+| gate default | `../gates/gate_runner.py` → `DEFAULT_PC` names that directory |
+| dev verdict | **`ADMISSIBLE`** — Δ `0.116584858`, ρ median `0.615639328`, 4/4 families both gates; `verdict.dev.pc_exchange_k10.json` |
+| eval verdict | **`ADMISSIBLE`** — Δ `0.116426731`, ρ median `0.600847458`, 4/4 families both gates; `verdict.eval.pc_exchange_k10.json` |
+| revision record | `../positive_control/PC-REVISION.md` |
+| old control | kept as labelled history at `positive_control/pc/` (`HISTORY.md`) |
+
+**The other rows of §6 stay as history, not as live options.** Each was a
+measured candidate for the same decision; none is adopted.
+
+| k | status after 2026-09-23 |
+|---|---|
+| 1 | history — rejected (Δ fails 3/4 families on both sets) |
+| 2 | history — rejected (Δ margin 1.10×, thinner than the suite's own swing) |
+| **10** | **ADOPTED** |
+| 5 | history — the runner-up; kept in case a later round wants more measurable room (§6 counter-case) |
+| 25 | history — rejected (ρ fails 2/4 families on the unseen set) |
+| ∞ (`pc`) | history — superseded contract control, evaluated at `positive_control/pc/` |
+
 ---
 
 ## 7. What this implies for B0 and B1
@@ -282,6 +329,16 @@ gate on unseen instances).
 ---
 
 ## 8. If a `k` is adopted: the re-freeze checklist
+
+### 8.0 Discharge status — 2026-09-23, `k = 10`
+
+| item | status |
+|---|---|
+| 1. `INTERFACE.md`'s `PC_i` sentence | **open — owned by the coordinator.** The exact before/after text is in `../positive_control/PC-REVISION.md` §7 and was reported, not edited. |
+| 2. the adopted candidate's frozen bytes | **done.** The candidate stays at `positive_control/variants/pc_exchange_k10/` and the *gate default* was re-pointed at it. This proposal suggested moving it to `positive_control/pc/`; the adoption deliberately did **not**, because the candidate directory's *name* keys the Outcome and verdict file paths and moving it would have rewritten every stored record for the contract PC — a decision change, where the requirement is identity-only. Keeping the bytes where they are makes the adopted verdict (`verdict.*.pc_exchange_k10.json`) *the* verdict already measured, byte for byte. |
+| 3. the gate's verdicts | **done.** `gate_runner.py` re-run on dev and eval; both `ADMISSIBLE`; `values/*.pc_exchange_k10.json` re-emitted; no stored decision field moved. |
+| 4. downstream artifacts computed against `PC_∞` | **out of this directory's ownership.** `a1`'s registered T1 tree, `redesign/`'s lever tables and the `C*(T1)` rows `c04_tie_a_pc_optimum` / `c05_tie_b_pc_complement` were computed against `PC_∞` and, per §7, are numbers about a *different* artifact now. They are not wrong; they must be re-run or re-labelled by their owners. |
+| 5. τ calibration | **unchanged and still valid.** `τ = 10 s` is the §7 floor, and a truncation is faster than the untruncated control (`p50 40 ms` at `k = 10` vs `97 ms` at `∞`), so the floor binds under either control. |
 
 **Must be re-frozen** (all of it is mechanical; none of it changes a threshold):
 
@@ -323,12 +380,15 @@ cd a0/tasks/maxcut
 # the two-set, per-family strength curve and the redesign cross-check
 python3 gates/strength_table.py
 
-# any single row, e.g. the recommended one
-python3 gates/gate_runner.py --set dev  --pc positive_control/variants/pc_exchange_k10
-python3 gates/gate_runner.py --set eval --pc positive_control/variants/pc_exchange_k10
-
-# the contract PC, unchanged, for comparison
+# the adopted control, which the runner now uses by default — must read ADMISSIBLE
 python3 gates/gate_runner.py --set dev
+python3 gates/gate_runner.py --set eval
+
+# an explicit row still names its own artifact, e.g. the runner-up
+python3 gates/gate_runner.py --set dev --pc positive_control/variants/pc_exchange_k05
+
+# the superseded local-optimum control, unchanged, for comparison — still NOT_ADMISSIBLE
+python3 gates/gate_runner.py --set dev --pc positive_control/pc
 
 # the variants are the frozen PC with one line changed; verified, not asserted
 python3 positive_control/make_variants.py --check

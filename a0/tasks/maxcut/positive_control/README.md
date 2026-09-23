@@ -9,10 +9,12 @@ Owner: the positive-control workstream of `a0/tasks/maxcut/`. Authority:
 | path | what it is |
 |---|---|
 | `baseline/solution.py` | **`b_i`** — one seeded uniform random bisection. A §4 candidate, nothing else |
-| `pc/solution.py` | **`PC_i`** — NetworkX `one_exchange(G_i, initial_cut=b_i, seed=s_i)`, transliterated from the pin. `MAX_SWAPS = None` means "run to a local optimum", i.e. the pin |
+| `variants/pc_exchange_k10/solution.py` | **`PC_i`, adopted 2026-09-23** — NetworkX `one_exchange(G_i, initial_cut=b_i, seed=s_i)`, transliterated from the pin, **stopped after 10 accepted improving swaps**. The gate reads it by default (`../gates/REVISION-PROPOSAL.md` §6.1) |
+| `pc/solution.py` | **history — superseded, kept** — the same transliteration run to a local optimum (`MAX_SWAPS = None`, i.e. the pin). It failed the ρ half of the gate and left the task inadmissible; bytes, verdicts and pin evidence are unchanged |
 | `pc/pinned/networkx_maxcut_b69beb2c.py` | the pinned upstream file, verbatim (`793419aa…`) |
 | `pc/pinned/networkx_init_b69beb2c.py` | the pinned commit's `networkx/__init__.py` (`3.7.1rc0.dev0`), verbatim |
-| `variants/pc_exchange_k{01,02,05,10,25}/` | the same candidate with `MAX_SWAPS` set to `k`: the truncation lever, as frozen §4 candidates. **Proposals, not the contract's PC** — see `../gates/REVISION-PROPOSAL.md` |
+| `variants/pc_exchange_k{01,02,05,25}/` | the same candidate with `MAX_SWAPS` set to `k`: the truncation lever, as frozen §4 candidates. **History** — measured candidates for the 2026-09-23 decision; none was adopted |
+| `PC-REVISION.md` / `HISTORY.md` | the revision record for the adopted PC, and the index of every control this directory has owned |
 | `make_variants.py` | `--write` / `--check`: generates the variants from `pc/solution.py` and verifies each differs from it by exactly one line |
 | `manifest.json` | the frozen identity of every candidate above: each file's sha256 *and* the whole-candidate `source_sha256` E* uses |
 | `build.py` | `--freeze` / `--check`: re-derive the manifest with E*'s own resolver, and cross-check `b_i` against `C*(T1)`'s `c02` through the real ABI |
@@ -24,19 +26,24 @@ Owner: the positive-control workstream of `a0/tasks/maxcut/`. Authority:
 Frozen identities, one line each:
 
 ```
-b_i              6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97
-PC_i             25de3e5d496198d74c7427de0d4504a0f3e49e8056c154d8eb8197648bcfb901
-pc_exchange_k01  69cbaccde91cbcbd7f19730c6c64328e9b4192b2a42b4257c5affe0a495727b2
-pc_exchange_k02  ce125f72f1d95efdf1d80ef1a66686e9693ea95389b8cd4a2ba24385302187c0
-pc_exchange_k05  8085adcf9f46d0a3b8a89ede85f3ed9631935f2527f32d2f64be69ee6c5f8b74
-pc_exchange_k10  ee49eba0798028532c2bcf084b56b137e19937a827105da97c75ed5a01e759da
-pc_exchange_k25  43a03d0d3e7268ae7ce4b554bad227896e4b4331ae76ee2e51e9d0d417509aeb
+b_i                6bfd919ed73c49dbb27fd2eb8f1f7224fac131773d7c8e1aa1f8b6ed09b24d97
+PC_i (adopted)     ee49eba0798028532c2bcf084b56b137e19937a827105da97c75ed5a01e759da  # = pc_exchange_k10, since 2026-09-23
+PC_i (superseded)  25de3e5d496198d74c7427de0d4504a0f3e49e8056c154d8eb8197648bcfb901  # = pc/, local optimum, history
+pc_exchange_k01    69cbaccde91cbcbd7f19730c6c64328e9b4192b2a42b4257c5affe0a495727b2
+pc_exchange_k02     ce125f72f1d95efdf1d80ef1a66686e9693ea95389b8cd4a2ba24385302187c0
+pc_exchange_k05     8085adcf9f46d0a3b8a89ede85f3ed9631935f2527f32d2f64be69ee6c5f8b74
+pc_exchange_k10     ee49eba0798028532c2bcf084b56b137e19937a827105da97c75ed5a01e759da  # adopted
+pc_exchange_k25     43a03d0d3e7268ae7ce4b554bad227896e4b4331ae76ee2e51e9d0d417509aeb
 ```
 
 `PC_i`'s digest moved from `d3c12b54…` on 2026-09-22 when `MAX_SWAPS` was added
-to its source (`DEVIATIONS.md` D-PC-7). The addition is inert for the contract's
-PC — `None` is the pin — and that was verified rather than asserted: the same
-`cut_edges` on all 48 dev+eval graphs, and the pin-equality check still `PASS`.
+to its source (`DEVIATIONS.md` D-PC-7) — inert at the time, because the
+contract's PC was still `None`. It moved again on **2026-09-23**, this time as a
+decision: `25de3e5d…` (local optimum) → `ee49eba0…` (`k = 10`). That second move
+is a contract revision with its own record (`PC-REVISION.md`), and it is the
+reason the file you are reading no longer describes `pc/` as *the* PC. The
+pin-equality check (`pc_identity_report.json`, C1–C5) is a statement about the
+shared transliteration source and is unaffected by `MAX_SWAPS`.
 
 ## 2. The pin
 
@@ -77,8 +84,9 @@ emit_partition([1 if v in cut else 0 for v in range(n)])
 `MAX_SWAPS = k` stops it after `k` *accepted improving* swaps, checked at the top
 of the round so the round that finds no improvement still terminates the loop the
 pin's way. The `k` variants are the truncation lever measured in
-`../gates/strength_table.json`; they are frozen candidates here, but adopting one
-as the contract's `PC_i` is a contract revision and has not happened.
+`../gates/strength_table.json`; **the contract adopted `k = 10` on 2026-09-23**
+(`PC-REVISION.md`), so `MAX_SWAPS = 10` is now the value the gate runs by
+default, and `pc/` with `MAX_SWAPS = None` is history.
 
 No score is written to the artifact: §3's partition is the only output, and E*
 recomputes `cut_edges` from the graph and that partition (§5, §6).
@@ -128,7 +136,10 @@ only a statement about files one workstream produced.
 * **Not the `C*(T1)` candidate named `c01_ok_high_pc`.** That is a local-search
   heuristic; no definition of `PC` existed in the repository when it was frozen
   (`../README.md` says so explicitly). The contract's `PC` is the NetworkX call
-  above, and it lives here.
+  above, stopped at `k = 10` since 2026-09-23, and it lives here. Note that
+  `../INTERFACE.md` — the interface authority — *still* defines `PC_i` nowhere;
+  the definition this directory implements is recorded in `PC-REVISION.md` §7 and
+  it is the coordinator's to move into the contract.
 * **Never given to a searching agent.** `pc/` contains NetworkX source inside the
   candidate tree; anything that materialises candidates into an agent workspace
   must exclude this directory (`DEVIATIONS.md` D-PC-5).

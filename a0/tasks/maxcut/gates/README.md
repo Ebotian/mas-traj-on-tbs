@@ -7,6 +7,31 @@ directory had to make is in `DEVIATIONS.md`; the artifacts under test are in
 
 ## 1. The verdict, and the evidence for it
 
+**Current verdict — the adopted positive control.** On 2026-09-23 the contract's
+`PC_i` was revised to the bounded-round variant at `k = 10`
+(`../positive_control/PC-REVISION.md`); the gate now reads it by default and the
+task is admissible:
+
+| gate | verdict | dev | eval |
+|---|---|---|---|
+| **Δ** — did the artifact improve anything? | **PASS** | mean `0.116584858` (need ≥ `0.03`), `4/4` families ≥ `0.02` | mean `0.116426731`, `4/4` |
+| **ρ** — is there headroom left afterwards? | **PASS** | median `0.615639328` (need ≥ `0.30`), `4/4` families | median `0.600847458`, `4/4` |
+| **saturation NO-GO** — is the baseline already at the reference? | not triggered | baseline headroom median `0.384381172` (veto below `0.05`), min `0.257847534` | median `0.361056711`, min `0.280269058` |
+| **task admissibility** | **`ADMISSIBLE`** | | |
+
+Evidence: `verdict.dev.pc_exchange_k10.json` / `.md` and
+`verdict.eval.pc_exchange_k10.json` / `.md`, produced by
+`python3 gates/gate_runner.py --set dev|eval` with no `--pc`. The artifact under
+test is `../positive_control/variants/pc_exchange_k10/`. No threshold moved: the
+adoption rewrote no stored Outcome and no stored verdict, and both identity
+instruments report identity-only movement with `0` decision leaves (§4).
+
+### 1.1 Superseded — the `PC_∞` verdict that forced the revision
+
+Kept as history. The unbounded local-optimum control at `../positive_control/pc/`
+is still present, still frozen, and still returns `NOT_ADMISSIBLE` on both sets;
+`python3 gates/gate_runner.py --set dev --pc positive_control/pc` reproduces it.
+
 | gate | verdict | dev | eval |
 |---|---|---|---|
 | **Δ** — did the artifact improve anything? | **PASS** | mean `0.247942608` (need ≥ `0.03`), `4/4` families ≥ `0.02` | mean `0.238448095`, `4/4` |
@@ -92,14 +117,16 @@ the comparison window is empty. `--before HEAD` would compare the re-stamped
 records with themselves, report `0/576` and `0/12`, and call that `CLEAN`; a window
 in which nothing moved cannot show that a re-stamp was clean (D-GATE-16).
 
-**The gate is satisfiable, and the decision it needs is not mine to make.** The
-same frozen runner, pointed at a weaker positive control (`--pc
-../positive_control/variants/pc_exchange_k10`), returns `ADMISSIBLE` on dev *and*
-eval with both bars cleared by ≥ 2×. Whether the contract should call that
-artifact `PC_i` is a **contract revision**, and `REVISION-PROPOSAL.md` is the
-document that puts the measured curve, the posterior-freedom declaration and the
-re-freeze checklist in front of whoever owns it. Nothing is adopted: the default
-run still evaluates the contract's `PC_i` and still says `NOT_ADMISSIBLE`.
+**The gate is satisfiable, and the decision it needed was not this
+workstream's to make — it has now been taken.** The same frozen runner, pointed
+at a weaker positive control (`../positive_control/variants/pc_exchange_k10`),
+returns `ADMISSIBLE` on dev *and* eval with both bars cleared by ≥ 2×. Whether
+the contract should call that artifact `PC_i` was a **contract revision**;
+`REVISION-PROPOSAL.md` put the measured curve, the posterior-freedom declaration
+and the re-freeze checklist in front of whoever owns it, and on 2026-09-23 the
+coordinator adopted `k = 10` (`REVISION-PROPOSAL.md` §6.1). The default run now
+evaluates the revised `PC_i` and returns `ADMISSIBLE`; the superseded
+`PC_∞` verdicts are kept, unchanged, as §1.1 and `verdict.{dev,eval}.json`.
 
 ## 2. The pre-registered branch: what to change, and what that re-freezes
 
@@ -223,20 +250,26 @@ One command, from the repository root, decides the gate and writes everything:
 cd a0/tasks/maxcut && python3 gates/gate_runner.py
 ```
 
-It prints the human table, writes `verdict.dev.json` (machine-readable, exact
-rationals) and `verdict.dev.md`, caches one E* Outcome per (candidate, graph)
-under `outcomes/dev/`, and exits `0` for `ADMISSIBLE`, `2` for `PENDING`,
-`1` for `NOT_ADMISSIBLE`. Nothing outside this directory and
-`../positive_control/` is written; the frozen suite is read-only.
+It prints the human table, writes `verdict.dev.pc_exchange_k10.json`
+(machine-readable, exact rationals) and `verdict.dev.pc_exchange_k10.md`, caches
+one E* Outcome per (candidate, graph) under `outcomes/dev/`, and exits `0` for
+`ADMISSIBLE`, `2` for `PENDING`, `1` for `NOT_ADMISSIBLE`. The file *names* carry
+the adopted control's directory name; that is what keeps the superseded
+`verdict.dev.json` readable as history instead of being overwritten. Nothing
+outside this directory and `../positive_control/` is written; the frozen suite is
+read-only.
 
 **Any candidate can be the positive control** (`--pc <dir>`, D-GATE-14). Its
-directory name selects its Outcome directory and its verdict file names, so the
-contract PC's frozen file names are untouched and a variant lands beside them:
+directory name selects its Outcome directory and its verdict file names, so no
+PC ever overwrites another's frozen verdicts:
 
 ```bash
-# the recommended truncation, on both sets (proposal only -- nothing is adopted)
+# the adopted control is the default; the runner below is the same thing explicitly
 python3 gates/gate_runner.py --set dev  --pc positive_control/variants/pc_exchange_k10
 python3 gates/gate_runner.py --set eval --pc positive_control/variants/pc_exchange_k10
+
+# the superseded local-optimum control -- still NOT_ADMISSIBLE
+python3 gates/gate_runner.py --set dev  --pc positive_control/pc
 
 # the whole strength curve, both sets, per family, plus the redesign cross-check
 python3 gates/strength_table.py
@@ -252,8 +285,9 @@ sh positive_control/bootstrap_pin.sh
 python3 positive_control/verify_pc_identity.py \
     --reference-python positive_control/.venv-pin/bin/python \
     --report positive_control/pc_identity_report.json
-python3 gates/gate_runner.py                 # dev: the gate, exit 1
+python3 gates/gate_runner.py                 # dev: the gate, exit 0 (ADMISSIBLE)
 python3 gates/gate_runner.py --set eval      # diagnostic, separate files
+python3 gates/gate_runner.py --pc positive_control/pc  # the superseded PC, exit 1
 python3 gates/seed_sensitivity.py --set dev  # is the verdict seed luck? no
 python3 gates/tau_calibration.py             # derive tau per section 7 (10 s)
 python3 gates/strength_table.py              # PC strength -> Delta/rho, both sets
@@ -264,8 +298,9 @@ python3 gates/restamp_evidence.py --before 7bf8a14b  # ... and every stamp is cu
                                                      #  evidence and refuse an empty comparison window)
 python3 references/recompute_rho.py --targets references/targets.json \
     --baseline gates/values/dev.baseline.json \
-    --positive-control gates/values/dev.positive-control.json \
+    --positive-control gates/values/dev.pc_exchange_k10.json \
     --out gates/rho_crosscheck.dev.json      # the sibling's own ρ implementation
+# swap in gates/values/dev.positive-control.json to cross-check the superseded PC
 ```
 
 `--force` re-runs E* instead of reusing cached Outcomes; without it, a cached
@@ -341,6 +376,9 @@ are the same NetworkX source with one line changed. No model spend was involved:
 the CEq ledger (§8) is untouched because no model call was made.
 
 It is also **not a chooser**. It measures six positive controls and reports which
-pass; it does not decide which one the contract should use, and the default run
-still evaluates the contract's own `PC_i`. That decision, its posterior-freedom
-declaration and its re-freeze checklist are in `REVISION-PROPOSAL.md`.
+pass; it does not decide which one the contract should use. That decision was
+taken on 2026-09-23 by the contract's owner, and the default now evaluates the
+adopted `PC_i` (`k = 10`). The measured curve, the posterior-freedom declaration
+and the re-freeze checklist that the decision rested on are in
+`REVISION-PROPOSAL.md`; the revision record is
+`../positive_control/PC-REVISION.md`.

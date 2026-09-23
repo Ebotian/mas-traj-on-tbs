@@ -6,11 +6,15 @@ What this decides
 The task is only admissible if a **known-effective external artifact**
 demonstrably improves the frozen baseline, and if, after that artifact is
 applied, **enough headroom remains**.  The artifact is the contract's positive
-control
+control, as revised on 2026-09-23 to the bounded-round variant at `k = 10`
+(`../positive_control/PC-REVISION.md`):
 
-    PC_i = networkx.algorithms.approximation.one_exchange(G_i, initial_cut=b_i, seed=s_i)
+    PC_i = networkx.algorithms.approximation.one_exchange(
+               G_i, initial_cut=b_i, seed=s_i)  stopped after 10 accepted swaps
 
-(see `../positive_control/`, which also owns the frozen baseline `b_i`).
+The unbounded local-optimum control that this replaces is kept, unchanged, as a
+labelled history item at `../positive_control/pc/`.  (See `../positive_control/`,
+which also owns the frozen baseline `b_i`.)
 
 Everything below is measured through E* (`../e_star.py`), the harness-owned
 evaluator: this runner never computes a cut itself and never reads a number a
@@ -62,7 +66,11 @@ DEFAULT_TARGETS = MAXCUT / "references" / "targets.json"
 CONFIG = HERE / "gate_config.json"
 
 BASELINE = MAXCUT / "positive_control" / "baseline"
-DEFAULT_PC = MAXCUT / "positive_control" / "pc"
+#: The contract's positive control since 2026-09-23 (PC-REVISION.md): the pinned
+#: `one_exchange`, truncated after 10 accepted improving swaps.  The unbounded
+#: local-optimum control is history at `positive_control/pc/`; it is still
+#: reachable with `--pc positive_control/pc`.
+DEFAULT_PC = MAXCUT / "positive_control" / "variants" / "pc_exchange_k10"
 
 CANDIDATE_LABEL = {"baseline": "b_i", "pc": "p_i"}
 
@@ -559,9 +567,10 @@ def main():
     parser.add_argument("--targets", default=str(DEFAULT_TARGETS))
     parser.add_argument("--pc", default=None,
                         help="candidate directory to use as the positive control "
-                             "(default: positive_control/pc).  Its name selects the "
-                             "Outcome and verdict file names, so variants never "
-                             "overwrite the contract PC's frozen verdicts.")
+                             "(default: positive_control/variants/pc_exchange_k10, the "
+                             "adopted contract PC).  Its name selects the Outcome and "
+                             "verdict file names, so an alternative PC never overwrites "
+                             "another PC's frozen verdicts.")
     parser.add_argument("--force", action="store_true", help="re-run E* instead of using cached Outcomes")
     parser.add_argument("--out", default=None)
     parser.add_argument("--table-out", default=None)
