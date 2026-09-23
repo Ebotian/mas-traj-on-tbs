@@ -310,7 +310,8 @@ Stated in `B_hard.json.scope_limits`, plus four this run made visible:
 
 1. **The A1 contract revision is not mine to make.** Whether to adopt a bounded-round
    positive control so the headroom gate can pass is the user's decision; nothing here
-   touches it. The gate's verdict (`NOT_ADMISSIBLE`) was not read as a target and no
+   touches it. The gate's verdict (`NOT_ADMISSIBLE` at this run; `ADMISSIBLE` since the
+   2026-09-23 revision of the positive control) was not read as a target and no
    threshold was moved.
 2. **D4 is not re-derivable from the committed evidence** (D-CAL-7): the `τ` cross-check
    reads the resources sidecar, which the reduction does not publish. `tau_cross_check.json`

@@ -6,15 +6,26 @@ Each variant is a byte-identical copy of `pc/solution.py` except for one line:
 
     MAX_SWAPS = None     ->     MAX_SWAPS = K          (K accepted improving swaps)
 
-so the claim "the variant is the frozen PC with one line changed" is verified by
-`diff`-ing against that file, not asserted in prose.  `None` is the pin (run to a
-local optimum); `K` is the truncation.
+so the claim "the variant is the frozen artifact at `pc/` with one line changed"
+is verified by `diff`-ing against that file, not asserted in prose.  `None` is the
+pin (the unbounded run to a local optimum at `pc/`); `K` is the truncation.
 
 Why generate rather than hand-write five near-copies: five hand-written copies
 would drift.  Why one directory each rather than a shared module: §4 runs a
 candidate from a private content-addressed copy with no injected files, so a
 candidate's identity has to be its own bytes -- `e_star_child.candidate_files`
 digests everything under the candidate directory.
+
+**Adoption note, 2026-09-23.**  This module was written before the contract
+decision, when every variant was a proposal and `pc/` was still the contract's
+`PC_i`.  `k = 10` is adopted now (`PC-REVISION.md`), so
+`variants/pc_exchange_k10/` **is** the contract's `PC_i` and the other four
+variants stay proposals.  Two strings below still call all five "proposed
+alternatives", and they are left as they are on purpose: `PURPOSE` and
+`metadata()`'s `"role": "positive-control-alternative"` are emitted into the
+frozen `candidate.json` bytes, which are part of each candidate's identity digest
+-- edit them only with a re-freeze.  Read them as the pre-decision text; for
+`pc_exchange_k10` the role is now the contract's positive control.
 
     python3 make_variants.py --write     # (re)generate variants/
     python3 make_variants.py --check     # verify emitted bytes against `git diff`-free template

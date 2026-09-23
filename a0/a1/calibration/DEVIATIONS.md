@@ -228,6 +228,26 @@ user's decision, not this directory's.
 
 ---
 
+## D-CAL-11 — the procedure names the gate's superseded verdict
+
+`PILOT-PROCEDURE.md` line 41 reads: "and does **not** relax any gate. The gate's verdict
+(`NOT_ADMISSIBLE`) is irrelevant". Since 2026-09-23 the default gate verdict is
+`ADMISSIBLE`, so the parenthetical names the verdict that the task carried before its
+positive-control revision (the unbounded control; the adopted control is
+`positive_control/variants/pc_exchange_k10/`, `a0/A1-RESULT.md` §3).
+
+**Why this is recorded rather than corrected.** The procedure is byte-frozen: its sha256
+`68af13211ab88aad1fe4b3ca40d29cf00e73f2139d78ae5b26fe8fc47a0e3fa2` is asserted by
+`pilot.py`'s `load_procedure`, by
+`tests/test_pilot.py::test_the_procedure_document_is_the_frozen_one`, by `a1/verify.py`,
+and by the `procedure_sha256` field of every artifact in this directory — and
+`B_hard.json` embeds it. Editing that one sentence would break all of them and would
+falsify the artifacts' claim that the run used the frozen document. The argument the
+sentence carries is untouched: the gate's verdict, whatever it reads, was never read as a
+target here, and no threshold was moved.
+
+---
+
 ## Non-deviations worth naming, because they look like ones
 
 * `T_wall_sec = 1800` is **not measured** — §9 calls it the design constant and the primary

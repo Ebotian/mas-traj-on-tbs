@@ -100,6 +100,12 @@ inflates its input to 272 and is measured at the true 136; and
 
 ## The frozen positive-control candidates
 
+Read 2026-09-23: `positive_control/pc/` is the **superseded** control. The contract's
+`PC_i` since that date is `positive_control/variants/pc_exchange_k10/`
+(`candidate_source_sha256 = ee49eba0…`), defined in `INTERFACE.md` §13. This section
+stays as written because it records the D-T1-10 fix, which is what it measured; the
+digest cell and the verdict sentence below carry the two corrections that reading needs.
+
 `positive_control/{baseline,pc}/solution.py` are mode `0755` with a `#!` line.
 Until D-T1-10 was fixed they could not be evaluated at all — but with the fix they
 evaluate, and their numbers land exactly on the gate's recorded ones:
@@ -107,7 +113,11 @@ evaluate, and their numbers land exactly on the gate's recorded ones:
 | candidate | launched as | status | `cut_edges` on `G_dev_0001` | `candidate_source_sha256` | gate recorded |
 |---|---|---|---|---|---|
 | `positive_control/baseline` | `/usr/bin/python3 <staged>/solution.py …` | `ok` | 132 | `6bfd919e…` | 132 / `6bfd919e…` |
-| `positive_control/pc` | `/usr/bin/python3 <staged>/solution.py …` | `ok` | 212 | `d3c12b54…` | 212 / `d3c12b54…` |
+| `positive_control/pc` | `/usr/bin/python3 <staged>/solution.py …` | `ok` | 212 | `25de3e5d…` | 212 / `25de3e5d…` |
+
+The digest in the last column read `d3c12b54…` when this table was written. The D-PC-7
+edit of 2026-09-22 changed `pc/`'s bytes, so the current value — and the one every stored
+record carries — is `25de3e5d…` (`positive_control/DEVIATIONS.md` keeps that change).
 
 The byte-identical mirrors under `redesign/frozen_mirror/` give the same
 `status`, the same `cut_edges` and the same `candidate_source_sha256`, so the
@@ -118,11 +128,13 @@ workstream's directory).
 Over the whole grid (2 candidates × 24 dev graphs, seed 1337, tau 30 s), **48/48**
 of the gate's recorded rows reproduce exactly on `(status, cut_edges,
 candidate_source_sha256)`, and a forced re-run of `gates/gate_runner.py` itself —
-in a `/tmp` sandbox, so nothing under `gates/` is written — yields
-`verdict = NOT_ADMISSIBLE` with `delta_gate`, `rho_gate`, `saturation_no_go`,
-`counts` all identical to `gates/verdict.dev.json` and **zero** differing row
-fields. (That exit code is the gate's own `NOT_ADMISSIBLE` return, not an error:
-`gate_runner.main` returns `{"ADMISSIBLE": 0, "PENDING": 2}.get(overall, 1)`.)
+in a `/tmp` sandbox, so nothing under `gates/` is written — reproduces
+`gates/verdict.dev.json` with `delta_gate`, `rho_gate`, `saturation_no_go` and
+`counts` all identical and **zero** differing row fields. That file records the unbounded
+control, so the re-run reaches it with `--pc positive_control/pc`; the default re-run
+writes `gates/verdict.dev.pc_exchange_k10.json` and returns `ADMISSIBLE`. Either exit
+code is the gate's own return, not an error: `gate_runner.main` returns
+`{"ADMISSIBLE": 0, "PENDING": 2}.get(overall, 1)`.
 
 ## C\*(T1) coverage of §10
 

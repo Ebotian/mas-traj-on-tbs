@@ -10,9 +10,12 @@ evaluate`, theta = seed 1337, tau 30 s), and reduces the resulting integer
     rho_i   = (T_i - p_i) / (T_i - b_i),  T_i = OPT_i if certified else R_i
 
 Baseline b_i is taken from the frozen E* Outcomes in `../gates/values/` (the same
-numbers the gate used), so this measurement is comparable to `verdict.dev.json`
-graph by graph.  The `exchange_opt` variant must reproduce the frozen PC's
-`cut_edges` on all 24 graphs; that equality is asserted, not assumed.
+numbers the gate used), so this measurement is comparable to the superseded
+control's `verdict.dev.json` graph by graph.  The `exchange_opt` variant must
+reproduce the superseded control's `cut_edges` (`positive_control/pc/`, the
+contract's `PC_i` until 2026-09-23, now
+`positive_control/variants/pc_exchange_k10/`) on all 24 graphs; that equality is
+asserted, not assumed.
 
     python3 gen/run_l2.py            # measure (cached outcomes reused)
     python3 gen/run_l2.py --force    # re-run E* for every graph
@@ -33,6 +36,10 @@ E_STAR = TASK / "e_star.py"
 MANIFEST = TASK / "suite" / "manifest.json"
 TARGETS = TASK / "references" / "targets.json"
 FROZEN_BASELINE = TASK / "gates" / "values" / "dev.baseline.json"
+#: The superseded control's frozen p_i (`positive_control/pc/`, the unbounded
+#: local optimum).  The contract's `PC_i` has been
+#: `positive_control/variants/pc_exchange_k10/` since 2026-09-23; this file keeps
+#: the superseded control as its reference row, so the name is historical.
 FROZEN_PC = TASK / "gates" / "values" / "dev.positive-control.json"
 
 SEED = 1337
@@ -225,11 +232,13 @@ def main(argv=None):
               "thresholds": {"delta_overall_mean_min": raw(DELTA_OVERALL_MIN),
                              "delta_family_mean_min": raw(DELTA_FAMILY_MIN),
                              "rho_median_min": raw(RHO_MIN)},
-              "reference_pc_note": "the frozen PC's own p_i (exchange_opt) is reproduced "
-                                   "here and cross-checked against gates/values/dev.positive-control.json",
+              "reference_pc_note": "the superseded control's own p_i (exchange_opt, "
+                                   "positive_control/pc/) is reproduced here and cross-checked "
+                                   "against gates/values/dev.positive-control.json; the contract's "
+                                   "PC_i since 2026-09-23 is positive_control/variants/pc_exchange_k10",
               "variants": {}}
     print(f"{'variant':14s} {'meanDelta':>10s} {'medRho':>9s} {'Δfam':>5s} {'ρfam':>5s} "
-          f"{'Δgate':>6s} {'ρgate':>6s}  Δp-vs-frozenPC")
+          f"{'Δgate':>6s} {'ρgate':>6s}  Δp-vs-supersededPC")
     for v in args.variants:
         m = measure(v, graphs, targets, baseline, frozen_pc)
         result["variants"][v] = m
@@ -243,12 +252,12 @@ def main(argv=None):
     out.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n")
     print(f"wrote {out}")
 
-    # the internal-consistency assertion: exchange_opt == frozen PC, graph by graph
+    # the internal-consistency assertion: exchange_opt == the superseded control
     opt = result["variants"]["exchange_opt"]
     bad = [r["graph_id"] for r in opt["rows"] if r.get("delta_vs_frozen_pc") not in (None, 0)]
     if bad:
-        raise SystemExit(f"exchange_opt differs from the frozen PC on {len(bad)} graphs: {bad}")
-    print("OK: exchange_opt reproduces the frozen PC cut_edges on all 24 dev graphs")
+        raise SystemExit(f"exchange_opt differs from the superseded control on {len(bad)} graphs: {bad}")
+    print("OK: exchange_opt reproduces the superseded control cut_edges on all 24 dev graphs")
     return 0
 
 

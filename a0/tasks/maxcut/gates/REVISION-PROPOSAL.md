@@ -311,9 +311,13 @@ measured candidate for the same decision; none is adopted.
   sufficient; the coordinator should decide whether the injected object is the
   artifact's **outcome** (a partition) or its **procedure**, and whether the
   audit trail separates the two.
-* **Every recorded Δ/ρ in the repository is relative to a named PC.** `a1`'s
-  registered T1 tree and `redesign/`'s lever tables carry numbers computed against
-  `PC_∞`. If a `k` is adopted, those numbers must either be re-run or be
+* **Every recorded Δ/ρ in the repository is relative to a named PC.**
+  `redesign/`'s lever tables carry numbers computed against `PC_∞`, and they are
+  the only one of the artifacts this bullet first named that does: earlier it
+  also named `a1`'s registered T1 tree, which carries no positive-control number
+  at all (**corrected 2026-09-23** — `a1/T1-EID.json` and `a1/T1.contract.json`
+  do not mention `positive_control`, and neither do the files under
+  `a1/kapso_t1/`). If a `k` is adopted, those numbers must either be re-run or be
   explicitly labelled as `PC_∞` numbers. They do not become wrong; they become
   numbers about a different artifact.
 * **A cheaper artifact slightly relaxes the time budget.** On the calibration set
@@ -337,7 +341,7 @@ measured candidate for the same decision; none is adopted.
 | 1. `INTERFACE.md`'s `PC_i` sentence | **open — owned by the coordinator.** The exact before/after text is in `../positive_control/PC-REVISION.md` §7 and was reported, not edited. |
 | 2. the adopted candidate's frozen bytes | **done.** The candidate stays at `positive_control/variants/pc_exchange_k10/` and the *gate default* was re-pointed at it. This proposal suggested moving it to `positive_control/pc/`; the adoption deliberately did **not**, because the candidate directory's *name* keys the Outcome and verdict file paths and moving it would have rewritten every stored record for the contract PC — a decision change, where the requirement is identity-only. Keeping the bytes where they are makes the adopted verdict (`verdict.*.pc_exchange_k10.json`) *the* verdict already measured, byte for byte. |
 | 3. the gate's verdicts | **done.** `gate_runner.py` re-run on dev and eval; both `ADMISSIBLE`; `values/*.pc_exchange_k10.json` re-emitted; no stored decision field moved. |
-| 4. downstream artifacts computed against `PC_∞` | **out of this directory's ownership.** `a1`'s registered T1 tree, `redesign/`'s lever tables and the `C*(T1)` rows `c04_tie_a_pc_optimum` / `c05_tie_b_pc_complement` were computed against `PC_∞` and, per §7, are numbers about a *different* artifact now. They are not wrong; they must be re-run or re-labelled by their owners. |
+| 4. downstream artifacts computed against `PC_∞` | **out of this directory's ownership, and narrower than first written (corrected 2026-09-23).** Only `redesign/`'s lever tables were computed against `PC_∞`; the gate's own `verdict.{dev,eval}.json` and `values/{dev,eval}.positive-control.json` are the old control's files, and a few scripts carry its label (`tau_calibration.py`'s `"PC_i"` key, `seed_sensitivity.dev.json`). This row first also named `a1`'s registered T1 tree and the `C*(T1)` rows `c04_tie_a_pc_optimum` / `c05_tie_b_pc_complement`; that was false — `a1` mentions no positive control, and `c04`/`c05` are `c01_ok_high_pc`'s partition and its complement (`cut_edges` `207`, not the control's `212`), so they need no re-run. |
 | 5. τ calibration | **unchanged and still valid.** `τ = 10 s` is the §7 floor, and a truncation is faster than the untruncated control (`p50 40 ms` at `k = 10` vs `97 ms` at `∞`), so the floor binds under either control. |
 
 **Must be re-frozen** (all of it is mechanical; none of it changes a threshold):
@@ -353,9 +357,11 @@ measured candidate for the same decision; none is adopted.
    `--pc`, and re-freeze `verdict.*.json` / `values/*.json`. Both new verdicts
    must read `ADMISSIBLE`; a `k` that passes only on dev must be rejected, as
    §3.2 does for `k = 25`.
-4. Any downstream artifact computed against `PC_∞`: `a1`'s registered T1 tree,
-   `redesign/`'s lever tables, and the `C*(T1)` rows that were frozen *because*
-   of a PC measurement (`c04_tie_a_pc_optimum`, `c05_tie_b_pc_complement`).
+4. Any downstream artifact computed against `PC_∞`: `redesign/`'s lever tables
+   (**corrected 2026-09-23** — this item first also named `a1`'s registered T1
+   tree and the `C*(T1)` rows `c04_tie_a_pc_optimum` / `c05_tie_b_pc_complement`;
+   neither carries a control number, and `c04`/`c05` are `c01_ok_high_pc`'s
+   partition and its complement — see §8.0 row 4).
 5. The τ calibration, re-run under the adopted PC (`python3 gates/tau_calibration.py`,
    seconds).
 

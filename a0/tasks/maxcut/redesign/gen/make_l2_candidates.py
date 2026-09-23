@@ -14,7 +14,14 @@ construction it uses.
 Variants
 --------
 * `exchange_opt`      -- one_exchange to local optimum (should reproduce the
-                         frozen PC byte-for-byte; that equality is the check)
+                         superseded control `positive_control/pc/`
+                         byte-for-byte; that equality is the check).  That control
+                         is superseded as of 2026-09-23; the contract's `PC_i` is
+                         now `positive_control/variants/pc_exchange_k10/`.  The
+                         description string that follows is emitted into the
+                         candidate's bytes and still reads "the frozen PC"; it
+                         stays as emitted, because a change would move the
+                         recorded `candidate_source_sha256`
 * `exchange_k<K>`     -- one_exchange truncated after K accepted improving swaps
 * `greedy`            -- classic greedy construction: each node joins the side
                          that maximises the cut to already-placed neighbours

@@ -2,7 +2,14 @@
 """Freeze, and re-verify, the two artifacts this directory owns.
 
     b_i  =  `baseline/`   one seeded uniform random bisection
-    PC_i =  `pc/`         NetworkX `one_exchange(G_i, initial_cut=b_i, seed=s_i)`
+    PC_∞ =  `pc/`         NetworkX `one_exchange(G_i, initial_cut=b_i, seed=s_i)`,
+                          run to a local optimum (`MAX_SWAPS = None`)
+
+**Control label, 2026-09-23.**  The second entry is the artifact this file called
+`PC_i` before that date.  The contract's `PC_i` is now the *same* call stopped
+after 10 accepted improving swaps, frozen at `variants/pc_exchange_k10/`; `pc/` is
+the superseded control and its verdicts are the un-suffixed
+`../gates/verdict.{dev,eval}.json` (`PC-REVISION.md`, `HISTORY.md`).
 
 Both are candidates in INTERFACE.md §4's sense, so both are frozen the way
 `C*(T1)`'s 21 candidates are: every byte in the directory is listed with its
@@ -65,8 +72,10 @@ def describe(candidate_dir):
 
 
 def candidate_dirs():
-    """Every candidate this directory freezes: the baseline, the contract PC, and
-    the truncation variants (each its own timestamped entry)."""
+    """Every candidate this directory freezes: the baseline `b_i`, the superseded
+    control `PC_∞` at `pc/`, and the truncation variants (each its own timestamped
+    entry) -- one of which, `variants/pc_exchange_k10/`, is the contract's `PC_i`
+    since 2026-09-23."""
     dirs = [HERE / "baseline", HERE / "pc"]
     dirs += sorted(p for p in (HERE / "variants").glob("*") if (p / "solution.py").is_file())
     return dirs

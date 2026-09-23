@@ -14,11 +14,21 @@ It measures latency only.  **No calibration graph takes part in any selection**
 they take.
 
 What counts as "the candidate latency distribution".  The candidates the task
-will actually run: the frozen baseline `b_i`, the frozen positive control `PC_i`,
-its truncations, and the `ok` members of `C*(T1)` that a conformance run
-executes.  `C*(T1)`'s deliberately-sleeping `timeout` candidate is excluded by
+will actually run: the frozen baseline `b_i`, the contract's positive control, its
+truncations, and the `ok` members of `C*(T1)` that a conformance run executes.
+`C*(T1)`'s deliberately-sleeping `timeout` candidate is excluded by
 construction -- it exists to *exceed* tau, so including it would make the
 percentile meaningless.
+
+**Which control, 2026-09-23.**  The map below was written when the contract's
+control was the unbounded `positive_control/pc/`, so its key `"PC_i"` names that
+artifact -- the control that is superseded now and labelled `PC_∞`.  The adopted
+control is the variant at `variants/pc_exchange_k10/`, keyed `"PC_k10"`
+(`PC-REVISION.md`).  That key is part of the stored output
+(`tau_calibration.json`, `per_candidate[].candidate`), so it is kept: **read
+`"PC_i"` here as `PC_∞`.**  The derivation does not depend on the label -- the
+stored run gives pooled `p99 = 146 ms`, so `10 x p99 = 1.46 s` and the 10 s floor
+binds.
 
 Timings come from E* itself (`--emit-resources`), i.e. the same numbers the
 harness records in `resources.runs[].wall_ms`, and the 99th percentile is the

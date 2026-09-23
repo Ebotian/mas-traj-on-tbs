@@ -105,9 +105,10 @@ own frozen bytes and digest in `manifest.json`.
 `pc/` contains `pinned/networkx_maxcut_b69beb2c.py` and
 `pinned/networkx_init_b69beb2c.py`. `e_star_child.candidate_files` hashes every
 file in the candidate directory except dot-directories and `__pycache__`, so both
-pins enter `candidate_source_sha256` (`d3c12b54…`). That is intended — the pin
-*is* part of PC's identity — and it is why `manifest.json` lists four files for
-`pc/`, only one of which is the entry.
+pins enter `candidate_source_sha256` (`d3c12b54…`, the digest before D-PC-7's
+edit; `25de3e5d…` after it). That is intended — the pin *is* part of PC's
+identity — and it is why `manifest.json` lists four files for `pc/`, only one of
+which is the entry.
 
 **Consequence for the later experiment.** This directory contains NetworkX
 source. The assignment says the PC's source is never given to a searching agent
@@ -164,6 +165,12 @@ Consequences, all recorded:
 | pin equality | still `PASS` — `verify_pc_identity.py`, C3, 64 graphs |
 | downstream | every stored Outcome for `pc/` was re-run at the same time, and `DEVIATIONS.md` in `../gates/` records the field-level diff of the verdicts (5 identity leaves, 0 decision leaves) |
 
+**Note (2026-09-23).** In the third row, "the contract's `PC_i`" means `pc/` —
+the control the contract named `PC_i` until 2026-09-23. That control is now
+history, and the contract's `PC_i` is `variants/pc_exchange_k10/` (`HISTORY.md`,
+`PC-REVISION.md`). The row is a statement about `pc/`, where `MAX_SWAPS = None`;
+the digest movement and the 48 unchanged `cut_edges` stay correct as such.
+
 **Why this is a re-freeze and not a silent edit.** The digest other artifacts key
 on changed, so keeping the old verdicts would have left them claiming to describe
 bytes that no longer exist. The re-run is what makes the verdicts true again, and
@@ -195,6 +202,17 @@ never part of the identity.
   artifact the contract calls `PC_i` is a contract revision and belongs to the
   contract author. `pc/` is still the contract's `PC_i` and the gate's verdict
   for it is still `NOT_ADMISSIBLE`.
+
+  **SUPERSEDED, 2026-09-23.** The paragraph above is the state before the
+  contract revision. `k = 10` was adopted on 2026-09-23: the contract's `PC_i` is
+  now `variants/pc_exchange_k10/`, and `pc/` is history. The gate reads the
+  `k = 10` control by default and issues `ADMISSIBLE` on dev and on eval. The
+  files `../gates/verdict.dev.json` and `../gates/verdict.eval.json` are
+  unchanged and still read `NOT_ADMISSIBLE`, but they are no longer the
+  contract's verdict: they are the verdicts of the superseded control, still
+  reproducible with `--pc positive_control/pc`. The revision record is
+  `PC-REVISION.md`; the index of the adopted and the superseded control is
+  `HISTORY.md`.
 * **The calibration set is used for latency only.** §9 forbids using
   `suite/calibration/**` for anything but resource rates, and a gate is a
   selection-adjacent judgement, so `gate_runner.py` and `seed_sensitivity.py`

@@ -55,6 +55,19 @@ to make `stage_candidate` preserve the mode.
 **Not done, deliberately:** no change to `e_star_child.py`, `e_star.py`, or the
 frozen candidate files.  This is another workstream's artifact.
 
+**Status update, 2026-09-23 — the finding above is not rewritten.** Commit
+`6dd717c2` ("the candidate launch must be a function of the candidate's bytes
+alone") removed the mode-bit inference.  `e_star_child.resolve_candidate` now
+launches every candidate as `[sys.executable, <staged entry>, …]` unless the
+candidate declares `exec`, and `stage_candidate` copies source file modes only for
+a declared `exec: []`.  The two frozen candidates declare no `exec`, so the
+`PermissionError` above no longer occurs: `python3 e_star.py evaluate --candidate
+positive_control/pc --graph suite/dev/G_dev_0001.json --seed 1337 --timeout 30
+--out /tmp/o.json` returns `status=ok`, exit 0 (checked 2026-09-23 against `E*` at
+`dc6969ec…`).  The words "today" and "as they stand" above describe the state when
+this entry was written.  The mirror workaround was necessary then, and its
+Outcomes stay as measured.
+
 ---
 
 ## D-RD-2 — `p_i` at large `n` uses an efficient *equivalent* transliteration of the pinned `one_exchange`
@@ -72,7 +85,7 @@ at the frozen `θ = (seed 1337, τ = 30 s)` on the L1 sample:
 | `L1_ERp080_n1024_r0…r3` | 1024 | ~41800 | **`timeout`** |
 
 So beyond `n = 512` on the denser stratum, and mostly at `n = 1024` on the
-sparser one, the frozen PC does not finish inside the frozen budget, and
+sparser one, the superseded control does not finish inside the frozen budget, and
 `INTERFACE.md` §6 rule 5 forbids folding a `timeout` in as anything.  The value
 `p_i` in `out/l1_values.json` is therefore the local optimum of the **same
 algorithm**, obtained from `redesign/candidates/exchange_opt/solution.py`, which
@@ -85,8 +98,9 @@ instead of `O(n·m)`.  It is the *same map* on (graph, seed):
 * same accept-only-if-improving loop.
 
 Equality is asserted, not assumed: `gen/run_l2.py` requires `exchange_opt` to
-reproduce the frozen PC's `cut_edges` on **all 24 dev graphs** (0 differences),
-and `gen/l1_eval.py` asserts equality on every L1 graph where the pin completes.
+reproduce the superseded control's `cut_edges` on **all 24 dev graphs** (0
+differences), and `gen/l1_eval.py` asserts equality on every L1 graph where the
+pin completes.
 
 **Budget, labelled.**  The transliteration is given `τ = 900 s` (recorded in each
 Outcome's `theta.timeout_s`), because the question is the value of the converged
@@ -172,12 +186,14 @@ recorded in `instances/ub/<graph_id>.json` and copied into `targets.json`.
 
 ## D-RD-7 — L2's reference row is measured, not copied
 
-L2(a) (the current PC, for reference) is measured by running
+L2(a) (the superseded control, for reference) is measured by running
 `redesign/candidates/exchange_opt` through E* like every other variant, rather
-than reading `gates/values/dev.positive-control.json`.  `gen/run_l2.py` then
-**asserts** that this reproduces the frozen PC's `cut_edges` on all 24 dev graphs
+than reading `gates/values/dev.positive-control.json` — the frozen value file of
+the superseded control, `positive_control/pc/`.  `gen/run_l2.py` then **asserts**
+that this reproduces that control's `cut_edges` on all 24 dev graphs
 (0 differences), and the headline numbers it produces (mean Δ `0.247942608`,
-median ρ `0.158819629`) are digit-identical to `gates/verdict.dev.md`.  So the L2
+median ρ `0.158819629`) are digit-identical to that control's verdict,
+`gates/verdict.dev.md`.  So the L2
 comparison shares one instrument with the gate, and that is checked rather than
 claimed.
 
@@ -230,4 +246,29 @@ are the measurements that were made), nor that the digest is recoverable from th
 repository (`E*` writes it). `out/e-star-state/` is untracked raw run state,
 excluded by the repository's `.gitignore`; it carries no `evaluator_source_sha256`
 and is left untouched.
+
+---
+
+## D-RD-10 — `PC_i` is the bounded variant since 2026-09-23, and this file's "PC" labels name the superseded control
+
+**What changed upstream, not here.** On 2026-09-23 the contract's positive
+control `PC_i` became `positive_control/variants/pc_exchange_k10/` — the same
+pinned `one_exchange(G_i, initial_cut=b_i, seed=s_i)`, stopped after 10 accepted
+improving swaps — on the strength curve this directory measured (L2, `LEVERS.md`
+§2; the criterion is frozen in `gates/REVISION-PROPOSAL.md`, the decision in
+`positive_control/PC-REVISION.md`).  `gates/gate_runner.py` `DEFAULT_PC` now points
+at that directory, the adopted verdicts are
+`gates/verdict.{dev,eval}.pc_exchange_k10.json` (`ADMISSIBLE`), and
+`positive_control/pc/` is kept as history with its verdicts
+`gates/verdict.{dev,eval}.json` (`NOT_ADMISSIBLE`).
+
+**What it means for this file.** The unbounded local optimum at
+`positive_control/pc/` — the reference row that D-RD-2 and D-RD-7 measured, and
+that this file called "the current PC" or "the frozen PC" — is the **superseded**
+control.  Every number in this directory is unchanged and correct for the control
+it measured; none was recomputed.  D-RD-2 and D-RD-7 now name that control, and
+D-RD-1 carries the 2026-09-23 status update on the `E*` launch fix (`6dd717c2`).
+
+**Not changed by this entry.** No threshold, no suite byte, no `E*` byte and no
+`gate_config.json` value.  Labels only.
 

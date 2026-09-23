@@ -285,7 +285,26 @@ after the fix — all 21 C\*(T1) verdicts are unchanged, because every member of
 C\*(T1) is mode `0644` and never entered the broken branch. All 48 gate rows
 (2 candidates × 24 dev graphs) reproduce exactly (`status`, `cut_edges`,
 `candidate_source_sha256`), and a forced re-run of the gate in a `/tmp` sandbox
-reproduces `verdict = NOT_ADMISSIBLE` with zero differing row fields.
+reproduces `verdict = NOT_ADMISSIBLE` with zero differing row fields — both with
+`--pc positive_control/pc`, the control in force at the time.
+
+**Corrected 2026-09-23 — which control that re-run measures.** The default re-run
+no longer returns `NOT_ADMISSIBLE`. On 2026-09-23 the contract adopted
+`positive_control/variants/pc_exchange_k10/` as the positive control
+(`gates/gate_runner.py:73`, `positive_control/PC-REVISION.md`), and the default
+run now writes `verdict = ADMISSIBLE`, exit 0, to
+`gates/verdict.dev.pc_exchange_k10.json`. The `NOT_ADMISSIBLE` result above, and
+the row-for-row agreement with the table that was released, belong to the
+superseded control `positive_control/pc` alone. That control is still reachable,
+and its table is still reproducible, with
+
+```
+python3 gates/gate_runner.py --set dev --pc positive_control/pc
+```
+
+whose verdict file is `gates/verdict.dev.json` (`NOT_ADMISSIBLE`, exit 1). The
+staging defect and its fix are unchanged by this; only the control that fills the
+`p_i` column of the table changed.
 
 **Regression test.** `test_candidate_staging.py` (also wired in as conformance
 probe `p7_candidate_staging`). It fails on the pre-fix evaluator, and its failure

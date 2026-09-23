@@ -7,10 +7,22 @@ but it is the wrong way to *explain* a failure, because a failure at one seed
 could be luck.  This script re-runs the same measurement at additional seeds and
 prints Δ and ρ side by side.
 
-It decides nothing.  It exists so that a reviewer can see whether the verdict in
-`verdict.<set>.json` is structural or a single-seed accident, and the extra runs
-are written to `outcomes/<set>/s<seed>/...` so they never overwrite the
+It decides nothing.  It exists so that a reviewer can see whether the running
+control's verdict is structural or a single-seed accident, and the extra runs are
+written to `outcomes/<set>/s<seed>/...` so they never overwrite the
 pre-registered ones.
+
+**Which control, 2026-09-23.**  The control is read through
+`gate_runner.DEFAULT_PC`, so this script measures the *running* control: the
+adopted bounded `PC_i` (`positive_control/variants/pc_exchange_k10/`) since
+2026-09-23, and the superseded unbounded `PC_∞` (`positive_control/pc/`) before
+that.  The verdict to compare its rows against is
+`verdict.<set>.pc_exchange_k10.json`; the un-suffixed `verdict.<set>.json` is the
+*superseded* control's verdict and still reads `NOT_ADMISSIBLE`.  The stored
+`seed_sensitivity.dev.json` is the earlier run — its rows are `PC_∞` rows — and
+its embedded `note` still *starts* by pointing a reader at `verdict.<set>.json`; on
+2026-09-23 a dated label note was appended to that string in place, with the `rows`
+left unchanged.  `DEVIATIONS.md` carries the same reading.
 
     python3 gates/seed_sensitivity.py --set dev --seeds 1337 0 1 2 3
 """

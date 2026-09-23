@@ -277,8 +277,43 @@ now named, so that adopting a `k` cannot be mistaken for relaxing a gate:
   the positive control (§10's "`ok` and high (PC)"). Now that `PC_i` is defined,
   `../README.md`'s note says that candidate "is the thing to replace". It is
   outside this directory's ownership and was not touched.
-* `a1`'s registered T1 tree, `redesign/`'s lever tables, and the `C*(T1)` tie
-  rows `c04_tie_a_pc_optimum` / `c05_tie_b_pc_complement` carry `PC_∞` numbers.
-  Per `../gates/REVISION-PROPOSAL.md` §7 they are now numbers about a *different*
-  artifact: not wrong, but needing a re-run or an explicit `PC_∞` label by their
-  owners.
+* **Corrected 2026-09-23 — the blast radius is narrower than first written.** The
+  bullet this replaces named `a1`'s registered T1 tree, `redesign/`'s lever
+  tables and the `C*(T1)` tie rows `c04_tie_a_pc_optimum` /
+  `c05_tie_b_pc_complement` as carrying `PC_∞` numbers. Two of those three
+  statements are false and are withdrawn. `a1` carries no positive-control number
+  at all: `grep -c positive_control a0/a1/T1-EID.json a0/a1/T1.contract.json`
+  returns `0` and `0`, and no file under `a0/a1/kapso_t1/` mentions the control.
+  `c04`/`c05` are `c01_ok_high_pc`'s partition and its exact complement, changed
+  only in docstring wording; their frozen `cut_edges` is `207` each (graph
+  `G_dev_0001`), the same as `c01` and *not* the control's `212`
+  (`../conformance.expected.json`), so they are not PC-relative and need no
+  re-run.
+* The artifacts that *are* relative to the control are therefore: `redesign/`'s
+  lever tables (the only one of the three computed against `PC_∞`), the gate's
+  own stored files (`../gates/verdict.{dev,eval}.json`,
+  `../gates/values/{dev,eval}.positive-control.json`), and label-only drift in a
+  few scripts and diagnostics (`../gates/tau_calibration.py`'s `"PC_i"` key and
+  `../gates/seed_sensitivity.dev.json` hold `PC_∞` numbers under a label that now
+  points at `k = 10`). Per `../gates/REVISION-PROPOSAL.md` §7 those are numbers
+  about a *different* artifact: not wrong, but needing a re-run or an explicit
+  `PC_∞` label by their owners.
+
+### 7.5 Applied, 2026-09-23 — in a different shape than §7.2/§7.3 proposed
+
+The lead applied the change to `../INTERFACE.md` on 2026-09-23, so §7.1's finding is
+**closed**: the contract now defines its positive control. The applied shape differs from
+the proposal above, and the difference is recorded here rather than smoothed over:
+
+* **§13 is new** and carries the definition — the identity quadruple
+  `(G_i, b_i, s_i, networkx b69beb2c)` with the truncation at 10 accepted improving swaps,
+  the reason `s_i` must be frozen together with `G_i` and `b_i` (the pin shuffles the node
+  order, so the initial cut alone does not fix `p_i`), the candidate-directory digest
+  `ee49eba0…` and the fact that it is not any single file's sha256, the superseded
+  control's `25de3e5d…`, the verdict-file naming rule, and the deliberate staleness inside
+  the adopted candidate's bytes.
+* **§12 gained one bullet** — that the control's identity may only change through a
+  contract revision, and never to make a gate pass. The original prohibition keeps its
+  original wording; the in-line sentence §7.2 proposed was not used.
+* **§1 gained two layout lines**, worded in the file's own table style rather than the
+  proposed text.

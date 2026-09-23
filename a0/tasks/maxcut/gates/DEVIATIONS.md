@@ -35,6 +35,11 @@ requires the Δ half to be *implementable and reportable before
 `0.248 ≫ 0.03`; under reading B the mean is `0.826 ≫ 0.03`, so the gate passes
 either way and the failing path is ρ regardless. The choice is recorded because
 it changes what the number *means*, not because it changes the answer.
+(**2026-09-23:** the two mean numbers, and "the failing path is ρ", belong to the
+superseded unbounded control (`PC_∞`, `positive_control/pc`). Under the adopted
+`k = 10` control the Δ half still passes and the ρ half now passes, so the verdict
+is `ADMISSIBLE` — D-GATE-18. Reading A still changes what the number means, not
+the answer.)
 
 ---
 
@@ -46,6 +51,9 @@ the two central order statistics. (The assignment says "global median"; with
 `Fraction`s, never on floats. For the dev set the two candidates differ by
 `|0.1588 − 0.1638|`, and both are far below `0.30`, so the verdict is insensitive
 to this choice — but it is stated so a re-implementation matches to the digit.
+(**2026-09-23:** those two medians, and that verdict, are the superseded `PC_∞`
+control's. The adopted `k = 10` control's dev ρ median is `0.615639328`, which is
+also far from the `0.30` bar, so this choice remains insensitive — D-GATE-18.)
 
 ---
 
@@ -63,7 +71,10 @@ records that config's sha256, so the edit would be visible.
 
 **Result.** Not triggered: median `0.384381172`, min `0.257847534` on dev. The
 baseline is far from the reference, so the failure cannot be blamed on a suite
-that is already solved at the baseline.
+that is already solved at the baseline. (**2026-09-23:** "the failure" is the
+superseded `PC_∞` control's ρ failure; the median and min above are functions of
+the baseline and the targets only, so they hold for either control, and the veto
+is not triggered — D-GATE-18.)
 
 ---
 
@@ -94,6 +105,13 @@ statistic, stated in the output.
 
 (two runs; the ranges are the run-to-run variation.)
 
+**2026-09-23 label note.** `PC_i` in the population sentence and in the table is
+the unbounded control, now labelled `PC_∞` (`positive_control/pc`); the same key
+in `tau_calibration.json` and in `tau_calibration.py`'s candidate map reads the
+same way. The adopted contract `PC_i` is the variant `pc_exchange_k10` (D-GATE-18).
+`τ` itself does not change: the stored re-measurement gives pooled p99 `146 ms`,
+so `10 × p99 = 1.46 s` and the 10 s floor still binds.
+
 `gate_config.theta.timeout_s` is now `10.0`, with the derivation and the evidence
 file named in the config itself. The floor binding makes the value insensitive to
 the percentile estimate: any pooled p99 below 1 s yields `τ = 10 s`.
@@ -117,14 +135,19 @@ has made it only for its own runs and says so in every verdict's `theta` field.
 ## D-GATE-5 — dev decides; eval is written to a *separate* file
 
 The gate is decided on `dev`. The eval numbers are computed (the assignment asks
-for them "if cheap") and written to `verdict.eval.json` / `verdict.eval.md` —
-never merged into the dev verdict — so that §12's "let no eval instance enter the
+for them "if cheap") and written to a separate eval verdict file
+(`verdict.eval.pc_exchange_k10.json` / `.md` for the adopted control, and
+`verdict.eval.json` / `.md` for the superseded `PC_∞` one — D-GATE-18) — never
+merged into the dev verdict — so that §12's "let no eval instance enter the
 agent's workspace, context or any visible path" is not weakened. Nothing in the
 gate's decision path reads an eval number; `gate_config.sets` freezes which set
 is `gate` and which is `diagnostic`.
 
-Both sets fail ρ and pass Δ, which is corroboration rather than a second chance:
-no threshold was evaluated against eval.
+Both sets fail ρ and pass Δ under the superseded `PC_∞` control, which is
+corroboration rather than a second chance: no threshold was evaluated against
+eval. (**2026-09-23:** under the adopted `k = 10` control both sets pass both
+halves; this paragraph records the earlier round, in which the contract's control
+failed the ρ half — D-GATE-18.)
 
 ---
 
@@ -337,6 +360,13 @@ verdict — `NOT_ADMISSIBLE` for `dev`/`eval`, `ADMISSIBLE` for the variants tha
 pass, `NOT_ADMISSIBLE` for `eval` at `k25` — is unchanged, and every rendered
 `.md` table and `strength_table.{json,md}`/`seed_sensitivity.dev.json`/
 `rho_crosscheck.dev.json` came out byte-identical, so no decision number moved.
+(**2026-09-23:** the `dev`/`eval` verdicts named here are the superseded `PC_∞`
+control's, `verdict.{dev,eval}.json`. The adopted `k = 10` control's verdicts are
+`verdict.{dev,eval}.pc_exchange_k10.json` and read `ADMISSIBLE` — D-GATE-18. Also:
+one byte-identity reading above no longer holds for a later reader. A dated label note
+was appended to `seed_sensitivity.dev.json`'s `note` string on 2026-09-23; its `rows`
+are unchanged, so the reading this entry makes — that no decision number moved — still
+stands.)
 
 **One number that did move, and it is not a decision.** `tau_calibration.json` is
 re-measured from scratch, and the percentiles came out higher than at the first
@@ -369,7 +399,11 @@ reproduces the transition itself, not just the end state — that is the command
 reviewer should re-run); `python3 gates/refreeze_evidence.py --before 7bf8a14b`
 → `CLEAN`, 12 verdicts, 0 decision leaves;
 `python3 gates/gate_runner.py` → `NOT_ADMISSIBLE`, exit 1. Zero model spend: no
-`a0/meter/` call was made for any of this.
+`a0/meter/` call was made for any of this. (**2026-09-23:** that default-control
+result was correct at the re-stamp. The runner's default is now
+`pc_exchange_k10` (D-GATE-18), so `python3 gates/gate_runner.py` today returns
+`ADMISSIBLE`, exit 0; the `NOT_ADMISSIBLE`/exit-1 path needs
+`--pc positive_control/pc`.)
 
 ---
 
@@ -517,7 +551,8 @@ underneath them:
 * `seed_sensitivity.dev.json` — its rows are the `PC_∞` control's
   (`Δ 0.247942608`, `ρ 0.158819629` at the frozen seed), while its own note
   points a reader at "the single frozen seed's verdict in `verdict.<set>.json`",
-  which is now the `k = 10` file. Regenerating it would add ~192 tagged Outcome
+  which is the superseded control's file — the adopted one is
+  `verdict.<set>.pc_exchange_k10.json`. Regenerating it would add ~192 tagged Outcome
   files (`outcomes/dev/s{0,1,2,3}/pc_exchange_k10/…`) that this revision has no
   need for, so the file is left as the `PC_∞` diagnostic it is — **read its rows
   as `PC_∞` rows.**

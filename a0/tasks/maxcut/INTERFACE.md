@@ -26,6 +26,8 @@ a0/tasks/maxcut/
   e_star_child.py         候选子进程装载器（沙箱、超时、四态）
   candidates/             ★C*(T1)：固定候选集，用于一致性检验（含 invalid/error/timeout）
   references/             ★参考目标 R_i / OPT_i / U_i + 构建日志
+  positive_control/       ★正控 PC_i 与基线 b_i 的候选字节（variants/ 是各 k 的截断，pc/ 是无界历史正控）
+  gates/                  ★预注册门配置 + runner + 判定（verdict.<set>[.<pc 目录名>].json）
 a0/meter/                 明文计账代理 + ledger 格式
 a0/a1/                    A1 编排：CID/AID、block、预算强制、资格判定
 ```
@@ -184,6 +186,25 @@ env:   PATH 最小集、PYTHONDONTWRITEBYTECODE=1、HOME=<scratch>、LANG=C.UTF-
 ## 12. 明确禁止
 
 - 放宽任何预注册门（PC 按族 Δ、ρ、饱和 NO-GO）；不过就重造套件并记录。
+- 未经本文件的契约修订就更换正控 `PC_i` 的身份——尤其不得为了让门通过而换 PC（见 §13）。
 - 用浮点做分数比较；用候选自报的分数；把 `status != ok` 折算成 0。
 - 让 eval 集进入 agent 的工作区、上下文或任何可见路径。
 - 修改上游 runtime 源码。
+
+---
+
+## 13. 正控 `PC_i` 的身份（冻结，2026-09-23 起）
+
+`PC_i` 是 §6 意义下的 harness 侧候选。它的身份是四元组：
+
+```
+PC_i = one_exchange(G_i, initial_cut=b_i, seed=s_i)   # 在 10 次接受改进的交换后截断
+identity = (G_i, b_i, s_i, networkx commit b69beb2c4f6e480aaca4b0de7b4883f2b9f1030b)
+```
+
+- 被转写的上游文件是 `networkx/algorithms/approximation/maxcut.py`（该文件 sha256 `793419aa…`，BSD-3-Clause；`positive_control/pc/pinned/` 留有副本）。
+- **`s_i` 必须与 `G_i`、`b_i` 一起冻结。** 上游实现每轮先 `seed.shuffle(nodes)` 再取首个最优交换，所以只冻结 `initial_cut` 不足以定 `p_i`（实测：只改 shuffle seed，60 图中 55 图的分划改变）。`s_i = θ.seed = 1337`，取自 `gates/gate_config.json`，经 `gate_runner.py` → `e_star_child.py` 传入；候选自身的 `--seed` 无默认值。
+- 候选字节在 `positive_control/variants/pc_exchange_k10/`；`E*` 给出的 `source_sha256` = `ee49eba0…`。这是**候选目录摘要**（对该目录文件清单的规范 JSON 求 sha256），不是任何单文件的 sha256——其中 `solution.py` 自身是 `13a353a2…`。
+- 无界的历史正控保留在 `positive_control/pc/`（`source_sha256` = `25de3e5d…`，判定 `NOT_ADMISSIBLE`），可用 `gate_runner.py --pc positive_control/pc` 复现。判定文件名随 PC 目录名走：`gates/verdict.<set>.json` 是**已废正控**的判定（保留为历史，不被覆盖），默认正控的判定在 `gates/verdict.<set>.pc_exchange_k10.json`。
+- 采纳记录、事前写下的判据与后验自由度的声明在 `positive_control/PC-REVISION.md`。本次修订**没有**改动 §6 的判定规则、套件、`gate_config.json` 的阈值或 `E*`。
+- 已知的字节内陈旧，**故意不修**：`variants/pc_exchange_k10/` 的 `solution.py` docstring 与 `candidate.json` 仍把该候选写作 *proposed alternative*，因为这两个文件都参与上面的目录摘要；改动它们会改变 `ee49eba0…`，使既有 Outcome 与判定变成另一批字节的记录。更正记在这里，不在那些字节里。
