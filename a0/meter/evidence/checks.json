@@ -1,8 +1,8 @@
 {
-  "passed": 69,
-  "total": 69,
+  "passed": 70,
+  "total": 70,
   "proxy_under_test": "/home/ebt/rsi-dev/a0/meter/meter_proxy.py",
-  "proxy_sha256": "89f7bac46033fda5cf3c28074be138e7d6c23fad6e702284b21a1954dc1d6ebb",
+  "proxy_sha256": "b99c04c3875f33f88c3302a2b39e12f06e6ae3f808b04752e7e22439cb66f600",
   "checks": [
     {
       "name": "S1 http 200",
@@ -82,7 +82,7 @@
     {
       "name": "S4 anthropic path routed",
       "ok": true,
-      "detail": "https://127.0.0.1:44417/anthropic/v1/messages"
+      "detail": "https://127.0.0.1:56107/anthropic/v1/messages"
     },
     {
       "name": "S5 usage merged from message_start + message_delta",
@@ -230,6 +230,11 @@
       "detail": "status=429 reason='upstream_http_429_no_usage'"
     },
     {
+      "name": "S13f a 3xx with a non-JSON body names its status too",
+      "ok": true,
+      "detail": "status=302 reason='upstream_http_302_no_usage' unmetered=True"
+    },
+    {
       "name": "S13d a 2xx body that is not JSON stays unparseable_response_body",
       "ok": true,
       "detail": "status=200 reason='unparseable_response_body'"
@@ -267,7 +272,7 @@
     {
       "name": "S15 both endpoint shapes are published",
       "ok": true,
-      "detail": "{\"anthropic_base_url\": \"http://127.0.0.1:60141\", \"arm_id\": \"A_base\", \"base_url\": \"http://127.0.0.1:60141/v1\", \"campaign_id\": \"C_0001\", \"token\": \"tok-C1\"}"
+      "detail": "{\"anthropic_base_url\": \"http://127.0.0.1:48711\", \"arm_id\": \"A_base\", \"base_url\": \"http://127.0.0.1:48711/v1\", \"campaign_id\": \"C_0001\", \"token\": \"tok-C1\"}"
     },
     {
       "name": "S16 start refused, non-zero exit",
@@ -322,17 +327,17 @@
     {
       "name": "S18e every body-bearing request in the whole run was framed, whole and parseable",
       "ok": true,
-      "detail": "audited=26 offenders=[]"
+      "detail": "audited=27 offenders=[]"
     },
     {
       "name": "S18f every forwarded request carried a credential",
       "ok": true,
-      "detail": "audited=26"
+      "detail": "audited=27"
     },
     {
       "name": "S18g every ledger row written so far still re-derives, including the ones added here",
       "ok": true,
-      "detail": "rows=30 bad=[]"
+      "detail": "rows=31 bad=[]"
     },
     {
       "name": "S19a an unframed body is refused by the proxy (400), not guessed at",
@@ -347,7 +352,7 @@
     {
       "name": "S19c nothing unframed ever reached the upstream",
       "ok": true,
-      "detail": "upstream log lines 26 -> 26"
+      "detail": "upstream log lines 27 -> 27"
     }
   ]
 }

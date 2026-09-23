@@ -626,10 +626,12 @@ def handle_request(conn: socket.socket, peer: str, campaign: Campaign, svc: Serv
             # A body that yields no usage says nothing about the status by itself, and an audit
             # reads the status off the row. So a non-2xx must name it -- whether the body was
             # JSON without a `usage` object or not JSON at all (a gateway page, a truncated
-            # body). `unparseable_response_body` alone cannot tell a 401 from a 500.
+            # body). `unparseable_response_body` alone cannot tell a 401 from a 500, and the
+            # test is `>= 300`, not `>= 400`: `http.client` does not follow redirects, so a 3xx
+            # arrives here as a gap too and must name itself.
             no_usage_reason = outcome.unmetered_reason in ("no_usage_field_in_response",
                                                            "unparseable_response_body")
-            if status >= 400 and no_usage_reason:
+            if status >= 300 and no_usage_reason:
                 outcome = UsageOutcome(None, "none", "upstream_http_%d_no_usage" % status,
                                        outcome.raw)
             elif not body_bytes:

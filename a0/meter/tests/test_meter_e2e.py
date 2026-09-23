@@ -81,6 +81,7 @@ def test_the_unparseable_error_labelling_checks_are_present_and_not_vacuous(self
     expected = {
         "S13b": "upstream_http_502_no_usage",
         "S13c": "upstream_http_429_no_usage",
+        "S13f": "upstream_http_302_no_usage",
         "S13d": "unparseable_response_body",
         "S13e": "empty_response_body",
     }

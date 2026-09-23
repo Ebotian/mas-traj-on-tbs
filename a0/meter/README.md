@@ -120,7 +120,7 @@ this component exists to close. Reasons this implementation emits:
 | reason | meaning |
 |---|---|
 | `no_usage_field_in_response` | 2xx response with no `usage` object |
-| `upstream_http_<code>_no_usage` | non-2xx response that yields no usage — whether the error body is JSON without a `usage` object, or not JSON at all (a gateway page, plain text); the row always names the status |
+| `upstream_http_<code>_no_usage` | a response with `status >= 300` that yields no usage — whether the body is JSON without a `usage` object, or not JSON at all (a gateway page, plain text); the row always names the status. A 3xx counts: `http.client` does not follow redirects, so a redirect reaches this code as a gap |
 | `empty_response_body` | 2xx with an empty body |
 | `usage_present_without_cache_split` | prompt total reported, cache split not (`--on-missing-cache-split unmetered`) |
 | `stream_truncated_before_usage[:<err>]` | the stream ended (or errored) before any *final* usage event |
@@ -136,6 +136,18 @@ this component exists to close. Reasons this implementation emits:
 | `request_body_unframed` | body bytes with neither `Content-Length` nor chunked framing: extent undefined, so refused rather than guessed (recorded, nothing forwarded) |
 | `request_body_truncated` | declared length or chunked terminator never arrived |
 | `request_body_length_unparsable` / `request_body_too_large` | `Content-Length` that is not a non-negative integer / exceeds the 64 MiB cap |
+
+The status-naming rule has a precedence, and an independent sweep of every branch on 2026-09-23
+fixed its exact extent. Three non-2xx shapes still do **not** name the status, and each keeps
+`unmetered: true` with `ceq: null`, so nothing is estimated — only the reason is less specific
+than the row above promises:
+
+- a body that carries a *partial* or *invalid* `usage` object (`completion_tokens_absent`,
+  `inconsistent_usage_negative_field`, `partial_native_usage_fields`, …);
+- a body the provider compressed despite `Accept-Encoding: identity`
+  (`content_encoding_<enc>_not_parseable`);
+- an error delivered as an SSE stream (`stream_ended_without_usage`,
+  `stream_truncated_before_usage`).
 
 ## 3. Attribution — how a row knows which campaign it belongs to
 

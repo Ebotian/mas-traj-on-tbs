@@ -304,6 +304,7 @@ def main(argv: list[str] | None = None) -> int:
     H1ET = {"X-Fake-Scenario": "error-429-text", "X-A0-Meter-Token": "tok-C1", **AUTH}
     H1NJ = {"X-Fake-Scenario": "ok-200-notjson", "X-A0-Meter-Token": "tok-C1", **AUTH}
     H1NE = {"X-Fake-Scenario": "ok-200-empty", "X-A0-Meter-Token": "tok-C1", **AUTH}
+    H1RD = {"X-Fake-Scenario": "error-302-html", "X-A0-Meter-Token": "tok-C1", **AUTH}
     H2 = {"X-Fake-Scenario": "chat-usage-ns", "X-A0-Meter-Token": "tok-C2", **AUTH}
 
     def rows() -> list[dict]:
@@ -571,6 +572,16 @@ def main(argv: list[str] | None = None) -> int:
           and row["reason"] == "upstream_http_429_no_usage",
           "status=%d reason=%r" % (status, row["reason"]))
 
+    # The label above was first written for `status >= 400` while the claim said "non-2xx", so a
+    # redirect kept the 2xx label. This check pins the wider test.
+    status, _, _ = post(p1, "/v1/chat/completions", {"model": "deepseek-flash"}, H1RD)
+    row = last()
+    check("S13f a 3xx with a non-JSON body names its status too",
+          status == 302 and row["unmetered"] is True and row["usage"] is None
+          and row["ceq"] is None and row["reason"] == "upstream_http_302_no_usage",
+          "status=%d reason=%r unmetered=%r" % (status, row["reason"], row["unmetered"]))
+    s13f_row = row
+
     print("\n=== S13d the 2xx reasons stay distinct from the non-2xx one ===")
     status, _, _ = post(p1, "/v1/chat/completions", {"model": "deepseek-flash"}, H1NJ)
     row = last()
@@ -766,6 +777,7 @@ def main(argv: list[str] | None = None) -> int:
         "S7b_non_allowlisted_host_refused": refusal_rows[1],
         "S11_stream_truncated_before_usage": s11_row,
         "S13b_non_2xx_unparseable_body_names_status": s13b_row,
+        "S13f_3xx_unparseable_body_names_status": s13f_row,
     }
     with open(os.path.join(out, "highlights.json"), "w", encoding="utf-8") as handle:
         json.dump(highlights, handle, indent=2)

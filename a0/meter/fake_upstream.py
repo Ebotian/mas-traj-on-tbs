@@ -110,6 +110,10 @@ SCENARIOS = {
                        "body": b"<html><body><h1>502 Bad Gateway</h1></body></html>"},
     "error-429-text": {"mode": "raw", "status": 429, "content_type": "text/plain",
                        "body": b"rate limited: slow down"},
+    # A 3xx that never hands over a usable body. `http.client` does not follow redirects, so the
+    # proxy sees the redirect itself; it is a gap like any other non-2xx and must name its status.
+    "error-302-html": {"mode": "raw", "status": 302, "content_type": "text/html",
+                       "body": b"<html><body>302 Found</body></html>"},
     # A 2xx whose body is not JSON: the reason must stay `unparseable_response_body`.
     "ok-200-notjson": {"mode": "raw", "status": 200, "content_type": "text/plain",
                        "body": b"not json at all"},
