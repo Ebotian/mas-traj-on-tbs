@@ -1,0 +1,351 @@
+2026-09-23T11:13:46+08:00 == up: run directory /tmp/a0ec
+== non-a0ec containers before
+adapdc-catalog-postgres-1	postgres:16	Up 26 hours (healthy)
+adapdc-postgresql-1	postgres:16	Exited (0) 6 days ago
+adapdc-temporal-1	temporalio/server:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-admin-tools-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-create-namespace-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-ui-1	temporalio/ui:2.49.1	Exited (2) 6 days ago
+== adapdc-catalog-postgres-1 before
+id=ec2bbaf149c24317e300ea614110d0b7105daa329e95707148766933ca860a25 running=true started=2026-09-22T01:04:21.916233832Z restarts=0
+ Network a0ec-egress Creating 
+ Network a0ec-egress Creating 
+ Network a0ec-internal Creating 
+ Network a0ec-internal Creating 
+ Network a0ec-egress Created 
+ Network a0ec-egress Created 
+ Network a0ec-internal Created 
+ Network a0ec-internal Created 
+ Container a0ec-cli Creating 
+ Container a0ec-meter Creating 
+ Container a0ec-cli Created 
+ Container a0ec-meter Created 
+ Container a0ec-meter Starting 
+ Container a0ec-cli Starting 
+ Container a0ec-meter Started 
+ Container a0ec-cli Started 
+49097b901f1f75004b148152163378bc9148513f3ad1d2a97335233e0fa0df1c
+2026-09-23T11:14:56+08:00 == down
+ Container a0ec-meter Stopping 
+ Container a0ec-cli Stopping 
+ Container a0ec-meter Stopped 
+ Container a0ec-meter Removing 
+ Container a0ec-meter Removed 
+ Container a0ec-cli Stopped 
+ Container a0ec-cli Removing 
+ Container a0ec-cli Removed 
+ Network a0ec-egress Removing 
+ Network a0ec-internal Removing 
+ Network a0ec-egress Removed 
+ Network a0ec-internal Removed 
+== after teardown: only the pre-existing containers/networks should remain
+adapdc-temporal-ui-1	temporalio/ui:2.49.1	Exited (2) 6 days ago
+adapdc-temporal-create-namespace-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-1	temporalio/server:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-admin-tools-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-postgresql-1	postgres:16	Exited (0) 6 days ago
+adapdc-catalog-postgres-1	postgres:16	Up 26 hours (healthy)
+adapdc_temporal-network  bridge
+bridge  bridge
+host  host
+none  null
+2026-09-23T11:15:08+08:00 == up: run directory /tmp/a0ec
+== non-a0ec containers before
+adapdc-catalog-postgres-1	postgres:16	Up 26 hours (healthy)
+adapdc-postgresql-1	postgres:16	Exited (0) 6 days ago
+adapdc-temporal-1	temporalio/server:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-admin-tools-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-create-namespace-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-ui-1	temporalio/ui:2.49.1	Exited (2) 6 days ago
+== adapdc-catalog-postgres-1 before
+id=ec2bbaf149c24317e300ea614110d0b7105daa329e95707148766933ca860a25 running=true started=2026-09-22T01:04:21.916233832Z restarts=0
+ Network a0ec-egress Creating 
+ Network a0ec-internal Creating 
+ Network a0ec-egress Creating 
+ Network a0ec-internal Creating 
+ Network a0ec-egress Created 
+ Network a0ec-egress Created 
+ Network a0ec-internal Created 
+ Network a0ec-internal Created 
+ Container a0ec-cli Creating 
+ Container a0ec-meter Creating 
+ Container a0ec-meter Created 
+ Container a0ec-cli Created 
+ Container a0ec-cli Starting 
+ Container a0ec-meter Starting 
+ Container a0ec-cli Started 
+ Container a0ec-meter Started 
+5deaaf3e74e48025afea009eae9be4e7e4f05e74f4e4f8aef86ca7a3aa8e9a37
+compose_up_seconds=0.22
+compose_up_to_meter_ready_seconds=0.79
+first_docker_exec_codex_version_seconds=0.03
+image_pull_seconds=0.00  # python:3.12-slim was already local
+a0ec-cli-c2	python:3.12-slim	Up Less than a second	
+a0ec-cli	python:3.12-slim	Up Less than a second	
+a0ec-meter	python:3.12-slim	Up Less than a second	127.0.0.1:8802->8802/tcp
+a0ec-internal internal=true subnet=172.31.78.0/24
+2026-09-23T11:15:08+08:00 == up complete
+2026-09-23T11:15:10+08:00 == probe (inside each agent container)
+--- variant C1 ---
+{
+ "_walk_control_ok": true,
+ "_leak_basenames_found": [],
+ "_leak_dirs_found": [],
+ "_opened_count": 0
+}
+--- variant C2 ---
+{
+ "_walk_control_ok": true,
+ "_leak_basenames_found": [],
+ "_leak_dirs_found": [],
+ "_opened_count": 0
+}
+2026-09-23T11:15:25+08:00 == probe complete
+2026-09-23T11:15:49+08:00 == probe (inside each agent container)
+--- variant C1 ---
+{
+ "_walk_control_ok": true,
+ "_leak_basenames_found": [],
+ "_leak_dirs_found": [],
+ "_opened_count": 0,
+ "_read_control_ok": true,
+ "_read_control_body": "a0ec canary -- visible means the visibility control works\n"
+}
+--- variant C2 ---
+{
+ "_walk_control_ok": true,
+ "_leak_basenames_found": [],
+ "_leak_dirs_found": [],
+ "_opened_count": 0,
+ "_read_control_ok": true,
+ "_read_control_body": "a0ec canary -- visible means the visibility control works\n"
+}
+2026-09-23T11:16:04+08:00 == probe complete
+2026-09-23T11:16:08+08:00 == metered call, variant C1 (posture: danger-full-access, the T1 coding_agent posture)
+sandbox: danger-full-access
+reasoning effort: none
+reasoning summaries: none
+session id: 01a0cc43-7701-7f40-b145-c3b01762f734
+--------
+user
+Reply with exactly: A0EC-C1-OK
+warning: Model metadata for `deepseek-flash` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+codex
+A0EC-C1-OK
+tokens used
+825
+A0EC-C1-OK
+variant C1 exit=0
+2026-09-23T11:16:09+08:00 == metered call, variant C2 (same posture; no network namespace uplink at all)
+sandbox: danger-full-access
+reasoning effort: none
+reasoning summaries: none
+session id: 01a0cc43-7bdc-70a0-ba3c-8ea396684243
+--------
+user
+Reply with exactly: A0EC-C2-OK
+warning: Model metadata for `deepseek-flash` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+codex
+A0EC-C2-OK
+tokens used
+185
+A0EC-C2-OK
+variant C2 exit=0
+2026-09-23T11:16:11+08:00 == calls complete
+2026-09-23T11:16:13+08:00 == verify (host side)
+== the ledger, re-derived by a separate program (a0/meter/verify_ledger.py)
+40_ledger.jsonl: 6 rows, 2 metered, 4 unmetered, ceq_total=1382
+  EC_C1_0001/A_container_internal ceq=1005
+  EC_C2_0001/A_container_netnone ceq=377
+
+== every row, and CEq summed from the rows themselves
+  EC_C1_0001   A_container_internal model=None            unmetered=True  ceq=None
+  EC_C2_0001   A_container_netnone  model=None            unmetered=True  ceq=None
+  EC_C1_0001   A_container_internal model=None            unmetered=True  ceq=None
+  EC_C2_0001   A_container_netnone  model=None            unmetered=True  ceq=None
+  EC_C1_0001   A_container_internal model=deepseek-flash  unmetered=False ceq=1005
+  EC_C2_0001   A_container_netnone  model=deepseek-flash  unmetered=False ceq=377
+  TOTAL CEq = 1382 over 6 rows
+
+== non-a0ec containers, after (diff against the before fingerprint)
+  IDENTICAL to the before fingerprint
+    adapdc-catalog-postgres-1	postgres:16	Up 26 hours (healthy)
+    adapdc-postgresql-1	postgres:16	Exited (0) 6 days ago
+    adapdc-temporal-1	temporalio/server:1.31.0	Exited (0) 6 days ago
+    adapdc-temporal-admin-tools-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+    adapdc-temporal-create-namespace-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+    adapdc-temporal-ui-1	temporalio/ui:2.49.1	Exited (2) 6 days ago
+
+== adapdc-catalog-postgres-1, after
+id=ec2bbaf149c24317e300ea614110d0b7105daa329e95707148766933ca860a25 running=true started=2026-09-22T01:04:21.916233832Z restarts=0
+  before: id=ec2bbaf149c24317e300ea614110d0b7105daa329e95707148766933ca860a25 running=true started=2026-09-22T01:04:21.916233832Z restarts=0
+
+== startup cost, measured
+compose_up_seconds=0.22
+compose_up_to_meter_ready_seconds=0.79
+first_docker_exec_codex_version_seconds=0.03
+image_pull_seconds=0.00  # python:3.12-slim was already local
+call_C1_seconds=1.24
+call_C2_seconds=1.27
+
+== image sizes
+python:3.12-slim 177220457 bytes (uncompressed)
+
+== the harness-supplied state, and what the container has of its own
+/tmp/a0ec/codex-home/c1:
+total 580
+drwxr-xr-x 8 ebt ebt    380 Sep 23 11:16 .
+drwxr-xr-x 4 ebt ebt     80 Sep 23 11:13 ..
+-rw------- 1 ebt ebt      3 Sep 23 11:16 .sandbox_migration
+drwxr-xr-x 2 ebt ebt     60 Sep 23 11:16 .tmp
+-rw------- 1 ebt ebt    857 Sep 23 11:16 config.toml
+-rw-r--r-- 1 ebt ebt   4096 Sep 23 11:16 goals_1.sqlite
+-rw-r--r-- 1 ebt ebt  32768 Sep 23 11:16 goals_1.sqlite-shm
+-rw-r--r-- 1 ebt ebt  78312 Sep 23 11:16 goals_1.sqlite-wal
+-rw-r--r-- 1 ebt ebt     36 Sep 23 11:16 installation_id
+-rw-r--r-- 1 ebt ebt  49152 Sep 23 11:16 logs_2.sqlite
+-rw-r--r-- 1 ebt ebt  45056 Sep 23 11:16 memories_1.sqlite
+-rw-r--r-- 1 ebt ebt  40960 Sep 23 11:16 queue_1.sqlite
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:16 sessions
+drwxr-xr-x 2 ebt ebt     40 Sep 23 11:16 shell_snapshots
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:16 skills
+-rw-r--r-- 1 ebt ebt 241664 Sep 23 11:16 state_5.sqlite
+drwxr-xr-x 2 ebt ebt     60 Sep 23 11:16 thread-writer-locks
+-rw-r--r-- 1 ebt ebt  86016 Sep 23 11:16 thread_history_1.sqlite
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:15 tmp
+
+/tmp/a0ec/codex-home/c2:
+total 496
+drwxr-xr-x 8 ebt ebt    340 Sep 23 11:16 .
+drwxr-xr-x 4 ebt ebt     80 Sep 23 11:13 ..
+-rw------- 1 ebt ebt      3 Sep 23 11:16 .sandbox_migration
+drwxr-xr-x 2 ebt ebt     60 Sep 23 11:16 .tmp
+-rw------- 1 ebt ebt    763 Sep 23 11:16 config.toml
+-rw-r--r-- 1 ebt ebt  32768 Sep 23 11:16 goals_1.sqlite
+-rw-r--r-- 1 ebt ebt     36 Sep 23 11:16 installation_id
+-rw-r--r-- 1 ebt ebt  49152 Sep 23 11:16 logs_2.sqlite
+-rw-r--r-- 1 ebt ebt  45056 Sep 23 11:16 memories_1.sqlite
+-rw-r--r-- 1 ebt ebt  40960 Sep 23 11:16 queue_1.sqlite
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:16 sessions
+drwxr-xr-x 2 ebt ebt     40 Sep 23 11:16 shell_snapshots
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:16 skills
+-rw-r--r-- 1 ebt ebt 241664 Sep 23 11:16 state_5.sqlite
+drwxr-xr-x 2 ebt ebt     60 Sep 23 11:16 thread-writer-locks
+-rw-r--r-- 1 ebt ebt  86016 Sep 23 11:16 thread_history_1.sqlite
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:15 tmp
+  auth:  none -- the CLI authenticates with DS_KEY, injected per exec
+  the host's ~/.codex was NOT mounted: no session, plugin or config reused
+
+== docker socket availability inside the lane (must be absent)
+ls: cannot access '/var/run/docker.sock': No such file or directory
+ls: cannot access '/var/run/docker.sock': No such file or directory
+2026-09-23T11:16:13+08:00 == verify complete
+2026-09-23T11:17:31+08:00 == down
+ Container a0ec-cli Stopping 
+ Container a0ec-meter Stopping 
+ Container a0ec-cli Stopped 
+ Container a0ec-cli Removing 
+ Container a0ec-cli Removed 
+ Container a0ec-meter Stopped 
+ Container a0ec-meter Removing 
+ Container a0ec-meter Removed 
+ Network a0ec-egress Removing 
+ Network a0ec-internal Removing 
+ Network a0ec-egress Removed 
+ Network a0ec-internal Removed 
+== after teardown: only the pre-existing containers/networks should remain
+adapdc-temporal-ui-1	temporalio/ui:2.49.1	Exited (2) 6 days ago
+adapdc-temporal-create-namespace-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-1	temporalio/server:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-admin-tools-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-postgresql-1	postgres:16	Exited (0) 6 days ago
+adapdc-catalog-postgres-1	postgres:16	Up 26 hours (healthy)
+adapdc_temporal-network  bridge
+bridge  bridge
+host  host
+none  null
+2026-09-23T11:18:26+08:00 == up: run directory /tmp/a0ec
+== non-a0ec containers before
+adapdc-catalog-postgres-1	postgres:16	Up 26 hours (healthy)
+adapdc-postgresql-1	postgres:16	Exited (0) 6 days ago
+adapdc-temporal-1	temporalio/server:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-admin-tools-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-create-namespace-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-ui-1	temporalio/ui:2.49.1	Exited (2) 6 days ago
+== adapdc-catalog-postgres-1 before
+id=ec2bbaf149c24317e300ea614110d0b7105daa329e95707148766933ca860a25 running=true started=2026-09-22T01:04:21.916233832Z restarts=0
+ Network a0ec-internal Creating 
+ Network a0ec-internal Creating 
+ Network a0ec-egress Creating 
+ Network a0ec-egress Creating 
+ Network a0ec-egress Created 
+ Network a0ec-egress Created 
+ Network a0ec-internal Created 
+ Network a0ec-internal Created 
+ Container a0ec-cli Creating 
+ Container a0ec-meter Creating 
+ Container a0ec-cli Created 
+ Container a0ec-meter Created 
+ Container a0ec-cli Starting 
+ Container a0ec-meter Starting 
+ Container a0ec-cli Started 
+ Container a0ec-meter Started 
+e81b963153310970490765bf0de2866caa04fac04f6ae637046e209eb4684c1e
+compose_up_seconds=0.21
+compose_up_to_meter_ready_seconds=0.78
+first_docker_exec_codex_version_seconds=0.03
+image_pull_seconds=0.00  # python:3.12-slim was already local
+a0ec-cli-c2	python:3.12-slim	Up Less than a second	
+a0ec-meter	python:3.12-slim	Up Less than a second	127.0.0.1:8802->8802/tcp
+a0ec-cli	python:3.12-slim	Up Less than a second	
+a0ec-internal internal=true subnet=172.31.78.0/24
+2026-09-23T11:18:27+08:00 == up complete
+2026-09-23T11:18:27+08:00 == tool-loop call, variant C1: create a file in the workspace and execute it
+/usr/bin/bash -lc "printf \"print('A0EC_TOOL_OK')\\n\" > hello_a0ec.py && python3 hello_a0ec.py" in /workspace
+ succeeded in 0ms:
+A0EC_TOOL_OK
+
+codex
+Created `hello_a0ec.py` and ran it with `python3`. Stdout is:
+
+```
+A0EC_TOOL_OK
+```
+tokens used
+547
+Created `hello_a0ec.py` and ran it with `python3`. Stdout is:
+
+```
+A0EC_TOOL_OK
+```
+tool-loop exit=0
+total 24
+-rw-r--r-- 1 ebt ebt   217 Sep 23 11:18 README.txt
+-rw-r--r-- 1 ebt ebt    58 Sep 23 11:18 a0ec-canary-visible.txt
+-rw-r--r-- 1 ebt ebt    22 Sep 23 11:18 hello_a0ec.py
+-rw-r--r-- 1 ebt ebt 10598 Sep 23 11:16 probe_C1.json
+2026-09-23T11:18:30+08:00 == tool-loop complete
+2026-09-23T11:18:33+08:00 == down
+ Container a0ec-cli Stopping 
+ Container a0ec-meter Stopping 
+ Container a0ec-cli Stopped 
+ Container a0ec-cli Removing 
+ Container a0ec-cli Removed 
+ Container a0ec-meter Stopped 
+ Container a0ec-meter Removing 
+ Container a0ec-meter Removed 
+ Network a0ec-egress Removing 
+ Network a0ec-internal Removing 
+ Network a0ec-egress Removed 
+ Network a0ec-internal Removed 
+== after teardown: only the pre-existing containers/networks should remain
+adapdc-temporal-ui-1	temporalio/ui:2.49.1	Exited (2) 6 days ago
+adapdc-temporal-create-namespace-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-1	temporalio/server:1.31.0	Exited (0) 6 days ago
+adapdc-temporal-admin-tools-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+adapdc-postgresql-1	postgres:16	Exited (0) 6 days ago
+adapdc-catalog-postgres-1	postgres:16	Up 26 hours (healthy)
+adapdc_temporal-network  bridge
+bridge  bridge
+host  host
+none  null

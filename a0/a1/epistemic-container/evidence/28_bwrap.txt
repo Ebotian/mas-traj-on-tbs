@@ -1,0 +1,57 @@
+== bwrap inside the container, per posture (2026-09-23T11:18:01+08:00)
+
+-- the host's bwrap (what Mechanism A inherits, and what the container image lacks)
+   /usr/bin/bwrap  bubblewrap 0.12.0  (host; package 'bubblewrap')
+   	linux-vdso.so.1 (0x00007fa7d07c8000)
+   	libcap.so.2 => /usr/lib/libcap.so.2 (0x00007fa7d075f000)
+   	libgcc_s.so.1 => /usr/lib/libgcc_s.so.1 (0x00007fa7d0732000)
+   	libc.so.6 => /usr/lib/libc.so.6 (0x00007fa7d0400000)
+   	/lib64/ld-linux-x86-64.so.2 => /usr/lib64/ld-linux-x86-64.so.2 (0x00007fa7d07ca000)
+
+--- A. container default caps (the shape run.sh does NOT use), bwrap mounted read-only
+   bwrap: No permissions to create a new namespace, likely because the kernel does not allow non-privileged user namespaces. On e.g. debian this can be enabled with 'sysctl kernel.unprivileged_userns_clone=1'.
+      exit=1
+
+--- B. cap_drop ALL + no-new-privileges (the shape run.sh uses), bwrap mounted read-only
+   bwrap: No permissions to create a new namespace, likely because the kernel does not allow non-privileged user namespaces. On e.g. debian this can be enabled with 'sysctl kernel.unprivileged_userns_clone=1'.
+      exit=1
+
+--- C. cap_drop ALL + seccomp=unconfined
+   bwrap: setting up uid map: Operation not permitted
+      exit=1
+
+--- D. cap_drop ALL + seccomp=unconfined, bwrap without --unshare-all
+   bwrap: setting up uid map: Operation not permitted
+      exit=1
+
+--- E. --cap-add SYS_ADMIN (default seccomp)
+   bwrap: pivot_root: Operation not permitted
+      exit=1
+
+--- F. --cap-add SYS_ADMIN + seccomp=unconfined   <-- the first posture where it works
+   INSIDE_BWRAP_OK
+      exit=0
+
+--- G. POSITIVE CONTROL: --privileged  (proves the failure above is the container, not bwrap)
+   INSIDE_BWRAP_OK
+      exit=0
+
+--- H. does posture F actually recover codex's own read-only semantics?
+      (model-free: 'codex sandbox' runs a command, no model call)
+      WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir "/tmp" (codex_home: AbsolutePathBuf("/tmp"))
+      bwrap: Can't mount proc on /proc: Operation not permitted
+      (a PermissionError here means read-only applied; a successful socket() would not)
+
+== the same question under a plain user namespace, i.e. the shape Mechanism A
+== (a0/a1/epistemic-ns) launches with: 'unshare -rmpf --mount-proc'
+   uid inside: 0
+   INSIDE_BWRAP_OK (exit=0)
+
+== and codex's read-only posture there, model-free (codex sandbox runs no model call)
+   PermissionError: [Errno 1] Operation not permitted
+   (PermissionError = the sandbox applied; on the host the same command is measured
+    in a0/notes/exit-closed/codex-0.155.1/evidence/18_sandbox_retest.txt)
+--- I. POSITIVE CONTROL for H: the same thing under --privileged
+          _socket.socket.__init__(self, family, type, proto, fileno)
+      PermissionError: [Errno 1] Operation not permitted
+      (PermissionError = codex's read-only posture working inside --privileged)

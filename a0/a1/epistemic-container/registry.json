@@ -1,0 +1,19 @@
+{
+  "schema": "a0.meter.registry/v1",
+  "listen_host": "0.0.0.0",
+  "_comment": "Mechanism C's meter registry. Two campaigns, one per containment variant (C1 = docker --internal network + dual-homed proxy; C2 = docker --network none + unix-socket relay). listen_host is 0.0.0.0 because the metering proxy is a container here and its only clients arrive over a container network / a published loopback port, not from a process on the same host. The token is the meter's optional second attribution check (INTERFACE.md S8); codex carries it as a provider http_header so the check is exercised, not merely declared.",
+  "campaigns": [
+    {
+      "campaign_id": "EC_C1_0001",
+      "arm_id": "A_container_internal",
+      "port": 8801,
+      "token": "a0ec-c1-6f2b41d9c8a34e70"
+    },
+    {
+      "campaign_id": "EC_C2_0001",
+      "arm_id": "A_container_netnone",
+      "port": 8802,
+      "token": "a0ec-c2-93e7a05bd1f84c62"
+    }
+  ]
+}

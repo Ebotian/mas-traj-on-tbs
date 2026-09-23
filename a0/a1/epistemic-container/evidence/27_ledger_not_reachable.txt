@@ -1,0 +1,8 @@
+== can the lane read the ledger by asking the meter over HTTP? ==
+  /var/lib/a0ec/ledger.jsonl             -> HTTP/1.1 403 Forbidden  a0-meter: path /var/lib/a0ec/ledger.jsonl is not a metered route | reason=path_not_routed:/var/lib/a0ec/ledger.jsonl | 
+  /ledger.jsonl                          -> HTTP/1.1 403 Forbidden  a0-meter: path /ledger.jsonl is not a metered route | reason=path_not_routed:/ledger.jsonl | 
+  /../../var/lib/a0ec/ledger.jsonl       -> HTTP/1.1 403 Forbidden  a0-meter: path /../../var/lib/a0ec/ledger.jsonl is not a metered route | reason=path_not_routed:/../../var/lib/a0ec/ledger
+  /v1/models                             -> HTTP/1.1 401 Authorization Required  Authentication Fails (governor)
+
+== and the mount table, verbatim, for the record ==
+30

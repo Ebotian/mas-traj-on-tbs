@@ -1,0 +1,33 @@
+{
+  "endpoints": [
+    {
+      "anthropic_base_url": "http://127.0.0.1:8801",
+      "arm_id": "A_container_internal",
+      "base_url": "http://127.0.0.1:8801/v1",
+      "campaign_id": "EC_C1_0001",
+      "token": "a0ec-c1-6f2b41d9c8a34e70"
+    },
+    {
+      "anthropic_base_url": "http://127.0.0.1:8802",
+      "arm_id": "A_container_netnone",
+      "base_url": "http://127.0.0.1:8802/v1",
+      "campaign_id": "EC_C2_0001",
+      "token": "a0ec-c2-93e7a05bd1f84c62"
+    }
+  ],
+  "meter": {
+    "allowlist": [
+      "api.deepseek.com"
+    ],
+    "attribution": "per_campaign_listener_port(+optional X-A0-Meter-Token)",
+    "ceq_formula": "ceq = miss + floor(hit*2/100) + 4*completion",
+    "connect": "refused",
+    "ledger": "/var/lib/a0ec/ledger.jsonl",
+    "missing_usage": "unmetered:true,ceq:null",
+    "mode": "plaintext_base_url",
+    "on_missing_cache_split": "unmetered",
+    "row_schema": "a0.meter.call/v1",
+    "upstream_base": "https://api.deepseek.com"
+  },
+  "schema": "a0.meter.aid/v1"
+}

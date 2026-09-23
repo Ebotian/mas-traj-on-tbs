@@ -1,0 +1,15 @@
+# CODEX_HOME config for Mechanism C variant C2 (docker --network none).
+# The container has no network interface with an uplink and no route, so the
+# only exit is the unix socket bind-mounted at /run/a0ec/c2.sock; the in-process
+# forwarder (sock_forward.py) republishes it as 127.0.0.1:8802 inside that
+# container, which is what base_url points at. Identity of the campaign is
+# therefore fixed by the socket, not by a hostname the client could vary.
+model = "deepseek-flash"
+model_provider = "ds"
+
+[model_providers.ds]
+name = "DeepSeek (metered via unix socket)"
+base_url = "http://127.0.0.1:8802/v1"
+env_key = "DS_KEY"
+wire_api = "responses"
+http_headers = { "X-A0-Meter-Token" = "a0ec-c2-93e7a05bd1f84c62" }

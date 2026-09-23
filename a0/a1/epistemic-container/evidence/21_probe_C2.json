@@ -1,0 +1,235 @@
+{
+ "variant": "C2",
+ "meter_url": "http://127.0.0.1:8802",
+ "identity": {
+  "uid_gid": "1000:1000",
+  "hostname": "a0ec-cli-c2",
+  "cwd": "/",
+  "codex": "codex-cli 0.155.1"
+ },
+ "walk": {
+  "n_dirs": 658,
+  "n_files": 4924,
+  "name_hits": [
+   "/workspace/a0ec-canary-visible.txt"
+  ],
+  "dir_hits": []
+ },
+ "_walk_control_ok": true,
+ "_leak_basenames_found": [],
+ "_leak_dirs_found": [],
+ "read_attempts": {
+  "/home/ebt/gptapi.md": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/rsi-dev": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/rsi-dev/.git": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/rsi-dev/a0/tasks/maxcut/references/targets.json": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/commitments.json": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/rsi-dev/a0/tasks/maxcut/references/witnesses/fs_policy.json": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval/G_eval_0001.json": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/rsi-dev/a0/tasks/maxcut/suite/eval": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/rsi-dev/a0/tasks/maxcut/suite": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/rsi-dev/a0/a1/kapso_t1": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/rsi-dev/a0/meter/meter_proxy.py": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/kapso_ck": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/tmp/eve": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/tmp/a0ec": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/.codex/auth.json": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/home/ebt/.codex/config.toml": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/root/.codex": {
+   "opened": false,
+   "errno": 13,
+   "error": "PermissionError: Permission denied",
+   "exists": false
+  },
+  "/var/run/docker.sock": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/run/docker.sock": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  },
+  "/run/containerd/containerd.sock": {
+   "opened": false,
+   "errno": 2,
+   "error": "FileNotFoundError: No such file or directory",
+   "exists": false
+  }
+ },
+ "_opened_count": 0,
+ "_read_control_ok": true,
+ "_read_control_body": "a0ec canary -- visible means the visibility control works\n",
+ "mounts": "731 696 0:95 / / rw,relatime - overlay overlay rw,lowerdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/1285/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/998/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/997/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/996/fs:/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/908/fs,upperdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/1286/fs,workdir=/var/lib/containerd/io.containerd.snapshotter.v1.overlayfs/snapshots/1286/work,index=off\n733 731 0:118 / /proc rw,nosuid,nodev,noexec,relatime - proc proc rw\n734 731 0:119 / /dev rw,nosuid - tmpfs tmpfs rw,size=65536k,mode=755,inode64,huge=advise\n735 734 0:120 / /dev/pts rw,nosuid,noexec,relatime - devpts devpts rw,gid=5,mode=620,ptmxmode=666\n736 731 0:121 / /sys ro,nosuid,nodev,noexec,relatime - sysfs sysfs ro\n737 736 0:29 / /sys/fs/cgroup ro,nosuid,nodev,noexec,relatime - cgroup2 cgroup rw,nsdelegate,memory_recursiveprot,memory_hugetlb_accounting\n738 734 0:116 / /dev/mqueue rw,nosuid,nodev,noexec,relatime - mqueue mqueue rw\n739 734 0:122 / /dev/shm rw,nosuid,nodev,noexec,relatime - tmpfs shm rw,size=65536k,inode64,huge=advise\n740 731 0:35 /a0ec/codex-home/c2 /codex-home rw,nosuid,nodev - tmpfs tmpfs rw,nr_inodes=1048576,inode64,huge=advise,usrquota\n741 731 0:35 /a0ec/ws-c2 /workspace rw,nosuid,nodev - tmpfs tmpfs rw,nr_inodes=1048576,inode64,huge=advise,usrquota\n742 731 259:3 /var/lib/docker/containers/5deaaf3e74e48025afea009eae9be4e7e4f05e74f4e4f8aef86ca7a3aa8e9a37/hostname /etc/hostname rw,relatime - ext4 /dev/nvme0n1p3 rw\n743 731 259:3 /var/lib/docker/containers/5deaaf3e74e48025afea009eae9be4e7e4f05e74f4e4f8aef86ca7a3aa8e9a37/hosts /etc/hosts rw,relatime - ext4 /dev/nvme0n1p3 rw\n744 731 259:3 /var/lib/docker/containers/5deaaf3e74e48025afea009eae9be4e7e4f05e74f4e4f8aef86ca7a3aa8e9a37/resolv.conf /etc/resolv.conf rw,relatime - ext4 /dev/nvme0n1p3 rw\n745 731 0:35 /a0ec/run /run/a0ec rw,nosuid,nodev - tmpfs tmpfs rw,nr_inodes=1048576,inode64,huge=advise,usrquota\n746 731 259:3 /home/ebt/rsi-dev/a0/a1/epistemic-container/probe_inside.py /opt/a0ec/probe_inside.py ro,relatime - ext4 /dev/nvme0n1p3 rw\n747 731 259:3 /home/ebt/rsi-dev/a0/a1/epistemic-container/sock_forward.py /opt/a0ec/sock_forward.py ro,relatime - ext4 /dev/nvme0n1p3 rw\n748 731 259:3 /usr/lib/libonig.so.5.5.0 /usr/lib/x86_64-linux-gnu/libonig.so.5 ro,relatime - ext4 /dev/nvme0n1p3 rw\n749 731 259:3 /usr/bin/codex /usr/local/bin/codex ro,relatime - ext4 /dev/nvme0n1p3 rw\n697 733 0:118 /bus /proc/bus ro,nosuid,nodev,noexec,relatime - proc proc rw\n698 733 0:118 /fs /proc/fs ro,nosuid,nodev,noexec,relatime - proc proc rw\n699 733 0:118 /irq /proc/irq ro,nosuid,nodev,noexec,relatime - proc proc rw\n700 733 0:118 /sys /proc/sys ro,nosuid,nodev,noexec,relatime - proc proc rw\n701 733 0:118 /sysrq-trigger /proc/sysrq-trigger ro,nosuid,nodev,noexec,relatime - proc proc rw\n702 733 0:123 / /proc/acpi ro,relatime - tmpfs tmpfs ro,size=4k,nr_inodes=1,inode64,huge=advise\n703 733 0:123 / /proc/asound ro,relatime - tmpfs tmpfs ro,size=4k,nr_inodes=1,inode64,huge=advise\n704 733 0:119 /null /proc/interrupts rw,nosuid - tmpfs tmpfs rw,size=65536k,mode=755,inode64,huge=advise\n705 733 0:119 /null /proc/kcore rw,nosuid - tmpfs tmpfs rw,size=65536k,mode=755,inode64,huge=advise\n706 733 0:119 /null /proc/keys rw,nosuid - tmpfs tmpfs rw,size=65536k,mode=755,inode64,huge=advise\n707 733 0:123 / /proc/scsi ro,relatime - tmpfs tmpfs ro,size=4k,nr_inodes=1,inode64,huge=advise\n708 733 0:119 /null /proc/timer_list rw,nosuid - tmpfs tmpfs rw,size=65536k,mode=755,inode64,huge=advise\n709 736 0:123 / /sys/devices/virtual/powercap ro,relatime - tmpfs tmpfs ro,size=4k,nr_inodes=1,inode64,huge=advise\n710 736 0:123 / /sys/firmware ro,relatime - tmpfs tmpfs ro,size=4k,nr_inodes=1,inode64,huge=advise\n",
+ "etc_hosts": "127.0.0.1\tlocalhost\n::1\tlocalhost ip6-localhost ip6-loopback\nfe00::\tip6-localnet\nff00::\tip6-mcastprefix\nff02::1\tip6-allnodes\nff02::2\tip6-allrouters\n",
+ "resolv_conf": "# Generated by Docker Engine.\n# This file can be edited; Docker Engine will not make further changes once it\n# has been modified.\n\nnameserver 10.54.46.250\n\n# Based on host file: '/etc/resolv.conf' (legacy)\n# Overrides: []\n",
+ "proc_net_route": "Iface\tDestination\tGateway \tFlags\tRefCnt\tUse\tMetric\tMask\t\tMTU\tWindow\tIRTT                                                       \n",
+ "proc_net_dev": "Inter-|   Receive                                                |  Transmit\n face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed\n    lo:    1574      24    0    0    0     0          0         0     1574      24    0    0    0     0       0          0\n",
+ "hosts_seen": {
+  "meter_name": "BLOCKED:gaierror",
+  "api.deepseek.com": "BLOCKED:gaierror",
+  "example.com": "BLOCKED:gaierror"
+ },
+ "proc": {
+  "n_pids": 3,
+  "pids": [
+   1,
+   7,
+   145
+  ],
+  "cmdlines": {
+   "1": "sleep infinity",
+   "7": "python3 /opt/a0ec/sock_forward.py --port 8802 --sock /run/a0ec/c2.sock --ready-file /tmp/fwd.ready",
+   "145": "python3 /opt/a0ec/probe_inside.py --out /workspace/probe_C2.json"
+  }
+ },
+ "egress_literals": {
+  "123.148.116.184:443": "BLOCKED:OSError",
+  "1.1.1.1:443": "BLOCKED:OSError",
+  "8.8.8.8:53": "BLOCKED:OSError",
+  "140.82.121.4:443": "BLOCKED:OSError"
+ },
+ "lateral": {
+  "172.17.0.1:443": "BLOCKED:OSError",
+  "172.17.0.1:5432": "BLOCKED:OSError",
+  "172.17.0.2:5432": "BLOCKED:OSError",
+  "127.0.0.1:5433": "BLOCKED:ConnectionRefusedError",
+  "127.0.0.1:2375": "BLOCKED:ConnectionRefusedError"
+ },
+ "positive_meter_http": {
+  "status_line": "HTTP/1.1 403 Forbidden",
+  "body_head": "a0-meter: request on campaign EC_C2_0001's port lacks that campaign's attribution token\nreason=attribution_token_mismatch\n"
+ },
+ "positive_meter_tcp": "REACHED",
+ "scan": {
+  "probed": 5,
+  "listeners_found": {}
+ },
+ "escape_attempts": {
+  "/proc/1/cmdline": "sleep infinity ",
+  "/proc/1/root listing": [
+   ".dockerenv",
+   "bin",
+   "boot",
+   "codex-home",
+   "dev",
+   "etc",
+   "home",
+   "lib",
+   "lib64",
+   "media",
+   "mnt",
+   "opt",
+   "proc",
+   "root",
+   "run",
+   "sbin",
+   "srv",
+   "sys",
+   "tmp",
+   "usr",
+   "var",
+   "workspace"
+  ],
+  "/proc/1/root/home": [],
+  "/proc/1/root/tmp": [
+   "fwd.ready"
+  ],
+  "/proc/1/root/workspace": [
+   "README.txt",
+   "a0ec-canary-visible.txt",
+   "probe_C2.json"
+  ],
+  "proc1_environ_has_DS_KEY": false,
+  "/proc/self/cgroup": "0::/\n"
+ }
+}

@@ -1,0 +1,86 @@
+== the ledger, re-derived by a separate program (a0/meter/verify_ledger.py)
+40_ledger.jsonl: 6 rows, 2 metered, 4 unmetered, ceq_total=1382
+  EC_C1_0001/A_container_internal ceq=1005
+  EC_C2_0001/A_container_netnone ceq=377
+
+== every row, and CEq summed from the rows themselves
+  EC_C1_0001   A_container_internal model=None            unmetered=True  ceq=None
+  EC_C2_0001   A_container_netnone  model=None            unmetered=True  ceq=None
+  EC_C1_0001   A_container_internal model=None            unmetered=True  ceq=None
+  EC_C2_0001   A_container_netnone  model=None            unmetered=True  ceq=None
+  EC_C1_0001   A_container_internal model=deepseek-flash  unmetered=False ceq=1005
+  EC_C2_0001   A_container_netnone  model=deepseek-flash  unmetered=False ceq=377
+  TOTAL CEq = 1382 over 6 rows
+
+== non-a0ec containers, after (diff against the before fingerprint)
+  IDENTICAL to the before fingerprint
+    adapdc-catalog-postgres-1	postgres:16	Up 26 hours (healthy)
+    adapdc-postgresql-1	postgres:16	Exited (0) 6 days ago
+    adapdc-temporal-1	temporalio/server:1.31.0	Exited (0) 6 days ago
+    adapdc-temporal-admin-tools-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+    adapdc-temporal-create-namespace-1	temporalio/admin-tools:1.31.0	Exited (0) 6 days ago
+    adapdc-temporal-ui-1	temporalio/ui:2.49.1	Exited (2) 6 days ago
+
+== adapdc-catalog-postgres-1, after
+id=ec2bbaf149c24317e300ea614110d0b7105daa329e95707148766933ca860a25 running=true started=2026-09-22T01:04:21.916233832Z restarts=0
+  before: id=ec2bbaf149c24317e300ea614110d0b7105daa329e95707148766933ca860a25 running=true started=2026-09-22T01:04:21.916233832Z restarts=0
+
+== startup cost, measured
+compose_up_seconds=0.22
+compose_up_to_meter_ready_seconds=0.79
+first_docker_exec_codex_version_seconds=0.03
+image_pull_seconds=0.00  # python:3.12-slim was already local
+call_C1_seconds=1.24
+call_C2_seconds=1.27
+
+== image sizes
+python:3.12-slim 177220457 bytes (uncompressed)
+
+== the harness-supplied state, and what the container has of its own
+/tmp/a0ec/codex-home/c1:
+total 580
+drwxr-xr-x 8 ebt ebt    380 Sep 23 11:16 .
+drwxr-xr-x 4 ebt ebt     80 Sep 23 11:13 ..
+-rw------- 1 ebt ebt      3 Sep 23 11:16 .sandbox_migration
+drwxr-xr-x 2 ebt ebt     60 Sep 23 11:16 .tmp
+-rw------- 1 ebt ebt    857 Sep 23 11:16 config.toml
+-rw-r--r-- 1 ebt ebt   4096 Sep 23 11:16 goals_1.sqlite
+-rw-r--r-- 1 ebt ebt  32768 Sep 23 11:16 goals_1.sqlite-shm
+-rw-r--r-- 1 ebt ebt  78312 Sep 23 11:16 goals_1.sqlite-wal
+-rw-r--r-- 1 ebt ebt     36 Sep 23 11:16 installation_id
+-rw-r--r-- 1 ebt ebt  49152 Sep 23 11:16 logs_2.sqlite
+-rw-r--r-- 1 ebt ebt  45056 Sep 23 11:16 memories_1.sqlite
+-rw-r--r-- 1 ebt ebt  40960 Sep 23 11:16 queue_1.sqlite
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:16 sessions
+drwxr-xr-x 2 ebt ebt     40 Sep 23 11:16 shell_snapshots
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:16 skills
+-rw-r--r-- 1 ebt ebt 241664 Sep 23 11:16 state_5.sqlite
+drwxr-xr-x 2 ebt ebt     60 Sep 23 11:16 thread-writer-locks
+-rw-r--r-- 1 ebt ebt  86016 Sep 23 11:16 thread_history_1.sqlite
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:15 tmp
+
+/tmp/a0ec/codex-home/c2:
+total 496
+drwxr-xr-x 8 ebt ebt    340 Sep 23 11:16 .
+drwxr-xr-x 4 ebt ebt     80 Sep 23 11:13 ..
+-rw------- 1 ebt ebt      3 Sep 23 11:16 .sandbox_migration
+drwxr-xr-x 2 ebt ebt     60 Sep 23 11:16 .tmp
+-rw------- 1 ebt ebt    763 Sep 23 11:16 config.toml
+-rw-r--r-- 1 ebt ebt  32768 Sep 23 11:16 goals_1.sqlite
+-rw-r--r-- 1 ebt ebt     36 Sep 23 11:16 installation_id
+-rw-r--r-- 1 ebt ebt  49152 Sep 23 11:16 logs_2.sqlite
+-rw-r--r-- 1 ebt ebt  45056 Sep 23 11:16 memories_1.sqlite
+-rw-r--r-- 1 ebt ebt  40960 Sep 23 11:16 queue_1.sqlite
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:16 sessions
+drwxr-xr-x 2 ebt ebt     40 Sep 23 11:16 shell_snapshots
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:16 skills
+-rw-r--r-- 1 ebt ebt 241664 Sep 23 11:16 state_5.sqlite
+drwxr-xr-x 2 ebt ebt     60 Sep 23 11:16 thread-writer-locks
+-rw-r--r-- 1 ebt ebt  86016 Sep 23 11:16 thread_history_1.sqlite
+drwxr-xr-x 3 ebt ebt     60 Sep 23 11:15 tmp
+  auth:  none -- the CLI authenticates with DS_KEY, injected per exec
+  the host's ~/.codex was NOT mounted: no session, plugin or config reused
+
+== docker socket availability inside the lane (must be absent)
+ls: cannot access '/var/run/docker.sock': No such file or directory
+ls: cannot access '/var/run/docker.sock': No such file or directory

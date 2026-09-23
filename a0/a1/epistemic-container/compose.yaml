@@ -1,0 +1,100 @@
+# Mechanism C -- the agent lane inside a container whose only bind mounts are
+# the session workspace and what the CLI needs.
+#
+# Two variants, both declared here or in run.sh:
+#   C1  cli on an --internal network whose ONLY dual-homed peer is the metering
+#       proxy container (the established shape, a0/notes/exit-closed/proxy-closure)
+#   C2  cli on --network none; its only exit is a unix socket bind-mounted from
+#       the host, republished inside the container as 127.0.0.1:8802 by
+#       sock_forward.py.  run.sh starts it; compose cannot express "no network".
+#
+# Neither variant mounts the repository, a docker socket, or anything from
+# /home/ebt.  A0EC_RUN_DIR must point at the run directory run.sh created.
+name: a0ec
+
+networks:
+  internal:
+    name: a0ec-internal
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.31.78.0/24
+  egress:
+    name: a0ec-egress
+
+services:
+  # The metering proxy (a0/meter/meter_proxy.py, mounted read-only, unmodified).
+  # It is the ONLY container with an uplink, and it forwards only to
+  # --allowlist api.deepseek.com.  It holds no key: it is a pass-through.
+  meter:
+    image: python:3.12-slim
+    container_name: a0ec-meter
+    user: "1000:1000"
+    working_dir: /opt/a0ec
+    restart: "no"
+    networks:
+      internal:
+        ipv4_address: 172.31.78.10
+      egress: {}
+    ports:
+      # Only for variant C2's host-side unix relay; 127.0.0.1 means no other
+      # host or container gains a path to it.
+      - "127.0.0.1:8802:8802"
+    volumes:
+      # The whole a0/meter directory, read-only: meter_proxy.py imports
+      # meter_core.py from its own directory.  Nothing here is modified; the
+      # ledger is written to the separate writable mount below.
+      - /home/ebt/rsi-dev/a0/meter:/opt/a0ec/meter:ro
+      - ./registry.json:/opt/a0ec/registry.json:ro
+      - ${A0EC_RUN_DIR:-/tmp/a0ec}/meter:/var/lib/a0ec
+    command:
+      - python3
+      - /opt/a0ec/meter/meter_proxy.py
+      - --registry
+      - /opt/a0ec/registry.json
+      - --listen-host
+      - 0.0.0.0
+      - --local-host
+      - a0ec-meter
+      - --ledger
+      - /var/lib/a0ec/ledger.jsonl
+      - --events
+      - /var/lib/a0ec/events.jsonl
+      - --aid-out
+      - /var/lib/a0ec/meter.aid.json
+      - --ready-file
+      - /var/lib/a0ec/ready
+      - --allowlist
+      - api.deepseek.com
+
+  # Variant C1: the agent lane.  Its whole filesystem view is the image plus
+  # four read-only mounts and one read-write mount (the session workspace).
+  cli:
+    image: python:3.12-slim
+    container_name: a0ec-cli
+    user: "1000:1000"
+    hostname: a0ec-cli
+    restart: "no"
+    networks:
+      - internal
+    volumes:
+      - ${A0EC_RUN_DIR:-/tmp/a0ec}/ws:/workspace
+      - ${A0EC_RUN_DIR:-/tmp/a0ec}/codex-home/c1:/codex-home
+      - /usr/bin/codex:/usr/local/bin/codex:ro
+      - /usr/lib/libonig.so.5.5.0:/usr/lib/x86_64-linux-gnu/libonig.so.5:ro
+      - ./probe_inside.py:/opt/a0ec/probe_inside.py:ro
+    environment:
+      HOME: /codex-home
+      CODEX_HOME: /codex-home
+      A0EC_VARIANT: C1
+      A0EC_METER_URL: http://a0ec-meter:8801
+      A0EC_METER_HOST: a0ec-meter:8801
+      A0EC_SCAN_SUBNET: "172.31.78"
+      A0EC_WORKSPACE: /workspace
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges
+    entrypoint:
+      - sleep
+      - infinity

@@ -1,0 +1,17 @@
+# CODEX_HOME config for Mechanism C variant C1 (docker --internal network +
+# dual-homed metering proxy). The shape is the one verified in
+# a0/notes/exit-closed/codex-0.155.1/REPORT.md S7: codex 0.155.1 speaks the
+# Responses wire only, and DeepSeek serves POST /v1/responses, which
+# a0/meter/meter_proxy.py routes. The only change from that recipe is base_url:
+# it points at the campaign's metered listener instead of at DeepSeek directly,
+# so the CLI cannot spend outside the ledger.
+model = "deepseek-flash"
+model_provider = "ds"
+
+[model_providers.ds]
+name = "DeepSeek (metered)"
+base_url = "http://a0ec-meter:8801/v1"
+env_key = "DS_KEY"
+wire_api = "responses"
+# The meter's optional per-campaign attribution token (INTERFACE.md S8).
+http_headers = { "X-A0-Meter-Token" = "a0ec-c1-6f2b41d9c8a34e70" }

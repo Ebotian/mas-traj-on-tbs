@@ -1,0 +1,32 @@
+-- inside the C1 container (image python:3.12-slim + 2 bind mounts):
+git      ABSENT
+python3  /usr/local/bin/python3
+node     ABSENT
+npm      ABSENT
+gcc      ABSENT
+cc       ABSENT
+make     ABSENT
+jq       ABSENT
+patch    ABSENT
+rg       ABSENT
+curl     ABSENT
+wget     ABSENT
+ssh      ABSENT
+docker   ABSENT
+Python 3.12.14
+-- on the host (what Mechanism A inherits for free):
+git      /usr/bin/git
+python3  /usr/bin/python3
+node     /usr/bin/node
+npm      /usr/bin/npm
+gcc      /usr/bin/gcc
+cc       /usr/bin/cc
+make     /usr/bin/make
+jq       /usr/bin/jq
+patch    /usr/bin/patch
+rg       /usr/bin/rg
+curl     /usr/bin/curl
+wget     /usr/bin/wget
+ssh      /usr/bin/ssh
+docker   /usr/bin/docker
+Python 3.14.7
