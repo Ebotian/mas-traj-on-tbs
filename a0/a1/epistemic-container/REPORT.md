@@ -594,3 +594,14 @@ a0/a1/epistemic-container/run.sh down           # and: ./probe_bwrap.sh for the 
 creates only `a0ec-*` containers and networks, and `verify` re-checks that the pre-existing
 containers are byte-identical to their before-fingerprint. `probe_bwrap.sh` needs no key and makes
 no model call, so the §5.3 finding can be re-established for free.
+
+**Reproducibility check.** I ran that exact command once, as a single invocation, after the commit
+that delivered it — and it exited 0 with every verdict reproduced on fresh state: both canary
+controls true, `_opened_count: 0`, no leak basenames or directories, `A0EC-C1-OK` / `A0EC-C2-OK`
+with `exit=0`, the tool loop's `hello_a0ec.py` present with the right body and executing on the
+host, `IDENTICAL to the before fingerprint` for the pre-existing containers, and **2 040 `CEq`**
+over 4 metered rows that time (two trivial turns plus the tool loop's two turns). The totals differ
+between runs because the model's turn count and token figures do; the `evidence/` committed here is
+from the run whose numbers `REPORT.md` quotes, and every cited figure is in a committed file. The
+second run's evidence was discarded after the check so that the report and `evidence/` stay
+consistent.
