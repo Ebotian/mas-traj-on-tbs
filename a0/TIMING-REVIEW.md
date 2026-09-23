@@ -138,13 +138,49 @@ pinned 上游文件 `networkx_maxcut_b69beb2c.py`（sha256 `793419aa…`，BSD-3
 
 `R = 10 / 16 / 34` **不在仓库里**（正则 `\bR\s*=\s*(10|16|34)\b` 与 `git log -S` 均无命中）。它们必须先进预注册文件。仓库对 `R=4` 的唯一说法是 `a0/A1-CONTRACT-AUDIT.md:13,119`——**qualification replication，不是 inferential sample size**；且 ≥3/4 判别力很弱（真值 0.5 时通过率 5/16 = 31.25%，0.7 时 65.17%）。**为什么定 4，仓库没给功效依据。**
 
-### 2.8 相关工作（用户提供，我核对了 FLARE 的摘要）
+### 2.8 相关工作（2026-09-23 补齐。v1 只读过 FLARE 的摘要；现已读过下面全部，并**亲自抓取核对了 5 篇的页面**，其余按标注区分）
 
-- **Rational metareasoning**：把"继续计算"与"获取信息"都视为有成本的 meta-action，按其对最终决策质量的预期贡献选择（Russell & Wefald, *Principles of Metareasoning*, AIJ 1991；DOI 由用户给出）。我们的问题在形式上属于这一族。
-- **FLARE**（Jiang et al., EMNLP 2023）：我核对了摘要原文——"methods that actively decide **when and what to retrieve** across the course of the generation… uses a prediction of the upcoming sentence… to regenerate the sentence **if it contains low-confidence tokens**"。即：**state 是 token 级不确定性，动作是句中检索**。
-- **Self-RAG**（arXiv:2310.11511，用户给出）：训练模型按需检索（reflection token）。
+**（a）形式上的家：rational metareasoning / value of computation**
 
-**差异（我认为是本质的）**：(i) state 从 token 级不确定性升为**长程、有 verified progress 的实验轨迹**；(ii) 我们的"检索"是**有界的一次性干预**，其价值**已被离线量测**（§2.5），而 FLARE/Self-RAG 的价值只能端到端看；(iii) 我们要的最终量是 **algorithmic progress on held-out instances**，不是文本质量。⇒ 这条线给 `B0b` 的 trigger design 提供现成对照族，但**不替我们解决长程研究时机问题**。
+- Russell & Wefald, *Principles of metareasoning*, AIJ 49(1-3):361-395, 1991（DOI `10.1016/0004-3702(91)90015-C`，书目经 DOI 内容协商核对）。meta-level 动作按 **expected value of computation** 打分：`V(S_j) = U([S_j]) − U([α])`，即"相对默认外部动作的效用增量"。
+- **已知病理**：理想的 meta-level 控制是对**含后续**的价值贪心（非 myopic）；可实现的 single-step 版本会失手，R&W 自称 **"meta-greedy barrier"**。
+- **修法**：Hay, Russell, Tolpin & Shimony, *Selecting Computations: Theory and Applications*, UAI 2012（arXiv:1207.5879，摘要已核对）。myopic 策略"often stopping far too early"；改为 **blinkered policy**——时间上可非 myopic，但一次只沿一个分支看（`Q^m ≤ Q^b ≤ Q*`）。
+- **对我们第一条用处**：R&W 把**外部信息获取排除在 meta-level 动作之外**（只在脚注里说"information-gathering experiments 的理性规则与 computations 同构"）。所以我们的问题不是"应用 R&W"，而是**把它的 meta-level 动作集扩到外部获取**。
+- **对我们第二条用处**：`r̂<θ ∧ ℓ>k → 去查` 正是 **depth-limit-1 的 meta-greedy 策略**。这给第一代 trigger 一个**有名字的失效模式：它会低估获取的价值**。`B0b` 的 ablation（加 `D/F/S`）在文献上对应的正是"从 meta-greedy 走向 blinkered"。
+
+**（b）何时检索：在 QA 里已经被研究过了**
+
+| 工作 | state / trigger | 动作 | 可逆 | 测过 timing |
+|---|---|---|---|---|
+| FLARE（Jiang et al., EMNLP 2023） | 预测下一句的 **token 概率**（低于 θ 触发） | 检索并重写该句 | 可重复 | 只扫 θ（触发比例 30–60%），**未测早晚** |
+| Self-RAG（Asai et al., arXiv:2310.11511，摘要已核对） | 模型自生成的 **reflection token**（三元 `Retrieve{No,Yes,Continue}` 属二手，我未核对） | 按段检索，可"继续用证据" | 可重复 | 只测有/无与频率 |
+| DRAGIN（Su et al., ACL 2024） | token 熵 × 最大注意力 × 语义指标 | 触发检索并重建 query，**可替换**已有证据 | 可逆 | 未测 |
+| SKR（Wang et al., Findings EMNLP 2023） | 模型"是否见过类似问题"的自知识 | 检索或不检索 | 可逆 | 未测 |
+| Adaptive-RAG（Jeong et al., NAACL 2024） | 小分类器预测 **query 复杂度** | 无/单步/迭代检索 | 可逆 | 未测 |
+| IRCoT（Trivedi et al., ACL 2023） | 每个推理步 | 每步检索 | 可逆 | 未测 |
+| **ReaLM-Retrieve**（Guo et al., SIGIR 2026, arXiv:2604.26649，**摘要已核对**） | **step 级不确定性检测器** | 学习"何时注入证据最有用"的**干预策略** | 可逆 | **测了**：相对固定间隔（IRCoT）检索次数 −47%、F1 +10.1 |
+
+⇒ **"自适应何时检索优于固定间隔"在 QA 里已经有结果**（ReaLM-Retrieve）。所以 novelty 不能再写成"首次研究何时检索"。
+
+⇒ 两条对我们有用的先验：**Budget-Aware Active RAG**（arXiv:2607.24010，摘要已核对）把检索价值定义为"**相对 no-retrieval 答案的边际正确率变化**"——这正是我们 `g(τ)=E[Y(τ)−Y(∞)]` 的形状；并且它报 "**retrieval harm is non-negligible**"、且发现"**简单的 uncertainty / 检索分基线常常与学习型 utility router 打平**"。后者**直接支持**我们"第一代只用三个 harness 量的策略"这个选择。
+
+**（c）agentic search-RL：学了"要不要/何时"搜，但不给搜索定价**
+
+Search-R1、ReSearch、WebThinker、Search-o1、R1-Searcher 都含"不搜"的决定（Search-R1 的提示词允许判断"no further external knowledge needed"后直接作答），但**奖励里没有搜索成本**：Search-R1 / ReSearch 只给答案分；WebThinker 只在偏好数据里"工具调用少的优先"；R1-Searcher 在 Stage 1 **奖励去搜**（`n≥1` 得 0.5）。（以上均为调查者读全文所得，**我未核对**。）
+
+**（d）算法发现：最近的邻居是 DeepEvolve**
+
+- **DeepEvolve**（Liu et al., arXiv:2510.06056, 2025-10-07，**摘要已核对**）："integrates deep research with algorithm evolution, uniting **external knowledge retrieval**… under a feedback-driven iterative loop"。它的摘要还写了**我们 `r_I` 衰减前提的经验版**："Pure algorithm evolution… depends only on the internal knowledge of LLMs and **quickly plateaus** in complex domains"。它做"外部检索 on/off"的消融（所以"外部知识有没有用"在算法发现领域**也已经被量过**），但**每一轮都检索，不变化引入的时刻**。
+  （该文正文自称"constrained to a 30-minute time budget and a single GPU"——这句**摘要里没有，我未核对**。）
+- FunSearch / AlphaEvolve / AIDE / OpenEvolve **没有获取动作**；AlphaEvolve 把"相关文献"作为**静态 prompt 上下文**。（二手。）
+
+**（e）结论：novelty 必须收窄成三层**
+
+- 不是"外部知识有用"——DeepEvolve 已示，我们的强度曲线也已示（`§2.5`）。
+- 不是"何时检索"本身——ReaLM-Retrieve 已在 QA 示。
+- 而是：**长程算法发现中的、一次性不可逆的获取；其价值被离线量测；判据是冻结预算下的策略价值差，且 state 来自 harness 的 verified-progress trace。**
+
+我**没有找到**同时具备这三点的先前工作（检索清单与"未找到≠不存在"的限制见 `§8.4`）。
 
 ---
 
@@ -413,6 +449,7 @@ $$
 5. **"机制 A 是最短路径"**——A 的强制点是 PATH shim、不是内核；绕过未被证明不存在（`§5.4`）。
 6. **探针报告自身有 10 处内部不一致**（`§8.3`）——承重事实我从 JSON 复核过，但"报告 = 证据"在该目录不完全成立。
 7. **所有 N-campaign 成本都是外推**——`R_A1^main = ∅`，8 个 campaign 一个都没跑过。
+8. **novelty 是否仍然太宽**（`§2.8`）——DeepEvolve 已吃掉"外部知识有用"（在算法发现领域，且同样用 30 分钟预算），ReaLM-Retrieve 已吃掉"何时检索优于固定间隔"（在 QA）。若复核者知道更近的"算法发现中的获取时机"工作，本报告的三层收窄需要重写。我的检索**未穷尽**（`§8.4`），各篇的核对状态见 `§8.2`。
 
 ---
 
@@ -447,7 +484,24 @@ $$
 
 ### 8.2 我亲自复核的条目
 
-两套 verdict 的数值与判定；强度曲线的 k10/k25/∞ 三行与阈值；`cut=217=R` 与 blob 路径；三档读权限与 TCP 两列；T1 三角色配置行；`B_hard`、两臂速率、成本与美元换算；`R=10/16/34` 不在仓库；`restamp`/`refreeze` CLEAN；FLARE 摘要；`memoriz`/`记忆` 检索。
+**仓库侧**：两套 verdict 的数值与判定；强度曲线的 k10/k25/∞ 三行与阈值；`cut=217=R` 与 blob 路径；三档读权限与 TCP 两列；T1 三角色配置行；`B_hard`、两臂速率、成本与美元换算；`R=10/16/34` 不在仓库；`restamp`/`refreeze` CLEAN；`memoriz`/`记忆` 检索。
+
+**文献侧（我亲自抓取页面核对，2026-09-23）**：
+
+| 文献 | 我核对了什么 | 结果 |
+|---|---|---|
+| FLARE / Jiang et al., EMNLP 2023 | 摘要（`aclanthology.org/2023.emnlp-main.495/`） | 存在；"actively decide **when and what to retrieve**"、"**low-confidence tokens**" |
+| Self-RAG / arXiv:2310.11511 | 摘要 | 存在；"adaptively retrieves passages on-demand… **reflection tokens**" |
+| Hay, Russell, Tolpin & Shimony, UAI 2012 / arXiv:1207.5879 | 摘要 | 存在；"counterexample to the intuitive conjecture that an optimal policy will necessarily reach a decision in all cases" |
+| DeepEvolve / arXiv:2510.06056 | 摘要 | 存在（2025-10-07）；"**external knowledge retrieval**…**quickly plateaus**" |
+| ReaLM-Retrieve / arXiv:2604.26649 | 摘要（首次抓取失败、重试成功） | 存在（SIGIR 2026）；"a retrieval intervention policy that learns **when**…"；相对固定间隔**检索次数 −47%** |
+| Budget-Aware Active RAG / arXiv:2607.24010 | 摘要（首次抓取失败、重试成功） | 存在（KDD 2026 workshop）；"**marginal correctness change over a no-retrieval answer**"、"**retrieval harm is non-negligible**" |
+| CAM-DF / arXiv:2607.27083 | 摘要 | 存在（2026-07-29）；标题即 "**Cost-Aware Stopping for Tool Acquisition**"；"a lightweight **pre-execution** plugin" |
+| Russell & Wefald, AIJ 1991 | DOI `10.1016/0004-3702(91)90015-C` 的书目（内容协商） | 卷 49、期 1-3、页 361-395 一致；**全文未读**——"meta-greedy barrier" 与 `V(S_j)=U([S_j])−U([α])` 来自调查者所读作者版（二手） |
+
+**我主动否掉的一条引用**：我给调查者的清单里写了 "Self-Route (Li et al. 2024)"。调查者在 arXiv / Semantic Scholar / Crossref / dblp 都找不到它；最接近的是 *Self-Routing RAG*（arXiv:2504.01018）与同名的**推理**工作（arXiv:2505.20664）。**不要引用我原来那条。**
+
+**仅由调查者读全文、我未核对的**：Self-RAG 的三元 `Retrieve{No,Yes,Continue}` 与 GPT-4 标注流程；DRAGIN / SKR / Adaptive-RAG / IRCoT 的 trigger 细节；Search-R1 / ReSearch / R1-Searcher / WebThinker / Search-o1 的奖励细节与提示词原文；DeepEvolve 的"30 分钟预算 + 单卡"句；CAM-DF 的"不在执行后更新获取决策"这一限制。
 
 ### 8.3 探针与杠杆报告自身的内部不一致（值得修，不改变承重结论）
 
@@ -465,6 +519,8 @@ $$
 ### 8.4 我**没有**验证的（明确留给复核者）
 
 ~30 分钟长会话（A 与 C 都未跑）；trajectory 级的 session/permission 等价（探针只在 `codex sandbox` 层面测过）；PATH shim 的不可绕性；`P_recover` 的实际值（这是实验问题）；placebo 与 packet 的**成本等价性**操作化；`r̂/ℓ` 的退化分析（这是推导，未做数值验证）；T1 是否真能承载 `B0`（`§4.3` 是论证，不是测量）；以及所有 N-campaign 成本（全部为外推）。
+
+**文献检索的限制（"未找到 ≠ 不存在"）**：`§2.8(e)` 的 novelty 收窄基于三组调查的检索，而检索本身有已知缺陷——其中一组报告搜索引擎返回验证码或噪声、`export.arxiv.org` 拒绝连接、且它没有 WebSearch 工具，只能靠 arXiv 站点内检索；另外两组依赖子代理自带的检索能力。所以 `§2.8(e)` **不能**读成"不存在"，只能读成"在我能触达的范围内没找到"。若复核者知道 2026 年下半年的相关工作（尤其"算法发现中的获取时机"这一支），请直接指出：那一条会重写 `§2.8`。
 
 ### 8.5 v1 中被推翻的表述（完整清单，便于追踪）
 
