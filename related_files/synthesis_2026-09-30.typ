@@ -1,7 +1,7 @@
 // Self-contained Typst source. Typst 0.15; Chinese font: Noto Sans CJK SC.
 // Compile: make synthesis_2026-09-30   (or: typst compile synthesis_2026-09-30.typ)
 // 本文无 \addbibresource 依赖：所有引证都是仓库内的 path:line，不是文献条目。
-#set document(title: "构想梳理 v2：溯源、四条线、两处同名异义、一个已经存在的反驳", author: "rsi-dev", date: datetime(year: 2026, month: 9, day: 30))
+#set document(title: "构想梳理 v3：溯源、四条线、两处同名异义、一个已经存在的反驳", author: "rsi-dev", date: datetime(year: 2026, month: 9, day: 30))
 #set page(paper: "a4", margin: (x: 22mm, y: 20mm), numbering: "1")
 #set text(lang: "zh", font: ("Noto Sans CJK SC", "Noto Sans"), size: 10pt)
 #set par(justify: true, leading: 0.7em, spacing: 0.75em)
@@ -19,21 +19,23 @@
 #let argmin = math.op("arg min", limits: true)
 
 #align(center)[
-  #text(size: 18pt, weight: "bold")[构想梳理 v2]
+  #text(size: 18pt, weight: "bold")[构想梳理 v3]
   #v(3pt)
   #text(size: 14pt)[溯源、四条线、两处同名异义、一个已经存在的反驳]
   #v(8pt)
-  #text(size: 9.5pt)[2026-09-30 · 仓库 `HEAD = cbf6c57a`（本文提交前）· 分支 `main`（本地，*无 remote*）]
+  #text(size: 9.5pt)[2026-09-30 · 分支 `main`（本地，*无 remote*）]
   #v(2pt)
-  #text(size: 9.5pt)[被梳理对象：`related_files/` 语料（25 个跟踪文本文件）＋ `a0/` 九份报告 ＋ 一个 ChatGPT 分享链接的完整载荷]
+  #text(size: 9.5pt)[被梳理对象：`related_files/` 语料（35 个跟踪文本文件）＋ `a0/` 九份报告 ＋ 一条 ChatGPT 对话的完整载荷]
   #v(2pt)
-  #text(size: 9.5pt)[阅读方式：*§0 摘要 → §1 溯源（v2 的新增基础）→ §6 只有交叉阅读才能发现的问题 → §8 未决决策*]
+  #text(size: 9.5pt)[阅读方式：*§0 摘要 → §1 溯源 → §6 只有交叉阅读才能发现的问题 → §8 未决决策 → §11 修订记录*]
 ]
 
 #v(8pt)
 
 #block(stroke: 0.5pt + luma(60%), inset: 9pt, radius: 4pt, breakable: true)[
-*v1 → v2*：v1 只读了语料与 `a0/`，把 `Pasted markdown.md` 当作 D 线的最新产物。*这个归因是错的。* v2 解码了分享链接的 11 MB 载荷，发现该对话（4011 节点、09-17→09-24）产出了语料的大部分，但*没有*产出 `Pasted markdown.md`，也没有产出那份独立审查——它们来自另一条对话。v2 因此新增 §1（溯源）与 §6.2–§6.5、§6.7，并修订 §2 的 A 线定性与 §6.5 的「不可合并」结论。v1 中被推翻的部分集中列在 §6.8。
+*v2 → v3*：v2 解码了载荷但没有验证它。v3 做了重放验证，结果推翻了 v2 的三处断言：语料的 32 个 `/mnt/data` 路径*并非*全部由对话写入（只有 7 个有写入操作，其余 25 个只被读取）；C 线 v2/v3 *已经回收*并入库；B 线那六个审查版本*不可恢复*，v2 说「可从载荷恢复」是错的。v3 还发现一件 v2 没看见的事：*磁盘上的 `research_state_control_review_v4.tex` 在这条对话结束之后又被排过版*，所以语料不是对话的纯快照（§7.6）。逐条见 §11。
+
+*v1 → v2*：v1 只读了语料与 `a0/`，把 `Pasted markdown.md` 当作 D 线的最新产物。*这个归因是错的。* v2 解码了分享链接的 11 MB 载荷，发现该对话（4011 节点、09-17→09-24）产出了语料的大部分，但*没有*产出 `Pasted markdown.md`，也没有产出那份独立审查——它们来自另一条对话。v2 因此新增 §1（溯源）与 §6.2–§6.5、§6.7，并修订 §2 的 A 线定性与 §6.5 的「不可合并」结论。v1 中被推翻的部分列在 §6.8。
 
 *标注约定*：【我复核】= 我亲自读了原文或亲自算过；【二手】= 只读调查者给的 `path:line`，我未逐条核对；【推断】= 我的判断，不是文档原话。完整分级见 §9。
 ]
@@ -104,22 +106,22 @@
   columns: (auto, 1fr, 1fr),
   table.header([类别], [文件], [判据]),
   [*你自带的输入*（对话只读取，从未写入）], [`adapdc_*`×4、`deep-research-report*.md`×3、`ada-engineering-plan.typ`、`opl-engineering-plan.typ`、`rule-construction-research*.md`×2、`virtual_staining_*`], [这些名字只出现在 *tool 消息*里（09-18 08:46 起），且都是被截断到 20000 字符的读取；`/mnt/data` 写入清单里*没有*它们。\#8 明确说来自「opl 那个压缩包」],
-  [*这条对话的产物*], [`algorithm_research_infrastructure_plan.typ`(09-17 09:54)、`open_world_algorithm_research_engineering_plan.typ`+`refs.bib`(09-18 06:17)、`open_world_plan_independent_review.typ` 及 `(1)`–`(6)` 共 7 版(09-18 08:09→09-20 07:15)、`open_world_plan_review.typ`(09-20 07:15)、`STATUS(1).md`/`STATUS(2).md`/`CONVERGENCE-2026-09-21.md`(09-21)、`research_state_control_review{,-v2,-v3,-v4}.tex`+四份 `.bib`(09-23 08:10→09:33)、`agent_engineering_science_report.tex`+`references.bib`+3 CSV+3 图(09-24 05:02→05:04)], [*32 个不同的 `/mnt/data` 路径*，全部由 assistant/tool 写入],
+  [*这条对话的产物*], [`algorithm_research_infrastructure_plan.typ`(09-17 09:54)、`open_world_algorithm_research_engineering_plan.typ`+`refs.bib`(09-18 06:17)、`open_world_plan_independent_review.typ` 及 `(1)`–`(6)` 共 7 版(09-18 08:09→09-20 07:15)、`open_world_plan_review.typ`(09-20 07:15)、`STATUS(1).md`/`STATUS(2).md`/`CONVERGENCE-2026-09-21.md`(09-21)、`research_state_control_review{,-v2,-v3,-v4}.tex`+四份 `.bib`(09-23 08:10→09:33)、`agent_engineering_science_report.tex`+`references.bib`+3 CSV+3 图(09-24 05:02→05:04)], [*32 个不同的 `/mnt/data` 路径*。*v3 更正*：其中只有 *7 个*在载荷里留有写入操作，其余 *25 个只被读取*——v2 写的「全部由 assistant/tool 写入」不成立。而且 7 这个数仍是下界：`cd /mnt/data` 之后用相对路径写入的，绝对路径正则看不见],
   [*另一条对话的产物*], [`Pasted markdown.md`、`agent_engineering_science_independent_review_2026-09-24.md`], [四个探针全部 *0 命中*：「原报告之后的下一层问题」、「重大修改后作为研究纲领发表」、`betabinom`、`SILO-BENCH`。而 `SILO-BENCH` 是 D 线全部论证的证据基础——它在这条对话的 2 864 505 字符里一次都没出现],
 )
 
 ⇒ *D 线其实是两条对话*：这条对话产出正式报告（七个理论域 $T_1$–$T_7$、RQ1–RQ5、沙箱实验 A/B/C），另一条对话产出 `Pasted markdown.md`（把 $T_1$–$T_7$ 明确贬为「仍然偏 taxonomy」，改为三层框架与 L1–L7）与那份独立审查。`Pasted markdown.md` §19 的「上一版：$T_1,…,T_7$」正是对 `report.tex` 的指涉，所以*时序是 report.tex(13:03) → Pasted markdown(15:30) → 审查(15:30)*，与三个文件的 mtime 一致。
 
-== 1.4 语料里缺的东西（可恢复）
+== 1.4 语料里缺的东西（v3：每一项都已实测，不再标「可恢复」了事）
 
 #table(
-  columns: (1fr, 1fr, auto),
-  table.header([缺], [状态], [可否恢复]),
-  [`research_state_control_review_v2.tex`、`_v3.tex` + `refs_v2/v3.bib`], [对话里存在（`_v2` 20 次命中），语料只有 v1 与 v4], [*可*，从载荷提取],
-  [`open_world_plan_independent_review(1)`–`(6).typ`], [语料只有 1 份，对话里有 7 版], [*可*],
-  [`agent_engineering_science_report.tex`(31503 B) + `references.bib`(6642 B)], [*只存在于未跟踪的 zip 里*], [已解出],
-  [`exp1/2/3_*.csv` ＋ 3 张图], [同上], [已解出],
-  [`STATUS(1).md`、`STATUS(2).md`], [进了 `a0/STATUS.md`，未在 `related_files/`], [需比对],
+  columns: (1fr, 1fr, 1fr),
+  table.header([缺], [v2 的说法], [v3 实测结论]),
+  [`research_state_control_review_v2.tex`、`_v3.tex` + `refs_v2/v3.bib`], [「*可*，从载荷提取」], [*已回收入库*。但*不是提取*——v2/v3 由 `cp` 加补丁链生成，载荷里没有整份内容，只能重放。重放通过与磁盘 v1、refs v1、refs v4 的*三次逐字节对拍*验证。见 §7.6],
+  [`open_world_plan_independent_review(1)`–`(6).typ`], [「*可*」], [*不可恢复*。载荷里只有截断的读取窗口（`s[:14000]`、`sed -n '1,260p'`、`'260,620p'`、`'620,1040p'`），*六个版本都没有任何写入操作*。v2 的「可」是错的],
+  [`agent_engineering_science_report.tex`(31503 B) + `references.bib`(6642 B)], [「已解出」], [确认。但注意载荷里还有一个*不同*的文件 `agent_engineering_report/agent_engineering_science.tex`，由 heredoc 整份写入、可完整恢复，它*不是* zip 里那一份。D 线可能还有更早的报告版本],
+  [`exp1/2/3_*.csv` ＋ 3 张图], [「已解出」], [确认。三个 CSV 与 `report.tex`、`.bib` 都在未跟踪的 zip 里，*git 中不存在*],
+  [`STATUS(1).md`、`STATUS(2).md`], [「需比对」], [仍未比对。载荷里 `STATUS(2).md` 有写入操作、`STATUS(1).md` 只被读取],
 )
 
 ⇒ *D 线唯一的实测数据（三个 CSV）在 git 里完全不存在*：zip 被 `.gitignore` 白名单排除（这是你的决定，「pdf 和 zip 都不要」）。这条排除的代价在 v1 里没被看见——被排除的不只是一个压缩包，是 D 线全部的可复现证据。
@@ -368,11 +370,13 @@ v1 说两条线的 estimand 不可合并。这部分仍然对，但漏了一半�
 = §7 未闭合的自我矛盾
 
 + *`adapdc_scaffold_implementation.typ` 双份*【二手，未复核】：`(1)` 版新增 ADR-001，要求把旧版标记为「部分条款已取代」；*该标记从未加上*，而旧版 `:32` 仍写「不能同时保留相反的现行决策」。两份现都被 git 跟踪（提交 `14edbf07`）。
-+ *C 线缺 v2/v3*：一天内四轮修订，语料只留了第一轮和第四轮。中间两轮是「八处反转」的实际发生地（v1 报告列出了八处，但没有 diff）。可从载荷恢复。
-+ *B 线缺 6 个审查版本*：`open_world_plan_independent_review(1)`–`(6)`，语料只有最终那一份。`rev:820-829` 的 R52–R62「审查推翻自己」的清单，其原始形态在这六版里。
++ *C 线缺 v2/v3 —— v3 已解决*：一天内四轮修订，语料原本只留第一轮和第四轮。中间两轮是「八处反转」的实际发生地。四个文件已由补丁链重放回收并入库：`research_state_control_review_v2.tex`(57 600 B / 931 行)、`_v3.tex`(78 083 B / 1216 行)、`refs_v2.bib`(20 875 B)、`refs_v3.bib`(29 190 B)。行数单调递增 616 → 931 → 1216 → 1607，与四轮扩写吻合。
++ *B 线缺 6 个审查版本 —— v3 判定不可恢复*：`open_world_plan_independent_review(1)`–`(6)`，语料只有最终那一份。`rev:820-829` 的 R52–R62「审查推翻自己」的清单，其原始形态在这六版里，*而六版都没有写入操作留在载荷中*，只有被截断的读取窗口。⇒ 这条线索永久缺失；`rev:820-829` 是它唯一的存证。
 + *`a0/STATUS.md` 已陈旧*：它自称 `HEAD = 0851806`、14 个 commit、标签 `a0-audited`；本文提交前为 `cbf6c57a`。文内 §3.3 自己已加 dated 注记说明该表描述的是 D1/D3 收敛之前的状态。⇒ 需要一份新的 STATUS，或在旧文件头部加 dated 标签（仓库对别人的 dated 验证报告的做法是*不改写*，只登记）。
 + *repro bundle 打包时改坏了 bib 的引用*【我复核】：`report.tex:14` 是 `\addbibresource{references.bib}`，而包里的文件叫 `agent_engineering_science_references.bib`；`references.bib` 在包内*不存在*（`ls | grep -c '^references\.bib$'` = 0）。成因可从载荷查到：09-24 05:02–05:03 写过两个 bib——`/mnt/data/agent_engineering_report/references.bib` 与 `/mnt/data/agent_engineering_science_references.bib`——tex 期望前者，打 zip 时扁平化并统一改名，*没有同步改 tex*。⇒ 这个 bundle 按现状*编译不出 PDF*。
   另两类依赖：`tex:254,269,297` 的 `\includegraphics` 指向三个 `fig_*.pdf`（在包内，但是二进制，被 `.gitignore` 白名单排除）；`tex:1` 的 `\documentclass{ctexart}` 需要 ctex 与 CJK 字体。*三个 CSV 不是构建输入*——tex 里没有 `\input`/`\include`/`pgfplotstable`，它们只在 `:415` 的散文里被点名。包不引用 zip 自身，也不含 `/mnt/data` 路径。
++ *语料不是对话的纯快照*【我复核，v3 新增】：磁盘上的 `research_state_control_review_v4.tex` 比重放出的对话版*多 337 字节 / 15 处*。差异全部在排版层——1 处 `\emergencystretch=3em`、2 处 `\allowbreak`、29 行是把 `\boxed{...}` 重排为 `\begin{gathered}` 多行、`\quad` 换成 `\\`。去掉空白后字符级相似度 *0.998186*，散文与论断一字未变。而 `emergencystretch` 与 `allowbreak` 在载荷的 2 864 505 字符里 *0 命中*。⇒ *v4.tex 在这条对话结束之后又被排过版*，那次修改不在这条对话里。
+  这条对方法有含义：语料的 mtime 与内容都不能单独用来判断「这份文档是哪一轮的产物」。v4 的 mtime 是 09-23 18:01，而对话的 v4 写于 09-23 09:33 UTC（= 17:33 本地）——差 28 分钟，与「对话后又排了一次版」吻合。
 
 = §8 未决决策清单
 
@@ -385,7 +389,10 @@ v1 说两条线的 estimand 不可合并。这部分仍然对，但漏了一半�
 + *是否用 §6.3 的复算回应审查？* 我可以直接从 exp1 重算 36 格并给出与 β-二项的偏差表；但*生成器仍未写明*，需要补上脚本才算完整回应。
 + *exp3 的 1.0 是否要先修*（§6.7）？在给出一个它能失败的对照之前，L4 没有证据。
 + *`RQ1–RQ5` 与 $rho$ 是否改名*（§6.1、§6.2）？两处同名异义都会在合并写作时产生错误交叉引用。
-+ *是否恢复 C 线 v2/v3 与 B 线六个审查版本*（§7.2、§7.3）？它们记录了反转的实际过程，而反转正是这个项目的核心方法。*时效*：载荷解出的中间文件在 `/tmp`，重启即失。
++ *是否恢复 C 线 v2/v3 与 B 线六个审查版本 —— v3 已执行*：C 线四个文件已回收并入库；B 线六版判定*不可恢复*（§7.3）。随之而来的新决定：
+  - 回收出的 v2/v3 *没有*经过 v4 那次后期排版（§7.6），要不要给它们补同样的排版？我的判断是*不补*——它们是历史轮次的存证，不是待发布的文档。
+  - 对话记录已入库为 `related_files/conversation/`（转录 1 700 093 B、46 个 user 轮次 9 653 B、两个脚本）。`transcript.md` 对*导出*无损，对*原始对话*不是：6 条 tool 输出被导出截断到恰好 20000 字符。入库前按 10 类秘密模式扫过，*0 命中*。
+  - `agent_engineering_report/agent_engineering_science.tex`（heredoc 整份写入、可完整恢复，且*不同于* zip 里那份）要不要也回收？它是 D 线可能存在的更早报告版本。
 
 *理论侧（沿用 v1）*
 
@@ -423,6 +430,8 @@ v1 说两条线的 estimand 不可合并。这部分仍然对，但漏了一半�
 - 两处标签冲突：`v4.tex:1547-1561` 与 `report.tex:304-335` 的 RQ 清单，均逐行 grep 确认
 - 免责与引用的冲突：`report.tex:415` 与 `Pasted md:1149`，均逐行 grep 确认
 - *本文自身的格式*：所用 Typst 构造先以探针文件编译通过（`inter.big`、`oo`、数学模式内的 `[ ]`、`table.header`、CJK 字体族名），再写正文；`Noto Serif CJK SC` 经 `typst fonts` 确认*不可用*，故用 `Noto Sans CJK SC`
+- *v3 的重放验证*：7 个变更步骤从空沙箱重放，三次逐字节对拍通过（v1 tex `ee567fd0b038119a`、v1 bib `eb9709935ce7a5d1`、refs v4 bib `b16cb3b0dd44b40c`）；v4 tex 的 337 字节差异逐 hunk 定性为排版层；`emergencystretch`/`allowbreak` 在载荷 0 命中
+- *v3 的覆盖率测量*：六种 content 形状逐类清点（3598/194/108/51/41/18）；27 条「有 content 无文本」的消息逐条查看，*全部为真空*；32 个路径按写入/只读重新分类为 7/25
 
 *【二手】三个只读调查者读的，我未逐条核对*
 
@@ -447,3 +456,33 @@ v1 说两条线的 estimand 不可合并。这部分仍然对，但漏了一半�
 + *§1.3 的三分类是否可靠？* 判据是「是否出现在 `/mnt/data` 写入路径里」与四个 0 命中探针。tool 输出被截断到 20000 字符，所以*若某个产物只在被截断的部分出现过写入路径，我会漏掉它*。32 这个数应视为下界。
 + *§8 的「四套分解是本体冲突」是否是真问题？* 也可以读作「同一对象在四个抽象层级上的投影」，因而不需要收敛。若如此，正确的动作是画一张映射表而不是选一个。
 + *最强的反驳*：请论证「这次梳理本身是代理目标漂移的实例」——即绘制概念地图、发现同名异义、复算别人的模拟，是在提高*基础设施完整度*而不是提高真实研究能力。你在 \#11 亲自命名过这个谬误。若反驳成立，正确的下一步不是补读 §9 的未读清单，而是直接做 §8 的落地侧两项：接机制 A，跑一次 30 分钟长会话，然后决定 T1 是否换载体。
++ *v3 新增*：*重放出的 v2/v3 可信吗？* 支撑是三次逐字节对拍，其中 `refs_v4.bib` 在链条末端——所以整条 bib 链是端到端验证过的。但 `review_v4.tex` *没有*对拍通过（差 337 B），我的解释是「后期排版」。若那个解释错了，真实原因是链条里还有一步我没找到，那么 v2/v3 的 tex 也同样可疑（bib 不受影响，因为它对拍通过了）。*这是本文最脆弱的一环。*
++ *v3 新增*：*写入/只读的 7/25 分类可靠吗？* 不可靠到什么程度是可测的：第一次扫描漏了 `cp`（v2 就是 `cp` 出来的），第二次扫描漏了用变量间接 `write_text` 的 \#2958。两次都靠重放失败才暴露。⇒ 分类结论只在「已通过重放对拍」的范围内可信；对其余 25 个只读路径，正确的说法是*没有找到写入操作*，不是*没有写入操作*。
+
+= §11 修订记录
+
+== 11.1 v2 → v3
+
+v2 解码了载荷但没有验证它。v3 做了重放验证，四处断言被推翻或改写：
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  table.header([位置], [v2 的说法], [v3 的实测]),
+  [§1.3], [「32 个 `/mnt/data` 路径，*全部*由 assistant/tool 写入」], [*错*。只有 *7 个*留有写入操作，*25 个只被读取*。而且第一次分类还有假阳性：`Path('/mnt/data/X')` 这个模式把只读的 `.read_text()` 也算成写入，`(1)`/`(4)`/`(6)` 就是这样被误判的],
+  [§1.4 / §7.2], [C 线 v2/v3「*可*，从载荷提取」], [*不是提取，是重放*。v2 由 `cp` v1 生成再打补丁；载荷里没有整份内容。已重放回收并入库，方法经三次逐字节对拍验证],
+  [§1.4 / §7.3], [B 线六个审查版本「*可*」], [*不可恢复*。六版都只有截断的读取窗口，无任何写入操作],
+  [§7 新增], [（v2 没有这一条）], [*语料不是对话的纯快照*：磁盘 v4.tex 比对话版多 337 B 的排版修改，`\emergencystretch`/`\allowbreak` 在载荷 0 命中],
+)
+
+v3 还纠正了自己一次工具错误：重放器第一版用文本替换把 `biber` 改成 `true`，结果连 heredoc 正文里的 `backend=biber` 一起改了，v1 因此与磁盘差一行。改用 PATH 垫片后 v1 逐字节相同。*教训：中和外部工具时不要碰文档正文。*
+
+== 11.2 v1 → v2
+
+见 §6.8，共七条。其中最重要的是归因错误：v1 把 `Pasted markdown.md` 当作 D 线的最新产物并据此组织全篇，而它来自另一条对话。
+
+== 11.3 三版都保留的判断
+
+- §6.1（$rho$ 同名异义）、§6.2（`RQ1–RQ5` 同名异义）、§6.4（免责与引用冲突）、§6.6（样本量推理）自 v2 起未变。
+- §6.3（exp1 就是审查的 β-二项反例模型）自 v2 起未变，是本文最重要的单条发现。
+- §6.5 的「一行重叠、七行空白」自 v2 起未变。
+- §10 最后一条（这次梳理本身可能是代理目标漂移）三版都保留，且*没有被任何一版驳倒*。

@@ -73,3 +73,9 @@ related_files/eve/
 !related_files/*.md
 !related_files/*.txt
 !related_files/Makefile
+# conversation/ holds the record of the chat that produced most of this corpus, plus
+# the two scripts that regenerate it. The whitelist patterns above use a single `*`,
+# which does not cross `/`, so this subdirectory needs its own two lines. mapping.json
+# and outline.md are deliberately absent: decode_share.py regenerates both.
+!related_files/conversation/*.md
+!related_files/conversation/*.py
