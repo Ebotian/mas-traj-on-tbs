@@ -55,9 +55,10 @@ a0/notes/**/work/
 # related_files: a reference corpus of plans, reviews and their sources. Text
 # only, as a whitelist, because the folder accumulates downloaded papers and a
 # blacklist would admit the next binary silently. Directories stay re-included so
-# the text patterns below can be reached; the PDFs, which are build products of the
-# .typ/.tex sources beside them, stay out. To track a new text type, add one
-# !related_files/*.<ext> line.
+# the text patterns below can be reached; the PDFs stay out, both kinds of them.
+# pdf/ holds what `make` rebuilds from the .typ sources and `make clean` deletes.
+# literature/ holds papers with no source here at all, so nothing can rebuild
+# them. To track a new text type, add one !related_files/*.<ext> line.
 related_files/**
 !related_files/**/
 # codex/ and eve/ are clones with their own .git. Git cannot descend into them, so
