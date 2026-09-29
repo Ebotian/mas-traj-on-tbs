@@ -1,0 +1,616 @@
+\documentclass[11pt,a4paper]{ctexart}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage[nameinlink,capitalize]{cleveref}
+\usepackage[backend=biber,style=authoryear,maxcitenames=2,maxbibnames=99,doi=true,url=true,isbn=false]{biblatex}
+\addbibresource{research_state_control_refs.bib}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\setlist{nosep}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Pp}{\mathbb{P}}
+\newcommand{\Hh}{\mathcal{H}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\Cost}{\operatorname{Cost}}
+\newcommand{\Gain}{\operatorname{Gain}}
+\newcommand{\VOI}{\operatorname{VOI}}
+\newcommand{\TODO}{\textbf{[TODO]}}
+
+\title{开放世界长程 Agent 研究基础设施：\\检索、状态/时机与历史处理的统一调研}
+\author{Research review draft}
+\date{2026-09-23}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+本文针对开放世界、长程、工具增强、多 Agent/Swarm 的算法研究系统，系统拆解三个相互强化的核心困难：\textbf{(1) 检索困难}，尤其是跨 Git 历史、代码、实验、论文与互联网的语义检索；\textbf{(2) 时机困难}，即对当前研究状态的结构化估计以及对不同未来研究动作的价值预测；\textbf{(3) 历史处理困难}，即不断增长的 agent trajectory、tool calls、subagents、swarm、实验、成果和 Git 演化造成的 provenance/semantic/branch/policy entropy。本文将三者统一为一个“provenance-grounded, partially observed, resource-bounded adaptive control”问题，并把现有工程手段分为三种 enforcement 层：machine-enforceable code/policy、agent-executed SOP、human expert judgment。调研覆盖软件仓库挖掘与 feature location、provenance 与 scientific workflow、event sourcing、process mining/object-centric process mining、agent memory、long-horizon agents、active retrieval、rational metareasoning/value of information、predictive process monitoring、learning to defer 与 tacit expertise。核心工程结论是：不应先构造庞大的“Research OS”或固定本体，而应以 append-only event/provenance substrate 为底座，以可重建的 materialized views 作为 memory/state/index，再逐层研究 state estimation、forecasting、retrieval planning 与 human deferral。
+\end{abstract}
+
+\tableofcontents
+
+\section{问题定义：三个困难实际上构成一个闭环}
+
+设研究系统的不可直接观测真实状态为
+\begin{equation}
+ z_t\in\Z,
+\end{equation}
+其中可包含当前知识、候选机制、代码状态、实验结果、失败模式、未决假设、外部证据覆盖、预算与风险等。系统直接看到的是异构观测
+\begin{equation}
+ o_t=(\text{git},\text{files},\text{agent traces},\text{tool calls},\text{experiments},\text{papers},\text{scores},\ldots).
+\end{equation}
+历史为
+\begin{equation}
+ H_t=(o_{0:t},a_{0:t-1}).
+\end{equation}
+研究动作可以包含
+\begin{equation}
+ a_t\in\{\text{Think},\text{Experiment},\text{SearchHistory},\text{SearchCode},\text{SearchWorld},\text{Branch},\text{Merge},\text{AskHuman},\text{Stop},\ldots\}.
+\end{equation}
+
+因此三个困难可写为：
+\begin{align}
+\textbf{History/State:}\quad & H_t\longrightarrow b_t(z)=\Pp(z_t=z\mid H_t),\\
+\textbf{Forecast/Timing:}\quad & (b_t,a)\longrightarrow \Pp(z_{t+\Delta},Y\mid b_t,a),\\
+\textbf{Retrieval:}\quad & (b_t,q,B_t)\longrightarrow \text{evidence/action allocation}.
+\end{align}
+这与 POMDP 中 belief state、state information acquisition 与 optimal stopping 的经典结构相容\parencite{monahan1982pomdp,lauri2022pomdp}，但研究过程的状态空间、动作空间和观测结构远比标准有限 POMDP 更开放、更非平稳。
+
+本文的统一观点是
+\begin{equation}
+\boxed{\text{Research process}=\text{partially observed}+\text{provenance grounded}+\text{resource bounded adaptive control}.}
+\end{equation}
+
+三个困难形成正反馈：
+\begin{equation}
+ H_{\rm history}\uparrow\Rightarrow
+ \epsilon_{\rm state}\uparrow\Rightarrow
+ \epsilon_{\rm query}\uparrow\Rightarrow
+ C_{\rm retrieval}\uparrow\Rightarrow
+ H_{\rm history}\uparrow.
+\end{equation}
+这里的 $H_{\rm history}$ 不是严格 Shannon entropy，而是后文定义的工程熵的合称。
+
+\section{研究地图：哪些成熟领域已经覆盖了哪些子问题}
+
+\begin{longtable}{p{0.18\textwidth}p{0.31\textwidth}p{0.42\textwidth}}
+\toprule
+领域 & 已有成熟问题 & 对本项目的直接意义\\
+\midrule
+Software repository mining / feature location & 从 source、history、issues、changesets、dynamic traces 中定位功能与演化 & 复杂 Git 仓库中的“某概念在哪里、何时改变、为什么改变”并非新问题；单一 lexical/semantic search 不足\parencite{dit2013feature,kagdi2007msr,chochlov2017historical}\\
+Project memory & 将开发工件自动组织为团队项目记忆 & Hipikat 已把 issue、code、history 等视为项目群体记忆\parencite{cubranic2005hipikat}\\
+Provenance & Entity--Activity--Agent、derivation、usage、attribution & 可作为最小 provenance 语义骨架；不必自造底层 ontology\parencite{w3cprov2013}\\
+Scientific workflow provenance & workflow run、input/output/code、可重现打包 & Workflow Run RO-Crate 已提供跨 workflow system 的运行 provenance 表示\parencite{leo2024wfrun}\\
+Event sourcing & append-only event log + replay + materialized view & “历史不可变，memory/state 是投影视图”的直接工程先例\parencite{fowler2005eventsourcing,santos2026esaa}\\
+Process mining & event log $\to$ process discovery/conformance/performance & 可用于从 agent 轨迹发现实际研究过程，而非只依赖 SOP 中声明的过程\parencite{vanderAalst2016processmining,diba2021eventabstraction}\\
+Object-centric process mining & 一个 event 同时关联多个对象/案例 & 非常适合 agent/candidate/hypothesis/experiment/branch 多重归属\parencite{berti2023ocpm,vanderAalst2026ocpm}\\
+Predictive process monitoring & 从 running case 预测 outcome/next event/remaining time & 为“当前研究过程未来会怎样”提供直接方法论邻居\parencite{francescomarino2024ppm,verenich2019remaining}\\
+Agent memory & storage/reflection/experience、state management、source-grounded evolution & 说明 trajectory preservation、compression、experience abstraction 是独立问题；纯 semantic RAG 不足\parencite{zhang2025memorysurvey,luo2026memorysurvey,chen2026mage,sun2026trajwiki}\\
+Long-horizon agents & cross-context state persistence、harness、recovery & 强调长程能力是系统属性而非单纯 context window\parencite{dong2026longhorizon,wu2026reliable}\\
+Active retrieval & when/what to retrieve & 已在 RAG/reasoning 中出现按需检索与 intervention policy，故“何时检索”本身不是 novelty\parencite{jiang2023flare,asai2024selfrag,guo2026realm,feng2026camdf}\\
+Rational metareasoning / VOI & 对 computation/information acquisition 定价 & 为“继续内部研究还是检索/实验/问人”提供规范性框架\parencite{russell1991metareasoning,hay2012selecting,saar2009activefeature,desabbata2024rational}\\
+Learning to defer & 何时把决策交给昂贵的人类专家 & 将 human-in-the-loop 从固定审查者改写为可学习的 meta-action\parencite{hemmer2023defer}\\
+Tacit expertise / NDM & 经验形成 pattern/tacit knowledge 与快速判断 & 为“taste”提供比“不可形式化直觉”更可操作的解释\parencite{patterson2010tacit,klein2015intuition,polanyi1958personal}\\
+\bottomrule
+\end{longtable}
+
+\section{困难一：检索不是单一 RAG，而是跨时间、结构和 provenance 的证据分配}
+
+\subsection{大型 Git 仓库为什么难检索}
+
+传统代码搜索常把问题近似为
+\begin{equation}
+ q\longrightarrow \operatorname{rank}(\text{files/symbols}).
+\end{equation}
+但真实维护问题往往是：
+\begin{quote}
+“这个不断演化的功能什么时候从 A 设计变成 B？哪些 commit、issue、实验和决策共同导致了它？当前残留约束是什么？”
+\end{quote}
+因此目标不是静态 source retrieval，而是
+\begin{equation}
+ q\longrightarrow \operatorname{rank}(\text{concepts},\text{artifacts},\text{events},\text{commits},\text{rationales},\text{experiments}).
+\end{equation}
+
+Feature location 已有数十年研究。系统综述将方法覆盖 textual/IR、static structural、dynamic 与 hybrid 等路线\parencite{dit2013feature}。历史文本也有独立价值：Chochlov 等在 8 个系统、600 个 features 上发现，changeset history 与当前源码 lexical information 的组合优于各自单独使用，但效果依赖系统和配置\parencite{chochlov2017historical}。这直接反对“一个 embedding index 解决仓库历史”的设想。
+
+更接近我们目标的是 project memory。Hipikat 将开发过程中自然产生的工件组织成可推荐的 group memory\parencite{cubranic2005hipikat}；Codebook 则用 typed graph 统一 people、changesets、work items、files、source code 及其关系，说明“多工件图 + 路径查询”在软件工程中已有先例\parencite{begel2010codebook}。
+
+\subsection{检索应当分层}
+
+建议将检索动作拆为
+\begin{equation}
+ R(q)=\operatorname{Route}(q)\to (R_0,R_1,R_2,R_3,R_4,R_5),
+\end{equation}
+其中：
+\begin{align*}
+R_0 &: \text{exact lookup: ID/hash/path/commit/experiment};\\
+R_1 &: \text{structural: dependency/provenance/parent/descendant};\\
+R_2 &: \text{temporal: evolution/change point/history};\\
+R_3 &: \text{lexical/semantic: BM25/embedding/code search};\\
+R_4 &: \text{derived experience: similar failures/mechanisms/trajectories};\\
+R_5 &: \text{external: GitHub/papers/web/packages}.
+\end{align*}
+
+检索的目标不是 recall 最大化，而是有限预算下的 evidence allocation：
+\begin{equation}
+ r^*=\arg\max_{r\in\mathcal R}\frac{\E[\Delta U\mid r,H_t]}{\E[\Cost(r)\mid H_t]}.
+\end{equation}
+这使 repository retrieval 与 open-world retrieval 统一进入 metareasoning，而不是两个独立工具。
+
+\subsection{历史搜索的关键缺口：syntactic evolution 与 semantic evolution}
+
+Git 原生记录的是 syntactic evolution：blob、tree、commit、diff。研究者真正需要的是 semantic evolution：
+\begin{equation}
+ \text{Concept}\leftrightarrow\text{Decision}\leftrightarrow\text{Artifact}\leftrightarrow\text{Commit}\leftrightarrow\text{Experiment}.
+\end{equation}
+
+因此最值得构建的不是“更聪明的 git log”，而是 temporal provenance 上的 semantic index。其最低要求是：任何语义 claim 都能回到具体 commit/diff/event/evidence；任何 commit 也能向上关联其研究意图和验证结果。
+
+\section{困难三优先：历史处理是状态估计与检索的共同底座}
+
+\subsection{不要把 history 与 memory 混为一谈}
+
+近期 agent memory 文献已经从简单 storage 走向 reflection 与 experience abstraction\parencite{luo2026memorysurvey}。MAGE 更明确指出，按 semantic similarity 组织 memory 会打碎 execution-state dependencies，并提出 hierarchical state tree 以保持 active path、隔离错误分支和支持 revise\parencite{chen2026mage}。TrajWiki 则使用 source-grounded evolution trajectory、immutable episodic snapshots 与 ADD/REVISE/DEPRECATE 操作保存 memory 的演化过程\parencite{sun2026trajwiki}。
+
+这些工作支持一个保守原则：
+\begin{equation}
+\boxed{\text{History is evidence; memory is a derived view.}}
+\end{equation}
+即不以 summary 覆盖 raw history，而是
+\begin{equation}
+ H_{raw}\xrightarrow{f_q}V_q,
+\end{equation}
+允许针对不同查询重建不同 view。
+
+\subsection{Event sourcing 是很合适的工程原型}
+
+Event Sourcing 的核心是将状态变化保存为不可变事件，再通过 replay/projector 形成 materialized state\parencite{fowler2005eventsourcing}。2026 年 ESAA 已直接把该模式用于 LLM software agents：agent 产生结构化 intention，deterministic orchestrator 验证并写入 append-only log，再投影为可验证 view\parencite{santos2026esaa}。
+
+对研究基础设施，建议最小事件结构为
+\begin{equation}
+ e_i=(id,time,actor,type,inputs,outputs,parents,refs,cost,status,env).
+\end{equation}
+actor 可以是 human/agent/subagent/tool/evaluator；outputs/refs 可指向 commit、file、dataset、candidate、experiment、paper、search result、claim。
+
+\subsection{三层历史表示}
+
+\paragraph{$L_0$: immutable evidence.}
+完整保存 tool calls、prompts/outputs（受隐私与成本策略约束）、Git objects、实验 artifact、evaluator outcome、外部来源快照/标识。
+
+\paragraph{$L_1$: structured events.}
+将异构日志归一为机器可查询事件，例如 CandidateEvaluated、ArtifactRetrieved、DecisionMade、AgentSpawned、BranchRejected。
+
+\paragraph{$L_2$: semantic research views.}
+由 $L_0/L_1$ 派生 Hypothesis、Mechanism、FailureMode、Decision、OpenQuestion、Evidence 等研究语义对象。关键约束为
+\begin{equation}
+ L_2\to L_1\to L_0
+\end{equation}
+始终可追溯。
+
+W3C PROV 的 Entity--Activity--Agent 及 used/wasGeneratedBy/wasDerivedFrom/wasAssociatedWith 等关系足以作为 $L_1$ provenance 的最小标准骨架\parencite{w3cprov2013}。OpenLineage 的 Run/Job/Dataset + extensible facets 展示了工业级 event schema 如何保持小核心与可扩展元数据\parencite{openlineage}.Workflow Run RO-Crate 则展示了科研计算中将 inputs、outputs、code 和 run provenance 一起打包的成熟做法\parencite{leo2024wfrun}。
+
+\subsection{为什么 object-centric process mining 很匹配 swarm/agent research}
+
+传统 process mining 假定一个 case ID，但研究事件往往同时属于：
+\begin{equation}
+ \text{AgentRun},\text{Candidate},\text{Hypothesis},\text{Experiment},\text{GitBranch},\text{Task}.
+\end{equation}
+Object-centric process mining 允许事件同时关联多个 co-evolving objects，正是为突破单 case 假设而发展\parencite{berti2023ocpm,vanderAalst2026ocpm}。因此 swarm/subagent 不必另造历史系统；只需把 agent run 作为一种 object，并用 spawnedBy/used/generated/informed 等边描述关系。
+
+\subsection{Event abstraction 是承重难题，不是格式问题}
+
+底层可能记录数百万低层事件，但研究状态需要高层事件：
+\begin{equation}
+ \{\text{read},\text{edit},\text{test},\text{commit}\}\Rightarrow\text{ImplementMechanism}.
+\end{equation}
+Process mining 已把 event abstraction 视为独立研究问题，因为不同系统产生的事件粒度天然不同\parencite{diba2021eventabstraction}。因此应避免把 LLM 生成的高层摘要直接当事实；更稳妥的是把它视为可版本化、可失效、带 provenance 的 derived interpretation。
+
+\section{困难二：时机 = 状态估计 + 未来预测 + 元决策}
+
+\subsection{状态估计先于 policy learning}
+
+若历史表示为 $H_t$，真正供 policy 使用的应是 belief/state representation
+\begin{equation}
+ b_t=\phi(H_t).
+\end{equation}
+若 $\phi$ 丢失关键因果结构，则即使 policy optimizer 很强也无济于事。因此建议研究顺序为
+\begin{equation}
+\boxed{Observability\to Representation\to Prediction\to Control.}
+\end{equation}
+
+\subsection{Predictive process monitoring 提供了直接邻居}
+
+Predictive Process Monitoring (PPM) 从 historical event logs 学习对 running cases 的预测，包括 outcome、next activity、remaining time 与 cost 等\parencite{francescomarino2024ppm,verenich2019remaining}。对研究 agent，可以类比定义：
+\begin{align}
+\hat p_{\rm success} &= \Pp(\text{verified improvement within }B\mid H_t,a),\\
+\hat T_{\rm gain} &= \E[\text{cost to next meaningful improvement}\mid H_t,a],\\
+\hat \Delta J &= \E[J_{t+\Delta}-J_t\mid H_t,a],\\
+\hat I &= \E[\text{information gain}\mid H_t,a].
+\end{align}
+这比只做 plateau detection 更一般。
+
+\subsection{内部研究生产率的最小状态}
+
+若 evaluator 产生 best-so-far $J_t^*$，可将有效 improvement 视为 marked point process。设事件到达率为 $\lambda_t$，条件改进幅度为 $\mu_t$，则
+\begin{equation}
+ r_I(t)\approx\lambda_t\mu_t
+\end{equation}
+是 empirical endogenous research productivity。其优点是区分“越来越难找到改进”（$\lambda\downarrow$）和“仍频繁改进但幅度变小”（$\mu\downarrow$）。第一代 timing policy 可以只用
+\begin{equation}
+ s_t=(\hat\lambda_t,\hat\mu_t,b_t),
+\end{equation}
+全部由 harness-authoritative evaluator trace 计算，避免 agent self-report、embedding 或 LLM judge 进入最初因果链。
+
+\subsection{Rational metareasoning：研究动作本身也需要定价}
+
+经典 metareasoning 将 computation 视为有成本的 meta-action，选择能提高最终决策效用的 computation\parencite{russell1991metareasoning,hay2012selecting}。Active feature-value acquisition 同样根据信息价值决定是否支付成本获取额外特征\parencite{saar2009activefeature}。这为研究 agent 给出统一形式：
+\begin{equation}
+ Q(a\mid b_t)=\E[U_{future}\mid b_t,a]-\Cost(a),
+\end{equation}
+\begin{equation}
+ a_t^*=\arg\max_{a\in\A_t}Q(a\mid b_t).
+\end{equation}
+其中 $a$ 可以是继续内部 evolution、运行实验、检索本地历史、检索外部世界、问人或停止。
+
+\subsection{Active retrieval 说明“何时检索”已有局部解，但研究时域不同}
+
+FLARE 通过未来句子的低置信 token 决定 when/what to retrieve\parencite{jiang2023flare}；Self-RAG 学习按需检索和 reflection\parencite{asai2024selfrag}；ReaLM-Retrieve 把 reasoning step 上的 retrieval intervention 写成 learned sequential policy\parencite{guo2026realm}；CAM-DF 则研究异质工具成本下何时停止继续获取工具\parencite{feng2026camdf}。因此本项目的 novelty 不应表述为“首次研究检索时机”，而应收窄为：
+\begin{equation}
+\boxed{\text{long-horizon algorithm research}+\text{verified-progress state}+\text{history/provenance}+\text{costed open-world acquisition}.}
+\end{equation}
+
+DeepEvolve 已表明外部 deep research 与 algorithm evolution 可以组合，并以纯内部 evolution 在复杂任务中 plateau 为动机\parencite{liu2025deepevolve}。这进一步说明“外部知识是否有价值”不是最值得消耗研究资源的问题；更尖锐的问题是 acquisition policy。
+
+\section{困难一与二的耦合：检索本身也是 sequential decision process}
+
+检索并非一次函数调用，而可以表示为
+\begin{equation}
+ a_t^{ret}\in\{\text{search exact},\text{expand lineage},\text{search history},\text{semantic search},\text{search web},\text{read},\text{adapt},\text{stop retrieval}\}.
+\end{equation}
+一个好的 retrieval planner 必须同时预测：
+\begin{enumerate}
+\item 该来源命中相关证据的概率；
+\item 证据的新颖性与可信度；
+\item 阅读/理解/adaptation 成本；
+\item 证据对当前候选 action ranking 的 expected value；
+\item 继续检索相对立即行动的 opportunity cost。
+\end{enumerate}
+
+因此可定义
+\begin{equation}
+ \VOI(r\mid b_t)=\E[U^*_{after\ r}-U^*_{now}\mid b_t]-\Cost(r),
+\end{equation}
+并把 retrieval stopping 写为
+\begin{equation}
+ \max_r\VOI(r\mid b_t)\le 0\Rightarrow \text{StopRetrieval}.
+\end{equation}
+这与 cost-aware tool acquisition 和 rational metareasoning 的结构一致\parencite{feng2026camdf,russell1991metareasoning}。
+
+\section{“系统熵”的可操作分解}
+
+为了避免把“熵”只当比喻，建议至少记录四种工程不确定性：
+\begin{align}
+H_{prov} &: \text{provenance ambiguity：不知道结果/决策来自哪里};\\
+H_{sem} &: \text{semantic aliasing：同一概念多名、多概念同名};\\
+H_{branch} &: \text{branch explosion：agent/candidate/experiment 分支增长};\\
+H_{policy} &: \text{policy conflict：code/config/MD/prompt 对行为规定冲突}.
+\end{align}
+它们不必强行合成一个 Shannon 标量。更实用的是为每一项定义可测 proxy，例如 unresolved provenance links、concept alias collision、active branch count、conflicting policy assertions。核心因果假设是
+\begin{equation}
+(H_{prov},H_{sem},H_{branch},H_{policy})\uparrow
+\Rightarrow C_{retrieve}\uparrow,\ \epsilon_{state}\uparrow.
+\end{equation}
+该假设应通过真实 trajectory 数据验证，而非写成既定事实。
+
+\section{三层治理：Code/IaC、SOP 与 Human Taste}
+
+\subsection{Layer 1：machine-enforceable invariants}
+
+IaC 的核心价值是用 machine-readable definition 取代手工配置\parencite{rahman2021iac}；Policy as Code 进一步把安全、资源、合规等组织/技术规则写成 machine-enforceable declarative policy\parencite{serra2026policy}. 对研究 agent，凡可机械验证的 invariant 均应尽量从自然语言提升为 code：
+\begin{equation}
+\boxed{\text{Mechanically verifiable}\Rightarrow\text{do not leave it only in prose}.}
+\end{equation}
+典型对象包括 schema、hash、budget、sandbox、permission、evaluator identity、artifact dependency、allowed transition、provenance completeness。
+
+\subsection{Layer 2：SOP 是软 policy，不是事实}
+
+SOP 更接近
+\begin{equation}
+ \pi_{SOP}(s)\to a
+\end{equation}
+而不是 invariant。例如“连续三次相似失败后先查历史”不能保证永远正确，也难以在所有环境强制。因此 SOP 应带 version、scope、applicability condition 与 evidence，而不只是散落 Markdown。Agent 对 SOP 的遵循率、偏离原因和 outcome 应可测。
+
+\subsection{Layer 3：Human taste = 尚未充分显式化的 long-horizon evaluator}
+
+关于 expert intuition，更谨慎的表述不是“人类有神秘 taste”，而是经验可形成 pattern recognition 与 tacit knowledge；Naturalistic Decision Making 文献把熟练直觉与经验形成的 pattern/tacit knowledge 联系起来\parencite{patterson2010tacit,klein2015intuition}。Polanyi 的 personal/tacit knowledge 则提醒我们，科学实践包含无法完全还原为显式规则的个人知识成分\parencite{polanyi1958personal}。
+
+工程上可将 taste 暂时建模为
+\begin{equation}
+ T_H(s)\approx \E[\text{long-horizon research value}\mid s,\text{human experience}],
+\end{equation}
+但必须强调：这是计算解释，不是已被心理学证明的等价关系。
+
+\subsection{Human override 应成为一等事件}
+
+记录
+\begin{equation}
+ h_i=(state,agentProposal,humanDecision,reason,confidence,outcome).
+\end{equation}
+这使 human-in-the-loop 从不可分析的聊天干预变成可学习数据。Learning to defer 已研究如何在专家预测昂贵时学习何时交给人类\parencite{hemmer2023defer}。对研究 agent，未来可学习
+\begin{equation}
+ \pi_{defer}(b_t)=\Pp(\text{human intervention has positive net value}\mid b_t).
+\end{equation}
+
+\subsection{知识结晶：Taste $\leftrightarrow$ SOP $\leftrightarrow$ Code}
+
+成熟系统不应固定三层边界，而应支持知识在 enforcement level 间迁移：
+\begin{equation}
+ \text{Taste}\xrightarrow{codify}\text{SOP}\xrightarrow{mechanize}\text{Invariant}.
+\end{equation}
+若 hard invariant 出现系统性 counterexample，也允许
+\begin{equation}
+ \text{Invariant}\xrightarrow{invalidate/revise}\text{SOP/Taste}.
+\end{equation}
+关键是每次升级/降级都有 evidence 与 provenance，而不是“文档悄悄变了”。
+
+\section{建议的最小体系结构：Control Plane 与 Epistemic Plane 分离}
+
+\subsection{Control Plane}
+回答：什么可以发生、必须发生、不得发生。
+\begin{itemize}
+\item schemas/contracts;
+\item sandbox/network/filesystem policy;
+\item evaluator identity and budget;
+\item artifact integrity;
+\item executable transition guards;
+\item reproducibility/freeze checks.
+\end{itemize}
+
+\subsection{Epistemic Plane}
+回答：发生了什么、当前相信什么、为什么、还不知道什么、下一步去哪找。
+\begin{itemize}
+\item append-only research event ledger;
+\item provenance graph;
+\item semantic/temporal indexes;
+\item state estimators;
+\item predictive models;
+\item retrieval planner;
+\item human override/defer records;
+\item derived research views.
+\end{itemize}
+
+两者通过 stable IDs 与 content hashes 连接，但不互相替代。
+
+\section{Event-first, schema-light, views-later}
+
+本文不建议立即设计完整 Research Ontology。理由有三：
+\begin{enumerate}
+\item 研究对象和 agent 行为仍在快速变化，过早本体化会冻结错误抽象；
+\item object-centric process management 明确指出不同目的需要不同 process representation，不存在单一模型满足所有用途\parencite{vanderAalst2026ocpm};
+\item agent memory 文献也正在从静态 record 转向 source-grounded、可演化 memory，而非证明某个固定 schema 是最终答案\parencite{sun2026trajwiki,chen2026mage}。
+\end{enumerate}
+
+因此建议只冻结极小 core：
+\begin{verbatim}
+Event {
+  id, timestamp, actor, type,
+  inputs[], outputs[], parents[], refs[],
+  cost, status, environment_id, schema_version
+}
+\end{verbatim}
+所有 Hypothesis/Mechanism/Decision/Failure 等均先作为 typed derived objects/views，而不是底层不可变 ontology。
+
+\section{建议的研究程序：不要一次性解决三个困难}
+
+\subsection{Phase 0：Observability audit}
+目标：回答“我们到底记录了什么，哪些东西丢了？”
+\begin{itemize}
+\item 对 agent/tool/git/evaluator/subagent/swarm 事件做 source inventory；
+\item 定义 authoritative event IDs 与 clocks；
+\item 测量 provenance completeness；
+\item 识别不可恢复的 silent state mutation。
+\end{itemize}
+
+\subsection{Phase 1：Append-only substrate}
+先实现事件 ledger + content-addressed artifact references + Git linkage，不做复杂 memory AI。
+验收：任一最终 result 可反向恢复其 candidate、experiment、agent run、tool inputs 与 commit；任一 event 可 replay/verify 到约定边界。
+
+\subsection{Phase 2：Retrieval baselines}
+建立五类 baseline：exact、graph/provenance、temporal Git/history、lexical/semantic、hybrid。用真实历史问题构造 benchmark，例如：
+\begin{itemize}
+\item 某机制首次出现在哪里？
+\item 为什么被废弃？
+\item 当前实现继承了哪些旧假设？
+\item 哪些实验已经证伪相似方案？
+\item 某功能跨 rename/move/refactor 后的完整 lineage 是什么？
+\end{itemize}
+指标除 Recall@k/MRR 外，应测 evidence completeness、time-to-answer、wrong-rationale rate、provenance precision。
+
+\subsection{Phase 3：Event abstraction / state views}
+比较 deterministic projection、rule-based abstraction、LLM abstraction、hybrid。高层 view 只做 derived object，并保留 source links。重点测：
+\begin{equation}
+\text{compression}\quad vs\quad\text{future-query recoverability}.
+\end{equation}
+
+\subsection{Phase 4：State estimation}
+先不用 RL。用历史 campaign 学习/校准：
+\begin{equation}
+ \hat\lambda_t,\hat\mu_t,\hat p_{success},\hat T_{gain},\hat p_{failure}.
+\end{equation}
+评价 calibration、Brier score、time-dependent discrimination 与 distribution shift。
+
+\subsection{Phase 5：Action forecasting}
+针对固定 action set 比较
+\begin{equation}
+ \hat Q(a\mid b_t)
+\end{equation}
+的预测质量。先离线 counterfactual/paired experiments，再考虑 online policy learning。
+
+\subsection{Phase 6：Retrieval timing}
+使用受控 exogenous packet 做因果 timing assay，再进入 live open-world search。这样分离 information timing 与 query formulation/source quality。
+
+\subsection{Phase 7：Human deferral}
+把 human intervention 变成显式动作，比较 always-human、never-human、uncertainty threshold、learned defer policy。
+
+\subsection{Phase 8：Knowledge crystallization}
+从高频 human override / SOP violation / repeated failure 中挖掘候选 rule，经过 replay 和 counterexample testing 后再提升为 executable policy；禁止 LLM 自动把“常见经验”直接升级成 hard invariant。
+
+\section{实验设计中的关键反例与风险}
+
+\subsection{Summary trap}
+摘要在当前 query 上有效，不代表对未来 query 足够。故 raw evidence 不应被 summary 替代。
+
+\subsection{Graph trap}
+有 provenance graph 不等于能回答语义问题；图的 edge typing 和 query planner 可能成为新瓶颈。
+
+\subsection{Ontology trap}
+过早固定 Hypothesis/Mechanism/Decision ontology 会迫使新型研究行为映射到旧类型，制造 silent semantic loss。
+
+\subsection{Embedding trap}
+相似不等于因果/适用。Agent memory 实证研究显示 retrieved experience 会强烈诱导 experience-following behavior，因此错误或过时 memory 可能系统性污染后续动作\parencite{xiong2026experience}。
+
+\subsection{Prediction trap}
+若训练数据来自旧 policy，则 $P(Y\mid s,a)$ 存在 policy-induced selection bias；需要 exploration、off-policy correction 或随机化 intervention 才能逐渐获得 action-value 识别。
+
+\subsection{Human oracle trap}
+Human taste 不是 ground truth。应记录 human confidence、分歧、结果和反事实；人类 override 也要被 calibration。
+
+\subsection{Automation ratchet trap}
+Taste$\to$SOP$\to$hard rule 是危险的单向棘轮。必须允许 hard rule 被 counterexample 降级或失效。
+
+\section{理论上最值得研究的开放问题}
+
+\subsection{Query-conditioned sufficient history}
+给定未来 query $q$，寻找最小历史投影
+\begin{equation}
+ V_q=f_q(H)
+\end{equation}
+使得任务损失增加不超过 $\epsilon$：
+\begin{equation}
+ L(q,V_q)-L(q,H)\le\epsilon,
+\end{equation}
+同时最小化存储/读取成本。这是 memory compression、retrieval 与 provenance 的统一目标。
+
+\subsection{Research-state representation learning}
+寻找表示 $z_t=\phi(H_t)$，使其同时对未来 outcome/action value 有预测力，并保持 provenance 可解释性。纯 embedding 与纯手工 schema 都可能不足。
+
+\subsection{Action-value under open-world expansion}
+动作集本身会随检索发现新工具、算法、数据而扩张：
+\begin{equation}
+ \A_{t+1}=\A_t\cup\Delta\A_t.
+\end{equation}
+这使标准固定动作空间的 POMDP/RL 假设失效。需要把 SearchWorld 同时视为信息获取和 action-space expansion。
+
+\subsection{Attribution across long trajectories}
+最终 improvement 往往由很早的 retrieval、某 subagent 的失败、后续 adaptation 共同产生。近期 trajectory attribution 工作开始形式化 long-range attribution，但该问题仍很开放\parencite{chen2026attribution}。
+
+\subsection{When to reuse vs when to re-derive}
+长 trajectory 检索后如何适配到当前 state 是独立瓶颈；近期工作已显示“找到相似 trajectory”与“安全有效复用”不是同一个问题\parencite{li2026qcr}。因此 retrieval quality 与 reuse quality 必须分开评测。
+
+\subsection{Human taste distillation without Goodharting}
+若把 human override 学成规则，系统会逐渐优化人类历史判断的 proxy，而非真实研究价值。需要保留 outcome-based validation 与 disagreement sampling，避免把 taste 静态化。
+
+\section{工程建议：现在应该复用什么，不该自造什么}
+
+\subsection{优先复用}
+\begin{itemize}
+\item provenance vocabulary：W3C PROV；
+\item research packaging：RO-Crate / Workflow Run RO-Crate；
+\item run lineage/event API 思想：OpenLineage；
+\item event-sourcing pattern：append-only log + projector + replay；
+\item object-centric event/process ideas：OCEL/OCPM；
+\item repository mining：Git native history + symbol/AST/dependency + lexical/IR hybrid；
+\item policy enforcement：IaC/Policy-as-Code 风格的 machine-enforceable contract。
+\end{itemize}
+
+\subsection{暂不自造}
+\begin{itemize}
+\item 完整 Research Ontology；
+\item 单一“万能 memory”；
+\item 单一 embedding/vector DB 作为 source of truth；
+\item 未有可识别 state 前的复杂 RL timing policy；
+\item 把 LLM summary 当 authoritative history；
+\item 自动将 human/SOP 经验提升为 hard rule。
+\end{itemize}
+
+\section{一个可落地的最小数据模型}
+
+\begin{verbatim}
+Event
+  id: content/random stable id
+  ts: logical + wall clock
+  actor_id: Human | AgentRun | Tool | Evaluator
+  type: extensible string
+  input_refs[]
+  output_refs[]
+  parent_event_ids[]
+  object_refs[]      # task, candidate, hypothesis, branch, experiment...
+  policy_refs[]      # code/SOP/prompt versions that governed action
+  env_id
+  cost
+  status
+  schema_version
+
+Artifact
+  id: content hash where possible
+  media_type
+  locator
+  git_commit?
+  external_uri?
+  license?
+  created_by_event
+
+Interpretation (derived, versioned)
+  id
+  type: Claim | Hypothesis | Mechanism | FailureMode | Decision | ...
+  statement
+  source_event_ids[]
+  confidence
+  valid_from / deprecated_by
+  interpreter_version
+\end{verbatim}
+
+这个 schema 的关键不是字段本身，而是：Event/Artifact 尽量事实化；Interpretation 明确是 derived、可修订、可废弃。
+
+\section{总判断}
+
+这次调研后的核心判断有五点。
+
+第一，三个困难确实都有庞大的既有研究，但它们分散在 software evolution、process mining、provenance、agent memory、RAG/metareasoning 与 human-AI decision making 中；尚没有一个成熟框架直接覆盖“开放世界长程算法研究 agent”的完整闭环。
+
+第二，\textbf{历史处理是更底层的承重项}。没有 provenance-grounded history，就无法可靠构造 state；没有 state，就很难研究 timing；没有语义/时间结构，就会不断把历史检索退化成昂贵的重新阅读。
+
+第三，最稳健的底座不是“Research OS”，而是
+\begin{equation}
+\boxed{\text{append-only event/provenance substrate}+\text{rebuildable views}.}
+\end{equation}
+这与 W3C PROV、Event Sourcing、OpenLineage、Workflow Run RO-Crate 和 OCPM 的成熟思想一致。
+
+第四，IaC/SOP/Human Taste 不是互斥方案，而是不同 uncertainty/enforcement levels；成熟系统应允许知识在三层间以有证据的方式结晶和回退。
+
+第五，真正的新研究问题位于这些成熟基础设施之上：
+\begin{equation}
+\boxed{
+H_t\xrightarrow{\phi}b_t
+\xrightarrow{\text{forecast}}\hat Q(a\mid b_t)
+\xrightarrow{\text{meta-policy}}a_t,
+}
+\end{equation}
+其中动作同时包括内部研究、历史/外部检索、实验、分支、停止与 defer-to-human；而每个 state/forecast/decision 又必须能够沿 provenance 回到原始证据。
+
+换言之，最值得长期研究的统一问题不是“怎样给 agent 加 memory”，而是：
+\begin{quote}
+\textbf{如何从不断增长、异构、多主体、可分叉的研究历史中，形成可追溯的当前 belief state；如何预测不同研究动作的未来价值；以及如何在有限预算下决定何时检索、实验、分叉、停止或交给人类。}
+\end{quote}
+
+\printbibliography
+\end{document}

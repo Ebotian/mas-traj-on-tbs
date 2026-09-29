@@ -51,3 +51,24 @@ a0/runtimes/loreley/llm-round/worker-repo-worktrees/
 # Scratch git worktrees/materialized trees created by probe runs
 **/*-work/
 a0/notes/**/work/
+
+# related_files: a reference corpus of plans, reviews and their sources. Text
+# only, as a whitelist, because the folder accumulates downloaded papers and a
+# blacklist would admit the next binary silently. Directories stay re-included so
+# the text patterns below can be reached; the PDFs, which are build products of the
+# .typ/.tex sources beside them, stay out. To track a new text type, add one
+# !related_files/*.<ext> line.
+related_files/**
+!related_files/**/
+# codex/ and eve/ are clones with their own .git. Git cannot descend into them, so
+# the whitelist above leaves them as untracked directories and `git add` would
+# record a gitlink with no .gitmodules to explain it. Name them explicitly; these
+# rules must stay below the re-include, since the last match wins.
+related_files/codex/
+related_files/eve/
+!related_files/*.typ
+!related_files/*.tex
+!related_files/*.bib
+!related_files/*.md
+!related_files/*.txt
+!related_files/Makefile
