@@ -1,0 +1,18 @@
+{
+  "name": "rsi-dev-viz",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Systematic visualization of the rsi-dev research conception: the concept map, the measured numbers, the reversal history, the conflict register, the decision register, and the assistant's own reading coverage.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "derive": "python3 scripts/derive_experiments.py"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2"
+  }
+}

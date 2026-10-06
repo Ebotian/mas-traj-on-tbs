@@ -1,0 +1,658 @@
+{
+ "_generated": "2026-10-06",
+ "_generator": "viz/scripts/derive_experiments.py",
+ "_source_zip": "related_files/agent_engineering_science_repro_bundle.zip",
+ "_zip_members": [
+  "agent_engineering_science_references.bib",
+  "agent_engineering_science_report.tex",
+  "exp1_correlated_ensemble.csv",
+  "exp2_metareasoning.csv",
+  "exp3_temporal_retrieval.csv",
+  "fig_correlated_ensemble.pdf",
+  "fig_metareasoning.pdf",
+  "fig_temporal_retrieval.pdf"
+ ],
+ "_note": "The zip is untracked (the corpus whitelist excludes .zip), so this derived JSON is the only git-traced copy of the D line's measured data. Re-run `pnpm derive` after any change to the bundle.",
+ "repro": {
+  "seed": 42,
+  "rng": "NumPy",
+  "libs": "NumPy/SciPy/Matplotlib",
+  "trials": {
+   "exp1_per_point": 150000,
+   "exp2_per_cell": 25000,
+   "exp3_per_level": 10000
+  },
+  "disclaimer": "所有模拟均为机制示例，不应被引用为真实 LLM Agent 的性能证据。",
+  "cite": "agent_engineering_science_report.tex:415"
+ },
+ "p_agent": 0.7,
+ "exp1": {
+  "rows": [
+   {
+    "rho": 0.0,
+    "N": 1,
+    "N_eff_csv": 1.0,
+    "N_eff_theory": 1.0,
+    "accuracy_csv": 0.69972,
+    "accuracy_betabinom": 0.7,
+    "delta_pp": -0.028,
+    "z": -0.24,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.0,
+    "N": 3,
+    "N_eff_csv": 3.0,
+    "N_eff_theory": 3.0,
+    "accuracy_csv": 0.785233,
+    "accuracy_betabinom": 0.784,
+    "delta_pp": 0.123,
+    "z": 1.04,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.0,
+    "N": 5,
+    "N_eff_csv": 5.0,
+    "N_eff_theory": 5.0,
+    "accuracy_csv": 0.837347,
+    "accuracy_betabinom": 0.83692,
+    "delta_pp": 0.043,
+    "z": 0.36,
+    "pasted_md": 0.838
+   },
+   {
+    "rho": 0.0,
+    "N": 9,
+    "N_eff_csv": 9.0,
+    "N_eff_theory": 9.0,
+    "accuracy_csv": 0.900327,
+    "accuracy_betabinom": 0.901191,
+    "delta_pp": -0.086,
+    "z": -0.73,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.0,
+    "N": 17,
+    "N_eff_csv": 17.0,
+    "N_eff_theory": 17.0,
+    "accuracy_csv": 0.959427,
+    "accuracy_betabinom": 0.959723,
+    "delta_pp": -0.03,
+    "z": -0.25,
+    "pasted_md": 0.961
+   },
+   {
+    "rho": 0.0,
+    "N": 33,
+    "N_eff_csv": 33.0,
+    "N_eff_theory": 33.0,
+    "accuracy_csv": 0.992587,
+    "accuracy_betabinom": 0.992179,
+    "delta_pp": 0.041,
+    "z": 0.34,
+    "pasted_md": 0.992
+   },
+   {
+    "rho": 0.05,
+    "N": 1,
+    "N_eff_csv": 1.0,
+    "N_eff_theory": 1.0,
+    "accuracy_csv": 0.700373,
+    "accuracy_betabinom": 0.7,
+    "delta_pp": 0.037,
+    "z": 0.32,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.05,
+    "N": 3,
+    "N_eff_csv": 2.7273,
+    "N_eff_theory": 2.7273,
+    "accuracy_csv": 0.772333,
+    "accuracy_betabinom": 0.7722,
+    "delta_pp": 0.013,
+    "z": 0.11,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.05,
+    "N": 5,
+    "N_eff_csv": 4.1667,
+    "N_eff_theory": 4.1667,
+    "accuracy_csv": 0.813773,
+    "accuracy_betabinom": 0.813213,
+    "delta_pp": 0.056,
+    "z": 0.47,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.05,
+    "N": 9,
+    "N_eff_csv": 6.4286,
+    "N_eff_theory": 6.4286,
+    "accuracy_csv": 0.859107,
+    "accuracy_betabinom": 0.859034,
+    "delta_pp": 0.007,
+    "z": 0.06,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.05,
+    "N": 17,
+    "N_eff_csv": 9.4444,
+    "N_eff_theory": 9.4444,
+    "accuracy_csv": 0.899353,
+    "accuracy_betabinom": 0.899746,
+    "delta_pp": -0.039,
+    "z": -0.33,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.05,
+    "N": 33,
+    "N_eff_csv": 12.6923,
+    "N_eff_theory": 12.6923,
+    "accuracy_csv": 0.927353,
+    "accuracy_betabinom": 0.928658,
+    "delta_pp": -0.13,
+    "z": -1.1,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.1,
+    "N": 1,
+    "N_eff_csv": 1.0,
+    "N_eff_theory": 1.0,
+    "accuracy_csv": 0.699127,
+    "accuracy_betabinom": 0.7,
+    "delta_pp": -0.087,
+    "z": -0.74,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.1,
+    "N": 3,
+    "N_eff_csv": 2.5,
+    "N_eff_theory": 2.5,
+    "accuracy_csv": 0.76056,
+    "accuracy_betabinom": 0.761855,
+    "delta_pp": -0.129,
+    "z": -1.09,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.1,
+    "N": 5,
+    "N_eff_csv": 3.5714,
+    "N_eff_theory": 3.5714,
+    "accuracy_csv": 0.794087,
+    "accuracy_betabinom": 0.793983,
+    "delta_pp": 0.01,
+    "z": 0.09,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.1,
+    "N": 9,
+    "N_eff_csv": 5.0,
+    "N_eff_theory": 5.0,
+    "accuracy_csv": 0.828593,
+    "accuracy_betabinom": 0.827448,
+    "delta_pp": 0.115,
+    "z": 0.97,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.1,
+    "N": 17,
+    "N_eff_csv": 6.5385,
+    "N_eff_theory": 6.5385,
+    "accuracy_csv": 0.854347,
+    "accuracy_betabinom": 0.855418,
+    "delta_pp": -0.107,
+    "z": -0.91,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.1,
+    "N": 33,
+    "N_eff_csv": 7.8571,
+    "N_eff_theory": 7.8571,
+    "accuracy_csv": 0.875473,
+    "accuracy_betabinom": 0.874724,
+    "delta_pp": 0.075,
+    "z": 0.63,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.2,
+    "N": 1,
+    "N_eff_csv": 1.0,
+    "N_eff_theory": 1.0,
+    "accuracy_csv": 0.700427,
+    "accuracy_betabinom": 0.7,
+    "delta_pp": 0.043,
+    "z": 0.36,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.2,
+    "N": 3,
+    "N_eff_csv": 2.1429,
+    "N_eff_theory": 2.1429,
+    "accuracy_csv": 0.74576,
+    "accuracy_betabinom": 0.7448,
+    "delta_pp": 0.096,
+    "z": 0.81,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.2,
+    "N": 5,
+    "N_eff_csv": 2.7778,
+    "N_eff_theory": 2.7778,
+    "accuracy_csv": 0.767093,
+    "accuracy_betabinom": 0.764864,
+    "delta_pp": 0.223,
+    "z": 1.88,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.2,
+    "N": 9,
+    "N_eff_csv": 3.4615,
+    "N_eff_theory": 3.4615,
+    "accuracy_csv": 0.784353,
+    "accuracy_betabinom": 0.783651,
+    "delta_pp": 0.07,
+    "z": 0.59,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.2,
+    "N": 17,
+    "N_eff_csv": 4.0476,
+    "N_eff_theory": 4.0476,
+    "accuracy_csv": 0.796187,
+    "accuracy_betabinom": 0.797871,
+    "delta_pp": -0.168,
+    "z": -1.42,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.2,
+    "N": 33,
+    "N_eff_csv": 4.4595,
+    "N_eff_theory": 4.4595,
+    "accuracy_csv": 0.80648,
+    "accuracy_betabinom": 0.80699,
+    "delta_pp": -0.051,
+    "z": -0.43,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.4,
+    "N": 1,
+    "N_eff_csv": 1.0,
+    "N_eff_theory": 1.0,
+    "accuracy_csv": 0.700107,
+    "accuracy_betabinom": 0.7,
+    "delta_pp": 0.011,
+    "z": 0.09,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.4,
+    "N": 3,
+    "N_eff_csv": 1.6667,
+    "N_eff_theory": 1.6667,
+    "accuracy_csv": 0.72104,
+    "accuracy_betabinom": 0.7216,
+    "delta_pp": -0.056,
+    "z": -0.47,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.4,
+    "N": 5,
+    "N_eff_csv": 1.9231,
+    "N_eff_theory": 1.9231,
+    "accuracy_csv": 0.727633,
+    "accuracy_betabinom": 0.729383,
+    "delta_pp": -0.175,
+    "z": -1.48,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.4,
+    "N": 9,
+    "N_eff_csv": 2.1429,
+    "N_eff_theory": 2.1429,
+    "accuracy_csv": 0.737973,
+    "accuracy_betabinom": 0.735767,
+    "delta_pp": 0.221,
+    "z": 1.86,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.4,
+    "N": 17,
+    "N_eff_csv": 2.2973,
+    "N_eff_theory": 2.2973,
+    "accuracy_csv": 0.74136,
+    "accuracy_betabinom": 0.740082,
+    "delta_pp": 0.128,
+    "z": 1.08,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.4,
+    "N": 33,
+    "N_eff_csv": 2.3913,
+    "N_eff_theory": 2.3913,
+    "accuracy_csv": 0.74032,
+    "accuracy_betabinom": 0.742635,
+    "delta_pp": -0.232,
+    "z": -1.96,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.7,
+    "N": 1,
+    "N_eff_csv": 1.0,
+    "N_eff_theory": 1.0,
+    "accuracy_csv": 0.70078,
+    "accuracy_betabinom": 0.7,
+    "delta_pp": 0.078,
+    "z": 0.66,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.7,
+    "N": 3,
+    "N_eff_csv": 1.25,
+    "N_eff_theory": 1.25,
+    "accuracy_csv": 0.707753,
+    "accuracy_betabinom": 0.704447,
+    "delta_pp": 0.331,
+    "z": 2.79,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.7,
+    "N": 5,
+    "N_eff_csv": 1.3158,
+    "N_eff_theory": 1.3158,
+    "accuracy_csv": 0.7044,
+    "accuracy_betabinom": 0.705736,
+    "delta_pp": -0.134,
+    "z": -1.13,
+    "pasted_md": 0.723
+   },
+   {
+    "rho": 0.7,
+    "N": 9,
+    "N_eff_csv": 1.3636,
+    "N_eff_theory": 1.3636,
+    "accuracy_csv": 0.70546,
+    "accuracy_betabinom": 0.706687,
+    "delta_pp": -0.123,
+    "z": -1.04,
+    "pasted_md": null
+   },
+   {
+    "rho": 0.7,
+    "N": 17,
+    "N_eff_csv": 1.3934,
+    "N_eff_theory": 1.3934,
+    "accuracy_csv": 0.705287,
+    "accuracy_betabinom": 0.70728,
+    "delta_pp": -0.199,
+    "z": -1.68,
+    "pasted_md": 0.73
+   },
+   {
+    "rho": 0.7,
+    "N": 33,
+    "N_eff_csv": 1.4103,
+    "N_eff_theory": 1.4103,
+    "accuracy_csv": 0.70822,
+    "accuracy_betabinom": 0.707613,
+    "delta_pp": 0.061,
+    "z": 0.51,
+    "pasted_md": 0.732
+   }
+  ],
+  "se_at_reported_trials_pp": 0.1183,
+  "worst_abs_z_over_N_ge_3": 2.79,
+  "worst_cell": "0.7|3",
+  "verdict": "consistent with the exchangeable beta-binomial",
+  "pasted_md": {
+   "rows": [
+    {
+     "rho": 0.0,
+     "N": 5,
+     "accuracy_claimed": 0.838,
+     "accuracy_betabinom": 0.83692,
+     "delta_pp": 0.108,
+     "z_at_claimed_trials": 0.41,
+     "in_exp1": true
+    },
+    {
+     "rho": 0.0,
+     "N": 17,
+     "accuracy_claimed": 0.961,
+     "accuracy_betabinom": 0.959723,
+     "delta_pp": 0.128,
+     "z_at_claimed_trials": 0.48,
+     "in_exp1": true
+    },
+    {
+     "rho": 0.0,
+     "N": 33,
+     "accuracy_claimed": 0.992,
+     "accuracy_betabinom": 0.992179,
+     "delta_pp": -0.018,
+     "z_at_claimed_trials": -0.07,
+     "in_exp1": true
+    },
+    {
+     "rho": 0.3,
+     "N": 5,
+     "accuracy_claimed": 0.773,
+     "accuracy_betabinom": 0.74425,
+     "delta_pp": 2.875,
+     "z_at_claimed_trials": 10.87,
+     "in_exp1": false
+    },
+    {
+     "rho": 0.3,
+     "N": 17,
+     "accuracy_claimed": 0.812,
+     "accuracy_betabinom": 0.762914,
+     "delta_pp": 4.909,
+     "z_at_claimed_trials": 18.55,
+     "in_exp1": false
+    },
+    {
+     "rho": 0.3,
+     "N": 33,
+     "accuracy_claimed": 0.82,
+     "accuracy_betabinom": 0.767641,
+     "delta_pp": 5.236,
+     "z_at_claimed_trials": 19.79,
+     "in_exp1": false
+    },
+    {
+     "rho": 0.7,
+     "N": 5,
+     "accuracy_claimed": 0.723,
+     "accuracy_betabinom": 0.705736,
+     "delta_pp": 1.726,
+     "z_at_claimed_trials": 6.53,
+     "in_exp1": true
+    },
+    {
+     "rho": 0.7,
+     "N": 17,
+     "accuracy_claimed": 0.73,
+     "accuracy_betabinom": 0.70728,
+     "delta_pp": 2.272,
+     "z_at_claimed_trials": 8.59,
+     "in_exp1": true
+    },
+    {
+     "rho": 0.7,
+     "N": 33,
+     "accuracy_claimed": 0.732,
+     "accuracy_betabinom": 0.707613,
+     "delta_pp": 2.439,
+     "z_at_claimed_trials": 9.22,
+     "in_exp1": true
+    },
+    {
+     "rho": 0.9,
+     "N": 33,
+     "accuracy_claimed": 0.708,
+     "accuracy_betabinom": 0.700716,
+     "delta_pp": 0.728,
+     "z_at_claimed_trials": 2.75,
+     "in_exp1": false
+    }
+   ],
+   "se_at_claimed_trials_pp": 0.2646,
+   "rho_values_absent_from_exp1": [
+    0.3,
+    0.9
+   ],
+   "verdict": "not compatible with the same model at the claimed trial count"
+  }
+ },
+ "exp2": {
+  "rows": [
+   {
+    "budget": 5,
+    "policy": "fixed_equal",
+    "regret": 0.5224,
+    "samples": 5.0,
+    "net_utility": 0.5178
+   },
+   {
+    "budget": 5,
+    "policy": "adaptive",
+    "regret": 0.5288,
+    "samples": 5.0,
+    "net_utility": 0.5119
+   },
+   {
+    "budget": 10,
+    "policy": "fixed_equal",
+    "regret": 0.3655,
+    "samples": 10.0,
+    "net_utility": 0.5476
+   },
+   {
+    "budget": 10,
+    "policy": "adaptive",
+    "regret": 0.331,
+    "samples": 10.0,
+    "net_utility": 0.5866
+   },
+   {
+    "budget": 20,
+    "policy": "fixed_equal",
+    "regret": 0.23,
+    "samples": 20.0,
+    "net_utility": 0.4322
+   },
+   {
+    "budget": 20,
+    "policy": "adaptive",
+    "regret": 0.2021,
+    "samples": 17.493,
+    "net_utility": 0.5131
+   },
+   {
+    "budget": 40,
+    "policy": "fixed_equal",
+    "regret": 0.1325,
+    "samples": 40.0,
+    "net_utility": 0.0237
+   },
+   {
+    "budget": 40,
+    "policy": "adaptive",
+    "regret": 0.1678,
+    "samples": 19.692,
+    "net_utility": 0.5106
+   },
+   {
+    "budget": 80,
+    "policy": "fixed_equal",
+    "regret": 0.0754,
+    "samples": 80.0,
+    "net_utility": -0.918
+   },
+   {
+    "budget": 80,
+    "policy": "adaptive",
+    "regret": 0.1663,
+    "samples": 19.654,
+    "net_utility": 0.5101
+   }
+  ],
+  "notes": {
+   "adaptive_samples_saturate_at": 19.692,
+   "fixed_regret_keeps_improving_to": 0.0754,
+   "adaptive_regret_plateaus_at": 0.1663,
+   "fixed_net_utility_peak_budget": 10,
+   "fixed_net_utility_at_80": -0.918,
+   "adaptive_net_utility_at_80": 0.5101
+  }
+ },
+ "exp3": {
+  "rows": [
+   {
+    "semantic_noise": 0.05,
+    "flat_retrieval": 0.4557,
+    "temporal_projection": 1.0
+   },
+   {
+    "semantic_noise": 0.1,
+    "flat_retrieval": 0.3337,
+    "temporal_projection": 1.0
+   },
+   {
+    "semantic_noise": 0.2,
+    "flat_retrieval": 0.2575,
+    "temporal_projection": 1.0
+   },
+   {
+    "semantic_noise": 0.3,
+    "flat_retrieval": 0.2343,
+    "temporal_projection": 1.0
+   },
+   {
+    "semantic_noise": 0.5,
+    "flat_retrieval": 0.225,
+    "temporal_projection": 1.0
+   },
+   {
+    "semantic_noise": 0.8,
+    "flat_retrieval": 0.2188,
+    "temporal_projection": 1.0
+   }
+  ],
+  "notes": {
+   "temporal_projection_is_constant": true,
+   "temporal_projection_value": 1.0,
+   "flat_retrieval_range": [
+    0.2188,
+    0.4557
+   ],
+   "queries_per_level": 10000
+  }
+ }
+}

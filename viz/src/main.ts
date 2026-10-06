@@ -1,0 +1,63 @@
+import { h } from './lib/dom.ts'
+import * as overview from './views/overview.ts'
+import * as map from './views/map.ts'
+import * as numbers from './views/numbers.ts'
+import * as time from './views/time.ts'
+import * as conflicts from './views/conflicts.ts'
+import * as decisions from './views/decisions.ts'
+import * as coverage from './views/coverage.ts'
+import './style.css'
+
+interface View { id: string; label: string; hint: string; render: (host: HTMLElement) => void }
+
+const VIEWS: View[] = [
+  { id: 'overview', label: '总览', hint: 'G₀、收窄倍率、epistemic debt、四能力', render: overview.render },
+  { id: 'map', label: '结构图', hint: '50 节点 / 67 边,分层力导', render: map.render },
+  { id: 'numbers', label: '实测数字', hint: 'exp1–exp3、强度曲线、成本', render: numbers.render },
+  { id: 'time', label: '时间轴', hint: '09-09 → 10-06,五次来源', render: time.render },
+  { id: 'conflicts', label: '冲突与反转', hint: '两侧并排 + 反转登记', render: conflicts.render },
+  { id: 'decisions', label: '决策', hint: '25 项,按阻塞关系排', render: decisions.render },
+  { id: 'coverage', label: '我的覆盖率', hint: '一手 / 二手 / 没读', render: coverage.render },
+]
+
+function currentId(): string {
+  const h0 = location.hash.replace(/^#\/?/, '')
+  return VIEWS.some(v => v.id === h0) ? h0 : 'overview'
+}
+
+function mount(): void {
+  const host = document.getElementById('view')
+  const hint = document.getElementById('hint')
+  if (!host || !hint) return
+  const id = currentId()
+  const view = VIEWS.find(v => v.id === id) ?? VIEWS[0]
+  host.textContent = ''
+  hint.textContent = view.hint
+  for (const b of document.querySelectorAll<HTMLButtonElement>('nav button')) {
+    b.setAttribute('aria-current', b.dataset.id === view.id ? 'true' : 'false')
+  }
+  document.title = `rsi-dev · ${view.label}`
+  view.render(host)
+  host.scrollIntoView({ block: 'start' })
+}
+
+const app = document.getElementById('app')
+if (app) {
+  app.appendChild(h('header', { class: 'top' },
+    h('div', { class: 'top-t' },
+      h('h1', {}, '构想结构可视化'),
+      h('p', {}, 'G₀ 到 H_T 的收窄链、实测数字、反转史、冲突登记,以及梳理者自己的阅读覆盖率。',
+        h('span', { class: 'top-meta' }, '仓库 rsi-dev · main @ ccae0deb · 本地无 remote · 数据核对于 2026-10-06'))),
+    h('nav', {}, ...VIEWS.map(v => h('button', {
+      'data-id': v.id,
+      onclick: () => { location.hash = `#/${v.id}` },
+    }, v.label)))))
+  app.appendChild(h('main', { id: 'view' }))
+  app.appendChild(h('div', { class: 'hintbar' }, h('span', { id: 'hint' })))
+  app.appendChild(h('footer', {},
+    '颜色从不单独承载信息:形状、直接标签、线型、描边虚实各自独立编码一个维度。',
+    '调色板经 dataviz 校验器检查(3 彩色 + 1 中性;6 色方案在色盲模拟下多组可混,已放弃)。',
+    '标为【推断】的内容不来自任何文档。'))
+  window.addEventListener('hashchange', mount)
+  mount()
+}

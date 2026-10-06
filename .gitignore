@@ -79,3 +79,9 @@ related_files/eve/
 # and outline.md are deliberately absent: decode_share.py regenerates both.
 !related_files/conversation/*.md
 !related_files/conversation/*.py
+
+# viz/: the TypeScript/Vite visualization of this corpus. Nothing under node_modules/
+# or dist/ is tracked anywhere in this repo (verified: 0 tracked matches), so the
+# patterns are safe at the top level.
+node_modules/
+dist/
