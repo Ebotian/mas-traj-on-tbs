@@ -1,0 +1,1370 @@
+范畴论驱动的实验编排与工程落地：AdaPDC 审查与 Compositional Experiment Calculus 实施方案
+
+
+
+范畴论驱动的实验编排与工程落地：AdaPDC 审查与 Compositional Experiment Calculus 实施方案
+执行摘要。 结合你当前提交的 adapdc-src-review-72f4b8f.tar.gz 与截至 2026 年 9 月的相关理论、论文和开源实现，我的判断是：AdaPDC 已经不是“概念原型”，而是一个相当扎实的 pre-categorical research runtime substrate；真正缺失的是位于 DSL 与冻结执行 Plan 之间的 categorical semantic kernel。
+
+不建议推倒现有实现重写。 当前已经建立的 content-addressed artifacts、冻结 signatureRef/typeRegistryRef/runtimeRef、Temporal durability、completion manifests、Catalog/reconcile、失败语义和幂等边界，正好是范畴论 IR 最难从数学模型获得、却必须由工程补齐的部分。新的工作应以 ResearchIR v2 → Plan v1 的兼容 lowering 方式叠加，而不是替换 C4。
+
+语义核心建议采用：typed、open、acyclic、monogamous hypergraph 作为 free symmetric monoidal category 的计算表示；复杂实验通过 generators、composition、tensor、symmetry 与受限 graph rewrite 派生，而不是通过 Experiment 对象、继承或不断增加 workflow 特例。 这一表示路线有直接的理论和工程先例：open-hypergraphs、Catlab、AlgebraicRewriting、DisCoPy 以及 string-diagram/DPO 系列论文已经证明了相当多的基础构件。
+
+最关键的工程验证并不是“范畴论是否能表示 workflow”，而是：真实科研变化中有多少能被稳定压缩为“小生成元 + 小边界 + 局部 typed rewrite”。 建议把这个问题设成项目的主验收指标；只有它成立，系统才真正超越“一个数学包装过的 DAG DSL”。
+
+背景、目标与对当前审查包的判断
+我们现在讨论的目标已经可以非常明确地写成：
+
+[ \boxed{ \text{TypeScript Surface Syntax} \rightarrow \text{Compositional Research IR} \rightarrow \text{Verified Rewrite} \rightarrow \text{Executable Plan} \rightarrow \text{Evidence / Provenance} } ]
+
+这里最重要的设计决定，是不把 Experiment 设为核心对象。核心 primitive 应当是带有 typed boundary 的 transformation：
+
+[ f:A\rightarrow B ]
+
+两个 transformation 可串接：
+
+[ A\xrightarrow f B\xrightarrow g C \qquad\Rightarrow\qquad g\circ f:A\to C ]
+
+也可以并行组合：
+
+[ f\otimes g:A\otimes C\rightarrow B\otimes D. ]
+
+一次完整 experiment 是这种结构的组合结果，而不是继承体系中的某个实例。这个方向与 string diagram、symmetric monoidal category 以及 open-hypergraph 的计算表示高度一致；2023 年关于 string diagrams 的数据并行算法工作已经给出了基于 structured cospans/ACSets 的计算表示，并研究了 composition、tensor、functor application 等操作的高效实现。
+
+Scope。 第一版不试图形式化“全部科学推理”。它只处理那些能表示成：
+
+[ \text{typed resources} + \text{typed transformations} + \text{composition} + \text{controlled rewrites} ]
+
+的实验结构，包括 baseline replication、parameter sweep、model/evaluator replacement、ablation、数据处理链、指标计算和 evidence derivation。自然语言假设、论文论证、开放式理论推理可以引用到 graph 中，但不要求一开始就成为同一个形式系统。
+
+团队规模：未指定。预算：未指定。 因而下面以 person-week 给工作量，日历时间只给条件性估算。
+
+核心假设有三个。第一，实际科研实验中的大部分“变化”具有局部边界保持性，即可以把一个子实验 (L) 替换成 (R)，而不重写整个 workflow。第二，科学语义所需的 type information 可以压缩成有限、工程上可维护的 facet system，而不需要一开始实现 dependent type theory。第三，现有 executor 不应知道范畴论结构；范畴结构可以先降低为你已经稳定运行的 frozen Plan。
+
+这三个假设都能被实验推翻，因此它们应该成为明确的研究假设，而不是架构信仰。
+
+当前审查包已经做到什么
+我对你上传的 72f4b8f 审查包的结论比之前“工程还不成熟”要更细化：
+
+范畴论驱动的整个生态还不成熟，但你当前 AdaPDC 的 execution/provenance substrate 已经明显越过 scaffold 阶段。
+
+审查包中已经有：
+
+能力	当前实现证据	我的判断
+冻结执行身份	packages/contracts/src/plan.ts:14–29 冻结 irDigest / interpreterVersion / runtimeRef / typeRegistryRef	强基础
+generator semantics 冻结	packages/contracts/src/generator-signature.ts:43–53；每个节点有 signatureRef	强基础
+content addressing	artifacts/sha256/**，并在包内保留规范制品	强基础
+typed connection	当前 type registry + schema 验证	已有，但语义类型偏薄
+研究关系	SweepGroup：packages/contracts/src/ir.ts:29–47	局部存在，尚非通用 relation algebra
+durable execution	apps/worker + Temporal，审查包给出真实八节点 integration evidence	强基础
+provenance/evidence	submission、node completion、execution completion manifests	强基础
+retry/idempotency	C4 明确处理 Activity retry、manifest no-overwrite、execution identity	非常值得保留
+relation-first algebra	尚无 id/compose/tensor/symmetry 一等语义	主要缺口
+open-hypergraph IR	当前仍是 node + input binding 的 typed DAG	主要缺口
+generic graph rewrite	无 L←K→R、match、application conditions、rewrite witness	主要缺口
+executor interpretations	当前 Temporal runtime 是具体实现，而非显式 interpretation/lowering interface	需要抽象，但不需要重写 runtime
+
+尤其是现在的 NodeSpec：
+
+ts
+Copy
+{
+  id,
+  op,
+  signatureRef,
+  implementation,
+  params,
+  inputs
+}
+见审查包 packages/contracts/src/ir.ts:16–27。它已经比普通 workflow DAG 强，因为 node semantics 和 implementation 都被冻结；但 graph topology 仍然隐含在 inputs -> {node, port} 中，value/wire 并不是一等实体，整个 graph 也没有显式 typed global source/target boundary。因此从 categorical IR 角度，它仍然是：
+
+[ \text{typed DAG IR} ]
+
+而不是：
+
+[ \text{typed open hypergraph}. ]
+
+还有两个值得现在就解决的工程问题。
+
+其一，当前 card DSL 使用模块级可变：
+
+ts
+Copy
+let state: CardState | undefined;
+const coordinateStack: Record<string, Json>[] = [];
+审查包 packages/graph/src/dsl.ts:50–79。这在“每个 card 一个隔离进程”假设下可以成立，但不适合作为下一阶段长期 semantic builder；并发编译、异步 builder、IDE 增量求值和 agent 多分支构图都会让这种 implicit context 变成风险。建议 v2 用显式 immutable GraphBuilder/construction context。
+
+其二，文档状态已经发生 drift。源码审查包的 REVIEW-README.md 标记 archive commit 为 72f4b8fb...，而 docs/review-packet.md 又声明代码锚点为 a23fcd9、随后提交只改文档；与此同时包内部分状态文档还保留“C4 未开始”之类较早描述，而实际包已经包含 worker 与 C4 integration evidence。这个问题不会破坏执行正确性，却会直接降低独立审查可信度。下一版审查包应增加机器可读的 review-manifest.json，明确：
+
+json
+Copy
+{
+  "archiveCommit": "72f4b8f...",
+  "implementationAnchor": "a23fcd9...",
+  "relationship": "docs-only commits after implementationAnchor",
+  "claims": {
+    "C4": "passed"
+  },
+  "evidence": [...]
+}
+并由 CI 生成，而不是人工文档自行声明。
+
+因此我会把目前 AdaPDC 定位为：
+
+[ \boxed{ \textbf{可靠的 frozen typed DAG + execution/evidence substrate} } ]
+
+下一步不是再增强 DAG，而是插入真正的：
+
+[ \boxed{\textbf{categorical semantic layer}} ]
+
+理论构件、成熟度与相关工程实现
+这套架构所需要的数学实际上不是一整套“高阶范畴论”，而是少数几个相当明确的构件。
+
+构件	在系统里的实际作用	理论成熟度	工程采用建议
+Symmetric Monoidal Category	顺序组合、并行组合、identity、交换 wires	高	MVP 核心
+String Diagrams	composition 的可视化/等式语言	高	核心语义模型，不必作为存储格式
+Typed Open Hypergraphs	string diagrams 的机器表示	中高	IR v2 首选
+DPO / DPOI rewriting	有接口的局部结构替换	高	MVP rewrite 首选
+SPO	更宽松删除语义	高	第二阶段
+SqPO	cloning 等结构变化	中高	后续按需求
+Categorical DB / functorial migration	schema/instance/migration 的组合模型	中高	借鉴；MVP 不作为关键 runtime dependency
+Functorial semantics	一个 syntax，多种 interpretation	高	架构核心原则
+
+String diagram rewriting 与 graph rewriting 的对应关系已经有严密工作支持。第一篇 String Diagram Rewrite Theory 将带 Frobenius 结构的 string-diagram rewriting 对应到 hypergraph 上的 DPO rewriting；后续工作处理一般 symmetric monoidal theories，并通过 convex DPO 避免无意的资源复制/删除；DPO with interfaces 又进一步把显式输入/输出 boundary 纳入 rewrite，给出了与局部合流、critical-pair 分析有关的结果。
+
+这对科研 IR 特别重要，因为我们并不希望：
+
+“因为数学上有一个 spider/Frobenius operation，所以数据 artifact 可以默默被复制、合并、删除。”
+
+相反，scientific resources 经常是 provenance-sensitive、resource-sensitive 的。所以第一版建议限制为：
+
+[ \boxed{ \text{typed + directed + acyclic + monogamous open hypergraphs} } ]
+
+也就是基本上保持 free SMC 的 resource-sensitive 语义。
+
+需要复用某个 artifact 时，显式写：
+
+[ A\xrightarrow{\Delta_A} A\otimes A ]
+
+或者在类型上声明该资源属于允许 fan-out 的区域，而不是默认所有 values 都具有无限 copying/deleting。一般 symmetric monoidal theory 中不能无条件复制或丢弃变量，也正是相关 string-diagram rewriting 工作强调的问题之一。
+
+Open-hypergraphs 的官方实现把 operations 表示为 hyperedges、values 表示为 nodes，并保留每个 hyperedge 的有序多输入/多输出以及整个 diagram 的 source/target；这几乎就是我们所需要的 Research IR 数据模型。其 Rust 实现同时提供 imperative builder、data-parallel algebraic operations 和 functors，但项目官方仍把部分接口明确标成 experimental，因此它更适合作为 representation/algorithm 参考实现，而不是 AdaPDC 的直接核心依赖。
+
+开源与论文实现比较
+项目/工作	语言	当前成熟度	与本项目最相关接口	优势	限制	许可证 / 关键依赖
+Catlab.jl	Julia	活跃研究级；2026 年仍有大版本 API 演进	categories、wiring diagrams、ACSets、functors、limits/colimits	Applied Category Theory 工程生态最完整之一；适合作为 semantic oracle	Julia 栈；研究 API 演进，不宜直接成为 TS runtime 内核	MIT；ACSets/GATlab 等。
+AlgebraicRewriting.jl	Julia	活跃研究级，官方明确警告 API/behavior 尚不能视为恒定	DPO、SPO、SqPO、PBPO+、application conditions、attribute variables	最适合做 rewrite oracle；覆盖我们以后可能需要的大部分 rewrite 机制	不宜把当前版本直接作为 production control plane	MIT；Catlab/C-Sets。
+open-hypergraphs	Rust	pre-1.0、活跃、部分 experimental	open hypergraph、composition/tensor、functors、serialization	IR representation 最接近目标；面向可扩展/数据并行 syntax	rewrite/runtime 生态尚未像 Catlab 那样完整	MIT/Apache-2.0；依赖较小。
+catgrad	Rust	实验/早期工程	OpenHypergraph IR、typecheck、interpreter、source-to-source transformation	已展示“categorical IR → compiler/interpreter”的真实工程路线	聚焦深度学习；rewrite/control-flow/runtime 仍在发展	MIT；核心依赖 open-hypergraphs。
+DisCoPy	Python	较成熟研究/教学工具	Diagram、composition、tensor、rewrite、Functor、Hypergraph	API 清晰；非常适合 law tests、cross-language reference tests	不是 workflow/HPC/provenance 平台	BSD-3-Clause；Python 科学计算生态。
+CQL / categorical databases	Java	专业领域内成熟，但适用面窄	schema、instance、query、functorial data migration	数据 schema/migration 理论与实现都值得借鉴	Java 集成成本；商业使用许可需要单独审查，不能默认视为普通 permissive dependency	官方 CQL 实现；生产嵌入前需许可证审查。
+ACSets / Categorical Data Structures	Julia	成熟研究构件	attributed C-sets、graph+tabular data、homomorphisms、migration	非常适合观察“图结构 + 属性数据”怎样统一表示	不直接解决 scientific execution	AlgebraicJulia 生态。
+
+一个很重要的工程结论是：没有必要选择其中一个项目然后“把 AdaPDC 移植过去”。
+
+更好的分工是：
+
+[ \begin{aligned} \text{open-hypergraphs} &\rightarrow \text{representation/algorithm reference}\ \text{Catlab} &\rightarrow \text{categorical semantics reference}\ \text{AlgebraicRewriting} &\rightarrow \text{rewrite oracle}\ \text{DisCoPy} &\rightarrow \text{diagram/functor law oracle}\ \text{CQL} &\rightarrow \text{database semantics reference}\ \text{AdaPDC/TS} &\rightarrow \text{production implementation} \end{aligned} ]
+
+也就是说，自己实现一个很小的 TS semantic kernel，但用成熟研究实现做 differential/property testing。
+
+这比把研究软件引入 production dependency chain 更稳。
+
+AI4Science 所处的位置
+2026 年的 Experiment-as-Code Labs 已经开始把实验定义成 declarative configuration，再编译为仪器/API 操作，并在系统层讨论 program analysis、safety、resource assignment 和 orchestration。这说明“科研实验应该先成为可分析的声明式程序，再 lowering 到执行系统”正在形成明确趋势。
+
+AI Scientist-v2 则代表另一条主流路线：agent 进行 hypothesis、experiment、analysis 的闭环探索，并用 progressive agentic tree search 管理实验分支。这证明 autonomous experiment search 已经具有工程价值，但它的搜索空间依然主要由 agent/workflow manager 驱动，并不是我们这里的“typed graph rewrite calculus”。
+
+因此，截至目前，我没有在本次审阅的主要原始项目中看到一个已经成熟地同时实现：
+
+[ \boxed{ \begin{array}{c} \text{typed open-hypergraph scientific IR}\ +\text{formal graph rewriting}\ +\text{durable HPC/cloud execution}\ +\text{content-addressed provenance}\ +\text{agent-verified rewrite search} \end{array}} ]
+
+的生产平台。
+
+这正是 AdaPDC 有可能形成独立价值的位置，但也意味着我们应该做一层薄而严格的 semantic kernel，而不是企图一次造完整 categorical platform。
+
+工程架构与 TypeScript Research IR 方案
+我建议把当前：
+
+text
+Copy
+TS card
+   ↓
+ExperimentIR v1
+   ↓
+Plan v1
+   ↓
+Temporal
+演化为：
+
+TypeScript Surface Syntax
+
+Research Builder
+
+ResearchIR v2
+Typed Open Hypergraph
+
+Verifier / Law Checker
+
+Rewrite Engine
+
+Immutable Research Snapshot
+
+Execution Lowering
+
+Frozen Plan
+
+Temporal Durable Control Plane
+
+Local
+
+Slurm
+
+Kubernetes
+
+CAS + Completion Manifests
+
+Catalog / Provenance Graph
+
+Visualization / Cost / Agent Views
+
+
+
+Show code
+核心原则是：
+
+[ \boxed{\text{ResearchIR} \neq \text{ExecutablePlan} \neq \text{ExecutionRecord}} ]
+
+这三个东西现在必须刻意分开。
+
+ResearchIR 表示“科学变换是怎么组合的”；Plan 表示“这次应怎样执行”；Evidence/Provenance 表示“实际上执行了什么以及产生了什么”。
+
+你现有 C4 已经把后两者的大部分基础搭好了。
+
+IR 不再以 task node 为唯一一等实体
+推荐最低数据结构：
+
+ts
+Copy
+type TypeId = string;
+type ValueId = string;
+type EdgeId = string;
+
+interface ValueNode {
+  readonly id: ValueId;
+  readonly type: PortType;
+}
+
+interface GeneratorEdge {
+  readonly id: EdgeId;
+  readonly generator: GeneratorRef;
+  readonly inputs: readonly ValueId[];
+  readonly outputs: readonly ValueId[];
+  readonly params: Readonly<Record<string, JsonValue>>;
+}
+
+interface ResearchGraph {
+  readonly schema: "adapdc.research-ir/v2";
+  readonly values: ReadonlyMap<ValueId, ValueNode>;
+  readonly edges: ReadonlyMap<EdgeId, GeneratorEdge>;
+
+  // 整张 open graph 的 typed boundary
+  readonly sources: readonly ValueId[];
+  readonly targets: readonly ValueId[];
+}
+现在：
+
+text
+Copy
+Node A.output → Node B.input
+不再只是藏在 B.inputs 里的引用，而变成：
+
+text
+Copy
+         value v
+A ─────────●───────── B
+于是 v 可以拥有真正的 type、provenance、copy policy、visibility 等属性。
+
+这就是 open hypergraph 对多输入、多输出 operation 更自然的原因，也是现有 open-hypergraphs 使用的基本表示思路。
+
+TS surface 不应该让科研人员写范畴论
+底层可以有：
+
+ts
+Copy
+id(A)
+compose(f, g)
+tensor(f, g)
+swap(A, B)
+但 scientist-facing API 应该像：
+
+ts
+Copy
+const train = generator({
+  id: "train@2",
+  inputs: {
+    data: port(Dataset),
+    config: port(TrainConfig),
+  },
+  outputs: {
+    model: port(Model),
+  },
+  semantics: {
+    determinism: "seeded",
+    network: "none",
+  },
+});
+
+const evaluate = generator({
+  id: "evaluate@3",
+  inputs: {
+    model: port(Model),
+    test: port(TestSet),
+  },
+  outputs: {
+    score: port(Score),
+  },
+});
+实验构图采用显式 builder，而不是当前 module-global state：
+
+ts
+Copy
+const baseline = defineResearch({
+  id: "baseline",
+  inputs: {
+    train: Dataset,
+    test: TestSet,
+    config: TrainConfig,
+  },
+
+  build(g, input) {
+    const { model } = g.call(train, {
+      data: input.train,
+      config: input.config,
+    });
+
+    const { score } = g.call(evaluate, {
+      model,
+      test: input.test,
+    });
+
+    return g.outputs({ score });
+  },
+});
+注意这里没有：
+
+ts
+Copy
+class Experiment
+class TrainingExperiment extends Experiment
+也没有：
+
+ts
+Copy
+experiment.run()
+experiment.fork()
+experiment.compare()
+所有这些高阶行为最终都是 relation construction 或 rewrite。
+
+低层 DSL 则可以暴露：
+
+ts
+Copy
+const pipeline =
+  compose(
+    tensor(preprocess, id(Config)),
+    train,
+    evaluate,
+  );
+但这主要用于 law tests、library authors 和 optimizer，不要求所有科研人员使用。
+
+类型系统应从 schema-name equality 升级成兼容关系
+当前包已经冻结 type registry，这是非常正确的设计；但 series/v1 之类 nominal schema 仍然不足以承担科研语义。
+
+建议：
+
+ts
+Copy
+interface PortType {
+  readonly schema: SchemaRef;
+
+  readonly semanticRole?: string;
+
+  readonly unit?: UnitRef;
+  readonly shape?: readonly Dimension[];
+  readonly coordinateSystem?: string;
+  readonly timeGrid?: TimeGridRef;
+
+  readonly visibility:
+    | "agent-visible"
+    | "evaluator-only"
+    | "secret";
+
+  readonly cardinality: "one" | "many";
+
+  readonly copyPolicy:
+    | "linear"
+    | "shareable"
+    | "explicit-copy";
+
+  readonly determinism?:
+    | "deterministic"
+    | "seeded"
+    | "nondeterministic";
+}
+类型检查也不要再只是：
+
+[ schema_A=schema_B ]
+
+而是定义一个可审计的 compatibility judgment：
+
+[ A\preceq B. ]
+
+例如：
+
+ts
+Copy
+compatible(
+  CelsiusSeries<Hourly>,
+  TemperatureSeries<Hourly>
+) // 可通过显式已注册 coercion
+
+compatible(
+  CelsiusSeries<Hourly>,
+  PressureSeries<Hourly>
+) // false
+但MVP 不建议进入 dependent types 或 theorem prover。TypeScript generic/phantom types只是 surface ergonomics；runtime frozen PortType 才是可信事实来源，因为 TS 类型最终会擦除。
+
+composition laws 必须真的成为测试，而不只是文档
+内核需要直接测试：
+
+[ f\circ id=f ]
+
+[ id\circ f=f ]
+
+[ h\circ(g\circ f)=(h\circ g)\circ f ]
+
+以及 tensor associativity、symmetry、interchange law：
+
+[ (f_2\circ f_1)\otimes(g_2\circ g_1)
+(f_2\otimes g_2)\circ(f_1\otimes g_1). ]
+
+但这里有一个实现陷阱：不能要求两边 JSON byte-for-byte 一样，除非我们先定义 canonical normal form。
+
+因此至少区分：
+
+ts
+Copy
+syntacticDigest(graph)
+isIsomorphic(a, b)
+equivalentUnderSMC(a, b)
+MVP 的 CAS identity 应继续采用规范化的 syntactic snapshot digest，而不是贸然声称获得“categorical semantic hash”。
+
+这是一个很重要的边界：
+
+[ \boxed{ \text{content-addressed identity} \neq \text{categorical equivalence} } ]
+
+先把后者用于 law checking，等 canonical graph/isomorphism machinery 成熟后再考虑 quotienting。
+
+Rewrite 是系统真正区别于普通 workflow 的地方
+建议 rule 直接采用：
+
+[ L\leftarrow K\rightarrow R ]
+
+其中 (K) 是保留接口。
+
+ts
+Copy
+interface RewriteRule {
+  readonly id: string;
+  readonly semantics: "DPO";
+
+  readonly lhs: PatternGraph;
+  readonly interface: InterfaceMap;
+  readonly rhs: PatternGraph;
+
+  readonly conditions: readonly ApplicationCondition[];
+}
+例如 evaluator substitution：
+
+ts
+Copy
+const replaceEvaluator = rule({
+  id: "evaluation/replace-v2",
+
+  semantics: "DPO",
+
+  lhs: pattern(p => {
+    const score = p.call(evalV1, {
+      model: p.boundary("model"),
+      test: p.boundary("test"),
+    });
+    return p.outputs(score);
+  }),
+
+  interface: ["model", "test", "score"],
+
+  rhs: pattern(p => {
+    const score = p.call(evalV2, {
+      model: p.boundary("model"),
+      test: p.boundary("test"),
+    });
+    return p.outputs(score);
+  }),
+
+  conditions: [
+    sameTypedBoundary(),
+    noVisibilityEscalation(),
+  ],
+});
+应用过程：
+
+l
+
+r
+
+match m
+
+DPO rewrite
+
+L
+要替换的子图
+
+K
+保留接口
+
+R
+替换后的子图
+
+G
+当前 Research Graph
+
+G′
+
+Rewrite Witness
+
+
+
+Show code
+DPO with interfaces 与 string diagrams 的对应尤其适合这个设计，因为科学实验修改通常要求“内部结构可以换，但对外 boundary 必须继续成立”。相关理论已经对这种有接口 rewriting 做了系统研究。
+
+第一版只实现 DPO。
+
+不要一开始同时自己实现 DPO/SPO/SqPO/PBPO+。
+
+AlgebraicRewriting 已经说明这些体系在工程上都可实现，并且支持 application conditions、attribute variables、graph processes 等；它非常适合作为 reference implementation。
+
+AdaPDC 的扩展顺序建议是：
+
+[ DPO \rightarrow SPO \rightarrow SqPO ]
+
+只有真正出现“删除 dangling context 很常见”时才加 SPO，真正出现“结构克隆是一等科研动作”时才加 SqPO。
+
+每次 rewrite 必须生成一等 evidence：
+
+ts
+Copy
+interface RewriteWitness {
+  readonly schema: "adapdc.rewrite-witness/v1";
+
+  readonly ruleRef: DigestRef;
+
+  readonly beforeGraph: DigestRef;
+  readonly afterGraph: DigestRef;
+
+  readonly match: MatchMapping;
+  readonly preservedInterface: InterfaceMapping;
+  readonly substitution: Readonly<Record<string, JsonValue>>;
+
+  readonly conditions: readonly {
+    id: string;
+    passed: boolean;
+  }[];
+
+  readonly proposedBy:
+    | HumanIdentity
+    | AgentIdentity;
+
+  readonly rationaleRef?: DigestRef;
+}
+这使 provenance 从：
+
+“某节点什么时候运行过？”
+
+扩展为：
+
+“为什么会存在这次实验？”
+
+即：
+
+[ G_0 \xRightarrow{\rho_1} G_1 \xRightarrow{\rho_2} G_2 \xrightarrow{\mathrm{compile}} P \xrightarrow{\mathrm{execute}} E. ]
+
+这才是 agentic research 真正需要的 lineage。
+
+Functorial semantics 在工程里不要过度数学化
+理论上可以写：
+
+[ F_{\rm exec}:\mathcal R\rightarrow\mathcal E, ]
+
+[ F_{\rm cost}:\mathcal R\rightarrow\mathcal C, ]
+
+[ F_{\rm visual}:\mathcal R\rightarrow\mathcal V. ]
+
+实际 TS 可以定义：
+
+ts
+Copy
+interface Interpretation<O, A> {
+  onType(type: PortType): O;
+  onGenerator(gen: GeneratorSignature): A;
+
+  identity(x: O): A;
+  compose(f: A, g: A): A;
+  tensor(f: A, g: A): A;
+  braid(a: O, b: O): A;
+}
+但我不建议直接把 SlurmExecutor 称为 functor。
+
+更严谨的层次是：
+
+[ ResearchIR \xrightarrow{F_{\rm exec}} ExecutablePlan \xrightarrow{\text{backend}} Runtime. ]
+
+所以：
+
+ts
+Copy
+interface ExecutionLowering {
+  lower(graph: ResearchGraph): Result<ExecutablePlan>;
+}
+
+interface PlanExecutor {
+  execute(plan: ExecutablePlan): Promise<ExecutionRef>;
+}
+然后：
+
+ts
+Copy
+LocalExecutor
+TemporalExecutor
+SlurmExecutor
+KubernetesExecutor
+只是 Plan backend。
+
+这避免为了“范畴论纯度”让基础设施实现承担它并没有真正满足的数学性质。
+
+Runtime、Provenance、Caching 与安全边界
+这一部分我反而建议最大程度保留当前 C4。
+
+你现在已经解决了很多 category theory 完全帮不了你的问题，例如 frozen implementation identity、CAS digest verification、process exit validation、attempt-specific directories、path escape rejection、output port acceptance、no-overwrite completion manifests、Temporal Activity retry idempotency，以及 Catalog registration 的 present/absent/unavailable/conflict 四态。这些都在本次 docs/review-packet.md 的 C4 反例矩阵中有明确证据。
+
+这些东西应该被视为系统资产，而不是“旧架构”。
+
+lowering 到现有 Plan
+第一阶段直接做：
+
+text
+Copy
+ResearchIR v2
+       │
+       │ validate categorical structure
+       │
+       ▼
+ExecutionLowering
+       │
+       ▼
+Plan v1
+       │
+       ▼
+现有 C4 Worker
+也就是说 categorical kernel 暂时不改变 worker protocol。
+
+这有一个很大的研究优势：
+
+如果 ResearchIR 实验失败，我们可以判断失败来自 semantic abstraction，而不是“因为同时重写了 runtime 所以什么都不知道”。
+
+这是控制变量。
+
+后续只有当 v1 Plan 真正限制 execution 时才引入 Plan v2。
+
+当前串行拓扑执行应保留为 reference executor
+现有 worker 按 frozen topological plan.nodes 执行，第一阶段不要急着并行化。
+
+先让它成为：
+
+[ E_{\rm reference} ]
+
+然后再实现 scheduler：
+
+[ E_{\rm parallel}. ]
+
+两者必须在 deterministic workflow 上得到相同 artifact identities/provenance semantics。
+
+之后 Slurm 和 Kubernetes 都应只消费 lowering 后的 execution semantics。
+
+Slurm 的官方 sbatch 支持 dependency，例如 afterok，但官方同时明确警告不要在紧循环中大量发送 RPC；并且 Slurm 本身并不会自动替用户搬运 input/output files。因此 production Slurm adapter 应优先生成 batch/job-array 级提交方案，并依靠共享 CAS 或显式 staging，而不是每个 hyperedge 直接 sbatch 一次。
+
+Kubernetes Job 也不能假定“一个逻辑 node 恰好启动一次”。Kubernetes 官方文档明确描述了 Job 的重试/替换行为，在一些情况下同一个程序可能被启动多次；Indexed Jobs 又非常适合 parameterized branches。因此你当前 execution key + immutable artifact + idempotent completion manifest 的路线，与 Kubernetes 的真实执行语义其实非常吻合。
+
+Caching
+当前 C4 已经明确把 T06 cache variants 留作后续。
+
+建议 cache key 不要包含整个 graph digest，否则：
+
+[ G\Rightarrow G' ]
+
+一次微小 rewrite 就会让所有 node cache 全失效。
+
+正确的 node semantic key 更接近：
+
+[ K_n = H( S_n, I_n, R_n, P_n, A_{1},...,A_k, T_n ) ]
+
+其中：
+
+(S_n)：generator signature digest；
+(I_n)：implementation digest；
+(R_n)：runtime/environment digest；
+(P_n)：canonical parameters；
+(A_k)：ordered input artifact digests；
+(T_n)：影响执行语义的类型/codec semantics。
+示意：
+
+ts
+Copy
+const executionKey = digest({
+  generator: node.signatureRef,
+  implementation: node.implementation,
+  runtime: plan.runtimeRef,
+  params: canonical(node.params),
+  inputs: orderedInputDigests,
+  codecSemantics: relevantTypeRefs,
+});
+这使局部 rewrite 后：
+
+text
+Copy
+unchanged upstream ─────────── cache hit
+changed subgraph   ─────────── recompute
+unchanged downstream
+  but same inputs  ─────────── potential cache hit
+成为可能。
+
+对于 nondeterministic generator，要么：
+
+text
+Copy
+noncacheable
+要么把 RNG seed、sampling configuration 和必要 environment 放入语义输入，不允许“假确定性”。
+
+Provenance 不要替换现有 manifests
+现有 manifests 应继续作为 operational truth。
+
+上层增加：
+
+text
+Copy
+Research snapshot
+Rewrite witness
+Compile witness
+Plan
+Submission manifest
+Node completion manifest
+Execution completion manifest
+Artifact
+Catalog registration
+然后提供标准 exporter。
+
+W3C PROV 的 Entity / Activity / Agent 模型与这种结构天然兼容；Workflow Run RO-Crate 又专门处理 workflow/run provenance，并明确区分 prospective 和 retrospective provenance，因此可以作为 interoperability output，而不必反过来让内部 IR 被标准模型绑住。
+
+对应关系大致是：
+
+AdaPDC	PROV / WRROC 概念
+ResearchGraph snapshot	Entity / prospective workflow
+Rewrite application	Activity
+Agent/human proposer	Agent
+Frozen Plan	Entity
+Node execution	Activity
+Input/output artifact	Entity
+wasDerivedFrom	artifact/data derivation
+rewrite witness	plan/research derivation
+completion manifest	retrospective execution evidence
+
+现有 CWL 生态同样提供 provenance tooling，说明将 workflow execution 导出到 Research Object/W3C PROV 是已有实践，而不是需要自定义一套外部交换标准。
+
+Agent 安全模型必须比当前 human-authored card 更严格
+这是下一阶段不能回避的一点。
+
+当前 TS card 是实际模块代码。对于受信任的人类研究者，这可以继续存在。
+
+但：
+
+[ \boxed{ \text{Agent-generated TS} \not\Rightarrow \text{host process dynamic import} } ]
+
+否则 semantic verifier 再严格，也阻止不了：
+
+ts
+Copy
+import fs from "node:fs";
+import child_process from "node:child_process";
+在构 graph 之前就发生副作用。
+
+Agent 最好只输出：
+
+ts
+Copy
+interface RewriteProposal {
+  graphRef: DigestRef;
+  ruleRef: DigestRef;
+  match: MatchSelector;
+  bindings: Record<string, JsonValue>;
+  rationaleRef: DigestRef;
+}
+流程变成：
+
+text
+Copy
+Agent
+ ↓
+structured rewrite proposal
+ ↓
+type checker
+ ↓
+DPO matcher
+ ↓
+application-condition verifier
+ ↓
+policy checker
+ ↓
+optional human approval
+ ↓
+immutable G′
+ ↓
+compile / execute
+这样 Agent 操作的是研究代数，而不是任意 shell。
+
+必须执行 agent-generated code 的场景，则应放在明确 sandbox 中。gVisor 官方将其定位为运行不可信代码，包括 user-uploaded/LLM-generated code 的隔离场景；Firecracker 则提供基于 KVM microVM 的更强 VM 边界。这两类技术都比“Python venv + subprocess”更接近安全隔离。
+
+所以当前 C4 的 process isolation 应准确称为：
+
+reproducibility/runtime isolation
+
+而不是：
+
+security sandbox。
+
+最小可行原型与交付计划
+我建议把 MVP 分成两个层次，否则很容易又一次把 semantic research 与 infrastructure expansion 混在一起。
+
+MVP-A：验证 categorical research IR 是否值得存在。
+
+目标只包含：
+
+[ \boxed{ typed\ open\ hypergraph + SMC\ composition + restricted\ DPO + rewrite\ witness + Plan,v1\ lowering } ]
+
+MVP-B：证明它能进入真实 engineering environment。
+
+再增加：
+
+[ cache + provenance export + backend abstraction + agent proposal + sandbox profile. ]
+
+按团队规模未指定的前提，建议用 person-week 管理：
+
+里程碑	主要工作	工作量估计	明确交付物	Gate
+基线冻结	重跑 C4；建立 machine-readable review manifest；解决 status drift	1–2 pw	review-manifest.json、baseline evidence	当前 132/132、33/33 等现有证据不得回归
+Semantic kernel	ValueNode/GeneratorEdge/boundary；immutable graph；canonical serialization	3–5 pw	packages/research-ir	graph laws/property tests 通过
+Compositional API	id/compose/tensor/swap + ergonomic builder	2–3 pw	TS DSL v2	无 Experiment inheritance；现有 demo 可重写
+Compatibility lowering	ResearchIR v2 → Plan v1	2–3 pw	packages/lowering-plan-v1	八节点 demo 执行结果与 C4 baseline 等价
+DPO rewrite	typed matcher、interface、NAC/PAC 最小子集、rewrite witness	4–6 pw	packages/rewrite	curated invalid rewrites 全拒绝
+Provenance/cache	rewrite lineage；node execution keys；cache reuse	3–4 pw	provenance queries、T06	局部 rewrite 不使无关 node cache 失效
+Runtime adapters	executor contract；Local/Temporal 保留；Slurm/K8s plan emitter	3–5 pw	backend adapters	backend contract tests
+Agent/security	structured proposal protocol、policy verifier、sandbox profile	2–4 pw	agent demo + threat model	agent 不直接获得 host arbitrary execution
+科研验证	replication/sweep/ablation/provenance/agent experiments	4–6 pw	benchmark report	满足下面主指标
+
+因此：
+
+[ \boxed{\text{MVP-A}\approx 12\text{–}19\ \text{person-weeks}} ]
+
+完整 MVP-A+B 大约：
+
+[ \boxed{24\text{–}38\ \text{person-weeks}} ]
+
+这是工程估算，不是承诺。若由 3 名熟悉 TypeScript/runtime、其中至少一人熟悉 graph rewriting 的工程研究混合团队并行，MVP-A 大致对应数个两周 iteration；但由于团队规模未指定，正式计划应以 person-week 和 milestone gate 为准，而不要把一个日历日期写死。
+
+关键测试不应只是普通 unit tests
+第一组是algebraic law tests：
+
+ts
+Copy
+property("left identity", arbitraryMorphism, f => {
+  expect(equivalent(compose(id(f.dom), f), f)).toBe(true);
+});
+
+property("associativity", composableTriple, ([f, g, h]) => {
+  expect(
+    equivalent(
+      compose(compose(f, g), h),
+      compose(f, compose(g, h)),
+    ),
+  ).toBe(true);
+});
+第二组是differential oracle tests。
+
+同一随机小 graph/rule：
+
+text
+Copy
+AdaPDC implementation
+          vs.
+AlgebraicRewriting/Catlab reference
+比较 match existence、rewrite result up to graph isomorphism、dangling-condition behavior。
+
+这正是我建议“不依赖 Julia runtime，但依赖 Julia 作为 oracle”的原因。AlgebraicRewriting 已经公开实现 DPO/SPO/SqPO、application conditions 和更复杂 rewrite mechanisms，很适合作为这种 reference。
+
+第三组是metamorphic tests：
+
+text
+Copy
+reorder declaration
+rename presentation-local IDs
+move card path
+serialize → deserialize
+compile same graph twice
+都不得改变规定不应变化的语义。
+
+你现有 T01–T04 的设计思想其实已经非常适合扩展成这一层。
+
+MVP 验收标准
+我建议不要用“实现了 category theory”这种无法验收的句子，而采用：
+
+指标	MVP-A 验收标准
+表达能力	五个 benchmark transformation 全部能由 typed rewrite/composition 表示
+Change locality	benchmark 中至少 80% 的研究变更不需要修改 executor/runtime
+Type safety	curated invalid composition/rewrite suite 必须 100% 在执行前拒绝
+Provenance completeness	任一最终 benchmark artifact 都能回溯到 graph snapshot、rewrite chain、plan、generator implementation、runtime 与所有直接输入
+Runtime equivalence	现有八节点 deterministic demo 经 v2 lowering 后与 C4 reference execution 得到相同科学结果，并保持既有 frozen semantics
+Incrementality	局部 rewrite 不得因 graph-level identity 变化而机械失效所有 unaffected node cache
+Immutability	rewrite 后旧 graph digest 及 bytes 永远不变化
+Law compliance	identity/associativity/interchange/symmetry property suite 通过
+Rewrite auditability	每个 G→G' 有 content-addressed witness
+C4 regression	当前 frozen/CAS/manifest/recovery/security checks 不得因 categorical layer 被削弱
+
+这里最重要的项目 KPI 是：
+
+[ \boxed{ R= \frac{\text{可由局部、已验证 rewrite 表达的实际科研变化}} {\text{总 benchmark 科研变化}} } ]
+
+假如真实研究中 (R) 长期只有 20%–30%，那就说明我们把范畴结构放错了层。
+
+如果能稳定达到 70%–90%，并且剩余部分主要是“新增 generator”，那这个方向就很有价值。
+
+审查包设计与真实科研评估
+你目前的 review archive 已经有一个非常好的习惯：不仅提供源码，还提供 frozen artifacts、preview 和 test-output。
+
+下一阶段应把它升级成“semantic review package”。
+
+推荐目录不是为了给实验本身建立空间层级，而只是给审查材料建立可发现结构；这与你“不让 filesystem 承担 research semantics”的原则并不冲突。
+
+text
+Copy
+adapdc-review/
+├── REVIEW-README.md
+├── review-manifest.json
+├── manifest.sha256
+│
+├── architecture/
+│   ├── research-ir-v2.md
+│   ├── categorical-semantics.md
+│   ├── lowering-contract.md
+│   ├── executor-contract.md
+│   ├── provenance-model.md
+│   └── threat-model.md
+│
+├── specs/
+│   ├── research-ir-v2.schema.json
+│   ├── generator-signature-v2.schema.json
+│   ├── rewrite-rule-v1.schema.json
+│   ├── rewrite-witness-v1.schema.json
+│   ├── execution-key-v1.md
+│   └── compatibility-judgement.md
+│
+├── examples/
+│   ├── baseline.ts
+│   ├── replication.ts
+│   ├── sweep.ts
+│   ├── ablation.ts
+│   ├── evaluator-replacement.ts
+│   └── invalid/
+│
+├── fixtures/
+│   ├── graphs/
+│   ├── rules/
+│   ├── artifacts/
+│   └── provenance/
+│
+├── evidence/
+│   ├── unit.txt
+│   ├── integration.txt
+│   ├── property-tests.txt
+│   ├── differential-tests.txt
+│   ├── benchmark-results.json
+│   └── security-tests.txt
+│
+├── snapshots/
+│   ├── research-graph-before.json
+│   ├── rewrite-witness.json
+│   ├── research-graph-after.json
+│   ├── frozen-plan.json
+│   └── provenance-export.json
+│
+├── benchmarks/
+│   ├── methodology.md
+│   ├── scaling.json
+│   └── scientific-evaluation.md
+│
+├── deployment/
+│   ├── local/
+│   ├── temporal/
+│   ├── slurm/
+│   └── kubernetes/
+│
+└── review/
+    ├── checklist.md
+    ├── risk-register.md
+    ├── license-inventory.md
+    ├── supply-chain.md
+    ├── known-limitations.md
+    └── open-questions.md
+其中最关键的是 review-manifest.json。
+
+建议它不只是列文件，而是列claim → evidence：
+
+json
+Copy
+{
+  "schema": "adapdc.review-manifest/v1",
+
+  "source": {
+    "archiveCommit": "72f4b8f...",
+    "implementationAnchor": "a23fcd9..."
+  },
+
+  "claims": [
+    {
+      "id": "categorical-law-associativity",
+      "status": "passed",
+      "evidence": [
+        "evidence/property-tests.txt"
+      ]
+    },
+    {
+      "id": "rewrite-preserves-boundary",
+      "status": "passed",
+      "evidence": [
+        "snapshots/rewrite-witness.json",
+        "evidence/differential-tests.txt"
+      ]
+    }
+  ]
+}
+如此审查者无需相信 README。
+
+他可以从 claim 直接走到：
+
+[ \text{claim} \rightarrow \text{test} \rightarrow \text{snapshot} \rightarrow \text{digest} \rightarrow \text{source}. ]
+
+用真实科研流程验证
+建议不要只继续使用 synthetic sequence/shift/score/aggregate。那个 demo 仍应保留，因为它是极好的 reference test，但 categorical hypothesis 必须使用真实科研变化来验证。
+
+Baseline replication。
+
+原 graph：
+
+[ G_0 ]
+
+应用规则：
+
+[ \rho_{\rm replicate}(seed_1,\ldots,seed_n) ]
+
+得到多分支：
+
+[ G_0\Rightarrow G_1. ]
+
+验收不只是“跑出了五份结果”，而是确认：
+
+seeds 是否进入语义 identity；
+deterministic/seeded distinction 是否正确；
+五个分支与原 baseline 的共享上游是否得到 cache reuse；
+provenance 是否能回答“这个 score 来自哪个 seed”。
+Parameter sweep。
+
+当前 SweepGroup 已经是一项有价值的概念资产，但 v2 中我不建议让 sweep 继续是 categorical primitive。
+
+它更适合成为：
+
+[ \text{rewrite/combinator macro} ]
+
+即：
+
+ts
+Copy
+sweep(node, {
+  bias: [0, 1, 2],
+});
+编译成重复的 generators + explicit coordinate metadata + aggregation relation。
+
+因此 sweep 是科学 ergonomic abstraction，而不是底层 category 新增一种特殊 morphism。
+
+Ablation。
+
+这是最有价值的 DPO benchmark。
+
+例如：
+
+text
+Copy
+preprocess
+    ↓
+component A
+    ↓
+component B
+    ↓
+evaluate
+替换为：
+
+text
+Copy
+preprocess
+    ↓
+identity/bypass
+    ↓
+component B
+    ↓
+evaluate
+只要 boundary types 一致：
+
+[ L:X\rightarrow Y,\qquad R:X\rightarrow Y ]
+
+就可进行：
+
+[ G[L]\Rightarrow G[R]. ]
+
+这比 Experiment.clone(); removeComponent() 更直接地验证 relation-first hypothesis。
+
+Provenance query。
+
+必须至少能回答：
+
+这个最终指标到底由哪些原始数据、代码实现、运行环境和 rewrite 决定？
+
+哪条 rewrite 首次引入这个 branch？
+
+当前结果与 baseline 的最低共同祖先 ResearchGraph 是什么？
+
+哪些结果来自同一个 evaluator，但不同 model generator？
+
+一个失败/negative result 是否仍完整保留而未被后续 rewrite 覆盖？
+
+这会逼着 provenance 从普通 workflow lineage 进入真正的 research derivation graph。
+
+Agent-driven rewrite。
+
+最后才让 agent 进入。
+
+给 agent：
+
+text
+Copy
+current graph
+generator registry
+allowed rewrite rule registry
+current evidence
+research objective
+budget
+让它输出：
+
+json
+Copy
+{
+  "rule": "replicate-seed/v1",
+  "match": "...",
+  "bindings": {
+    "seeds": [11, 23, 47]
+  },
+  "reason": "..."
+}
+而不是：
+
+text
+Copy
+请生成一个新的 Python 脚本并运行。
+主要测量：
+
+[ \text{valid proposal rate} ]
+
+[ \text{static rejection rate} ]
+
+[ \text{wasted execution avoided} ]
+
+[ \text{scientifically meaningful rewrite rate}. ]
+
+这时我们真正得到的是：
+
+[ \boxed{ \text{LLM proposes} \quad +\quad \text{formal kernel verifies} } ]
+
+而不是：
+
+[ \text{LLM writes arbitrary workflow code}. ]
+
+我认为这会成为整个架构最有价值的 AI4Science 属性。
+
+风险、替代方案与最终优先级
+最大风险其实不是 graph rewriting 太难。
+
+最大的风险是：
+
+我们最后发现真实科学变化并不服从稳定的小边界。
+
+例如实验变化经常同时改变：
+
+text
+Copy
+data definition
+metric semantics
+training procedure
+comparison protocol
+statistical assumptions
+如果这些总是强耦合，那么强行写成局部：
+
+[ L\Rightarrow R ]
+
+只会制造虚假的 compositionality。
+
+所以千万不能先把“relation-first 必然优越”当成结论。
+
+这应该由前面那个 (R) 指标验证。
+
+第二个风险是 category-theoretic God Object。
+
+完全可能出现：
+
+text
+Copy
+一个万能 Category
+300 个 Type constructors
+1000 个 morphism subclasses
+几十种 effects
+复杂得没人懂的 rewrite language
+那只是把 OOP God Object 换成：
+
+[ \mathcal C_{\rm God}. ]
+
+规避原则应该非常硬：
+
+[ \boxed{ \text{small generators} + \text{small boundaries} + \text{few structural laws} } ]
+
+复杂性必须主要来自 composition。
+
+第三个风险是过早引入 Frobenius/cartesian structure。如果默认所有 values 可 copy/delete，scientific provenance 很容易被隐式结构操作掩盖。MVP 应采用 resource-sensitive core，copy/discard 显式化。相关 string-diagram rewrite 理论正好说明一般 SMC 与自由复制变量之间需要谨慎区分。
+
+第四个风险是 rewrite matching 的复杂度。一般 graph matching 并不便宜，所以第一版不要承诺“对任意大图做任意 rewrite search”。实际策略应是：
+
+text
+Copy
+small patterns
+typed candidate filtering
+generator labels
+boundary signatures
+bounded locality
+indexed graph lookup
+Agent 甚至可以先指定 candidate region，再由 kernel 验证 match。
+
+第五个风险是 TS surface 与 formal kernel 混淆。TypeScript 很适合人类 API，但它不是 proof assistant。因此：
+
+[ \boxed{ \text{TS static types = ergonomics} } ]
+
+[ \boxed{ \text{frozen runtime contracts = authority} } ]
+
+这与当前 AdaPDC 已经坚持的 frozen signature/type registry 哲学完全一致。
+
+第六个风险是 categorical database scope creep。Categorical DB 和 functorial migration 的确与整个架构非常契合，并已有实际工程研究；但不应因此把 PostgreSQL 重写掉。现有 Catalog 继续做 production fact store，categorical schema/instance model先用于模型设计、migration oracle 或 export。Attributed C-sets 在“图结构与属性数据统一”方面已经提供了成熟研究基础。
+
+第七个风险是把研究级依赖直接变成生产关键路径。AlgebraicRewriting 官方自己明确说仍处于 active development，不能假设稳定 API；open-hypergraphs 也保留 experimental APIs。它们应首先做 reference oracle，而不是系统 availability dependency。
+
+我给当前路线的最终优先级
+最高优先级：冻结 C4，不动 runtime。
+
+先把当前 archive 的 documentation drift 和 review-manifest 问题解决。把目前已经很好的 artifact、manifest、recovery、Temporal semantics 当作不可轻易破坏的 baseline。
+
+然后只增加两个新 package：
+
+text
+Copy
+packages/research-ir
+packages/rewrite
+外加：
+
+text
+Copy
+packages/lowering-plan-v1
+而不要立即创建十几个 categorical packages。
+
+research-ir 第一版只支持：
+
+[ {id,\circ,\otimes,\sigma} ]
+
+加 typed open hypergraph representation。
+
+rewrite 第一版只支持：
+
+[ \text{typed DPO + interface + simple application conditions}. ]
+
+接着把你当前八节点 demo 改写成：
+
+text
+Copy
+TS v2
+ ↓
+ResearchIR
+ ↓
+Plan v1
+ ↓
+existing C4
+执行结果必须保持不变。
+
+然后立即做第一个真正的 scientific ablation benchmark。
+
+不要先写 Slurm，不要先写 K8s，不要先写 GUI，不要先写 agent，不要先实现 general-purpose theorem proving。
+
+真正的第一道生死 Gate 是：
+
+[ \boxed{ \text{真实 ablation / replication / sweep} \stackrel{?}{=} \text{small typed rewrites} } ]
+
+第二道 Gate 才是：
+
+[ \boxed{ \text{local rewrite} \Rightarrow \text{incremental execution + complete provenance} } ]
+
+第三道 Gate 才让 agent 进来：
+
+[ \boxed{ \text{Agent proposal} \rightarrow \text{formal verification} \rightarrow \text{execution} } ]
+
+如果这三关都成立，那么 AdaPDC 的架构就会从：
+
+“一个做得相当严谨的 typed scientific workflow system”
+
+真正转变成：
+
+“一个可供人类和 AI 操作的、关系优先的 research intermediate representation。”
+
+我认为这是目前最值得追的定义。
+
+最终可以把整个系统压缩成下面这组边界：
+
+[ \boxed{ \begin{aligned} \textbf{Syntax}\quad& \Sigma={\text{small typed scientific generators}}\[3pt] \textbf{Composition}\quad& {id,\circ,\otimes,\sigma}\[3pt] \textbf{Representation}\quad& \text{immutable typed open hypergraphs}\[3pt] \textbf{Evolution}\quad& G\xRightarrow[\text{typed DPO}]{\rho}G'\[3pt] \textbf{Interpretation}\quad& F:\mathcal R\to\mathcal X\[3pt] \textbf{Execution}\quad& F_{\rm exec}(G)\to\text{Frozen Plan}\to\text{Runtime}\[3pt] \textbf{Evidence}\quad& G_0\Rightarrow\cdots\Rightarrow G_n \to P\to E\to A \end{aligned}} ]
+
+其中最关键的一句仍然不是“用了范畴论”，而是：
+
+[ \boxed{ \textbf{Experiment is derived; composition and relations are primitive.} } ]
+
+从你现在的 72f4b8f 审查包看，我认为已经到了可以真正实施这一步，而不是继续停留在理论讨论的时候。当前 C4 最有价值的地方，恰恰是让我们可以在不重新解决 orchestration、CAS、retry、identity、failure/recovery 这些问题的情况下，把接下来的研究精力集中在唯一真正未知的问题上：
+
+[ \boxed{ \text{“Compositional Experiment Calculus 是否确实是科学实验变化的好 IR？”} } ]
+
+这应当成为下一阶段的首要研究问题、工程里程碑和审查包总验收命题。
+

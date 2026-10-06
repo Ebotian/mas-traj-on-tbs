@@ -1,0 +1,1271 @@
+范畴论优先的实验编排与工程落地：截至 2026 年 9 月的理论、实现与路线评估
+
+
+
+范畴论优先的实验编排与工程落地：截至 2026 年 9 月的理论、实现与路线评估
+执行摘要
+截至 2026 年 9 月 10 日，我的判断可以压缩为一句话：
+
+[ \boxed{ \text{范畴论优先的实验编排已经具备成熟的数学部件，但尚不存在成熟的端到端工程产品。} } ]
+
+这里需要把“成熟”拆开看。对称幺半范畴、string diagram、hypergraph category、structured cospan、DPO 图重写、functorial data migration 等形式理论已经相当成熟；Catlab、AlgebraicRewriting、DisCoPy、open-hypergraphs 等已经证明这些理论能够落实为真实的数据结构、组合算法和重写程序。尤其是 structured cospan 给出了“带输入输出边界的开放系统”模型，DPO/hypergraph rewriting 给出了组合图的局部重写理论，而 Wilson 与 Zanasi 已进一步给出基于结构化 cospan/ACSet 表示的 string diagram 组合、tensor、term construction 和 functor evaluation 的线性顺序算法与对数级并行算法。
+
+但是，“科学实验究竟应该被建模成哪种 category，什么是 object，什么是 morphism，什么可以复制，什么必须线性消费，随机性、外部设备、副作用、统计证据、hypothesis relation 如何进入语义”目前没有行业标准答案。 Catlab 自身仍明确定位为 applied/computational category theory 编程库，而非 workflow 系统或 proof assistant；AlgebraicRewriting 明确警告 API/行为尚未稳定；open-hypergraphs 仍有实验 API。换言之，数学地基成熟，不代表“科研语义 ontology + compiler + executor + provenance + agent”这一整栋楼已经有人造好。
+
+生产工程世界则恰好相反：Nextflow、Dagster、CWL 等对 DAG、任务执行、HPC/cloud、缓存、恢复、资产 lineage 和 portability 已经有成熟经验。Nextflow 当前稳定版仓库显示到 26.04.6，并支持 pipeline caching、execution history、resume 等；其内置 data lineage 从 25.04 起仍标为 experimental。Dagster 已经是资产中心的生产 orchestration 系统，官方定位包含 lineage、observability、testing 和 production lifecycle；2026 年 7 月仍在持续发布 1.13.x。CWL v1.2.1 则已经形成供应商中立的正式工作流规范，但它明确把 workflow 定义为由依赖关系构成的 directed graph，而不是 categorical rewrite calculus。
+
+AI4Science 又提供了第三条线。AI Scientist-v2 已经能够通过 progressive agentic tree search 自动提出假设、运行实验、分析和撰写论文，但其官方仓库明确警告它会直接执行 LLM 生成代码，因此必须在受控 sandbox 中运行。2026 年提出的 Experiment-as-Code Labs 更接近本文方向：实验是 declarative configuration，系统层负责 program analysis、安全检查、资源分配和 orchestration，再编译到设备 API；但其论文没有进一步建立 typed open-hypergraph、categorical composition 和 algebraic rewrite 语义。
+
+因此我不建议重新造一个“categorical Nextflow”。更合适的架构是：
+
+[ \boxed{ \text{Category Theory = Semantic IR} \quad\neq\quad \text{Runtime Orchestrator} } ]
+
+具体到你提交的 AdaPDC 审查包，这个结论尤其明确。我对 审查包 做了静态审查，归档 SHA-256 为：
+
+text
+Copy
+3fe3b6948d8d13aa9affee7f2d4345490e40d664ec41b09b12fa2e4dda2bdfc9
+包内声明源码提交为：
+
+text
+Copy
+72f4b8fbf58d5f5841e145075ab26125c6d703ae
+现有实现已经不是“纸面 scaffold”：它具有 frozen signature、content-addressed artifact、稳定 Plan identity、PostgreSQL catalog、Temporal 实际执行、恢复/冲突处理以及一组相当扎实的测试。审查包中的 test-output/vitest.txt 为 132/132 单元测试通过，integration.txt 为 33/33 集成测试通过，并含真实 Temporal 八节点 E2E，Python 层 29/29 测试通过。
+
+因此我认为最正确的落地路线不是推倒它，而是：
+
+[ \boxed{ \text{ResearchIR}{category} \xrightarrow{F{\mathrm{exec}}} \text{现有 AdaPDC IR/Plan} \xrightarrow{} \text{Temporal} } ]
+
+保留你现在已经解决得不错的 CAS、frozen contracts、Plan、Temporal、Postgres、execution recovery；在它们上面增加一个非常小的 categorical semantic kernel + typed rewrite layer。这是风险最低、又能真正验证“关系优先”假设的路线。
+
+我的建议成熟度评级是：
+
+层级	截至目前成熟度	工程判断
+SMC / hypergraph category / structured cospan	高	可直接作为语义理论
+DPO/SPO/SqPO rewriting	高（理论）/中（工程库）	可借鉴，不建议第一天全量实现
+open-hypergraph 数据结构	中	可借鉴 representation 与算法
+categorical database/schema migration	中高	数据模型值得借鉴
+生产 workflow/runtime	高	直接复用，不应重造
+provenance 标准	高	应输出 PROV/RO-Crate，而非另造标准
+categorical scientific experiment ontology	低	真正研究空缺之一
+agent-driven typed scientific rewriting	低	非常值得做，但要最后接 Agent
+一体化“Category-first AI4Science OS”	低	目前没有成熟现成方案
+
+最终建议的首个可交付研究原型不是“大平台”，而是：
+
+[ \boxed{ \text{typed generators} +{\mathrm{id},\circ,\otimes,\mathrm{symmetry}} +\text{typed open-hypergraph IR} +\text{restricted DPO-style rewrites} +\text{AdaPDC Plan lowering} } ]
+
+在现有 AdaPDC 基础上，达到可信研究原型预计 4–5 个自然月、约 7–9 人月；达到可供实际科研团队试运行的 production pilot，累计约 8–10 个月、12–17 人月。这些为工程估算，不是已有项目公布的数据；HPC/cloud 目标环境、物理实验室设备、团队现有范畴论经验均为未指定，因此估算默认继续复用现有 Temporal + PostgreSQL + Python worker 技术栈。
+
+理论基础与真正尚未解决的问题
+范畴论优先的核心价值，并不是把普通 DAG 换一个数学名字，而是改变系统的基本语义单位。
+
+传统实验对象模型倾向于：
+
+text
+Copy
+Experiment
+ ├── config
+ ├── dataset
+ ├── executor
+ ├── metrics
+ ├── lineage
+ └── run()
+最终非常容易回到你此前担心的 OOE——Object-Oriented Experimentation。继承、mixins、plugins 和状态生命周期不断扩展后，“Experiment”成为 God Object。
+
+关系优先则把实验片段看成：
+
+[ f:X\rightarrow Y ]
+
+而复杂实验是：
+
+[ X\xrightarrow{f}Y\xrightarrow{g}Z \qquad\Rightarrow\qquad g\circ f:X\rightarrow Z. ]
+
+多个彼此独立的变换通过 tensor 组合：
+
+[ f\otimes g: X\otimes A\rightarrow Y\otimes B. ]
+
+这正对应 symmetric monoidal category 和 string diagram 的基本组合结构。Structured cospan 又进一步提供“开放系统具有显式输入、输出 boundary”的数学形式：
+
+[ L(a)\rightarrow x\leftarrow L(b), ]
+
+在适当条件下，这些开放系统构成 symmetric monoidal / hypergraph category。它因此非常适合表达“实验片段不是封闭对象，而是拥有可组合 boundary 的过程”。
+
+进一步，如果科研探索被解释成：
+
+[ G\Rightarrow G' ]
+
+那么实验“扩展”不再等价于复制目录或创建 Experiment subclass，而是修改 research term 的局部结构。String Diagram Rewrite Theory 给出了以 DPO hypergraph rewriting 对 Frobenius/string-diagram rewriting 建模的 sound/complete combinatorial interpretation；AlgebraicRewriting 已经工程化实现 DPO、SPO、SqPO，并能在 C-Sets 等数据结构上进行规则匹配和重写。
+
+但这里有几个非常容易被“范畴论很优雅”掩盖掉的工程问题。
+
+首先，普通 SMC 是线性的，科研数据流却经常 fan-out。 在普通 monoidal syntax 中，一条 wire 不能凭空被复制；hypergraph/Frobenius structure 可以提供 spider，从而表达复制、合并等 wiring。DisCoPy 的 Hypergraph API 就明确提供 spiders，而 string-diagram rewriting 的 Frobenius 结构也正是围绕这种 wiring 建模。
+
+然而，对于科研系统，不能直接声明“所有东西都有 spider”。例如：
+
+text
+Copy
+immutable dataset reference -> 可以复制引用
+physical sample            -> 不可以复制
+GPU allocation             -> 不可以复制
+chemical reagent aliquot   -> 只能按资源规则拆分
+model artifact             -> 可以共享
+secret capability          -> 不应该随意复制
+因此推荐在 type 中增加结构模态：
+
+ts
+Copy
+type StructuralMode =
+  | "shareable"      // 可 fan-out
+  | "affine"         // 可丢弃，不可复制
+  | "linear";        // 必须且只能消费一次
+这不是一个装饰性的 schema 字段，而是 categorical composition checker 的一部分。
+
+其次，数学 tensor 不能简单等价于“并行执行”。
+
+[ f\otimes g ]
+
+在语义上表示两个 component 的 monoidal juxtaposition；它们能否真的同时在两块 GPU 上运行，还取决于资源、side effect、锁、外部服务和 scheduler。因此：
+
+[ \text{semantic independence} \neq \text{physical schedulability}. ]
+
+executor interpretation 可以利用 tensor 暴露出的 independence，但不能由 syntax 直接保证并行。
+
+第三，随机实验不是纯函数。 ML 训练、Monte Carlo、外部 API、仪器读数都可能使：
+
+[ f:X\to Y ]
+
+不再具有普通 deterministic function 的运行语义。DisCoPy 已包含 Markov-category 相关结构，说明 categorical toolkit 本身可以继续向概率过程扩展，但 MVP 不应试图一次解决完整 stochastic semantics。
+
+我建议第一版只冻结：
+
+ts
+Copy
+determinism:
+  | { kind: "strict" }
+  | { kind: "seeded"; seedParam: "seed" }
+  | { kind: "external" };
+
+effects: readonly EffectCapability[];
+随后让 cache、reproducibility 和 agent policy 根据这些声明工作。
+
+第四，所谓 semantics → executor functor 必须成为可检验的工程承诺，而不只是漂亮术语。
+
+理想情况是：
+
+[ F_{\rm exec}(\mathrm{id}_X)
+\mathrm{id}_{F(X)} ]
+
+[ F_{\rm exec}(g\circ f) \simeq F_{\rm exec}(g)\circ F_{\rm exec}(f) ]
+
+[ F_{\rm exec}(f\otimes g) \simeq F_{\rm exec}(f)\otimes F_{\rm exec}(g). ]
+
+但是生产编译器可能插入 artifact staging、serialization、sandbox boundary、resource acquisition，因此严格 equality 往往不成立。更现实的目标是 strong/lax monoidal interpretation 或 observational equivalence。
+
+所以第一版文档里我甚至不会正式宣称：
+
+“Temporal compiler is a functor.”
+
+我会写成：
+
+law-tested lowering interpreter
+
+等 identity/composition/tensor preservation 的测试和语义等价关系真正定义清楚以后，再升级数学承诺。
+
+这一点是区别“范畴论驱动工程”和“给 DAG 贴范畴论标签”的关键。
+
+现有实现与生产工具的比较
+现状其实呈现出很清晰的“两头成熟、中间断裂”。
+
+一头是 categorical computation。Catlab 是目前最系统的 applied/computational category theory 工程框架之一，能够表示 categorical doctrines、typed symbolic manipulation、wiring diagrams，并提供 JSON/GraphML serialization；但其官方文档明确说它不是 theorem prover、proof assistant 或用户级 GUI。
+
+AlgebraicRewriting 在 Catlab/C-Set 基础上直接实现了 DPO、SPO、SqPO、PBPO 等图重写，以及 application condition、attribute variable、graph process 等能力，不过官方仓库明确注明仍处于活跃开发、API/behavior 不应假定稳定。
+
+open-hypergraphs 直接实现 Wilson–Zanasi 的 string-diagram 数据结构思想，当前 Rust 库提供 construction、composition、data-parallel algebraic operation、layering、functor 等能力；仓库示例依赖 0.2.10，而且仍有单独的 experimental feature，因此更适合作为 IR/algorithm 参考，而不是拿来承担生产科研 orchestration。
+
+另一头是生产 workflow。Nextflow 在科学/HPC pipeline 上已经提供相当完整的缓存、resume、执行历史、远端运行等工程能力，CWL 则形成了 vendor-neutral 的 portable workflow specification；Dagster 在数据资产 orchestration、lineage、observability 和生产生命周期方面成熟度更高。
+
+因此不能简单问“Catlab 和 Nextflow 哪个更好”，它们解决的是不同层。
+
+项目和工具对比
+本文的“成熟度”是工程判断而不是项目官方评级：
+
+生产成熟：适合直接承载生产执行或已形成稳定标准；
+研究成熟：已有稳定理论和有意义实现，但主要面向研究/专业开发；
+实验性：接口、生态或工程运行能力尚不足以直接作为关键生产基础设施。
+项目	主要语言/形式	核心能力	范畴论/关系语义	Workflow/生产能力	本报告成熟度判断	推荐角色
+Catlab	Julia	GAT、C-Sets、wiring diagrams、monoidal/categorical algorithms、serialization	很强	非 workflow/runtime；官方明确不是 proof assistant	研究成熟	理论/算法参考、conformance oracle
+AlgebraicJulia	Julia 生态	Catlab、rewriting、Petri/ACT 工具生态	很强	生产 orchestration 弱	研究成熟生态	参考实现生态，不直接作为主运行栈
+AlgebraicRewriting	Julia	DPO/SPO/SqPO/PBPO、application conditions、C-Set rewriting	很强	无生产 scheduler；API 尚不稳定	实验—研究级	rewrite semantics 的首选参考
+open-hypergraphs	Rust	scalable open hypergraph/string diagram representation、composition、tensor、functor	很强	无 workflow control plane；部分 API experimental	实验性	IR representation/性能算法参考
+DisCoPy	Python	string diagrams、SMC/hypergraph/Markov structures、functors、rewriting	很强	不负责生产 workflow	研究成熟	快速原型、语义交叉验证
+Nextflow	Groovy/JVM	科学 workflow、cache/resume、HPC/cloud、history、containers	弱：主要为 dataflow/DAG	很强；内置 lineage 当前仍 experimental	生产成熟	后期 HPC executor adapter
+Dagster	Python	asset orchestration、lineage、observability、testing、deployment	弱：asset/DAG-centric	很强	生产成熟	数据资产型项目可选；AdaPDC 当前优先级低
+CWL	YAML/JSON 标准	portable analysis workflow/tool description、conformance	有 typed ports，但本体仍是 directed graph	标准成熟；自身不是 executor	成熟标准	interchange/export 层
+AI Scientist-v2	Python	hypothesis→experiment→analysis→paper；agentic tree search	几乎没有形式 categorical IR	研究系统；执行 LLM code 要 sandbox	研究原型	Agent 行为 benchmark，而非底层基础设施
+CQL	Java/CQL	categorical schema、functorial migration、constraint/query	很强，特别是 schema/data	官方称适合 single-node in-memory production workloads；不是 DBMS/workflow	专业化成熟	数据 schema/migration 设计参考
+PROV-O	OWL/RDF 标准	Entity/Activity/Agent/Plan provenance interchange	关系模型，但不是 experiment calculus	稳定 W3C Recommendation	成熟标准	provenance export
+RO-Crate	JSON-LD	打包 research data、metadata、workflow/software/provenance	非 categorical	1.2 为 Recommendation	成熟标准	可重复研究归档/export
+
+Catlab 的能力和定位来自其官方文档及仓库；AlgebraicRewriting 的重写支持和 API 状态来自官方仓库/文档；open-hypergraphs 的 Rust 实现和 experimental API 来自官方仓库；DisCoPy 当前 PyPI 1.2.2 提供 Hypergraph、Functor 和 rewriting；这些项目共同证明 categorical computation 本身不是纯理论。
+
+Nextflow 官方 release 页面截至搜索时列出 26.04.6 为 latest stable；其文档明确提供 execution cache/history，并将内置 data lineage 标为 experimental。Dagster 2026 年 7 月发布 1.13.15，官方定位则明确包含 production orchestration、integrated lineage 和 observability。
+
+CWL v1.2.1 的规范明确把 workflow 定义为“一组 operations 构成的 directed graph”，并以数据依赖决定执行；这说明它非常适合 interoperability，但不是本文想要的“research transformations + rewrite algebra”。
+
+CQL 是一个值得特别注意的旁证：category theory 并非天然只能做研究玩具。其官方实现是 functorial data migration 的 reference implementation，当前项目仍有 2026 年 release；官方站点称它适用于 single-node、in-memory 数据处理，但也明确声明它是 stateless、不是 database management system。
+
+Agentic science 与我们的缺口
+AI Scientist-v2 的研究搜索空间主要是 agentic tree search over experiments/code：
+
+[ s_0 \rightarrow {s_1,s_2,\ldots} \rightarrow \text{evaluate} \rightarrow \text{continue} ]
+
+而不是：
+
+[ G \xRightarrow[\text{typed rule }r]{} G' ]
+
+其论文明确说明 progressive agentic tree search，由 experiment manager 管理；官方仓库也直接警告系统执行 LLM-written code 可能带来危险 package、非受控网络和额外进程风险。
+
+Coscientist 则证明另一侧已经成立：LLM 可以把规划、文档检索、Python 执行和实验设备 API 组合起来，完成化学实验设计与执行；但它的基本 action space 仍是 planner/tool/API，而不是一个有组合公理的 experiment IR。
+
+2026 年的 Experiment-as-Code Labs 是目前我认为最靠近这条架构思想的公开研究之一：
+
+text
+Copy
+AI hypothesis
+      ↓
+declarative experiment configuration
+      ↓
+program analysis / safety / resources
+      ↓
+orchestration
+      ↓
+device API
+论文明确提出这套分层，但还没有把 declarative configuration 建模为 typed open hypergraph，也没有以 categorical rewrite 作为 autonomous exploration 的受控 action space。
+
+所以真正可能形成研究贡献的部分不是：
+
+“我们也做一个 AI scientist。”
+
+而是：
+
+[ \boxed{ \text{把 Agent 的 action space 从 arbitrary code mutation} \rightarrow \text{typed semantic rewrite} } ]
+
+这是现有 autonomous science 和 formal/compositional systems 之间非常明显的一条缝。
+
+对现有 AdaPDC 审查包的判断与目标架构
+本次审查特别重要，因为你的项目其实已经解决了很多“category theory 论文通常完全不解决”的工程问题。
+
+根据归档内的 REVIEW-README.md、contracts、graph/compiler、catalog、worker 和 test output，当前 AdaPDC 的主要结构是：
+
+text
+Copy
+Card / TS DSL
+    ↓
+adapdc.ir/v1
+    ↓
+frozen adapdc.plan/v1
+    ↓
+Temporal worker
+    ↓
+Python implementation
+    ↓
+CAS + PostgreSQL Catalog
+当前 ExperimentIR 的 binding 已经可以显式指向 artifact 或另一个 node 的 port：
+
+ts
+Copy
+type Binding =
+  | { kind: "artifact"; ref: Ref }
+  | { kind: "port"; node: string; port: string };
+节点又冻结：
+
+text
+Copy
+id
+op
+signatureRef
+implementation
+params
+inputs
+这是很好的基础，因为 generator 的逻辑别名和冻结执行语义已经被区分。
+
+当前 Plan 又冻结：
+
+text
+Copy
+irDigest
+interpreterVersion
+runtimeRef
+typeRegistryRef
+nodes
+exports
+并明确不让 executionId、时间戳、本机绝对路径污染 Plan identity。这个设计应当保留。
+
+八节点示例：
+
+text
+Copy
+x
+├─ shifted/bias=0 ─ score/bias=0 ┐
+├─ shifted/bias=1 ─ score/bias=1 ├─ report
+└─ shifted/bias=2 ─ score/bias=2 ┘
+而且 sweepGroup 不只是把 sweep 展平成三个 node，还保留：
+
+json
+Copy
+{
+  "axes": {
+    "bias": [0, 1, 2]
+  }
+}
+说明项目已经开始区分：
+
+[ \text{execution nodes} \quad\text{和}\quad \text{research-level relationship}. ]
+
+这是非常好的信号。
+
+但它目前还不能称为 category-first IR。
+
+当前 schema 的本质还是：
+
+[ \boxed{\text{typed port DAG + sweep metadata}} ]
+
+尚不存在显式的：
+
+[ \mathrm{id},\qquad \circ,\qquad \otimes,\qquad \sigma_{A,B} ]
+
+也没有：
+
+text
+Copy
+open input boundary
+open output boundary
+wire objects
+hyperedges as generators
+structural copy/delete policy
+rewrite rule L <- K -> R
+rewrite proof/trace
+category laws
+semantic equality
+因此我的建议是不要把当前 adapdc.ir/v1 改造成万能 IR。
+
+应增加第二层：
+
+text
+Copy
+Research / Semantic Layer
+        │
+        │ adapdc.semantic-ir/v1
+        ▼
+Execution Compilation Layer
+        │
+        │ F_temporal
+        ▼
+现有 adapdc.ir/v1 + adapdc.plan/v1
+        ▼
+Temporal / worker / CAS / catalog
+也就是说：
+
+[ \boxed{ \text{ResearchIR} \ne \text{ExecutionIR} } ]
+
+这是整个设计里我最强烈的建议。
+
+推荐架构
+Human / Scientist
+
+Scientific Agent
+
+TypeScript Surface DSL
+
+Categorical Semantic Kernel
+typed open-hypergraph
+
+Static Checker
+types · structural modes · effects
+
+Rewrite Engine
+typed local rules
+
+Rewrite Trace
+rule + match + before/after digest
+
+Law-tested Lowering
+F_temporal
+
+Existing Frozen AdaPDC Plan
+
+Temporal Control Plane
+
+Sandboxed Workers
+
+Frozen Python / native generators
+
+Content-addressed Artifact Store
+
+PostgreSQL Catalog
+
+PROV / RO-Crate Export
+
+
+
+Show code
+这种架构和当前生产 workflow 的经验是一致的：semantic declaration 不应承担 durable scheduling 的全部责任。Temporal 本身的定位就是持久化执行，能够在 crash/network/infrastructure failure 后恢复 workflow，因此既然 AdaPDC 已经集成它，没有理由再在 categorical kernel 里重新实现这部分。
+
+数据模型应分层，而不是把所有关系都塞进一个图
+我建议至少分为五类实体：
+
+层	核心记录	是否 immutable/content addressed
+Semantic schema	WireType, GeneratorSignature, RewriteRule	是
+Research structure	SemanticIR, RewriteTrace	是
+Compilation	LoweringVersion, ExecIR, Plan	是
+Runtime facts	Execution, Attempt, Event, NodeResult	append-only / immutable facts 优先
+Artifact	Artifact, Manifest, Location	内容 immutable，location 可扩展
+
+然后 provenance 通过映射导出，而不是成为 semantic graph 的内部运行状态。
+
+W3C PROV 已经提供 Entity、Activity、Agent 和 Plan 等稳定概念，可以映射：
+
+text
+Copy
+Artifact               -> prov:Entity
+Node Attempt            -> prov:Activity
+Human / Agent / Worker  -> prov:Agent
+Frozen Plan             -> prov:Plan
+generated artifact      -> prov:wasGeneratedBy
+input artifact          -> prov:used
+PROV-O 是 W3C Recommendation，目标正是跨系统 interchange provenance，而不是要求每个系统使用其 RDF model 作为内部 runtime schema。
+
+RO-Crate 1.2 则已经是 Recommendation，以 JSON-LD 打包 research data、metadata，并允许描述 workflow/scripts 和 provenance，很适合作为“一键归档科研对象”的外部格式。
+
+如果未来需要把运行事件接入数据平台，还可以可选输出 OpenLineage。其核心模型正是 run/job/dataset/event，而不是 research semantics，因此它更适合作为 operational lineage adapter，而非主科研模型。
+
+最小可行语义内核与 TypeScript 设计
+我会刻意把 MVP 限制在自由生成的、typed symmetric monoidal/open-hypergraph 语法，而不是一开始就做“所有 applied category theory”。
+
+核心 signature：
+
+[ \Sigma=(O,G) ]
+
+其中 (O) 是 wire/object types，(G) 是 typed generators：
+
+[ g:A_1\otimes\cdots\otimes A_m \rightarrow B_1\otimes\cdots\otimes B_n. ]
+
+复杂实验只能通过少量构造得到：
+
+[ {\mathrm{id},\circ,\otimes,\mathrm{swap},\mathrm{copy?},\mathrm{discard?}}. ]
+
+Wilson–Zanasi 已证明 open/string diagram 的 composition、tensor、functor application 可以建立高效的数据结构算法，因此采用 open hypergraph 并不天然意味着运行时一定不可扩展。
+
+TypeScript API 草案
+我不会延续当前模块级全局 state 的 DSL 实现作为 categorical core。当前 use/sweep/map/collect/experiment 对用户很方便，但它仍是隐式 mutable graph builder；category kernel 最好完全 immutable。
+
+ts
+Copy
+import {
+  wireType,
+  generator,
+  id,
+  seq,
+  tensor,
+  compileSemantic,
+} from "@adapdc/semantic";
+
+const Dataset = wireType("dataset/v1", {
+  structural: "shareable",
+});
+
+const TrainSet = wireType("train-set/v1", {
+  structural: "shareable",
+});
+
+const TestSet = wireType("test-set/v1", {
+  structural: "shareable",
+});
+
+const Model = wireType("model/v1", {
+  structural: "shareable",
+});
+
+const Metrics = wireType("metrics/v1", {
+  structural: "shareable",
+});
+
+const split = generator({
+  id: "split@1",
+  input: [Dataset],
+  output: [TrainSet, TestSet],
+  params: {
+    ratio: "number/v1",
+    seed: "integer/v1",
+  },
+  determinism: {
+    kind: "seeded",
+    seedParam: "seed",
+  },
+  implementation: "sha256:...",
+});
+
+const train = generator({
+  id: "train@1",
+  input: [TrainSet],
+  output: [Model],
+  params: {
+    seed: "integer/v1",
+  },
+  determinism: {
+    kind: "seeded",
+    seedParam: "seed",
+  },
+  implementation: "sha256:...",
+});
+
+const evaluate = generator({
+  id: "evaluate@1",
+  input: [Model, TestSet],
+  output: [Metrics],
+  params: {},
+  determinism: {
+    kind: "strict",
+  },
+  implementation: "sha256:...",
+});
+
+// Dataset
+//   -> TrainSet ⊗ TestSet
+//   -> Model    ⊗ TestSet
+//   -> Metrics
+const baseline = seq(
+  split({ ratio: 0.8, seed: 42 }),
+  tensor(
+    train({ seed: 1 }),
+    id(TestSet),
+  ),
+  evaluate(),
+);
+
+const semanticIr = compileSemantic(baseline);
+这个表达的关键不是 API 长什么样，而是：
+
+[ \mathrm{split}; (\mathrm{train}\otimes\mathrm{id}); \mathrm{evaluate} ]
+
+本身就是完整语义。
+
+没有：
+
+ts
+Copy
+class Experiment extends ...
+也没有：
+
+ts
+Copy
+experiment.run()
+“Experiment”只是 composite morphism 的用户级名称。
+
+Proposed open-hypergraph IR
+建议单独建立：
+
+text
+Copy
+adapdc.semantic-ir/v1
+例如：
+
+json
+Copy
+{
+  "schema": "adapdc.semantic-ir/v1",
+  "signatureRef": "sha256:...",
+  "boundary": {
+    "inputs": [
+      {
+        "wire": "w_dataset",
+        "type": "dataset/v1"
+      }
+    ],
+    "outputs": [
+      {
+        "wire": "w_metrics",
+        "type": "metrics/v1"
+      }
+    ]
+  },
+  "wires": [
+    {
+      "id": "w_dataset",
+      "type": "dataset/v1",
+      "structural": "shareable"
+    },
+    {
+      "id": "w_train",
+      "type": "train-set/v1",
+      "structural": "shareable"
+    },
+    {
+      "id": "w_test",
+      "type": "test-set/v1",
+      "structural": "shareable"
+    },
+    {
+      "id": "w_model",
+      "type": "model/v1",
+      "structural": "shareable"
+    },
+    {
+      "id": "w_metrics",
+      "type": "metrics/v1",
+      "structural": "shareable"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "e_split",
+      "generator": "split@1",
+      "sources": ["w_dataset"],
+      "targets": ["w_train", "w_test"],
+      "params": {
+        "ratio": 0.8,
+        "seed": 42
+      }
+    },
+    {
+      "id": "e_train",
+      "generator": "train@1",
+      "sources": ["w_train"],
+      "targets": ["w_model"],
+      "params": {
+        "seed": 1
+      }
+    },
+    {
+      "id": "e_eval",
+      "generator": "evaluate@1",
+      "sources": ["w_model", "w_test"],
+      "targets": ["w_metrics"],
+      "params": {}
+    }
+  ]
+}
+注意这里 sources/targets 可以是多元的，这就是普通 edge graph 不够自然、hypergraph 更合适的地方。open-hypergraphs 的实际 Rust serialization 也采用 global sources/targets + hypergraph nodes/edges/adjacency 的方向。
+
+Rewrite 不应首先允许 arbitrary code
+第一类 rule 应非常保守：相同 boundary 的 generator replacement。
+
+例如：
+
+[ \mathrm{evaluate}_1: Model\otimes Test\rightarrow Metrics ]
+
+替换成：
+
+[ \mathrm{robustEvaluate}_2: Model\otimes Test\rightarrow Metrics. ]
+
+可以写：
+
+ts
+Copy
+const robustEvaluation = rewriteRule({
+  id: "robust-evaluator/v1",
+
+  match: edge({
+    generator: "evaluate@1",
+    input: [Model, TestSet],
+    output: [Metrics],
+  }),
+
+  replace: edge({
+    generator: "robust-evaluate@2",
+    input: [Model, TestSet],
+    output: [Metrics],
+  }),
+
+  require: [
+    sameBoundary(),
+    registeredGenerator(),
+    effectSubsumption(),
+  ],
+});
+对应形式上：
+
+[ L\xleftarrow{}K\xrightarrow{}R ]
+
+其中 (K) 保留 interface，而 (L,R) 是替换前后的局部开放系统。DPO rewriting 以及 structured-cospan rewriting 已经为这种“保留 interface 的局部变化”提供理论基础。
+
+然后才逐步增加：
+
+text
+Copy
+sweepParameter
+replicateSeeds
+addControl
+replaceEvaluator
+insertNormalization
+ablateComponent
+crossValidate
+这类科学意义明确、模式局部、可静态检查的 rewrite。
+
+例如：
+
+[ \mathrm{train}(\theta) \Rightarrow \bigotimes_{\theta_i\in\Theta} \mathrm{train}(\theta_i) \rightarrow \mathrm{aggregate}. ]
+
+Agent 应产生：
+
+json
+Copy
+{
+  "rule": "parameter-sweep/v1",
+  "match": {
+    "edge": "e_train"
+  },
+  "arguments": {
+    "parameter": "learningRate",
+    "values": [0.0001, 0.001, 0.01]
+  }
+}
+而不是默认产生：
+
+text
+Copy
+"Here is 400 lines of new Python. Execute it."
+rewrite trace 必须记录：
+
+json
+Copy
+{
+  "schema": "adapdc.rewrite-trace/v1",
+  "ruleRef": "sha256:...",
+  "before": "sha256:semantic-ir-before",
+  "after": "sha256:semantic-ir-after",
+  "match": {
+    "edges": ["e_train"]
+  },
+  "proposedBy": {
+    "kind": "agent",
+    "id": "..."
+  },
+  "approval": {
+    "kind": "policy"
+  }
+}
+这会使 Agent 的 reasoning action 变成一个可审计的一等 artifact。
+
+编译器边界
+然后建立：
+
+[ F_{\rm temporal}: \mathcal E_{\rm semantic} \rightarrow \mathcal P_{\rm AdaPDC}. ]
+
+具体工程上：
+
+text
+Copy
+SemanticIR
+   │
+   ├─ type check
+   ├─ structural-mode check
+   ├─ effect/resource validation
+   ├─ normalize
+   ├─ stable semantic digest
+   │
+   ▼
+Lowering
+   │
+   ├─ materialization insertion
+   ├─ fan-out expansion
+   ├─ resource/staging nodes
+   ├─ deterministic topological order
+   │
+   ▼
+现有 ExperimentIR / Plan
+原来的 signatureRef、implementation、runtimeRef、typeRegistryRef 都继续作为下层冻结对象。
+
+这意味着 categorical migration 的工程风险很低：
+
+[ \boxed{ \text{新增一层，而不是替换五层。} } ]
+
+工程挑战、安全、性能与验证方案
+最大的工程风险并不是“实现 (\circ) 很难”。Composition 很容易。
+
+真正难的是确定哪些 categorical laws 对科研世界成立。
+
+语义与执行事实必须严格分开
+例如：
+
+text
+Copy
+“这个实验结构是什么？”
+应该由 SemanticIR 回答。
+
+而：
+
+text
+Copy
+“2026-09-10 13:22 的第三次运行失败了吗？”
+应该由 execution event store 回答。
+
+如果把运行状态直接写回 categorical graph：
+
+text
+Copy
+edge.status = "failed"
+就会立即重新进入 mutable object graph。
+
+所以：
+
+[ \boxed{ \text{Semantic graph immutable} } ]
+
+而：
+
+[ \boxed{ \text{execution history append-only facts} } ]
+
+这和你现有 Plan identity 避免时间戳、execution ID 的方向高度一致。
+
+Semantic identity 与 byte identity 不能混为一谈
+范畴论通常关心“up to isomorphism”；AlgebraicRewriting 的官方 demo 也特别指出 C-Sets 通常被视为 up to isomorphism，极限/余极限过程可能改变顶点/边的具体排列。
+
+而 AdaPDC 当前非常需要：
+
+text
+Copy
+stable deterministic bytes
+stable digest
+stable node identity
+这两件事并不冲突，但需要明确区分：
+
+[ \text{storage identity} \neq \text{semantic equivalence}. ]
+
+MVP 不建议尝试“任意同构图都自动得到完全相同 SHA-256”。
+
+更现实的是：
+
+text
+Copy
+Storage equality:
+canonical serialization bytes 相同
+
+Construction equality:
+normalization 后 AST/IR 相同
+
+Categorical equality:
+通过 laws / isomorphism / rewrite theory 判等
+后者逐步增强。
+
+否则第一阶段就会掉进 canonical graph isomorphism、normal-form 完备性之类并不直接产生科研价值的大坑。
+
+Rewrite matching 必须受限
+AlgebraicRewriting 能进行一般 C-Set homomorphism search，并支持 application conditions，这说明通用 matching 能力是可实现的；同时也提醒我们生产系统里不能让 Agent 提交任意巨大 pattern，然后期望所有图都可以低成本搜索。
+
+第一阶段规则应限制为：
+
+text
+Copy
+bounded local pattern
+typed exact generator constraints
+有限 attribute predicates
+禁止 arbitrary recursive graph query
+明确 match cardinality
+并为：
+
+text
+Copy
+generator type
+boundary signature
+research relation
+parameter key
+effect class
+建立 index。
+
+Agent 安全模型应改变
+AI Scientist-v2 的官方安全提示很好地体现了当前 agentic science 的典型风险：LLM-written code 可能安装危险 package、开放网络、启动非预期进程，因此官方要求受控 sandbox。
+
+AdaPDC 当前 cards/demo.ts 的注释实际上也已经承认 cards 是 trusted TS，并非 sandbox。
+
+所以 category-first 带来的一个重要安全收益是可以建立两个权限域：
+
+text
+Copy
+Agent normal mode
+    ↓
+只能选择已注册 generator
+只能执行已注册 rewrite
+只能改变参数
+不能提交任意 executable code
+而：
+
+text
+Copy
+Novel generator mode
+    ↓
+生成源码
+    ↓
+quarantine
+    ↓
+build/test/security scan
+    ↓
+human/policy approval
+    ↓
+content-address
+    ↓
+registry
+正式 worker 仍建议：
+
+text
+Copy
+ephemeral attempt sandbox
+network deny-by-default
+read-only base filesystem
+explicit writable artifact directory
+CPU / GPU / memory / wall-clock budget
+no host container socket
+secret broker rather than inherited environment
+这些是本报告建议的安全控制，而不是现有 AdaPDC 已全部实现的事实。
+
+可重复性应分等级
+不要承诺“所有 scientific experiment 都 bitwise reproducible”。
+
+建议定义：
+
+等级	定义
+R0 Semantic	相同 semantic declaration 得到相同 SemanticIR digest
+R1 Compilation	相同 SemanticIR + lowering version 得到相同 Plan identity
+R2 Environment	runtime/container/dependency 均内容冻结
+R3 Seeded Result	seeded stochastic computation 在声明条件下可重现
+R4 Bitwise	输出 bytes 完全相同，仅适用于支持该保证的 generator
+
+物理设备、外部 API 和某些 GPU kernel 可能天然不能达到 R4。
+
+这比一个模糊的：
+
+text
+Copy
+reproducible: true
+更符合科研事实。
+
+性能策略
+open-hypergraphs 背后的算法工作说明，用整数数组表达 structured-cospan/string diagram 后，composition、tensor、term construction、functor application 可以进行高效且天然 data-parallel 的实现。
+
+因此性能上我不会第一天把 semantic kernel 写成 Rust。
+
+路线应当是：
+
+text
+Copy
+TS correctness prototype
+       ↓
+profile
+       ↓
+确认实际 bottleneck
+       ↓
+只有 open-hypergraph algebra / matcher 慢
+       ↓
+Rust/WASM native kernel
+而不是：
+
+text
+Copy
+“category theory 看起来很底层”
+       ↓
+先花三个月写 Rust
+科研 artifact 也不应该穿过 Temporal payload 来回搬运。控制面应该传：
+
+text
+Copy
+digest
+artifact ref
+metadata
+真正大型矩阵、模型、轨迹文件走 CAS/object storage。
+
+当前本地 content-addressed artifact layer 可以继续用；规模扩大后再把 bytes 后端替换为 S3-compatible object store，而 catalog 保留 logical artifact identity。这也是推荐而不是现有项目事实。
+
+测试矩阵
+第一个测试必须直接使用你已有的八节点 bias-sweep，因为它给出了迁移等价基线。
+
+测试场景	要验证的性质	通过标准
+AdaPDC 八节点 bias sweep	新 SemanticIR lowering 不改变当前结果	仍得到 0 / 1 / 4；当前 E2E 全绿
+Identity	id ; f = f, f ; id = f	normalize 后等价
+Associativity	(f;g);h = f;(g;h)	property tests
+Tensor	tensor composition/interchange	property tests
+Type safety	Model 不能接 Dataset-only generator	compile-time/IR check 拒绝
+Linear sample	physical sample 不允许无依据 fan-out	checker 必须拒绝
+Sweep rewrite	单节点 → finite sweep	boundary 保持；trace 完整
+Seed replication	train → 多 seed + aggregate	seed 全冻结，可追踪
+Ablation	component → compatible identity/no-op	仅当 boundary/effect 允许
+Evaluator replacement	evaluator A → B	boundary compatibility
+Held-out leakage	test data 不能流入声明禁止的 train port	policy checker 拒绝
+Stochastic cache	seeded/external generator	cache policy 与 determinism 一致
+Failure/retry	重试、冲突、输出错误	现有 C3/C4 regression 全部保留
+Archive reproducibility	export RO-Crate/PROV	所有输出可回溯 Plan/IR/artifact
+
+此外建议做 Catlab/AlgebraicRewriting differential testing：
+
+text
+Copy
+随机生成小 typed graph
+        ↓
+TS kernel composition/rewrite
+        ↓
+JSON bridge
+        ↓
+Catlab / AlgebraicRewriting
+        ↓
+up-to-isomorphism 对比
+这样无需把 Julia 引入 production dependency，却能把一个成熟 categorical implementation 当成语义 oracle。Catlab 已提供 wiring-diagram 与 serialization 基础，AlgebraicRewriting 又提供 DPO/SPO/SqPO，因此很适合这一角色。
+
+评估指标
+建议将验收分成五组。
+
+形式正确性：
+
+[ 100% ]
+
+通过预定义 category-law、boundary、linearity 和 rewrite safety 测试；这里不接受“99%”。
+
+迁移兼容性：
+
+现有 AdaPDC 的 132 TS unit、33 integration、29 Python tests 必须保持全绿；现有 Plan/CAS/catalog contracts 不应为了 categorical layer 发生不必要破坏。
+
+身份稳定性：
+
+text
+Copy
+文件移动
+无关文档修改
+execution timestamp
+runtime execution id
+都不得改变 semantic/Plan identity；这一点当前项目已经有 T01/T04 类似测试，应扩展到 SemanticIR。
+
+Rewrite locality：
+
+对局部 rewrite，统计：
+
+text
+Copy
+unchanged semantic edge ratio
+unchanged execution node ratio
+artifact cache reuse ratio
+目标是让“加一个 seed”或“加一个 sweep point”不导致整个研究图重新获得新 identity。
+
+性能：
+
+基准硬件目前未指定，因此第一轮不建议写死绝对 SLA，而记录：
+
+text
+Copy
+composition edges/sec
+tensor edges/sec
+canonical serialization MB/sec
+lowering nodes/sec
+rewrite matching p50/p95/p99
+peak memory / edge
+incremental compile reuse
+基准规模至少：
+
+text
+Copy
+1k edges
+10k edges
+100k edges
+达到真实瓶颈后再制定生产 SLA。
+
+分阶段落地路线、风险与最终交付物
+基于当前审查包的成熟度，我会采用“在已有系统上加语义层”而不是 greenfield 开发。
+
+工程路线
+阶段	主要工作	关键产出	预计自然时间	预计人月
+语义契约冻结	定义 objects/wires、generator、boundary、composition、tensor、structural modes、effect/determinism；ADR	semantic-contract.md、schema v1	2–3 周	0.8–1.2
+Semantic MVP	immutable TS algebra、open-hypergraph IR、canonical serialization、law tests	@adapdc/semantic	4–5 周	1.5–2.0
+AdaPDC lowering	SemanticIR → 当前 IR/Plan，保持现有 Temporal/CAS/catalog	@adapdc/lowering-temporal	3–4 周	1.0–1.5
+Rewrite MVP	typed local matcher、DPO-inspired rule/interface、rewrite trace	@adapdc/rewrite	4–6 周	1.5–2.0
+科研场景验证	八节点 sweep、multi-seed、ablation、evaluator replacement、linearity	examples + benchmark	4–6 周	1.5–2.0
+Provenance/export	semantic→PROV、research package→RO-Crate；可选 OpenLineage	exporters	2–4 周	0.7–1.0
+Agent gate	Agent 只能提 typed rewrite；budget/policy/approval	planner API	4–6 周	1.5–2.0
+Production pilot	concurrency、大图、对象存储、fault matrix、HPC adapter	pilot release	6–10 周	3–5
+
+部分阶段可并行。因此不是简单把所有周数相加。
+
+在复用当前 AdaPDC runtime 的前提下，我估计：
+
+[ \boxed{ \text{可信 category-first research prototype} \approx 4\text{–}5\text{个月} \approx 7\text{–}9\text{人月} } ]
+
+而：
+
+[ \boxed{ \text{production scientific pilot} \approx 8\text{–}10\text{个月累计} \approx 12\text{–}17\text{人月} } ]
+
+推荐最小团队：
+
+角色	建议投入
+TypeScript/compiler/backend engineer	1.0 FTE
+Runtime/data/backend engineer	0.75–1.0 FTE
+Applied category theory researcher	0.2–0.35 FTE
+Domain scientist	0.2–0.4 FTE
+Agent/security engineer	Agent 阶段 0.3–0.5 FTE
+
+当前团队实际人数：未指定。
+HPC/cloud executor 目标：未指定。
+物理实验设备集成：未指定。
+第一期 domain science workload：可直接使用当前 AdaPDC 示例作为 regression，但最终真实领域：未指定。
+
+推荐技术组合与优先级
+我会按如下优先顺序选型：
+
+优先级	技术	决策
+P0	当前 AdaPDC Plan + CAS + PostgreSQL + Temporal	保留，不重写
+P0	自研最小 TS Semantic Kernel	核心研究产出
+P0	frozen generator/type registry	沿用并提升到 categorical signature
+P1	Catlab	语义参考、交叉验证 oracle
+P1	AlgebraicRewriting	DPO-style rewrite 语义参考
+P1	PROV-O + RO-Crate	标准 provenance/research package export
+P1	open-hypergraphs	IR/layout/performance algorithm 参考
+P2	Nextflow	HPC/cluster adapter，而非主 semantic runtime
+P2	CWL	portability/export adapter
+P2	Rust/WASM categorical kernel	仅在 profiling 证明 TS 性能不足后
+P3	DisCoPy	Python 快速验证/教育/交叉测试
+P3	CQL	schema/data integration 复杂后再引入思想或接口
+低优先	Dagster	当前已有 Temporal，不建议双 orchestrator
+后置	AI Scientist integration	rewrite layer、安全策略稳定后再接
+
+这个选择不是因为 Dagster 或 Nextflow“不好”。相反，它们在自己的生产领域非常成熟；只是你现在最缺的不是另一个 orchestrator，而是execution 之上的 research semantics。Nextflow 官方的 cache/history/HPC 能力和 Dagster 的 lineage/observability 都说明生产层已有成熟答案；CWL 又说明 portability 可以独立于具体 executor。
+
+最主要的风险
+风险	严重性	缓解
+“范畴论化一切”导致抽象爆炸	高	MVP 只实现 free typed SMC/open hypergraph + 少数 structural operations
+科学语义其实无法用稳定 generator 集压缩	最高	用真实实验验证，而不是继续写理论框架
+copy/Frobenius 对物理资源语义错误	高	StructuralMode：shareable/affine/linear
+stochastic/effect semantics 过度形式化	中高	MVP 先 declarative annotations，后续再升级理论
+graph rewriting matcher 性能	中	bounded local patterns + indexes + incremental matching
+SemanticIR 与 ExecIR 双模型漂移	高	单向 compiler + contract tests，禁止 runtime 回写 SemanticIR
+graph isomorphism 与 digest 冲突	中高	byte identity 与 semantic equality 分开
+Agent 绕过 rewrite 直接执行 arbitrary code	极高	默认只允许 registry + typed rewrite；新 code 进入隔离注册流程
+范畴论人才成为维护瓶颈	中高	DSL 暴露工程术语，数学语义隐藏在 kernel/ADR
+重新实现成熟 runtime	极高	明确禁止：Temporal/Nextflow 等作为 executor adapters
+
+其中最关键的 go/no-go 判据其实只有一个：
+
+[ \boxed{ \text{真实科研演化能否主要表现为少量稳定 generator 上的局部 typed rewrites？} } ]
+
+如果做完：
+
+text
+Copy
+parameter sweep
+multi-seed
+ablation
+evaluator replacement
+cross-validation
+control insertion
+hypothesis refinement
+以后发现绝大部分真实研究仍必须：
+
+text
+Copy
+任意改 500 行 Python
+改变整个数据结构
+改变实验世界模型
+那么 category-first 应退回较薄的 workflow/typing layer，而不应该继续扩张。
+
+反之，如果实验变化可以从：
+
+text
+Copy
+copy directory
+modify scripts
+change config
+repair dependencies
+rerun everything
+压缩成：
+
+[ G\xRightarrow{r}G' ]
+
+并且旧的 artifacts、subgraphs、evidence 都能被局部复用，那么这套架构的价值会远远超出“更好看的 DSL”。
+
+最终交付物
+一个完整的第一阶段审查版本，我建议至少包含：
+
+交付物	内容
+代码仓库	packages/semantic, packages/rewrite, packages/lowering-temporal, packages/provenance
+形式规范	objects/generators/composition/tensor/symmetry/structural modes/rewrite semantics
+Schema	semantic-ir/v1, rewrite/v1, rewrite-trace/v1
+TS API	immutable category-first surface API
+兼容 compiler	SemanticIR → 当前 AdaPDC frozen Plan
+实验样例	当前八节点 bias sweep + ML multi-seed + ablation + evaluator replacement
+示例数据	小型 deterministic fixture + seeded stochastic fixture
+Property tests	identity、associativity、tensor/interchange、typing、linearity
+Rewrite tests	match/interface/app-condition/rejection/trace
+Regression tests	保持当前 132 + 33 + 29 测试和 E2E
+Differential tests	与 Catlab/AlgebraicRewriting 小图结果 up-to-isomorphism 比较
+安全测试	path traversal、undeclared output、sandbox、budget、registry bypass
+Benchmark	1k/10k/100k edge compile/rewrite/lowering
+Provenance export	PROV-O；RO-Crate research package
+部署说明	local Temporal/Postgres、worker、CAS；production profile
+审查包	git commit、artifact digest、IR/Plan/RewriteTrace previews、全部测试日志
+研究报告	理论假设、工程决策、失败边界、benchmark、known limitations
+
+你当前这份审查包的组织方式实际上很适合作为模板：source commit、content-addressed artifacts、预览 IR/Plan、test outputs 和复现实验都已经存在。因此未来 categorical milestone 应继续采用同一种“代码 + 冻结制品 + 测试证据 + 审查报告”交付模式，而不是只给论文式 demo。
+
+主要原始资料与官方链接
+理论基础：
+
+Baez & Courser, Structured Cospans —— 开放系统、显式输入输出 boundary、hypergraph category。
+Bonchi et al., String Diagram Rewrite Theory I —— string diagram 与 DPO hypergraph rewriting 的形式连接。
+Wilson & Zanasi, Data-Parallel Algorithms for String Diagrams —— open/string diagram 的高效数据结构与 composition/tensor/functor 算法。
+Cicala, Rewriting Structured Cospans —— 对开放系统进行 DPO-style rewriting。
+Spivak, Functorial Data Migration —— schema/category、instance/functor 与数据迁移。
+范畴论工程实现：
+
+Catlab / 官方文档 —— applied/computational category theory。
+AlgebraicRewriting —— DPO/SPO/SqPO/PBPO rewriting。
+open-hypergraphs —— Rust open-hypergraph/string-diagram 数据结构。
+DisCoPy —— Python string diagrams、hypergraphs、functors、rewriting。
+CQL / Categorical Data —— functorial database/data migration。
+Workflow 与 provenance：
+
+Nextflow / 官方文档 —— 科学/HPC workflow。
+Dagster / 官方文档 —— asset orchestration、lineage、observability。
+Common Workflow Language v1.2 —— portable workflow standard。
+W3C PROV-O —— provenance ontology。
+RO-Crate 1.2 —— research object / metadata package。
+OpenLineage —— run/job/dataset operational lineage。
+Agentic / autonomous science：
+
+AI Scientist-v2 / 论文 —— agentic tree search 的 end-to-end autonomous science。
+Experiment-as-Code Labs —— declarative experiment → analysis/safety/resources/orchestration → device API，目前公开工作中与本文分层理念最接近的一支。
+Coscientist, Nature —— LLM planner、工具、代码执行与实验室自动化组合。
+综合这些理论、工程项目以及你当前 AdaPDC 审查包之后，我的最终工程判断是：
+
+[ \boxed{ \begin{aligned} &\text{不要把 Experiment 重新做成一个更复杂的对象；}\[2mm] &\text{不要把范畴论 runtime 化；}\[2mm] &\text{不要重造 Temporal/Nextflow；}\[2mm] &\text{不要一开始允许 Agent 任意改代码。} \end{aligned} } ]
+
+而应该建立：
+
+[ \boxed{ \textbf{一个很小、不可变、typed、compositional、rewritable 的 Research IR} } ]
+
+使它成为：
+
+[ \text{Scientist/Agent} \rightarrow \boxed{\text{ResearchIR rewrite}} \rightarrow \text{Frozen Plan} \rightarrow \text{Temporal} \rightarrow \text{Evidence} \rightarrow \boxed{\text{ResearchIR rewrite}} ]
+
+accepted
+
+rejected
+
+Knowledge / Evidence G
+
+Hypothesis / Goal
+
+Candidate typed rewrite
+
+Static type / effect / policy check
+
+Compile to frozen Plan
+
+Sandboxed execution
+
+New evidence
+
+Catalog + provenance
+
+
+
+Show code
+如果这条闭环能够在你的真实科研任务上成立，那么“category-first”带来的核心收益就不再是数学上的优雅，而是一个非常具体的工程性质：
+
+[ \boxed{ \text{科研变化第一次成为可类型检查、可组合、可局部执行、可审计、可供 Agent 搜索的一等程序变换。} } ]
+
+而这恰好是目前 Catlab/open-hypergraphs 一侧与 Nextflow/Temporal/AI Scientist 一侧之间尚未被成熟工程体系填上的那一层。
+
