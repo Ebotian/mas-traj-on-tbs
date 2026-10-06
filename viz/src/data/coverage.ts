@@ -13,9 +13,9 @@ export const COVERAGE_SUMMARY: CoverageSummary = {
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37437,
- "corpusLinesRead": 2835,
+ "corpusLinesRead": 2843,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 2835
+ "corpusLinesReadExclTranscript": 2843
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -42,7 +42,8 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
   "path": "related_files/research_state_control_review_v4.tex",
   "lines": 1607,
   "status": "partial",
-  "linesRead": 120
+  "linesRead": 128,
+  "note": "读过的区段:269-272、1215-1270、1540-1607(含九条原则与结尾的可证伪约束)。其余为二手。"
  },
  {
   "path": "related_files/deep-research-report(2).md",

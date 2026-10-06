@@ -137,7 +137,7 @@ export function render(host: HTMLElement): void {
       note('人类介入的位置:novel / high-impact / low-confidence / conflict / irreversible 状态;并让每次介入成为可校准、可结晶的数据。',
         cite('v4.tex:1585-1589'), h('br'),
         badge('这是用户轮次 #28 里「人类判别」的正式版本', COLOR.frame))),
-    panel('九条工程原则(我只读到第八条)',
+    panel('九条工程原则',
       h('ol', { class: 'prin' },
         ...['Goal-first:任何组件必须证明其与 G₀ 的关系',
           'Evidence-first:重要动作产生 artifact + evidence + provenance',
@@ -146,8 +146,13 @@ export function render(host: HTMLElement): void {
           'Storage ≠ retrieval ≠ context:三者分别优化',
           'Prediction serves allocation:forecast 以 decision value 而非单纯 accuracy 评价',
           'Shelf-first:telemetry、workflow、database、generic provenance 不重造',
-          'Field ↔ Lab:field 发现失效模式,lab 识别因果'].map(x => h('li', {}, x)),
-        h('li', { class: 'miss' }, '第九条 —— 我没读到(v4.tex:1600 之后)')),
-      cite('v4.tex:1592-1600'),
-      note(badge('二手 / 部分', COLOR.warn), ' 这一节我只 sed 出了 1580–1600 行,第九条缺失。'))))
+          'Field ↔ Lab:field 发现失效模式,lab 识别因果',
+          'Crystallize conservatively:Judgment/SOP/Invariant 可升可降,且必须保留 scope、provenance 与 counterexample'].map(x => h('li', {}, x))),
+      cite('v4.tex:1592-1601'),
+      note('第九条在 2026-10-06 补读:第一次只 sed 出 1580–1600 行,而 enumerate 的第九项在 1601。',
+        '它把左边 Taste⇄SOP⇄IaC 那条轴变成', h('b', {}, '双向'),
+        '的:结晶可以降级,且降级时也必须保留反例 —— 与 a0/「dated 报告不改写、只登记」是同一个纪律。'),
+      note(h('b', {}, '同一段里的可证伪约束'), '(v4.tex:1604):下一步不是扩张架构,而是让真实研究运行产生 RQ1–RQ4 的数据,并先实现一个极薄的 Evidence/State prototype;',
+        '若该薄层不能在真实 campaign 中降低恢复成本、重复劳动或 human load,就应当缩减甚至放弃,',
+        '「而不是用更大的 ontology、更多 agent 或更复杂 world model 掩盖失败。这是从 G₀ 出发最重要的可证伪约束。」'))))
 }
