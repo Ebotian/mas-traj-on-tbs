@@ -7,9 +7,9 @@ import type { Conflict, Decision, Reversal, TimelineEvent } from '../types.ts'
  *  other-conversation = the D-line narrative pair, which is NOT in that payload.
  *  repo = a0/ implementation. this-session = 09-30 and 10-06 work. */
 export const TIMELINE: TimelineEvent[] = [
-  { date: '09-09', clock: '', label: 'adapdc_* ×4 · deep-research-report ×3', track: 'input', note: 'Relation-First / Unit Card / 范畴论 IR。来自「opl 那个压缩包」(轮次 #8)' },
-  { date: '09-14', clock: '', label: 'rule-construction-research ×2', track: 'input', note: '电价规则构建。在四条线里都不落位,连被对话读取的记录都没有' },
-  { date: '09-16→18', clock: '', label: 'ada-/opl-engineering-plan · virtual_staining', track: 'input' },
+  { date: '09-09', clock: '', label: 'adapdc_* ×4 · deep-research-report ×3', track: 'input', note: 'Relation-First / Unit Card / 范畴论 IR。10-06 复核:账户里有同期的 Document(Sep 9–10),不全是「从压缩包里读来的东西」' },
+  { date: '09-14', clock: '', label: 'rule-construction-research ×2', track: 'input', note: '电价规则构建。原记「连被对话读取的记录都没有」;10-06 复核:它的结论句(「可组合规则＋多实例生成器＋结构覆盖与独立核对」)命中同日期的项目对话「对话总览与反思」' },
+  { date: '09-16→18', clock: '', label: 'ada-/opl-engineering-plan · virtual_staining', track: 'input', note: '10-06 复核:两份 engineering plan 是「审查Kimi插件」(09-16)的产物 —— 对话自述「已完成两份独立工程计划,各 7 页…PDF 已编译」,不是纯输入' },
   { date: '09-17', clock: '08:46', label: '对话开始:Kimi Code 有没有插件市场', track: 'conversation' },
   { date: '09-17', clock: '09:35', label: '轮次 #7 正交组合方针', track: 'conversation', note: '「终究我们是要做实际的项目,而不是基础设施」' },
   { date: '09-17', clock: '09:48', label: '轮次 #11 用户命名代理谬误', track: 'conversation', note: 'A 线降级由用户先说出,比 plan.typ:53 把它书面化早约 20 小时' },
@@ -36,6 +36,9 @@ export const TIMELINE: TimelineEvent[] = [
   { date: '09-30', clock: '', label: '梳理解码载荷 → v1 → v2 → v3(Typst)', track: 'this-session', artifact: 'related_files/synthesis_2026-09-30.typ' },
   { date: '09-30', clock: '', label: '重放回收 C 线 v2/v3 + conversation/ 入库', track: 'this-session', note: '三次逐字节对拍通过' },
   { date: '10-06', clock: '', label: 'viz/ 脚手架:TS + Vite,七个视图', track: 'this-session', artifact: 'viz/' },
+  { date: '10-06', clock: '', label: '账户 Library 核查:159 条 → 118 条本地没有', track: 'this-session', note: '站点搜索不索引 File:搜 open_world_plan 命中 0,而库页六版俱在 —— 这正是误判的根因' },
+  { date: '10-06', clock: '', label: 'B 线六版取回:(1)–(5) 入库,v(6) 与磁盘逐字节相同', track: 'this-session', artifact: 'related_files/open_world_plan_independent_review(1).typ', note: '拼接 CodeMirror 预览;6/6 typst 编译通过。此前写在三处的「不可恢复」被推翻' },
+  { date: '10-06', clock: '', label: 'D 线 / a0 侧 / AdaPDC 12 份取回,另 3 份只有渲染文本', track: 'this-session', artifact: 'related_files/TIMING-REVIEW(1).md', note: 'H_T 审查 v2、STATUS(1/2)、第二轮审计、进展稿、C0 两份、源码审查包、接口契约;范畴论三份走跨源沙盒 iframe,markdown 原文不可得' },
 ]
 
 /* ----------------------------------------------------------------- reversals */
@@ -102,6 +105,16 @@ export const REVERSALS: (Reversal & { evidence: 'v' | 's' })[] = [
       { was: '重放器用文本替换中和 LaTeX', now: '把 biber 改成 true 时连 heredoc 正文里的 backend=biber 一起改了 ⇒ v1 与磁盘差一行。改用 PATH 垫片后逐字节相同', cite: '§11.1' },
     ],
   },
+  {
+    round: '梳理 v3 → 账户库核查(10-06)', date: '2026-10-06', source: 'chatgpt.com/library 159 条 + 站点搜索 + 17 份取回件', evidence: 'v',
+    items: [
+      { was: 'B 线六个 open_world_plan_independent_review 版本「不可恢复:载荷里只有截断的读取窗口,无写入操作」', now: '六版都在账户 Library 里(File,09-18→09-20)。(1)–(5) 已取回入库,v(6) 与磁盘那份逐字节相同(仅差一个尾部空行)', cite: 'commit 900bcb0' },
+      { was: '站点搜索可以当文件清单用 —— 搜 open_world_plan 得 0 命中,据此判定账户里也没有', now: '搜索只索引对话与文档语料,不索引 File:0 命中与「库里六版俱在」同时为真。凡断「文件是否存在」必须以 Library 页面为准', cite: '库页 vs /command search' },
+      { was: '「项目」有 38 条对话', now: '12 条(面板行带日期;可访问名里写着 chat in project);其余 /c/ 链接是侧栏全局 Recents 与同一批对话的重复', cite: '项目页 + 库页两张快照' },
+      { was: 'adapdc_*、deep-research-report*、ada-/opl-engineering-plan 都是「纯输入,只被读取」', now: 'adapdc_* 与 deep-research-report* 有同期账户 Document(Sep 9–10);ada-/opl-engineering-plan 是「审查Kimi插件」(09-16)的产物', cite: 'search: 审查包 / AdaPDC / rekursiv' },
+      { was: '项目标签可以当相关性判据', now: '不能:产出 virtual_staining_open_source_sota_survey.typ 的那条对话不在项目里;项目内也有 BESS、气象站这类别的主题', cite: 'search: 虚拟染色 → 唯一命中非项目对话' },
+    ],
+  },
 ]
 
 /* ------------------------------------------------------------------ conflicts */
@@ -149,6 +162,12 @@ export const CONFLICTS: Conflict[] = [
     right: { who: '旧版', cite: 'adapdc_scaffold_implementation.typ:32', quote: '「不能同时保留相反的现行决策。」' },
     consequence: '两份现都被 git 跟踪(提交 14edbf07)。【二手:我未复核这两行】',
   },
+  {
+    id: 'search-vs-library', title: '同一条目,搜索说没有、库页说在', kind: 'provenance', evidence: 'v',
+    left: { who: '站点搜索', cite: 'search「open_world_plan」→ 0 命中', quote: '按这条证据推论:账户里没有 B 线那六版,与载荷侧「只有读取窗口、无写入」的结论互相印证。' },
+    right: { who: 'Library 页面', cite: 'chatgpt.com/library,159 条', quote: 'open_world_plan_independent_review(1)…(6).typ 六张卡片俱在,Modified 09-18→09-20。' },
+    consequence: '两条证据都真:搜索只索引对话与文档语料,不索引 File。用「搜索无命中」推断「文件不存在」,让本项目在一个季度里把「B 线不可恢复」写进了三处记忆与一张反转表。凡涉及文件存在性,一律以 Library 页面为准;搜索只用来定位对话与文档。',
+  },
 ]
 
 /* ------------------------------------------------------------------ decisions */
@@ -175,10 +194,16 @@ export const DECISIONS: Decision[] = [
   { id: 'D19', group: 'corpus', status: 'open', question: 'zip 里 5 个纯文本(report.tex + references.bib + 三个 CSV)是否提出来跟踪?它们是 D 线唯一的实测数据,现在 git 里不存在', cite: 'synthesis §8.1', recommendation: '(b) 原样提出 + README 登记 bib 引用被打包改坏' },
   { id: 'D20', group: 'corpus', status: 'open', question: 'agent_engineering_report/agent_engineering_science.tex(heredoc 整份写入、可完整恢复,且不同于 zip 里那份)要不要也回收?', cite: 'synthesis §1.4' },
   { id: 'D21', group: 'corpus', status: 'open', question: '回收出的 v2/v3 要不要补 v4 那次后期排版?', cite: 'synthesis §8.5', recommendation: '不补 —— 它们是历史轮次的存证,不是待发布的文档' },
-  { id: 'D22', group: 'corpus', status: 'open', question: 'rule-construction ×2 与 virtual_staining 是独立应用域,还是同一纲领的实例?溯源排除了「对话产物」这一可能,语料里没有答案', cite: 'synthesis §8 跨线项' },
+  { id: 'D22', group: 'corpus', status: 'open', question: 'rule-construction ×2 与 virtual_staining 是独立应用域,还是同一纲领的实例?10-06 复核:前者的结论句命中 09-14 的项目对话「对话总览与反思」,后者仍只见于项目外的对话', cite: 'synthesis §8 跨线项 + 10-06 库核查', recommendation: '原判据「连被对话读取的记录都没有」已作废 —— 站点搜索只索引对话与文档语料,不索引 File' },
   { id: 'D23', group: 'corpus', status: 'open', question: 'related_files/synthesis_2026-09-30.html 与 viz/ 是否入 git?前者被 .gitignore:62 忽略,后者需要 node_modules 与 dist 的忽略规则', cite: '本次会话' },
   { id: 'D24', group: 'corpus', status: 'done', question: 'C 线 v2/v3 是否恢复', cite: '提交 ccae0deb', recommendation: '已执行:补丁链重放 + 三次逐字节对拍' },
   { id: 'D25', group: 'corpus', status: 'done', question: '对话记录是否入库', cite: '提交 ccae0deb', recommendation: '已执行:transcript + user_turns + 两个脚本;mapping.json 与 11 MB HTML 不入库,可由脚本 0.8 s 重建' },
+  { id: 'D26', group: 'corpus', status: 'done', question: 'B 线六个独立审查版本是否可恢复', cite: '提交 900bcb0', recommendation: '已执行:从账户 Library 取回 (1)–(5) 并入库;v(6) 与磁盘那份逐字节相同' },
+  { id: 'D27', group: 'corpus', status: 'open', question: '三份「范畴论」报告只拿到渲染文本(markdown 标记已被剥掉),这种降级副本是否留在语料里?', cite: '提交 301a4be', recommendation: '文件名已带 .rendered.txt;若不接受,删掉即可,内容与 literature/ 里的同线 PDF 重叠' },
+  { id: 'D28', group: 'corpus', status: 'open', question: '48 个归档(adapdc-src-review-*.tar ×36、adapdc-c2-review ×3、payload.tar ×3、emsx_workspace ×5、repository-review ×1,另有 8 个 open-problem-lab zip)是否下载作恢复源?', cite: '10-06 库核查', recommendation: '归档在跟踪白名单外,入库与否是两件事;下载只解决「手里有没有」' },
+  { id: 'D29', group: 'corpus', status: 'open', question: 'research-foundations.md 的正文说「研究起点:继承自 emsx 的已证结论」—— 它归本语料,还是归 emsx 那个项目?', cite: '10-06 库核查', recommendation: '已取回但未入库(留在 /tmp);归属由用户定' },
+  { id: 'D30', group: 'corpus', status: 'open', question: 'adapdc_architecture_report.typ 与 adapdc_theory_review(1).typ 的预览始终不渲染,是否换通道或过些时候重试?', cite: '10-06 库核查', recommendation: '两者都是 .typ,理论上可走拼接通道;先怀疑是暂时性加载失败' },
+  { id: 'D31', group: 'corpus', status: 'open', question: '把账户 Library 当定期同步的恢复源,还是只在需要时核查?', cite: '10-06 库核查', recommendation: '倾向后者:一次核查已证明「搜索会漏、下载已坏、归档不入库」,例行同步的成本高于收益' },
 ]
 
 export const DECISION_GROUPS = {

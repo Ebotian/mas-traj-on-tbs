@@ -55,6 +55,7 @@ export const STATUS_LABEL: Record<ReadStatus, string> = {
   secondhand: '二手(调查者读,我抽样复核)',
   unread: '完全没读',
   recovered: '重放回收,未读',
+  fetched: '从账户库取回,未读',
   authored: '我写的',
   generated: '我生成并检索过,未逐行读',
 }
@@ -65,6 +66,7 @@ export const STATUS_COLOR: Record<ReadStatus, string> = {
   secondhand: COLOR.frame,
   unread: COLOR.bad,
   recovered: COLOR.muted,
+  fetched: COLOR.line,
   authored: COLOR.line,
   generated: COLOR.muted,
 }

@@ -28,7 +28,7 @@ export interface Edge { source: string; target: string; kind: EdgeKind }
 
 /* ---------- coverage ---------- */
 
-export type ReadStatus = 'read' | 'partial' | 'secondhand' | 'unread' | 'recovered' | 'authored' | 'generated'
+export type ReadStatus = 'read' | 'partial' | 'secondhand' | 'unread' | 'recovered' | 'fetched' | 'authored' | 'generated'
 
 export interface CoverageRow {
   path: string

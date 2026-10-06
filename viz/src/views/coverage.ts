@@ -3,7 +3,7 @@ import { COLOR, STATUS_COLOR, STATUS_LABEL } from '../lib/palette.ts'
 import { badge, cite, h, note, panel, stat } from '../lib/dom.ts'
 import type { CoverageRow, ReadStatus } from '../types.ts'
 
-const ORDER: ReadStatus[] = ['read', 'authored', 'partial', 'secondhand', 'recovered', 'generated', 'unread']
+const ORDER: ReadStatus[] = ['read', 'authored', 'partial', 'secondhand', 'recovered', 'fetched', 'generated', 'unread']
 
 function bars(rows: CoverageRow[], title: string, caption: string): HTMLElement {
   const max = Math.max(...rows.map(r => r.lines))
@@ -52,7 +52,7 @@ export function render(host: HTMLElement): void {
       '。所以我用前者作为标题数字,并把后者标为自我美化。')))
 
   const counts = ORDER.map(st => ({ st, n: CORPUS_COVERAGE.filter(r => r.status === st).length, lines: CORPUS_COVERAGE.filter(r => r.status === st).reduce((a, r) => a + r.lines, 0) }))
-  host.appendChild(panel('语料 35 个文件按阅读状态',
+  host.appendChild(panel(`语料 ${S.corpusFiles} 个文件按阅读状态`,
     h('table', { class: 'tbl' },
       h('thead', {}, h('tr', {}, h('th', {}, '状态'), h('th', {}, '文件数'), h('th', {}, '行数'), h('th', {}, '占语料行数'))),
       h('tbody', {}, ...counts.filter(c => c.n > 0).map(c => h('tr', {},
