@@ -38,7 +38,7 @@ export const TIMELINE: TimelineEvent[] = [
   { date: '10-06', clock: '', label: 'viz/ 脚手架:TS + Vite,七个视图', track: 'this-session', artifact: 'viz/' },
   { date: '10-06', clock: '', label: '账户 Library 核查:159 条 → 118 条本地没有', track: 'this-session', note: '站点搜索不索引 File:搜 open_world_plan 命中 0,而库页六版俱在 —— 这正是误判的根因' },
   { date: '10-06', clock: '', label: 'B 线六版取回:(1)–(5) 入库,v(6) 与磁盘逐字节相同', track: 'this-session', artifact: 'related_files/open_world_plan_independent_review(1).typ', note: '拼接 CodeMirror 预览;6/6 typst 编译通过。此前写在三处的「不可恢复」被推翻' },
-  { date: '10-06', clock: '', label: 'D 线 / a0 侧 / AdaPDC 12 份取回,另 3 份只有渲染文本', track: 'this-session', artifact: 'related_files/TIMING-REVIEW(1).md', note: 'H_T 审查 v2、STATUS(1/2)、第二轮审计、进展稿、C0 两份、源码审查包、接口契约;范畴论三份走跨源沙盒 iframe,markdown 原文不可得' },
+  { date: '10-06', clock: '', label: 'D 线 / a0 侧 / AdaPDC 9 份取回(无损),另 3 份只有渲染文本(共 12)', track: 'this-session', artifact: 'related_files/TIMING-REVIEW(1).md', note: 'H_T 审查 v2、STATUS(1/2)、第二轮审计、进展稿、C0 两份、源码审查包、接口契约;范畴论三份走跨源沙盒 iframe,markdown 原文不可得。外部复核(10-06)指出原写「12 份取回」与恢复清单的 9+3 不符,已改' },
   { date: '10-06', clock: '', label: '稿 4:记忆基底即信息划分 —— 第一节是「去重表」', track: 'this-session', artifact: 'related_files/1006/memory_substrate_and_partition.typ', note: '体例变了一次:先判定哪些说法已在 v4/稿 1–3(给位置),只在四条新内容上展开:N1 机制→旋钮→特征损失、N2 触发器从容量改为矛盾密度、N3 相关性过滤的结构性盲区、N4 强制边界=工具持有者(单写者新风险);N5 = 三个裁决器 T1–T3' },
 ]
 
@@ -192,7 +192,7 @@ export const DECISIONS: Decision[] = [
   { id: 'D16', group: 'cross', status: 'open', question: '四套分解(三重困难 / 五段 / 三层 / 七域)是本体冲突,还是同一框架的不同层?有了 G₀ 之后我倾向后者,但这需要用户确认', cite: 'synthesis §8 跨线项', recommendation: '若是后者,正确的动作是画映射表而不是选一个' },
   { id: 'D17', group: 'cross', status: 'open', question: 'DSS 的四处定义(A 线命题 1 已证 / C 线 Δ_B(φ) / D 线 argmin|S| / a0 的三量 s_t)是否收敛成一个', cite: 'synthesis §5 读法一', recommendation: 'A 线那个是唯一有证明的,应当作为起点' },
   { id: 'D18', group: 'cross', status: 'open', question: 'ADA 是执行载体还是已废弃?Pasted md §21 仍点名它,open_world_...plan.typ:40 称其为「可替换的实现手段」', cite: 'synthesis §8' },
-  { id: 'D19', group: 'corpus', status: 'open', question: 'zip 里 5 个纯文本(report.tex + references.bib + 三个 CSV)是否提出来跟踪?它们是 D 线唯一的实测数据,现在 git 里不存在', cite: 'synthesis §8.1', recommendation: '(b) 原样提出 + README 登记 bib 引用被打包改坏' },
+  { id: 'D19', group: 'corpus', status: 'open', question: 'zip 里 5 个纯文本(report.tex + references.bib + 三个 CSV)是否提出来跟踪?它们是 D 线唯一的实验产物(模拟/合成,非真实 agent 实测),现在 git 里不存在', cite: 'synthesis §8.1', recommendation: '(b) 原样提出 + README 登记 bib 引用被打包改坏' },
   { id: 'D20', group: 'corpus', status: 'open', question: 'agent_engineering_report/agent_engineering_science.tex(heredoc 整份写入、可完整恢复,且不同于 zip 里那份)要不要也回收?', cite: 'synthesis §1.4' },
   { id: 'D21', group: 'corpus', status: 'open', question: '回收出的 v2/v3 要不要补 v4 那次后期排版?', cite: 'synthesis §8.5', recommendation: '不补 —— 它们是历史轮次的存证,不是待发布的文档' },
   { id: 'D22', group: 'corpus', status: 'open', question: 'rule-construction ×2 与 virtual_staining 是独立应用域,还是同一纲领的实例?10-06 复核:前者的结论句命中 09-14 的项目对话「对话总览与反思」,后者仍只见于项目外的对话', cite: 'synthesis §8 跨线项 + 10-06 库核查', recommendation: '原判据「连被对话读取的记录都没有」已作废 —— 站点搜索只索引对话与文档语料,不索引 File' },
