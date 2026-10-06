@@ -17,7 +17,7 @@ const VIEWS: View[] = [
   { id: 'numbers', label: '实测数字', hint: 'exp1–exp3、强度曲线、成本', render: numbers.render },
   { id: 'time', label: '时间轴', hint: '09-09 → 10-06,五次来源', render: time.render },
   { id: 'conflicts', label: '冲突与反转', hint: '两侧并排 + 反转登记', render: conflicts.render },
-  { id: 'decisions', label: '决策', hint: '31 项,按阻塞关系排', render: decisions.render },
+  { id: 'decisions', label: '决策', hint: '33 项,按阻塞关系排', render: decisions.render },
   { id: 'coverage', label: '我的覆盖率', hint: '一手 / 二手 / 没读', render: coverage.render },
   { id: 'library', label: '账户库', hint: '159 条 · 取回 17 份 · 一处结论被推翻', render: library.render },
 ]

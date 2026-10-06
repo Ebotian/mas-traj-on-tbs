@@ -204,6 +204,8 @@ export const DECISIONS: Decision[] = [
   { id: 'D29', group: 'corpus', status: 'open', question: 'research-foundations.md 的正文说「研究起点:继承自 emsx 的已证结论」—— 它归本语料,还是归 emsx 那个项目?', cite: '10-06 库核查', recommendation: '已取回但未入库(留在 /tmp);归属由用户定' },
   { id: 'D30', group: 'corpus', status: 'open', question: 'adapdc_architecture_report.typ 与 adapdc_theory_review(1).typ 的预览始终不渲染,是否换通道或过些时候重试?', cite: '10-06 库核查', recommendation: '两者都是 .typ,理论上可走拼接通道;先怀疑是暂时性加载失败' },
   { id: 'D31', group: 'corpus', status: 'open', question: '把账户 Library 当定期同步的恢复源,还是只在需要时核查?', cite: '10-06 库核查', recommendation: '倾向后者:一次核查已证明「搜索会漏、下载已坏、归档不入库」,例行同步的成本高于收益' },
+  { id: 'D32', group: 'cross', status: 'open', question: '记忆组织与本地检索策略:它是 RQ1×RQ3 的联合实例 —— Recover 的基质,同时「检索花多少」本身属于 Allocate。可证伪预测:带类型与来源边的登记册,只在**否定式查询**上显著优于纯文本搜索("从未主张" vs "没被索引")。', cite: 'v4:710（Lossless Evidence → Versioned Derived State → Query-conditioned Views）;2026-10-06 同一问题被三种检索给出三种答案', recommendation: '登记为开放问题,不立新线;先用语料里现成、已知答案的查询集(哪条对话产出哪份文件、哪条结论被推翻过)测一次' },
+  { id: 'D33', group: 'cross', status: 'open', question: '同一 agent 框架下,同一任务随推进阶段换不同模型协作:它是 RQ3 在「推理不均质」这条资源维上的实例(v4:1254 的六个资源里没有它),任一时点单模型,不乘成本。触发应是登记册里的状态转移(主张 → 需对抗),不是时间。', cite: '2026-10-06 最小协作单位讨论', recommendation: '判据:交接只在「该阶段误差成本 > 交接成本」时值得;先做误差相关性测试 —— 同一道已知答案的题问两个模型,若同错,则该类问题上无增益' },
 ]
 
 export const DECISION_GROUPS = {
