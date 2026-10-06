@@ -2,7 +2,7 @@
 // 编译:make 1006/model_society_as_allocation   (或 typst compile 1006/model_society_as_allocation.typ)
 // 本文无 \addbibresource:外部来源是搜索转述、未逐篇打开,做成 .bib 会声称比实际更多的核实。
 // 它们以行内引证 + §5 来源表的形式出现,并逐条标等级。
-#set document(title: "模型社会是一个分配问题:六条判断、一个 kill criterion、一个第一步", author: "rsi-dev", date: datetime(year: 2026, month: 10, day: 6))
+#set document(title: "society是一个分配问题:六条判断、一个 kill criterion、一个第一步", author: "rsi-dev", date: datetime(year: 2026, month: 10, day: 6))
 #set page(paper: "a4", margin: (x: 22mm, y: 20mm), numbering: "1")
 #set text(lang: "zh", font: ("Noto Sans CJK SC", "Noto Sans"), size: 10pt)
 #set par(justify: true, leading: 0.7em, spacing: 0.75em)
@@ -17,7 +17,7 @@
 #set table(inset: 4.5pt, stroke: 0.35pt + luma(70%))
 
 #align(center)[
-  #text(size: 17pt, weight: "bold")[模型社会是一个分配问题]
+  #text(size: 17pt, weight: "bold")[society是一个分配问题]
   #v(3pt)
   #text(size: 13pt)[六条判断、一个 kill criterion、一个第一步]
   #v(8pt)
@@ -34,11 +34,13 @@
 *证据分级沿用本仓库惯例*:【我复核】= 我亲自算过或读过原文(本仓库内的工件);【二手】= 搜索转述,未逐篇打开原文;【推断】= 我的判断。§5 给出完整来源表与分级。*第一、二、三条判断不依赖任何外部数字* —— 它们依赖本仓库自己的 exp1 复算与 `a0/` 的测量。
 
 *标注约定*:轮次编号指 `related_files/conversation/user_turns.md` 中的 user 轮次;`path:line` 指仓库内文件。
+
+*术语*:本系列一律用 `society` 这个名词指「多个模型按任务、任务阶段与自身发挥自适应形成的协作结构」,不译作「模型社会」—— 该词是构想者自己起的英文名,译掉会把把手拆掉。中文只用于「人类社会」「人类制度史」与构想者原话里的「社会契约」。
 ]
 
 = §0 一句话立场
 
-*「模型之间如何协作」被问错了层级。该优化的不是拓扑(swarm / 投票 / 辩论),而是一个异质、有价、相关的动作空间上的分配策略;第一个该建的工件不是社会,是一张测出来的联合能力结构。*
+*「模型之间如何协作」被问错了层级。该优化的不是拓扑(swarm / 投票 / 辩论),而是一个异质、有价、相关的动作空间上的分配策略;第一个该建的工件不是 society,是一张测出来的联合能力结构。*
 
 理由浓缩成三句:可交换集成的数学在异质模型下不适用,而这套数学的失效条件本仓库已经亲自算过(§2.1);token-plan 的实际计费是一个*带拐点的多维硬约束*(credits 触顶即停、合同并发上限、账户级 RPM/TPM、时段倍率),文献的连续价格假设在这里不成立(§2.2);三种常见拓扑的天花板都在验证器那一步,而验证器是本仓库现有最强的资产(§2.3)。
 
@@ -48,9 +50,9 @@
 
 #quote[把下一单位有限资源分配到最高预期研究价值处。 #h(1em) `research_state_control_review_v4.tex:1254, 1579`]
 
-而 Allocate 覆盖六种资源:token、wall-clock、实验、检索、subagent、*human attention*(`v4.tex:1254`)。模型选择与模型组合是这六种资源上的动作,不是第六种新能力。⇒ 模型社会问题*不是第五条研究线*,而是 Allocate 的动作空间扩张;因此它继承 kill chain(`RQ1 → RQ2 → RQ3`,RQ4 并行)与验证器优先的纪律,而不是另起炉灶。
+而 Allocate 覆盖六种资源:token、wall-clock、实验、检索、subagent、*human attention*(`v4.tex:1254`)。模型选择与模型组合是这六种资源上的动作,不是第六种新能力。⇒ society问题*不是第五条研究线*,而是 Allocate 的动作空间扩张;因此它继承 kill chain(`RQ1 → RQ2 → RQ3`,RQ4 并行)与验证器优先的纪律,而不是另起炉灶。
 
-这个落位有实际后果:它意味着模型社会的第一件仪器,与 `a0/` 的第一件仪器是同一件 —— *先证明尺子准*。
+这个落位有实际后果:它意味着society的第一件仪器,与 `a0/` 的第一件仪器是同一件 —— *先证明尺子准*。
 
 = §2 六条判断
 
@@ -82,7 +84,7 @@
 + *k 路并行被合同封顶。* ensemble 的 k 不超过档位并发数(Standard 为 3–4)。要提高 k 只能升档 —— *钱轴从并发这一项回来*,不是从 token 项。
 + *唯一公共分母是 credit。* 既然无固定换算、速率随模型变化,能力矩阵每格就不能记 pass\@1 或调用数,而要记 *verified-success per credit* 与 *per wall-clock-hour*:一个两货币前沿。平台计量器不透明(无公开换算、构成项二手),所以只能当黑盒读数:*用它测量,但任何跨月比较都要重新标定*,正如 `a0/` 对待未审计的评测器。
 + *时段是第四种可分配资源。* 夜间 4 折/5 折使同一次调用的 credit 成本差 2.5 倍;加上不结转,月末未用 credit 的边际价值为 0。⇒ 最优策略在时间上*非均匀*:breadth 重的批次放夜间与月末,延迟敏感的单调用放白天月初。没有任何拓扑讨论包含这个轴。
-+ *硬停使失控集成的爆炸半径等于一个月。* 触顶即暂停,且不结转意味着本月剩余工作全停。⇒ 任何社会策略必须带*每实验冻结的 credit 预算* —— 这正是 `B_"hard"` 的纪律;没有它,一个 ensemble bug 可以吃掉整月。*这是核对计费后我认为最强的新结论。*
++ *硬停使失控集成的爆炸半径等于一个月。* 触顶即暂停,且不结转意味着本月剩余工作全停。⇒ 任何society 策略必须带*每实验冻结的 credit 预算* —— 这正是 `B_"hard"` 的纪律;没有它,一个 ensemble bug 可以吃掉整月。*这是核对计费后我认为最强的新结论。*
 
 对照 `a0/`:$B_"hard" = (T_"wall" 1800 s, "CEq"_"max" 1966519, N_"evaluatorCalls" 725, P_"concurrency" 1)$ 的四元组,与平台给出的(墙钟、credits、RPM/TPM、并发)*同构*。所以正确的移植不是「把墙钟当唯一约束」,而是*把四元组的冻结纪律整体移植到订阅上*。
 
@@ -113,7 +115,7 @@ swarm 的「验收」、投票的「聚合」、cascade 的「升级判据」是
 
 ⇒ 用本仓库自己的估计量 $V_B(pi)$(冻结预算下的策略价值差)去量,拓扑之争消解成一次测量:$Delta = V_B(pi_"social") - V_B(pi_"best-single+verifier")$,在等墙钟预算下。
 
-== 2.5 不舒服的推论:模型社会是代理谬误的候选实例
+== 2.5 不舒服的推论:society是代理谬误的候选实例
 
 轮次 \#11(09-17 09:48)的原话:
 
@@ -123,12 +125,12 @@ C 线第四轮把同一条纪律写成了可证伪约束(`v4.tex:1604`):
 
 #quote[因此,当前最合理的下一步不是继续扩张架构,而是让真实研究运行开始产生 RQ1--RQ4 所需的数据,并首先实现一个极薄的 Evidence/State prototype。若该薄层不能在真实 campaign 中降低恢复成本、重复劳动或 human load,就应当缩减甚至放弃,而不是用更大的 ontology、更多 agent 或更复杂 world model 掩盖失败。这是从 $G_0$ 出发最重要的可证伪约束。]
 
-把「更多 agent」换成「更多模型」,这句话一字不改地适用于模型社会。
+把「更多 agent」换成「更多模型」,这句话一字不改地适用于society。
 
 == 2.6 kill criterion(写在建造之前)
 
 #block(stroke: 1pt + rgb("#be123c"), inset: 10pt, radius: 4pt, breakable: true)[
-在 $N$ 个任务族、冻结验证器、*等墙钟预算*下,若所有社会策略的 verified-progress-per-wall-clock-hour 都不超过「校准后的 best-single + 验证器」,则社会不建。
+在 $N$ 个任务族、冻结验证器、*等墙钟预算*下,若所有society 策略的 verified-progress-per-wall-clock-hour 都不超过「校准后的 best-single + 验证器」,则 society 不建。
 
 该判据的测量成本约为一轮 calibration campaign;它比任何拓扑设计都便宜,且一旦通过,后面所有设计都有了共同的分母。
 ]
@@ -152,7 +154,7 @@ C 线第四轮把同一条纪律写成了可证伪约束(`v4.tex:1604`):
   [墙钟是绑定货币], [Allocate 的六资源之一;`B_"hard"`], [`v4.tex:1254`;`A1-RESULT.md` §6],
   [天花板在验证器], [L5;`EID*`;A0.1 假通过漏洞], [独立审查 L5;`STATUS.md` §4],
   [信息不对称是唯一杠杆], [冻结 packet / frozen corpus], [`v4.tex:463`;`TIMING-REVIEW` §4.2],
-  [模型社会 = Allocate 的动作空间扩张], [RQ3(foresight & resource rationality)], [`v4.tex:1553`],
+  [society = Allocate 的动作空间扩张], [RQ3(foresight & resource rationality)], [`v4.tex:1553`],
   [kill criterion], [crystallize conservatively(第九条)], [`v4.tex:1601, 1604`],
 )
 
@@ -206,6 +208,6 @@ C 线第四轮把同一条纪律写成了可证伪约束(`v4.tex:1604`):
 + *能力矩阵的粒度*:按任务族还是按实例?按实例会过拟合到校准集,按任务族会抹掉「同一族内不同题型的最优模型不同」—— 而后者可能正是异质性的主要来源。
 + *配额是否让并发成为真上限 —— 已部分回答*:并发上限是合同条款(1–2 / 2–3 / 3–4 / 6–8,【我复核】),所以 §2.2 第一版的「breadth 便宜」确应改为「breadth 受合同并发限制」,最优 k 的上界由档位决定。*仍未测的是数值型 RPM/TPM*:官方限流页只给定义与行为,具体阈值在模型市场详情页,我没有抓到。⇒ 能力矩阵开工前先从控制台导出每个候选模型的 RPM/TPM,否则 429 会被误记为模型失败。
 + *哪个验证器便宜到能对每个候选运行*:编译/测试/conformance 是机械的、便宜的;LLM judge 不是 —— 用 judge 当验证器会把天花板问题原样搬回来(§2.3)。任务族的选择因此受「有没有机械验证器」约束,这可能比任务本身的重要性更先决定实验设计。
-+ *模型社会是否继承 kill chain*:`RQ1`(recoverability)与 `RQ2`(decision-sufficient state)未测。若社会策略的状态表示依赖跨模型的历史整合,则它隐含地假设了 RQ2;若不依赖(每轮无状态),则它放弃了长期学习(RQ4)。两种选择都该是显式的。
++ *society是否继承 kill chain*:`RQ1`(recoverability)与 `RQ2`(decision-sufficient state)未测。若society 策略的状态表示依赖跨模型的历史整合,则它隐含地假设了 RQ2;若不依赖(每轮无状态),则它放弃了长期学习(RQ4)。两种选择都该是显式的。
 + *三目标(时间-金钱-成果)在订阅下的形态 —— §2.2 核对后已部分回答*:钱轴没有塌缩,它以三种方式回来:加油包影子价格 ¥0.005/credit、升档买并发、时段倍率。*剩下要测的是一个数字:你的实际用量落在拐点的哪一侧。* 若从不买加油包且月末常有结余,则边际 credit 月内为 0、月末为负(不结转 ⇒ 结余是浪费),最优策略会主动在月末与夜间烧掉结余;若经常触顶,则边际为 ∞,一切 breadth 都要排队到下个订阅月。这一个实测数字决定 §2.2 推论三的方向,也决定「成果/钱」这一轴在该用哪个斜率。
-+ *人类注意力的位置*:Allocate 的六资源里,human attention 是唯一没有仪器的。模型社会若把更多候选推到人面前验收,它节省的机器成本可能以人类时间为代价支付 —— 而第九条要求 crystallize conservatively,即降级时保留反例。人类验收的失败反例目前没有任何记录机制。
++ *人类注意力的位置*:Allocate 的六资源里,human attention 是唯一没有仪器的。society若把更多候选推到人面前验收,它节省的机器成本可能以人类时间为代价支付 —— 而第九条要求 crystallize conservatively,即降级时保留反例。人类验收的失败反例目前没有任何记录机制。

@@ -206,7 +206,7 @@ export const DECISIONS: Decision[] = [
   { id: 'D30', group: 'corpus', status: 'open', question: 'adapdc_architecture_report.typ 与 adapdc_theory_review(1).typ 的预览始终不渲染,是否换通道或过些时候重试?', cite: '10-06 库核查', recommendation: '两者都是 .typ,理论上可走拼接通道;先怀疑是暂时性加载失败' },
   { id: 'D31', group: 'corpus', status: 'open', question: '把账户 Library 当定期同步的恢复源,还是只在需要时核查?', cite: '10-06 库核查', recommendation: '倾向后者:一次核查已证明「搜索会漏、下载已坏、归档不入库」,例行同步的成本高于收益' },
   { id: 'D32', group: 'cross', status: 'open', question: '记忆基底 = 信息划分的实现层(稿 4)。反向映射:机制 → 旋钮 → 特征损失 —— 八种机制没有一种「不损失」,选机制就是选放弃哪个旋钮。四条新内容:①压缩/遗忘的触发器从容量改为矛盾密度;②相关性过滤按构造无法产出 nontrivial(结构性盲区,不是概率漏检);③强制边界是工具持有者,而系统里没有 MMU ⇒ 单写者是系统级单点,且信息划分的丢失在构造上不可见;④三个裁决器 T1–T3。', cite: 'related_files/1006/memory_substrate_and_partition.typ;v4:37（底座+视图）、:322（可机械验证者提升为 code）、:469（提升须过 replay）', recommendation: 'T1–T3 只需本地语料,近零 credits;未通过前这几条只是 SOP 候选,不是 invariant;单写者是否可接受需用户裁决' },
-  { id: 'D33', group: 'cross', status: 'open', question: '模型社会 = 四元组(聚合 / 信息划分 / 反转成本 / 权威可变性)+ 宪法层,三个时间尺度(任务 / 族 / 实验);适应只在「静态 spread > 探索成本」时动手。不是「按阶段换模型」—— 要问的是该实例化哪个四元组。', cite: '1006/model_society_as_allocation.typ, society_as_learned_structure.typ, society_belief_and_law.typ(稿 1–3 的 kill 1–3 与 Step 0)', recommendation: '记忆基底决定反转成本,因而决定适应值不值得买 —— 这是 D32 与 D33 的接口;先做稿 3 §5 的静态矩阵,再谈适应' },
+  { id: 'D33', group: 'cross', status: 'open', question: 'society = 四元组(聚合 / 信息划分 / 反转成本 / 权威可变性)+ 宪法层,三个时间尺度(任务 / 族 / 实验);适应只在「静态 spread > 探索成本」时动手。不是「按阶段换模型」—— 要问的是该实例化哪个四元组。', cite: '1006/model_society_as_allocation.typ, society_as_learned_structure.typ, society_belief_and_law.typ(稿 1–3 的 kill 1–3 与 Step 0)', recommendation: '记忆基底决定反转成本,因而决定适应值不值得买 —— 这是 D32 与 D33 的接口;先做稿 3 §5 的静态矩阵,再谈适应' },
 ]
 
 export const DECISION_GROUPS = {
