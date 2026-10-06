@@ -39,6 +39,7 @@ export const TIMELINE: TimelineEvent[] = [
   { date: '10-06', clock: '', label: '账户 Library 核查:159 条 → 118 条本地没有', track: 'this-session', note: '站点搜索不索引 File:搜 open_world_plan 命中 0,而库页六版俱在 —— 这正是误判的根因' },
   { date: '10-06', clock: '', label: 'B 线六版取回:(1)–(5) 入库,v(6) 与磁盘逐字节相同', track: 'this-session', artifact: 'related_files/open_world_plan_independent_review(1).typ', note: '拼接 CodeMirror 预览;6/6 typst 编译通过。此前写在三处的「不可恢复」被推翻' },
   { date: '10-06', clock: '', label: 'D 线 / a0 侧 / AdaPDC 12 份取回,另 3 份只有渲染文本', track: 'this-session', artifact: 'related_files/TIMING-REVIEW(1).md', note: 'H_T 审查 v2、STATUS(1/2)、第二轮审计、进展稿、C0 两份、源码审查包、接口契约;范畴论三份走跨源沙盒 iframe,markdown 原文不可得' },
+  { date: '10-06', clock: '', label: '稿 4:记忆基底即信息划分 —— 第一节是「去重表」', track: 'this-session', artifact: 'related_files/1006/memory_substrate_and_partition.typ', note: '体例变了一次:先判定哪些说法已在 v4/稿 1–3(给位置),只在四条新内容上展开:N1 机制→旋钮→特征损失、N2 触发器从容量改为矛盾密度、N3 相关性过滤的结构性盲区、N4 强制边界=工具持有者(单写者新风险);N5 = 三个裁决器 T1–T3' },
 ]
 
 /* ----------------------------------------------------------------- reversals */
@@ -204,8 +205,8 @@ export const DECISIONS: Decision[] = [
   { id: 'D29', group: 'corpus', status: 'open', question: 'research-foundations.md 的正文说「研究起点:继承自 emsx 的已证结论」—— 它归本语料,还是归 emsx 那个项目?', cite: '10-06 库核查', recommendation: '已取回但未入库(留在 /tmp);归属由用户定' },
   { id: 'D30', group: 'corpus', status: 'open', question: 'adapdc_architecture_report.typ 与 adapdc_theory_review(1).typ 的预览始终不渲染,是否换通道或过些时候重试?', cite: '10-06 库核查', recommendation: '两者都是 .typ,理论上可走拼接通道;先怀疑是暂时性加载失败' },
   { id: 'D31', group: 'corpus', status: 'open', question: '把账户 Library 当定期同步的恢复源,还是只在需要时核查?', cite: '10-06 库核查', recommendation: '倾向后者:一次核查已证明「搜索会漏、下载已坏、归档不入库」,例行同步的成本高于收益' },
-  { id: 'D32', group: 'cross', status: 'open', question: '记忆组织与本地检索策略:它是 RQ1×RQ3 的联合实例 —— Recover 的基质,同时「检索花多少」本身属于 Allocate。可证伪预测:带类型与来源边的登记册,只在**否定式查询**上显著优于纯文本搜索("从未主张" vs "没被索引")。', cite: 'v4:710（Lossless Evidence → Versioned Derived State → Query-conditioned Views）;2026-10-06 同一问题被三种检索给出三种答案', recommendation: '登记为开放问题,不立新线;先用语料里现成、已知答案的查询集(哪条对话产出哪份文件、哪条结论被推翻过)测一次' },
-  { id: 'D33', group: 'cross', status: 'open', question: '同一 agent 框架下,同一任务随推进阶段换不同模型协作:它是 RQ3 在「推理不均质」这条资源维上的实例(v4:1254 的六个资源里没有它),任一时点单模型,不乘成本。触发应是登记册里的状态转移(主张 → 需对抗),不是时间。', cite: '2026-10-06 最小协作单位讨论', recommendation: '判据:交接只在「该阶段误差成本 > 交接成本」时值得;先做误差相关性测试 —— 同一道已知答案的题问两个模型,若同错,则该类问题上无增益' },
+  { id: 'D32', group: 'cross', status: 'open', question: '记忆基底 = 信息划分的实现层(稿 4)。反向映射:机制 → 旋钮 → 特征损失 —— 八种机制没有一种「不损失」,选机制就是选放弃哪个旋钮。四条新内容:①压缩/遗忘的触发器从容量改为矛盾密度;②相关性过滤按构造无法产出 nontrivial(结构性盲区,不是概率漏检);③强制边界是工具持有者,而系统里没有 MMU ⇒ 单写者是系统级单点,且信息划分的丢失在构造上不可见;④三个裁决器 T1–T3。', cite: 'related_files/1006/memory_substrate_and_partition.typ;v4:37（底座+视图）、:322（可机械验证者提升为 code）、:469（提升须过 replay）', recommendation: 'T1–T3 只需本地语料,近零 credits;未通过前这几条只是 SOP 候选,不是 invariant;单写者是否可接受需用户裁决' },
+  { id: 'D33', group: 'cross', status: 'open', question: '模型社会 = 四元组(聚合 / 信息划分 / 反转成本 / 权威可变性)+ 宪法层,三个时间尺度(任务 / 族 / 实验);适应只在「静态 spread > 探索成本」时动手。不是「按阶段换模型」—— 要问的是该实例化哪个四元组。', cite: '1006/model_society_as_allocation.typ, society_as_learned_structure.typ, society_belief_and_law.typ(稿 1–3 的 kill 1–3 与 Step 0)', recommendation: '记忆基底决定反转成本,因而决定适应值不值得买 —— 这是 D32 与 D33 的接口;先做稿 3 §5 的静态矩阵,再谈适应' },
 ]
 
 export const DECISION_GROUPS = {
