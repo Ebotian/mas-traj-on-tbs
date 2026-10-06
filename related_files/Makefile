@@ -8,13 +8,14 @@
 #   make clean          删除 pdf/ 及其中所有产物
 #
 # 源码目录只放 .typ / .bib，产物统一进 pdf/。
-# 依赖取自 wildcard，新增 .typ 或 .bib 后无需改本文件。
+# 依赖取自 wildcard，顶层或 1006/ 下新增 .typ / .bib 后无需改本文件；
+# 再开新的子目录才需要把它加进 SRC。
 # 任一 .bib 变更会触发全部文档重编译：目前只有两份文档用参考文献，
 # 用这个粗粒度依赖换 Makefile 的简单可靠。
 
 TYPST ?= typst
 OUT   := pdf
-SRC   := $(wildcard *.typ)
+SRC   := $(wildcard *.typ) $(wildcard 1006/*.typ)
 BIB   := $(wildcard *.bib)
 PDF   := $(patsubst %.typ,$(OUT)/%.pdf,$(SRC))
 
@@ -23,17 +24,19 @@ PDF   := $(patsubst %.typ,$(OUT)/%.pdf,$(SRC))
 all: $(PDF)
 
 $(OUT)/%.pdf: %.typ $(BIB) | $(OUT)
+	@mkdir -p $(dir $@)
 	$(TYPST) compile "$<" "$@"
 
 # 支持 make <文件名>（不带 .typ 后缀）编译单个文档
 %: %.typ | $(OUT)
+	@mkdir -p $(dir $(OUT)/$@.pdf)
 	$(TYPST) compile "$<" "$(OUT)/$@.pdf"
 
 $(OUT):
 	mkdir -p $(OUT)
 
 list:
-	@ls -1 *.typ
+	@ls -1 *.typ 1006/*.typ
 
 clean:
 	rm -rf $(OUT)
