@@ -133,3 +133,52 @@
 **我没有核的**(仍按 ◐ 看待,不得当已核):§5 全部条目;qwen 的 25k/1k 截断与 `<persisted-output>`、200k 批量预算、
 并发上限 10、hooks 阻断面宽窄、OS 沙盒、microcompaction 两级压缩;kimi 的 v1/v2 双层共存与
 `human/compaction/*` 是否在活路径;以及 §2 里凡未标 ⚙ 的格。
+
+---
+
+# 未解决问题(本节由本会话 2026-10-07 补入;均**未**进入登记册)
+
+按当前相位(相互对齐 + 修现有 bug、不做新的),下列条目**只是候选**,要进 `viz/src/data/corpus.ts` 的
+决策册/冲突册需用户裁定。放这里是为了不丢,并且每条都给出可证伪形式与杀死条件。
+
+## U1 · 候选失败模式:把判决外包给另一个 LLM(来自 §3)
+
+| 项 | 内容 |
+|---|---|
+| 可证伪形式 | 把安全判决外包给另一个 LLM 的 harness,在对抗压力下(改写、编码混淆、多步规避)的**漏放率**高于同一 harness 的确定性规则路径 |
+| 杀死条件 | 在同等对抗集上,LLM 判决路径的漏放率不高于(或显著低于)确定性路径 ⇒ U1 不成立 |
+| 现成样本 | qwen:`packages/core/src/permissions/classifier.ts`(两阶段 LLM 分类器)vs 同仓的 `shell-safety-rules.ts` / shell AST 路径 |
+| 需要什么才可判 | 一个共享的对抗命令集 + 两条路径各自的漏放计数;两者都在本机可跑 |
+
+## U2 · 候选失败模式:判据只渲染、从不求值(来自 §3)
+
+| 项 | 内容 |
+|---|---|
+| 可证伪形式 | 完成判据只被渲染进 prompt、从不被代码求值的 harness,其"完成"判定与**可执行判据**在对照任务集上系统性背离(即等于没有判据) |
+| 杀死条件 | 两者在对照集上一致率足够高 ⇒ "渲染即无判据"不成立(判据仍有效,只是靠模型自觉执行) |
+| 现成样本 | kimi:`features/goal/injection/goalInjection.ts:81` 渲染 `<untrusted_completion_criterion>`;全仓无求值分支 |
+| 需要什么才可判 | 一组任务 + 两种 harness 各自的"完成"判定;或对 kimi 单臂做"骗过渲染层"的注入试验 |
+
+## U3 · 未核清单(◐)的**核法**(把 §5 与上面「我没有核的」变成可执行的检查)
+
+| 待核项 | 怎么核(都在本机) |
+|---|---|
+| qwen 结果整形 25k/1k、`<persisted-output>`、200k 批量预算 | `grep -rn "25_000\|25000\|persisted-output\|200_000" packages/core/src packages/cli/src` |
+| qwen 并发上限 10 与并发安全分区 | 找并发常量 + 分区函数,读它在 batch 执行前的串行准备 |
+| qwen hooks:阻断面宽窄、出错不阻塞 | 读 `packages/core/src/hooks/hookRunner.ts` 的错误分支与 allow/deny/ask 出口 |
+| qwen OS 沙盒(会话级一次决定) | 找 sandbox 决策点与其生命周期 |
+| qwen microcompaction 两级压缩 | 找 microcompaction 模块与它是否发起模型调用 |
+| kimi v1/v2 双层共存、`human/compaction/*` 是否在活路径 | 从入口(CLI/sdk)沿 import 图走到 `agent-core-v2`,看 v1 是否仍被引用 |
+| kimi 审批无 handler 默认 `cancelled`;hook 出错默认 allow;Bash 未声明 accesses→事实独占 | 分别读 `permissionPolicy` 默认分支、hooks 错误分支、`ToolAccesses` 缺省语义 |
+| 环境与版本 | **已记录(2026-10-07)**:qwen-code `464f486e20198f7f39623f3e95f51ab5d4f98e40`(2026-10-07,`@qwen-code/qwen-code 0.25.0`);kimi-code `21406fb4c805cc8c715e6d1f16ad3fb5f25f4fe3`(2026-09-30,`@moonshot-ai/kimi-code@2.1.1-13-g21406fb4c`)。**本文全部行号绑这两个提交**;checkout 一变即失效 |
+
+## U4 · 与项目已有原则的关系(最要紧的未决项)
+
+- 项目原则(`related_files/TIMING-REVIEW(1).md`):**所有触发变量都是 harness-authoritative;没有 embedding、没有 agent 自评、没有 LLM judge**。
+- 现在拿到了两个真实 harness 上的**实例化样本**:qwen 在**两处**违反(AUTO 权限分类器、Goal verifier 都是 LLM judge,且开 side-query),kimi 在触发路径上守住但把完成判据降级为未求值的文本。
+- **未决**:这两个样本对那条原则是
+  (a) **支持**(qwen 的违反点恰好落在被判为风险的位置);
+  (b) **反驳**(kimi 守住了触发路径,却退化成"有判据而不判");
+  (c) **第三态** —— 两者都缺"判据可执行性"这一维,应作为新的一维登记(而非当作原则的反例)。
+- 我的读法(可反驳):(c) 更可能。kimi 的样本说明"harness-authoritative"还不足够 —— 判据不仅要**在 harness 里**、不外包给 LLM,还必须有**可执行性**(被判据判、而不是被模型读)。若采纳,这一维该进的就是 `Taste ⇄ SOP ⇄ IaC` 的中间那层(SOP→IaC 的升格路径),而不是新开一条线。
+
