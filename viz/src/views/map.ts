@@ -188,7 +188,7 @@ export function render(host: HTMLElement): void {
     const sh = shapePath(KIND_SHAPE[n.kind], n.r)
     const mark = s(sh.tag, {
       ...sh.attrs, fill: KIND_COLOR[n.kind], 'fill-opacity': n.evidence === 'u' ? 0.42 : 0.92,
-      stroke: COLOR.ink, 'stroke-width': n.evidence === 'v' ? 2 : 1.5,
+      stroke: COLOR.ink, 'stroke-width': (n.evidence === 'v' || n.evidence === 'r') ? 2 : 1.5,
       'stroke-dasharray': EVIDENCE_DASH[n.evidence] || '',
     })
     g.appendChild(mark)
@@ -208,7 +208,7 @@ export function render(host: HTMLElement): void {
     det.appendChild(h('p', { class: 'det-t' }, n.title))
     det.appendChild(h('div', {},
       badge(KIND_LABEL[n.kind], KIND_COLOR[n.kind]),
-      badge(`证据:${EVIDENCE_LABEL[n.evidence]}`, n.evidence === 'v' ? COLOR.good : n.evidence === 's' ? COLOR.warn : COLOR.muted),
+      badge(`证据:${EVIDENCE_LABEL[n.evidence]}`, n.evidence === 'v' || n.evidence === 'r' ? COLOR.good : n.evidence === 's' ? COLOR.warn : COLOR.muted),
       badge(`第 ${n.layer} 层`, COLOR.muted)))
     if (n.cite) det.appendChild(h('div', {}, cite(n.cite)))
     if (n.summary) det.appendChild(h('p', { class: 'note strong' }, n.summary))
@@ -245,7 +245,7 @@ export function render(host: HTMLElement): void {
       if (!g) continue
       let vis = onKind[n.kind]
       if (mode.onlyConflict && n.kind !== 'find') vis = false
-      if (mode.onlyWeak && n.evidence === 'v') vis = false
+      if (mode.onlyWeak && (n.evidence === 'v' || n.evidence === 'r')) vis = false
       g.style.display = vis ? '' : 'none'
       const lit = !focus || nb.has(n.id) || pathSet.has(n.id)
       g.style.opacity = lit ? '1' : '0.12'
@@ -309,7 +309,7 @@ export function render(host: HTMLElement): void {
     svgk.appendChild(s(sh.tag, { ...sh.attrs, fill: KIND_COLOR[k], stroke: COLOR.ink, 'stroke-width': 1.3 }))
     leg.appendChild(h('span', {}, svgk, KIND_LABEL[k]))
   }
-  for (const e of ['v', 's', 'u'] as Evidence[]) {
+  for (const e of ['r', 'v', 's', 'u'] as Evidence[]) {
     const svgl = s('svg', { width: 22, height: 10 })
     svgl.appendChild(s('line', { x1: 1, y1: 5, x2: 21, y2: 5, stroke: COLOR.ink, 'stroke-width': 2.4, 'stroke-dasharray': EVIDENCE_DASH[e] || '' }))
     leg.appendChild(h('span', {}, svgl, EVIDENCE_LABEL[e]))
@@ -327,7 +327,7 @@ export function render(host: HTMLElement): void {
     h('div', { class: 'cardbody' },
       note('按「收窄链」:亮起来的是 G₀ → Allocate → RQ3 → H_T → 门 → B0a,一条穿过 8 层的细线,两侧全暗。这是「H_T 只是子问题」的可视化。'),
       note('按「只看冲突」:玫红三角形聚在第 4–5 层,即线与线的交界处,不在任何一条线内部。'),
-      note(`按「只看二手+未读」:剩下 ${nodes.filter(n => n.evidence !== 'v').length} 个节点(` +
+      note(`按「只看二手+未读」:剩下 ${nodes.filter(n => n.evidence !== 'v' && n.evidence !== 'r').length} 个节点(` +
         `${nodes.filter(n => n.evidence === 's').length} 二手 + ${nodes.filter(n => n.evidence === 'u').length} 未读)。` +
         '这是给我自己的折扣清单 —— 个数从数据现算,不手写。'),
       note('节点大小 = 连接度。描边虚实 = 证据等级,与颜色无关,所以色盲下仍可读。'))))

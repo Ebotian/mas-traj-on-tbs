@@ -4,8 +4,9 @@
 
 export type NodeKind = 'frame' | 'line' | 'impl' | 'find'
 
-/** v = I read the source or computed it myself · s = a subagent's path:line, spot-checked · u = never read */
-export type Evidence = 'v' | 's' | 'u'
+/** v = I read the source or computed it myself · r = that, and an independent external system re-derived it too
+ *  · s = a subagent's path:line, spot-checked · u = never read. Ordering: r > v > s > u. */
+export type Evidence = 'v' | 'r' | 's' | 'u'
 
 export type EdgeKind =
   | 'has' | 'spec' | 'is' | 'kill' | 'inst' | 'part' | 'uses' | 'block'

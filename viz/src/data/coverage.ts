@@ -26,16 +26,16 @@
 import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
- "corpusFiles": 63,
- "corpusLines": 95851,
- "corpusLinesExclTranscript": 34351,
+ "corpusFiles": 65,
+ "corpusLines": 97116,
+ "corpusLinesExclTranscript": 35616,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 4242,
+ "corpusLinesRead": 4704,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 4242
+ "corpusLinesReadExclTranscript": 4704
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -440,6 +440,20 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
   "status": "authored",
   "linesRead": 147,
   "note": "稿 3:结晶/去结晶与统计触发"
+ },
+ {
+  "path": "related_files/deep-research-report-longhorizon-agent-eval-2026-10-07.md",
+  "lines": 1209,
+  "status": "partial",
+  "linesRead": 406,
+  "note": "外部 Deep Research 导出(本项目的产品);我读了摘要、证据标准、蓝图、缺口与结尾(共 406 行),全文由子代理通读一遍但那是二手。正文一字未改,头部是 provenance"
+ },
+ {
+  "path": "related_files/deepresearch-citation-ledger-2026-10-07.md",
+  "lines": 56,
+  "status": "authored",
+  "linesRead": 56,
+  "note": "我写的引用核验台账(38 条 URL);其中三条我已亲核"
  },
  {
   "path": "related_files/1006/society_belief_and_law.typ",

@@ -38,15 +38,16 @@ export const KIND_SHAPE: Record<NodeKind, Shape> = {
   frame: 'circle', line: 'square', impl: 'diamond', find: 'tri',
 }
 
-/** Stroke dash by evidence grade. Solid = I verified it myself. */
-export const EVIDENCE_DASH: Record<Evidence, string> = { v: '', s: '5 3', u: '2 3' }
+/** Stroke dash by evidence grade — never colour alone. Ordering: r > v > s > u.
+ *  Solid = I verified it myself; long dash = that plus an independent external re-derivation. */
+export const EVIDENCE_DASH: Record<Evidence, string> = { r: '14 2.5', v: '', s: '5 3', u: '2 3' }
 
 export const EVIDENCE_LABEL: Record<Evidence, string> = {
-  v: '我复核', s: '二手(调查者)', u: '我没读',
+  r: '独立再证', v: '我复核', s: '二手(调查者)', u: '我没读',
 }
 
 export const EVIDENCE_COLOR: Record<Evidence, string> = {
-  v: COLOR.good, s: COLOR.warn, u: COLOR.muted,
+  r: COLOR.good, v: COLOR.good, s: COLOR.warn, u: COLOR.muted,
 }
 
 export const STATUS_LABEL: Record<ReadStatus, string> = {

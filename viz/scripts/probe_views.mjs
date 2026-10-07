@@ -46,11 +46,11 @@ globalThis.document = {
 
 const ROUTES = [
   ['overview', 'src/views/overview.ts', ['G₀', 'epistemic debt', '九条工程原则', 'Taste ⇄ SOP ⇄ IaC']],
-  ['map', 'src/views/map.ts', ['只看二手+未读', '6 个节点(2 二手 + 4 未读)']],
+  ['map', 'src/views/map.ts', ['只看二手+未读', '6 个节点(2 二手 + 4 未读)', '独立再证', '我复核', '二手(调查者)', '我没读']],
   ['time', 'src/views/time.ts', ['09-09 → 10-07', '外部复核 1–6 轮', 'B 线六版审查', '原判「中间版本永久缺失」已推翻', '09-30、10-06 与 10-07']],
   ['conflicts', 'src/views/conflicts.ts', ['条冲突', '条已登记的反转', '外部复核 #6 → 收口(10-07)']],
   ['decisions', 'src/views/decisions.ts', ['D33', 'D1', '代理谬误']],
-  ['coverage', 'src/views/coverage.ts', ['语料 63 个文件', '95830', '4138']],
+  ['coverage', 'src/views/coverage.ts', ['语料 65 个文件', '97116', '4704']],
   ['library', 'src/views/library.ts', ['取不到:原因已查明', '取不到:仅记录现象', '未取(是重复件)', '未尝试', '六版独立审查']],
 ]
 
