@@ -20,7 +20,7 @@ import { fileURLToPath } from 'node:url'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(HERE, '..')
-const DATE = '2026-10-06'
+const DATE = process.env.PKT_DATE || new Date().toLocaleDateString('sv-SE')  // YYYY-MM-DD(本机时区);可用 PKT_DATE 覆盖
 const PKG = `packet-${DATE}`
 const OUTROOT = path.join(HERE, 'out')
 const DEST = path.join(OUTROOT, PKG)
@@ -103,7 +103,7 @@ const CLAIM_INDEX = [
 ].map(([a, b]) => `| ${a} | ${b} |`).join('\n')
 
 const SUBS = {
-  '{{HEAD}}': HEAD,
+  '{{HEAD}}': HEAD, '{{PKT_DATE}}': DATE,
   '{{NARROWING}}': ['| 收窄项 | 已测 / 总数 | 已测的是哪个 | 出处 |', '|---|---|---|---|', NARROW].join('\n'),
   '{{CORPUS_STATS}}': CORPUS_STATS,
   '{{N_CLAIMS}}': String(CLAIM_COUNT), '{{N_DEC}}': String(DECISIONS.length), '{{N_OPEN}}': String(nopen),

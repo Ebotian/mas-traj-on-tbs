@@ -20,7 +20,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const S = process.env.WB_SESSION || 'cgpt-project-index'
-const PACKET = process.argv[2] || path.join(HERE, 'out/packet-2026-10-06.tar.gz')
+const PACKET = process.argv[2] || path.join(HERE, 'out', `packet-${new Date().toLocaleDateString('sv-SE')}.tar.gz`)
 const MSG = process.env.WB_MSG || path.join(HERE, 'packet_msg.md')  // 不放 /tmp:本机 /tmp 是 tmpfs,重启即清
 const OUT = process.env.WB_OUT || path.join(HERE, 'out/reply-2026-10-06.md')
 const POLL_MS = 6000

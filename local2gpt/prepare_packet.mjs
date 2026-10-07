@@ -12,9 +12,12 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
+import { fileURLToPath } from 'node:url'
+
+const HERE = path.dirname(fileURLToPath(import.meta.url))
 
 const S = process.env.WB_SESSION || 'cgpt-project-index'
-const PKT = process.argv[2] || '/home/ebt/rsi-dev/local2gpt/out/packet-2026-10-06.tar.gz'
+const PKT = process.argv[2] || path.join(HERE, 'out', `packet-${new Date().toLocaleDateString('sv-SE')}.tar.gz`)
 const MSG = process.env.WB_MSG || '/home/ebt/rsi-dev/local2gpt/packet_msg.md'
 const SEL_COMPOSER = '[contenteditable="true"]'
 const CHIP_PREFIX = 'packet-2026'
