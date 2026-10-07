@@ -17,7 +17,10 @@ import { fileURLToPath } from 'node:url'
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 
 const S = process.env.WB_SESSION || 'cgpt-project-index'
-const PKT = process.argv[2] || path.join(HERE, 'out', `packet-${new Date().toLocaleDateString('sv-SE')}.tar.gz`)
+const LATEST = path.join(HERE, 'out/.latest-packet')
+const PKT = process.argv[2] || (fs.existsSync(LATEST)
+  ? path.join(HERE, 'out', fs.readFileSync(LATEST, 'utf8').trim())
+  : path.join(HERE, 'out', `packet-${new Date().toLocaleDateString('sv-SE')}.tar.gz`))
 const MSG = process.env.WB_MSG || '/home/ebt/rsi-dev/local2gpt/packet_msg.md'
 const SEL_COMPOSER = '[contenteditable="true"]'
 const CHIP_PREFIX = 'packet-2026'
@@ -39,13 +42,15 @@ const state = () => ev(`(()=>{
 if (!fs.existsSync(PKT)) { console.error('包不存在:', PKT); process.exit(1) }
 if (!fs.existsSync(MSG)) { console.error('正文不存在:', MSG); process.exit(1) }
 
-const sha = crypto.createHash('sha256').update(fs.readFileSync(PKT)).digest('hex')
-console.log('包:', path.basename(PKT), fs.statSync(PKT).size, 'B · sha256', sha.slice(0, 12))
-const CSHA = path.join(path.dirname(PKT), '.composer-sha')
+const FP = fs.existsSync(path.join(path.dirname(PKT), '.latest-fingerprint'))
+  ? fs.readFileSync(path.join(path.dirname(PKT), '.latest-fingerprint'), 'utf8').trim()
+  : crypto.createHash('sha256').update(fs.readFileSync(PKT)).digest('hex').slice(0, 8)
+console.log('包:', path.basename(PKT), fs.statSync(PKT).size, 'B · 内容指纹', FP)
+const CSHA = path.join(path.dirname(PKT), '.composer-fp')
 const priorSha = fs.existsSync(CSHA) ? fs.readFileSync(CSHA, 'utf8').trim() : ''
 const pre = JSON.parse(await state())
 let uploaded = false
-if (pre.chips >= 1 && priorSha === sha) {
+if (pre.chips >= 1 && priorSha === FP) {
   console.log('composer 里已是同一份包(sha 对账通过),跳过上传 —— 防止重复堆叠')
 } else {
   if (pre.chips >= 1) console.warn('composer 里有 %d 枚 chip 且 sha 与本地不同;先删干净再传会更整齐(现在仍按一次新上传处理)', pre.chips)
@@ -62,6 +67,6 @@ await sleep(2000)
 
 const st = JSON.parse(await state())
 console.log('after:', JSON.stringify(st))
-fs.writeFileSync(path.join(path.dirname(PKT), '.composer-sha'), sha + '\n', 'utf8')
+fs.writeFileSync(path.join(path.dirname(PKT), '.composer-fp'), FP + '\n', 'utf8')
 if (st.chips !== 1) console.warn('注意:composer 里有 %d 枚 chip(预期 1);多于 1 枚请在浏览器里删掉多余的。', st.chips)
-console.log('\n完成:附件已挂(sha %s)、正文 %d 字符,未发送。请在浏览器里 review。', sha.slice(0, 12), st.draft)
+console.log('\n完成:附件已挂(指纹 %s)、正文 %d 字符,未发送。请在浏览器里 review。', FP, st.draft)

@@ -20,7 +20,10 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const S = process.env.WB_SESSION || 'cgpt-project-index'
-const PACKET = process.argv[2] || path.join(HERE, 'out', `packet-${new Date().toLocaleDateString('sv-SE')}.tar.gz`)
+const LATEST = path.join(HERE, 'out/.latest-packet')
+const PACKET = process.argv[2] || (fs.existsSync(LATEST)
+  ? path.join(HERE, 'out', fs.readFileSync(LATEST, 'utf8').trim())
+  : path.join(HERE, 'out', `packet-${new Date().toLocaleDateString('sv-SE')}.tar.gz`))
 const MSG = process.env.WB_MSG || path.join(HERE, 'packet_msg.md')  // 不放 /tmp:本机 /tmp 是 tmpfs,重启即清
 const OUT = process.env.WB_OUT || path.join(HERE, 'out/reply-2026-10-06.md')
 const POLL_MS = 6000
@@ -75,11 +78,12 @@ async function main() {
   const sha = crypto.createHash('sha256').update(fs.readFileSync(PACKET)).digest('hex')
   const STATE = path.join(HERE, 'out/.last-sent-sha')
   const lastSha = fs.existsSync(STATE) ? fs.readFileSync(STATE, 'utf8').trim() : ''
-  const CSHA = path.join(HERE, 'out/.composer-sha')
+  const CSHA = path.join(HERE, 'out/.composer-fp')
   const composerSha = fs.existsSync(CSHA) ? fs.readFileSync(CSHA, 'utf8').trim() : ''
+  const localFp = fs.existsSync(path.join(HERE, 'out/.latest-fingerprint')) ? fs.readFileSync(path.join(HERE, 'out/.latest-fingerprint'), 'utf8').trim() : ''
   const st = await composerState()
   console.log('composer 现状:', JSON.stringify(st), '| 本地包 sha', sha.slice(0, 12), '| 上次发出', lastSha.slice(0, 12) || '(无记录)')
-  if (st.attached && st.draft > 200 && (lastSha === sha || composerSha === sha)) {
+  if (st.attached && st.draft > 200 && (lastSha === sha || composerSha === localFp)) {
     console.log('composer 里已是同一份包(sha 对账通过),跳过上传与填充,直接发送')
   } else if (st.attached && st.draft > 200 && lastSha !== sha) {
     console.error('拒绝发送:composer 里挂着的是另一份包(上次发出 %s,本地 %s)。', lastSha.slice(0, 12) || '无记录', sha.slice(0, 12))

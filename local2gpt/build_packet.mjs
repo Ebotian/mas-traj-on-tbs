@@ -21,7 +21,10 @@ import { fileURLToPath } from 'node:url'
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(HERE, '..')
 const DATE = process.env.PKT_DATE || new Date().toLocaleDateString('sv-SE')  // YYYY-MM-DD(本机时区);可用 PKT_DATE 覆盖
-const PKG = `packet-${DATE}`
+const TAG = process.env.PKT_TAG || ''            // 有意义的后缀:<轮次>s<本次序号>,如 r2s1 = 第二轮第 1 次
+// 命名规则:packet-<构建日>-<tag>-<内容指纹8>.tar.gz —— 名字自带(轮次, 内容身份),
+// 于是同一份内容不会重传(守卫按指纹跳过),不同内容/不同轮次天然不撞名(避免 ChatGPT 追加 (n))。
+const PKG = `packet-${DATE}${TAG ? '-' + TAG : ''}`
 const OUTROOT = path.join(HERE, 'out')
 const DEST = path.join(OUTROOT, PKG)
 
@@ -165,13 +168,20 @@ fs.writeFileSync(idx, fs.readFileSync(idx, 'utf8').split('@@MANIFEST@@').join(ma
 fs.writeFileSync(path.join(DEST, 'SHA256SUMS'), walk(DEST).filter((f) => f !== 'SHA256SUMS').sort().map((f) => `${sha(path.join(DEST, f))}  ${f}`).join('\n') + '\n')
 
 /* ---------- 5) 打包 ---------- */
-const tar = path.join(OUTROOT, `${PKG}.tar.gz`)
+const tarTmp = path.join(OUTROOT, `${PKG}.tar.gz`)
+if (fs.existsSync(tarTmp)) fs.rmSync(tarTmp)
+execFileSync('tar', ['-czf', tarTmp, '-C', OUTROOT, PKG])
+// 内容指纹:对包内 SHA256SUMS 取哈希 —— tar 字节含 mtime,不能当内容标识
+const fp = crypto.createHash('sha256').update(fs.readFileSync(path.join(DEST, 'SHA256SUMS'))).digest('hex').slice(0, 8)
+const tar = path.join(OUTROOT, `${PKG}-${fp}.tar.gz`)
 if (fs.existsSync(tar)) fs.rmSync(tar)
-execFileSync('tar', ['-czf', tar, '-C', OUTROOT, PKG])
+fs.renameSync(tarTmp, tar)
+fs.writeFileSync(path.join(OUTROOT, '.latest-packet'), path.basename(tar) + '\n', 'utf8')
+fs.writeFileSync(path.join(OUTROOT, '.latest-fingerprint'), fp + '\n', 'utf8')
 
 /* ---------- 6) 报告 ---------- */
 const kb = (n) => (n / 1024).toFixed(1) + ' KB'
 console.log(`包已生成:${path.relative(ROOT, DEST)}`)
 for (const f of all) console.log(`  ${kb(fs.statSync(path.join(DEST, f)).size).padStart(9)}  ${String(lines(fs.readFileSync(path.join(DEST, f), 'utf8'))).padStart(5)} 行  ${f}`)
-console.log(`\n压缩件:${path.relative(ROOT, tar)}  ${kb(fs.statSync(tar).size)}`)
+console.log(`\n压缩件:${path.relative(ROOT, tar)}  ${kb(fs.statSync(tar).size)}  内容指纹(manifest sha8)= ${fp}`)
 console.log(`HEAD=${HEAD} · 决策 ${DECISIONS.length}(待决 ${nopen}) · 冲突 ${CONFLICTS.length} · 反转 ${REVERSALS.length} · 语料 ${S.corpusFiles} 文件`)
