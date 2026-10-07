@@ -82,7 +82,7 @@ const COV_TABLE = ['| 路径 | 行 | 状态 | 已读行 | 备注 |', '|---|---|-
 const LIB_BLOCK = [
   `\`chatgpt.com/library\` 共 **${LIB_TOTALS.entries}** 条;按名比对后本地没有 **${LIB_TOTALS.unmatched}** 条;`,
   `本轮取回并入库 **${LIB_TOTALS.recovered}** 份;取不到或未取 **${LIB_TOTALS.blocked}** 条` +
-  `(原因已查明 ${BLOCKED.filter((b) => b.status === 'reason').length} / 未取 ${BLOCKED.filter((b) => b.status === 'not-taken').length} / 未尝试 ${BLOCKED.filter((b) => b.status === 'not-attempted').length});`,
+  `(原因已查明 ${BLOCKED.filter((b) => b.status === 'reason').length} / 仅记录现象 ${BLOCKED.filter((b) => b.status === 'symptom').length} / 未取 ${BLOCKED.filter((b) => b.status === 'not-taken').length} / 未尝试 ${BLOCKED.filter((b) => b.status === 'not-attempted').length});`,
   `名字呈归档形态 **${LIB_TOTALS.archives}** 条(按规则不入 git);约 **${LIB_TOTALS.other}** 条属其他项目。\n`,
   '三条取回通道与各自的陷阱:\n',
   ...MECHANISMS.map((m) => `- **${m.viewer}** —— 取法:${m.route};陷阱:${m.trap}`),

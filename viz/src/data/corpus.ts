@@ -188,7 +188,7 @@ export const CONFLICTS: Conflict[] = [
     id: 'search-vs-library', title: '同一条目,搜索说没有、库页说在', kind: 'provenance', evidence: 'v',
     left: { who: '站点搜索', cite: 'search「open_world_plan」→ 0 命中', quote: '按这条证据推论:账户里没有 B 线那六版,与载荷侧「只有读取窗口、无写入」的结论互相印证。' },
     right: { who: 'Library 页面', cite: 'chatgpt.com/library,159 条', quote: 'open_world_plan_independent_review(1)…(6).typ 六张卡片俱在,Modified 09-18→09-20。' },
-    consequence: '两条证据都真:搜索对 File 类至少漏过六项(其索引范围未测),库页有六版。用「搜索无命中」推断「文件不存在」,让本项目在 09-30 至 10-06 这一周里把「B 线不可恢复」写进了三处记忆与一张反转表。可确证的规则只有一条:不能用 0 命中推断不存在;至于「文件到底在不在」,以能在两处独立取到为准。',
+    consequence: '两条证据都真:搜索对 File 类至少漏过六项(其索引范围未测),库页有六版。用「搜索无命中」推断「文件不存在」,让本项目在 09-30 至 10-06 这一周里把「B 线不可恢复」写进了三处记忆与一张反转表。可确证的规则只有一条:不能用 0 命中推断不存在。存在性由**一次经身份核验的成功读取**支持;第二通道用于核对身份或恢复可靠性,不是存在性的必要条件。',
   },
 ]
 

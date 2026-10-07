@@ -109,7 +109,7 @@ export const LIB_NOTES = {
     '本轮在库页看到六张卡片并全部取回;v(6) 与磁盘那份归一化后逐字节相同(唯一差异是一个尾部空行)。',
   searchTrap: '同一次核查里,站点搜索对 open_world_plan 返回 0 命中,而库页有六版 ⇒ 搜索对 File 类至少漏过六项;' +
     '索引的真实范围未测(不能推广为「不索引 File」)。' +
-    '不索引 File。用「搜索无命中」推断「文件不存在」正是当初误判的根因。',
+    '用「搜索无命中」推断「文件不存在」正是当初误判的根因。',
   downloadDead: '卡片的 Download 不可用:/api/library/files/<id>/download → estuary 带签名链,服务端回 ' +
     '{"detail":"File link not found."}(33 字节,被浏览器记为中断下载)。',
   dupPolicy: '库里的多数条目是仓库已有文件的重复上传(带 (1)(2) 后缀);按名比对后跳过,未逐个 sha256。',
