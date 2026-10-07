@@ -72,11 +72,11 @@ export const LADDER: { v: string; lines: number; note: string }[] = [
   { v: 'v(6)', lines: 1030, note: '= 磁盘上的 open_world_plan_independent_review.typ' },
 ]
 
-export interface BlockedRow { name: string; why: string; status: 'reason' | 'not-taken' | 'not-attempted' }
+export interface BlockedRow { name: string; why: string; status: 'reason' | 'symptom' | 'not-taken' | 'not-attempted' }
 
 export const BLOCKED: BlockedRow[] = [
-  { name: 'adapdc_architecture_report.typ', why: '预览始终不渲染:>14 s 内没有 CodeMirror、也没有 Try again 按钮', status: 'reason' },
-  { name: 'adapdc_theory_review(1).typ', why: '同上', status: 'reason' },
+  { name: 'adapdc_architecture_report.typ', why: '观察到 >14 s 内没有 CodeMirror、也没有 Try again 按钮 —— 这是现象,不是根因(需请求响应或诊断日志)', status: 'symptom' },
+  { name: 'adapdc_theory_review(1).typ', why: '同上:同一次观察,根因未查', status: 'symptom' },
   { name: 'agent_engineering_science_v1', why: '对话框标题露出真名 agent_engineering_science_v1.**zip** —— 是归档,不是文本', status: 'reason' },
   { name: 'agent_engineering_science_report.tex', why: '与未跟踪的 repro zip 内容重复(不是取不到)', status: 'not-taken' },
   { name: 'agent_engineering_science_references.bib', why: '同上', status: 'not-taken' },
@@ -107,7 +107,8 @@ export const MECHANISMS: Mechanism[] = [
 export const LIB_NOTES = {
   falsified: '「B 线六版不可恢复」此前写进了三个地方(分享链接溯源、可重建性、账户清单)。' +
     '本轮在库页看到六张卡片并全部取回;v(6) 与磁盘那份归一化后逐字节相同(唯一差异是一个尾部空行)。',
-  searchTrap: '同一次核查里,站点搜索对 open_world_plan 返回 0 命中 —— 搜索只索引对话与文档语料,' +
+  searchTrap: '同一次核查里,站点搜索对 open_world_plan 返回 0 命中,而库页有六版 ⇒ 搜索对 File 类至少漏过六项;' +
+    '索引的真实范围未测(不能推广为「不索引 File」)。' +
     '不索引 File。用「搜索无命中」推断「文件不存在」正是当初误判的根因。',
   downloadDead: '卡片的 Download 不可用:/api/library/files/<id>/download → estuary 带签名链,服务端回 ' +
     '{"detail":"File link not found."}(33 字节,被浏览器记为中断下载)。',

@@ -91,7 +91,7 @@ const LIB_BLOCK = [
   `\n_LIB_NOTES_ 下载通道已坏:${LIB_NOTES.downloadDead}`,
 ].join('\n')
 
-const BLOCK_STATUS = { reason: '原因已查明', 'not-taken': '未取(与 zip 重复)', 'not-attempted': '未尝试(原因未查)' }
+const BLOCK_STATUS = { reason: '原因已查明', symptom: '仅记录现象(根因未查)', 'not-taken': '未取(与 zip 重复)', 'not-attempted': '未尝试(原因未查)' }
 const BLOCK_TABLE = ['| 状态 | 条目 | 说明 |', '|---|---|---|', ...BLOCKED.map((b) => `| ${BLOCK_STATUS[b.status]} | \`${cell(b.name)}\` | ${cell(b.why)} |`)].join('\n')
 
 const CLAIM_INDEX = [
