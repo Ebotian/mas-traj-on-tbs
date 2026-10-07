@@ -179,6 +179,16 @@ export const REVERSALS: (Reversal & { evidence: 'v' | 's' })[] = [
       { was: '(抓取)同一段对话的 main.innerText 长度', now: '该视图**虚拟化挂载**:同一对话先后抓到 22.8k / 14.2k / 6.2k 字符 —— 长度**不是**完整性信号。可靠做法:读页面**尾部**最后一个 "ChatGPT said:" 块,并以 UI 自带的 "Worked for Ns" 为完成标志(注意它是重排后出现的,首轮抓取可能早于它)', cite: 'local2gpt/out/reply-2026-10-07-r5.md, -r6.md' },
     ],
   },
+  {
+    round: '独立研究报告 → 采纳(10-07)', date: '2026-10-07', source: '外部 Deep Research 导出「长程 Agent 评测」(1,196 行 / 38 源;引用已逐条核验,见 .qwen/tmp/deepresearch-citation-ledger.md)', evidence: 'v',
+    items: [
+      { was: '(证据档)本项目只有「我复核 v」与「二手 s」两档,重复出现不进入证据', now: '**重复不是新意被削减,是证据**。本轮有 6 条判断被一个外部检索系统独立再得到:追加式底座 + 可重建视图(C1)、Evidence-first 与「历史不可由 summary 替代」、报分布而非最佳单次 run(基础设施计划:312 / virtual_staining:420 / adapdc_theory_review:387)、N_eff 与「agent 数量不是好的缩放变量」、人类注意力是一种资源(稿 4 六资源表)、可机械验证者优先(C2 / v4:322),外加「指标在一切条件下都完美」是失效模式(冲突 exp3)。**尚未落地**:证据类型目前仍只有 v / s(types.ts 的 Evidence 与地图图例只认这两档),新增「独立再证」一档是 schema + 视图改动,待用户裁定,此处只登记该档应当存在', cite: '本次去重 A 类;viz/src/types.ts' },
+      { was: '`time to first improvement` / `time to target` 只用均值 + 置信区间汇总(计划:770)', now: '**已修**:计划补 §6.4 删失规则与生存分析 —— 未发生记右删失 t⁺ = B 且标记与观测值分开存;先报达事件比例 k/n,再报事件发生者的分位数;预算预注册、不得因删失多而延长。指认这一缺陷的有**两个互不相干的来源**:B 线审查的五个版本(同一份审查的不同长度,只算一个来源)+ 本次外部报告', cite: 'open_world_algorithm_research_engineering_plan.typ §6.4' },
+      { was: 'N_eff 里的 ρ 只有两种含义(D 线错误相关性 / a0 的 assay 范围)', now: '外部报告给出第三种并附测量程序:相关性算在 agent 级**已验证边际增益** ΔQ 上(每任务/试验/checkpoint),估计量用经验相关矩阵,并明写「不能用自然语言输出的相似度」⇒ 三条含义须分开命名(ρ_assay / ρ_error / ρ_gain)', cite: '冲突 rho + 外部报告 §2.9' },
+      { was: '性能类结果没有有效性守卫', now: '登记一条守卫(冲突 bench-validity):名义客观的运行时/加速比排名是机器与计分规则的函数 —— 审计重放 740 任务/四类 GCP 机,只有 GSO 39/102、SWE-Perf 11/140、SWE-fficiency 411/498 在每次重放中都满足其原始有效性判据,且 8 份共享提交里 9/28 的排名相反 ⇒ 优化结果报成元组,不报单一倍数', cite: '冲突 bench-validity' },
+      { was: '(引用可用性)外部报告的引用可直接引用', now: '**三处必须改后使用**:SWE-fficiency 是 **0.23×**(它写 0.15×)、LHTB 验证器是 **rebuild-from-artifact**(它写 replay-based,且方向相反)、LHTB 类别仓库 8 类/论文 9 类(两源冲突);另有**两处内部矛盾**:成本向量定义了两次(摘要 7 项已塌成单一美元项,而正文禁止塌缩)、V 自称 first-order 却缺席两个指标清单', cite: 'citation ledger + 报告 §5.1/§5.2' },
+    ],
+  },
 ]
 
 /* ------------------------------------------------------------------ conflicts */
@@ -188,7 +198,7 @@ export const CONFLICTS: Conflict[] = [
     id: 'rho', title: 'ρ 同名异义', kind: 'name-collision', evidence: 'v',
     left: { who: 'D 线的 ρ', cite: 'Pasted markdown.md §2, §20 L1', quote: 'latent error correlation —— agent 间错误相关性,是关于世界的量。' },
     right: { who: 'a0/ 的 ρ_X', cite: 'positive_control/PC-REVISION.md:165-166', quote: 'ρ_X = (R − J_X)/(R − J_0),是 assay 的动态范围。「ρ 是 assay 的属性,MUST NOT 被当作关于世界的证据。」' },
-    consequence: '审查最硬的数学结论针对前者,但措辞看起来像批评任何用 ρ 的推断。任何把两条线写进同一份文档的尝试都会踩这个坑。建议 a0/ 侧改名 ρ_assay 或 dyn_range。',
+    consequence: '审查最硬的数学结论针对前者,但措辞看起来像批评任何用 ρ 的推断。任何把两条线写进同一份文档的尝试都会踩这个坑。建议 a0/ 侧改名 ρ_assay 或 dyn_range。**2026-10-07 出现第三种用法**:一份外部研究导出把 N_eff 的相关性定义为 agent 级*已验证边际增益* ΔQ(每任务/试验/checkpoint)的相关,并给出测量程序(经验相关矩阵),且明写「被相关的量不能用自然语言输出的相似度」。三条必须分开命名:ρ_assay(a0/ 的仪器性质)、ρ_error(D 线的错误相关性)、ρ_gain(增益相关,本次新增)。',
   },
   {
     id: 'rq', title: 'RQ1–RQ5 同名异义', kind: 'name-collision', evidence: 'v',
@@ -231,6 +241,12 @@ export const CONFLICTS: Conflict[] = [
     left: { who: '站点搜索', cite: 'search「open_world_plan」→ 0 命中', quote: '按这条证据推论:账户里没有 B 线那六版,与载荷侧「只有读取窗口、无写入」的结论互相印证。' },
     right: { who: 'Library 页面', cite: 'chatgpt.com/library,159 条', quote: 'open_world_plan_independent_review(1)…(6).typ 六张卡片俱在,Modified 09-18→09-20。' },
     consequence: '两条证据都真:搜索对 File 类至少漏过六项(其索引范围未测),库页有六版。用「搜索无命中」推断「文件不存在」,让本项目在 09-30 至 10-06 这一周里把「B 线不可恢复」写进了三处记忆与一张反转表。可确证的规则只有一条:不能用 0 命中推断不存在。存在性由**一次经身份核验的成功读取**支持;第二通道用于核对身份或恢复可靠性,不是存在性的必要条件。',
+  },
+  {
+    id: 'bench-validity', title: '性能类基准的有效性是机器与计分规则的函数', kind: 'false-green', evidence: 'v',
+    left: { who: '基准的名义判据', cite: 'GSO / SWE-Perf / SWE-fficiency 的官方参考补丁与计分规则', quote: '参考补丁可重放、目标量是运行时 ⇒ 名义上是可执行的、客观的性能判据,可据此排名。' },
+    right: { who: '2026 审计的重放结果', cite: 'arXiv:2607.01211(GSO 39/102 · SWE-Perf 11/140 · SWE-fficiency 411/498)', quote: '「replay the official reference patches for 740 code optimization tasks across four common types of Google Cloud machines … only 39/102 GSO tasks, 11/140 SWE-Perf tasks, and 411/498 SWE-fficiency tasks [satisfy the original validity rules in every replay] … the official rankings disagree on 9 of 28 pairwise submission comparisons.」【我逐字核过】' },
+    consequence: '名义客观的性能结果依赖机器与聚合规则 ⇒ 一个优化结果不能只报 speedup,要报成元组(倍数、CI、硬件、基线、正确性覆盖、隐藏鲁棒性、重放稳定性)。对本项目是**守卫**不是当下缺陷:自有文档里只有 artifact 层的环境锁定(adapdc_relation_first_plan.typ:155「不能把机器上的绝对路径当作跨机器身份」),没有性能层的硬件钉扎与跨机重放要求。与 exp3 同线:都是「指标看起来无懈可击,而有效性未验」。',
   },
 ]
 

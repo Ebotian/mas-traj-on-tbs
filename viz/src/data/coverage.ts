@@ -27,15 +27,15 @@ import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
  "corpusFiles": 63,
- "corpusLines": 95830,
- "corpusLinesExclTranscript": 34330,
+ "corpusLines": 95851,
+ "corpusLinesExclTranscript": 34351,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 4138,
+ "corpusLinesRead": 4242,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 4138
+ "corpusLinesReadExclTranscript": 4242
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -80,9 +80,10 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/open_world_algorithm_research_engineering_plan.typ",
-  "lines": 1513,
-  "status": "secondhand",
-  "linesRead": 0
+  "lines": 1534,
+  "status": "partial",
+  "linesRead": 104,
+  "note": "2026-10-07 为落 §6.4 删失规则,读了 §6.1–§6.3 与 §8.1 指标表(window 727–830);此前记为二手未读"
  },
  {
   "path": "related_files/Pasted markdown.md",
