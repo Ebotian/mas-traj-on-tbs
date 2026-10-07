@@ -327,7 +327,9 @@ export function render(host: HTMLElement): void {
     h('div', { class: 'cardbody' },
       note('按「收窄链」:亮起来的是 G₀ → Allocate → RQ3 → H_T → 门 → B0a,一条穿过 8 层的细线,两侧全暗。这是「H_T 只是子问题」的可视化。'),
       note('按「只看冲突」:玫红三角形聚在第 4–5 层,即线与线的交界处,不在任何一条线内部。'),
-      note('按「只看二手+未读」:剩下 7 个节点(3 二手 + 4 未读)。这是给我自己的折扣清单。'),
+      note(`按「只看二手+未读」:剩下 ${nodes.filter(n => n.evidence !== 'v').length} 个节点(` +
+        `${nodes.filter(n => n.evidence === 's').length} 二手 + ${nodes.filter(n => n.evidence === 'u').length} 未读)。` +
+        '这是给我自己的折扣清单 —— 个数从数据现算,不手写。'),
       note('节点大小 = 连接度。描边虚实 = 证据等级,与颜色无关,所以色盲下仍可读。'))))
 
   const first = nodes.find(n => n.id === 'g0')

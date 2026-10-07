@@ -17,7 +17,7 @@ export const TIMELINE: TimelineEvent[] = [
   { date: '09-18', clock: '02:47', label: '轮次 #17 搜索已有实现', track: 'conversation', note: '开放世界这条线的起点' },
   { date: '09-18', clock: '02:54', label: '轮次 #18 open problems must in open world', track: 'conversation', note: '该口号是用户的,不是模型的' },
   { date: '09-18', clock: '06:17', label: 'open_world_algorithm_research_engineering_plan.typ + refs.bib', track: 'conversation', artifact: 'related_files/open_world_algorithm_research_engineering_plan.typ' },
-  { date: '09-18→20', clock: '08:09→07:15', label: '七版独立审查', track: 'conversation', note: '(1)–(6) 永久缺失:载荷里只有截断的读取窗口,无写入操作' },
+  { date: '09-18→20', clock: '08:09→07:15', label: '六版独立审查(六次上传)', track: 'conversation', note: '(1)–(6)。当时只能从载荷推断,记为「永久缺失」—— 该结论已推翻,见 10-06 的取回条目' },
   { date: '09-20', clock: '07:15', label: 'open_world_plan_review.typ', track: 'conversation', artifact: 'related_files/open_world_plan_review.typ', note: '§4 成为 a0/ 的协议权威:外部、只读、不在本仓库内' },
   { date: '09-21', clock: '', label: 'A−1 / A0.1 / A0.2 + STATUS + CONVERGENCE + SPRINT', track: 'repo', artifact: 'a0/STATUS.md', note: '标签 a0-audited' },
   { date: '09-22', clock: '', label: 'A1-REQUIREMENTS · A1-CONTRACT-AUDIT', track: 'repo' },
@@ -40,6 +40,7 @@ export const TIMELINE: TimelineEvent[] = [
   { date: '10-06', clock: '', label: 'B 线六版取回:(1)–(5) 入库,v(6) 与磁盘归一化后逐字节相同', track: 'this-session', artifact: 'related_files/open_world_plan_independent_review(1).typ', note: '拼接 CodeMirror 预览;6/6 typst 编译通过。此前写在三处的「不可恢复」被推翻' },
   { date: '10-06', clock: '', label: 'D 线 / a0 侧 / AdaPDC 9 份取回(无损),另 3 份只有渲染文本(共 12)', track: 'this-session', artifact: 'related_files/TIMING-REVIEW(1).md', note: 'H_T 审查 v2、STATUS(1/2)、第二轮审计、进展稿、C0 两份、源码审查包、接口契约;范畴论三份走跨源沙盒 iframe,markdown 原文不可得。外部复核(10-06)指出原写「12 份取回」与恢复清单的 9+3 不符,已改' },
   { date: '10-06', clock: '', label: '稿 4:记忆基底即信息划分 —— 第一节是「去重表」', track: 'this-session', artifact: 'related_files/1006/memory_substrate_and_partition.typ', note: '体例变了一次:先判定哪些说法已在 v4/稿 1–3(给位置),只在四条新内容上展开:N1 机制→旋钮→特征损失、N2 触发器从容量改为矛盾密度、N3 相关性过滤的结构性盲区、N4 强制边界=工具持有者(单写者新风险);N5 = 三个裁决器 T1–T3' },
+  { date: '10-07', clock: '', label: '外部复核 1–6 轮:逐条核验 → 修复 → 收口', track: 'this-session', artifact: 'related_files/gpt-review-2026-10-07-r6.md', note: '缺陷数 4 / 19 / 13+1 / 6 / 1 / 0;第 6 轮「无」即收口。每轮只审被点名的位置 —— 所以收口不等于包内已无缺陷,包外的证据缺口(C9 的映射、C19 的身份配对、T1′/T2/T3 未跑)照旧未销' },
 ]
 
 /* ----------------------------------------------------------------- reversals */

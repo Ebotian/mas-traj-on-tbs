@@ -9,6 +9,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
+    "probe": "node --experimental-strip-types scripts/probe_views.mjs",
     "derive": "python3 scripts/derive_experiments.py"
   },
   "devDependencies": {

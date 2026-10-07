@@ -19,11 +19,15 @@ export function render(host: HTMLElement): void {
     '这一页是 2026-10-06 的核查:哪些是仓库已有的重复件,哪些是仓库没有的,取回时各走了哪条通道,以及',
     h('b', {}, '哪一条此前的结论被这次核查推翻'), '。'))
 
+  const bStat = (k: string) => BLOCKED.filter(b => b.status === k).length
   host.appendChild(h('div', { class: 'stats' },
     stat(String(T.entries), '库页卡片总数(懒加载到底)'),
     stat(String(T.unmatched), '按名比对后本地没有', COLOR.warn),
     stat(String(T.recovered), '本轮取回并提交', COLOR.good),
-    stat(String(T.blocked), '取不到(原因已查明)', COLOR.bad),
+    stat(String(bStat('reason')), '取不到:原因已查明', COLOR.bad),
+    stat(String(bStat('symptom')), '取不到:仅记录现象'),
+    stat(String(bStat('not-taken')), '未取(是重复件)'),
+    stat(String(bStat('not-attempted')), '未尝试'),
     stat(String(T.archives), '归档形态(按规则不入 git)'),
     stat(`~${T.other}`, '属于其他项目(emsx/BESS、金融、个人配置)')))
 
