@@ -54,3 +54,65 @@ SWE-bench 2,294 原始任务 · RE-Bench 的具体小时/专家数 · GSO「102 
 ## 对使用者的实际后果
 
 引这份报告时,**只有那三处要改**(0.15×→0.23×;删 "replay-based";「九类」改「八类(仓库)/九类(论文),两源不一致」);其余关键数字可直接引用,其中审计那条我已经逐字核过,可以当作本项目至今最硬的外部评测有效性证据。
+
+---
+
+# 追加:对话里提到的 GitHub 仓库的独立核对(2026-10-07 第二轮)
+
+方法:`gh api repos/<owner>/<name>`(权威存在性 + 元数据)+ 取各仓 README/代码用 `gh search code` 比对。
+**不请摘要器报数**(前一天它把 openai/math 的 162/185 报成 155/184)。
+
+## 一、存在性(15 个全部存在)
+
+| 仓库 | ★ | 备注 |
+|---|---:|---|
+| `openai/math` | 4664 | pushed 2026-10-06,1 个 commit |
+| `loopx-project/loopx` | 6167 | pushed 2026-10-07 |
+| `zli12321/LHTB` | 713 | — |
+| `SWE-bench/SWE-bench` | 5985 | — |
+| `ScalingIntelligence/KernelBench` | 1280 | — |
+| `facebookresearch/kernel_bench_verified` | 15 | — |
+| `swefficiency/swefficiency` | 26 | — |
+| `sierra-research/tau-bench` | 1457 | — |
+| `hkust-nlp/AgentBoard` | 448 | — |
+| `MultiagentBench/MARBLE` | 58 | **fork=true**(上游为 `ulab-uiuc/MARBLE`) |
+| `METR/RE-Bench` | 170 | — |
+| `gso-bench/gso` | 92 | — |
+| `ybkim95/agent-scaling` | 55 | — |
+| `openai/mle-bench` | 1766 | — |
+| `laude-institute/harbor` | 5876 | 已迁至 **`harbor-framework/harbor`** |
+
+另:`facebookresearch/TUA-Bench`(120 任务,arXiv 2606.28480)真实存在 —— 对话里 "τ-bench / TUA-Bench" 的后半正是它。
+
+## 二、断言逐条核(以**所引仓库自身**为准)
+
+| 对话/报告的断言 | 核验 |
+|---|---|
+| LHTB:46 任务、稠密部分分、90 分钟、hidden verifiers | ✅ README 原文 |
+| LHTB:**暴露 verifier-cheating 问题** | ✅ 但不在 README/论文正文里 —— 在仓内 `harbor/examples/prompts/cheating_agent.md.j2`("你的目标是利用任何方式 **CHEAT**…MUST use at least some cheating")。措辞是对话自己的 |
+| SWE-bench 系 F2P/P2P | ✅ 术语真:README 没有,但 `swebench/types.py`、`harness/grading.py`、`docs/guides/datasets.md` 都有 `FAIL_TO_PASS` / `PASS_TO_PASS` |
+| KernelBench:`fast_p` | ✅ README 4 处 |
+| KernelBench-Verified:hidden 测试 / TF32 基线 / 内存指标 / input-blind | ✅ README 全部命中 |
+| SWE-fficiency:相对专家、correctness-preserving | ✅(倍率见前文:0.23×,不是 0.15×) |
+| METR 支出视野:性能-花费曲线、agent/human 交点 | ✅ |
+| τ-bench `pass^k` + TUA-Bench `All-5` | ✅ τ-bench README 有 pass^;TUA-Bench 榜头就是 `Success Rate / Pass@1 / Pass@5 / **All-5**` |
+| AgentBoard:success rate + progress rate + grounding + steps | ✅ progress rate / grounding 命中(README 用词略有差别) |
+| MARBLE:milestone KPI、star/chain/tree/graph 对比 | ⚠️ **两仓 README 都没有**(fork 与上游 `ulab-uiuc/MARBLE` 一致,均无 milestone/star/chain/tree/graph)。该断言只由论文 arXiv:2503.01935 支撑 |
+| LoopX:DeepSWE 五臂 heartbeat **70/113、61.9%、第 1** | ✅ **数字属实**,见下更正 |
+
+## 三、更正我上一轮的错(重要)
+
+我先前写「LoopX 仓库未给 DeepSWE 数字,7/46 未独立核到」——那是**继承了报告给错的路径**。报告的链接指向
+`huangruiteng/loopx/benchmark/deepswe/README.md`,而那个文件自述是 "DeepSWE **practice**" 笔记,明确
+"without publishing … unqualified score claims",**确实没有数字**。
+
+数字在**另一个仓、另一条路径**:
+`loopx-project/loopx/benchmark/deepswe-gptxhigh-v1/README.md` —— 标题 "DeepSWE Five-Arm Benchmark Harness (v1)",
+五臂定义齐全(`plain` / `goal` / `heartbeat` / `codex-cli` / `ssh-goal`,113 个 SWE 任务),结果行:
+
+```
+| 1 | heartbeat | 70/113 | 61.9% | 0.9739 | 0.886 | 0.993 |
+```
+
+⇒ **对话的说法成立**(第 1 名、70/113、61.9%、五臂),**报告给了错路径**,**我的台账又沿用了报告的错误**。
+这条同时也是「二手引用的路径错误会向下传染」的实例。
