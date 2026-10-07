@@ -50,7 +50,7 @@ const ROUTES = [
   ['time', 'src/views/time.ts', ['09-09 → 10-07', '外部复核 1–6 轮', 'B 线六版审查', '原判「中间版本永久缺失」已推翻', '09-30、10-06 与 10-07']],
   ['conflicts', 'src/views/conflicts.ts', ['条冲突', '条已登记的反转', '外部复核 #6 → 收口(10-07)']],
   ['decisions', 'src/views/decisions.ts', ['D33', 'D1', '代理谬误']],
-  ['coverage', 'src/views/coverage.ts', ['语料 65 个文件', '97180', '4766']],
+  ['coverage', 'src/views/coverage.ts', ['语料 68 个文件', '99922', '6151']],
   ['library', 'src/views/library.ts', ['取不到:原因已查明', '取不到:仅记录现象', '未取(是重复件)', '未尝试', '六版独立审查']],
 ]
 

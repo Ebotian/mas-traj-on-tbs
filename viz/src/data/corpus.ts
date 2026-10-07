@@ -180,7 +180,7 @@ export const REVERSALS: (Reversal & { evidence: 'v' | 's' })[] = [
     ],
   },
   {
-    round: '独立研究报告 → 采纳(10-07)', date: '2026-10-07', source: 'Deep Research 导出「长程 Agent 评测」(1,196 行 / 38 源;引用已逐条核验,见 related_files/deepresearch-citation-ledger-2026-10-07.md)。**它不是独立的外部材料**:它是会话 6ac5b520(分享链 6ac5e134)第 4 轮的产物,而该会话第 2/3 轮已提出 VOC 路由、验证器适配层、state/artifact graph 与 reusability —— 见 `.qwen/tmp/conv-6ac5e134/`', evidence: 'v',
+    round: '独立研究报告 → 采纳(10-07)', date: '2026-10-07', source: 'Deep Research 导出「长程 Agent 评测」(1,196 行 / 38 源;引用已逐条核验,见 related_files/deepresearch-citation-ledger-2026-10-07.md)。**它不是独立的外部材料**:它是会话 6ac5b520(分享链 6ac5e134)第 4 轮的产物,而该会话第 2/3 轮已提出 VOC 路由、验证器适配层、state/artifact graph 与 reusability —— 见 `related_files/conversation-openai-math-engineering-implications-2026-10-07/`(已入库)', evidence: 'v',
     items: [
       { was: '(证据档)本项目只有「我复核 v」与「二手 s」两档,重复出现不进入证据', now: '**重复不是新意被削减,是证据**。本轮有 6 条判断被一个外部检索系统独立再得到:追加式底座 + 可重建视图(C1)、Evidence-first 与「历史不可由 summary 替代」、报分布而非最佳单次 run(基础设施计划:312 / virtual_staining:420 / adapdc_theory_review:387)、N_eff 与「agent 数量不是好的缩放变量」、人类注意力是一种资源(稿 4 六资源表)、可机械验证者优先(C2 / v4:322),外加「指标在一切条件下都完美」是失效模式(冲突 exp3)。**尚未落地**:证据类型目前仍只有 v / s(types.ts 的 Evidence 与地图图例只认这两档),新增「独立再证」一档是 schema + 视图改动,待用户裁定,此处只登记该档应当存在', cite: '本次去重 A 类;viz/src/types.ts' },
       { was: '`time to first improvement` / `time to target` 只用均值 + 置信区间汇总(计划:770)', now: '**已修**:计划补 §6.4 删失规则与生存分析 —— 未发生记右删失 t⁺ = B 且标记与观测值分开存;先报达事件比例 k/n,再报事件发生者的分位数;预算预注册、不得因删失多而延长。指认这一缺陷的有**两个互不相干的来源**:B 线审查的五个版本(同一份审查的不同长度,只算一个来源)+ 本次外部报告', cite: 'open_world_algorithm_research_engineering_plan.typ §6.4' },
