@@ -26,16 +26,16 @@
 import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
- "corpusFiles": 68,
- "corpusLines": 99922,
- "corpusLinesExclTranscript": 35759,
+ "corpusFiles": 69,
+ "corpusLines": 100057,
+ "corpusLinesExclTranscript": 35894,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 6151,
+ "corpusLinesRead": 6286,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 4845
+ "corpusLinesReadExclTranscript": 4980
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -460,6 +460,13 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
   "lines": 17,
   "status": "read",
   "linesRead": 17
+ },
+ {
+  "path": "related_files/harness-design-comparison-qwen-vs-kimi-2026-10-07.md",
+  "lines": 135,
+  "status": "authored",
+  "linesRead": 135,
+  "note": "跨会话转交的 harness 对照;正文来自 qwen-code-df,我写了头与文末【我复核】并抽查了 kimi 13 条 + qwen 若干条。两处已改正:仓库路径缺前缀、qwen hook 事件 22 而非 19"
  },
  {
   "path": "related_files/conversation-openai-math-engineering-implications-2026-10-07/README.md",
