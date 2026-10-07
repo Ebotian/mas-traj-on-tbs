@@ -78,7 +78,8 @@ const COV_TABLE = ['| 路径 | 行 | 状态 | 已读行 | 备注 |', '|---|---|-
 
 const LIB_BLOCK = [
   `\`chatgpt.com/library\` 共 **${LIB_TOTALS.entries}** 条;按名比对后本地没有 **${LIB_TOTALS.unmatched}** 条;`,
-  `本轮取回并入库 **${LIB_TOTALS.recovered}** 份;取不到且原因已查明 **${LIB_TOTALS.blocked}** 条;`,
+  `本轮取回并入库 **${LIB_TOTALS.recovered}** 份;取不到或未取 **${LIB_TOTALS.blocked}** 条` +
+  `(原因已查明 ${BLOCKED.filter((b) => b.status === 'reason').length} / 未取 ${BLOCKED.filter((b) => b.status === 'not-taken').length} / 未尝试 ${BLOCKED.filter((b) => b.status === 'not-attempted').length});`,
   `名字呈归档形态 **${LIB_TOTALS.archives}** 条(按规则不入 git);约 **${LIB_TOTALS.other}** 条属其他项目。\n`,
   '三条取回通道与各自的陷阱:\n',
   ...MECHANISMS.map((m) => `- **${m.viewer}** —— 取法:${m.route};陷阱:${m.trap}`),
@@ -87,7 +88,8 @@ const LIB_BLOCK = [
   `\n_LIB_NOTES_ 下载通道已坏:${LIB_NOTES.downloadDead}`,
 ].join('\n')
 
-const BLOCK_TABLE = ['| 条目 | 原因 |', '|---|---|', ...BLOCKED.map((b) => `| \`${cell(b.name)}\` | ${cell(b.why)} |`)].join('\n')
+const BLOCK_STATUS = { reason: '原因已查明', 'not-taken': '未取(与 zip 重复)', 'not-attempted': '未尝试(原因未查)' }
+const BLOCK_TABLE = ['| 状态 | 条目 | 说明 |', '|---|---|---|', ...BLOCKED.map((b) => `| ${BLOCK_STATUS[b.status]} | \`${cell(b.name)}\` | ${cell(b.why)} |`)].join('\n')
 
 const CLAIM_INDEX = [
   ['C1–C9', '`1_we_are_here/03_FRAMING.md`(原文)+ `3_verify/20_INDEX.md` 本节'],
@@ -147,6 +149,7 @@ const copyDir = (from, to, filter) => {
 }
 copyDir(path.join(ROOT, 'related_files/1006'), path.join(DEST, '4_full_text/1006'), (f) => f.endsWith('.typ'))
 copyDir(path.join(ROOT, 'viz/src/data'), path.join(DEST, '4_full_text/registers'), (f) => f.endsWith('.ts'))
+fs.copyFileSync(path.join(HERE, 'build_packet.mjs'), path.join(DEST, '3_verify/25_build_packet.mjs'))
 
 /* ---------- 4) 第二遍:清单表 + sha256 ---------- */
 const walk = (d, base = d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => {

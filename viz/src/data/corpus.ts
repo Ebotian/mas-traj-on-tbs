@@ -37,7 +37,7 @@ export const TIMELINE: TimelineEvent[] = [
   { date: '09-30', clock: '', label: '重放回收 C 线 v2/v3 + conversation/ 入库', track: 'this-session', note: '三次逐字节对拍通过' },
   { date: '10-06', clock: '', label: 'viz/ 脚手架:TS + Vite,七个视图', track: 'this-session', artifact: 'viz/' },
   { date: '10-06', clock: '', label: '账户 Library 核查:159 条 → 118 条本地没有', track: 'this-session', note: '站点搜索不索引 File:搜 open_world_plan 命中 0,而库页六版俱在 —— 这正是误判的根因' },
-  { date: '10-06', clock: '', label: 'B 线六版取回:(1)–(5) 入库,v(6) 与磁盘逐字节相同', track: 'this-session', artifact: 'related_files/open_world_plan_independent_review(1).typ', note: '拼接 CodeMirror 预览;6/6 typst 编译通过。此前写在三处的「不可恢复」被推翻' },
+  { date: '10-06', clock: '', label: 'B 线六版取回:(1)–(5) 入库,v(6) 与磁盘归一化后逐字节相同', track: 'this-session', artifact: 'related_files/open_world_plan_independent_review(1).typ', note: '拼接 CodeMirror 预览;6/6 typst 编译通过。此前写在三处的「不可恢复」被推翻' },
   { date: '10-06', clock: '', label: 'D 线 / a0 侧 / AdaPDC 9 份取回(无损),另 3 份只有渲染文本(共 12)', track: 'this-session', artifact: 'related_files/TIMING-REVIEW(1).md', note: 'H_T 审查 v2、STATUS(1/2)、第二轮审计、进展稿、C0 两份、源码审查包、接口契约;范畴论三份走跨源沙盒 iframe,markdown 原文不可得。外部复核(10-06)指出原写「12 份取回」与恢复清单的 9+3 不符,已改' },
   { date: '10-06', clock: '', label: '稿 4:记忆基底即信息划分 —— 第一节是「去重表」', track: 'this-session', artifact: 'related_files/1006/memory_substrate_and_partition.typ', note: '体例变了一次:先判定哪些说法已在 v4/稿 1–3(给位置),只在四条新内容上展开:N1 机制→旋钮→特征损失、N2 触发器从容量改为矛盾密度、N3 相关性过滤的结构性盲区、N4 强制边界=工具持有者(单写者新风险);N5 = 三个裁决器 T1–T3' },
 ]
@@ -109,11 +109,20 @@ export const REVERSALS: (Reversal & { evidence: 'v' | 's' })[] = [
   {
     round: '梳理 v3 → 账户库核查(10-06)', date: '2026-10-06', source: 'chatgpt.com/library 159 条 + 站点搜索 + 17 份取回件', evidence: 'v',
     items: [
-      { was: 'B 线六个 open_world_plan_independent_review 版本「不可恢复:载荷里只有截断的读取窗口,无写入操作」', now: '六版都在账户 Library 里(File,09-18→09-20)。(1)–(5) 已取回入库,v(6) 与磁盘那份逐字节相同(仅差一个尾部空行)', cite: 'commit 900bcb0' },
+      { was: 'B 线六个 open_world_plan_independent_review 版本「不可恢复:载荷里只有截断的读取窗口,无写入操作」', now: '六版都在账户 Library 里(File,09-18→09-20)。(1)–(5) 已取回入库,v(6) 与磁盘那份归一化后逐字节相同(唯一差异是一个尾部空行)', cite: 'commit 900bcb0' },
       { was: '站点搜索可以当文件清单用 —— 搜 open_world_plan 得 0 命中,据此判定账户里也没有', now: '搜索只索引对话与文档语料,不索引 File:0 命中与「库里六版俱在」同时为真。凡断「文件是否存在」必须以 Library 页面为准', cite: '库页 vs /command search' },
       { was: '「项目」有 38 条对话', now: '12 条(面板行带日期;可访问名里写着 chat in project);其余 /c/ 链接是侧栏全局 Recents 与同一批对话的重复', cite: '项目页 + 库页两张快照' },
       { was: 'adapdc_*、deep-research-report*、ada-/opl-engineering-plan 都是「纯输入,只被读取」', now: 'adapdc_* 与 deep-research-report* 有同期账户 Document(Sep 9–10);ada-/opl-engineering-plan 是「审查Kimi插件」(09-16)的产物', cite: 'search: 审查包 / AdaPDC / rekursiv' },
       { was: '项目标签可以当相关性判据', now: '不能:产出 virtual_staining_open_source_sota_survey.typ 的那条对话不在项目里;项目内也有 BESS、气象站这类别的主题', cite: 'search: 虚拟染色 → 唯一命中非项目对话' },
+    ],
+  },
+  {
+    round: '外部复核 → 降级(10-06 → 10-07)', date: '2026-10-07', source: 'related_files/gpt-review-2026-10-06.md（24 哈希通过;20/33/8/6 与登记册一致）', evidence: 'v',
+    items: [
+      { was: '「适应收益的上界 = 静态结构 spread」,因而先测静态矩阵即可判 society 值不值得建', now: '被一个两阶段反例否证:结构 A 得 (1,0)、B 得 (0,1),静态均值各 0.5 而阶段路由可得 1 ⇒ spread 不是上界;门须改为阶段条件的测量', cite: 'gpt-review 批次 2 · D33' },
+      { was: '损失表把「信息损失」与「计算/维护成本」混列', now: '已分列(稿 4 §2 改为五列):一列是放弃了哪个旋钮,一列是为此付出什么 —— 付成本 ≠ 放弃旋钮', cite: 'gpt-review 批次 1 · C11' },
+      { was: '「nontrivial」由过滤器的相关性排序来定义', now: '循环定义,尚未修:须先独立定义 nontrivial,才能谈过滤器能否产出它 —— 待裁决', cite: 'gpt-review 批次 1 · C13' },
+      { was: '三处全称推广(搜索从不索引 File / 12 即全集 / 同期 Document 即生成来源)', now: '已收口为「该全称不成立」:C17–C19 只主张反例存在,逐份来源仍需各自的生成事件配对', cite: 'gpt-review 批次 1 · C17–C19' },
     ],
   },
 ]
@@ -167,7 +176,7 @@ export const CONFLICTS: Conflict[] = [
     id: 'search-vs-library', title: '同一条目,搜索说没有、库页说在', kind: 'provenance', evidence: 'v',
     left: { who: '站点搜索', cite: 'search「open_world_plan」→ 0 命中', quote: '按这条证据推论:账户里没有 B 线那六版,与载荷侧「只有读取窗口、无写入」的结论互相印证。' },
     right: { who: 'Library 页面', cite: 'chatgpt.com/library,159 条', quote: 'open_world_plan_independent_review(1)…(6).typ 六张卡片俱在,Modified 09-18→09-20。' },
-    consequence: '两条证据都真:搜索只索引对话与文档语料,不索引 File。用「搜索无命中」推断「文件不存在」,让本项目在一个季度里把「B 线不可恢复」写进了三处记忆与一张反转表。凡涉及文件存在性,一律以 Library 页面为准;搜索只用来定位对话与文档。',
+    consequence: '两条证据都真:搜索只索引对话与文档语料,不索引 File。用「搜索无命中」推断「文件不存在」,让本项目在 09-30 至 10-06 这一周里把「B 线不可恢复」写进了三处记忆与一张反转表。凡涉及文件存在性,一律以 Library 页面为准;搜索只用来定位对话与文档。',
   },
 ]
 
@@ -201,12 +210,12 @@ export const DECISIONS: Decision[] = [
   { id: 'D25', group: 'corpus', status: 'done', question: '对话记录是否入库', cite: '提交 ccae0deb', recommendation: '已执行:transcript + user_turns + 两个脚本;mapping.json 与 11 MB HTML 不入库,可由脚本 0.8 s 重建' },
   { id: 'D26', group: 'corpus', status: 'done', question: 'B 线六个独立审查版本是否可恢复', cite: '提交 900bcb0', recommendation: '已执行:从账户 Library 取回 (1)–(5) 并入库;v(6) 与磁盘那份逐字节相同' },
   { id: 'D27', group: 'corpus', status: 'open', question: '三份「范畴论」报告只拿到渲染文本(markdown 标记已被剥掉),这种降级副本是否留在语料里?', cite: '提交 301a4be', recommendation: '文件名已带 .rendered.txt;若不接受,删掉即可,内容与 literature/ 里的同线 PDF 重叠' },
-  { id: 'D28', group: 'corpus', status: 'open', question: '48 个归档(adapdc-src-review-*.tar ×36、adapdc-c2-review ×3、payload.tar ×3、emsx_workspace ×5、repository-review ×1,另有 8 个 open-problem-lab zip)是否下载作恢复源?', cite: '10-06 库核查', recommendation: '归档在跟踪白名单外,入库与否是两件事;下载只解决「手里有没有」' },
+  { id: 'D28', group: 'corpus', status: 'open', question: '56 个归档形态条目(名字判出 48 个 `.tar`:adapdc-src-review ×36、adapdc-c2-review ×3、payload.tar ×3、emsx_workspace ×5、repository-review ×1;另 8 个 open-problem-lab `.zip` 由对话框标题露出)是否下载作恢复源?', cite: '10-06 库核查;10-07 外部复核指出原 48 与 8 的范围不一致', recommendation: '归档在跟踪白名单外,入库与否是两件事;下载只解决「手里有没有」' },
   { id: 'D29', group: 'corpus', status: 'open', question: 'research-foundations.md 的正文说「研究起点:继承自 emsx 的已证结论」—— 它归本语料,还是归 emsx 那个项目?', cite: '10-06 库核查', recommendation: '已取回但未入库(留在 /tmp);归属由用户定' },
   { id: 'D30', group: 'corpus', status: 'open', question: 'adapdc_architecture_report.typ 与 adapdc_theory_review(1).typ 的预览始终不渲染,是否换通道或过些时候重试?', cite: '10-06 库核查', recommendation: '两者都是 .typ,理论上可走拼接通道;先怀疑是暂时性加载失败' },
   { id: 'D31', group: 'corpus', status: 'open', question: '把账户 Library 当定期同步的恢复源,还是只在需要时核查?', cite: '10-06 库核查', recommendation: '倾向后者:一次核查已证明「搜索会漏、下载已坏、归档不入库」,例行同步的成本高于收益' },
-  { id: 'D32', group: 'cross', status: 'open', question: '记忆基底 = 信息划分的实现层(稿 4)。反向映射:机制 → 旋钮 → 特征损失 —— 八种机制没有一种「不损失」,选机制就是选放弃哪个旋钮。四条新内容:①压缩/遗忘的触发器从容量改为矛盾密度;②相关性过滤按构造无法产出 nontrivial(结构性盲区,不是概率漏检);③强制边界是工具持有者,而系统里没有 MMU ⇒ 单写者是系统级单点,且信息划分的丢失在构造上不可见;④三个裁决器 T1–T3。', cite: 'related_files/1006/memory_substrate_and_partition.typ;v4:37（底座+视图）、:322（可机械验证者提升为 code）、:469（提升须过 replay）', recommendation: 'T1–T3 只需本地语料,近零 credits;未通过前这几条只是 SOP 候选,不是 invariant;单写者是否可接受需用户裁决' },
-  { id: 'D33', group: 'cross', status: 'open', question: 'society = 四元组(聚合 / 信息划分 / 反转成本 / 权威可变性)+ 宪法层,三个时间尺度(任务 / 族 / 实验);适应只在「静态 spread > 探索成本」时动手。不是「按阶段换模型」—— 要问的是该实例化哪个四元组。', cite: '1006/model_society_as_allocation.typ, society_as_learned_structure.typ, society_belief_and_law.typ(稿 1–3 的 kill 1–3 与 Step 0)', recommendation: '记忆基底决定反转成本,因而决定适应值不值得买 —— 这是 D32 与 D33 的接口;先做稿 3 §5 的静态矩阵,再谈适应' },
+  { id: 'D32', group: 'cross', status: 'open', question: '记忆基底 = 信息划分的实现层(稿 4)。反向映射:机制 → 旋钮 → 特征损失 —— 八种机制没有一种「不损失」,选机制就是选放弃哪个旋钮。四条新内容:①压缩/遗忘的触发器从容量改为矛盾密度;②相关性过滤按构造无法产出 nontrivial(结构性盲区,不是概率漏检);③强制边界是工具持有者,而系统里没有 MMU ⇒ 单写者是系统级单点,且信息划分的丢失在构造上不可见;④三个裁决器 T1–T3。外部复核(10-06)指出:存储基底不等于主体间信息划分,四条主张被绑成一项,T1–T3 未逐项覆盖(缺 N4 的测试);损失与成本须分列(已分列)。', cite: 'related_files/1006/memory_substrate_and_partition.typ;v4:37（底座+视图）、:322（可机械验证者提升为 code）、:469（提升须过 replay）;10-07 复核', recommendation: 'T1–T3 只需本地语料,近零 credits;未通过前这几条只是 SOP 候选,不是 invariant;单写者是否可接受需用户裁决' },
+  { id: 'D33', group: 'cross', status: 'open', question: 'society = 四元组(聚合 / 信息划分 / 反转成本 / 权威可变性)+ 宪法层,三个时间尺度(任务 / 族 / 实验);适应只在「静态 spread > 探索成本」时动手。**10-07 外部复核降级**:阶段交叉时静态均值 spread 可为 0 而阶段路由收益 > 0(A 得 (1,0)、B 得 (0,1)),故「适应收益 ≤ 静态 spread」不成立 —— 这道门须改为阶段条件的测量(反例保留,v4:492 要求降级留反例)。', cite: '1006/model_society_as_allocation.typ, society_as_learned_structure.typ, society_belief_and_law.typ;gpt-review 2026-10-06 §批次2 D33', recommendation: '记忆基底决定反转成本,因而决定适应值不值得买 —— 这是 D32 与 D33 的接口;静态矩阵仍可测,但不能再当作适应收益的上界' },
 ]
 
 export const DECISION_GROUPS = {

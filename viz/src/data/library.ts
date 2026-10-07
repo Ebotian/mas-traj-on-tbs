@@ -9,8 +9,8 @@ export interface LibTotals {
   entries: number      // 库页卡片总数(懒加载到底)
   unmatched: number    // 按名比对后,仓库里没有对应物的
   recovered: number    // 本轮取回并提交的
-  blocked: number      // 取不到,且原因已查明
-  archives: number     // 名字呈 `.tar`/`.zip` 形态的条目(按规则不入 git)
+  blocked: number      // 取不到**或未取**,状态逐条列出(见 BLOCKED[].status)
+  archives: number     // 归档形态条目(按规则不入 git):48 个由名字判出(`.tar`),另 8 个 open-problem-lab `.zip` 由对话框标题露出
   other: number        // 属于其他项目(emsx/BESS、金融、个人配置等),约数
 }
 
@@ -19,7 +19,7 @@ export const LIB_TOTALS: LibTotals = {
   unmatched: 118,
   recovered: 17,
   blocked: 7,
-  archives: 48,
+  archives: 56,
   other: 46,
 }
 
@@ -72,16 +72,16 @@ export const LADDER: { v: string; lines: number; note: string }[] = [
   { v: 'v(6)', lines: 1030, note: '= 磁盘上的 open_world_plan_independent_review.typ' },
 ]
 
-export interface BlockedRow { name: string; why: string }
+export interface BlockedRow { name: string; why: string; status: 'reason' | 'not-taken' | 'not-attempted' }
 
 export const BLOCKED: BlockedRow[] = [
-  { name: 'adapdc_architecture_report.typ', why: '预览始终不渲染:>14 s 内没有 CodeMirror、也没有 Try again 按钮' },
-  { name: 'adapdc_theory_review(1).typ', why: '同上' },
-  { name: 'agent_engineering_science_v1', why: '对话框标题露出真名 agent_engineering_science_v1.**zip** —— 是归档,不是文本' },
-  { name: 'agent_engineering_science_report.tex', why: '与未跟踪的 repro zip 内容重复,本轮未取' },
-  { name: 'agent_engineering_science_references.bib', why: '同上' },
-  { name: 'analytic_closed_loop_loss_study', why: '未尝试' },
-  { name: 'Deep Research report', why: '未尝试' },
+  { name: 'adapdc_architecture_report.typ', why: '预览始终不渲染:>14 s 内没有 CodeMirror、也没有 Try again 按钮', status: 'reason' },
+  { name: 'adapdc_theory_review(1).typ', why: '同上', status: 'reason' },
+  { name: 'agent_engineering_science_v1', why: '对话框标题露出真名 agent_engineering_science_v1.**zip** —— 是归档,不是文本', status: 'reason' },
+  { name: 'agent_engineering_science_report.tex', why: '与未跟踪的 repro zip 内容重复(不是取不到)', status: 'not-taken' },
+  { name: 'agent_engineering_science_references.bib', why: '同上', status: 'not-taken' },
+  { name: 'analytic_closed_loop_loss_study', why: '未尝试,原因未查', status: 'not-attempted' },
+  { name: 'Deep Research report', why: '未尝试,原因未查', status: 'not-attempted' },
 ]
 
 export interface Mechanism { viewer: string; route: string; trap: string }
@@ -106,7 +106,7 @@ export const MECHANISMS: Mechanism[] = [
 
 export const LIB_NOTES = {
   falsified: '「B 线六版不可恢复」此前写进了三个地方(分享链接溯源、可重建性、账户清单)。' +
-    '本轮在库页看到六张卡片并全部取回;v(6) 与磁盘那份逐字节相同(仅差一个尾部空行)。',
+    '本轮在库页看到六张卡片并全部取回;v(6) 与磁盘那份归一化后逐字节相同(唯一差异是一个尾部空行)。',
   searchTrap: '同一次核查里,站点搜索对 open_world_plan 返回 0 命中 —— 搜索只索引对话与文档语料,' +
     '不索引 File。用「搜索无命中」推断「文件不存在」正是当初误判的根因。',
   downloadDead: '卡片的 Download 不可用:/api/library/files/<id>/download → estuary 带签名链,服务端回 ' +
