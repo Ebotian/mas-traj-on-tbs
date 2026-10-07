@@ -56,10 +56,13 @@ async function harvest() {
 
 /** 幂等:已是"附件 + 草稿"状态就不再重复上传/填充。 */
 async function composerState() {
+  // 只在 composer 自己的 <form> 内找附件名 —— 扫 document.body 会把上一轮对话里的同一个文件名
+  // 也算进来,造成"有附件"的假阳性(2026-10-07 实测:清空后仍报 attached:true)。
   return JSON.parse(await ev(`(()=>{
     const ce=document.querySelector('${SEL_COMPOSER}');
-    const t=document.body.innerText||'';
-    return JSON.stringify({draft:ce?ce.innerText.length:0, attached:t.indexOf(${JSON.stringify(path.basename(PACKET).split('.')[0])})>=0});
+    const scope=(ce&&ce.closest('form'))||null;
+    const t=(scope?scope.innerText:document.body.innerText)||'';
+    return JSON.stringify({draft:ce?ce.innerText.length:0, attached:t.indexOf(${JSON.stringify(path.basename(PACKET).split('.')[0])})>=0, scopedToComposer:!!scope});
   })()`))
 }
 

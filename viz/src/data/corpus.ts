@@ -122,6 +122,7 @@ export const REVERSALS: (Reversal & { evidence: 'v' | 's' })[] = [
       { was: '「适应收益的上界 = 静态结构 spread」,因而先测静态矩阵即可判 society 值不值得建', now: '被一个两阶段反例否证:结构 A 得 (1,0)、B 得 (0,1),静态均值各 0.5 而阶段路由可得 1 ⇒ spread 不是上界;门须改为阶段条件的测量', cite: 'gpt-review 批次 2 · D33' },
       { was: '损失表把「信息损失」与「计算/维护成本」混列', now: '已分列(稿 4 §2 改为五列):一列是放弃了哪个旋钮,一列是为此付出什么 —— 付成本 ≠ 放弃旋钮', cite: 'gpt-review 批次 1 · C11' },
       { was: '「nontrivial」由过滤器的相关性排序来定义', now: '循环定义,尚未修:须先独立定义 nontrivial,才能谈过滤器能否产出它 —— 待裁决', cite: 'gpt-review 批次 1 · C13' },
+      { was: 'k ≈ 0.73 在两模型上交叉验证一致 ⇒ 平台级倍率', now: '一致性受扣减放大限制(8.42× = 扣减/残差):max 费率偏 8% ⇒ glm 净 credits 偏 ≈67%,故它只是与数据相容的假设,不是独立证据', cite: 'gpt-review 批次 1 · C20' },
       { was: '三处全称推广(搜索从不索引 File / 12 即全集 / 同期 Document 即生成来源)', now: '已收口为「该全称不成立」:C17–C19 只主张反例存在,逐份来源仍需各自的生成事件配对', cite: 'gpt-review 批次 1 · C17–C19' },
     ],
   },
@@ -214,7 +215,7 @@ export const DECISIONS: Decision[] = [
   { id: 'D29', group: 'corpus', status: 'open', question: 'research-foundations.md 的正文说「研究起点:继承自 emsx 的已证结论」—— 它归本语料,还是归 emsx 那个项目?', cite: '10-06 库核查', recommendation: '已取回但未入库(留在 /tmp);归属由用户定' },
   { id: 'D30', group: 'corpus', status: 'open', question: 'adapdc_architecture_report.typ 与 adapdc_theory_review(1).typ 的预览始终不渲染,是否换通道或过些时候重试?', cite: '10-06 库核查', recommendation: '两者都是 .typ,理论上可走拼接通道;先怀疑是暂时性加载失败' },
   { id: 'D31', group: 'corpus', status: 'open', question: '把账户 Library 当定期同步的恢复源,还是只在需要时核查?', cite: '10-06 库核查', recommendation: '倾向后者:一次核查已证明「搜索会漏、下载已坏、归档不入库」,例行同步的成本高于收益' },
-  { id: 'D32', group: 'cross', status: 'open', question: '记忆基底 = 信息划分的实现层(稿 4)。反向映射:机制 → 旋钮 → 特征损失 —— 八种机制没有一种「不损失」,选机制就是选放弃哪个旋钮。四条新内容:①压缩/遗忘的触发器从容量改为矛盾密度;②相关性过滤按构造无法产出 nontrivial(结构性盲区,不是概率漏检);③强制边界是工具持有者,而系统里没有 MMU ⇒ 单写者是系统级单点,且信息划分的丢失在构造上不可见;④三个裁决器 T1–T3。外部复核(10-06)指出:存储基底不等于主体间信息划分,四条主张被绑成一项,T1–T3 未逐项覆盖(缺 N4 的测试);损失与成本须分列(已分列)。', cite: 'related_files/1006/memory_substrate_and_partition.typ;v4:37（底座+视图）、:322（可机械验证者提升为 code）、:469（提升须过 replay）;10-07 复核', recommendation: 'T1–T3 只需本地语料,近零 credits;未通过前这几条只是 SOP 候选,不是 invariant;单写者是否可接受需用户裁决' },
+  { id: 'D32', group: 'cross', status: 'open', question: '记忆基底 = 信息划分的实现层(稿 4)。反向映射:机制 → 旋钮 → 特征损失 —— 八种机制没有一种「不损失」,选机制就是选放弃哪个旋钮。四条新内容:①压缩/遗忘的触发器从容量改为矛盾密度;②相关性过滤按构造无法产出 nontrivial(结构性盲区,不是概率漏检);③强制边界是工具持有者,而系统里没有 MMU ⇒ 单写者是系统级单点,且信息划分的丢失在构造上不可见;④三个裁决器 T1–T3。外部复核(10-06)指出:存储基底不等于主体间信息划分,四条主张被绑成一项,T1–T3 未逐项覆盖(缺 N4 的测试);损失与成本须分列(已分列)。**10-07 用户裁定:C13/N3 的 nontrivial 留在 taste 层、无良定义,只作直觉登记。**', cite: 'related_files/1006/memory_substrate_and_partition.typ;v4:37（底座+视图）、:322（可机械验证者提升为 code）、:469（提升须过 replay）;10-07 复核', recommendation: 'T1–T3 只需本地语料,近零 credits;未通过前这几条只是 SOP 候选,不是 invariant;单写者是否可接受需用户裁决' },
   { id: 'D33', group: 'cross', status: 'open', question: 'society = 四元组(聚合 / 信息划分 / 反转成本 / 权威可变性)+ 宪法层,三个时间尺度(任务 / 族 / 实验);适应只在「静态 spread > 探索成本」时动手。**10-07 外部复核降级**:阶段交叉时静态均值 spread 可为 0 而阶段路由收益 > 0(A 得 (1,0)、B 得 (0,1)),故「适应收益 ≤ 静态 spread」不成立 —— 这道门须改为阶段条件的测量(反例保留,v4:492 要求降级留反例)。', cite: '1006/model_society_as_allocation.typ, society_as_learned_structure.typ, society_belief_and_law.typ;gpt-review 2026-10-06 §批次2 D33', recommendation: '记忆基底决定反转成本,因而决定适应值不值得买 —— 这是 D32 与 D33 的接口;静态矩阵仍可测,但不能再当作适应收益的上界' },
 ]
 
