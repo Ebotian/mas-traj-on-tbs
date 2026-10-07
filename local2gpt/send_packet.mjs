@@ -56,13 +56,14 @@ async function harvest() {
 
 /** 幂等:已是"附件 + 草稿"状态就不再重复上传/填充。 */
 async function composerState() {
-  // 只在 composer 自己的 <form> 内找附件名 —— 扫 document.body 会把上一轮对话里的同一个文件名
-  // 也算进来,造成"有附件"的假阳性(2026-10-07 实测:清空后仍报 attached:true)。
+  // 附件是 <span class="…group/resource…"> 里的截断标签:按文本匹配会漏(2026-10-07 实测),
+  // 改为在 composer 的 <form> 内找「叶子元素、文本以 packet-2026 起头」的 chip,并报 chips 计数。
   return JSON.parse(await ev(`(()=>{
     const ce=document.querySelector('${SEL_COMPOSER}');
-    const scope=(ce&&ce.closest('form'))||null;
-    const t=(scope?scope.innerText:document.body.innerText)||'';
-    return JSON.stringify({draft:ce?ce.innerText.length:0, attached:t.indexOf(${JSON.stringify(path.basename(PACKET).split('.')[0])})>=0, scopedToComposer:!!scope});
+    const form=ce?ce.closest('form'):null;
+    let chips=0;
+    if(form){ chips=[...form.querySelectorAll('*')].filter(e=>e.children.length===0 && (e.textContent||'').trim().startsWith('packet-2026')).length; }
+    return JSON.stringify({draft:ce?ce.innerText.length:0, attached:chips>0, chips, scopedToComposer:!!form});
   })()`))
 }
 
@@ -74,10 +75,12 @@ async function main() {
   const sha = crypto.createHash('sha256').update(fs.readFileSync(PACKET)).digest('hex')
   const STATE = path.join(HERE, 'out/.last-sent-sha')
   const lastSha = fs.existsSync(STATE) ? fs.readFileSync(STATE, 'utf8').trim() : ''
+  const CSHA = path.join(HERE, 'out/.composer-sha')
+  const composerSha = fs.existsSync(CSHA) ? fs.readFileSync(CSHA, 'utf8').trim() : ''
   const st = await composerState()
   console.log('composer 现状:', JSON.stringify(st), '| 本地包 sha', sha.slice(0, 12), '| 上次发出', lastSha.slice(0, 12) || '(无记录)')
-  if (st.attached && st.draft > 200 && lastSha === sha) {
-    console.log('已是「同一份包 + 草稿」状态,跳过上传与填充(幂等)')
+  if (st.attached && st.draft > 200 && (lastSha === sha || composerSha === sha)) {
+    console.log('composer 里已是同一份包(sha 对账通过),跳过上传与填充,直接发送')
   } else if (st.attached && st.draft > 200 && lastSha !== sha) {
     console.error('拒绝发送:composer 里挂着的是另一份包(上次发出 %s,本地 %s)。', lastSha.slice(0, 12) || '无记录', sha.slice(0, 12))
     console.error('请先在浏览器里删掉那个附件(或清空草稿),再重跑本脚本 —— 宁可多发一次上传,也不发错版本的包。')
