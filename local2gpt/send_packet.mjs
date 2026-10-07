@@ -15,6 +15,7 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import crypto from 'node:crypto'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
@@ -67,10 +68,17 @@ async function main() {
   if (!fs.existsSync(MSG)) { console.error('正文文件不存在:', MSG); process.exit(1) }
   const msg = fs.readFileSync(MSG, 'utf8')
 
+  const sha = crypto.createHash('sha256').update(fs.readFileSync(PACKET)).digest('hex')
+  const STATE = path.join(HERE, 'out/.last-sent-sha')
+  const lastSha = fs.existsSync(STATE) ? fs.readFileSync(STATE, 'utf8').trim() : ''
   const st = await composerState()
-  console.log('composer 现状:', JSON.stringify(st))
-  if (st.attached && st.draft > 200) {
-    console.log('已是「附件 + 草稿」状态,跳过上传与填充(幂等)')
+  console.log('composer 现状:', JSON.stringify(st), '| 本地包 sha', sha.slice(0, 12), '| 上次发出', lastSha.slice(0, 12) || '(无记录)')
+  if (st.attached && st.draft > 200 && lastSha === sha) {
+    console.log('已是「同一份包 + 草稿」状态,跳过上传与填充(幂等)')
+  } else if (st.attached && st.draft > 200 && lastSha !== sha) {
+    console.error('拒绝发送:composer 里挂着的是另一份包(上次发出 %s,本地 %s)。', lastSha.slice(0, 12) || '无记录', sha.slice(0, 12))
+    console.error('请先在浏览器里删掉那个附件(或清空草稿),再重跑本脚本 —— 宁可多发一次上传,也不发错版本的包。')
+    process.exit(4)
   } else {
     const up = await post({ action: 'upload', args: { files: [PACKET], selector: SEL_INPUT }, session: S })
     console.log('upload:', JSON.stringify(up).slice(0, 200))
@@ -90,6 +98,7 @@ async function main() {
   console.log('发送键:', b.sel)
   await clickAt(b.x, b.y)
 
+  fs.writeFileSync(STATE, sha + '\n', 'utf8')
   const t0 = Date.now()
   let prev = '', stable = 0, text = ''
   while (Date.now() - t0 < DEADLINE_MS) {
