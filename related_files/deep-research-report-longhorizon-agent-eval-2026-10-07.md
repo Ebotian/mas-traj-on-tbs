@@ -1,4 +1,6 @@
-<!-- 来源:ChatGPT 项目「未来人工智能设想」的 Deep Research 输出(会话 6ac5b520-25fc-83ee-a5e5-a768b1fa9eac)
+<!-- 来源:ChatGPT 项目「未来人工智能设想」的 Deep Research 输出(会话 6ac5b520-25fc-83ee-a5e5-a768b1fa9eac;
+     分享链 https://chatgpt.com/share/6ac5e134-626c-83ee-a23f-b63a98333bce —— 已用仓库里的 decode_share.py 解出:413 节点完全线性,
+     4 个 user 轮;本报告即该会话**第 4 轮**的产物(第 4 轮 prompt 逐字:见 .qwen/tmp/conv-6ac5e134/user_turns.md)
      标题:Long-Horizon Agent Evaluation: SOTA Systems, Metrics, and an Engineering Blueprint for ADA/OPL
      生成:Research completed in 9m · 25 citations · 595 searches(2026-10-07)
      获取:面板在跨域沙箱 frame #f1 内(桥无法向 OOPIF 注入输入:点击/滚轮/Tab 三种实测均不入);由用户点面板的 ⤓ 按钮下载,
