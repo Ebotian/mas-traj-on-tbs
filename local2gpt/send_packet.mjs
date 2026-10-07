@@ -59,14 +59,11 @@ async function harvest() {
 
 /** 幂等:已是"附件 + 草稿"状态就不再重复上传/填充。 */
 async function composerState() {
-  // 附件是 <span class="…group/resource…"> 里的截断标签:按文本匹配会漏(2026-10-07 实测),
-  // 改为在 composer 的 <form> 内找「叶子元素、文本以 packet-2026 起头」的 chip,并报 chips 计数。
+  // 判据(2026-10-07 修正):输入框附件 = class 含 composer-attachment 的元素。Sources 面板与会话正文不算。
   return JSON.parse(await ev(`(()=>{
+    const att=[...document.querySelectorAll('[class*="composer-attachment"]')].filter(e=>!(e.parentElement&&e.parentElement.closest('[class*="composer-attachment"]'))).length;
     const ce=document.querySelector('${SEL_COMPOSER}');
-    const form=ce?ce.closest('form'):null;
-    let chips=0;
-    if(form){ chips=[...form.querySelectorAll('*')].filter(e=>e.children.length===0 && (e.textContent||'').trim().startsWith('packet-2026')).length; }
-    return JSON.stringify({draft:ce?ce.innerText.length:0, attached:chips>0, chips, scopedToComposer:!!form});
+    return JSON.stringify({draft:ce?ce.innerText.length:0, attached:att>0, chips:att});
   })()`))
 }
 

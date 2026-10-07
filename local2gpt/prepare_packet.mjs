@@ -12,7 +12,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 
@@ -32,12 +32,18 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
 const ev = (c) => post({ action: 'evaluate', args: { code: c }, session: S }).then((d) => (d.data ? String(d.data.value) : ''))
 
 const state = () => ev(`(()=>{
+  // 判据(2026-10-07 修正):只有 class 含 composer-attachment 的元素才是输入框附件。
+  // 之前按「composer 的 form 内文本以 packet-2026 起头」判断,会把 Sources 面板与会话正文也算进来 —— 假阳性。
+  const att=[...document.querySelectorAll('[class*="composer-attachment"]')].filter(e=>!(e.parentElement&&e.parentElement.closest('[class*="composer-attachment"]'))).length;
   const ce=document.querySelector('${SEL_COMPOSER}');
-  const form=ce?ce.closest('form'):null;
-  let chips=0;
-  if(form){ chips=[...form.querySelectorAll('*')].filter(e=>e.children.length===0 && (e.textContent||'').trim().startsWith('${CHIP_PREFIX}')).length; }
-  return JSON.stringify({draft:ce?ce.innerText.length:0, chips, head:ce?ce.innerText.slice(0,40):''});
+  return JSON.stringify({draft:ce?ce.innerText.length:0, chips:att, head:ce?ce.innerText.slice(0,40):''});
 })()`)
+
+// 主入口守卫必须放在**任何副作用之前**:放在文件末尾等于没有(顶层流程已经跑完)。
+if (import.meta.url !== pathToFileURL(process.argv[1] || '').href) {
+  console.error('prepare_packet.mjs 只应被直接运行;被 import 时不执行')
+  process.exit(0)
+}
 
 if (!fs.existsSync(PKT)) { console.error('包不存在:', PKT); process.exit(1) }
 if (!fs.existsSync(MSG)) { console.error('正文不存在:', MSG); process.exit(1) }
