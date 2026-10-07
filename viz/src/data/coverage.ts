@@ -27,8 +27,8 @@ import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
  "corpusFiles": 65,
- "corpusLines": 97178,
- "corpusLinesExclTranscript": 35678,
+ "corpusLines": 97180,
+ "corpusLinesExclTranscript": 35680,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
@@ -443,7 +443,7 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/deep-research-report-longhorizon-agent-eval-2026-10-07.md",
-  "lines": 1209,
+  "lines": 1211,
   "status": "partial",
   "linesRead": 406,
   "note": "外部 Deep Research 导出(本项目的产品);我读了摘要、证据标准、蓝图、缺口与结尾(共 406 行),全文由子代理通读一遍但那是二手。正文一字未改,头部是 provenance"
