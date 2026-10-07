@@ -91,6 +91,7 @@ G₀(`v4.tex:1225`)→ epistemic debt 环(`:1237`)→ 四能力 Recover / Unders
 | **第九条原则** | Crystallize conservatively:可升可降,降级时保留反例 | `v4.tex:1601` |
 | **NARROWING** | 四个收窄读数:能力 1/4、资源 1/6、实验矩阵 1/8、campaign 0/8 | 见 `01_STATE.md` |
 | **verdict 级证据** | 【我复核】= 我亲自算过/读过;【二手】= 搜索或他人转述;【推断】= 我的判断 | `24_GRADES.md` |
+| **登记册的 `evidence` 码** | `4_full_text/registers/*.ts` 里每个节点/冲突/反转段自带的来源码:`r` = **独立再证**(我读过,且该判断被一个外部系统独立再得到)· `v` = 我复核 · `s` = 二手(调查者读、我抽查)· `u` = 我没读。顺序 `r > v > s > u`;类型与图例在 `viz/src/types.ts`、`viz/src/lib/palette.ts`(不随包)。与上面三档不是同一套:那套讲**我对你输出**的把握,这一套讲**登记册条目**的来源 | `corpus.ts` · `graph.ts` |
 
 @@@ FILE: 1_we_are_here/03_FRAMING.md @@@
 # 框架摘录(`research_state_control_review_v4.tex`,逐字)
