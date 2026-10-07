@@ -7,19 +7,35 @@
 // account Library in three commits (900bcb0 · ef9d9b2 · 301a4be) and I have read none of them.
 // Three of those are `.rendered.txt`: Deep Research reports whose markdown source is not
 // obtainable, so the copy is the rendered text and the filename carries the caveat.
+// 2026-10-07 refresh (the snapshot had gone stale). Added 11 rows — the six external-review
+// artifacts (fetched from the web model; all read end to end) and the five drafts under
+// 1006/ (status "authored", credited at full length like the other authored rows) — fixed
+// `Makefile` 39 → 42 and re-measured `repoTrackedTotal`. So each headline number had been
+// too low: 52 files / 94,538 lines / 2,843 read → 63 / 95,830 / 4,138.
+// Two further findings from re-deriving rather than trusting the old rows:
+//   · the 10-06 snapshot was **not** counted by one method. Four rows equalled `splitlines`
+//     rather than `wc -l` (the deep-research trio and `Pasted markdown.md` — all four lack a
+//     trailing newline). Everything is now `wc -l`, which is why those four dropped by 1
+//     each; `范畴论…审查包.rendered.txt` was already `wc -l` and is unchanged.
+//   · `corpusLinesRead` had been declared 2,843 while its rows summed to 2,846 — but that
+//     was *my* edit, not the snapshot's error: the `Makefile` row is "read, 39", and it
+//     became 42. Re-derive the sums after touching a row; do not carry the old total.
+// What the refresh does **not** cover: the six review rounds audited these registers'
+// *wording* only. Each round listed the positions it looked at, and none could see this
+// register's completeness — the review artifacts are not shipped inside the packet.
 import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
- "corpusFiles": 52,
- "corpusLines": 94538,
- "corpusLinesExclTranscript": 33038,
+ "corpusFiles": 63,
+ "corpusLines": 95830,
+ "corpusLinesExclTranscript": 34330,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
- "repoTrackedTotal": 37437,
- "corpusLinesRead": 2843,
+ "repoTrackedTotal": 37504,
+ "corpusLinesRead": 4138,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 2843
+ "corpusLinesReadExclTranscript": 4138
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -39,13 +55,13 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/deep-research-report(1).md",
-  "lines": 1721,
+  "lines": 1720,
   "status": "secondhand",
   "linesRead": 0
  },
  {
   "path": "related_files/deep-research-report.md",
-  "lines": 1673,
+  "lines": 1672,
   "status": "secondhand",
   "linesRead": 0
  },
@@ -58,7 +74,7 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/deep-research-report(2).md",
-  "lines": 1575,
+  "lines": 1574,
   "status": "secondhand",
   "linesRead": 0
  },
@@ -70,9 +86,9 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/Pasted markdown.md",
-  "lines": 1412,
+  "lines": 1411,
   "status": "read",
-  "linesRead": 1412
+  "linesRead": 1411
  },
  {
   "path": "related_files/范畴论驱动的实验编排与工程落地-AdaPDC审查与CEC实施方案.rendered.txt",
@@ -350,9 +366,86 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/Makefile",
-  "lines": 39,
+  "lines": 42,
   "status": "read",
-  "linesRead": 39
+  "linesRead": 42
+ },
+ {
+  "path": "related_files/gpt-review-2026-10-06.md",
+  "lines": 133,
+  "status": "fetched",
+  "linesRead": 133,
+  "note": "外部复核第 1 轮答复:24 哈希通过;20/33/8/6 与登记册一致。抓取后落档,带 provenance 头"
+ },
+ {
+  "path": "related_files/gpt-review-2026-10-07.md",
+  "lines": 47,
+  "status": "fetched",
+  "linesRead": 47,
+  "note": "第 2 轮:19 条 defect,逐条核验全部成立(含我 10-06 自己修出的内部矛盾)"
+ },
+ {
+  "path": "related_files/gpt-review-2026-10-07-r3.md",
+  "lines": 52,
+  "status": "fetched",
+  "linesRead": 52,
+  "note": "第 3 轮:13 条 defect + 1 条交付不同步(后者是我的错:正文声称改了计量稿,而该文件逐字节未变)"
+ },
+ {
+  "path": "related_files/gpt-review-2026-10-07-r4.md",
+  "lines": 74,
+  "status": "fetched",
+  "linesRead": 74,
+  "note": "第 4 轮:6 条(5 条「仍不成立」+ 1 条「仍缺证据」)。首传被 ChatGPT 侧 Upload failed,清残片后补传"
+ },
+ {
+  "path": "related_files/gpt-review-2026-10-07-r5.md",
+  "lines": 13,
+  "status": "fetched",
+  "linesRead": 13,
+  "note": "第 5 轮:1 条(我把图像费率的上界与下界写反了)"
+ },
+ {
+  "path": "related_files/gpt-review-2026-10-07-r6.md",
+  "lines": 11,
+  "status": "fetched",
+  "linesRead": 11,
+  "note": "第 6 轮:收口 —— 「无。」+「上一轮所列其余修改:已审且无。」"
+ },
+ {
+  "path": "related_files/1006/credit_meter_calibration.typ",
+  "lines": 247,
+  "status": "authored",
+  "linesRead": 247,
+  "note": "我自己的产物(被动线性反演标定记录);10-07 的外部复核共 5 轮落在它身上"
+ },
+ {
+  "path": "related_files/1006/memory_substrate_and_partition.typ",
+  "lines": 213,
+  "status": "authored",
+  "linesRead": 213,
+  "note": "稿 4:记忆基底与信息划分。N1–N4 + T1/T1′/T2/T3 的裁决器表"
+ },
+ {
+  "path": "related_files/1006/model_society_as_allocation.typ",
+  "lines": 213,
+  "status": "authored",
+  "linesRead": 213,
+  "note": "稿 2:把 society 写成分配问题"
+ },
+ {
+  "path": "related_files/1006/society_as_learned_structure.typ",
+  "lines": 147,
+  "status": "authored",
+  "linesRead": 147,
+  "note": "稿 3:结晶/去结晶与统计触发"
+ },
+ {
+  "path": "related_files/1006/society_belief_and_law.typ",
+  "lines": 143,
+  "status": "authored",
+  "linesRead": 143,
+  "note": "稿 1:信念状态、法律族与三个时间尺度"
  },
 ]
 
