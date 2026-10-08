@@ -108,6 +108,7 @@ const CLAIM_INDEX = [
   ['C27', '`4_full_text/extras/conversation-openai-math-README.md` 增量段第 5 轮'],
   ['C28', '`4_full_text/extras/plan-6.4-censoring.md`'],
   ['C29', '`4_full_text/registers/types.ts` · `graph.ts`'],
+  ['C30–C38', '`2_claims_to_attack/15_LITERATURE.md` §2–§4'],
   ['全域背景', '`4_full_text/registers/*.ts`(机器可读的登记册源文件)'],
 ].map(([a, b]) => `| ${a} | ${b} |`).join('\n')
 
