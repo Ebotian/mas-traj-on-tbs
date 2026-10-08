@@ -13,7 +13,7 @@ interface View { id: string; label: string; hint: string; render: (host: HTMLEle
 
 const VIEWS: View[] = [
   { id: 'overview', label: '总览', hint: 'G₀、收窄倍率、epistemic debt、四能力', render: overview.render },
-  { id: 'map', label: '结构图', hint: '50 节点 / 67 边,分层力导', render: map.render },
+  { id: 'map', label: '结构图', hint: '54 节点 / 72 边,分层力导', render: map.render },
   { id: 'numbers', label: '实测数字', hint: 'exp1–exp3、强度曲线、成本', render: numbers.render },
   { id: 'time', label: '时间轴', hint: '09-09 → 10-06,五次来源', render: time.render },
   { id: 'conflicts', label: '冲突与反转', hint: '两侧并排 + 反转登记', render: conflicts.render },

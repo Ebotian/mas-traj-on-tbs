@@ -1,6 +1,10 @@
 // Ported from related_files/synthesis_2026-09-30.html (built 2026-09-30, 50 nodes / 67 edges).
 // The port was mechanical, not retyped: a script eval-ed the N/E/ET literals out of that
 // file and emitted this module, so the two cannot have drifted by transcription.
+// **Hand edits after the port (each named where it happened)**: lineB's "permanently lost" turned
+// into history (e3c202f); princ9 and neff re-graded to `r` (df84073a); and on 2026-10-08 four nodes
+// added for the day's structural additions — `crit`, `threeway`, `pricing`, `hosts` — with five
+// edges. Those four are OURS, not from the HTML: 54 nodes / 72 edges as of 2026-10-08.
 import type { Edge, EdgeKind, NodeKind, Evidence, GNode } from '../types.ts'
 
 export const NODES: GNode[] = [
@@ -54,6 +58,10 @@ export const NODES: GNode[] = [
   { id: "uVs", kind: "line" as NodeKind, layer: 4, evidence: "u" as Evidence, title: "virtual_staining survey (09-18)", cite: "virtual_staining_open_source_sota_survey.typ", summary: "虚拟染色的开源 SOTA 综述 + refs.bib(149 行)。同样不落位。", detail: "我完全没读。" },
   { id: "uT", kind: "line" as NodeKind, layer: 5, evidence: "u" as Evidence, title: "report.tex 七域 T₁–T₇ 论证", cite: "agent_engineering_science_report.tex", summary: "31503 字节里我只读了章节标题、:14、:254/269/297、:415。", detail: "七个理论域(观测 / 动力学 / 资源分配 / 认识论动力学 / 协调拓扑 / 可靠性恢复 / 系统辨识)与三个中层理论(Adaptive Observability / Epistemic Stability / Agent Similarity-Regime)的论证细节我没读。⇒ 我对 D 线的理解建立在 Pasted md 与那份审查之上,不是建立在正式报告之上。而 Pasted md 恰恰把七域贬为「偏 taxonomy」。" },
   { id: "uA0", kind: "impl" as NodeKind, layer: 6, evidence: "u" as Evidence, title: "a0/ 其余六份报告", cite: "a0/EPISTEMIC-REVIEW.md 等", summary: "EPISTEMIC-REVIEW · A1-REQUIREMENTS · A1-INTERIM · A1-CONTRACT-AUDIT · CONVERGENCE-2026-09-21 · SPRINT-2026-09-21。", detail: "我只读了 STATUS.md、A1-RESULT.md、TIMING-REVIEW.md §0–§7。这六份只经前两份的转述出现。比例上说清楚:a0/ 有 37400 个跟踪文件,我读了 3 份报告。所以我对落地侧的理解是「经两份权威转述的理解」,不是「读过实现的理解」。" },
+  { id: "crit", kind: "frame" as NodeKind, layer: 5, evidence: "v" as Evidence, title: "判据与验证器", cite: "harness-design-comparison-qwen-vs-kimi-2026-10-07.md §2;conversation-harness-literature-…/README.md §2 阶段四;gpt-review-2026-10-08-r8.md", summary: "判据三条件:在 harness 里 · 被代码求值 · 不外包给 LLM。**这是项目约束,不是普遍定理** —— 外部复核给出反例:harness 外的确定性检查器(验产物哈希并签回、宿主执行接受门)也可靠可靠。", detail: "2026-10-08 增。两个现有 harness 各缺不同的一条(qwen 可执行但外包;kimi 不外包但从不求值)。文献线把「何时重采样而非改路由」定为识别问题(2607.08665 **v3**,该版收回 v2 的预算分配/学习路由/Pareto 主张),首个测量据此定为**仪器试跑**:冻结环境/预算/判据,混入「已知正确 · 无改善 · 错误但自称完成」三类产物,看误接受并留原始计量。" },
+  { id: "threeway", kind: "frame" as NodeKind, layer: 5, evidence: "v" as Evidence, title: "三方目标 墙钟×成本×通过率", cite: "economics-of-agent-systems-2026-10-08.md;conversation-harness-literature-…/README.md §2 阶段二", summary: "目前没有公认标准榜;候选口径 S_π(t,c)(**归属无法核实,已降级为我们的候选**),墙钟用 T_solved = ΣT_i / Σ1[pass_i]。", detail: "2026-10-08 增。同通过率下每题 token 可差约 40×(Scaffold Effect)⇒ harness 的主要经济作用可能是「为同样的成功率决定烧多少」。MoFlow 被降级正是因为用 token 与串行轮数替代了真实费用与墙钟。" },
+  { id: "pricing", kind: "frame" as NodeKind, layer: 5, evidence: "v" as Evidence, title: "计价层 Φ_θ(测量/策略/计价)", cite: "economics-of-agent-systems-2026-10-08.md §1–§3", summary: "钱是 m 上的派生量;价格与**计量口径**都要版本化;η_token 与 η_$ 分开报。Φ_θ 不属于 ADA 也不属于 OPL(但这是**架构选择**,不是推论)。", detail: "2026-10-08 增。已核的三张价目:DeepSeek 分时(峰谷 2×、缓存桶 50×)、Token Plan 月硬上限 + 夜间 0.4×/0.5×、GLM 平价无峰谷。1006/credit_meter_calibration.typ 就是 Token Plan 的 Φ_θ 标定,其「线性是假设、图像费率未识别」正是计量口径不确定性。" },
+  { id: "hosts", kind: "impl" as NodeKind, layer: 6, evidence: "v" as Evidence, title: "两个现有 harness 作候选宿主", cite: "1_we_are_here/04_EXISTING_AGENTS.md(包内);harness-design-comparison-qwen-vs-kimi-2026-10-07.md", summary: "qwen-code 与 kimi-code;行号钉在固定提交(qwen 464f486e / kimi 21406fb4)。两者是判据试跑的现成宿主。", detail: "2026-10-08 增。宿主选择尚未定:可 upstream ≠ 一次实验的接线成本(外部复核更正);外部复核建议每仓各跑一个固定产物接线探针,谁先闭合谁先用。" },
 ]
 
 export const EDGES: Edge[] = [
@@ -124,6 +132,11 @@ export const EDGES: Edge[] = [
   { source: "uVs", target: "g0", kind: "orphan" as EdgeKind },
   { source: "uT", target: "lineD", kind: "orphan" as EdgeKind },
   { source: "uA0", target: "a0", kind: "orphan" as EdgeKind },
+  { source: "crit", target: "hosts", kind: "needs" as EdgeKind },
+  { source: "threeway", target: "crit", kind: "needs" as EdgeKind },
+  { source: "pricing", target: "threeway", kind: "feed" as EdgeKind },
+  { source: "crit", target: "taste", kind: "note" as EdgeKind },
+  { source: "pricing", target: "a0", kind: "note" as EdgeKind },
 ]
 
 export const EDGE_STYLE: Record<EdgeKind, { label: string; color: string; width: number; dash: string }> = {
