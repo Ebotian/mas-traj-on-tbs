@@ -102,6 +102,12 @@ const CLAIM_INDEX = [
   ['C18', '`2_claims_to_attack/13_REVERSALS.md` → 项目对话计数'],
   ['C20', '`4_full_text/1006/credit_meter_calibration.typ`'],
   ['D1–D33', '`2_claims_to_attack/11_DECISIONS.md`'],
+  ['C21–C24', '`4_full_text/extras/economics-of-agent-systems-2026-10-08.md`'],
+  ['C25', '`4_full_text/extras/harness-design-comparison-qwen-vs-kimi-2026-10-07.md` A1–A3'],
+  ['C26', '`4_full_text/extras/conversation-harness-literature-README.md` §2'],
+  ['C27', '`4_full_text/extras/conversation-openai-math-README.md` 增量段第 5 轮'],
+  ['C28', '`4_full_text/extras/plan-6.4-censoring.md`'],
+  ['C29', '`4_full_text/registers/types.ts` · `graph.ts`'],
   ['全域背景', '`4_full_text/registers/*.ts`(机器可读的登记册源文件)'],
 ].map(([a, b]) => `| ${a} | ${b} |`).join('\n')
 
@@ -152,6 +158,32 @@ const copyDir = (from, to, filter) => {
 }
 copyDir(path.join(ROOT, 'related_files/1006'), path.join(DEST, '4_full_text/1006'), (f) => f.endsWith('.typ'))
 copyDir(path.join(ROOT, 'viz/src/data'), path.join(DEST, '4_full_text/registers'), (f) => f.endsWith('.ts'))
+
+/* 这一轮新增:包外的材料按「判定新主张所必需」筛选后**拷贝**进来(不内联,避免与源文件漂移)。
+   没有它们,10_CLAIMS 里 C21–C29 的位置栏会指向包外。 */
+const EXTRAS = [
+  ['related_files/economics-of-agent-systems-2026-10-08.md', '4_full_text/extras/economics-of-agent-systems-2026-10-08.md'],
+  ['related_files/harness-design-comparison-qwen-vs-kimi-2026-10-07.md', '4_full_text/extras/harness-design-comparison-qwen-vs-kimi-2026-10-07.md'],
+  ['related_files/conversation-harness-literature-and-multi-model-routing-2026-10-08/README.md', '4_full_text/extras/conversation-harness-literature-README.md'],
+  ['related_files/conversation-openai-math-engineering-implications-2026-10-07/README.md', '4_full_text/extras/conversation-openai-math-README.md'],
+  ['related_files/deepresearch-citation-ledger-2026-10-07.md', '4_full_text/extras/deepresearch-citation-ledger-2026-10-07.md'],
+]
+for (const [from, to] of EXTRAS) {
+  const dst = path.join(DEST, to)
+  fs.mkdirSync(path.dirname(dst), { recursive: true })
+  fs.copyFileSync(path.join(ROOT, from), dst)
+}
+/* 切片:计划 §6.4(右删失规则)。整份计划 1,534 行,按选择规则只放这一节。 */
+{
+  const plan = fs.readFileSync(path.join(ROOT, 'related_files/open_world_algorithm_research_engineering_plan.typ'), 'utf8').split('\n')
+  const a = plan.findIndex((l) => l.startsWith('== 6.4'))
+  const b = plan.findIndex((l, i) => i > a && l.startsWith('= '))
+  if (a < 0) throw new Error('未找到计划的 §6.4')
+  const slice = ['# `open_world_algorithm_research_engineering_plan.typ` §6.4(逐字摘录,原文件 1,534 行)', ''].concat(plan.slice(a, b > a ? b : a + 40))
+  const dst = path.join(DEST, '4_full_text/extras/plan-6.4-censoring.md')
+  fs.mkdirSync(path.dirname(dst), { recursive: true })
+  fs.writeFileSync(dst, slice.join('\n'), 'utf8')
+}
 fs.copyFileSync(path.join(HERE, 'build_packet.mjs'), path.join(DEST, '3_verify/25_build_packet.mjs'))
 
 /* ---------- 4) 第二遍:清单表 + sha256 ---------- */
