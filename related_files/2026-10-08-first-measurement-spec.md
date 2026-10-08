@@ -41,10 +41,10 @@
 - **首选宿主 qwen-code**(第 9 轮之外的理由见 `04_EXISTING_AGENTS.md`:接受外部 PR + 自跑 SWE-bench 回归)。
 - **已确认的接线事实**:存在无头入口 **`-p/--prompt`**(另有 `--approval-mode`、`--model`);完成判据在 `packages/core/src/goals/goal-verifier.ts`(模型判决 + 受约束 JSON);计量在 usage/telemetry 侧。
 - **接线探针(按此顺序,一行一行做)**:
-  1. 用 `-p` 跑**一个固定产物**(不涉及模型判断的纯文本任务),确认能无头驱动;
-  2. **截获完成判据的调用与返回**(读 side-query 的那次请求/响应);
-  3. **导出三量**(token / 墙钟 / 工具调用);
-  4. 写最小补丁,把三样接到一次可重复的跑批上。
+  1. ~~用 `-p` 跑一个固定产物,确认能无头驱动~~ **已完成(2026-10-08)**:`qwen -p "Reply with exactly: ok"` → stdout `ok`、exit 0、干净无 TUI。**同一跑还暴露一条必须冻结的默认**:无头默认 **`--yolo` + 无沙盒**(它自己打印警告),⇒ 试验必须显式钉 `--sandbox` 与 approval mode,否则不可复现。
+  2. **计量通道已找到**:`--telemetry-outfile <file>`(「Redirect all telemetry output to the specified file」—— token/用量从这里出);另有 `--telemetry-target local|gcp`、`--telemetry-log-prompts`;沙盒另可用 `-s/--sandbox`(true/false/docker/podman/sandbox-exec)与 `qwen sandbox <cmd>`(可先探后端)。
+  3. **仍需截获**:完成判据的调用与返回(`packages/core/src/goals/goal-verifier.ts` 的那次 side-query 请求/响应)。
+  4. 写最小补丁:把三量 + 判据记录接到一次可重复的跑批上。
 - **不变量**:**不花额度的先做完**(读码、写探针);**第一次真跑只跑一个最小任务**,并在跑之前把预算写死。
 
 ## 4. 与登记册的关系(跑完后才动)
