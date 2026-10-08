@@ -26,16 +26,16 @@
 import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
- "corpusFiles": 72,
- "corpusLines": 105214,
- "corpusLinesExclTranscript": 36162,
+ "corpusFiles": 73,
+ "corpusLines": 105342,
+ "corpusLinesExclTranscript": 36290,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 8373,
+ "corpusLinesRead": 8501,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 5248
+ "corpusLinesReadExclTranscript": 5376
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -479,6 +479,13 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
   "lines": 101,
   "status": "authored",
   "linesRead": 101
+ },
+ {
+  "path": "related_files/economics-of-agent-systems-2026-10-08.md",
+  "lines": 128,
+  "status": "authored",
+  "linesRead": 128,
+  "note": "经济考虑大类:三个 provider 的 Φ_θ 实例(均已核官方页)、三层架构、η 双口径、只存账单禁令的三次独立来源、harness 经济学证据、以及我们自己计量记录的残余不确定性"
  },
  {
   "path": "related_files/harness-design-comparison-qwen-vs-kimi-2026-10-07.md",
