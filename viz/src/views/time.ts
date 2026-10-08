@@ -7,7 +7,7 @@ const TRACK: Record<string, { label: string; color: string; note: string }> = {
   'conversation': { label: '被解码的那条对话', color: COLOR.frame, note: '09-17 08:46 → 09-24 07:36 UTC,4011 节点,完全线性' },
   'other-conversation': { label: '另一条对话', color: COLOR.find, note: 'D 线的叙事文档;SILO-BENCH 在被解码的对话里 0 命中' },
   'repo': { label: '仓库实现 (a0/)', color: COLOR.impl, note: '测量链' },
-  'this-session': { label: '本次整理', color: COLOR.warn, note: '09-30、10-06 与 10-07' },
+  'this-session': { label: '本次整理', color: COLOR.warn, note: '09-30、10-06、10-07 与 10-08' },
 }
 
 export function render(host: HTMLElement): void {
@@ -40,7 +40,7 @@ export function render(host: HTMLElement): void {
         e.note ? h('p', { class: 'note' }, e.note) : null))
   })
 
-  host.appendChild(panel('时间轴 · 09-09 → 10-07', h('div', { class: 'tl' }, ...rows)))
+  host.appendChild(panel('时间轴 · 09-09 → 10-08', h('div', { class: 'tl' }, ...rows)))
 
   host.appendChild(h('div', { class: 'grid2' },
     panel('四次转向都由用户先说出',

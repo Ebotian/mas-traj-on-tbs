@@ -47,7 +47,7 @@ globalThis.document = {
 const ROUTES = [
   ['overview', 'src/views/overview.ts', ['G₀', 'epistemic debt', '九条工程原则', 'Taste ⇄ SOP ⇄ IaC']],
   ['map', 'src/views/map.ts', ['只看二手+未读', '6 个节点(2 二手 + 4 未读)', '独立再证', '我复核', '二手(调查者)', '我没读']],
-  ['time', 'src/views/time.ts', ['09-09 → 10-07', '外部复核 1–6 轮', 'B 线六版审查', '原判「中间版本永久缺失」已推翻', '09-30、10-06 与 10-07']],
+  ['time', 'src/views/time.ts', ['09-09 → 10-08', '外部复核 1–6 轮', 'B 线六版审查', '原判「中间版本永久缺失」已推翻', '09-30、10-06、10-07 与 10-08', '语料日(二)']],
   ['conflicts', 'src/views/conflicts.ts', ['条冲突', '条已登记的反转', '外部复核 #6 → 收口(10-07)']],
   ['decisions', 'src/views/decisions.ts', ['D33', 'D1', '代理谬误']],
   ['coverage', 'src/views/coverage.ts', ['语料 72 个文件', '105195', '8354']],
