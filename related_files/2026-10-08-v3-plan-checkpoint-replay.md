@@ -75,3 +75,39 @@
    特别注意:qwen-code 无头默认是 **yolo + 无沙盒**(其自身打印警告),不钉就不可复现。
 
 **选谁**:E1–E3 **用 qwen-code**(四件里两件已实测;另见 C41:它接受外部 PR 且自跑 SWE-bench 回归)。kimi-code 列为**候选** —— 它的 core 在"可重放"这一点上更接近我们的要求,值得在"换宿主"那一维里优先测。
+
+## 7. MAS 路由:**不是**选模型,而是"协作结构"的路由(2026-10-08 二稿,依构想着更正)
+
+构想着更正:「不是换模型,而是**协作 route** —— 比如在同一轮中以特定组织结构(分工、派发…)进行 MAS,其中 route 是构成 MAS 的**关键子系统**」。
+这与 MasRouter 的名字一致:「**route LLMs *for multi-agent systems***」—— 路由的对象是**协作结构**,模型选择只是其中一维。
+
+### 7.1 现成宿主已经给了什么(qwen-code,均为本会话回源码核实)
+
+| 已给 | 位置 |
+|---|---|
+| **角色是声明式定义**(不是临时提示) | `packages/core/src/subagents/`:`agent-frontmatter-schema.ts`(frontmatter 定义 agent)、`builtin-agents.ts`、`execution-backend.ts` |
+| **派发/停止有管道与可观测点** | `subagent-manager.ts`;hooks 里的 **`SubagentStart` / `SubagentStop`** |
+| **后台 agent 可恢复** | `agents/background-tasks.ts`、`agents/background-agent-resume.ts` |
+| **并发有上限,且已按模型分槽** | `DEFAULT_MAX_CONCURRENT_BACKGROUND_AGENTS = 10`;`maxConcurrentBackgroundAgents` **与 `maxConcurrentBackgroundAgentsByModel`** |
+| **模型运行期可换** | `config.setModel` / `switchModel`(有测试);另有 `advisorModel` + `advisor-policy`(第二个模型在环的先例) |
+
+### 7.2 缺的**正是整个路由器**
+
+**今天"派不派、派给谁、怎么合"是 LLM 自己决定的** —— 委派是一个**工具**:`packages/core/src/tools/create-sub-session.ts`(默认 `ask`,让分类器审)。
+⇒ **继承它 = 把路由器变成一个不受控的变量。** 要成为实验套件,必须补上:
+
+1. **路由接口**:决定 *结构形式 × 角色分工 × 模型绑定 × 信息可见性* 的分配;**必须可插臂**(MasRouter / EvoRoute / 决策模型 / 基线插同一个插座)—— 这正是 E4 能成立的前提。
+2. **分配矩阵逐检查点入账**:这张矩阵**就是 E2 要打乱的那个单位**(share-matched 打乱的是"角色×模型×信息"的对应,不是"每步用哪个模型")。
+3. **聚合事件**:合并/汇总那一步必须是一条事件 —— 判据判的是**聚合后的产物**。
+4. **中和宿主自带的委派**:把工具集钉住,使**模型不能自行 spawn**;否则路由器的分配会被模型自己的选择污染。
+
+### 7.3 结论:改,但改的是"路由器 + 分配日志 + 聚合事件",不是重写成一套 suite
+
+- **宿主保持为固定因子**,并**版本戳**(改过的宿主是一个**新的 scaffold** ⇒ 必须重新基线;Scaffold Effect 的 40× 就在这条线上)。
+- **路由器策略 / 判据 / 检查点层放在我们自己仓库**作 sidecar:判据不能是宿主自带的判官(自指),检查点层与宿主无关(保留"换宿主"那一维的便宜)。
+- **只补一个缝**:委派路径(`create-sub-session` / subagent spawn)改由**路由器**决定,且每次 spawn/合并都入事件日志。
+- **换来什么**:E2 的 share-matched 从"说不清"变成**良定义**(固定**份数**,只打乱角色×模型×信息的对应);E4 的三臂插同一插座 ⇒ 比较的是**策略**,不是系统 —— 这正是 v2 自己警告过的(「完整 MasRouter 与完整 EvoRoute 的比较属于系统比较」)。
+
+### 7.4 待构想着定:套件放哪里
+
+建议:**套件独立成一个本地目录**(钉住 qwen-code 的 commit),`rsi-dev` 只留**规格 / 判据 / 事件日志 schema / 结果**(纯文本,与语料纪律一致)。理由:宿主代码体量大且会漂,放进来会让语料失真;而"实验资产"该是可重放的小东西。
