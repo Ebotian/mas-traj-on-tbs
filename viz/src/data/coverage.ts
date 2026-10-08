@@ -27,15 +27,15 @@ import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
  "corpusFiles": 73,
- "corpusLines": 105342,
- "corpusLinesExclTranscript": 36290,
+ "corpusLines": 105356,
+ "corpusLinesExclTranscript": 36304,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 8501,
+ "corpusLinesRead": 8511,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 5376
+ "corpusLinesReadExclTranscript": 5386
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -80,7 +80,7 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/open_world_algorithm_research_engineering_plan.typ",
-  "lines": 1534,
+  "lines": 1538,
   "status": "partial",
   "linesRead": 104,
   "note": "2026-10-07 为落 §6.4 删失规则,读了 §6.1–§6.3 与 §8.1 指标表(window 727–830);此前记为二手未读"
@@ -482,16 +482,16 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/economics-of-agent-systems-2026-10-08.md",
-  "lines": 128,
+  "lines": 129,
   "status": "authored",
-  "linesRead": 128,
+  "linesRead": 129,
   "note": "经济考虑大类:三个 provider 的 Φ_θ 实例(均已核官方页)、三层架构、η 双口径、只存账单禁令的三次独立来源、harness 经济学证据、以及我们自己计量记录的残余不确定性"
  },
  {
   "path": "related_files/harness-design-comparison-qwen-vs-kimi-2026-10-07.md",
-  "lines": 203,
+  "lines": 207,
   "status": "authored",
-  "linesRead": 203,
+  "linesRead": 207,
   "note": "跨会话转交的 harness 对照;正文来自 qwen-code-df,我写了头与文末【我复核】并抽查了 kimi 13 条 + qwen 若干条。两处已改正:仓库路径缺前缀、qwen hook 事件 22 而非 19"
  },
  {
@@ -502,9 +502,9 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/deepresearch-citation-ledger-2026-10-07.md",
-  "lines": 118,
+  "lines": 123,
   "status": "authored",
-  "linesRead": 118,
+  "linesRead": 123,
   "note": "我写的引用核验台账(38 条 URL);其中三条我已亲核"
  },
  {
