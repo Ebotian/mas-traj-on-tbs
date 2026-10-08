@@ -165,6 +165,7 @@ copyDir(path.join(ROOT, 'viz/src/data'), path.join(DEST, '4_full_text/registers'
    没有它们,10_CLAIMS 里 C21–C29 的位置栏会指向包外。 */
 const EXTRAS = [
   ['related_files/economics-of-agent-systems-2026-10-08.md', '4_full_text/extras/economics-of-agent-systems-2026-10-08.md'],
+  ['related_files/deep-research-report-longhorizon-agent-eval-2026-10-07.md', '4_full_text/extras/deep-research-report-longhorizon-agent-eval-2026-10-07.md'],
   ['related_files/harness-design-comparison-qwen-vs-kimi-2026-10-07.md', '4_full_text/extras/harness-design-comparison-qwen-vs-kimi-2026-10-07.md'],
   ['related_files/conversation-harness-literature-and-multi-model-routing-2026-10-08/README.md', '4_full_text/extras/conversation-harness-literature-README.md'],
   ['related_files/conversation-openai-math-engineering-implications-2026-10-07/README.md', '4_full_text/extras/conversation-openai-math-README.md'],

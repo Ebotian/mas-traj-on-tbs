@@ -26,16 +26,16 @@
 import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
- "corpusFiles": 73,
- "corpusLines": 105356,
- "corpusLinesExclTranscript": 36304,
+ "corpusFiles": 74,
+ "corpusLines": 105487,
+ "corpusLinesExclTranscript": 36435,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 8511,
+ "corpusLinesRead": 8642,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 5386
+ "corpusLinesReadExclTranscript": 5517
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -486,6 +486,13 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
   "status": "authored",
   "linesRead": 129,
   "note": "经济考虑大类:三个 provider 的 Φ_θ 实例(均已核官方页)、三层架构、η 双口径、只存账单禁令的三次独立来源、harness 经济学证据、以及我们自己计量记录的残余不确定性"
+ },
+ {
+  "path": "related_files/gpt-review-2026-10-08-r8.md",
+  "lines": 131,
+  "status": "fetched",
+  "linesRead": 131,
+  "note": "第 8 轮外部复核答复(11 条:每条一攻击 + 实验优先级的理由更正 + 状态级);它以指纹/字节/哈希通过开头,本轮无交付不同步"
  },
  {
   "path": "related_files/harness-design-comparison-qwen-vs-kimi-2026-10-07.md",
