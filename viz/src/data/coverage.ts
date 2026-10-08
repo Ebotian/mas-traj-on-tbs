@@ -26,16 +26,16 @@
 import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
- "corpusFiles": 69,
- "corpusLines": 100106,
- "corpusLinesExclTranscript": 35943,
+ "corpusFiles": 72,
+ "corpusLines": 102301,
+ "corpusLinesExclTranscript": 36086,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 6335,
+ "corpusLinesRead": 7905,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 5029
+ "corpusLinesReadExclTranscript": 5172
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -460,6 +460,25 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
   "lines": 17,
   "status": "read",
   "linesRead": 17
+ },
+ {
+  "path": "related_files/conversation-harness-literature-and-multi-model-routing-2026-10-08/transcript.md",
+  "lines": 2052,
+  "status": "generated",
+  "linesRead": 1427,
+  "note": "第三条对话(201 节点/10 user 轮)的解码产物;通读 7 条长正文与全部 user 轮 + EvoRoute 精读约 2/3;55 条 tool 输出全为 redacted"
+ },
+ {
+  "path": "related_files/conversation-harness-literature-and-multi-model-routing-2026-10-08/user_turns.md",
+  "lines": 42,
+  "status": "read",
+  "linesRead": 42
+ },
+ {
+  "path": "related_files/conversation-harness-literature-and-multi-model-routing-2026-10-08/README.md",
+  "lines": 101,
+  "status": "authored",
+  "linesRead": 101
  },
  {
   "path": "related_files/harness-design-comparison-qwen-vs-kimi-2026-10-07.md",
