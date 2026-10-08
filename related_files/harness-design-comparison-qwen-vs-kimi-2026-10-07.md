@@ -136,28 +136,47 @@
 
 ---
 
-# 未解决问题(本节由本会话 2026-10-07 补入;均**未**进入登记册)
+# 未解决问题(本节由本会话 2026-10-07 补入;2026-10-08 依用户裁定改写;**均未**进入登记册)
 
-按当前相位(相互对齐 + 修现有 bug、不做新的),下列条目**只是候选**,要进 `viz/src/data/corpus.ts` 的
-决策册/冲突册需用户裁定。放这里是为了不丢,并且每条都给出可证伪形式与杀死条件。
+用户裁定(2026-10-08):「失败模式可以记为现存的不同实现思路.论文支撑可以补充」——
+故 A1/A2 不再是"候选失败模式",而是**两个仓库各自现存的实现思路**(已在本机逐条核实,见 §0 与上面的【我复核】),
+下面各配**论文支撑**与**若要判别所需的实验**。
+**论文支撑的核验边界**:这里的 arXiv ID 我逐条用 arXiv API 核过存在性与标题(见第三条对话 README §3 的 15 条 + 本会话另核的 9 条);**论文内部的数字未回正文核对**。要进 `viz/src/data/corpus.ts` 的决策册/冲突册仍需用户裁定。
 
-## U1 · 候选失败模式:把判决外包给另一个 LLM(来自 §3)
+## A1 · 现存思路一:把判决交给另一个 LLM(抽样自 qwen-code)
 
-| 项 | 内容 |
-|---|---|
-| 可证伪形式 | 把安全判决外包给另一个 LLM 的 harness,在对抗压力下(改写、编码混淆、多步规避)的**漏放率**高于同一 harness 的确定性规则路径 |
-| 杀死条件 | 在同等对抗集上,LLM 判决路径的漏放率不高于(或显著低于)确定性路径 ⇒ U1 不成立 |
-| 现成样本 | qwen:`packages/core/src/permissions/classifier.ts`(两阶段 LLM 分类器)vs 同仓的 `shell-safety-rules.ts` / shell AST 路径 |
-| 需要什么才可判 | 一个共享的对抗命令集 + 两条路径各自的漏放计数;两者都在本机可跑 |
-
-## U2 · 候选失败模式:判据只渲染、从不求值(来自 §3)
+**做法**:判据不在确定性代码里,而是**另开一次 side-query**,让一个模型按受约束的 JSON 输出判决。
 
 | 项 | 内容 |
 |---|---|
-| 可证伪形式 | 完成判据只被渲染进 prompt、从不被代码求值的 harness,其"完成"判定与**可执行判据**在对照任务集上系统性背离(即等于没有判据) |
-| 杀死条件 | 两者在对照集上一致率足够高 ⇒ "渲染即无判据"不成立(判据仍有效,只是靠模型自觉执行) |
-| 现成样本 | kimi:`features/goal/injection/goalInjection.ts:81` 渲染 `<untrusted_completion_criterion>`;全仓无求值分支 |
-| 需要什么才可判 | 一组任务 + 两种 harness 各自的"完成"判定;或对 kimi 单臂做"骗过渲染层"的注入试验 |
+| 实例 | `packages/core/src/permissions/classifier.ts`(文件头自称 "AUTO approval mode LLM classifier",两阶段:stage 1 只出 `shouldBlock`/32 tokens,stage 2 出 `{thinking, shouldBlock, reason}`/4096 tokens);`packages/core/src/goals/goal-verifier.ts`(`runSideQuery` + `generateJson`,带 `proofKind` 与 `blockedPolicy` 判据文本) |
+| 同一仓的对照路径 | `packages/core/src/shell-safety-rules.ts` / shell AST 路径(确定性规则) |
+| 论文支撑 | **AutoHarness(2603.03329)**——自动合成**代码**型 harness 而不是让模型临场判;该方向把"判决"往确定性一侧推。**Phantom Guardrails(2607.13083)**——自检型机制会**虚构并不存在的失败**(15/60 vs 对照 0/60),且要求"无变更"必须是合法输出。**METR 的受控长程对比**(见 `related_files/conversation-openai-math-engineering-implications-2026-10-07/README.md` 的增量段第 9 轮:Claude Code 胜 ReAct 的 bootstrap 样本仅 50.7%,Codex 胜 Triframe 14.5%)——产品级 scaffold 的复杂度**不等于**更强的自主视野。**Resample or Reroute?(2607.08665)**——收益**随验证器质量下降而缩小**,即"判决者的质量"是收益的一阶变量。 |
+| 若要判别(可选,不是本条的成立条件) | 一个共享的对抗命令集 + 两条路径各自的漏放计数;两者都在本机可跑 |
+
+## A2 · 现存思路二:判据只渲染进 prompt,从不被代码求值(抽样自 kimi-code)
+
+**做法**:判据作为**prompt 里的不变量**交付给模型自守,harness 侧不执行它。
+
+| 项 | 内容 |
+|---|---|
+| 实例 | `features/goal/injection/goalInjection.ts:81` 把 `completionCriterion` 渲染成 `<untrusted_completion_criterion>`;`update_goal` 直接同步 `markComplete`(无模型调用);全仓 `completionCriterion` 无求值分支(只有渲染与状态搬移) |
+| 对比其触发路径 | 触发路径上**零 judge**(这是它的强项):`REPEAT_FORCE_STOP_STREAK = 12` 等判据全在代码里 |
+| 论文支撑 | **How Much of a Harness Does a Strong Agent Need?(2609.40303)**——最小 harness 已可与复杂 harness 相当 ⇒ 把判据写进 prompt 不算"缺 harness",但也不等于判据生效。**Beyond the Model(2609.32459)**——组件的有用性**依任务而变**,故"渲染即生效"不能被默认。**τ-bench(2406.12045)** 与**基于状态的校验**路线证明:判据一旦可执行,就能测 `pass^k` 这类**重复成功**;反之只能测单次自述。**PaperBench(2504.01848)** 更进一步——它**为自己的判官另建一个 benchmark**,即"判据本身也要被测"。 |
+| 若要判别(可选) | 一组任务 + 两种 harness 各自的"完成"判定;或对 kimi 单臂做"骗过渲染层"的注入试验 |
+
+## A3 · 这两个思路在同一张轴上的位置
+
+把 A1/A2 与项目原则并排,可见**这不是"有无判据"的二分,而是两个独立的轴**:
+
+| 轴 | 含义 | qwen | kimi | 项目原则(`TIMING-REVIEW(1).md`) |
+|---|---|---|---|---|
+| 判据在哪 | 由谁执行 | **harness 外的另一个 LLM** | prompt 文本(harness 不执行) | 必须在 harness 里,且不外包给 LLM |
+| 判据能否执行 | 是否被代码求值 | 能(结构化输出被消费) | **不能**(只渲染) | 必须可执行 |
+
+⇒ 两个真实 harness 各自只满足一半:**qwen 满足"可执行"但违反"不外包";kimi 满足"不外包"但违反"可执行"。**
+这一点比"两个失败模式"更准确,也正是 U4 的第三态:**判据需要"在 harness 里 + 可执行 + 不外包"三个条件同时成立**,
+而按现有样本,行业内两种主流做法**各缺一个**。
 
 ## U3 · 未核清单(◐)的**核法**(把 §5 与上面「我没有核的」变成可执行的检查)
 

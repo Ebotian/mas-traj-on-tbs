@@ -27,15 +27,15 @@ import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
  "corpusFiles": 72,
- "corpusLines": 105195,
- "corpusLinesExclTranscript": 36143,
+ "corpusLines": 105214,
+ "corpusLinesExclTranscript": 36162,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 8354,
+ "corpusLinesRead": 8373,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 5229
+ "corpusLinesReadExclTranscript": 5248
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -482,9 +482,9 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/harness-design-comparison-qwen-vs-kimi-2026-10-07.md",
-  "lines": 184,
+  "lines": 203,
   "status": "authored",
-  "linesRead": 184,
+  "linesRead": 203,
   "note": "跨会话转交的 harness 对照;正文来自 qwen-code-df,我写了头与文末【我复核】并抽查了 kimi 13 条 + qwen 若干条。两处已改正:仓库路径缺前缀、qwen hook 事件 22 而非 19"
  },
  {
