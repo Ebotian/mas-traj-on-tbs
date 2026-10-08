@@ -26,16 +26,16 @@
 import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
- "corpusFiles": 81,
- "corpusLines": 108599,
- "corpusLinesExclTranscript": 37209,
+ "corpusFiles": 82,
+ "corpusLines": 108954,
+ "corpusLinesExclTranscript": 37564,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 9416,
+ "corpusLinesRead": 9771,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 6291
+ "corpusLinesReadExclTranscript": 6646
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -500,6 +500,13 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
   "status": "authored",
   "linesRead": 149,
   "note": "v3 计划草案(本地座起草,未经对抗审查):以「可断点重放的轨迹」为最小单位;E1 仪器检查→E2 share-matched→E3 继续/重启/分叉→E4 机制比较;相对 v2 的保留/修正/新增各三条"
+ },
+ {
+  "path": "related_files/2026-10-08-v2-protocol-from-web.md",
+  "lines": 319,
+  "status": "fetched",
+  "linesRead": 319,
+  "note": "网页侧的 v2 协议(10-08 08:32 的答复),从包会话记录按节点抽成独立件;证据分级:转述,点名的编号已钉版本"
  },
  {
   "path": "related_files/2026-10-08-first-measurement-spec.md",
