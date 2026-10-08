@@ -6,6 +6,8 @@ import type { EdgeKind, Evidence, GNode, NodeKind } from '../types.ts'
 
 const W = 1180
 const H = 940
+/** Set by layout() when the widest layer needs more room than W has (see the clamp note). */
+let layoutWidth = W
 const LAYERS = 8
 /** Horizontal clearance floor between node centres on the same layer. */
 const MIN_GAP = 96
@@ -122,14 +124,37 @@ function layout(): Sim[] {
 
   let lo = Infinity, hi = -Infinity
   for (const n of nodes) { lo = Math.min(lo, n.x); hi = Math.max(hi, n.x) }
-  const span = hi - lo || 1
-  for (const n of nodes) n.x = 80 + ((n.x - lo) / span) * (W - 160)
-  // the rescale can compress a layer back below MIN_GAP, so relax once more in
-  // final coordinates and then clamp instead of rescaling again
-  relax(120)
-  for (const n of nodes) {
-    n.x = Math.max(46, Math.min(W - 46, n.x))
-    n.y = Math.max(34, Math.min(H - 30, n.y))
+  /* Constructive per-layer placement. Why not the iterative relax alone: on a crowded layer
+   * (layer 5 grew to 13 nodes on 2026-10-08) the chain does not converge in any bounded number
+   * of passes, and the final clamp pushed the ends back in until 「计价层 Φ_θ」 and 「三方目标」
+   * landed on the same x — centre distance 0, two overlapping circles. So: sort each layer, read
+   * the exact clearance every adjacent pair needs (label widths, floored at MIN_GAP), lay them out
+   * at those distances, centre the layer, and let the canvas be as wide as the widest layer needs.
+   * The force pass above still decides the *order* and the y; it no longer decides overlap. */
+  let needW = 0
+  const layersPlaced: { s: Sim[]; needs: number[]; total: number; pad: number }[] = []
+  for (const g of groups.values()) {
+    const s = [...g].sort((a, b) => a.x - b.x)
+    const needs: number[] = []
+    for (let i = 1; i < s.length; i++) {
+      needs.push(Math.max(MIN_GAP, (labelWidth(s[i - 1].title) + labelWidth(s[i].title)) / 2 + 10))
+    }
+    /* The first and last node's label is centred on its own x, so half of each sticks out past
+     * the chain: without this the end labels are clipped by the viewBox (seen in the 2026-10-08
+     * headless render of layer 5's right end). */
+    const pad = (labelWidth(s[0].title) + labelWidth(s[s.length - 1].title)) / 2
+    const total = needs.reduce((a, b) => a + b, 0) + pad
+    needW = Math.max(needW, total)
+    layersPlaced.push({ s, needs, total, pad })
+  }
+  layoutWidth = Math.max(W, needW + 92)
+  for (const { s, needs, total, pad } of layersPlaced) {
+    let x = (layoutWidth - total) / 2 + pad / 2
+    s[0].x = x
+    for (let i = 1; i < s.length; i++) {
+      x += needs[i - 1]
+      s[i].x = x
+    }
   }
   return nodes
 }
@@ -158,7 +183,7 @@ export function render(host: HTMLElement): void {
   left.appendChild(h('h2', {}, '理解结构图 · 力导 + 分层约束'))
   left.appendChild(ctl)
 
-  const svg = s('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, class: 'chart graph', role: 'img', 'aria-label': '构想理解结构图' })
+  const svg = s('svg', { viewBox: `0 0 ${layoutWidth} ${H}`, width: layoutWidth, height: H, class: 'chart graph', role: 'img', 'aria-label': '构想理解结构图' })
   const scroll = h('div', { class: 'scroll' }, svg)
   left.appendChild(scroll)
 

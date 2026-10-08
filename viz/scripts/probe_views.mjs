@@ -70,6 +70,42 @@ for (const [name, rel, expects] of ROUTES) {
     console.log(`✗ ${name.padEnd(10)} 渲染抛错: ${e && e.message}`)
   }
 }
+
+/* #/map geometry: no two nodes of one layer may share (or near-share) a centre.
+   2026-10-08: layer 5 grew to 13 nodes and the iterative relax + clamp folded 「计价层 Φ_θ」
+   onto 「三方目标」 at centre distance 0. The layout is now constructive, so assert it. */
+try {
+  const mod = await import(pathToFileURL(path.join(ROOT, 'viz/src/views/map.ts')).href)
+  const host = new El('#root')
+  mod.render(host)
+  const groups = []
+  const walk = (n) => { for (const c of n.children) { if (c.tag === 'g' && c.attrs.class === 'node' && c.attrs.transform) groups.push(c); walk(c) } }
+  walk(host)
+  const pts = groups.map(g => {
+    const m = /translate\(([-\d.]+),([-\d.]+)\)/.exec(g.attrs.transform)
+    return { id: g.attrs['aria-label'], x: +m[1], y: +m[2] }
+  })
+  const bands = []
+  for (const n of [...pts].sort((a, b) => a.y - b.y)) {
+    const b = bands[bands.length - 1]
+    if (b && Math.abs(n.y - b.y0) < 30) { b.items.push(n); b.y0 = n.y } else bands.push({ y0: n.y, items: [n] })
+  }
+  let worst = Infinity, where = ''
+  for (const b of bands) {
+    const s = b.items.sort((a, b2) => a.x - b2.x)
+    for (let i = 1; i < s.length; i++) {
+      const d = s[i].x - s[i - 1].x
+      if (d < worst) { worst = d; where = `${s[i - 1].id} ↔ ${s[i].id}` }
+    }
+  }
+  const okGeo = worst >= 96
+  if (!okGeo) bad++
+  console.log(`${okGeo ? '✓' : '✗'} map 几何    ${pts.length} 节点 / ${bands.length} 层,最窄中心距 ${worst.toFixed(1)} (下限 96)${okGeo ? '' : ' —— ' + where}`)
+} catch (e) {
+  bad++
+  console.log(`✗ map 几何   检查失败: ${e && e.message}`)
+}
+
 console.log(bad === 0
   ? `\n${ROUTES.length}/${ROUTES.length} 路由渲染通过且关键串在场(不含 numbers:见文件头)`
   : `\n${bad} 条路由有问题`)
