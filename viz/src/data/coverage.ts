@@ -26,16 +26,16 @@
 import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
- "corpusFiles": 74,
- "corpusLines": 105507,
- "corpusLinesExclTranscript": 36455,
+ "corpusFiles": 76,
+ "corpusLines": 105756,
+ "corpusLinesExclTranscript": 36704,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 8662,
+ "corpusLinesRead": 8911,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 5537
+ "corpusLinesReadExclTranscript": 5786
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -486,6 +486,20 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
   "status": "authored",
   "linesRead": 129,
   "note": "经济考虑大类:三个 provider 的 Φ_θ 实例(均已核官方页)、三层架构、η 双口径、只存账单禁令的三次独立来源、harness 经济学证据、以及我们自己计量记录的残余不确定性"
+ },
+ {
+  "path": "related_files/gpt-review-2026-10-08-r9.md",
+  "lines": 195,
+  "status": "fetched",
+  "linesRead": 195,
+  "note": "第 9 轮答复:问题 3(逐步模型选择)的现有评测参考;引用已钉版本(TwinRouterBench v4 / RouterArena v3 / RouterBench v2 / LLMRouterBench v1)"
+ },
+ {
+  "path": "related_files/2026-10-08-first-measurement-spec.md",
+  "lines": 54,
+  "status": "authored",
+  "linesRead": 54,
+  "note": "首个测量规格:合成第 7/8/9 轮意见(M0 仪器检查 + M1 share-matched 对照)+ 宿主接线状态"
  },
  {
   "path": "related_files/gpt-review-2026-10-08-r8.md",
