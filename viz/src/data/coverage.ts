@@ -27,15 +27,15 @@ import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
  "corpusFiles": 74,
- "corpusLines": 105487,
- "corpusLinesExclTranscript": 36435,
+ "corpusLines": 105507,
+ "corpusLinesExclTranscript": 36455,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 8642,
+ "corpusLinesRead": 8662,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 5517
+ "corpusLinesReadExclTranscript": 5537
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -509,9 +509,9 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/deepresearch-citation-ledger-2026-10-07.md",
-  "lines": 123,
+  "lines": 143,
   "status": "authored",
-  "linesRead": 123,
+  "linesRead": 143,
   "note": "我写的引用核验台账(38 条 URL);其中三条我已亲核"
  },
  {
