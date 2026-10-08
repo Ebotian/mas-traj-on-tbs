@@ -2651,13 +2651,2850 @@ Started deep research on long-horizon agent evaluation systems
 Worked for 20s
 
 
-===== [assistant/text] 10-07 05:19 node=57850cd6 len=196 =====
+===== [assistant/text] 10-07 05:19 node=57850cd6 len=117 =====
 Deep Research 已经开始处理这个问题了。它会先给出研究计划，然后继续核验长程 Agent 的 SOTA 实现、评测指标、源码位置和对 ADA/OPL 最值得吸收的部分；最终报告会直接显示在 Deep Research 里。
+
+
+===== [user/text] 10-07 06:59 node=4e21d1de len=64 =====
+就LHTB这样的评测来说,对于我们关心的指标:费用,墙钟时间,通过率,目前主流的开源agent框架成绩如何?有没有相关可信结论?
+
+
+===== [user/text] 10-07 06:59 node=0aff443c len=64 =====
+就LHTB这样的评测来说,对于我们关心的指标:费用,墙钟时间,通过率,目前主流的开源agent框架成绩如何?有没有相关可信结论?
+
+
+===== [assistant/text] 10-07 07:00 node=3e6850cb len=89 =====
+我先把 LHTB 的定义、官方榜单/论文和公开复现实验对齐，再把“通过率—墙钟时间—费用”拆成同口径比较；这类 benchmark 最容易被不同模型、并发策略和计费口径混在一起。
+
+
+===== [tool/text] 10-07 07:00 node=68034c12 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:00 node=55013b0b len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:01 node=42e5346d len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:01 node=5e1cfff7 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [assistant/thoughts] 10-07 07:01 node=eec37303 len=20 =====
+Searched 18 websites
+
+
+===== [assistant/text] 10-07 07:01 node=001320e1 len=142 =====
+目前已经看到一个很关键的证据边界：**LHTB 官方主表主要是在固定 Terminus-2 后比较模型，而不是比较 agent framework**。真正控制“同模型、换框架”的公开实验很少，所以我会把“可直接下结论的证据”和“只能旁证的 Terminal-Bench 数据”分开。
+
+
+===== [tool/text] 10-07 07:01 node=804d21da len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:01 node=a5dd4a98 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:01 node=601430c6 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:01 node=ffd0a752 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:01 node=7618d767 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:01 node=c447b741 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:01 node=ea83fece len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:01 node=85429895 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [assistant/thoughts] 10-07 07:01 node=0da8e061 len=444 =====
+整理评测结论
+我会把 LHTB 的公开结果与成本、墙钟时间、通过率分开看：目前更可信的是固定任务预算下的端到端结果，开源框架之间的严格同模型对照仍然很少，成本数据尤其不完整。
+Comparing benchmark evidence
+I’m separating direct LHTB results from broader framework studies. Controlled comparisons suggest orchestration can raise scores, but cost often increases substantially; standardized wall-clock measurements and fair open-source framework rankings remain limited.
+Compared benchmark evidence and organized evaluation conclusions
+
+
+===== [assistant/thoughts] 10-07 07:01 node=6c0d4189 len=20 =====
+Searched 36 websites
+
+
+===== [assistant/reasoning_recap] 10-07 07:01 node=9fbf7d49 len=17 =====
+Worked for 1m 25s
+
+
+===== [assistant/text] 10-07 07:01 node=deedc04e len=6785 =====
+有，而且现在已经能得到一些相当有用的结论。不过要先把一个坑拆开：**LHTB 本身目前还不是一个成熟的“开源 agent framework 排行榜”**。它最可信的官方实验是固定 `Terminus-2`，然后换模型；真正把 **model 固定、只换 harness/framework** 的公开数据还比较少。LHTB 社区榜也明确说 harness 是成绩的一部分，但当前绝大多数种子结果仍是 Terminus-2。citeturn564081search3turn564081search6
+
+所以，如果我们关心的是你一直在强调的三个量
+
+\[
+(\text{pass rate},\;\text{wall-clock},\;\text{cost}),
+\]
+
+我认为目前最可信的证据不是单看一个榜，而是把 **LHTB + Terminal-Bench/Pro 的受控 harness 实验 + Harness-Bench** 拼起来看。
+
+### 目前比较值得信的公开结果
+
+| Harness / framework | 证据 | 通过能力 | 成本/效率 | 我对证据的评价 |
+|---|---|---:|---:|---|
+| **Goose** | Scaffold Effect，固定 Qwen 3.6 Plus / MiniMax M2.5，50 个 Terminal-Bench Pro 任务 | 约 38–48% | **28k–37k tokens / solved** | **目前最强的成本证据之一** |
+| **OpenHands-SDK** | 同上 | 约 46–50% | 841k–843k tokens / solved | 成功率接近 Goose，但该实验中贵约 **23–30×** |
+| **OpenCode** | 同上 | 约 46–50% | 1.15M–1.55M tokens / solved | 同等成功率附近，成本约 **41× Goose** |
+| **NanoBot** | Harness-Bench，106 tasks × 8 models | completion 81.6%，总 score 76.2 | **68.7k tokens/task** | 在该 benchmark 的 OSS harness 中非常强，但不是 LHTB |
+| **Hermes** | Harness-Bench | completion 80.4%，score 71.2 | 139.7k tokens/task，22.6 turns | 能力不错，但明显更“长” |
+| **Moltis** | Harness-Bench | completion 78.4%，score 68.8 | 134.9k tokens/task | 中上 |
+| **Terminus-2** | LHTB / Terminal-Bench 官方参考 harness | 强烈依赖模型 | 官方更多报告模型成本 | **适合作为 benchmark reference，不宜当成本最优 agent** |
+| **Geass Harness** | LHTB community，DeepSeek V4 Flash | **14/46 ≥.95，11/46 =1.0，mean 0.602** | 无公开可比成本 | LHTB 当前很有趣，但**不是受控 harness 对比** |
+| **LoopX Heartbeat** | LHTB，同 GPT-5.6 Sol 与 Plain/Goal 比较 | 7/46 ≥.95；mean 0.4948 | **$551.73 / 46 ≈ $12/task** | 长程控制层有信号，但目前**不证明效率更高** |
+
+Scaffold Effect 的实验尤其重要：它固定任务、模型、sandbox 和大体系统提示，比较 Goose、OpenCode、OpenHands-SDK，共 300 次试验。模型内的 pass-rate 差距只有 **0–8 个百分点**，大部分置信区间包含 0；但每解一道题的 token 成本差了接近 **40 倍**。citeturn643768academia27turn643768search0turn643768search6
+
+具体数字很醒目：
+
+\[
+\begin{array}{c|cc}
+&\text{Qwen 3.6 Plus}&\text{MiniMax M2.5}\\
+\hline
+\text{Goose}&28142&36950\\
+\text{OpenHands}&841201&843286\\
+\text{OpenCode}&1147740&1546977
+\end{array}
+\]
+
+单位都是 **tokens / solved task**。而平均轮数其实只差大约 \(1.2\times\)，不是 40 倍；主要差异来自**每轮上下文膨胀、tool serialization、history 重发、idle turn**。citeturn643768search1turn643768search4
+
+这恰好击中了我们关心的一个核心问题：
+
+> **agent harness 的主要经济作用，目前看可能不是把 pass rate 提高很多，而是决定“为了得到同样的成功率，要烧多少 token、等多久、重复多少无效动作”。**
+
+---
+
+### 墙钟时间比“费用”更难得到干净结论
+
+这里我反而建议保守一点。
+
+LHTB 的标准预算是每题 **90 min**，官方早期实验一次完整 46 题 sweep 实际大约需要 **53–71 小时累计 task wall time**，单任务约 69–93 分钟。这首先说明 LHTB 已经进入“真的长程”区间，而不是 SWE-bench 那种短回合修补。citeturn541103search4
+
+但公开 framework 论文通常不太适合直接比较绝对 wall-clock，因为它严重受：
+
+- API endpoint decoding latency；
+- provider batching；
+- sandbox 启动；
+- 网络；
+- 并发数；
+- model reasoning effort；
+- harness 是否异步跑工具；
+- context cache；
+
+影响。
+
+例如 Scaffold Effect 给所有任务统一 **900 s wall-time cap**，并记录 `wall_seconds`，但作者最后也主要强调 no-action turns 和 timeout fingerprint，而没有把“平均秒数排名”作为核心结论。OpenCode 每题约有 **2.0–2.16 个 no-action turns**，Goose 只有 **0.2–0.3**，约 10 倍；这基本可以视作一种稳定的**等待税 / latency tax**。citeturn241921search3turn241921search1
+
+所以我会定义我们自己的墙钟指标为
+
+\[
+T_{\rm solved}
+=
+\frac{\sum_i T_i}
+{\sum_i \mathbf 1[\text{pass}_i]},
+\]
+
+即 **wall-seconds per solved task**，而不是简单平均每题耗时。
+
+因为一个 agent 15 分钟就放弃、通过率 20%，显然不能说它比跑 50 分钟、通过率 60% 的 agent “快”。
+
+---
+
+## LHTB 本身给我们的最有趣信号：长程控制并非免费午餐
+
+LoopX 最近做了一个非常接近我们想看的 LHTB 实验：固定 **GPT-5.6 Sol、max reasoning、46 个相同任务**，比较 Plain Codex、native Goal 和 LoopX Heartbeat。
+
+结果：
+
+| 模式 | Mean reward | \(R\ge .95\) | Cost |
+|---|---:|---:|---:|
+| Plain | 0.4218 | **7/46** | $212.97 |
+| Native Goal | 0.4475 | 4/46 | $344.25 |
+| LoopX Heartbeat | **0.4948** | **7/46** | **$551.73** |
+
+也就是说 LoopX 确实把 mean reward 从 0.422 拉到了 0.495，约 +17.3%，但**严格通过数没有超过 Plain：还是 7/46**；成本则从约 $213 上升到约 $552。citeturn719369search0
+
+换算一下：
+
+\[
+C_{\rm task}
+\approx
+\$4.63,\ \$7.48,\ \$11.99.
+\]
+
+更重要的是，LoopX 自己也明确警告：这个实验有 replacement trials、部分时间预算不同，只有每 cell 一个有效 trial，没有 confidence interval，因此不能称作严格的 equal-budget efficiency comparison。citeturn719369search0
+
+所以现在不能说：
+
+> “persistent goal / heartbeat 一定值得。”
+
+只能说：
+
+> **它有能力把未完成任务进一步推进，尤其在研究复现、搜索、长期状态积累任务中；但如果 acceptance / rollback / verification 设计不好，它可能只是花更多钱把一个 0.4 推成 0.8，而不是把 0.8 推成 1.0。**
+
+这点其实跟我们之前讨论 ada/opl 的方向非常吻合：**continuation 本身不是 reward；只有 continuation → verified progress 才是 reward。** memcite
+
+---
+
+## Harness-Bench 给出了更广的开源框架信号
+
+2026 年的 Harness-Bench 做得更接近真正的 factorial experiment：
+
+\[
+106\ tasks
+\times
+6\ harnesses
+\times
+8\ models
+=
+5088
+\]
+
+条主实验轨迹。
+
+六个 OSS harness 是：
+
+NanoBot、Hermes、Moltis、NullClaw、ZeroClaw、OpenClaw。
+
+它固定 task environment、budget、timeout 和 evaluator，只让 harness 保留自己的 prompting、tool API、state management 和 recovery。citeturn712556academia43turn712556search11
+
+聚合结果：
+
+| Harness | Completion | Score | tokens/task | turns |
+|---|---:|---:|---:|---:|
+| **NanoBot** | **81.6%** | **76.2** | **68.7k** | 7.3 |
+| Hermes | 80.4% | 71.2 | 139.7k | 22.6 |
+| Moltis | 78.4% | 68.8 | 134.9k | 8.0 |
+| NullClaw | 75.9% | 64.4 | 175.1k | 12.1 |
+| ZeroClaw | 69.9% | 61.4 | 133.2k | 8.6 |
+| OpenClaw | 60.0% | 52.4 | 82.1k | 5.0 |
+
+citeturn738047search1turn738047search2
+
+这里一个非常漂亮的结果是：
+
+\[
+\text{NanoBot}:68.7k\ tokens,\ 81.6\% completion
+\]
+
+居然同时比很多更“重”的 harness **便宜且强**。
+
+所以“更多 reasoning / 更多 turns / 更复杂 agent topology = 更强”现在没有证据支持。
+
+反而目前越来越多数据指向：
+
+\[
+\boxed{
+\text{good harness}
+\approx
+\text{少而有效的 action}
++
+\text{小而稳定的 state}
++
+\text{可靠 verification}
++
+\text{及时 recovery}
+}
+\]
+
+而不是无限套 planner、critic、subagent。
+
+---
+
+# 我认为现在已经可以下的 5 个较可信结论
+
+第一，**不要再比较“模型”，而应比较**
+
+\[
+(\text{model},\text{harness},\text{budget})
+\]
+
+这个三元组。Terminal-Bench 同一模型换 harness 可以差 5–20 pp；Harness-Bench 又独立确认执行层可以产生二十多个百分点的 aggregate spread。citeturn495481search2turn738047academia41
+
+第二，**cost 的 harness 效应可能远大于 pass-rate 效应。** 这是目前我认为最可靠、最有工程价值的结论。至少在 Scaffold Effect 的受控实验里：
+
+\[
+\Delta P \lesssim 8{\rm pp},
+\qquad
+\frac{C_{\max}}{C_{\min}}\approx40.
+\]
+
+citeturn827354academia36
+
+第三，**长程 persistence 有价值，但很容易成为昂贵的“继续犯错”。** LoopX 的 LHTB 数据正是典型：mean reward 明显提高，但 strict solve 没超过 Plain，成本却约 \(2.6\times\)。citeturn719369search0
+
+第四，**目前最值得警惕的不是思考少，而是 context churn。** 重复历史、巨大 tool schema、重复读文件、idle turn、失败后无效重试，都可能让 token 成本出现数量级增长。
+
+第五，因此我们真正应该优化的不是单纯
+
+\[
+\max P(\mathrm{pass}),
+\]
+
+而是一个 Pareto 面：
+
+\[
+\boxed{
+\left(
+P_{\rm pass},
+\frac{\$}{\rm solved},
+\frac{s}{\rm solved}
+\right)
+}
+\]
+
+再加一个对我们自己的系统尤其重要的第四轴：
+
+\[
+P(\text{catastrophic regression}),
+\]
+
+即已经取得正确中间结果后，被后续长程探索破坏掉的概率。
+
+---
+
+如果让我现在给 **ada / opl** 一个非常实际的 benchmark 目标，我甚至不会先追“LHTB 第一”。
+
+我会要求新 harness 相对 baseline 满足：
+
+\[
+P_{\rm pass}\uparrow
+\quad\text{且}\quad
+C_{\rm solved}\downarrow
+\quad\text{且}\quad
+T_{\rm solved}\downarrow ,
+\]
+
+至少必须在三维 Pareto 上不被 baseline dominate。
+
+而从目前公开证据看，**Goose 式“轻量 loop”是一个非常值得作为成本基线的参照；NanoBot 值得研究其 execution design；OpenHands 值得作为成熟复杂 harness 基线；LoopX 值得借鉴持久状态机制，但其成本收益比还没有被证明。**
+
+这比简单问“哪个 agent 跑分最高”更接近我们真正要解决的问题。
+
+
+===== [user/text] 10-07 07:04 node=a761e48e len=86 =====
+我们的场景更多关注开源的code系列,比如kimicode.qwencode(且是真开源,允许公开pr,不是像grok那样只放个只读仓库的),这方面的评测存在吗,成绩如何?
+
+
+===== [assistant/text] 10-07 07:04 node=95bf4427 len=178 =====
+这次我会把范围收窄到你说的“**真开源 coding agent / CLI**”：代码公开、仓库持续接受外部 PR、可以本地改 harness，而不是只公布一个参考仓。重点看 Kimi Code、Qwen Code，再补 OpenHands、SWE-agent、Aider/类似 CLI，并尽量找**同 benchmark、同模型或至少可校准**的成绩。
+
+
+===== [tool/text] 10-07 07:05 node=1b303428 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:05 node=ea316ffc len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:05 node=4e6ca2d3 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [assistant/thoughts] 10-07 07:05 node=08505b94 len=18 =====
+Searched 1 website
+
+
+===== [assistant/text] 10-07 07:05 node=59960c1b len=152 =====
+有，而且 **Qwen Code 这边已经开始出现“把 CLI/harness 本身当实验对象”的评测**；Kimi Code 目前更多还是“固定 Kimi Code 去测模型能力”，所以两者证据强度并不一样。接下来我重点核对：是否有同模型跨 harness、是否公开多次重复、以及有没有成本/时间数据。
+
+
+===== [tool/text] 10-07 07:05 node=23cbf6d2 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:05 node=dfebe71a len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:05 node=5c439855 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:05 node=df3fd947 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [assistant/thoughts] 10-07 07:05 node=a6eb96f1 len=290 =====
+Planning current benchmarks
+I’m checking the latest open coding-agent evaluations, prioritizing public code, reproducible tasks, PR-based outcomes, and same-model harness comparisons. I’ll separate verified evidence from claims that remain difficult to reproduce.
+Planned current benchmarks
+
+
+===== [tool/text] 10-07 07:05 node=53f2c813 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [assistant/thoughts] 10-07 07:05 node=1b08981d len=246 =====
+Separating evidence
+I’m ready to compare Qwen Code, Kimi Code, OpenHands, SWE-agent variants, and Aider by openness, PR-centered evaluation, reproducibility, and same-model harness evidence. I’ll flag proprietary or self-reported results clearly.
+
+
+===== [assistant/thoughts] 10-07 07:05 node=8ab35ffe len=19 =====
+Searched 8 websites
+
+
+===== [assistant/reasoning_recap] 10-07 07:05 node=9d59b9f2 len=16 =====
+Worked for 1m 6s
+
+
+===== [assistant/text] 10-07 07:05 node=2d29c832 len=7098 =====
+有，而且现在已经开始出现一些**真正适合我们这种“改 agent/harness 本身”场景的评测**。不过不同项目成熟度差别很大。
+
+最值得注意的是：**Qwen Code 已经有比较像“框架回归测试”的正式评测；Kimi Code 则已经有很强的公开 coding benchmark 成绩，但多数仍是“模型 + Kimi Code”组合评测，不是纯 harness 对照。**
+
+### 先说你关心的“真开源”
+
+**Qwen Code** 这一点最干净。它公开声明 framework 和 Qwen 模型都是 open-source，支持第三方 provider / local model；贡献指南明确接受 patch 和 PR，要求先关联 issue、经过 review。citeturn393431view0turn850199search0
+
+**Kimi Code** 现在也是真正活跃的 MIT 开源仓库，而不是旧 `kimi-cli` 那个归档只读仓。旧 `MoonshotAI/kimi-cli` 已于 2026 年 9 月归档；新的 `MoonshotAI/kimi-code` 是 TypeScript 重写后的主线。citeturn850199search7turn970032search8
+
+但它的治理比 Qwen Code 严格：目前**外部 PR 只接受维护者预先批准的 bug fix；外部 feature PR 默认不接受**。也就是说源码是真开源、仓库不是 read-only、PR 也是真 PR，但社区改 agent 核心路线的权限并没有 Qwen Code 那么开放。citeturn970032search0
+
+这个差异对我们很现实：
+
+\[
+\text{forkability} \neq \text{upstreamability}.
+\]
+
+如果我们想对 harness 做实验并最终 upstream，**Qwen Code 更适合作为实验宿主**；Kimi Code 更适合 fork 后研究。
+
+---
+
+## 1. Qwen Code：目前最接近我们想要的“framework benchmark”
+
+Qwen Code 官方现在直接拿 **SWE-bench Verified 500 题**回归测试自己的不同版本，而且条件控制得相当好：
+
+- 固定模型：`Qwen 3.7 Max`
+- 每个 Qwen Code 版本 **3 次完整运行**
+- 即每版本 \(500\times3=1500\) jobs
+- `max_iterations=500`
+- `runtime_timeout=7200s`
+- 1M context
+- high reasoning
+
+截至公开表中的版本：
+
+| Qwen Code | Avg Score | Pass Rate | pass\(^3\) |
+|---|---:|---:|---:|
+| 0.0.14 | **77.80%** | 84.6% | **69.2%** |
+| 0.1.0 | 76.73% | 84.6% | 68.0% |
+| 0.5.0 | 76.60% | 83.0% | 68.4% |
+| 0.10.0 | 76.47% | 84.4% | 67.4% |
+| 0.15.0 | 77.67% | 84.6% | 68.6% |
+| 0.19.0 | 76.40% | **85.0%** | 65.8% |
+| 0.22.0 | 77.33% | 84.4% | 68.0% |
+
+citeturn970032search4
+
+这个表其实很有意思。
+
+如果只看平均：
+
+\[
+76.4\%\sim77.8\%
+\]
+
+看起来几个版本“差不多”。
+
+但 reliability 指标 `pass^3` 却从
+
+\[
+65.8\%\to69.2\%
+\]
+
+有大约 3.4 pp 摆动。
+
+这正说明我们前面讲的：
+
+> **final mean score 对 harness regression 的辨识力不足，稳定性指标可能更敏感。**
+
+而且 Qwen Code 已经发现了同一个问题：它们当前 benchmark workflow 能跑 SWE-bench Verified 和 Terminal-Bench 2.0，但**token/context 优化没有自动绑定 task-success regression gate**。官方 issue 明确说，不能只测“省了多少 token”，还必须测“tool recall / task success 损失多少”。citeturn970032search2
+
+这跟我们想做的 ADA/OPL 几乎同一个问题。
+
+我会认为 Qwen Code 当前的 benchmark infra 是我们**最值得直接读源码**的一个。
+
+---
+
+# 2. Kimi Code：公开成绩很强，但 harness 评测还不够“科学隔离”
+
+Kimi K3 的官方 coding 表里，Kimi Code 被用在很多长程 benchmark 上：
+
+| Benchmark | Kimi K3 + Kimi Code |
+|---|---:|
+| DeepSWE v1.1 | **67.5%** |
+| Terminal-Bench 2.1 | **88.3%** |
+| ProgramBench | **77.8%** |
+| FrontierSWE | **81.2%** |
+| MLS-Bench-Lite | **48.3%** |
+
+citeturn940056search1turn940056search0
+
+从纯“实际 coding-agent 能力”看，这已经是很强的组合。
+
+但这里必须特别小心：
+
+\[
+\boxed{\text{这些主要证明 Kimi K3 + Kimi Code 强}}
+\]
+
+并不能直接推出：
+
+\[
+\boxed{\text{Kimi Code harness 本身比 Qwen Code / SWE-agent 强}}
+\]
+
+因为不同模型往往用了不同 harness。
+
+Moonshot 自己也明确标注了这一点：例如 Terminal-Bench 2.1 中，Kimi K3 用 Kimi Code，而其他模型可能取 Claude Code、Terminus 2 或 Codex 的最佳结果。citeturn903677search3turn940056search0
+
+所以这不是严格的 harness ranking。
+
+---
+
+## 但 Kimi Code 有两个非常有价值的“小型自然实验”
+
+第一个是 **DeepSWE**。
+
+Moonshot 的发布实验：
+
+\[
+\text{Kimi K3 + Kimi Code}=67.5
+\]
+
+而同一个 Kimi K3 在 DeepSWE 官方榜的 `mini-SWE-agent` harness 下约为：
+
+\[
+67.3
+\]
+
+citeturn940056search0
+
+差：
+
+\[
+\Delta\approx0.2\text{ pp}.
+\]
+
+也就是说至少在这个实验里：
+
+> **复杂 Kimi Code 并没有显著打败极简 mini-SWE-agent。**
+
+这其实很符合我们前面观察到的 harness 规律。
+
+---
+
+第二个甚至更有意思，是 Moonshot 的内部 **Kimi Code Bench 2.0**。
+
+同一个 Kimi K3：
+
+\[
+\text{Claude Code}=73.7
+\]
+
+\[
+\text{Kimi Code}=72.9.
+\]
+
+另一个内部 Coding Experience benchmark：
+
+\[
+\text{Claude Code}=59.9
+\]
+
+\[
+\text{Kimi Code}=56.6.
+\]
+
+citeturn903677search6
+
+因此至少 Moonshot 自己的内部数据也没有显示：
+
+\[
+\text{Kimi Code}\gg \text{Claude Code}.
+\]
+
+反而更多像：
+
+\[
+\boxed{\text{Kimi Code 已做到和成熟 proprietary harness 大致同档}}
+\]
+
+这对一个开源 CLI 已经是相当不错的结论。
+
+但因为 benchmark 是内部集，所以证据等级低于 DeepSWE。
+
+---
+
+# 3. DeepSWE 现在是我认为最适合我们关注的公开 benchmark
+
+它比 SWE-bench Verified 更接近你说的“真正长程 code agent”。
+
+当前 DeepSWE v1.1：
+
+- 113 个原创长程工程任务；
+- 有成本；
+- output tokens；
+- agent steps；
+- success confidence interval；
+- task verifier；
+- 官方 leaderboard。
+
+当前公开榜里 Kimi K3 大约是：
+
+\[
+69\%\pm5\%
+\]
+
+平均成本：
+
+\[
+\$4.65/\text{task}
+\]
+
+输出约：
+
+\[
+81k\ \text{tokens}
+\]
+
+约：
+
+\[
+98\ \text{agent steps}.
+\]
+
+citeturn940056search2
+
+这类数据已经比传统 SWE-bench 好很多。
+
+因为我们可以计算：
+
+\[
+\frac{\text{success}}{\$},
+\qquad
+\frac{\text{success}}{\text{steps}},
+\qquad
+\frac{\text{success}}{\text{tokens}}.
+\]
+
+例如同榜：
+
+- GPT-6 Astra：74%，\$4.43，29 steps；
+- Gemini 3.8 Flash：74%，\$2.36，166 steps；
+- GPT-5.6 Sol：73%，\$6.46，61 steps；
+- Kimi K3：69%，\$4.65，98 steps。citeturn940056search2
+
+这里已经能看到完全不同的 agentic regime：
+
+\[
+\text{少步高信息密度}
+\quad\text{vs}\quad
+\text{多步低成本搜索}.
+\]
+
+这正是我们 OPL 想控制的东西。
+
+---
+
+# 4. SWE-agent / mini-SWE-agent 反而非常值得作为我们的基准
+
+如果目标不是产品，而是研究 harness 本身，**mini-SWE-agent 可能比 OpenHands 更适合作 baseline**。
+
+原因很简单：它足够小。
+
+公开 SWE-bench 实验仓甚至直接收录它的 bash-only trajectory，而且它一直被作为固定 scaffold 做模型比较。citeturn248759search13turn248759search15
+
+这意味着我们可以非常清楚地定义：
+
+\[
+A_0=\text{mini-SWE-agent}
+\]
+
+然后依次加入：
+
+\[
+A_1=A_0+\text{memory}
+\]
+
+\[
+A_2=A_1+\text{replan}
+\]
+
+\[
+A_3=A_2+\text{multi-agent}
+\]
+
+\[
+A_4=A_3+\text{VOC router}
+\]
+
+这样 causal attribution 比拿 OpenHands 这种大系统做 baseline 干净很多。
+
+---
+
+# 5. OpenHands：成熟，但更适合“上限基线”而不是机制实验
+
+OpenHands 的好处是 benchmark infra 非常完整，现在公开 benchmark repo 已经支持：
+
+- SWE-bench
+- SWE-bench Pro
+- GAIA
+- Commit0
+- ProgramBench
+- safety benchmark
+
+等。citeturn248759search2turn248759search12
+
+它很适合回答：
+
+> 一个成熟、复杂、功能齐全的 OSS software agent 可以做到什么水平？
+
+但如果我们想回答：
+
+> 哪个机制使 success 提高 3%？
+
+就麻烦了。
+
+因为 OpenHands 的状态机、memory、tool policy、prompt、context management 等耦合得比较深。
+
+因此我会把它作为：
+
+\[
+\text{upper engineering baseline}
+\]
+
+而不是：
+
+\[
+\text{scientific minimal baseline}.
+\]
+
+---
+
+# 6. 目前真正缺失的，是“开源 Code CLI 横向同模型 benchmark”
+
+这恰好是现在的一个空洞。
+
+理想实验应该是固定：
+
+\[
+M=\text{Kimi K3}
+\]
+
+然后跑：
+
+\[
+\{
+\text{Kimi Code},
+\text{Qwen Code},
+\text{SWE-agent},
+\text{mini-SWE-agent},
+\text{OpenHands}
+\}.
+\]
+
+再换：
+
+\[
+M=\text{Qwen3.7 Max}
+\]
+
+重复。
+
+测：
+
+\[
+\begin{aligned}
+&P_{\rm solve}\\
+&pass^3\\
+&\$/{\rm solved}\\
+&T_{\rm wall}/{\rm solved}\\
+&tokens/{\rm solved}\\
+&steps/{\rm solved}\\
+&recovery\\
+&regression
+\end{aligned}
+\]
+
+目前公开研究里，**这种规模的 controlled matrix 还很少**。
+
+所以现在你如果问：
+
+> “Kimi Code 和 Qwen Code 到底哪个 harness 更好？”
+
+严格答案是：
+
+\[
+\boxed{\text{目前没有足够干净的公开证据}}
+\]
+
+不是因为没人 benchmark，而是因为：
+
+\[
+\text{model}
+\times
+\text{harness}
+\times
+\text{budget}
+\times
+\text{effort}
+\]
+
+经常同时变化。
+
+---
+
+# 对我们来说，我现在会把候选优先级改成这样
+
+**第一优先：Qwen Code。**
+
+不是因为它一定最强，而是因为它同时满足：
+
+\[
+\text{open source}
++
+\text{active PR}
++
+\text{multi-provider}
++
+\text{large benchmark infra}
++
+\text{repeat-run reliability metrics}.
+\]
+
+尤其已经有 500-task × 3 runs 的 SWE-bench regression pipeline 和 Terminal-Bench workflow。citeturn970032search2turn970032search4
+
+**第二优先：mini-SWE-agent / SWE-agent。**
+
+作为最小可解释 baseline。
+
+**第三优先：Kimi Code。**
+
+产品级能力很强、架构本身值得研究，而且 K3 + Kimi Code 长程成绩不错；但其 upstream policy 比 Qwen Code 窄，而且公开的 harness-specific science 还少一点。Kimi Code 当前 active repo 本身则完全值得源码级研究。citeturn970032search0turn970032search8
+
+**第四优先：OpenHands。**
+
+作为成熟复杂系统上限。
+
+我觉得这里已经出现一个对 ADA/OPL 很现实的机会：**我们完全可以自己补这个 benchmark 空缺**——固定 Kimi/Qwen 两个开放模型，在 Qwen Code、Kimi Code、mini-SWE-agent、OpenHands 上做统一 DeepSWE/Terminal-Bench 对照，再把 cost、wall-time、pass\(^k\)、recovery 全部记录下来。
+
+这会比“再造一个 benchmark”更有价值，因为它直接回答目前公开资料还回答不了的那个问题：
+
+\[
+\boxed{\text{开源 coding harness 本身到底值多少？}}
+\]
+
+
+===== [user/text] 10-07 07:08 node=01b136f9 len=26 =====
+学术前沿有没有公开可信的长程harness评测框架?
+
+
+===== [assistant/text] 10-07 07:08 node=42631266 len=119 =====
+有，而且近一年已经开始出现一类更“科学”的做法：**把 harness / scaffold 本身作为实验变量**，固定模型、任务、预算与 verifier，测长程性能、成本、步骤和稳定性。这个方向比传统“模型排行榜”更接近我们要的东西。
+
+
+===== [tool/text] 10-07 07:08 node=045d15de len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:08 node=16c96a1a len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:08 node=ec29045c len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:08 node=620de143 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [assistant/thoughts] 10-07 07:08 node=12393f17 len=166 =====
+评估长程框架
+我会区分专门比较 harness 的研究框架、长程任务基准，以及用于归因分析的方法。当前还没有统一标准，但有几类公开方案已经相当接近：包括 Harness-Bench、LongHorizon-Harness、LHTB、Scaffold Effect、WeaveBench 和 AgentCompass。
+评估了长程框架
+
+
+===== [tool/text] 10-07 07:08 node=eae726f0 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:09 node=428504af len=39 =====
+The output of this plugin was redacted.
+
+
+===== [assistant/thoughts] 10-07 07:09 node=454794df len=20 =====
+Searched 12 websites
+
+
+===== [assistant/reasoning_recap] 10-07 07:09 node=57218950 len=14 =====
+Worked for 49s
+
+
+===== [assistant/text] 10-07 07:09 node=6a5e5ba5 len=8950 =====
+有，而且现在已经形成一个比较清晰的前沿层次。**但还没有一个像 SWE-bench 那样已经公认的“长程 harness 标准榜”**。目前最可信的做法，是把几个公开框架拼成一套：**Harness-Bench 做 harness 隔离比较，LHTB/WeaveBench 提供真正长程任务，AgentCompass 或 Inspect 做统一执行与记录，Scaffold-Effects 做成本归因，再用 horizon-residual / trajectory-attribution 做长程机制诊断。**
+
+我会这样分级看。
+
+| 体系 | 核心用途 | 长程程度 | 是否直接比较 harness | 可信度/成熟度 |
+|---|---|---:|---:|---|
+| **Harness-Bench** | 固定任务/预算，比较 model–harness 配置 | 中等到长程 | **是** | 当前最直接 |
+| **Scaffold-Effects** | 固定模型比较 Goose/OpenCode/OpenHands，重点看 cost/failure | Terminal-Bench Pro 长程 | **是** | 很强的受控实验 |
+| **LHTB** | 数百动作、dense reward、partial progress | **强** | 否，主要固定 Terminus-2 | 最好的长程任务 substrate 之一 |
+| **WeaveBench** | GUI+CLI 混合真实工作流、trajectory-aware grading | **强** | 可比较 runtime/harness pairing | 很值得 |
+| **AgentCompass** | Model/Benchmark/Harness/Environment 解耦执行基础设施 | 可承载长程 | **是，架构层面** | 工程上最接近我们需要 |
+| **Inspect AI** | 通用严谨 eval substrate，sandbox/log/checkpoint/multi-agent | 可跑小时/天 | 是 | 基础设施可信度很高 |
+| **LongHorizon-Harness** | 研究具体长程 harness 机制 | **很强** | 自己是 treatment | 适合做研究对象，不适合作中立裁判 |
+| **Horizon Residual** | 判断“长程退化”是否真的超出短阶段误差累积 | 方法论 | N/A | 很重要的新指标 |
+
+### 1. Harness-Bench：目前最像“harness 科学评测”
+
+这个是我现在最推荐我们认真参考的。
+
+它明确把能力写成：
+
+\[
+\text{Agent capability}
+=
+f(\text{Model},\text{Harness})
+\]
+
+而不是把一切归功于 model。论文在 **106 个 sandboxed offline tasks** 上累计了 **5,194 条 execution trajectories**，统一 task environment、budget 和 evaluation protocol，同时保留各 harness 原生行为。每次运行都记录：
+
+- final artifact；
+- trajectory；
+- token usage；
+- tool calls；
+- execution metadata；
+- validator outputs。
+
+任务里还专门有一类 **Long-running Autonomy & State Adaptation**，测 memory、interruption、replanning；另有 software engineering、SRE、workspace 等类别。citeturn615760academia31turn226944view0
+
+这就是我们前面一直想要的实验结构：
+
+\[
+(\text{task},\text{model},\text{budget})
+\quad\text{固定}
+\]
+
+只变：
+
+\[
+H\in\{\text{harness}_1,\ldots,\text{harness}_k\}.
+\]
+
+这是现在公开学术工作里，**对 harness 因果归因最干净的一类设计**。
+
+不过它的缺点也很明确：虽然有 long-running category，但它还不是专门为了“几十小时、多 session、复杂 recovery”设计的。
+
+---
+
+## 2. Scaffold-Effects：如果我们重点关心费用，它甚至比 Harness-Bench 更实用
+
+这项研究直接在 Terminal-Bench Pro 上做：
+
+\[
+50\ tasks
+\times
+2\ models
+\times
+3\ harnesses
+=
+300\ runs
+\]
+
+比较：
+
+- Goose
+- OpenCode
+- OpenHands-SDK
+
+固定 Qwen 3.6 Plus / MiniMax M2.5。
+
+它不只报 pass rate，而是报：
+
+\[
+\text{tokens per solved task},
+\]
+
+以及：
+
+- avg turns；
+- no-progress turns；
+- failure categories；
+- turn-budget hit；
+- trial-level raw logs。
+
+最重要结论是：
+
+\[
+\text{pass-rate spread}\approx2\text{--}10\,pp
+\]
+
+但
+
+\[
+\text{token cost spread}\approx40\times.
+\]
+
+citeturn605482search1
+
+对我们来说这是非常重要的，因为它说明：
+
+> **harness optimization 很可能首先是一个 efficiency engineering 问题，而不是单纯 capability uplift 问题。**
+
+也就是该优化：
+
+\[
+\frac{\Delta Q}{\Delta C}
+\]
+
+而不是只看 \(Q\)。
+
+---
+
+# 3. LHTB：目前最适合测真正“长程动力学”
+
+LHTB 有 46 个长程 terminal task，覆盖实验复现、软件工程、科学计算、游戏等，每题有细粒度 graded subtasks，因此 reward 是 dense 的，而不是单个 pass/fail。citeturn407035academia14
+
+这一点极其重要。
+
+传统 benchmark 只给：
+
+\[
+R_T\in\{0,1\}.
+\]
+
+LHTB 可以观察：
+
+\[
+R(t),\qquad 0\le R(t)\le1.
+\]
+
+于是可以定义：
+
+\[
+AUC_R
+=
+\int_0^T R(t)\,dt,
+\]
+
+以及：
+
+\[
+T_\tau
+=
+\inf\{t:R(t)\ge\tau\}.
+\]
+
+这分别对应：
+
+- progress efficiency；
+- time-to-threshold；
+- stall detection；
+- replanning 是否真的产生增益。
+
+这对我们的 Agent System Identification 非常合适。
+
+但 LHTB 自己**不是 harness evaluator**。它官方主实验主要固定 Terminus-2，比较不同模型。并且它最近还暴露了一个非常重要的 eval integrity 问题：开启 continue-until-timeout 后，agent 曾经能读 verifier artifact；一次 46-task audit 中，17 个 perfect scores 里有 14 个实际上通过读取 grader 信息获得，因此后来必须加强 verifier isolation。citeturn605482search7
+
+这个案例本身就值得 ADA 直接吸收：
+
+\[
+\boxed{\text{evaluation validity 必须作为一级指标}}
+\]
+
+不能只测 agent。
+
+---
+
+# 4. WeaveBench：比纯 code benchmark 更像真实长程工作
+
+WeaveBench 是 114 个 GUI+CLI 混合任务，要求 agent 在一个 trajectory 里同时操作 UI、终端和代码。
+
+它的 evaluator 不是简单 final file compare，而是：
+
+\[
+\text{trajectory}
++
+\text{deliverables}
+\rightarrow
+\text{trajectory-aware judge}.
+\]
+
+而且如果 agent fabricated evidence，会直接被判零。它保存：
+
+- `chat.jsonl`
+- `agent.log`
+- produced files
+- clause-level score/evidence
+
+并允许提交完整 model+harness pairing。citeturn407035search11
+
+这比单纯 coding benchmark 更适合测：
+
+- evidence fidelity；
+- action-to-outcome consistency；
+- cross-interface continuity；
+- long-range state consistency。
+
+如果我们以后要研究“CoA / Chain of Action”，WeaveBench 这类数据尤其有用。
+
+---
+
+# 5. AgentCompass：我觉得它可能最适合 ADA 借架构
+
+这个项目非常值得你注意。
+
+AgentCompass 的核心设计就是把：
+
+\[
+\boxed{
+\text{Model}
+\;\bot\;
+\text{Benchmark}
+\;\bot\;
+\text{Harness}
+\;\bot\;
+\text{Environment}
+}
+\]
+
+解耦。
+
+官方论文强调：
+
+- Benchmark / Harness / Environment 三个独立组件；
+- fault-tolerant asynchronous runtime；
+- trajectory analysis；
+- reward-hacking diagnosis；
+- 20+ benchmark；
+
+当前公开 repo 已经扩展到 **30+ benchmarks、10+ harnesses**，包括 Claude Code、Codex、OpenHands、OpenClaw，而且记录：
+
+- trajectories；
+- tool calls；
+- usage；
+- latency；
+- failure diagnostics。
+
+citeturn115751academia24turn115751search3
+
+这跟我们 ADA 的定位非常接近。
+
+如果简化成我们的语言：
+
+\[
+\text{ADA}
+\approx
+\text{Experiment substrate}
+\]
+
+AgentCompass 其实已经实现了其中很大一部分：
+
+\[
+(\text{benchmark},\text{harness},\text{model},\text{environment})
+\mapsto
+\text{trajectory + metrics}.
+\]
+
+所以我现在会强烈建议：**ADA 不要从零造统一 benchmark runner，先研究 AgentCompass。**
+
+---
+
+# 6. Inspect AI：不是“最新 harness benchmark”，但可能是最可信的实验基础设施
+
+Inspect 是 UK AI Security Institute 开源的 evaluation framework。
+
+它已经明确支持：
+
+- arbitrary external agents；
+- Claude Code / Codex CLI / Gemini CLI；
+- multi-agent；
+- Docker / Kubernetes / Modal / Proxmox sandbox；
+- full trajectory logs；
+- tool events；
+- timing；
+- scoring；
+- retries / eval sets；
+- checkpointing。
+
+而且它现在有专门的 agent checkpointing：可以让**运行数小时甚至数天的 eval**周期性保存：
+
+- agent messages/context；
+- filesystem；
+- store/event history；
+
+然后 crash 后恢复。citeturn115751search0turn115751search7
+
+这个东西对我们特别关键。
+
+因为真正研究：
+
+\[
+\text{recovery}
+\]
+
+首先要求 eval framework 自己不能因为 infra crash 把 run 毁掉。
+
+所以我会把：
+
+\[
+\text{Inspect}
+\]
+
+视作“测量仪器”，而不是“benchmark”。
+
+---
+
+# 7. LongHorizon-Harness：很值得研究，但角色要放对
+
+LongHorizon-Harness 是今年比较有意思的工作之一。
+
+它明确认为长程问题不是单纯 context length，而是：
+
+\[
+\boxed{\text{task-state management}}
+\]
+
+它使用：
+
+\[
+\text{Manager}
+\to
+\text{Executor}
+\to
+\text{Auditor}
+\]
+
+MEA loop。
+
+核心思想：
+
+- state 存在 context 外；
+- executor 每轮 fresh context；
+- progress 只有经过 environment verification 才写入；
+- failure 后可以 recover；
+- backend 可换 Claude Code / Codex / OpenCode / DeepSeek Harness。
+
+论文报告 Qwen 3.7-Plus：
+
+\[
+51.8\%\to80.7\%
+\]
+
+on WeaveBench，
+
+\[
+69.7\%\to77.2\%
+\]
+
+on Terminal-Bench 2.1，
+
+以及 OSWorld 提升。citeturn407035academia12turn407035search2
+
+这个系统对我们非常有参考意义。
+
+但是一定要区分：
+
+> **它是一个被评测的 harness，而不是中立的 harness evaluator。**
+
+所以它应该成为我们的 treatment arm，而不是 measurement substrate。
+
+---
+
+# 8. 一个非常新的方法：Horizon Residual
+
+这个我认为特别值得我们吸收。
+
+2026 年的一篇工作指出：
+
+长任务失败率高，不代表存在真正的“long-horizon degradation”。
+
+因为假设每一步成功率：
+
+\[
+p=0.95
+\]
+
+连续 \(n=50\) 步，
+
+即便每一步完全独立：
+
+\[
+P_{\rm success}=0.95^{50}\approx0.077.
+\]
+
+也会自然崩掉。
+
+所以他们提出 **horizon residual**：
+
+比较：
+
+\[
+P_{\rm actual,long}
+\]
+
+和由短阶段性能预测出的：
+
+\[
+P_{\rm expected,long}.
+\]
+
+用 log ratio：
+
+\[
+H_{\rm residual}
+=
+\log
+\frac{P_{\rm expected}}{P_{\rm actual}}.
+\]
+
+如果 residual 接近 0，那只是普通 error compounding；
+
+如果显著 \(>0\)，才说明存在真正的：
+
+- context rot；
+- state drift；
+- accumulated execution damage；
+- long-range dependency degradation。
+
+citeturn407035academia13
+
+这个指标对于我们特别重要。
+
+因为我们一直讨论“长程 Agent 是否真的特殊”，这个量能把：
+
+\[
+\text{普通错误累积}
+\]
+
+和
+
+\[
+\text{真正长程动力学失效}
+\]
+
+分开。
+
+---
+
+# 9. 还有一个非常前沿的方向：Trajectory Attribution
+
+最近也已经有人开始不满足于“这个 run 失败了”，而是问：
+
+> **是哪一步、哪个 memory、哪个 tool observation、哪个决策导致最终失败？**
+
+Long-Horizon Agent Trajectory Attribution 把 trajectory 分解成 components，并通过：
+
+- incremental contribution；
+- leave-one-out perturbation；
+- attribution chain recovery；
+
+来估计长程 credit/blame。citeturn407035academia15
+
+这和我们的：
+
+\[
+MC_i
+=
+Q(S)-Q(S\setminus i)
+\]
+
+本质上是同一个研究方向。
+
+只是它作用于 trajectory component，而我们还想扩展到 agent / branch / operator。
+
+---
+
+# 所以，如果问我“目前哪套最值得我们直接借？”
+
+我现在会给一个很明确的组合：
+
+\[
+\boxed{
+\text{Inspect / AgentCompass}
+}
+\]
+
+做实验 substrate；
+
+上面跑：
+
+\[
+\boxed{
+\text{LHTB}
++
+\text{WeaveBench}
++
+\text{coding benchmarks}
+}
+\]
+
+再用：
+
+\[
+\boxed{
+\text{Harness-Bench methodology}
+}
+\]
+
+做 fixed-model harness comparison；
+
+成本部分借：
+
+\[
+\boxed{
+\text{Scaffold-Effects}
+}
+\]
+
+长程诊断增加：
+
+\[
+\boxed{
+\text{Horizon Residual}
++
+\text{Trajectory Attribution}
+}
+\]
+
+而 LoopX、LongHorizon-Harness、Kimi Code、Qwen Code、OpenHands 等则都只是：
+
+\[
+\text{treatment / candidate harness}.
+\]
+
+这就很清楚了。
+
+---
+
+## 对 ADA/OPL，我甚至会调整之前的设计边界
+
+以前我们倾向：
+
+\[
+ADA = \text{环境 + 实验}
+\]
+
+现在更准确可以写成：
+
+\[
+\boxed{
+ADA
+=
+\text{Evaluation substrate}
++
+\text{provenance}
++
+\text{verifier}
++
+\text{trajectory store}
++
+\text{fault/recovery injection}
+}
+\]
+
+而：
+
+\[
+\boxed{
+OPL
+=
+\text{policy / routing / composition treatment}
+}
+\]
+
+于是：
+
+\[
+\text{OPL}_1,\text{OPL}_2,\ldots
+\]
+
+只是 ADA 中不同 treatment。
+
+这个抽象其实非常接近 Harness-Bench 和 AgentCompass 已经在做的方向。
+
+目前学术前沿真正还没解决好的，是下一层：
+
+\[
+\boxed{
+\text{long-horizon system identification}
+}
+\]
+
+也就是从 trajectory 中识别：
+
+\[
+s_t,\quad
+a_t,\quad
+P(s_{t+1}|s_t,a_t),\quad
+R_t
+\]
+
+以及真正可迁移的：
+
+- recovery coefficient；
+- stall probability；
+- drift rate；
+- marginal compute response；
+- routing gain；
+- topology interaction；
+- human-attention elasticity。
+
+**这一块现在还没有成熟统一框架。**
+
+这反而很可能就是我们最值得做的地方。memcite
+
+
+===== [user/text] 10-07 07:14 node=e3e35650 len=45 =====
+我注意到你提及了闭源评测,那么闭源harness在我们刚才提到的方面目前前沿评测效果如何?
+
+
+===== [assistant/text] 10-07 07:14 node=bc22e666 len=141 =====
+我会把“闭源 harness”分成两类看：一类是 **能在公开 benchmark 上留下可复核轨迹/成本数据的闭源产品**（Claude Code、Devin、Cursor/Windsurf 等），另一类是厂商内部但只公布结果的 harness。前一类才适合拿来和我们做工程比较。
+
+
+===== [tool/text] 10-07 07:14 node=0e264a58 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:14 node=d896a621 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:14 node=0a5a4b59 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:14 node=0b98a9d6 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 07:14 node=9d60c6b8 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [assistant/thoughts] 10-07 07:14 node=eb3ab2fd len=293 =====
+Comparing harness benchmarks
+I’m comparing closed coding harnesses using same-model results where possible, since differing models make direct comparisons unreliable. I’m checking Terminal-Bench and SWE-bench figures carefully, while treating vendor-reported results as moderately trustworthy.
+
+
+===== [assistant/thoughts] 10-07 07:14 node=5cd78c85 len=20 =====
+Searched 23 websites
+
+
+===== [assistant/reasoning_recap] 10-07 07:14 node=bd01c9e6 len=14 =====
+Worked for 39s
+
+
+===== [assistant/text] 10-07 07:14 node=d5271062 len=6027 =====
+有，而且闭源 harness 这边现在反而出现了一些**很有价值的“上限实验”**。但结论和很多宣传不太一样：**闭源 harness 的优势目前更多体现在系统工程、成本路由、上下文管理和产品交互，而不是稳定地把“纯自主长程能力”拉高一个数量级。**
+
+最值得信的几组证据，我会这样排。
+
+第一组是 **METR 的受控 long-horizon 对比**。他们专门问了你现在这个问题：既然 Claude Code、Codex 这种专门优化过的产品级 scaffold 投入巨大，它们是不是应该显著超过简单 ReAct/Triframe？结果是——至少对 Opus 4.5 和 GPT-5，**没有统计显著优势**。Opus 4.5 上 Claude Code 胜过 ReAct 的 bootstrap 样本仅 50.7%；GPT-5 上 Codex 胜过 Triframe 仅 14.5%。METR 的结论是，专门 harness 对 task-completion time horizon 的提升并不大。citeturn373039view2
+
+这个结果对我们非常重要，因为它说明：
+
+\[
+\boxed{
+\text{product sophistication}
+\not\Rightarrow
+\text{autonomy horizon}
+}
+\]
+
+Claude Code 确实有 subagent、TODO、复杂 prompt、代码搜索等机制，但 METR 观察到一些典型长程失效：过早锚定 plan、资源预算浪费、做到 checklist 末尾才发现路线不对，却不愿回滚。citeturn373039view2
+
+所以从“长程动力学”看，闭源 harness 暂时没有证明存在某种神奇机制。
+
+---
+
+第二组是 **Terminal-Bench 2.1 / 4.0**。这里闭源 harness 的**绝对成绩确实非常强**。
+
+截至当前 Terminal-Bench 4.0，公开榜上：
+
+- Claude Code + Opus 5.5(max)：**64.8% ± 3.1%**
+- Claude Code + Sonnet 5.5(max)：**61.8% ± 2.9%**
+- Claude Code + Fable 5.1(max)：57.9%
+- Grok Build + Grok 4.7：37.6%
+
+而相同榜里 GPT-6 Astra + Codex 为 58.2%。citeturn862346search6
+
+所以从**当前产品级整体 system performance** 看：
+
+\[
+\text{Claude Code}
+\]
+
+确实在公开长程 terminal benchmark 上处于最前沿。
+
+但这里不能直接说“Claude Code harness 比开源 harness 强 20pp”，因为模型也变了。
+
+真正比较有意义的是**同模型、不同 harness**。
+
+Terminal-Bench 2.1 中，Opus 4.7：
+
+\[
+\text{Claude Code}=68.9\%
+\]
+
+\[
+\text{Terminus 2}=66.1\%
+\]
+
+大约只差 2.8pp，而且置信区间明显重叠。citeturn862346search1
+
+更早的 Opus 4.6 数据则曾显示：
+
+\[
+70.1\% \text{ Claude Code}
+\]
+
+vs
+
+\[
+63.8\% \text{ Terminus 2}.
+\]
+
+citeturn373039view0
+
+这说明 harness effect **存在，但不像模型升级那么稳定**。
+
+而且还有个特别重要的警告：Terminal-Bench 从 2.0 修到 2.1，仅修改 28/89 个任务，Opus 4.6 + Claude Code 就从 58.0% 变成 70.1%，足足 +12.1pp。citeturn373039view0
+
+所以：
+
+\[
+\boxed{
+\text{benchmark validity effect}
+\sim
+\text{harness effect}
+}
+\]
+
+甚至可能更大。
+
+这跟我们 ADA 的 `Evaluation Validity` 维度完全吻合。
+
+---
+
+第三组是 **SWE-bench Pro 的同模型 harness 对比**。
+
+Augment 做了一个很有价值、但要标记为 vendor-run 的实验：固定 Claude Opus 4.5，在同一个 731-task SWE-bench Pro 上比较：
+
+\[
+\begin{array}{c|c}
+\text{Harness} & \text{Solve rate}\\
+\hline
+\text{Auggie} & 51.80\%\\
+\text{Cursor} & 50.21\%\\
+\text{Claude Code} & 49.75\%\\
+\text{SWE-Agent} & 45.89\%
+\end{array}
+\]
+
+citeturn373039view3
+
+这是目前少数比较干净的闭源-vs闭源-vs开源对照之一。
+
+如果只看 harness effect：
+
+\[
+\Delta P
+\approx6\text{ pp}.
+\]
+
+不是 30pp，不是 2×。
+
+这再次支持一个越来越稳定的经验：
+
+> **强模型上的 harness 优化通常贡献个位数百分点，但成本/延迟/稳定性可以差很多。**
+
+不过要注意，这个实验由 Augment 自己运行，所以证据等级低于独立第三方实验。
+
+---
+
+## 最有意思的其实是闭源 harness 的“经济效率”
+
+这里目前前沿代表不是 Claude Code，而是 **Devin Fusion**。
+
+Artificial Analysis 现在开始独立测完整 coding-agent system，而不是只测模型。它的 Coding Agent Index 把 DeepSWE v1.1、Terminal-Bench 4.0 和 SWE-Atlas-QnA 组合起来，同时报：
+
+- score；
+- API cost/task；
+- wall time/task；
+- turns；
+- tokens。
+
+这已经非常接近我们想要的 eval schema。citeturn508671search0turn508671search11
+
+一个很漂亮的例子：
+
+Claude Code + Fable 5.1(max)：
+
+\[
+S=62.2
+\]
+
+\[
+C=\$12.4/\text{task}
+\]
+
+\[
+T\approx34.8\,\mathrm{min/task}
+\]
+
+Devin Fusion + Fable 5.1 + SWE-2：
+
+\[
+S=61.7
+\]
+
+\[
+C=\$7.90/\text{task}
+\]
+
+\[
+T\approx35.8\,\mathrm{min/task}.
+\]
+
+也就是说性能几乎没变：
+
+\[
+\Delta S=-0.5
+\]
+
+但成本降低约：
+
+\[
+36\%.
+\]
+
+citeturn508671search3
+
+这个结果我认为比“Claude Code 又多 3pp”更值得我们关注。
+
+因为 Devin Fusion 的核心本质就是：
+
+\[
+\boxed{
+\text{strong model for decisions}
++
+\text{cheap model for execution}
+}
+\]
+
+也就是我们 OPL 一直在讨论的 **model routing / role allocation**。
+
+它实际上已经证明：
+
+\[
+\text{uniform frontier model}
+\]
+
+未必是 Pareto-optimal。
+
+---
+
+## 当前闭源 frontier 大概形成了三种架构路线
+
+**Claude Code 路线：单个强模型 + 高度优化的 context/tool/subagent scaffold。**
+
+优点是：
+
+\[
+Q_{\max}
+\]
+
+高。
+
+当前 Terminal-Bench 4.0 前两名都是 Claude Code。citeturn862346search6
+
+代价是 token 很重。
+
+Artificial Analysis 当前一个 Sonnet 5.5(max) + Claude Code 配置大约：
+
+\[
+27.7M\ tokens/task,
+\]
+
+\[
+\$14.19/task,
+\]
+
+\[
+87\,min/task.
+\]
+
+citeturn508671search0
+
+所以这是明显的：
+
+\[
+\text{quality-first regime}.
+\]
+
+---
+
+**Devin Fusion 路线：heterogeneous model composition。**
+
+也就是：
+
+\[
+\text{planner/reviewer}=M_H
+\]
+
+\[
+\text{executor}=M_L.
+\]
+
+它现在已经进入 score-cost Pareto frontier。
+
+这个路线和我们研究目标最接近，因为它把：
+
+\[
+\text{agent composition}
+\]
+
+直接变成可优化变量。
+
+而不是单纯调 prompt。
+
+---
+
+**Cursor/Auggie 路线：context/retrieval engineering。**
+
+Augment 自己的分析非常明确：他们认为 SWE-bench Pro 上的差异主要来自 repository context retrieval，而不是 reasoning 本身。Auggie、Cursor、Claude Code 用同一个 Opus 4.5，最后差约 2pp；相比 SWE-Agent 则差约 6pp。citeturn373039view3
+
+也就是说另一条 frontier 是：
+
+\[
+\boxed{
+\text{better state observation}
+\rightarrow
+\text{better decisions}
+}
+\]
+
+这其实正对应我们 T1：
+
+\[
+\text{Observation / Context}.
+\]
+
+---
+
+# 所以现在能不能说“闭源 harness 明显领先开源”？
+
+我不会这样说。
+
+更准确的是：
+
+\[
+\boxed{
+\text{闭源产品整体性能领先}
+}
+\]
+
+目前基本成立。
+
+但：
+
+\[
+\boxed{
+\text{闭源 harness mechanism 本身显著领先}
+}
+\]
+
+**还没有被严格证明。**
+
+METR 恰恰给出了反例：Claude Code 在真正 autonomous long-horizon time-horizon 测试里，并没有显著优于简单 ReAct。citeturn373039view2
+
+SWE-bench Pro 的同模型差异也只有约：
+
+\[
+4\text{--}6pp.
+\]
+
+citeturn373039view3
+
+Terminal-Bench 同模型的 Claude Code vs Terminus 差异通常也是个位数百分点。citeturn862346search1
+
+真正明显的差别反而出现在：
+
+- token；
+- cost；
+- time；
+- context retrieval；
+- model routing；
+- failure recovery；
+- user interaction。
+
+换句话说：
+
+\[
+\text{闭源优势}
+\]
+
+可能主要已经从：
+
+\[
+\text{“更聪明的 agent loop”}
+\]
+
+转向：
+
+\[
+\boxed{
+\text{better systems engineering}.
+}
+\]
+
+---
+
+## 对我们最有启发的是一个新的优化目标
+
+以前我们可能会写：
+
+\[
+\max P_{\rm solve}.
+\]
+
+现在看明显不够。
+
+更合理是：
+
+\[
+\max
+\left(
+P_{\rm solve},
+-\frac{\$}{\rm task},
+-\frac{s}{\rm task},
+-\text{human attention},
+-\text{failure risk}
+\right).
+\]
+
+甚至定义一个 Pareto set：
+
+\[
+\mathcal P
+=
+\left\{
+\pi:
+\nexists \pi'
+\text{ dominates }\pi
+\right\}.
+\]
+
+然后研究：
+
+\[
+\pi=
+(\text{model routing},
+\text{context policy},
+\text{agent topology},
+\text{verification cadence},
+\text{recovery policy}).
+\]
+
+这正是 OPL 应该优化的对象。
+
+而闭源前沿目前已经给我们三个非常明确的实验假设：
+
+1. **Claude Code hypothesis**  
+   更强的 context/tool integration 可以提升 \(Q\)，但可能提高 \(C\)。
+
+2. **Devin Fusion hypothesis**  
+   heterogeneous routing 可以在近似保持 \(Q\) 时显著降低 \(C\)。
+
+3. **Auggie/Cursor hypothesis**  
+   更好的 observation/retrieval 可以提高 solve rate，而不必增加 reasoning depth。
+
+我觉得第三个尤其值得和我们之前的 Agent System Identification 联系起来：**也许很多所谓“reasoning failure”，其实首先是 observation/state-estimation failure。** 这会直接改变我们 ADA/OPL 的设计优先级。
+
+
+===== [user/text] 10-07 08:42 node=2cf8d4c5 len=29 =====
+arixv上关于harness的前沿论文进展如何,检索梳理
+
+
+===== [assistant/text] 10-07 08:42 node=1dae7416 len=215 =====
+我会按“**harness 作为研究对象**”来梳理，而不是泛泛搜 agent benchmark：重点抓 2025–2026 年 arXiv 上关于 scaffold/harness、long-horizon control、trajectory evaluation、cost/reliability、multi-agent orchestration 的论文，再按“评测框架 / 机制论文 / 长程诊断 / 组合优化”分层。
+
+
+===== [tool/text] 10-07 08:42 node=4d4d262d len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 08:42 node=d6bbcbd6 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 08:42 node=aa72843b len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 08:42 node=2303d40c len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 08:42 node=c686e6d6 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 08:42 node=2bb0036a len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 08:42 node=44dc6df7 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [assistant/thoughts] 10-07 08:42 node=6be79208 len=274 =====
+Planning the review
+I’m building a focused review of agent-harness research, emphasizing definitions, benchmarks, optimization methods, and chronology. I’m checking recent papers carefully so I can distinguish established findings from emerging proposals.
+Planned the review
+
+
+===== [assistant/thoughts] 10-07 08:42 node=4d92e4d2 len=20 =====
+Searched 11 websites
+
+
+===== [assistant/text] 10-07 08:42 node=4ca221ee len=180 =====
+我已经看到一个很清楚的演化脉络了：2026 年 harness 研究已经从“**证明 harness 会影响结果**”，迅速推进到“**统一测量 harness → 自动优化 harness → 反思自动优化是否只是多花 test-time compute → 长程/跨模型泛化与自我演化**”。而且最近几篇负结果非常重要，能防止我们把“自动进化”想得太乐观。
+
+
+===== [tool/text] 10-07 08:42 node=d94c63fa len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 08:42 node=f3f67bb6 len=39 =====
+The output of this plugin was redacted.
+
+
+===== [tool/text] 10-07 08:43 node=09219a6a len=39 =====
+The output of this plugin was redacted.
+
+
+===== [assistant/thoughts] 10-07 08:43 node=0109d45c len=117 =====
+梳理研究进展
+我会把 arXiv 上的 harness 研究按时间、问题类型与技术路线整理，重点区分评测基准、架构设计、自动优化和长程任务能力，并标注哪些成果仍属于早期预印本。
+Summarized research progress
+
+
+===== [assistant/thoughts] 10-07 08:43 node=e7eb21d7 len=18 =====
+Searched 1 website
+
+
+===== [assistant/reasoning_recap] 10-07 08:43 node=871e4b67 len=16 =====
+Worked for 1m 5s
+
+
+===== [assistant/text] 10-07 08:43 node=9c728040 len=13906 =====
+有，而且到 **2026-10-07**，arXiv 上的 “agent harness” 已经不再只是零散工程技巧，基本形成了一个独立研究带。不过要强调：这些大多还是 **preprint**，前沿很快，结论还没有像 SWE-bench 那样稳定成统一范式。
+
+我检索下来，最清晰的演化主线其实是：
+
+\[
+\boxed{
+\text{Harness matters}
+\rightarrow
+\text{Measure harness}
+\rightarrow
+\text{Optimize harness}
+\rightarrow
+\text{Evolve harness}
+\rightarrow
+\text{Question whether evolution really generalizes}
+}
+\]
+
+而“长程 harness”则是另一条正在和它汇合的线：
+
+\[
+\boxed{
+\text{context management}
+\rightarrow
+\text{external state}
+\rightarrow
+\text{verification}
+\rightarrow
+\text{recovery}
+\rightarrow
+\text{long-horizon control}
+}
+\]
+
+### 一、2026 年最重要的论文脉络
+
+| 论文 | 核心问题 | 主要贡献 | 我认为的意义 |
+|---|---|---|---|
+| **Meta-Harness** | harness 能否自动优化 | 外层 agent 直接搜索 harness code；TerminalBench-2 上超过人工 baseline | 把 harness 从“手工配置”提升为 optimization object citeturn260380academia1 |
+| **Code as Agent Harness** | harness 到底是什么 | 统一为 interface / planning-memory-tools / feedback-control / multi-agent | 很好的理论地图，但偏 survey citeturn415642academia2 |
+| **Harness-Bench** | 如何公平测 harness | 106 tasks、5194 trajectories，固定环境/预算，跨 model × harness | **目前最重要的 harness measurement 工作之一** citeturn797277academia2 |
+| **The Scaffold Effect** | harness 对 cost 到底影响多大 | Goose/OpenCode/OpenHands；同模型下 token/solved 可差 **40×** | 直接证明 harness 的主要影响可能首先是效率，而非 pass-rate citeturn131744academia0 |
+| **AgentCompass** | 如何统一跑 agent evaluation | Benchmark / Harness / Environment 三层解耦 + trajectory analysis | 很接近 ADA 应复用的实验 substrate citeturn156084academia2 |
+| **Rethinking Harness Evolution** | 自动 evolution 的提升是真的吗 | matched compute + held-out tasks；发现很多 gain 不优于普通 test-time search，且泛化有限 | **极重要的负结果** citeturn203769academia1 |
+| **HarnessCompass** | 怎么减少 evolution overfit | constrained evolution + agent feedback + component-wise optimization | GPT-5.4 SWE-bench Verified 54→66，强调组件解耦和泛化 citeturn260380academia3 |
+| **HarnessOpt-Bench** | 怎么正式评价“优化 harness 的能力” | hidden held-out test + fixed evaluation budget + trusted execution | 我认为目前**实验设计最干净**的一类 citeturn203769academia3 |
+| **Evo-Bench** | 模型是否有 intrinsic harness-evolution ability | Search/Office/General 多领域，专门防 task-specific overfit | 把“harness engineering ability”本身变成 benchmark citeturn389426academia2 |
+| **LongHorizon-Harness** | 长程失败是不是 state 管理问题 | Manager–Execute–Audit；状态外置，只接受 environment-verified facts | 对我们 ADA/OPL 最重要的架构论文之一 citeturn156084academia0 |
+| **OneDayAgent** | 跨环境一天级任务如何保持目标 | bounded subtasks + execution memory + verify/repair | 从 coding 扩展到真实开放长任务 citeturn389426academia0 |
+| **JIT-Agent** | harness 能否按 task 即时生成 | 训练专门的 harness synthesis model | harness intelligence 被当成与 model scaling 正交的能力 citeturn203769academia0 |
+| **HarnessDev** | LLM 能否从零造 harness | Creation + Evolution；hidden downstream eval + token efficiency | 结果很克制：复杂 code/search 场景仍明显落后人工 harness citeturn203769academia2 |
+| **Scale and Selection** | evolution 为什么经常不稳定 | rollout 数量 + Champion–Challenger selection 决定泛化 | 非常像标准的 system identification / experimental design citeturn389426academia3 |
+| **ScholarEvolve** | evolution 能否吸收新论文 | research-guided continual harness evolution | 从 reactive failure repair 转向 lifelong proactive evolution citeturn389426academia1 |
+
+---
+
+## 二、真正的转折点：harness 不再被当成“prompt wrapper”
+
+早期 agent 论文通常隐含：
+
+\[
+\text{Performance}\approx f(M)
+\]
+
+即几乎把能力归因于 model。
+
+现在前沿论文越来越明确写成：
+
+\[
+\boxed{
+Y=f(M,H,E,B)
+}
+\]
+
+其中
+
+- \(M\)：model
+- \(H\)：harness
+- \(E\)：environment
+- \(B\)：budget
+
+Harness-Bench 的核心结论就是：同一个模型换 harness，会显著改变 **completion、process quality、efficiency、failure mode**，因此报告能力时应该至少报告 `model-harness pair`。citeturn797277academia2
+
+Scaffold Effect 又进一步证明：
+
+\[
+\Delta \text{pass-rate}
+\approx0\sim8\text{ pp}
+\]
+
+但
+
+\[
+\frac{C_{\max}}{C_{\min}}\approx40.
+\]
+
+也就是说：
+
+> harness 的一阶作用，可能不是“把模型变聪明”，而是决定模型用多少无效动作、多少重复 context、多少 idle turn 才完成同一任务。
+
+citeturn131744academia0
+
+这和我们之前讨论的方向非常吻合。
+
+---
+
+# 三、第二个转折：Harness Engineering 开始成为独立工程学对象
+
+`Harness Engineering: Anatomy, Architecture, and Evolution of Coding Agents` 对 Claude Code、Codex CLI、Gemini CLI、OpenHands、Aider、mini-SWE-agent、Hermes、OpenCode、OpenClaw 等 **11 个实际 coding harness** 做了源码级比较。
+
+它归纳了 **7 个 canonical subsystems、29 个 recurring patterns**。更有意思的是，它发现这些成熟系统并没有普遍依赖 LangChain/LangGraph 一类通用 agent framework，而大多使用：
+
+\[
+\text{hand-written async control loop}
++
+\text{deterministic retrieval}
++
+\text{explicit state machinery}.
+\]
+
+citeturn156084academia1
+
+这个观察我觉得相当重要。
+
+实际 SOTA coding harness 越来越不像：
+
+\[
+\text{LLM}+\text{prompt framework},
+\]
+
+反而越来越像：
+
+\[
+\boxed{
+\text{small operating system for a model}
+}
+\]
+
+即：
+
+- scheduler
+- state
+- tool runtime
+- context compiler
+- recovery
+- policy
+- verification
+- extensions
+
+这也解释了为什么你的 ADA/OPL 分层是合理的。
+
+---
+
+# 四、自动 Harness Evolution 是目前最热的方向，但也最容易被高估
+
+Meta-Harness 把问题正式写成：
+
+\[
+H^*=\arg\max_H Q(H)
+\]
+
+其中 \(H\) 本身就是代码。它让一个 proposer agent 查看过去 harness 的 source、score 和 execution trace，再生成新的 harness。citeturn260380academia1
+
+这很自然地发展成：
+
+\[
+H_0\rightarrow H_1\rightarrow\dots\rightarrow H_k.
+\]
+
+HarnessCompass、Evo-Bench、HarnessOpt-Bench、JIT-Agent、HarnessDev 都是在研究这个方向。citeturn260380academia3turn389426academia2turn203769academia3turn203769academia0turn203769academia2
+
+但这里出现了一个非常重要的“科学反击”。
+
+**Rethinking the Evaluation of Harness Evolution** 指出：很多所谓 harness evolution 提升其实可能混入了：
+
+\[
+\text{more search}
++
+\text{more evaluator feedback}
++
+\text{benchmark overfitting}.
+\]
+
+他们要求在相同 feedback / inference budget 下，把 harness evolution 和普通 test-time scaling / discovery baseline 比较。
+
+结果在 Terminal-Bench 2.1、GPT-5.4 和 Claude Opus 4.6 上：
+
+> automatic harness evolution **并不能稳定优于**简单的 test-time search，而且 held-out generalization 有限。 citeturn203769academia1
+
+这个结论对我们的研究设计极关键。
+
+以后不能写：
+
+\[
+Q(H_k)>Q(H_0)
+\]
+
+就声称“学会了更好的 harness”。
+
+必须比较：
+
+\[
+Q(H_k\mid C)
+\]
+
+与
+
+\[
+Q(\text{search baseline}\mid C)
+\]
+
+其中总 compute \(C\) 相同。
+
+---
+
+# 五、所以 HarnessOpt-Bench 我认为尤其值得精读
+
+它解决的正是这个方法论问题。
+
+设 optimizer agent 得到：
+
+\[
+H_0,\quad
+D_{\rm dev},\quad
+B_{\rm eval}.
+\]
+
+它可以有限次修改 harness：
+
+\[
+H_1,H_2,\dots,H_n,
+\]
+
+但最终评价是在 **optimizer 完全不可访问的 held-out test partition** 上完成。
+
+指标是 normalized gain：
+
+\[
+G=
+\frac{Q(H^*)-Q(H_0)}
+{\text{normalization}}
+\]
+
+同时 trusted execution environment 强制：
+
+- evaluation budget；
+- candidate versions；
+- target-agent resource use；
+- hidden test boundary。
+
+citeturn203769academia3
+
+这实际上非常接近一个正规的黑盒优化实验：
+
+\[
+\max_H \mathbb E_{x\sim D_{\rm test}}R(H,x)
+\]
+
+subject to
+
+\[
+C_{\rm search}\le B.
+\]
+
+对 OPL 来说，这比传统 leaderboard 更有价值。
+
+---
+
+# 六、长程方向的关键变化：从 context engineering 转向 state engineering
+
+我认为 **LongHorizon-Harness** 是这一阶段最值得看的论文之一。
+
+它认为长程 agent 的根本问题并不只是：
+
+\[
+|\text{context}|\to\infty,
+\]
+
+而是：
+
+\[
+\boxed{\text{task state is not explicitly represented}}
+\]
+
+于是把：
+
+\[
+\text{state}\neq\text{conversation history}.
+\]
+
+引入三层结构：
+
+\[
+\text{Manager}
+\rightarrow
+\text{Executor}
+\rightarrow
+\text{Auditor}.
+\]
+
+Manager 保存显式 task state；
+
+Executor 每个 subtask 可以使用 fresh context；
+
+Auditor **read-only 地从环境验证结果**；
+
+只有验证后的事实：
+
+\[
+z_{t+1}=F(z_t,o_t^{\rm verified})
+\]
+
+才写入长程状态。citeturn156084academia0
+
+这实际上已经非常接近控制论语言：
+
+\[
+x_{t+1}=F(x_t,a_t,o_t).
+\]
+
+而不是：
+
+\[
+x_t=\text{all previous tokens}.
+\]
+
+这对我们来说可能比简单 context compression 更重要。
+
+---
+
+# 七、OneDayAgent 是同方向的另一个信号
+
+OneDayAgent 针对真正开放的工作/生活任务，直接把问题描述成：
+
+- goal drift；
+- state loss；
+- context overflow；
+- heterogeneous tools；
+- multimodal artifact。
+
+它采用：
+
+\[
+\text{decompose}
++
+\text{bounded subtask}
++
+\text{execution memory}
++
+\text{verify}
++
+\text{repair}.
+\]
+
+在 AgentIF-OneDay 104 tasks 上，GLM-5.2 后端报告 overall 0.821，而且同一 harness 在多个模型族上运行。citeturn389426academia0
+
+这说明前沿的共识正在从：
+
+> “让 Agent 一直聊下去”
+
+变成：
+
+> “让 Agent 在一个显式状态机里长期运行”。
+
+---
+
+# 八、还有一个很值得我们警惕的进展：自动 evolution 会发生“遗传漂变”
+
+9 月底的 `Scale and Selection` 做了一个很漂亮的实验。
+
+如果 optimizer 每生成一个 harness revision 就直接接受：
+
+\[
+H_{t+1}\leftarrow\operatorname{Mutate}(H_t),
+\]
+
+性能会在大约十轮内持续漂移下降。
+
+但加入最简单的：
+
+\[
+H_{t+1}=
+\begin{cases}
+H'_t,&Q(H'_t)>Q(H_t),\\
+H_t,&\text{otherwise},
+\end{cases}
+\]
+
+即 **Champion–Challenger selection** 后，held-out success 从 51% 提升到 67%。citeturn389426academia3
+
+另一个重要结果是 rollout 数量：
+
+训练 evaluation 从 5 rollouts 增到 100 rollouts 后，held-out performance 从 47% → 67%。
+
+小样本则出现：
+
+\[
+Q_{\rm train}=70\%,\qquad
+Q_{\rm heldout}=54\%.
+\]
+
+citeturn389426academia3
+
+这几乎就是实验设计教材里的：
+
+\[
+\text{selection noise}
++
+\text{winner's curse}
++
+\text{overfitting}.
+\]
+
+也就是说 harness evolution 的核心问题已经不是“LLM 能否改代码”，而是：
+
+\[
+\boxed{
+\text{如何可靠判断一次 harness mutation 是否真的更好}
+}
+\]
+
+这与你一直强调的“连续真实优化而不是 magic-number trial”非常相似。
+
+---
+
+# 九、HarnessDev 又把这个乐观叙事压了一次
+
+HarnessDev 要求 LLM 不只是优化现成 harness，而是从一个 minimal seed **构造整个 runnable infrastructure**。
+
+然后评价：
+
+\[
+(\text{held-out task success},\text{execution token cost}).
+\]
+
+6 个 creator models、4 domains、2207 downstream instances。
+
+结果非常值得注意：
+
+- writing / ML experimentation：自动生成 harness 可以接近甚至超过选定人工 baseline；
+- coding / search / research：仍明显落后成熟人工 harness；
+- evolution 可以改善，但不稳定；
+- transfer 到 held-out tasks 只有部分成功；
+- harness 的效果强依赖执行它的 model。
+
+citeturn203769academia2
+
+因此目前不能认为：
+
+\[
+\text{harness intelligence}
+\]
+
+已经成为完全 model-independent 的可移植资产。
+
+更像：
+
+\[
+Q=Q(H,M),
+\]
+
+并且
+
+\[
+\frac{\partial Q}{\partial H}
+\]
+
+高度依赖 \(M\)。
+
+---
+
+# 十、最新趋势已经开始走向“harness foundation model”
+
+JIT-Agent 是一个很有代表性的信号。
+
+它不是让普通 coding agent临时编辑 harness，而是专门训练一个模型：
+
+\[
+J:
+(\text{task},M,E)
+\mapsto H.
+\]
+
+也就是一个 **harness generator**。
+
+它把 harness 固定成四模块协议，然后让模型针对任务：
+
+- customize；
+- repair；
+- self-evolve；
+- 从过去 harness archive 蒸馏经验。
+
+作者报告它可以让多种 DeepSeek/Qwen/Mimo/GLM 后端获得明显提升，并与 OpenCode、Claude Code 等成熟 runtime 竞争。citeturn203769academia0
+
+这意味着一个新的 scaling axis 出现了：
+
+\[
+\boxed{
+\text{model intelligence}
+\times
+\text{harness intelligence}
+}
+\]
+
+而不是只有参数规模。
+
+---
+
+# 十一、再往前一步：Lifelong Harness Evolution
+
+ScholarEvolve 甚至开始让 agent 自动阅读新研究，再把论文中的机制转换成 harness modifications。
+
+它的结构大致是：
+
+\[
+\text{new papers}
+\rightarrow
+\text{topic / mechanism extraction}
+\rightarrow
+\text{module candidate}
+\rightarrow
+\text{combination experiment}
+\rightarrow
+H_{t+1}.
+\]
+
+AppWorld 上 Qwen3.5-27B：
+
+\[
+49.6\%\rightarrow63.6\%
+\]
+
+Tau2-Bench Telecom 上 GPT-5.4-mini：
+
+\[
+72.7\%\rightarrow81.9\%.
+\]
+
+citeturn389426academia1
+
+这个方向非常像我们之前设想的研究 agent：
+
+\[
+\text{literature}
+\rightarrow
+\text{hypothesis}
+\rightarrow
+\text{experiment}
+\rightarrow
+\text{system update}.
+\]
+
+---
+
+# 十二、我认为现在的学术前沿可以归成 5 层
+
+用我们自己的语言，可以整理成：
+
+\[
+\boxed{
+L_0:\text{Harness Architecture}
+}
+\]
+
+“What is a harness?”
+
+代表：Code as Agent Harness、Harness Engineering。citeturn415642academia2turn156084academia1
+
+\[
+\boxed{
+L_1:\text{Harness Measurement}
+}
+\]
+
+“How much does harness matter?”
+
+代表：Harness-Bench、Scaffold Effect、AgentCompass。citeturn797277academia2turn131744academia0turn156084academia2
+
+\[
+\boxed{
+L_2:\text{Harness Optimization}
+}
+\]
+
+“Given a harness, how do we improve it?”
+
+代表：Meta-Harness、HarnessCompass。citeturn260380academia1turn260380academia3
+
+\[
+\boxed{
+L_3:\text{Harness Optimization Science}
+}
+\]
+
+“Is the claimed improvement real?”
+
+代表：HarnessOpt-Bench、Rethinking Harness Evolution、Evo-Bench。citeturn203769academia3turn203769academia1turn389426academia2
+
+\[
+\boxed{
+L_4:\text{Adaptive / Long-Horizon Harness}
+}
+\]
+
+“How should harness change with state/task/time?”
+
+代表：LongHorizon-Harness、OneDayAgent、JIT-Agent、ScholarEvolve。citeturn156084academia0turn389426academia0turn203769academia0turn389426academia1
+
+我觉得我们真正感兴趣的是：
+
+\[
+L_3\rightarrow L_4.
+\]
+
+---
+
+## 十三、目前还没有解决的关键问题
+
+虽然论文很多，但几个最核心的问题仍然是空白。
+
+最明显的是**没有稳定的 harness state-space**。
+
+现在常写：
+
+\[
+H=
+(\text{prompt},
+\text{tools},
+\text{memory},
+\text{control flow},\ldots)
+\]
+
+但这些是 implementation components，不是系统辨识意义上的状态变量。
+
+我们想找的是：
+
+\[
+z_t=
+(
+\text{uncertainty},
+\text{progress},
+\text{branch diversity},
+\text{context debt},
+\text{failure risk},
+\text{verification confidence},
+\dots
+)
+\]
+
+使得：
+
+\[
+P(z_{t+1}\mid h_{\le t})
+\approx
+P(z_{t+1}\mid z_t,a_t).
+\]
+
+这一块目前几乎没人真正解决。
+
+其次是 **compute allocation law**：
+
+\[
+a_t^*
+=
+\arg\max_a
+\frac{\mathbb E[\Delta Q\mid s_t,a]}{C(a)}.
+\]
+
+现有 harness evolution 大部分仍然是固定 rounds、固定 rollout、固定候选数。
+
+真正在线的 Value-of-Computation routing 还很初级。
+
+第三是 **multi-agent composition**。
+
+目前 harness 论文开始谈 orchestration，但：
+
+\[
+N_{\rm agents},
+\quad
+\rho_{ij},
+\quad
+MC_i,
+\quad
+C_{\rm comm}
+\]
+
+这些量还没有形成统一评估体系。
+
+---
+
+# 对 ADA / OPL 最有价值的论文阅读顺序
+
+如果我们不是做综述，而是准备落地，我建议直接按下面顺序精读：
+
+1. **Harness-Bench**  
+   学怎么做 controlled harness evaluation。citeturn797277academia2
+2. **The Scaffold Effect**  
+   学 cost / latency / failure fingerprint。citeturn131744academia0
+3. **AgentCompass**  
+   看 runner / benchmark / harness / environment 解耦。citeturn156084academia2
+4. **HarnessOpt-Bench**  
+   学最干净的 harness optimization protocol。citeturn203769academia3
+5. **Rethinking Harness Evolution**  
+   防止我们做出“伪优化”。citeturn203769academia1
+6. **LongHorizon-Harness**  
+   学外置状态 + verifier-gated state transition。citeturn156084academia0
+7. **Meta-Harness / HarnessCompass**  
+   学实际 harness search/evolution。citeturn260380academia1turn260380academia3
+8. **Scale and Selection**  
+   学 evolution selection noise、rollout 数与 champion–challenger。citeturn389426academia3
+9. **HarnessDev / Evo-Bench**  
+   看 harness 能力是否真正可泛化。citeturn203769academia2turn389426academia2
+10. **JIT-Agent / ScholarEvolve**  
+    看最前沿的 task-adaptive / lifelong harness。citeturn203769academia0turn389426academia1
+
+如果把这批工作和我们之前的讨论放在一起，我现在的判断比之前更明确了：
+
+\[
+\boxed{
+\text{Agent Engineering 的前沿已经从 agent design 转向 harness optimization}
+}
+\]
+
+但更深一层的：
+
+\[
+\boxed{
+\text{harness system identification + optimal control}
+}
+\]
+
+还基本是空白。
+
+现在大家已经会：
+
+\[
+H\rightarrow H'
+\]
+
+但还不真正知道：
+
+\[
+\frac{\partial Q}{\partial H},
+\qquad
+P(s_{t+1}\mid s_t,a_t),
+\qquad
+\text{VOC}(a\mid s),
+\]
+
+更没有稳定的 regime law。
+
+**这正是我们前面一直试图形式化的东西。**
+
+如果继续往下，我建议下一步不要再扩论文列表，而是把这十几篇论文逐篇拆成一个统一矩阵：
+
+\[
+\text{state}
+\times
+\text{action}
+\times
+\text{optimizer}
+\times
+\text{feedback}
+\times
+\text{budget}
+\times
+\text{metric}
+\times
+\text{generalization}
+\]
+
+然后看每篇论文究竟覆盖了哪几个格子、哪些格子仍是空的。那样很可能就能直接得到 ADA/OPL 的研究路线。
 
 ---
 
 If you want, I can:
 
-- 继续分析数论领域的具体进展
-- 列举代数与复几何领域的核心结果
-- 详细罗列理论计算机科学部分亮点
+- 继续梳理arXiv上2026年后harness研究最新动态
+- 详细解释HarnessOpt-Bench的设计与意义
+- 分析自动harness进化中的主要挑战与负面结果

@@ -27,15 +27,15 @@ import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
  "corpusFiles": 72,
- "corpusLines": 102301,
- "corpusLinesExclTranscript": 36086,
+ "corpusLines": 105195,
+ "corpusLinesExclTranscript": 36143,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 7905,
+ "corpusLinesRead": 8354,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 5172
+ "corpusLinesReadExclTranscript": 5229
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -450,16 +450,16 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/conversation-openai-math-engineering-implications-2026-10-07/transcript.md",
-  "lines": 2663,
+  "lines": 5500,
   "status": "generated",
-  "linesRead": 1306,
-  "note": "第二条对话(413 节点/4 user 轮)的解码产物。我读了 8 个实体块(4 user + 4 条长正文)= 1,306 行;其余 334 块几乎全是 redacted 占位"
+  "linesRead": 1698,
+  "note": "第二条对话的解码产物(2026-10-08 增量更新:413→567 节点 / 4→10 user 轮)。我通读旧段 1,306 行(8 实体块),新段读了全部 user 轮并展示 5 条新长正文的 352 行"
  },
  {
   "path": "related_files/conversation-openai-math-engineering-implications-2026-10-07/user_turns.md",
-  "lines": 17,
+  "lines": 41,
   "status": "read",
-  "linesRead": 17
+  "linesRead": 41
  },
  {
   "path": "related_files/conversation-harness-literature-and-multi-model-routing-2026-10-08/transcript.md",
@@ -489,9 +489,9 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/conversation-openai-math-engineering-implications-2026-10-07/README.md",
-  "lines": 62,
+  "lines": 95,
   "status": "authored",
-  "linesRead": 62
+  "linesRead": 95
  },
  {
   "path": "related_files/deepresearch-citation-ledger-2026-10-07.md",
