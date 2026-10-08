@@ -26,16 +26,16 @@
 import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
- "corpusFiles": 76,
- "corpusLines": 105756,
- "corpusLinesExclTranscript": 36704,
+ "corpusFiles": 80,
+ "corpusLines": 108486,
+ "corpusLinesExclTranscript": 37096,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 8911,
+ "corpusLinesRead": 9303,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 5786
+ "corpusLinesReadExclTranscript": 6178
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -500,6 +500,32 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
   "status": "authored",
   "linesRead": 54,
   "note": "首个测量规格:合成第 7/8/9 轮意见(M0 仪器检查 + M1 share-matched 对照)+ 宿主接线状态"
+ },
+ {
+  "path": "related_files/conversation-packet-channel-2026-10-06-08/transcript.md",
+  "lines": 2338,
+  "status": "generated",
+  "linesRead": 0,
+  "note": "包会话(第 1–9 轮 + 构想着七轮)的解码产物;通读了 17 个 user 轮与 10-08 07:37 后的 7 条长回复"
+ },
+ {
+  "path": "related_files/conversation-packet-channel-2026-10-06-08/user_turns.md",
+  "lines": 271,
+  "status": "read",
+  "linesRead": 271
+ },
+ {
+  "path": "related_files/conversation-packet-channel-2026-10-06-08/README.md",
+  "lines": 74,
+  "status": "authored",
+  "linesRead": 74
+ },
+ {
+  "path": "related_files/gpt-review-2026-10-08-r7.md",
+  "lines": 47,
+  "status": "fetched",
+  "linesRead": 47,
+  "note": "第 7 轮答复:从包会话记录**补档**(此前只在对话里报告过)"
  },
  {
   "path": "related_files/gpt-review-2026-10-08-r8.md",
