@@ -496,9 +496,9 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/2026-10-08-v3-plan-checkpoint-replay.md",
-  "lines": 113,
+  "lines": 121,
   "status": "authored",
-  "linesRead": 113,
+  "linesRead": 121,
   "note": "v3 计划草案(本地座起草,未经对抗审查):以「可断点重放的轨迹」为最小单位;E1 仪器检查→E2 share-matched→E3 继续/重启/分叉→E4 机制比较;相对 v2 的保留/修正/新增各三条"
  },
  {
