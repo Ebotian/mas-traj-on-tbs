@@ -26,16 +26,16 @@
 import type { CoverageRow, CoverageSummary } from '../types.ts'
 
 export const COVERAGE_SUMMARY: CoverageSummary = {
- "corpusFiles": 80,
- "corpusLines": 108486,
- "corpusLinesExclTranscript": 37096,
+ "corpusFiles": 81,
+ "corpusLines": 108543,
+ "corpusLinesExclTranscript": 37153,
  "a0TopMd": 9,
  "a0TopMdLines": 1920,
  "a0TrackedTotal": 37400,
  "repoTrackedTotal": 37504,
- "corpusLinesRead": 9303,
+ "corpusLinesRead": 9360,
  "a0LinesRead": 893,
- "corpusLinesReadExclTranscript": 6178
+ "corpusLinesReadExclTranscript": 6235
 }
 
 export const CORPUS_COVERAGE: CoverageRow[] = [
@@ -493,6 +493,13 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
   "status": "fetched",
   "linesRead": 195,
   "note": "第 9 轮答复:问题 3(逐步模型选择)的现有评测参考;引用已钉版本(TwinRouterBench v4 / RouterArena v3 / RouterBench v2 / LLMRouterBench v1)"
+ },
+ {
+  "path": "related_files/2026-10-08-v3-plan-checkpoint-replay.md",
+  "lines": 57,
+  "status": "authored",
+  "linesRead": 57,
+  "note": "v3 计划草案(本地座起草,未经对抗审查):以「可断点重放的轨迹」为最小单位;E1 仪器检查→E2 share-matched→E3 继续/重启/分叉→E4 机制比较;相对 v2 的保留/修正/新增各三条"
  },
  {
   "path": "related_files/2026-10-08-first-measurement-spec.md",
