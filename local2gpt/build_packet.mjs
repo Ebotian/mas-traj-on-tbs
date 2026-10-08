@@ -109,6 +109,7 @@ const CLAIM_INDEX = [
   ['C28', '`4_full_text/extras/plan-6.4-censoring.md`'],
   ['C29', '`4_full_text/registers/types.ts` · `graph.ts`'],
   ['C30–C38', '`2_claims_to_attack/15_LITERATURE.md` §2–§4'],
+  ['C39–C42', '`1_we_are_here/04_EXISTING_AGENTS.md` §2–§5'],
   ['全域背景', '`4_full_text/registers/*.ts`(机器可读的登记册源文件)'],
 ].map(([a, b]) => `| ${a} | ${b} |`).join('\n')
 

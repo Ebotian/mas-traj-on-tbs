@@ -30,7 +30,8 @@
 1. `15_LITERATURE.md` —— **本轮主攻**:57 篇的编目、**精读四篇的结论**、以及我们据此设的实验优先级;
 2. `10_CLAIMS.md` —— 逐行攻击 {{N_CLAIMS}} 条主张(其中 C30–C38 是文献结论);
 3. `11_DECISIONS.md` —— 逐行攻击 {{N_DEC}} 项决策;
-4. `12_CONFLICTS.md` + `13_REVERSALS.md` —— 判定 {{N_CONF}} 条冲突与 {{N_REV}} 组反转。
+4. `12_CONFLICTS.md` + `13_REVERSALS.md` —— 判定 {{N_CONF}} 条冲突与 {{N_REV}} 组反转;
+5. `1_we_are_here/04_EXISTING_AGENTS.md` —— **我们对两个现有 harness(kimi / qwen)的了解**:逐轴表、两种判据思路、四条设计教训、边界。
 
 每行固定五字段、≤4 行:*攻击的主张 · 残余疑问 · 最便宜的否证 · 依赖哪个物件 · 包内不可判定*。
 末尾有一个开放问题:*若只允许你排一个测量,你排什么*。
@@ -122,6 +123,67 @@ G₀(`v4.tex:1225`)→ epistemic debt 环(`:1237`)→ 四能力 Recover / Unders
 
 {{EXCERPTS}}
 
+@@@ FILE: 1_we_are_here/04_EXISTING_AGENTS.md @@@
+# 我们对两个现有 agent 的了解:kimi-code 与 qwen-code
+
+这一节合并两处来源:①由**另一个会话**取证的逐轴对照(本会话回源码抽查并改正两处);②本会话为它补的
+**四条设计教训**与**边界**。行号级证据有前提,先写在前面。
+
+## 0. 前提:钉住的版本与路径前缀
+
+- 行号钉在两个本地 checkout:**qwen-code `464f486e`(`@qwen-code/qwen-code 0.25.0`,最后提交 2026-10-07)**;
+  **kimi-code `21406fb4`(`@moonshot-ai/kimi-code 2.1.1-13-g21406fb4c`,最后提交 2026-09-30)**。**checkout 一动,本文所有行号失效。**
+- 路径前缀(对照文里省略过,是 grep 缺陷不是内容错误):qwen 的 `packages/core/src/…`、`packages/cli/src/…`;kimi 的 `packages/agent-core-v2/src/…`。
+- 证据档:✅ = 本会话回源码核过(下面表里标 ⚙ 的与 §2 全部);◐ = 转述未核(见 §4)。
+
+## 1. 逐轴(压缩版;完整版见 `4_full_text/extras/harness-design-comparison-qwen-vs-kimi-2026-10-07.md`)
+
+| 轴 | qwen-code | kimi-code |
+|---|---|---|
+| **循环位置** | 工具执行那一圈**在 host**(`use-llm-stream.ts:2594/4843→:6016 submitQuery`、`nonInteractiveCli.ts:2469 while`);core 无状态,只 yield `ToolCallRequest` | **全在 core**:`human/` 四层状态机(session→agent→turn→tool),工具执行也在 core,host 只给审批回调 |
+| **停止条件** | **分散**:`MAX_TURNS = 100`(`core/client.ts:212`)、会话轮数、session token、loop detector、Stop-hook 上限 | **集中**:turn guard 判 maxSteps;另有"反向停 turn"通道;**同签名调用连续 3/5/8/12 次逐级升级到强制停**(`REPEAT_FORCE_STOP_STREAK = 12`)⚙ |
+| **工具声明** | 手写 JSON Schema | **zod 派生**(强制 `additionalProperties:false`) |
+| **并发** | 数字上限默认 **10**,按并发安全分区 | **无数字上限**,按 `ToolAccesses` 冲突串行 |
+| **结果整形** | 25k 字符/1k 行 → 落盘(`<persisted-output>`+sha256)→ **批内预算 200k 按比例分配** | 50k 字符/2k 行(`toolContract.ts:7`)→ 落盘 + 返回可 Read 指针;**无批内预算** ⚙ |
+| **提示** | 多层 section 组装,**稳定前缀作 cache 锚** | 单模板插值后冻结,变更靠尾部 `<system-reminder>` |
+| **压缩** | **两级**:就地清空旧结果(无模型调用)+ 摘要重建 | **一层**:全量 LLM 摘要 |
+| **记忆** | 三层(project/user/team)+ 每轮 recall | **不存在** |
+| **权限** | 5 值(`ApprovalMode` 枚举,`config/approval-mode.ts:7`) | 引擎 3 值 `'manual'|'yolo'|'auto'`(`permissionPolicy/types.ts:6`)⚙ |
+| **读前写** | 有(新鲜读缓存 + mtime/size) | **无**(零命中)⚙ |
+| **hooks** | 22 个事件(`hooks/types.ts:24`);**出错不阻塞** | 20 个事件;阻断面窄;**出错默认 allow** |
+| **沙盒** | 会话级一次决定的 OS 沙盒 | **无 OS 沙盒**,靠 shell AST 启发式 + 路径守卫 |
+| **外部监督** | **两处独立判决者**:AUTO 权限分类器(`permissions/classifier.ts`,两阶段 LLM)、Goal verifier(`goals/goal-verifier.ts`,模型判决 + 受约束 JSON);都开 side-query | **零**:`update_goal` 直接同步 `markComplete`;`completionCriterion` 以 `<untrusted_completion_criterion>` 渲染、**从不被代码求值** ⚙ |
+
+## 2. 两处判决者 = 两种**现存实现思路**,以及"判据三条件"
+
+- **思路一(qwen)**:判据不在确定性代码里,而是**另开一次 side-query** 让模型按受约束 JSON 判决。
+- **思路二(kimi)**:判据作为 **prompt 里的不变量**交付模型自守,harness 侧**不执行**它(其**触发**路径则零 judge)。
+- **判据三条件**(项目原则 `related_files/TIMING-REVIEW(1).md`:所有触发变量 harness-authoritative,没有 LLM judge):
+  (i) 判据在 harness 里 · (ii) **被代码求值** · (iii) **不外包给 LLM**。
+- **更正(外部复核 2026-10-08)**:此处曾写"两个 harness 各缺一条" —— 那个**计数站不住**(qwen 的位置格已是"harness 外";
+  且 A1 比安全判决、A2 比完成判据,**不是同一种判据**;"执行一个 JSON 判决"≠"执行判据本身")。**改为逐格填表**:
+  对同一种判据填 *位置 / 实际求值者 / 结果消费者*,再判满足哪几条。源码不随包 ⇒ **该表在包内不可判定**。
+
+## 3. 四条设计教训(本会话加的,可攻击)
+
+1. **循环位置决定"恢复什么"**:qwen 把执行状态推给外层 journal(同一内核喂多个前端,代价是 core 不知"这轮跑到哪"),kimi 把状态收进 core 做**可重放状态机**(可挂载重连,代价是 core 更重)。同一需求,两种相反答案。
+2. **停止条件可以分散也可以集中**,而 kimi 的**升级式**(3/5/8/12)比单一上限**更省**:它给"偶发重复"留了余地,只对持续重复升级。
+3. **结果整形是成本问题,不只是上下文问题**:两者都截断+落盘,但只有 qwen 做了**批内预算**(200k 按比例分配)⇒ 截断本身不控制一次批处理的总量。
+4. **默认方向不对称是共有特征**:kimi 审批 fail-closed 而 hook fail-open;qwen hook 出错同样不阻塞、但非交互会话审批自动拒。⇒ 不能把"fail-closed"当成某一方的特征。
+
+## 4. 我们不知道的(边界;◐)
+
+审批无 handler 时是否默认 `cancelled`;hook 出错默认 allow 的实现位置;某仓"Bash 未声明 accesses → 事实独占"的实际语义;
+kimi 的 v1/v2 双层共存与 `human/compaction/*` 是否在活路径;qwen 的 25k/1k 截断与 200k 预算的具体实现点、并发上限 10 的常量位置、
+OS 沙盒决策点、两级压缩的模块边界;以及本表 **§1 里未标 ⚙ 的全部格子**(转述,未回源码)。
+
+## 5. 对我们自己 harness 的直接含义
+
+- **要测"判据能不能拒绝假进展",这两个仓是现成宿主**:它们都有可跑的循环、可插的判据位、以及**两种相反的判据做法**——
+  这正是那条最小试跑(见 `2_claims_to_attack/15_LITERATURE.md` §4 与第 7 轮的状态级答案)最省的落地方式。
+- **宿主选择的差别**:qwen-code 接受外部 PR 且自己跑 SWE-bench Verified 回归(七版本 76.40–77.80%、pass³ 65.8–69.2%);
+  kimi-code 是 MIT 但只收维护者预批准的 bug fix ⇒ **`forkability ≠ upstreamability`**。
+
 @@@ FILE: 2_claims_to_attack/10_CLAIMS.md @@@
 # 待攻击的主张(逐行)
 
@@ -170,6 +232,11 @@ G₀(`v4.tex:1225`)→ epistemic debt 环(`:1237`)→ 四能力 Recover / Unders
 | C37 | 三方目标目前**没有**公认标准榜;可信做法是拼装 Harness-Bench + LHTB/WeaveBench + AgentCompass/Inspect + Scaffold-Effects | 新(10-08) | `15_LITERATURE.md` §4 | 给出一个我们没找到的、已公认的三方标准榜;或指出拼装会引入不可比的接口差异 |
 | C38 | 本轮的**降维可接受**:57 篇只精读 4 篇,而结论主要建立在这 4 篇 + 另外 3 篇之上 | 新(10-08) | `15_LITERATURE.md` 末 | 指出这 7 篇的选择本身有偏(如全部来自同一检索会话);或指出某条结论必须用被略过的 53 篇中的某一篇才能判定 |
 
+
+| C39 | §3 的四条设计教训可以指导我们自己的 harness(循环位置/停止条件的升级式/批内预算/默认方向不对称) | 新(10-08) | `1_we_are_here/04_EXISTING_AGENTS.md` §3 | 指出其中某一条在我们的场景下不成立(如"升级式更省"只在重复是主要浪费时成立) |
+| C40 | 「判据三条件」(在 harness 里 · 被代码求值 · 不外包 LLM)是**必要**的 | 新(10-08) | `04_EXISTING_AGENTS.md` §2 | 给出一个满足三条件而判据仍失灵的机制(⇒ 条件不充分,需补第四条件);或给出一个违反其中一条却仍可靠的机制 |
+| C41 | 若要用现有 harness 做实验,**qwen-code 更适合当宿主**(接受外部 PR + 自跑 SWE-bench 回归),kimi-code 更适合 fork 后研究 | 新(10-08) | 同上 §5 | 指出宿主选择的更关键因素(如判据可插性、许可、可观测性);或指出"可 upstream"在实验中并不重要 |
+| C42 | 这两个样本足以代表"我们关心的现有 agent 设计空间" | 新(10-08) | 同上 §1–§4 | 指出选样偏置(如两者同期、同一地区生态);或指出设计空间里另有与这两者**正交**的一类(如纯检索型、无状态型) |
 
 @@@ FILE: 2_claims_to_attack/11_DECISIONS.md @@@
 # 决策册({{N_DEC}} 项,逐行)
