@@ -72,7 +72,11 @@
 
 **来源**:`harbor-framework/terminal-bench-science`(科学工作流的终端 agent 评测);本地 checkout `/home/ebt/terminal-bench-science`,HEAD `39e4923`,工作树干净。
 **我实测的事实**(不是转述):`tasks/` 下 **5 个领域 × 4 个子域、约 70 个 `task.toml`**;每个任务目录 = `instruction.md · environment · solution · tests · task.toml`(+`authoring`)。
-以 `tasks/earth-sciences/geosciences/stereo-dem-icesat2/` 为例:`tests/` 里有 **`test.sh` + `test_outputs.py`**,并**把留出数据烘进 verifier**(`holdout_icesat2.parquet`、参考 geojson)—— **agent 看不到**;`task.toml` 里 `artifacts = ["/root/outputs/dem.tif", …, "pipeline.tar"]` 是 **agent→verifier 的接口**;资源信封原生:`[environment] cpus=4 / memory_mb=16384 / storage_mb=30720 / build_timeout_sec=3600`、`[verifier] timeout_sec=28800`(8 h)、`[agent] timeout_sec=600`。**许可 Apache-2.0**;带 **canary GUID**(防污染)。
+以 `tasks/earth-sciences/geosciences/stereo-dem-icesat2/` 为例:`tests/` 里有 `test.sh` + `test_outputs.py`,并**把留出数据烘进 verifier**(`holdout_icesat2.parquet`)—— **agent 看不到**;`task.toml` 的 `artifacts = [...]` 是 **agent→verifier 的接口**;`[verifier] environment_mode = "separate"`、`network_mode = "no-network"`(verifier 在干净容器里**只拿到 artifacts + `tests/Dockerfile` 烘进去的东西**);资源信封原生:`[environment] cpus=4 / memory_mb=16384 / storage_mb=30720 / build_timeout_sec=3600`。
+
+**★ 更正(2026-10-09;我先前写反了,致预算差 48 倍)**:`[agent] timeout_sec` 全 70 任务**一律 28800(8 h)**;`[verifier] timeout_sec` 值域 **120–12000、中位 600**(我自己按段头重读并全量统计)。**错因**:我按 grep 输出的**邻近行**归属,没读段头 —— 教训与此前"读版本"同类:**归属要读段头,不读邻行**。
+**`tests/` 命名不统一**(我实测):`test.sh` **70**、`test_outputs.py` **37**、`holdout_*` **20** ⇒ 不可按单一样本外推。
+**许可 Apache-2.0**;带 **canary GUID**(防污染)。
 
 ### 为什么它对我们价值高(三条)
 
@@ -85,6 +89,21 @@
 
 v2 的三档(接线 HumanEval+/MBPP+ → 主实验 DS-1000 → 迁移 SWE-bench 子集)是**代码/函数级**的;第 17 轮已把优先级修正为 **LHTB 优先**(跨任务类型 + 长程)。
 ⇒ 本数据集与 LHTB 同类但**多出两件**:①判据与留出数据**已外置**(我们要的正是这个);②**科学领域**(与项目同域)。**建议:把它列为 M0 的判据来源候选,并与 LHTB 比较后再定**(LHTB 的判据形态待核)。
+
+### ★ 该仓**已有**的现成机制:正好是 E1 的三类产物(2026-10-09,与 `terminal-bench-science-b1` 会话通信后逐条复核)
+
+| E1 要的东西 | 该仓的对应物 | 我的核验 |
+|---|---|---|
+| ① **已知正确** | `/validate` 的 oracle 臂(reward 1.0) | 转述(其机制说明见下条) |
+| ② **无改善** | `/validate` 的 nop 臂(reward 0.0) | 同上 |
+| ③ **错误但自称完成** | `/cheat` 试验线;`ci_checks/test-tasks/`(**我数 85 个条目**)的 fail-* 回归任务,每个 pin 一个检查的**抓取率**(即误接受率) | 条目数与目录都已实测 |
+| **判据输出如何被消费** | `ci_checks/check-binary-reward.py`:强制 reward 恰为 0 或 1 —— 因为 harbor 按 `reward >= 1.0` 判过,**分数型 reward 只是"读起来像通过"**,其部分信用会被下游静默丢弃;且 **`reward.json` 优先于 `reward.txt`** | **已读其文档头原文** |
+| **判据的攻击面词表** | `rubrics/trial-analysis.toml`(含 `verifier_correctness` · `boundary_fairness` · **`unearned_credit`**…) | 已见 7 条 `[[criteria]]`(其说 8 条) |
+
+⇒ **E1 不必从零造夹具**:① ② 由 `/validate` 的两点给出,③ 有 `test-tasks` 的 fail-* 线;**而 `check-binary-reward.py` 直接给出"入账"的硬约束**(二值),这比我们自己定的"控制入账"更具体。
+
+**三处"文档有、实际没有"(已核,避免踩)**:`TASK_IMPLEMENTATION_RUBRIC.toml` **不存在**(AGENTS.md 的 Repo Structure 列着它);`docs/EXAMPLES.md` **0 字节**;`CLAUDE.md` 是指向 `AGENTS.md` 的**符号链接**(不是第二份文件)。
+**浅克隆警告**(转述 + 可核):本地 clone 仅 2 个 commit(grafted)、**未配置 `template` 远端** ⇒ 文档里的 `git fetch template && git merge template/main` **在此 clone 里跑不了**。
 
 ### 待核(已向该仓的会话发问,2026-10-09)
 
