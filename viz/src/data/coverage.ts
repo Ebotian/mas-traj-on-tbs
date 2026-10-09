@@ -510,9 +510,9 @@ export const CORPUS_COVERAGE: CoverageRow[] = [
  },
  {
   "path": "related_files/2026-10-08-first-measurement-spec.md",
-  "lines": 54,
+  "lines": 92,
   "status": "authored",
-  "linesRead": 54,
+  "linesRead": 92,
   "note": "首个测量规格:合成第 7/8/9 轮意见(M0 仪器检查 + M1 share-matched 对照)+ 宿主接线状态"
  },
  {

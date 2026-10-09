@@ -67,3 +67,26 @@
 - M0 对应冲突 **`bench-validity`**(判据有效性)与 **C40**(三条件只是项目约束,不是普遍定理)。
 - M1 对应 **D33**(society)与 **C26/C35**(多模型的条件优势、质量估计能力)。
 - 结果若推翻本项目某条主张 ⇒ 写成反转段;若暴露新矛盾 ⇒ 写成冲突行。**两件都要用户裁定。**
+
+## 5. 数据集候选:Terminal-Bench-Science(2026-10-09,构想着指出;我只读看过本地 checkout)
+
+**来源**:`harbor-framework/terminal-bench-science`(科学工作流的终端 agent 评测);本地 checkout `/home/ebt/terminal-bench-science`,HEAD `39e4923`,工作树干净。
+**我实测的事实**(不是转述):`tasks/` 下 **5 个领域 × 4 个子域、约 70 个 `task.toml`**;每个任务目录 = `instruction.md · environment · solution · tests · task.toml`(+`authoring`)。
+以 `tasks/earth-sciences/geosciences/stereo-dem-icesat2/` 为例:`tests/` 里有 **`test.sh` + `test_outputs.py`**,并**把留出数据烘进 verifier**(`holdout_icesat2.parquet`、参考 geojson)—— **agent 看不到**;`task.toml` 里 `artifacts = ["/root/outputs/dem.tif", …, "pipeline.tar"]` 是 **agent→verifier 的接口**;资源信封原生:`[environment] cpus=4 / memory_mb=16384 / storage_mb=30720 / build_timeout_sec=3600`、`[verifier] timeout_sec=28800`(8 h)、`[agent] timeout_sec=600`。**许可 Apache-2.0**;带 **canary GUID**(防污染)。
+
+### 为什么它对我们价值高(三条)
+
+1. **它把我们 E1 要建的判据形状**已经标准化了:**在容器外、由代码执行、带留出数据、只经 `artifacts` 与 agent 交互**。
+   ⇒ E1 的"判据控制入账"可以直接落在这一格式上,不必自造。
+2. **"冻结环境与预算"有原生表示**:cpus/memory/storage + 两级 timeout ⇒ M0 的冻结清单不需自定义。
+3. **跨领域 + 专家策展**(5 领域 20 子域,科学工作流):正是 LHTB 被看重的"跨任务类型 + 长程"性质,而且**落在本项目的领域**(科研工作流)。
+
+### 与 v2 数据集选择的关系
+
+v2 的三档(接线 HumanEval+/MBPP+ → 主实验 DS-1000 → 迁移 SWE-bench 子集)是**代码/函数级**的;第 17 轮已把优先级修正为 **LHTB 优先**(跨任务类型 + 长程)。
+⇒ 本数据集与 LHTB 同类但**多出两件**:①判据与留出数据**已外置**(我们要的正是这个);②**科学领域**(与项目同域)。**建议:把它列为 M0 的判据来源候选,并与 LHTB 比较后再定**(LHTB 的判据形态待核)。
+
+### 待核(已向该仓的会话发问,2026-10-09)
+
+①它当前状态(clone 到哪、跑没跑过 harbor runner);②**最便宜**的任务是哪个 slug、其 `tests/` 是否**纯确定性**(不含 LLM judge);③`lite/` 只有一个 README —— 上游是否有更小可运行集;④能否**只替换/包裹 verifier**(保留任务与 env)而不必按它的 `test.sh` 跑。
+**边界**:以上均为**我读仓库所得**;这套任务的**实际可运行性**(harbor runner、容器、8 h verifier)我**未实测**。
