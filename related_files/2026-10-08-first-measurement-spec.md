@@ -200,7 +200,7 @@ v2 的三档(接线 HumanEval+/MBPP+ → 主实验 DS-1000 → 迁移 SWE-bench 
 
 ### 6.6 第一个真实 agent 臂:agent-flash-1(2026-10-09)
 
-**执行方式**(全部显式,构成冻结清单的骨架):`-a qwen-coder` · `-m deepseek-v4-flash` · `--ak version=0.25.0` · **effort=max**——经 `--mounts '[{"type":"bind","source":"/home/ebt/harbor-runs/effort-settings.json","target":"/root/.qwen/settings.json","read_only":true}]'`(schema: `ServiceVolumeConfig{type,source,target,read_only}`,字符串短格式会被校验拒绝)· `--env-file agent.env`(密钥不进 argv)· `--agent-timeout-multiplier 0.25`(2h 护栏)·
+**执行方式**(全部显式,构成冻结清单的骨架):`-a qwen-coder` · **`-m deepseek-flash`**(**官方 id**,`GET /models` 2026-10-09 实查;首跑以别名 `deepseek-v4-flash` 发出,但应答与计费均按官方名记录——**此后统一官方 id**)· `--ak version=0.25.0` · **effort=max**——经 `--mounts '[{"type":"bind","source":"/home/ebt/harbor-runs/effort-settings.json","target":"/root/.qwen/settings.json","read_only":true}]'`(schema: `ServiceVolumeConfig{type,source,target,read_only}`,字符串短格式会被校验拒绝)· `--env-file agent.env`(密钥不进 argv)· `--agent-timeout-multiplier 0.25`(2h 护栏)·
 
 **agent 臂网络配方**(五轮冒烟收敛,全部实测):install.sh → raw.githubusercontent **经 7890**(≈2/3 成功率,**失败零成本,重试即可**);nvm.sh → `NVM_SOURCE` **jsdelivr 直连**(`NVM_INSTALL_VERSION=v0.40.2` 免 github API 查询);node → `NVM_NODEJS_ORG_MIRROR` **npmmirror 直连**;qwen-code npm → **npmmirror 直连**;apt/pip/DeepSeek API/CDN → **no_proxy 直连**;代理只服务 github 系。
 
