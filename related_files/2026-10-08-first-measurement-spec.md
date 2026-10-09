@@ -109,3 +109,30 @@ v2 的三档(接线 HumanEval+/MBPP+ → 主实验 DS-1000 → 迁移 SWE-bench 
 
 ①它当前状态(clone 到哪、跑没跑过 harbor runner);②**最便宜**的任务是哪个 slug、其 `tests/` 是否**纯确定性**(不含 LLM judge);③`lite/` 只有一个 README —— 上游是否有更小可运行集;④能否**只替换/包裹 verifier**(保留任务与 env)而不必按它的 `test.sh` 跑。
 **边界**:以上均为**我读仓库所得**;这套任务的**实际可运行性**(harbor runner、容器、8 h verifier)我**未实测**。
+
+## 6. 接入手册:我们跑 harbor 时装什么、能复用多少、密钥怎么放(2026-10-09,本机已装 harbor 0.24.0)
+
+### 6.1 会装什么(以最便宜任务 `life-sciences/medicine/tumor-immune-interface` 为例)
+
+- **任务环境镜像**:`FROM ubuntu:24.04` + apt `python3/pip` + **钉死版本的 pip 栈**(numpy 2.1.3 · scipy 1.14.1 · pandas 2.2.3 · scikit-image 0.24.0 · scikit-learn 1.5.2 · matplotlib 3.9.2 · tifffile 2024.8.30 · huggingface-hub 0.26.2)+ 把队列数据 COPY 进去。
+  **它的 Dockerfile 自己写明了理由**:全栈预装且钉版本,"so results do not depend on what the agent chooses to install … behave identically to the environment the reference outputs came from" ⇒ **环境本身是仪器的一部分** —— 与我们的冻结纪律同向。
+- **判据侧镜像**:`tests/Dockerfile` + `requirements.txt` + **`verify.py`(28 KB)+ `pipeline.py`(9 KB)+ `cluster_key.csv`** ⇒ 判据不是薄断言,是一个**实质的确定性程序**。
+- **agent 侧**:每次 trial 由适配器装 `nvm + npm install -g @qwen-code/qwen-code@{版本}`(可钉版本)⇒ 这一步**每次都要联网装**(是否有缓存待核,见 6.2)。
+
+### 6.2 复用性(高)
+
+- **基础镜像高度共享**(全库):`ubuntu:24.04` **15** 个任务 · `python:3.11-slim` 14 · `python:3.12-slim` 8;少数任务**钉 digest**(`@sha256:…`)⇒ 可复现。
+- **harbor 自带镜像缓存**:`harbor cache clean` 清的是 **`alexgshaw/*`、`hb__*`、`sb__*`** 三类镜像与 `~/.cache/harbor` ⇒ 构建产物**本地缓存**,同任务第二次跑是快的。
+- **`harbor run --diff <源 job>`** 给"复用/重评/重跑"预览 ⇒ **重分析不必重跑**。
+- **oracle 臂零模型成本**:跑的是任务自带 `solution/solve.sh`,不调用任何模型 ⇒ 排练免费,只花本机算力。
+- **待核**:agent 的安装(nvm+npm)是否跨 trial 缓存。
+
+### 6.3 密钥:你的判断对 —— **不必对外暴露**,但必须有一个通道进容器
+
+容器是**新建的**,所以凭据**必然要跨一次边界**;可选的通道(优先级从高到低):
+
+1. **容器内写 `~/.qwen/settings.json`**:适配器**已经会写这个文件**(`_mcp_settings_command()`,目前用于注 MCP)⇒ 我们的 provider 条目(`baseUrl` + `envKey`)可走这里;
+2. **`--env-file`**:harbor 从文件读环境变量(`api_key → OPENAI_API_KEY`、`base_url → OPENAI_BASE_URL`,适配器原文如此),**密钥不进 argv**;
+3. ❌ **不要用 `--ak api_key=…`**:`--print-config` 会把 kwargs **原样回显** ⇒ 密钥会落进任何被归档的配置(我实测时就是这样,故当时只传了截断值)。
+
+⇒ **定版做法**:(1)+(2):容器内 settings 指向 `envKey`,密钥值由 `--env-file` 注入;**归档的配置文件里不出现密钥**。
