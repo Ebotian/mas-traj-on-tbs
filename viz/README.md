@@ -25,7 +25,7 @@ pnpm derive     # 重新派生 src/data/experiments.json
 | `#/decisions` | 33 项决策,按阻塞关系排;含「这次梳理本身可能是代理目标漂移」的自我攻击 |
 | `#/coverage` | 我自己的阅读覆盖率:73 个语料文件的逐文件行数与已读行数,三档折扣 |
 | `#/library` | 账户 Library 的核查台账:159 条 → 118 条本地没有 → 取回 17 份;三条取回通道各自的陷阱;一处**被推翻的结论** |
-| `#/replay` | 轨迹重建(React 19 组件化单页;w4/w5 走查逐步回放):双珠链时间条(珠径 ∝ 工具调用数;上=A·deepseek-flash · 下=B·qwen3.8-flash)、git 中脊(◆ 普通 · ◉ 玫红实边圆 = merge · ◯ 蓝实边环 + 小字 = tag)、门/板刻度;滑块粒度 = 一个对话轮,输入框精确到第 N 轮,点珠/节点跳转;右侧 git 织图(真实 DAG 泳道)与协议账随步点亮/变暗;本步详情按 parts 原序展开(思考可折叠、工具卡带结果与原始行)。数据 = 采集包原文(raw 逐行入档),折叠只改显示 |
+| `#/replay` | 轨迹重建(React 19 组件化单页;w4/w5 走查逐步回放):双珠链时间条(珠径 ∝ 工具调用数;上=A·deepseek-flash · 下=B·qwen3.8-flash)、git 中脊(◆ 普通 · ◉ 玫红实边圆 = merge · ◯ 蓝实边环 + 小字 = tag)、门/板刻度;滑块粒度 = 一个对话轮,输入框精确到第 N 轮,点珠/节点跳转;右侧 git 织图(**git log --graph 版式**:轨道列 = 分支线(灰=main · 蓝=a · 绿=b)、分叉/汇合为曲线、分支/tag 徽章;全部提交任何步都在场,未发生的降透明、随步点亮)与协议账随步点亮/变暗;本步详情按 parts 原序展开(思考可折叠、工具卡带结果与原始行)。数据 = 采集包原文(raw 逐行入档),折叠只改显示 |
 
 ## 数据从哪来(以及哪些是我的推断)
 
@@ -81,7 +81,10 @@ pnpm derive     # 重新派生 src/data/experiments.json
   双向同步)、珠链珠子与 git 节点点击跳转(`jumpTo` 写回步号)、展开全部(思考、参数、输出、两条原始行)、
   w4↔w5 切换,各态截图读回。同日该页重写为 **React 19 组件化单页**(`views/replay/components/`:
   App/Strip/TurnDetail/GitGraph 四组件 + 框架无关的 `data.ts`):珠链 lit 计数(步 88 时 A 38/38、
-  B 50/50)与 `getComputedStyle` 取色均实查。**React 页面不在 `npm run probe` 内**(createRoot 需要
+  B 50/50)与 `getComputedStyle` 取色均实查。git 织图此后重写为 `git log --graph` 版式(轨道列 +
+  分叉/汇合曲线 + 分支/tag 徽章),布局先在真实 bundle 上用离线模拟对表,再在页面 DOM 逐节点回读
+  列坐标(20 行全部吻合):步 1 = 23 圆(20 节点 + 3 tag 环)中 1 亮 22 暗、步 88 全亮、步 44 亮 12;
+  点 init 行跳第 1 轮、无 React 错误。**React 页面不在 `npm run probe` 内**(createRoot 需要
   真实 DOM——探针的 DOM 桩不够),其渲染靠上述浏览器检查;其余视图改完仍必须重跑探针(8/8)。
 - 取回件里的 5 个 `.typ` 由语料自己的 `make all` 编译,**0 error / 0 warning**;
   B 线 v(6) 与磁盘那份**归一化后逐字节相同**(唯一差异是一个尾部空行),这是整条抽取管线的校准点。

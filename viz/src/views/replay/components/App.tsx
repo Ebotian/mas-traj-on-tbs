@@ -124,9 +124,9 @@ export default function App() {
 
         <div className="sidecol">
           {bundle && (
-            <div className="card"><h2>{`git 织图 · ${bundle.git.commits.length} 提交(泳道 = 分支线)`}</h2>
+            <div className="card"><h2>{`git 织图 · ${bundle.git.commits.length} 提交(轨道列 = 分支线)`}</h2>
               <div style={{ padding: '6px 10px 4px' }}>
-                <GitGraph cards={bundle.git.commits} tags={bundle.git.tags} step={stepNum} gid={jumpTo} />
+                <GitGraph cards={bundle.git.commits} endMs={endMs} gid={jumpTo} />
               </div>
             </div>
           )}
