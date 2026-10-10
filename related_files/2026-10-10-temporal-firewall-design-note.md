@@ -77,7 +77,7 @@
 1. 出口面:task 白名单加入 github 系 FQDN;harbor sidecar 把这批 FQDN 的 TCP 重定向到**宿主网关**(新组件);其余照旧。
 2. 网关判定:浮动引用先解 SHA 再判;`unknown/解析失败 ⇒ deny`;粒度待裁(**对象时间 vs 仓库创建时间**;倾向对象级,仓库级作粗筛)。
 3. 审计:逐请求 `policy_decision`(allow/deny + `t_verified` + 请求哈希),与 hooks/OTel 同轴(`session_id`+时间戳)。
-4. 第二站 nature(文章出版日解析);**引擎面另议**(搜索结果天然"现在"内容——保留为已知盲面,或网关内做结果级过滤,待裁)。
+4. 第二站 nature(文章出版日解析);**引擎面(2026-10-10 裁定):禁止**——不可时间裁定 ⇒ 失败闭合,已从 overlay 移除(bing/mojeek/ecosia 及通配);同日**冻结 KB 方案被否**;overlay 规则改以**测试代码**钉住(`egress/tests/`,TDD:引擎规则先红、策略改后全绿)。
 
 ## 8. 网络访问策略组件:分层裁定与 v1(2026-10-10)
 
