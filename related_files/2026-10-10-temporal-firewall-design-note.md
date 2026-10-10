@@ -96,7 +96,7 @@
 
 **构建次序**:v0 = 框架 + github(判定原语已实测);v1 = arxiv · biorxiv/medrxiv · zenodo · europepmc · ncbi/pmc(API 型,规则同构)+ 重定向防护;v2 = nature · wikipedia(页面解析型);stackexchange 按需。**TDD**:每源"允许 pre-T / 拒 post-T / 拒未知"三件套进 `test_gateway_*.py`;容器级 live 测 `/check` 可达且直连仍死。**接线**:模板 v2 替换 "open internet" 前提句并写明网关用法;开 GATEWAY 条件时 overlay `gateway.status: live` + render;**GATEWAY = 第三条件,不与 engines-on/off 混表**。
 
-**v0 实况(2026-10-10 晚,已建成,status=candidate 未激活)**:`harbor-runs/egress/gateway/`(surfaces/policy/server/run.sh,纯 stdlib)——**无重定向 ✓、取数 URL 由解析分量构造 ✓、JSONL 审计 ✓、sha256 缓存 ✓、连接级单次重试 ✓**(一上游 SSL 瞬态实测触发)。判定:**静态 36 测全绿**(含 11 网关单测:分类 2 + 决策 9);**live 6/6 对真 GitHub 过**(v0.18.3 提交放行 t_verified=2021-08-24;main 拒;基准仓拒〔created 2026-01-25〕;活跃仓页拒〔pushed 现在〕;raw 经 sha 取回 8640 B;issues 形态拒);服务烟测过(healthz · /check JSON · /fetch 200/403 · 审计落盘)。**激活待裁定**(= base 加 `172.17.0.1/32` + overlay status→live + 模板 v2)。
+**v0 实况(2026-10-10 晚,已建成,status=candidate 未激活)**:`harbor-runs/egress/gateway/`(surfaces/policy/server/run.sh,纯 stdlib)——**无重定向 ✓、取数 URL 由解析分量构造 ✓、JSONL 审计 ✓、sha256 缓存 ✓、连接级单次重试 ✓**(一上游 SSL 瞬态实测触发)。判定:**静态 36 测全绿**(含 11 网关单测:分类 2 + 决策 9);**live 6/6 对真 GitHub 过**(v0.18.3 提交放行 t_verified=2021-08-24;main 拒;基准仓拒〔created 2026-01-25〕;活跃仓页拒〔pushed 现在〕;raw 经 sha 取回 8640 B;issues 形态拒);服务烟测过(healthz · /check JSON · /fetch 200/403 · 审计落盘)。**激活(2026-10-10 晚,用户裁定「激活网关」)**:base v2 +`172.17.0.1`、overlay v5 `gateway: live`、task.toml = **17 主机**(render match=True);实测——冒烟容器侧车实读 **17 条(IP 在列)**;冒烟1 安装链 0 errored;**容器内 live 套件 6/6**(含 `gateway_endpoint_reachable`);**容器内 /check E2E = HTTP 200 + 正确 allow 判定**(2021-08-24,经 IP 目标放行);网关服务已常驻(`run.sh`)。**模板 v2 草稿待审**(未套用)。
 
 ## 8. 网络访问策略组件:分层裁定与 v1(2026-10-10)
 
