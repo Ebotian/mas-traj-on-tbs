@@ -127,3 +127,14 @@ Credits 是计量单位、**月度硬上限、超限停机、不结转**;boost �
 2. **是否把 η 双口径写进计划的指标表**(`open_world_algorithm_research_engineering_plan.typ` §8.1 现有"external reuse rate"等)。
 3. **第二条对话的增量**:该对话现比我入库的快照多 1 轮(即 §2 引的那轮)。要做增量更新需要一份**新的分享链**;DOM 抓取在数学标记上不干净(渲染成 MathML + LaTeX 双份),我不建议用它当入库来源。
 4. §5 的数字来自对话转述,**未回论文/仓库正文核对**(arXiv ID 已核)。
+
+---
+
+## 8. 成本映射工具:`Φ_θ` 的可核验实现(2026-10-10 追加)
+
+**θ 的第一份可执行实例**:DeepSeek 官方 TOU 定价 → 自动生成的费率卡 → 实测 token 分布按时间折价。工具在 `harbor-runs/pricing/`(仓库外):`fetch_rate_card.py` · `price_trajectory.py` · `rate-card-2026-10-10.json` · `reports/`。
+
+- **可核验性契约**(`fetch_rate_card.py`):页面字节 **sha256 存档**;每个费率必须在原始 HTML 中**逐字出现**;内部一致性(off = peak/2、flash < pro);`--verify` 复抓对拍(2026-10-10 实测:rates identical,页面 sha 未变)。**复抓同时复证 2026-10-08 快照**:三档费率与 `deepseek-public-pricing-tou-cache` 记录一致;新增信息:并发上限 2500/500、第二个 legacy 名 `deepseek-v4-flash-vision-exp`、页脚明示 "Use deepseek-flash as the model name"。
+- **计价的效率设计**(依构想着 2026-10-10 之构想:"利用 agent 执行时间连续的先验知识"):快路径 **O(1)/run** —— 区间首尾之间**不含 TOU 边界** → 整段一价;逐步 O(n) 作回退与交叉核验。**修正其一处置信**:首尾同段是必要不充分(00:30→10:30 两头 off-peak 仍夹 06:00–10:00 peak),实现用"边界不在区间内"判据。
+- **首个实测实例**:`agent-flash-1`(2026-10-09 09:05→09:25 UTC,周五,窗口内)→ PEAK 一价 **$0.3813**(快/逐步两路 AGREE;逐步合计与 `final_metrics` 对账一致);**同轨迹全 off-peak 反事实 = $0.1906** —— "`C = Φ_θ(m)` 需要带时间戳的计量"的第一条本仓实测注脚。
+- **本例边界**:中国节假日排除**未建模**(无假日表;影响方向为 holiday→off-peak);费率为 list price,与实际上账口径的差异另记。
