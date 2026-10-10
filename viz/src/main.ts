@@ -2,6 +2,7 @@ import { h } from './lib/dom.ts'
 import * as overview from './views/overview.ts'
 import * as map from './views/map.ts'
 import * as numbers from './views/numbers.ts'
+import * as arms from './views/arms.ts'
 import * as time from './views/time.ts'
 import * as conflicts from './views/conflicts.ts'
 import * as decisions from './views/decisions.ts'
@@ -15,6 +16,7 @@ const VIEWS: View[] = [
   { id: 'overview', label: '总览', hint: 'G₀、收窄倍率、epistemic debt、四能力', render: overview.render },
   { id: 'map', label: '结构图', hint: '54 节点 / 72 边,分层力导', render: map.render },
   { id: 'numbers', label: '实测数字', hint: 'exp1–exp3、强度曲线、成本', render: numbers.render },
+  { id: 'arms', label: '手臂对比', hint: '六格雷达:正确率 × 成本 × 墙钟(2026-10-10)', render: arms.render },
   { id: 'time', label: '时间轴', hint: '09-09 → 10-06,五次来源', render: time.render },
   { id: 'conflicts', label: '冲突与反转', hint: '两侧并排 + 反转登记', render: conflicts.render },
   { id: 'decisions', label: '决策', hint: '33 项,按阻塞关系排', render: decisions.render },

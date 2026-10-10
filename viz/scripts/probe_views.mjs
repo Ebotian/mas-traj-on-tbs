@@ -51,6 +51,7 @@ const ROUTES = [
   ['conflicts', 'src/views/conflicts.ts', ['条冲突', '条已登记的反转', '外部复核 #6 → 收口(10-07)']],
   ['decisions', 'src/views/decisions.ts', ['D33', 'D1', '代理谬误']],
   ['coverage', 'src/views/coverage.ts', ['语料 82 个文件', '108954', '9771']],
+  ['arms', 'src/views/arms.ts', ['六格', '0.8726', '16.45', '拆线', '统一口径', 'EO']],
   ['library', 'src/views/library.ts', ['取不到:原因已查明', '取不到:仅记录现象', '未取(是重复件)', '未尝试', '六版独立审查']],
 ]
 
