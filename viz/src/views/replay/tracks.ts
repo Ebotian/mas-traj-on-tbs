@@ -67,24 +67,37 @@ export function buildStrip(b: ReplayBundle, onJump: (k: number) => void): StripH
     svg.appendChild(g)
   })
 
-  // git 提交:菱形(空心 = merge);tag 加环与短标签
+  // git 提交:普通 = 实心菱形;merge = 玫红实边圆(白底);tag = 蓝实边环 + 短标签。
+  // 三层分开收集、按 普通 → merge → tag 的顺序统一追加:后画的普通标记不会遮住 merge/tag。
+  const plainEls: SVGElement[] = []
+  const mergeEls: SVGElement[] = []
+  const ringEls: SVGElement[] = []
   for (const c of b.git.commits) {
     const xx = X(ms(c.date))
     const merge = c.parents.length > 1
     const tag = b.git.tags.find(t => t.sha === c.sha)
     const g = s('g', { transform: `translate(${xx},${gitY})` })
     g.appendChild(s('title', {}, `${c.sha.slice(0, 7)} ${c.subject}\n${hhmmss(c.date, true)} · 分支 ${c.branches.join('/') || '—'}${tag ? ` · tag ${tag.name}` : ''}`))
-    g.appendChild(s('path', { d: 'M-5,0L0,-5.5L5,0L0,5.5Z', fill: merge ? 'none' : COLOR.line, stroke: COLOR.line, 'stroke-width': 1.4 }))
-    if (tag) {
-      g.appendChild(s('circle', { r: 8.2, fill: 'none', stroke: COLOR.line, 'stroke-width': 1, 'stroke-dasharray': '2.5 2' }))
-      g.appendChild(s('text', { x: 0, y: -11, class: 'lbl sm', 'text-anchor': 'middle' }, tag.name.replace(/^ckpt-/, '')))
-    }
+    if (merge) g.appendChild(s('circle', { r: 4.8, fill: '#fff', stroke: COLOR.find, 'stroke-width': 2.2 }))
+    else g.appendChild(s('path', { d: 'M-5,0L0,-5.5L5,0L0,5.5Z', fill: COLOR.line, stroke: COLOR.line, 'stroke-width': 1.2 }))
     const hit = s('rect', { x: -6, y: -9, width: 12, height: 18, class: 'hit' })
     hit.addEventListener('click', () => jumpTo(ms(c.date)))
     g.appendChild(hit)
     marks.push({ el: g, ts: ms(c.date) })
-    svg.appendChild(g)
+    ;(merge ? mergeEls : plainEls).push(g)
+    if (tag) {
+      const tg = s('g', { transform: `translate(${xx},${gitY})` })
+      tg.appendChild(s('title', {}, `${tag.name} → ${c.sha.slice(0, 7)}`))
+      tg.appendChild(s('circle', { r: 9, fill: 'none', stroke: COLOR.frame, 'stroke-width': 2 }))
+      tg.appendChild(s('text', { x: 0, y: -13, class: 'lbl sm', 'text-anchor': 'middle' }, tag.name.replace(/^ckpt-/, '')))
+      const th = s('rect', { x: -9.5, y: -9.5, width: 19, height: 19, class: 'hit' })
+      th.addEventListener('click', () => jumpTo(ms(c.date)))
+      tg.appendChild(th)
+      marks.push({ el: tg, ts: ms(c.date) })
+      ringEls.push(tg)
+    }
   }
+  for (const el of [...plainEls, ...mergeEls, ...ringEls]) svg.appendChild(el)
 
   // 协议事件:门 = 竖线(wait-start 虚 / allow 粗 / fast 细)
   for (const e of b.ops.gate) {

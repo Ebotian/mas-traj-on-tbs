@@ -45,7 +45,8 @@ export function render(host: HTMLElement): void {
   const meta = h('div', { class: 'leg' })
   const legend = h('div', { class: 'leg' },
     h('span', {}, '轮 = 竖条(高 ∝ 工具调用数;上泳道 a · 下泳道 b)'),
-    h('span', {}, '◆ 提交(空心 = merge;虚线环 + 小字 = tag)'),
+    h('span', {}, '◆ 普通提交 · ◯ 玫红实边圆 = merge'),
+    h('span', {}, '◯ 蓝实边环 + 小字 = tag'),
     h('span', {}, '│ 门事件(虚 = wait-start · 粗 = allow-after-wait)'),
     h('span', {}, '■ 板条目'),
     h('span', {}, '虚线竖线 = 当前步游标'),
@@ -151,7 +152,7 @@ export function render(host: HTMLElement): void {
       const merge = c.parents.length > 1
       const tags = b.git.tags.filter(t => t.sha === c.sha)
       const row = h('div', { class: 'rp-lrow', title: `${c.sha}\n${c.subject}\n分支可达集:${c.branches.join('/') || '—'}\n${c.date}` },
-        h('span', { class: 'g' }, merge ? '◆' : '●'),
+        h('span', { class: 'g', style: merge ? 'color:var(--rose)' : '' }, merge ? '◆' : '●'),
         h('span', { class: 'sha' }, sha7(c.sha)),
         h('span', { class: 'sub' }, c.subject, ...tags.map(t => h('span', { class: 'tagc' }, ` [${t.name}]`))),
         h('span', { class: 't' }, hhmmss(c.date)))
