@@ -101,6 +101,9 @@
 **v1 升级(2026-10-10 晚,用户裁定「再升级网关,迁移现有规则」)**:①**分层迁移**——`base.yml` 增 `gateway:` 段(机制:guards 默认 + **适配器目录**,overlay 的 kind 须在目录内),overlay v6 启用 **nature** 源;②**forbidden 接入网关裁决,独立于日期**——指定答案链接即使"日期合格"也拒(reason 含 `forbidden`;matcher:DOI/conceptDOI 值及后缀、host/path 模式跨主机泛化、散文条目提 token);③**nature 日期源 = Crossref**(实测:文章页对所有 UA 均 303 至 idp.nature.com consent ⇒ 页面解析不可行;Crossref `published-online` 与站点一致,**内容 v1 check-only**);④**测试重组**:任务相关 → `egress/tests/tumor_immune_interface/`(**allow/deny 两件**,含"日期合格但被指定禁"的独立性用例与真源 live 件),任务无关正反测试留父级(`test_gateway_mechanism.py`/`fakes.py`)。
 **验证(v1)**:静态 **47 测绿**(14 skip);**live 47/47**(github 放行 v0.18.3 / 拒 main 与基准仓;nature 放行 NumPy 2020-09-16(check-only)、答案文 `s43856-022-00197-2` 判 **forbidden**;指定 raw 链接判 forbidden);`check_paths` **28 文件**。
 
+**测试结构二升(2026-10-10 深夜,「正负 pair…静态/动态…同构迁移」+「类型化与类型合法检查」)**:①规则一律**正负 pair**(仅一个变量不同):**STATIC**(指定源:指定链接拒 ↔ 最近非指定对应物九分,离线可判〔forbidden 先于解析〕)· **DYNAMIC**(时间窗:截止前放行 ↔ 截止后拒,fixtures 携带双日期,离线+live 双判);②**同构迁移模板**:`egress/tests/task_template/`(5 件)+ 任务目录**除 `fixtures.py` 外逐字节一致**,由 `test_task_isomorphism.py` 机械强制——新任务 = 复制模板、改名、只填 fixtures;③**类型化**:全套注型(TypedDict pair、mixin 条件基类)+ **mypy 类型合法性为套件成员**(`egress/mypy.ini`;`test_type_legality.py`;**21 文件 0 问题**);④live 断言加传输级重试(仅吸收 resolution-failed 瞬态,政策理由断言不受影响);⑤新套件当场抓出并修复:`rulelib` 日期型字符串比较 TypeError、基类重复收集、nature 页 303→Crossref 日期源。
+**验证(二升)**:mypy 0 问题;套件 **52 测**(静态 OK/21 skip;live **52 OK**/18 skip);`check_paths` **38 文件**。
+
 ## 8. 网络访问策略组件:分层裁定与 v1(2026-10-10)
 
 **用户裁定原文**:「可以整理,而且确实应该分层整理.比如api访问这些基本不动,而论文资料等访问限制则随每个题目而变.」
