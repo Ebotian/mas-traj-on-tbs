@@ -11,8 +11,8 @@
 
 | 面 | 冻结值(= 现行两脚本原样) |
 |---|---|
-| 任务 | `build/task-restricted/`(`network_mode="allowlist"`,22 主机;`[verifier] no-network`) |
-| 网络策略 | 表不动;无代理 env;答案源(github/raw.github/nature/ncbi/pmc/doi)硬禁;bing/mojeek/ecosia 可用 |
+| 任务 | `build/task-restricted/`(`network_mode="allowlist"`,23 主机;`[verifier] no-network`) |
+| 网络策略 | 表 = 原 22 条 **+ 模型出口随供应商**(qwen 组须加 `token-plan.cn-beijing.maas.aliyuncs.com`;2026-10-10 已入 `task.toml`,共 **23 条**);无代理 env;答案源(github/raw.github/nature/ncbi/pmc/doi)硬禁;bing/mojeek/ecosia 可用 |
 | 安装链 | jsdelivr(nvm install.sh)+ npmmirror(node/npm)+ `cdn.npmmirror.com` |
 | CLI | `--ak version=0.25.0` |
 | effort 机制 | `--mounts` 挂 settings(变体文件见 §5) |
