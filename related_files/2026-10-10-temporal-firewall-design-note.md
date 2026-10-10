@@ -57,7 +57,7 @@
 
 ⇒ **修订**:截止线 = **2022-01-15 之前(严格)**(fail-closed 取 DOI 内嵌日;张贴日 2022-01-18)。策略件同步为 v0.1。残余:会议摘要/实验室页未穷举。**运行中三跑不受影响**(现层无时间门)。
 
-## 7. 时间范围访问:方向裁定与最小实现草图(2026-10-10)
+## 7. 时间范围访问:方向裁定与网关实现方案(2026-10-10)
 
 **方向裁定(用户原文)**:「我是认为,github这样的大型公共知识源,应当提供访问权限,受限模式只是限制他们对这些知识源的时间范围」
 
@@ -73,24 +73,41 @@
 
 ⇒ **对象级日期链可用**:repo `created_at` / release `published_at` / `commits/<ref>` → `commit.committer.date`。
 
-**最小原型(github 先行)**:
-1. 出口面:task 白名单加入 github 系 FQDN;harbor sidecar 把这批 FQDN 的 TCP 重定向到**宿主网关**(新组件);其余照旧。
-2. 网关判定:浮动引用先解 SHA 再判;`unknown/解析失败 ⇒ deny`;粒度待裁(**对象时间 vs 仓库创建时间**;倾向对象级,仓库级作粗筛)。
-3. 审计:逐请求 `policy_decision`(allow/deny + `t_verified` + 请求哈希),与 hooks/OTel 同轴(`session_id`+时间戳)。
-4. 第二站 nature(文章出版日解析);**引擎面(2026-10-10 裁定):禁止**——不可时间裁定 ⇒ 失败闭合,已从 overlay 移除(bing/mojeek/ecosia 及通配);同日**冻结 KB 方案被否**;overlay 规则改以**测试代码**钉住(`egress/tests/`,TDD:引擎规则先红、策略改后全绿)。
+**实现方案(2026-10-10 定形;替换本节早先的"FQDN 放行+sidecar 重定向"草图——该路线会让直连放行且需改 harbor 侧车)**:
+
+**形态(用户裁定:显式网关)**:github 等知识源**保持不在允许表**(直连照样死);容器唯一对外知识通道 = 宿主机显式网关(`172.17.0.1/32` 入 base 层,IP 放行);网关自己出网抓取、**先裁定日期再返回字节**。不引入 MITM/CA/hosts 改造、不碰 harbor 侧车。端点:`/fetch?url=`(合规则回内容,否则 403/503+理由)、`/check?url=`(只回裁定,供测试与 agent 自检)。**不建搜索**(引擎已禁;"找 URL 的导航"列为边界)。
+
+**数据源注册表(用户裁定:涵盖常用数据源)**:每源一个适配器 `Surface{can_handle(url)→parsed; t_verified(parsed)→datetime|None; fetch(parsed)→bytes}`;规则引擎统一 `allow = t_verified < cutoff`(unknown→deny),复用 `rulelib.allowed_by_date`。
+
+| 层 | 源 | 时间轴与判定 | 取数 |
+|---|---|---|---|
+| T1 | github | commit/tag/release 服务器时间;仓库页 = `created_at` ∧ **`pushed_at`** < T(有 T 后活动即拒);浮动引用→sha 后**按 sha 取**(不可变) | API + raw/codeload(按 sha) |
+| T1 | arxiv | 每版本提交时间(API) | abs/pdf **须带版本号**;无版本 → 解析 v1 日期再判 |
+| T1 | biorxiv / medrxiv | 每版本 posted 时间(API) | /content/<doi>v<n> |
+| T1 | zenodo | record `publication_date`(per version) | API 元数据 + 文件 |
+| T1 | wikipedia | 修订时间戳 | 按时间取旧版(`oldid`/`timestamp`) |
+| T1 | stackexchange | post creation(API) | API |
+| T2 | nature.com | 文章出版日解析 | 页面与 PDF 同判 |
+| T2 | ncbi·pmc / europepmc | 出版日(页面/API 字段) | E-utilities / REST |
+| T3 | doi.org | 纯解析器、不可裁定 | **拒**;要求直接 URL |
+| T3 | 任意网页 / 引擎 | 无版本轴 | **拒** |
+
+**机制要点**:①**重定向禁跟**——任何 3xx 即拒(堵"旧 URL 跳新内容");②适配器**自行构造**取数 URL(不复用用户原始 URL,防 SSRF);③按 sha/版本号取回,内容寻址 + sha256 缓存(`gateway/cache/`);④审计 JSONL(逐请求 `policy_decision`:allow/deny + 理由 + `t_verified` + `policy_version` + bytes 哈希,与 hooks/OTel 同轴);⑤策略源 = 同一分层清单的 overlay `gateway.surfaces` 段——**不在段内的 surface 一律拒**。
+
+**构建次序**:v0 = 框架 + github(判定原语已实测);v1 = arxiv · biorxiv/medrxiv · zenodo · europepmc · ncbi/pmc(API 型,规则同构)+ 重定向防护;v2 = nature · wikipedia(页面解析型);stackexchange 按需。**TDD**:每源"允许 pre-T / 拒 post-T / 拒未知"三件套进 `test_gateway_*.py`;容器级 live 测 `/check` 可达且直连仍死。**接线**:模板 v2 替换 "open internet" 前提句并写明网关用法;开 GATEWAY 条件时 overlay `gateway.status: live` + render;**GATEWAY = 第三条件,不与 engines-on/off 混表**。
 
 ## 8. 网络访问策略组件:分层裁定与 v1(2026-10-10)
 
 **用户裁定原文**:「可以整理,而且确实应该分层整理.比如api访问这些基本不动,而论文资料等访问限制则随每个题目而变.」
 
-⇒ 策略 = **两层**:`base.yml`(固定:模型端点 per provider + 安装链/镜像 + example.com)∘ 逐题 overlay(知识面:搜索面/文档面 + 时间门规则/禁源)。组件落于 `harbor-runs/egress/`:
+⇒ 策略 = **两层**:`base.yml`(固定:模型端点 per provider + 安装链/镜像 + example.com)∘ 逐题 overlay(知识面:文档面 + 时间门规则/禁源)。组件落于 `harbor-runs/egress/`:
 
 | 件 | 状态 | 职责 |
 |---|---|---|
 | `policies/base.yml` | live | 固定层(10 主机) |
-| `policies/<task>.yml` | hosts=live,temporal=candidate | 逐题 overlay(本题 13 主机;v2 拆分自 `config/temporal-policy…yml`,旧路径已迁) |
+| `policies/<task>.yml` | hosts=live,temporal=candidate | 逐题 overlay(本题 **6 主机**〔引擎禁后〕;v2 拆分自 `config/temporal-policy…yml`,旧路径已迁) |
 | `render.py` | live | 两层合成 → 生成 `build/task-restricted/task.toml` 的 allowed_hosts(**集合语义**,顺序不承载信息;`--write` 才写) |
 | `sync.py` | live | 运行中 sidecar:读现况→差集→**整表应用**(默认 dry;消灭 `network-policy allow` 整表替换脚枪) |
 | `validate.py` | live | 清单自检(host 语法/跨层重复/cutoff ISO/unknown→deny/禁源非空) |
 
-**边界(不变)**:执行仍在 harbor sidecar(域级)+未来网关(时间级);本组件只管"策略即数据 + 工具"。**验证(2026-10-10)**:`validate` 通过(10+13);`render --check` match=True(与现行 task.toml 集合相等——该拆分**零条件变更**);`check_paths.py` 覆盖扩至含 `egress/`(15 文件)。
+**边界(不变)**:执行仍在 harbor sidecar(域级)+未来网关(时间级);本组件只管"策略即数据 + 工具"。**验证(2026-10-10)**:`validate` 通过(10+13);`render --check` match=True(与现行 task.toml 集合相等——该拆分**零条件变更**);`check_paths.py` 覆盖扩至含 `egress/`(**21 文件**);测试四件化+引擎黑名单;(当日更晚:overlay v3 引擎禁,合成 16 主机,GATEWAY 方案见 §7)。
