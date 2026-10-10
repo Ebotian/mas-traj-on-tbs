@@ -122,6 +122,8 @@
 
 **边界(不变)**:执行仍在 harbor sidecar(域级)+未来网关(时间级);本组件只管"策略即数据 + 工具"。**验证(2026-10-10)**:`validate` 通过(10+13);`render --check` match=True(与现行 task.toml 集合相等——该拆分**零条件变更**);`check_paths.py` 覆盖扩至含 `egress/`(**21 文件**);测试四件化+引擎黑名单;(当日更晚:overlay v3 引擎禁,合成 16 主机,GATEWAY 方案见 §7)。
 
+**模板与 SOP(2026-10-10 夜,用户令「补充全模板文件…为新的双agent沙箱实例化其网络配置,固定新沙箱的网络配置 SOP」)**:①`egress/policies/_template.yml` = 全字段 overlay 模板(SOP 步骤内嵌为头注;契约套件按 `_` 前缀跳过——`tests/common.py:overlays()` 同名补丁);②`egress/README.md` = 组件图 + **SOP 七步**(cp→填→validate→render --write→check_paths+套件→sync(仅活动题)→pair 套件)+ **实例表**;③`render.py` 增 **`--toml`**(默认不变;非默认沙箱副本可渲染——“文件整理便于实现”项);④**双 agent 沙箱的网络配置实例化结论**:**原样继承现役 `tumor-immune-interface` 实例**(17 主机;两 agent 的加载项 git/board/wrapper 全在容器本地,无新网络开口)——已入实例表;若未来需独立实例,SOP 一步即成;⑤清**早期残留** 8 枚 orphan pyc(旧测试件名),复查 0 残留;⑥**验证**:validate ok(11+6)/render match True(17)/套件 **55 OK**/check_paths 40 文件全过。
+
 ## 9. 标准沙箱基建清单(2026-10-10;H2 双 agent 共存沙箱 = 本沙箱 + 协议层)
 
 构建期自带(agent 可**预先知道**;协议模板须列——与 template-v2「基础设施事实先行列举」同法):
