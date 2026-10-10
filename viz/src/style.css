@@ -194,11 +194,54 @@ table.dec td:first-child{white-space:nowrap}
 .rp-now{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--mut)}
 .rp-stripwrap{padding:2px 4px}
 svg.rp-strip{display:block;width:100%;height:auto}
-.rp-strip .dim{opacity:.2}
-.rp-strip .hit{fill:transparent;pointer-events:all;cursor:pointer}
-.rp-strip rect.cur{stroke:var(--ink);stroke-width:1.5}
-.rp-strip text.lane{font-size:10.5px;fill:var(--mut);font-family:ui-monospace,Menlo,monospace}
-.rp-cursor{stroke:var(--ink);stroke-width:1.4;stroke-dasharray:3 2}
+.rp-strip .hit,.rp-git .hit{fill:transparent;pointer-events:all;cursor:pointer}
+
+/* —— 珠链时间条 v2 —— */
+.rp-band{opacity:.55}
+.rp-band.a{fill:#eff6ff}
+.rp-band.b{fill:#f0fdf4}
+.rp-lanelbl{font-size:10.5px;font-weight:600;letter-spacing:.02em}
+.rp-lanelbl.a{fill:#3b82f6}
+.rp-lanelbl.b{fill:#15803d}
+
+.rp-thread{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.16}
+.rp-thread.lit{opacity:.5;stroke-width:2}
+
+.rp-bead{cursor:pointer}
+.rp-bead .dot{fill:#fff;stroke-width:2;transition:r .15s}
+.rp-bead.a .dot{stroke:#1d4ed8}
+.rp-bead.b .dot{stroke:#166534}
+.rp-bead.lit.a .dot{fill:#1d4ed8;stroke:#fff}
+.rp-bead.lit.b .dot{fill:#166534;stroke:#fff}
+.rp-bead:not(.lit) .dot{opacity:.45}
+.rp-bead .halo{fill:none;stroke-width:3;opacity:.18}
+.rp-bead.a .halo{stroke:#1d4ed8}
+.rp-bead.b .halo{stroke:#166534}
+.rp-bead:hover .dot{stroke:#0f172a;stroke-width:2.5}
+
+.rp-milestone{cursor:pointer}
+.rp-milestone .ms-commit{fill:#94a3b8;stroke:#fff;stroke-width:1}
+.rp-milestone .ms-merge{fill:#fff;stroke:#be123c;stroke-width:2}
+.rp-milestone .ms-tagring{fill:none;stroke:#1d4ed8;stroke-width:1.8}
+.rp-milestone .ms-taglabel{font-size:9.5px;font-weight:700;fill:#1d4ed8}
+.rp-milestone.future{opacity:.25}
+
+.rp-op{cursor:pointer}
+.rp-op .op-tick{stroke:#94a3b8;stroke-width:1}
+.rp-op.wait .op-tick{stroke-dasharray:2 2;stroke-width:1.2}
+.rp-op.allow .op-tick{stroke:#64748b;stroke-width:2.4}
+.rp-op .op-square{fill:#f59e0b;stroke:#fff;stroke-width:1}
+.rp-op.future{opacity:.25}
+
+.rp-spine{stroke:#e2e8f0;stroke-width:2;stroke-linecap:round}
+.rp-grid{stroke:#f1f5f9;stroke-width:1}
+.rp-axis{stroke:#cbd5e1;stroke-width:1}
+.rp-axis-tick{stroke:#cbd5e1;stroke-width:1}
+.rp-axis-label{font-size:10px;fill:#94a3b8;font-family:ui-monospace,Menlo,monospace}
+.rp-cur{stroke:#0f172a;stroke-width:1.2;stroke-dasharray:4 3;opacity:.7}
+.rp-curchip{fill:#0f172a}
+.rp-curtext{font-size:10px;font-weight:700;fill:#fff}
+
 .rp-chips{gap:6px}
 .rp-ledger{display:flex;flex-direction:column;font-size:11.5px}
 .rp-lrow{display:grid;grid-template-columns:15px 52px minmax(0,1fr) auto;gap:6px;align-items:baseline;
@@ -227,3 +270,11 @@ svg.rp-strip{display:block;width:100%;height:auto}
 .rp-sys>summary{font-size:12px;color:var(--mut);cursor:pointer}
 .rp-sys details{margin:5px 0}
 .rp-sys details>summary{font-size:11.5px;color:var(--mut);cursor:pointer}
+.rp-gitwrap{margin:0 0 4px}
+svg.rp-git{display:block;width:100%;height:auto}
+.rp-gedge{opacity:1}
+.rp-grow .rp-glabel{font-size:11px;fill:var(--ink)}
+.rp-grow .rp-gtime{font-size:10px;fill:var(--mut);font-family:ui-monospace,Menlo,monospace}
+.rp-grow.dim,.rp-gedge.dim{opacity:.2}
+.rp-grow.now .rp-glabel{font-weight:700}
+@media(min-width:1081px){.split.rp-wide{grid-template-columns:minmax(0,1fr) 470px}}

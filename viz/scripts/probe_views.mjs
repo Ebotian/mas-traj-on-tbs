@@ -4,8 +4,9 @@
 //
 // 它做的事:给一个最小 DOM 桩,按顺序 import 每个视图并调用 render(host),断言
 // (a) 不抛错、(b) 每个路由的关键串在场、(c) 已知的「从数据现算」的串与数据一致。
-// 它**不**覆盖:布局、交互、CSS、以及 numbers 视图(numbers 直接 import experiments.json,
-// node ESM 需要 import attribute —— 它只能靠构建期或浏览器检查)。
+// 它**不**覆盖:布局、交互、CSS、numbers 视图(numbers 直接 import experiments.json,
+// node ESM 需要 import attribute)、以及 replay(React 应用,createRoot 需要真实 DOM)——
+// 后两者只能靠构建期或浏览器检查(README「验证方式」有 chromedriver 实查记录)。
 //
 // 为什么存在:视图里的文字数字会悄悄过期(2026-10-07 就抓到 time 视图仍写「中间版本永久缺失」,
 // 以及 map 视图手写的「7 个节点」而数据是 6 个)。改完视图必须重跑本脚本。
@@ -53,10 +54,9 @@ const ROUTES = [
   ['coverage', 'src/views/coverage.ts', ['语料 82 个文件', '108954', '9771']],
   ['arms', 'src/views/arms.ts', ['六格', '0.8726', '16.45', '拆线', '统一口径', 'EO']],
   ['library', 'src/views/library.ts', ['取不到:原因已查明', '取不到:仅记录现象', '未取(是重复件)', '未尝试', '六版独立审查']],
-  // replay 的数据层走运行时 fetch(public/replay/*.json),探针只覆盖同步渲染的外壳文案;
-  // 数据渲染靠浏览器/headless 截图检查(同 numbers 的先例,见文件头)。
-  ['replay', 'src/views/replay/index.ts', ['轨迹重建', '步 = 助手应答周期', '折叠只改显示', '正在加载实验索引']],
-]
+  // replay 是 React 单页(createRoot 挂载,需要真实 DOM),不在探针内;
+  // 其渲染与交互由 headless chromium + chromedriver 实查(README「验证方式」)。
+  ]
 
 let bad = 0
 for (const [name, rel, expects] of ROUTES) {
@@ -111,6 +111,6 @@ try {
 }
 
 console.log(bad === 0
-  ? `\n${ROUTES.length}/${ROUTES.length} 路由渲染通过且关键串在场(numbers 与 replay 的数据渲染:见文件头)`
+  ? `\n${ROUTES.length}/${ROUTES.length} 路由渲染通过且关键串在场(numbers 与 replay 不在探针内:见文件头)`
   : `\n${bad} 条路由有问题`)
 process.exit(bad === 0 ? 0 : 1)

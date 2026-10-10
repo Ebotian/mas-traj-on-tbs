@@ -8,7 +8,7 @@ import * as conflicts from './views/conflicts.ts'
 import * as decisions from './views/decisions.ts'
 import * as coverage from './views/coverage.ts'
 import * as library from './views/library.ts'
-import * as replay from './views/replay/index.ts'
+import * as replay from './views/replay/index.tsx'
 import './style.css'
 
 interface View { id: string; label: string; hint: string; render: (host: HTMLElement) => void }
