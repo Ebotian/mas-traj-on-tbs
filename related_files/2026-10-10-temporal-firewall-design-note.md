@@ -104,6 +104,8 @@
 **测试结构二升(2026-10-10 深夜,「正负 pair…静态/动态…同构迁移」+「类型化与类型合法检查」)**:①规则一律**正负 pair**(仅一个变量不同):**STATIC**(指定源:指定链接拒 ↔ 最近非指定对应物九分,离线可判〔forbidden 先于解析〕)· **DYNAMIC**(时间窗:截止前放行 ↔ 截止后拒,fixtures 携带双日期,离线+live 双判);②**同构迁移模板**:`egress/tests/task_template/`(5 件)+ 任务目录**除 `fixtures.py` 外逐字节一致**,由 `test_task_isomorphism.py` 机械强制——新任务 = 复制模板、改名、只填 fixtures;③**类型化**:全套注型(TypedDict pair、mixin 条件基类)+ **mypy 类型合法性为套件成员**(`egress/mypy.ini`;`test_type_legality.py`;**21 文件 0 问题**);④live 断言加传输级重试(仅吸收 resolution-failed 瞬态,政策理由断言不受影响);⑤新套件当场抓出并修复:`rulelib` 日期型字符串比较 TypeError、基类重复收集、nature 页 303→Crossref 日期源。
 **验证(二升)**:mypy 0 问题;套件 **52 测**(静态 OK/21 skip;live **52 OK**/18 skip);`check_paths` **38 文件**。
 
+**v3 措辞修复(2026-10-10 深夜,由 GATEWAY 配对读数的观察触发)**:两臂都把 `host is not a declared gateway surface`(直连白名单上的文档主机经网关 check 时所得)先后误读为“封锁”(各耗 ~1–2 步再改直连)。修复:该拒因对**直连白名单主机**(`rulelib.compose(base, overlay)`)补注 `; host is on the direct allowlist - fetch it directly`;仅此一分支出提示(其他拒因不动)。实现:`policy.py` 增 `direct_hosts`(from_task 自 layers 合成)+ `_host_of` 助手;`fakes.fake_registry` 透传;`test_gateway_mechanism.DirectAllowlistHint` 三件(白名单主机出提示 / 未知主机保持原文 / 仅 surface-拒分支出提示)。**验证**:套件 **55 测 OK**(静态全绿、21 skip;mypy 0 问题);网关重启(pid 3041986)后 live E2E——docs.scipy.org → `"…; host is on the direct allowlist - fetch it directly"` ✓,example.org → 原文 ✓。
+
 ## 8. 网络访问策略组件:分层裁定与 v1(2026-10-10)
 
 **用户裁定原文**:「可以整理,而且确实应该分层整理.比如api访问这些基本不动,而论文资料等访问限制则随每个题目而变.」
