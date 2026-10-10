@@ -35,7 +35,7 @@
 指标口径((Score, Tokens, Time, Search Usage, Policy Violations) + Knowledge Coverage)采纳;Search Usage 可用 hooks `PreToolUse` + 网关日志双源。**B 组必须标注"自定义 Temporal Retrieval Protocol",不与官方榜单默认条件混报**。
 
 ## 4. 与 ATIF/日志的接合
-网关逐请求写 `policy_decision`(allow/deny + 理由 + `policy_version` + `corpus_revision` + 返回文本哈希);接合键 = `session_id` + 时间戳(与 hooks/OTel 同轴)。策略样例(YAML)草案:`harbor-runs/config/temporal-policy.tumor-immune-interface.yml`(status: candidate)。
+网关逐请求写 `policy_decision`(allow/deny + 理由 + `policy_version` + `corpus_revision` + 返回文本哈希);接合键 = `session_id` + 时间戳(与 hooks/OTel 同轴)。策略样例(YAML):`harbor-runs/egress/policies/`(base.yml 固定层 + 逐题 overlay;temporal 部分 status: candidate)。
 
 ## 5. 未决(待裁定)
 1. 是否开工 B 层网关(宿主侧只读检索服务 + 冻结 KB 管道 + 审计)——**语义方向已定(§7:知识源开放+时间窗)**;待裁的是**开工时点与首站范围**;
@@ -78,3 +78,19 @@
 2. 网关判定:浮动引用先解 SHA 再判;`unknown/解析失败 ⇒ deny`;粒度待裁(**对象时间 vs 仓库创建时间**;倾向对象级,仓库级作粗筛)。
 3. 审计:逐请求 `policy_decision`(allow/deny + `t_verified` + 请求哈希),与 hooks/OTel 同轴(`session_id`+时间戳)。
 4. 第二站 nature(文章出版日解析);**引擎面另议**(搜索结果天然"现在"内容——保留为已知盲面,或网关内做结果级过滤,待裁)。
+
+## 8. 网络访问策略组件:分层裁定与 v1(2026-10-10)
+
+**用户裁定原文**:「可以整理,而且确实应该分层整理.比如api访问这些基本不动,而论文资料等访问限制则随每个题目而变.」
+
+⇒ 策略 = **两层**:`base.yml`(固定:模型端点 per provider + 安装链/镜像 + example.com)∘ 逐题 overlay(知识面:搜索面/文档面 + 时间门规则/禁源)。组件落于 `harbor-runs/egress/`:
+
+| 件 | 状态 | 职责 |
+|---|---|---|
+| `policies/base.yml` | live | 固定层(10 主机) |
+| `policies/<task>.yml` | hosts=live,temporal=candidate | 逐题 overlay(本题 13 主机;v2 拆分自 `config/temporal-policy…yml`,旧路径已迁) |
+| `render.py` | live | 两层合成 → 生成 `build/task-restricted/task.toml` 的 allowed_hosts(**集合语义**,顺序不承载信息;`--write` 才写) |
+| `sync.py` | live | 运行中 sidecar:读现况→差集→**整表应用**(默认 dry;消灭 `network-policy allow` 整表替换脚枪) |
+| `validate.py` | live | 清单自检(host 语法/跨层重复/cutoff ISO/unknown→deny/禁源非空) |
+
+**边界(不变)**:执行仍在 harbor sidecar(域级)+未来网关(时间级);本组件只管"策略即数据 + 工具"。**验证(2026-10-10)**:`validate` 通过(10+13);`render --check` match=True(与现行 task.toml 集合相等——该拆分**零条件变更**);`check_paths.py` 覆盖扩至含 `egress/`(15 文件)。
