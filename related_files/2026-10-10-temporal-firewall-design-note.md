@@ -136,5 +136,5 @@
 6. 网络:allowlist 17 主机(文档面直连 / 模型端点 / 包源 / apt 源)+ explicit gateway `172.17.0.1:8788`;verifier 侧 no-network 不变;
 7. 观测:hooks(18 事件)+ OTel outfile。
 
-**变更纪律**:①payload 双份(`environment/payload/` 与 `dataset-build/payload/`,同源)——两侧各自 digest 断言,漂移构建即响;②改 apt 等上游层会失效其下所有层并曾触发 HF 重抓(硬伤)——**改 Dockerfile 必先本地预构建 + `--install-only` 冒烟**再上 trial;③`dataset-build`(公网变体)未改——重启公网臂时镜像同改。
+**变更纪律**:①payload 双份(`environment/payload/` 与 `dataset-build/payload/`,同源)——两侧各自 digest 断言,漂移构建即响;②改 apt 等上游层会失效其下所有层并曾触发 HF 重抓(硬伤)——**改 Dockerfile 必先本地预构建 + `--install-only` 冒烟**再上 trial;③`dataset-build`(公网变体)未改——重启公网臂时镜像同改;④**wheelhouse 本地化(2026-10-10 夜,用户令「常用层常用库本地化」)**:`environment/wheels/`(35 枚、122MB、完整闭包;pypi 直连+固定版本预取)+ Dockerfile `COPY wheels /wheels` + `pip --no-index --find-links`——**pip 层从此构建期零联网**;同批加 `inotify-tools`(门的 `inotifywait` 事件等待)。**取源教训(一次踩全)**:BuildKit 内 pip 直连实测 **~10 kB/s**(numpy 16MB 用 432s);本地代理**截断大响应**(pip JSONDecodeError 崩栈);SJTU 镜像 numpy **hash 不符**(弃,不可信源);**直连 pypi + 剥净全部 proxy env** = 可用路径(35/35 闭包、122MB)。
 **验证(2026-10-10)**:预构建首次复现 HF 硬伤(apt/pip 通、HF 断)→ COPY 修正后本地全量构建**通过**(digest 断言构建期即验);harbor 真实路径冒烟 `git-bake-smoke`(**58s、0 异常、新镜像 `hb__4519b3b4…`、安装链全通**);镜像内实测 **git 2.43.0**、`/root/data` 376M、八件栈逐版本钉对。
