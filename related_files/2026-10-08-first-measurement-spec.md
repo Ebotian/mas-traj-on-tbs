@@ -200,7 +200,7 @@ v2 的三档(接线 HumanEval+/MBPP+ → 主实验 DS-1000 → 迁移 SWE-bench 
 
 ### 6.6 第一个真实 agent 臂:agent-flash-1(2026-10-09)
 
-**执行方式**(全部显式,构成冻结清单的骨架):`-a qwen-coder` · **`-m deepseek-flash`**(**官方 id**,`GET /models` 2026-10-09 实查;首跑以别名 `deepseek-v4-flash` 发出,但应答与计费均按官方名记录——**此后统一官方 id**)· `--ak version=0.25.0` · **effort=max**——经 `--mounts '[{"type":"bind","source":"/home/ebt/harbor-runs/effort-settings.json","target":"/root/.qwen/settings.json","read_only":true}]'`(schema: `ServiceVolumeConfig{type,source,target,read_only}`,字符串短格式会被校验拒绝)· `--env-file agent.env`(密钥不进 argv)· `--agent-timeout-multiplier 0.25`(2h 护栏)·
+**执行方式**(全部显式,构成冻结清单的骨架):`-a qwen-coder` · **`-m deepseek-flash`**(**官方 id**,`GET /models` 2026-10-09 实查;首跑以别名 `deepseek-v4-flash` 发出,但应答与计费均按官方名记录——**此后统一官方 id**)· `--ak version=0.25.0` · **effort=max + 观测 hook**——经 `--mounts '[{"type":"bind","source":"/home/ebt/harbor-runs/trial-settings.json","target":"/root/.qwen/settings.json","read_only":true}]'`(schema: `ServiceVolumeConfig{type,source,target,read_only}`,字符串短格式会被校验拒绝;**该文件自 2026-10-10 起取代旧 `effort-settings.json`**:`model.reasoningEffort=max` + 18 事件观测 hook,见下「遥测与 hooks 接入」)· `--env-file agent.env`(密钥不进 argv)· `--agent-timeout-multiplier 0.25`(2h 护栏)·
 
 **agent 臂网络配方**(五轮冒烟收敛,全部实测):install.sh → raw.githubusercontent **经 7890**(≈2/3 成功率,**失败零成本,重试即可**);nvm.sh → `NVM_SOURCE` **jsdelivr 直连**(`NVM_INSTALL_VERSION=v0.40.2` 免 github API 查询);node → `NVM_NODEJS_ORG_MIRROR` **npmmirror 直连**;qwen-code npm → **npmmirror 直连**;apt/pip/DeepSeek API/CDN → **no_proxy 直连**;代理只服务 github 系。
 
@@ -210,3 +210,9 @@ v2 的三档(接线 HumanEval+/MBPP+ → 主实验 DS-1000 → 迁移 SWE-bench 
 **附带发现**:试验内 auto-memory 全程在跑——agent 运行中自建 **3 条任务记忆**(`qwen-sessions/-root/memory/`,随会话一并回收;起点为空、终点非空);**原始事件流**(310 事件 / 1.7 MB)与**派生轨迹**(74 步 / 1.03 MB)双双保留,轨迹转换=聚合 assistant 消息 + tool_result 事件。
 
 **格式更新(2026-10-10)**:harbor 0.24.0 的 schema 与校验器**已支持 ATIF-v1.8**(`Literal[…,"ATIF-v1.8"]`,默认即 v1.8;v1.8 相对 v1.7 为**纯增补**——音频内容部件,"Extended in ATIF-v1.8 with audio"。**权威来源:RFC 0001 `rfcs/0001-trajectory-format.md` 版本历史——v1.8 仅三条:新增 `audio` 部件类型与 `AudioSourceSchema`(media_type+path+可选 `duration_sec`)、流式/实时音频明确排除;注意 `docs-mintlify/agents/atif.mdx` 文档页尚停在 v1.7,以代码与 RFC 为准**);而**适配器层 28+ 个全部仍写 v1.7**(最高即 v1.7:claude-code/codex/opencode/gemini…;kimi v1.6、openhands v1.5)。据此两步更新:①现存轨迹按 v1.8 重标(最小差异:`trajectory.v1.8.json`,**通过官方校验器**,字节级仅版本号一处差异;原 v1.7 文件保留不动,作为发射原件);②**qwen 适配器本地补丁** `qwen_code.py:258` v1.7→v1.8(备份 `.orig-20261010`)——自此新发射即为 v1.8。**本机补丁清单更新**:`trial.py`(verifier 覆盖)+ `qwen_code.py`(ATIF v1.8),**`uv tool upgrade harbor` 两者都会被覆盖**。(上游查证:PyPI 最新 = 0.24.0,即当前所装版本,尚无官方适配器侧 v1.8 发布。)
+
+**遥测与 hooks 接入(2026-10-10)**:依据上游 telemetry.md 与 hooks 文档(均经 `gh api` 取原文),把两类观测并入实验配置:
+- **OTel(四行 `--ae`)**:`QWEN_TELEMETRY_ENABLED=true` · `QWEN_TELEMETRY_OUTFILE=/logs/agent/otel.json` · `QWEN_TELEMETRY_LOG_PROMPTS=false`(**显式决策:内容留在轨迹里,OTel 只留计时/计数/判定,避免整份提示二次入档**) · `QWEN_TELEMETRY_METRICS_INCLUDE_SESSION_ID=true`(为将来跨 trial 聚合)。
+- **hooks 观测触(`trial-settings.json` 内 `hooks` 块,18 事件)**:除 `MessageDisplay`(流式高频)外的全部事件;每个事件一条 command hook:`mkdir -p /logs/agent/hooks && tee "…/$(date +%s%N)-$$.json" >/dev/null`——**纯观测**:退出 0、无输出(= pass-through 不阻断),同步 + 10s 超时;逐事件原始 JSON(含 `session_id`/`transcript_path`/`permission_mode`/`tool_input` 等,**执行前**状态是 OTel 没有的)。本地已验命令本体(退出 0、JSON 可解)。
+- **回收**:harbor 收 `/logs/agent` → trial 的 `agent/` 下将出现 `otel.json` 与 `hooks/` 目录,与 `trajectory.json` 三源并排(session_id / prompt_id 为 join key)。
+- **规范运行模板**:`/home/ebt/harbor-runs/run_agent_arm.sh`(参数=job 名;含全部上述旗标与网络配方)。**端到端验证挂在下一次真跑**。
