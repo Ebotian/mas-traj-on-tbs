@@ -45,8 +45,6 @@ export default function StripBar({ turns, bundles, step, gid }: Props) {
     thoughts: t.thoughts.join('').length,
   })), [turns, x])
 
-  if (!N) return null
-
   const curEnd = ms(turns[step]?.t1 ?? turns[step]?.t0)
   const curX = x(new Date(curEnd))
 
@@ -63,6 +61,8 @@ export default function StripBar({ turns, bundles, step, gid }: Props) {
     }
     return { a: build('a'), b: build('b') }
   }, [beads, curEnd])
+
+  if (!N) return null
 
   const fmtTick = (d: Date) => hhmmss(d.toISOString())
 
