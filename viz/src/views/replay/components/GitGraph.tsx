@@ -1,6 +1,7 @@
 // replay/components/GitGraph.tsx —— git 织图:git log --graph 的 SVG 版。
-// 轨道列 = 分支线(灰=main · 蓝=a · 绿=b);分叉/汇合 = 曲线;refs = 徽章(分支/tag 所在);
-// 全部提交任何步都在场,未发生的降透明、随步点亮;点任意行跳至该提交落入的轮。
+// 每列 = 一条连续路径(git 的 | 轨道);分叉 / 汇合是半 S 曲线,接头一律落在节点图形下方,
+// 因此全图无断口、无毛刺。全部提交任何步都在场,未发生的降透明、随步点亮;
+// refs = 徽章;点任意行跳至该提交落入的轮。
 
 import { useMemo } from 'react'
 import type { ReplayCommit } from '../data'
@@ -25,9 +26,14 @@ function normRefs(refs?: string): string[] {
   return out
 }
 
-interface Col { await: string | null; color: string; y0: number; dead: boolean }
-interface RailSeg { x: number; y0: number; y1: number; color: string }
-interface CurveSeg { kind: 'split' | 'fuse'; a: number; b: number; y: number; color: string }
+// 一条列生命 = 一段直线轨道,端点带半 S 进出曲线
+interface Life {
+  color: string
+  start: { type: 'head' | 'split' | 'jog'; r: number; fromCol: number }
+  y1: number
+  end: null | { type: 'join' | 'jog'; r: number; toCol: number }
+}
+interface Col { await: string | null; color: string; dead: boolean; lives: Life[] }
 interface GNode { row: number; col: number; color: string }
 
 export default function GitGraph({ cards, endMs, gid }: Props) {
@@ -37,9 +43,9 @@ export default function GitGraph({ cards, endMs, gid }: Props) {
     const y = (i: number) => PADT + i * ROW + ROW / 2
     const x = (k: number) => PADL + k * LW + LW / 2
     const cols: (Col | null)[] = []
-    const rails: RailSeg[] = []
-    const curves: CurveSeg[] = []
     const nodes: GNode[] = []
+    // 联到既有轨道上的分叉(如把旧线并入既有列)单独画一条半 S
+    const connectors: { a: number; b: number; r: number; color: string }[] = []
     const pickColor = () => {
       const used = new Set((cols.filter(c => c && !c.dead) as Col[]).map(c => c.color))
       return CYCLE.find(c => !used.has(c)) || CYCLE[0]
@@ -55,13 +61,13 @@ export default function GitGraph({ cards, endMs, gid }: Props) {
       if (m) return m[1] === 'a' ? ACOL : BCOL
       return pickColor()
     }
-    // 最左空闲列;复用一条已终结(await=null)的旧生命时,先把它的轨道补收尾
     const findFree = (atRow: number) => {
       for (let i = 0; i < cols.length; i++) {
         const c = cols[i]
         if (!c || c.dead) return i
         if (!c.await) {
-          rails.push({ x: i, y0: c.y0, y1: y(atRow) - ROW * 0.3, color: c.color })
+          const l = c.lives[c.lives.length - 1]
+          l.y1 = y(atRow) - 7
           return i
         }
       }
@@ -71,15 +77,30 @@ export default function GitGraph({ cards, endMs, gid }: Props) {
 
     for (let k = 0; k < N; k++) {
       const c = cards[k]
-      let nodeCol = -1
+      const inCols: number[] = []
       for (let i = 0; i < cols.length; i++) {
         const cc = cols[i]
-        if (cc && !cc.dead && cc.await === c.sha) { nodeCol = i; break }
+        if (cc && !cc.dead && cc.await === c.sha) inCols.push(i)
       }
-      if (nodeCol < 0) {
-        const f = findFree(k)
-        cols[f] = { await: c.sha, color: k === 0 ? MAIN : spawnColor(c, true), y0: y(k), dead: false }
-        nodeCol = f
+      let nodeCol: number
+      if (inCols.length) {
+        nodeCol = inCols[0]
+        for (const j of inCols.slice(1)) {
+          const cj = cols[j] as Col
+          const l = cj.lives[cj.lives.length - 1]
+          l.end = { type: 'join', r: k, toCol: nodeCol }
+          l.y1 = y(k) - 6
+          cj.dead = true
+          cj.await = null
+        }
+      } else {
+        nodeCol = findFree(k)
+        const color = k === 0 ? MAIN : spawnColor(c, true)
+        const prev = cols[nodeCol]
+        cols[nodeCol] = {
+          await: c.sha, color, dead: false,
+          lives: [...(prev ? prev.lives : []), { color, start: { type: 'head', r: k, fromCol: nodeCol }, y1: y(N - 1), end: null }],
+        }
       }
       const col = cols[nodeCol] as Col
       nodes.push({ row: k, col: nodeCol, color: col.color })
@@ -93,64 +114,67 @@ export default function GitGraph({ cards, endMs, gid }: Props) {
           if (cc && !cc.dead && cc.await === p) { t = i; break }
         }
         if (t < 0) {
-          const f = findFree(k)
-          cols[f] = { await: p, color: spawnColor(c, false), y0: y(k + 1), dead: false }
-          t = f
-        }
-        curves.push({ kind: 'split', a: nodeCol, b: t, y: y(k), color: (cols[t] as Col).color })
-      }
-      // 两列同时等待同一提交 → 右列在该行之下并入左列
-      let fused = true
-      while (fused) {
-        fused = false
-        outer: for (let i = 0; i < cols.length; i++) {
-          const ci = cols[i]
-          if (!ci || ci.dead || !ci.await) continue
-          for (let j = i + 1; j < cols.length; j++) {
-            const cj = cols[j]
-            if (!cj || cj.dead || cj.await !== ci.await) continue
-            rails.push({ x: j, y0: cj.y0, y1: y(k) + ROW * 0.5, color: cj.color })
-            curves.push({ kind: 'fuse', a: j, b: i, y: y(k), color: cj.color })
-            cj.dead = true
-            cj.await = null
-            fused = true
-            break outer
+          t = findFree(k)
+          const prev = cols[t]
+          const priorLife = prev && prev.lives.length ? prev.lives[prev.lives.length - 1] : null
+          const isJog = !!(priorLife && priorLife.end && priorLife.end.r === k && priorLife.end.type === 'join')
+          if (isJog && priorLife && priorLife.end) priorLife.end.type = 'jog'
+          const color = spawnColor(c, false)
+          cols[t] = {
+            await: p, color, dead: false,
+            lives: [...(prev ? prev.lives : []), { color, start: { type: isJog ? 'jog' : 'split', r: k, fromCol: nodeCol }, y1: y(N - 1), end: null }],
           }
+        } else {
+          connectors.push({ a: nodeCol, b: t, r: k, color: (cols[t] as Col).color })
         }
       }
     }
-    for (let i = 0; i < cols.length; i++) {
-      const c = cols[i]
-      if (c && !c.dead) rails.push({ x: i, y0: c.y0, y1: y(N - 1), color: c.color })
+    for (const cc of cols) {
+      if (!cc || cc.dead) continue
+      cc.lives[cc.lives.length - 1].y1 = y(N - 1)
     }
+
     const maxCols = nodes.length ? Math.max(...nodes.map(n => n.col)) + 1 : 1
-    return { y, x, rails, curves, nodes, maxCols, H: PADT + N * ROW + PADB, labelX: PADL + maxCols * LW + 10 }
+    return { y, x, cols, nodes, connectors, maxCols, H: PADT + N * ROW + PADB, labelX: PADL + maxCols * LW + 10 }
   }, [cards])
 
   if (!N) return null
   const { y, x } = graph
 
-  const curvePath = (cv: CurveSeg): string => {
-    const xa = x(cv.a), xb = x(cv.b)
-    if (cv.kind === 'split') {
-      return 'M ' + xa + ' ' + cv.y + ' C ' + xa + ' ' + (cv.y + ROW * 0.45) + ' ' + xb + ' ' + (cv.y + ROW * 0.55) + ' ' + xb + ' ' + (cv.y + ROW)
+  // 一条列生命 → 单条连续 path:半 S 进 → 直线 → 半 S 出
+  const lifePath = (k: number, l: Life): string => {
+    const xs = x(k)
+    const parts: string[] = []
+    if (l.start.type === 'head') parts.push('M ' + xs + ' ' + y(l.start.r))
+    else {
+      const xn = x(l.start.fromCol), yk = y(l.start.r)
+      parts.push('M ' + xn + ' ' + yk + ' C ' + xn + ' ' + (yk + 8) + ' ' + xs + ' ' + (yk + 16) + ' ' + xs + ' ' + (yk + 24))
     }
-    const y0 = cv.y + 8
-    return 'M ' + xa + ' ' + y0 + ' C ' + xa + ' ' + (y0 + 9) + ' ' + xb + ' ' + (y0 + 3) + ' ' + xb + ' ' + (y0 + 12)
+    parts.push('L ' + xs + ' ' + l.y1)
+    if (l.end) {
+      const xn = x(l.end.toCol), yk = y(l.end.r)
+      parts.push('C ' + xs + ' ' + (yk + 7) + ' ' + xn + ' ' + (yk + 7) + ' ' + xn + ' ' + yk)
+    }
+    return parts.join(' ')
+  }
+  const connPath = (cn: { a: number; b: number; r: number }): string => {
+    const xa = x(cn.a), xb = x(cn.b), yk = y(cn.r)
+    return 'M ' + xa + ' ' + yk + ' C ' + xa + ' ' + (yk + 8) + ' ' + xb + ' ' + (yk + 16) + ' ' + xb + ' ' + (yk + 24)
   }
 
   const chipCharW = 5.8, chipH = 12, chipFont = 9.5
+  const curve = { fill: 'none', strokeWidth: 1.6, strokeLinecap: 'round', opacity: 0.45 } as const
 
   return (
     <div className="rp-gitwrap">
       <svg className="chart rp-git" viewBox={'0 0 ' + W + ' ' + graph.H} role="img" aria-label="git 织图">
-        {/* 轨道 */}
-        {graph.rails.map((r, i) => (
-          <line key={'rl' + i} x1={x(r.x)} y1={r.y0} x2={x(r.x)} y2={r.y1} stroke={r.color} strokeWidth={1.6} strokeLinecap="round" opacity={0.45} />
-        ))}
-        {/* 分叉 / 汇合 */}
-        {graph.curves.map((cv, i) => (
-          <path key={'cv' + i} d={curvePath(cv)} fill="none" stroke={cv.color} strokeWidth={1.6} strokeLinecap="round" opacity={0.45} />
+        {/* 轨道(每列生命一条连续路径) */}
+        {graph.cols.map((cc, i) => !cc ? null : cc.lives.map((l, li) => (
+          <path key={'l' + i + '-' + li} d={lifePath(i, l)} stroke={l.color} {...curve} />
+        )))}
+        {/* 并入既有轨道的分叉 */}
+        {graph.connectors.map((cn, i) => (
+          <path key={'cn' + i} d={connPath(cn)} stroke={cn.color} {...curve} />
         ))}
 
         {/* 节点 + 行(标签、徽章、时间) */}
@@ -198,7 +222,7 @@ export default function GitGraph({ cards, endMs, gid }: Props) {
           )
         })}
       </svg>
-      <p className="note">轨道列 = 分支线(灰=main · 蓝=a · 绿=b),分叉/汇合为曲线;徽章 = 分支/tag 所在提交;<b>◉</b> 玫红实边圆 = merge · <b>◯</b> 蓝环+名字 = tag;全部提交任何步都在场,未发生的降透明、随步点亮。点任意行跳至该提交落入的轮。</p>
+      <p className="note">轨道列 = 分支线(灰=main · 蓝=a · 绿=b),每列一条连续路径,分叉/汇合为半 S 曲线、接头落在节点下;徽章 = 分支/tag 所在提交;<b>◉</b> 玫红实边圆 = merge · <b>◯</b> 蓝环+名字 = tag;全部提交任何步都在场,未发生的降透明、随步点亮。点任意行跳至该提交落入的轮。</p>
     </div>
   )
 }

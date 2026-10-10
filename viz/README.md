@@ -82,7 +82,9 @@ pnpm derive     # 重新派生 src/data/experiments.json
   w4↔w5 切换,各态截图读回。同日该页重写为 **React 19 组件化单页**(`views/replay/components/`:
   App/Strip/TurnDetail/GitGraph 四组件 + 框架无关的 `data.ts`):珠链 lit 计数(步 88 时 A 38/38、
   B 50/50)与 `getComputedStyle` 取色均实查。git 织图此后重写为 `git log --graph` 版式(轨道列 +
-  分叉/汇合曲线 + 分支/tag 徽章),布局先在真实 bundle 上用离线模拟对表,再在页面 DOM 逐节点回读
+  分叉/汇合曲线 + 分支/tag 徽章;**每列一条连续路径**,汇合推迟到目标提交所在行、接头藏在节点
+  图形下,消掉早先的断口与毛刺——w5 中 col1 是 y54→480 一根不断线,两次「jog」穿节点而过),
+  布局先在真实 bundle 上用离线模拟对表,再在页面 DOM 逐节点回读
   列坐标(20 行全部吻合):步 1 = 23 圆(20 节点 + 3 tag 环)中 1 亮 22 暗、步 88 全亮、步 44 亮 12;
   点 init 行跳第 1 轮、无 React 错误。**React 页面不在 `npm run probe` 内**(createRoot 需要
   真实 DOM——探针的 DOM 桩不够),其渲染靠上述浏览器检查;其余视图改完仍必须重跑探针(8/8)。
