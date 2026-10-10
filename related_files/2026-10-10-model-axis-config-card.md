@@ -38,7 +38,7 @@
 ## 3. 运行设计
 - **A″** `agent-qwen38max-1-restricted`(基线;无模板)
 - **B″** `agent-qwen38max-1-sbb-restricted`(SBB;同模板)
-- 每格 n=1;顺序执行(单跑为准,保墙钟可比);顺序 **A″ 先、B″ 后**;时机 = 待 flash 组 A′/B′ 终了(机器一次一跑)。
+- 每格 n=1;**并行执行**——独立容器(2026-10-10 实测:单容器上限 8 GiB/2 核,agent 实耗 ~0.35 GiB/9% CPU,宿主余量 ~11 GiB)⇒ 两跑可同发,墙钟争用极小;**不受 flash 组进度阻塞**(可与 A′/B′ 并跑)。
 - 对读:行内 Δannotation(A″→B″) ⟷ flash 行内 Δ(A′→B′);同格跨行(A′↔A″、B′↔B″)= 模型效应。**public 组不混表。**
 
 ## 4. 预算(Token Plan credits;本组专属分报面)
