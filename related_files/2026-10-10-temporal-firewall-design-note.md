@@ -119,3 +119,18 @@
 | `validate.py` | live | 清单自检(host 语法/跨层重复/cutoff ISO/unknown→deny/禁源非空) |
 
 **边界(不变)**:执行仍在 harbor sidecar(域级)+未来网关(时间级);本组件只管"策略即数据 + 工具"。**验证(2026-10-10)**:`validate` 通过(10+13);`render --check` match=True(与现行 task.toml 集合相等——该拆分**零条件变更**);`check_paths.py` 覆盖扩至含 `egress/`(**21 文件**);测试四件化+引擎黑名单;(当日更晚:overlay v3 引擎禁,合成 16 主机,GATEWAY 方案见 §7)。
+
+## 9. 标准沙箱基建清单(2026-10-10;H2 双 agent 共存沙箱 = 本沙箱 + 协议层)
+
+构建期自带(agent 可**预先知道**;协议模板须列——与 template-v2「基础设施事实先行列举」同法):
+
+1. **git 2.43.0(2026-10-10 起)**——IaC 编排基底:commit 哈希作证据锚、**M1/M2 两次阶段 merge**、收尾段每轮短分支+合并(用户裁定「沙箱内自带 git、agent 预先知道」);
+2. 基础:ubuntu:24.04 + python3/pip(pypi 直连);
+3. 安装链:nvm(cdn.jsdelivr.net)→ node 22(npmmirror)→ qwen-code 0.25.0(npmmirror);
+4. 分析栈(pinned):numpy 2.1.3 / scipy 1.14.1 / pandas 2.2.3 / scikit-image 0.24.0 / scikit-learn 1.5.2 / matplotlib 3.9.2 / tifffile 2024.8.30 / huggingface-hub 0.26.2;
+5. 数据:payload 161 文件 **376M**(聚合 sha256 `babbc611…`)@ `/root/data`——**host 预取 `COPY payload /root/data`**,构建期不再触网;
+6. 网络:allowlist 17 主机(文档面直连 / 模型端点 / 包源 / apt 源)+ explicit gateway `172.17.0.1:8788`;verifier 侧 no-network 不变;
+7. 观测:hooks(18 事件)+ OTel outfile。
+
+**变更纪律**:①payload 双份(`environment/payload/` 与 `dataset-build/payload/`,同源)——两侧各自 digest 断言,漂移构建即响;②改 apt 等上游层会失效其下所有层并曾触发 HF 重抓(硬伤)——**改 Dockerfile 必先本地预构建 + `--install-only` 冒烟**再上 trial;③`dataset-build`(公网变体)未改——重启公网臂时镜像同改。
+**验证(2026-10-10)**:预构建首次复现 HF 硬伤(apt/pip 通、HF 断)→ COPY 修正后本地全量构建**通过**(digest 断言构建期即验);harbor 真实路径冒烟 `git-bake-smoke`(**58s、0 异常、新镜像 `hb__4519b3b4…`、安装链全通**);镜像内实测 **git 2.43.0**、`/root/data` 376M、八件栈逐版本钉对。
