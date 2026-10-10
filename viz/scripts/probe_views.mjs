@@ -53,6 +53,9 @@ const ROUTES = [
   ['coverage', 'src/views/coverage.ts', ['语料 82 个文件', '108954', '9771']],
   ['arms', 'src/views/arms.ts', ['六格', '0.8726', '16.45', '拆线', '统一口径', 'EO']],
   ['library', 'src/views/library.ts', ['取不到:原因已查明', '取不到:仅记录现象', '未取(是重复件)', '未尝试', '六版独立审查']],
+  // replay 的数据层走运行时 fetch(public/replay/*.json),探针只覆盖同步渲染的外壳文案;
+  // 数据渲染靠浏览器/headless 截图检查(同 numbers 的先例,见文件头)。
+  ['replay', 'src/views/replay/index.ts', ['轨迹重建', '步 = 助手应答周期', '折叠只改显示', '正在加载实验索引']],
 ]
 
 let bad = 0
@@ -108,6 +111,6 @@ try {
 }
 
 console.log(bad === 0
-  ? `\n${ROUTES.length}/${ROUTES.length} 路由渲染通过且关键串在场(不含 numbers:见文件头)`
+  ? `\n${ROUTES.length}/${ROUTES.length} 路由渲染通过且关键串在场(numbers 与 replay 的数据渲染:见文件头)`
   : `\n${bad} 条路由有问题`)
 process.exit(bad === 0 ? 0 : 1)

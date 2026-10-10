@@ -8,6 +8,7 @@ import * as conflicts from './views/conflicts.ts'
 import * as decisions from './views/decisions.ts'
 import * as coverage from './views/coverage.ts'
 import * as library from './views/library.ts'
+import * as replay from './views/replay/index.ts'
 import './style.css'
 
 interface View { id: string; label: string; hint: string; render: (host: HTMLElement) => void }
@@ -22,6 +23,7 @@ const VIEWS: View[] = [
   { id: 'decisions', label: '决策', hint: '33 项,按阻塞关系排', render: decisions.render },
   { id: 'coverage', label: '我的覆盖率', hint: '一手 / 二手 / 没读', render: coverage.render },
   { id: 'library', label: '账户库', hint: '159 条 · 取回 17 份 · 一处结论被推翻', render: library.render },
+  { id: 'replay', label: '轨迹重建', hint: 'w4/w5 逐步回放:滑块 × 轮 · git 节点 · 工具与思考可展开', render: replay.render },
 ]
 
 function currentId(): string {

@@ -1,7 +1,7 @@
 # viz/ · 构想结构可视化
 
-对 `related_files/` 语料 + `a0/` 测量链 + 一条 ChatGPT 对话 + **一个账户侧文件库**的
-系统化可视化。九个视图,TypeScript + Vite,无运行时依赖(图表是手写的 SVG,不是图表库)。
+对 `related_files/` 语料 + `a0/` 测量链 + 一条 ChatGPT 对话 + **一个账户侧文件库** + **双 agent 走查轨迹**的
+系统化可视化。十个视图,TypeScript + Vite,无运行时依赖(图表是手写的 SVG,不是图表库)。
 
 ```
 pnpm install
@@ -11,7 +11,7 @@ pnpm preview    # http://localhost:4178  (服务 dist/)
 pnpm derive     # 重新派生 src/data/experiments.json
 ```
 
-## 九个视图
+## 十个视图
 
 | 路由 | 内容 |
 |---|---|
@@ -24,6 +24,7 @@ pnpm derive     # 重新派生 src/data/experiments.json
 | `#/decisions` | 33 项决策,按阻塞关系排;含「这次梳理本身可能是代理目标漂移」的自我攻击 |
 | `#/coverage` | 我自己的阅读覆盖率:73 个语料文件的逐文件行数与已读行数,三档折扣 |
 | `#/library` | 账户 Library 的核查台账:159 条 → 118 条本地没有 → 取回 17 份;三条取回通道各自的陷阱;一处**被推翻的结论** |
+| `#/replay` | 轨迹重建(w4/w5 走查逐步回放):顶部滑块粒度 = 一个对话轮,输入框精确到第 N 轮;条带按时间标出轮(高 ∝ 工具数)/ git 提交(◆ 菱形:空心 = merge,虚线环 = tag)/ 门与板,点标记跳转;本步详情按 parts 原序展开(思考可折叠、工具卡带结果),右侧 git 账与协议账随步点亮/变暗。数据 = 采集包原文(raw 逐行入档),折叠只改显示 |
 
 ## 数据从哪来(以及哪些是我的推断)
 
@@ -47,6 +48,11 @@ pnpm derive     # 重新派生 src/data/experiments.json
   以及 7 条取不到的条目和原因。**三条通道的可信度不同**:拼接与剪贴板是无损的(其中 v(6) 与磁盘
   那份归一化后逐字节相同),沙盒 iframe 只能拿到渲染文本,所以那三份文件名带 `.rendered.txt`。
 - `src/data/a0.ts`、`src/data/corpus.ts` —— 从被引文件逐条誊录,每条带 `path:line`。
+- `public/replay/*.json` —— 双 agent 走查(w4/w5)的轨迹重建数据,由 `scripts/build_replay.mjs`
+  从 harbor job 目录生成:会话 JSONL 逐行 **raw 原文 + 解析结构**双份、git 从收集的 bundle 在宿主机
+  现场重放(含每提交的 a/b/main 可达集,供「某时刻分支尖」重建)、gate/board/state 原样收编。
+  **重新生成**:`node scripts/build_replay.mjs <job-dir> --exp <id> --label "…"`(job 目录在仓库外,
+  报告与全部记录在 spec §6.6)。
 
 **标为【推断】的内容不来自任何文档**,目前有三处:
 1. `#/overview` 的「八行实验矩阵 × 四能力」映射。八行出自 `agent_engineering_science_report.tex`,
@@ -70,6 +76,10 @@ pnpm derive     # 重新派生 src/data/experiments.json
   它当场抓到两处过期:time 视图仍写「中间版本永久缺失」、map 视图手写「7 个节点」而数据是 6 个。
   (2026-10-10 加入 `arms` 后为 8/8 通过。)
   **改完视图必须重跑。**
+- 2026-10-10:`#/replay` 的交互由 chromedriver 驱动实查——滑块 → 44/60、数字框 → 77(双向同步)、
+  条带的轮条/提交/门标记点击跳转、展开全部(思考、参数、输出、两条原始行)、w4↔w5 切换(步骤保留),
+  各态截图读回;`npm run probe` 只覆盖其外壳文案(数据层走运行时 fetch,同 `numbers` 先例)。
+  改完视图同样必须重跑探针。
 - 取回件里的 5 个 `.typ` 由语料自己的 `make all` 编译,**0 error / 0 warning**;
   B 线 v(6) 与磁盘那份**归一化后逐字节相同**(唯一差异是一个尾部空行),这是整条抽取管线的校准点。
 - 调色板经 dataviz 校验器:6 色方案在色盲模拟下多组可混,故降为 3 彩色 + 1 中性;
