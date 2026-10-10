@@ -38,7 +38,7 @@
 网关逐请求写 `policy_decision`(allow/deny + 理由 + `policy_version` + `corpus_revision` + 返回文本哈希);接合键 = `session_id` + 时间戳(与 hooks/OTel 同轴)。策略样例(YAML)草案:`harbor-runs/config/temporal-policy.tumor-immune-interface.yml`(status: candidate)。
 
 ## 5. 未决(待裁定)
-1. 是否开工 B 层网关(宿主侧只读检索服务 + 冻结 KB 管道 + 审计);
+1. 是否开工 B 层网关(宿主侧只读检索服务 + 冻结 KB 管道 + 审计)——**语义方向已定(§7:知识源开放+时间窗)**;待裁的是**开工时点与首站范围**;
 2. 残余清查(会议摘要/实验室页等未索引渠道)是否补扫;
 3. 推广到全 70 任务时的逐任务来源清单(缺者可识别来源 → `cutoff_unresolved`,排除在严格组外)。
 
@@ -56,3 +56,25 @@
 | Semantic Scholar | 未收录(边界) |
 
 ⇒ **修订**:截止线 = **2022-01-15 之前(严格)**(fail-closed 取 DOI 内嵌日;张贴日 2022-01-18)。策略件同步为 v0.1。残余:会议摘要/实验室页未穷举。**运行中三跑不受影响**(现层无时间门)。
+
+## 7. 时间范围访问:方向裁定与最小实现草图(2026-10-10)
+
+**方向裁定(用户原文)**:「我是认为,github这样的大型公共知识源,应当提供访问权限,受限模式只是限制他们对这些知识源的时间范围」
+
+⇒ RESTRICTED 的**目标语义**:知识源(github/nature 等)**开放访问**,受限只体现为**时间窗** `t_verified(d) < T`(unknown→deny);**域名级全禁是一期的保守近似**(已跑完的 A′/B′/B″ 三格即此近似,记录在案)。`LeakageFree` ∧ 仍须保留(引擎盲面等)。
+
+**判定原语实测(2026-10-10,`gh api` 一手;T=2022-01-15)**:
+
+| 对象 | 取值 | 判定 |
+|---|---|---|
+| `harbor-framework/terminal-bench-science` `created_at` | 2026-01-25 | deny(>T)✓ |
+| scikit-image v0.18.3 release / commit(紧链 ref→sha→date) | 2021-08-24 | allow ✓ |
+| scikit-image v0.19.1 release | 2021-12-15 | allow ✓ |
+
+⇒ **对象级日期链可用**:repo `created_at` / release `published_at` / `commits/<ref>` → `commit.committer.date`。
+
+**最小原型(github 先行)**:
+1. 出口面:task 白名单加入 github 系 FQDN;harbor sidecar 把这批 FQDN 的 TCP 重定向到**宿主网关**(新组件);其余照旧。
+2. 网关判定:浮动引用先解 SHA 再判;`unknown/解析失败 ⇒ deny`;粒度待裁(**对象时间 vs 仓库创建时间**;倾向对象级,仓库级作粗筛)。
+3. 审计:逐请求 `policy_decision`(allow/deny + `t_verified` + 请求哈希),与 hooks/OTel 同轴(`session_id`+时间戳)。
+4. 第二站 nature(文章出版日解析);**引擎面另议**(搜索结果天然"现在"内容——保留为已知盲面,或网关内做结果级过滤,待裁)。
