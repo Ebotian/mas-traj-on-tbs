@@ -87,7 +87,7 @@
 | T1 | zenodo | record `publication_date`(per version) | API 元数据 + 文件 |
 | T1 | wikipedia | 修订时间戳 | 按时间取旧版(`oldid`/`timestamp`) |
 | T1 | stackexchange | post creation(API) | API |
-| T2 | nature.com | 文章出版日解析 | 页面与 PDF 同判 |
+| T2 | nature.com | **Crossref** 日期(`10.1038/<id>`;文章页对所有 UA 均 303 → idp.nature.com consent,不可直取) | v1 check-only(github 面提供内容) |
 | T2 | ncbi·pmc / europepmc | 出版日(页面/API 字段) | E-utilities / REST |
 | T3 | doi.org | 纯解析器、不可裁定 | **拒**;要求直接 URL |
 | T3 | 任意网页 / 引擎 | 无版本轴 | **拒** |
@@ -97,6 +97,9 @@
 **构建次序**:v0 = 框架 + github(判定原语已实测);v1 = arxiv · biorxiv/medrxiv · zenodo · europepmc · ncbi/pmc(API 型,规则同构)+ 重定向防护;v2 = nature · wikipedia(页面解析型);stackexchange 按需。**TDD**:每源"允许 pre-T / 拒 post-T / 拒未知"三件套进 `test_gateway_*.py`;容器级 live 测 `/check` 可达且直连仍死。**接线**:模板 v2 替换 "open internet" 前提句并写明网关用法;开 GATEWAY 条件时 overlay `gateway.status: live` + render;**GATEWAY = 第三条件,不与 engines-on/off 混表**。
 
 **v0 实况(2026-10-10 晚,已建成,status=candidate 未激活)**:`harbor-runs/egress/gateway/`(surfaces/policy/server/run.sh,纯 stdlib)——**无重定向 ✓、取数 URL 由解析分量构造 ✓、JSONL 审计 ✓、sha256 缓存 ✓、连接级单次重试 ✓**(一上游 SSL 瞬态实测触发)。判定:**静态 36 测全绿**(含 11 网关单测:分类 2 + 决策 9);**live 6/6 对真 GitHub 过**(v0.18.3 提交放行 t_verified=2021-08-24;main 拒;基准仓拒〔created 2026-01-25〕;活跃仓页拒〔pushed 现在〕;raw 经 sha 取回 8640 B;issues 形态拒);服务烟测过(healthz · /check JSON · /fetch 200/403 · 审计落盘)。**激活(2026-10-10 晚,用户裁定「激活网关」)**:base v2 +`172.17.0.1`、overlay v5 `gateway: live`、task.toml = **17 主机**(render match=True);实测——冒烟容器侧车实读 **17 条(IP 在列)**;冒烟1 安装链 0 errored;**容器内 live 套件 6/6**(含 `gateway_endpoint_reachable`);**容器内 /check E2E = HTTP 200 + 正确 allow 判定**(2021-08-24,经 IP 目标放行);网关服务已常驻(`run.sh`)。**模板 v2 草稿待审**(未套用)。
+
+**v1 升级(2026-10-10 晚,用户裁定「再升级网关,迁移现有规则」)**:①**分层迁移**——`base.yml` 增 `gateway:` 段(机制:guards 默认 + **适配器目录**,overlay 的 kind 须在目录内),overlay v6 启用 **nature** 源;②**forbidden 接入网关裁决,独立于日期**——指定答案链接即使"日期合格"也拒(reason 含 `forbidden`;matcher:DOI/conceptDOI 值及后缀、host/path 模式跨主机泛化、散文条目提 token);③**nature 日期源 = Crossref**(实测:文章页对所有 UA 均 303 至 idp.nature.com consent ⇒ 页面解析不可行;Crossref `published-online` 与站点一致,**内容 v1 check-only**);④**测试重组**:任务相关 → `egress/tests/tumor_immune_interface/`(**allow/deny 两件**,含"日期合格但被指定禁"的独立性用例与真源 live 件),任务无关正反测试留父级(`test_gateway_mechanism.py`/`fakes.py`)。
+**验证(v1)**:静态 **47 测绿**(14 skip);**live 47/47**(github 放行 v0.18.3 / 拒 main 与基准仓;nature 放行 NumPy 2020-09-16(check-only)、答案文 `s43856-022-00197-2` 判 **forbidden**;指定 raw 链接判 forbidden);`check_paths` **28 文件**。
 
 ## 8. 网络访问策略组件:分层裁定与 v1(2026-10-10)
 
