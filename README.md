@@ -35,6 +35,12 @@ node viz/scripts/build_replay.mjs <job-dir> --exp <id> --label "…"
 - 署名：*mas-traj-on-tbs*，Ebotian，2026
 - 第三方引用段落不因本许可改变归属（见 `NOTICE`）。轨迹包为自有实验转录，含 agent 提示词与原始事件行。
 
+## 基准与上游（第三方，不随本库发布）
+
+- 实验任务：**terminal-bench-science**（`harbor-framework/terminal-bench-science`，本地钉版 `39e4923`）的 `tumor-immune-interface` 任务；`#/tumor` 的 tumor-1 即该任务上的双 agent 运行记录。
+- 运行框架：**harbor**（`harbor-framework/harbor`，原 `laude-institute/harbor`）。
+- 上游基准与框架按各自许可分发、**不包含在本库中**；本库的 Apache-2.0 / CC BY 4.0 不覆盖它们（受限网络任务副本、评分器与题目数据均来自上游）。
+
 ## 备注
 
 - 库内路径含作者机器路径（`/home/ebt/…`）；实验记录按原文保留，不做改写。
