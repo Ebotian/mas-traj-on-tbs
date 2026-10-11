@@ -163,6 +163,22 @@ export default function GitGraph({ cards, endMs, gid }: Props) {
   }
 
   const chipCharW = 5.8, chipH = 12, chipFont = 9.5
+  // 右侧时间列保留带(10px 等宽 8 字符 ≈ 48px + 间隙);subject 超宽截断为省略号,
+  // 避免长标题压进时间列(2026-10-11 修复)。全文仍在行 tooltip 里,截断只改显示。
+  const timeW = 56
+  const subCharW = (ch: string) => (ch.charCodeAt(0) > 0x2e80 ? 10.6 : 5.6)
+  const fitSub = (s: string, maxW: number) => {
+    if (maxW <= 12) return ''
+    let w = 0
+    let out = ''
+    for (const ch of s) {
+      const cw = subCharW(ch)
+      if (w + cw > maxW - 6) return out + '…'
+      out += ch
+      w += cw
+    }
+    return s
+  }
   const curve = { fill: 'none', strokeWidth: 1.6, strokeLinecap: 'round', opacity: 0.45 } as const
 
   return (
@@ -202,6 +218,7 @@ export default function GitGraph({ cards, endMs, gid }: Props) {
             return el
           })
           const subX = cx + 4
+          const subText = fitSub(c.subject, W - 8 - timeW - subX)
           const tip = c.sha + '\n' + c.subject + '\n' + hhmmss(c.date, true) + ' · 分支 ' + ((c.branches || []).join('/') || '—')
           return (
             <g key={'row' + k}>
@@ -212,7 +229,7 @@ export default function GitGraph({ cards, endMs, gid }: Props) {
                 {tagRef && <circle cx={xc} cy={yn} r={6.6} fill="none" stroke={ACOL} strokeWidth={1.6} />}
                 <text x={graph.labelX} y={yn + 3.5} className="rp-gsha">{sha7(c.sha)}</text>
                 {chipEls}
-                <text x={subX} y={yn + 3.5} className="rp-gsub">{c.subject}</text>
+                <text x={subX} y={yn + 3.5} className="rp-gsub">{subText}</text>
                 <text x={W - 8} y={yn + 3.5} className="rp-gtime" textAnchor="end">{hhmmss(c.date)}</text>
               </g>
               <rect x={0} y={yn - ROW / 2} width={W} height={ROW} className="hit" onClick={() => gid(ms(c.date))}>

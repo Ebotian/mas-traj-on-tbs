@@ -94,7 +94,9 @@ pnpm derive     # 重新派生 src/data/experiments.json
   三参,`#/replay` 收口为 w4/w5):走查全族 13 个 bundle(w4/w5/w6 + w6-4×2 两臂 8 跑 + 2 冒烟)与
   tumor-1(422 轮/430 调用/28 提交/981 系统事件)迁移进 viz,由 `scripts/build_replay.mjs` 逐一生成;
   两路由经无头铬 1440×1150 截图实查(选择器 13 项/1 项、头行计数、珠链、git 织图、逐步详情均在),
-  `npm run build`(tsc + vite)与探针 8/8 通过。
+  `npm run build`(tsc + vite)与探针 8/8 通过。同日修复**织图长 subject 与右侧时间列的重叠**:
+  按可用宽(时间列保留带 56px)截断为省略号,全文保留在行 tooltip;tumor-1(长标题)与
+  w6(短标题)两页放大截图逐张复核。
 - 取回件里的 5 个 `.typ` 由语料自己的 `make all` 编译,**0 error / 0 warning**;
   B 线 v(6) 与磁盘那份**归一化后逐字节相同**(唯一差异是一个尾部空行),这是整条抽取管线的校准点。
 - 调色板经 dataviz 校验器:6 色方案在色盲模拟下多组可混,故降为 3 彩色 + 1 中性;
