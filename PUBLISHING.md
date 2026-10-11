@@ -61,3 +61,6 @@
 - [x] 密钥审计（当前+全史）与内容范围复核
 - [x] 建仓与推送授权：用户应答本清单时给出仓库名与可见性（2026-10-11），据此执行
       `gh repo create Ebotian/mas-traj-on-tbs --public` + `git push -u origin main`
+- [x] **已公开**：https://github.com/Ebotian/mas-traj-on-tbs （2026-10-11）。首推遭遇本机对 github
+      的大上传断连（TLS reset / rpc post data），本地 git 配置 `http.postBuffer=512M` +
+      `http.version=HTTP/1.1` + lowSpeed 阈值后一次通过；该配置已持久化于本仓 `.git/config`。
