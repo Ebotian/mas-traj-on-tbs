@@ -47,17 +47,17 @@
 任何方案都需附 NOTICE 章：**引用自第三方论文/页面的片段仍归其原作者**，本许可不覆盖它们。
 落盘物：`LICENSE`（代码）＋ `LICENSE-docs`（如选 A）＋ 根 `README.md`（待拟）。
 
-## 4 · 待你裁定的三项
+## 4 · 决策记录（2026-10-11，用户裁定）
 
-1. **许可选择**（A / B / C 或其它）；
-2. **内容范围**：三个 ChatGPT 会话转录与 13 个 replay 全量转录（含协议内部提示词）随仓库
-   公开，还是移出/脱敏？（我建议随附——它们是研究对象本体；但会话里有你的原始措辞，归你定）
-3. **建仓与推送**：GitHub 账号 `Ebotian`；仓库名/可见性/是否保留完整 244 提交历史——按
-   既定规则，**明确的"推"字才动手**。
+1. **许可 = A（双证）**：代码 Apache-2.0 + 文档/语料 CC BY 4.0。落盘由生成器产出：
+   `LICENSE` 取自 GitHub license API（apache-2.0 正文，11,358B）；`LICENSE-docs` 取自 SPDX
+   canonical（CC-BY-4.0，17,022B）；`NOTICE` 记署名与第三方边界。
+2. **内容范围 = 全部包括**（含三个会话转录与 13+2 个 replay 全量 bundle）。
+3. **仓库 = `Ebotian/mas-traj-on-tbs`，public**（用户在应答本清单时指定）。
 
-## 5 · 技术清单（选定后即可执行）
+## 5 · 清单
 
-- [ ] `LICENSE`(+`LICENSE-docs`) 落盘、根 `README.md` 起草（定位、结构、复现命令、
-      数据与轨迹说明、NOTICE 指向）
-- [ ] 可选：`~/gptapi.md` 提及处不加改动（已议）；如需改名版本，另开分支做一次性替换
-- [ ] `git remote add` + push（**需你说"推"**）；或先 `gh repo create --private` 演练后转公开
+- [x] `LICENSE` / `LICENSE-docs` / `NOTICE` / 根 `README.md` 落盘
+- [x] 密钥审计（当前+全史）与内容范围复核
+- [x] 建仓与推送授权：用户应答本清单时给出仓库名与可见性（2026-10-11），据此执行
+      `gh repo create Ebotian/mas-traj-on-tbs --public` + `git push -u origin main`
