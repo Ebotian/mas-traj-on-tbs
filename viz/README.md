@@ -1,7 +1,7 @@
 # viz/ · 构想结构可视化
 
 对 `related_files/` 语料 + `a0/` 测量链 + 一条 ChatGPT 对话 + **一个账户侧文件库** + **双 agent 走查轨迹**的
-系统化可视化。十个视图,TypeScript + Vite;**`#/replay` 是 React 19 + d3-scale 的组件化单页,
+系统化可视化。十二个视图,TypeScript + Vite;**`#/replay`/`#/handoff`/`#/tumor` 是 React 19 + d3-scale 的组件化单页,
 其余视图零框架、图表是手写的 SVG(不是图表库)**。
 
 ```
@@ -26,6 +26,8 @@ pnpm derive     # 重新派生 src/data/experiments.json
 | `#/coverage` | 我自己的阅读覆盖率:73 个语料文件的逐文件行数与已读行数,三档折扣 |
 | `#/library` | 账户 Library 的核查台账:159 条 → 118 条本地没有 → 取回 17 份;三条取回通道各自的陷阱;一处**被推翻的结论** |
 | `#/replay` | 轨迹重建(React 19 组件化单页;w4/w5 走查逐步回放):双珠链时间条(珠径 ∝ 工具调用数;上=A·deepseek-flash · 下=B·qwen3.8-flash)、git 中脊(◆ 普通 · ◉ 玫红实边圆 = merge · ◯ 蓝实边环 + 小字 = tag)、门/板刻度;滑块粒度 = 一个对话轮,输入框精确到第 N 轮,点珠/节点跳转;右侧 git 织图(**git log --graph 版式**:轨道列 = 分支线(灰=main · 蓝=a · 绿=b)、分叉/汇合为曲线、分支/tag 徽章;全部提交任何步都在场,未发生的降透明、随步点亮)与协议账随步点亮/变暗;本步详情按 parts 原序展开(思考可折叠、工具卡带结果与原始行)。数据 = 采集包原文(raw 逐行入档),折叠只改显示 |
+| `#/handoff` | **交接实验全族**(React;复用轨迹重建组件,13 个 bundle 可切换):w4/w5 走查 + w6 机制排练 + w6-4×2 两臂 8 跑 + 2 冒烟,默认停在 w6;每跑同款双珠链/git 织图/门板账,逐步回放 |
+| `#/tumor` | **tumor-1 双 agent 真实任务轨迹**(React;同组件,单 bundle):2h 单跑,422 轮 / 430 工具调用 / 28 提交 / 981 系统事件,离线采集包原文 |
 
 ## 数据从哪来(以及哪些是我的推断)
 
@@ -49,7 +51,7 @@ pnpm derive     # 重新派生 src/data/experiments.json
   以及 7 条取不到的条目和原因。**三条通道的可信度不同**:拼接与剪贴板是无损的(其中 v(6) 与磁盘
   那份归一化后逐字节相同),沙盒 iframe 只能拿到渲染文本,所以那三份文件名带 `.rendered.txt`。
 - `src/data/a0.ts`、`src/data/corpus.ts` —— 从被引文件逐条誊录,每条带 `path:line`。
-- `public/replay/*.json` —— 双 agent 走查(w4/w5)的轨迹重建数据,由 `scripts/build_replay.mjs`
+- `public/replay/*.json` —— 双 agent 轨迹重建数据(走查全族 w4/w5/w6/4×2 两臂与冒烟 + tumor-1),由 `scripts/build_replay.mjs`
   从 harbor job 目录生成:会话 JSONL 逐行 **raw 原文 + 解析结构**双份、git 从收集的 bundle 在宿主机
   现场重放(含每提交的 a/b/main 可达集,供「某时刻分支尖」重建)、gate/board/state 原样收编。
   **重新生成**:`node scripts/build_replay.mjs <job-dir> --exp <id> --label "…"`(job 目录在仓库外,
@@ -88,6 +90,11 @@ pnpm derive     # 重新派生 src/data/experiments.json
   列坐标(20 行全部吻合):步 1 = 23 圆(20 节点 + 3 tag 环)中 1 亮 22 暗、步 88 全亮、步 44 亮 12;
   点 init 行跳第 1 轮、无 React 错误。**React 页面不在 `npm run probe` 内**(createRoot 需要
   真实 DOM——探针的 DOM 桩不够),其渲染靠上述浏览器检查;其余视图改完仍必须重跑探针(8/8)。
+- 2026-10-11:`#/handoff` 与 `#/tumor` 新建(复用同一 React 回放器;`App` 增 `include`/`exclude`/`initial`
+  三参,`#/replay` 收口为 w4/w5):走查全族 13 个 bundle(w4/w5/w6 + w6-4×2 两臂 8 跑 + 2 冒烟)与
+  tumor-1(422 轮/430 调用/28 提交/981 系统事件)迁移进 viz,由 `scripts/build_replay.mjs` 逐一生成;
+  两路由经无头铬 1440×1150 截图实查(选择器 13 项/1 项、头行计数、珠链、git 织图、逐步详情均在),
+  `npm run build`(tsc + vite)与探针 8/8 通过。
 - 取回件里的 5 个 `.typ` 由语料自己的 `make all` 编译,**0 error / 0 warning**;
   B 线 v(6) 与磁盘那份**归一化后逐字节相同**(唯一差异是一个尾部空行),这是整条抽取管线的校准点。
 - 调色板经 dataviz 校验器:6 色方案在色盲模拟下多组可混,故降为 3 彩色 + 1 中性;

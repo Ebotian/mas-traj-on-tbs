@@ -9,17 +9,19 @@ import GitGraph from './GitGraph'
 
 type ExpState = { loading: true } | { loading: false; bundle: ReplayBundle }
 
-export default function App() {
+export default function App({ include, exclude, initial }: { include?: string[]; exclude?: string[]; initial?: string } = {}) {
   const [idx, setIdx] = useState<IndexEntry[] | null>(null)
   const [expState, setExpState] = useState<ExpState>({ loading: true })
   const [stepNum, setStepNum] = useState(0)
 
-  // Fetch index - auto-select latest
+  // Fetch index - filter to this view's set; auto-select `initial` or the latest
   useEffect(() => {
     loadIndex().then(data => {
-      if (!data.length) return
-      setIdx(data)
-      loadBundle(data[data.length - 1].exp).then(b => setExpState({ loading: false, bundle: b })).catch(() => {})
+      const list = data.filter(e => (!include || include.includes(e.exp)) && (!exclude || !exclude.includes(e.exp)))
+      if (!list.length) return
+      setIdx(list)
+      const sel = (initial && list.find(e => e.exp === initial)) || list[list.length - 1]
+      loadBundle(sel.exp).then(b => setExpState({ loading: false, bundle: b })).catch(() => {})
     }).catch(() => {})
   }, [])
 

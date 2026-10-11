@@ -9,5 +9,5 @@ import App from './components/App'
 
 export function render(host: HTMLElement): void {
   const root = createRoot(host)
-  root.render(/*#__PURE__*/ <App />)
+  root.render(/*#__PURE__*/ <App include={['w4', 'w5']} />)
 }
