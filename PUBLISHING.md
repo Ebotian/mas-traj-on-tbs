@@ -64,3 +64,6 @@
 - [x] **已公开**：https://github.com/Ebotian/mas-traj-on-tbs （2026-10-11）。首推遭遇本机对 github
       的大上传断连（TLS reset / rpc post data），本地 git 配置 `http.postBuffer=512M` +
       `http.version=HTTP/1.1` + lowSpeed 阈值后一次通过；该配置已持久化于本仓 `.git/config`。
+- [x] 2026-10-11 追加：**完整实验套件入仓 `harness/`**（与运行根同构、路径位置推导；大 payload/wheels
+      只给取回方法与构建期 digest 断言；复现文档 `harness/REPRODUCE.md`；任务偏离件+notes 在
+      `harness/build/task-restricted/`；评分器与答案键刻意不入包）。

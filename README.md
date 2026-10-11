@@ -12,6 +12,7 @@ Dual-agent research on terminal-bench-science: measurement chain, registers, and
 | `a0/` | 测量链与记录：容器/计时实验、conformance、报告与证据（体量大，脚本与证据兼有） |
 | `related_files/` | 语料与文档：研究综述（state control v1–v4）、工程规格、外部审阅往来、会话转录（仅文本；第三方论文 PDF 不入库） |
 | `local2gpt/` | 与外部 web 席位往来的打包/发送工具（`out/` 与 tar 产物不入库） |
+| `harness/` | **完整实验套件**：双 agent 单容器协议的执行/门禁/轨迹/账本工具、任务偏离件与 payload 取回脚本；端到端复现见 `harness/REPRODUCE.md` |
 
 ## 快速看
 
@@ -27,6 +28,13 @@ npm run probe      # 8 视图渲染探针
 ```bash
 node viz/scripts/build_replay.mjs <job-dir> --exp <id> --label "…"
 ```
+
+## 实验套件与复现
+
+完整套件在 **`harness/`**（与运行根同构的布局，脚本按位置推导路径）。大件不入包：376MB payload
+与 122MB wheels 只给取回脚本 + 清单 + 构建期 digest 断言；job 产物与密钥不入库。端到端步骤
+（依赖与两处本地偏离、密钥、抓取、`--install-only` 冒烟、4×2 编排、指标与保真核验、轨迹回放）
+见 **`harness/REPRODUCE.md`**。
 
 ## 许可
 
