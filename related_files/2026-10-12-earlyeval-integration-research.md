@@ -29,9 +29,10 @@
 - 预测表契约(策略应用所必需列):`traj_id, label, prefix_step_idx, prob_cal_safe_success__<P>, prob_cal_safe_failure__<P>`;CLI:`policy apply --preset current_safe_stop --predictions <path> --output-dir <dir>`。
 - 特征族:behavioral(活动计数/最后步/事件计时/工作节奏/错误与测试状态,~115 维)+ textual(TF-IDF→SVD 分块)+ reference(可选);〔仓库〕README FAQ:无参考基准时**失败头单独更强**("Failure signals — stalling, repeated errors, unchanging feedback — are intrinsic to the trajectory and transfer well")。
 
-### 1.4 发行边界〔仓库,重要〕
+### 1.4 发行边界〔仓库,重要;2026-10-12 复核更正〕
 
-- **训练器与特征工程未随发行**:`models/dual_head_lightgbm.py` 与 `core/prefix.py` 均委托外部 "answer-aware source module root"(路径由 configs/paths 指);feature engineer pickle、前缀表、数据、模型全为 output,不提交。⇒ **发行可独立跑的是:契约 normalize、策略应用/记账、报表**;训练路径需自备部件。
+- **代码自包含**:训练器、特征工程、prefix/step builder 等 answer-aware 代码**随发行**——vendored 于 `earlyeval/vendor/prefix_predict_model_holdout_answer/`(61 个已跟踪文件,含 `safe_stop_dual_head_retrain.py`、`prefix_builder.py`、`step_builder.py`、`feature_engineer.py`、`run_all.py`);`VENDOR_STATUS.md`:CLI 默认在此解析双头训练器;`core/legacy_paths.py`:发行 "code-self-contained … Do not fall back to an external legacy package at runtime"(旧 `legacy_answer_module_root` 仅为审计血统指针);`configs/paths.example.yaml`:`legacy.answer_module_root: null` 且注明运行时不依赖旧包目录。
+- **不入发行的是数据与产物**:原始基准数据、prefix tables、FeatureEngineer pickle、训练 fold 模型、预测文件 = README 的 "outputs, not source";复现说明把它列为 "Required inputs" 但**不附获取 URL**,须自备/重建。⇒ 发行可独立跑:契约 normalize、策略应用/记账、报表;训练代码本身在位(数据与产物到位即可运行)。
 - 冒烟夹具的概率列是演示曲线,examples/README 原话:**"Do not read them as measurements, cite them, or compare them against the paper."**
 
 ### 1.5 本机实测(2026-10-12,零 API 花费)〔实测〕
