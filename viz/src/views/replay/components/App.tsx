@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import type { ReplayBundle, IndexEntry, ReplaySystem } from '../data'
 import { loadIndex, loadBundle, hhmmss, ms, commitsAsc, mapSystems } from '../data'
-import { RUN_META } from '../meta'
+import { RUN_META, RMB_RATE } from '../meta'
 import StripBar from './Strip'
 import TurnDetail from './TurnDetail'
 import GitGraph from './GitGraph'
@@ -79,8 +79,9 @@ export default function App({ include, exclude, initial }: { include?: string[];
             <span className="rp-sum-title"><b>{m.task}</b> · {m.run}</span>
             <span className="rp-sum-sep" />
             <span>总墙钟 <b>{m.wall}</b></span>
-            <span>成本 <b>A${m.aUsd} + B¥{m.bCny}</b>(≈{m.cr}cr)</span>
+            <span>成本 <b>¥{(m.aUsd * RMB_RATE + m.bCny).toFixed(3)}</b><span className="rp-sum-sub"> = A US${m.aUsd}{m.aNote ? `(${m.aNote})` : ''}×7 + B ¥{m.bCny}(≈{m.cr}cr)</span></span>
             <span>完成效果 <b>{m.verdict}</b> · {m.outcome}</span>
+            <span className="rp-sum-note">折算规则:1 USD = 7 CNY(统一折为 RMB,供参考)</span>
           </div>
         )
       })()}

@@ -1,6 +1,7 @@
 // StatsPanel.tsx —— 时间与成本统计:tokens 分布(uncached/cache/out)与映射成本。
 // 口径与 walkthrough/tasks/walkthrough/metrics.py 同源(费率卡 2026-10-10;见 bundle.stats.mapping)。
 import type { ReplayBundle } from '../data'
+import { RMB_RATE } from '../meta'
 
 function fmtTok(n: number): string {
   if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M'
@@ -74,7 +75,7 @@ export default function StatsPanel({ bundle }: { bundle: ReplayBundle }) {
               </div>
               <div style={{ marginTop: 3, fontSize: '11.5px', fontFamily: 'ui-monospace,Menlo,monospace', color: '#334155' }}>
                 {c ? (c.scheme?.startsWith('A')
-                  ? <>映射 A(US$): <b>{c.usd != null ? c.usd.toFixed(4) : '—'}</b>{c.peak ? ' · 峰值×2' : ''}</>
+                  ? <>映射 A(¥): <b>{c.usd != null ? (c.usd * RMB_RATE).toFixed(4) : '—'}</b>(US${c.usd != null ? c.usd.toFixed(4) : '—'}{c.peak ? ' · 峰值×2' : ''} × 1:7)</>
                   : <>映射 B(¥): <b>{c.cny != null ? c.cny.toFixed(3) : '—'}</b> = credits <b>{c.cr_k1 != null ? c.cr_k1.toFixed(0) : '—'}</b>(k=1) · {c.cr_k072 != null ? c.cr_k072.toFixed(0) : '—'}(k=0.72)</>)
                   : '无成本映射(模型未识别)'}
               </div>
@@ -83,7 +84,7 @@ export default function StatsPanel({ bundle }: { bundle: ReplayBundle }) {
         })}
         <div className="note" style={{ marginTop: 6, fontSize: '11px' }}>
           全族 tokens 合计 {fmtTok(grand)} · 口径与 metrics.py 同源 · {s.mapping?.version}<br />
-          {s.mapping?.A};{s.mapping?.B};{s.mapping?.credits};{s.mapping?.out}
+          {s.mapping?.A};{s.mapping?.B};{s.mapping?.credits};{s.mapping?.out};成本统一按 1 USD = 7 CNY 折算为 RMB(供参考)
         </div>
       </div>
     </div>

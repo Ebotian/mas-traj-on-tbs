@@ -112,7 +112,8 @@ pnpm derive     # 重新派生 src/data/experiments.json
 - 2026-10-12(主指标与排版):实验页**首行新增「主指标条」**(tbs 原题短名 + 总墙钟 + 成本 + 完成效果;
   `views/replay/meta.ts` 载四跑);四跑 label 改用 tbs 原题式(`tumor-immune-interface · tumor-2` 等);
   `.rp-readout` 改可换行修掉轨迹卡片文字溢出——1150 窄窗截图复测(指标条两行折行、
-  交接页 readout 收于卡内;`/tmp/viz-meta-*.png`)。
+  交接页 readout 收于卡内;`/tmp/viz-meta-*.png`)。成本侧按用户令「按1:7统一换算为rmb计价」——
+  主指标条与统计卡均以 **¥** 为主(明注「1 USD = 7 CNY」折算规则;原币种保留于括注供追溯)。
 - 取回件里的 5 个 `.typ` 由语料自己的 `make all` 编译,**0 error / 0 warning**;
   B 线 v(6) 与磁盘那份**归一化后逐字节相同**(唯一差异是一个尾部空行),这是整条抽取管线的校准点。
 - 调色板经 dataviz 校验器:6 色方案在色盲模拟下多组可混,故降为 3 彩色 + 1 中性;
