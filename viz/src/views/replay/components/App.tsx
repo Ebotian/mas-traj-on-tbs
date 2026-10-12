@@ -6,6 +6,7 @@ import { loadIndex, loadBundle, hhmmss, ms, commitsAsc, mapSystems } from '../da
 import StripBar from './Strip'
 import TurnDetail from './TurnDetail'
 import GitGraph from './GitGraph'
+import StatsPanel from './StatsPanel'
 
 type ExpState = { loading: true } | { loading: false; bundle: ReplayBundle }
 
@@ -57,7 +58,7 @@ export default function App({ include, exclude, initial }: { include?: string[];
   const picker = idx?.map(e => (
     <button key={e.exp} onClick={() => selectExp(e.exp)}
       className={`btn${(bundle && bundle.exp === e.exp) ? ' act' : ''}`}
-      title={`trial ${e.trial} · ${e.counts.turns}轮 / ${e.counts.calls}调用 / ${e.counts.commits}提交`}
+      title={`trial ${e.trial} · ${e.counts.turns}轮 / ${e.counts.calls}调用 / ${e.counts.commits}提交${e.tokens_total ? ` · tokens ${e.tokens_total.toLocaleString()}` : ''}`}
     >{e.exp}</button>
   ))
 
@@ -113,6 +114,8 @@ export default function App({ include, exclude, initial }: { include?: string[];
 
         <p className="note">Step = assistant response cycle (one assistant message + subsequent tool results); slider &amp; input use this granularity. Folding alters display only, not data — every step's original JSONL is verbatim transcript. Source: <code>node viz/scripts/build_replay.mjs</code>.</p>
       </div>
+
+      {bundle && <StatsPanel bundle={bundle} />}
 
       {/* Split: detail left + ledgers right */}
       <div className="split rp-wide">
