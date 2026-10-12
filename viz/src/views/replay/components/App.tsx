@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import type { ReplayBundle, IndexEntry, ReplaySystem } from '../data'
 import { loadIndex, loadBundle, hhmmss, ms, commitsAsc, mapSystems } from '../data'
+import { RUN_META } from '../meta'
 import StripBar from './Strip'
 import TurnDetail from './TurnDetail'
 import GitGraph from './GitGraph'
@@ -71,6 +72,18 @@ export default function App({ include, exclude, initial }: { include?: string[];
 
   return (
     <div style={{ maxWidth: 1440, margin: '0 auto', padding: '0 16px 40px' }}>
+      {bundle && RUN_META[bundle.exp] && (() => {
+        const m = RUN_META[bundle.exp]
+        return (
+          <div className="rp-summary" role="note">
+            <span className="rp-sum-title"><b>{m.task}</b> · {m.run}</span>
+            <span className="rp-sum-sep" />
+            <span>总墙钟 <b>{m.wall}</b></span>
+            <span>成本 <b>A${m.aUsd} + B¥{m.bCny}</b>(≈{m.cr}cr)</span>
+            <span>完成效果 <b>{m.verdict}</b> · {m.outcome}</span>
+          </div>
+        )
+      })()}
       <p className="lede">对指定实验的轨迹重建：按带时间戳的离散每步回放（数据=采集包原文，只折叠不删减）。<b>顶部滑块粒度 = 每个对话轮</b>，输入框可精确定位到第 N 轮；重建条标出 git 节点与工具用量，本步详情含可展开思考、工具卡与逐行原文。</p>
 
       {/* Card 1: controls + strip */}

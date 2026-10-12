@@ -63,7 +63,7 @@ export default function StatsPanel({ bundle }: { bundle: ReplayBundle }) {
                 <span>跨度 {fmtMs(st.span_s != null ? st.span_s * 1000 : null)}</span>
                 <span>轮时 中位 {fmtMs(med)} · p90 {fmtMs(p90v)} · 最长 {fmtMs(maxd)}</span>
               </div>
-              <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginTop: 5, fontSize: '11.5px' }}>
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap', marginTop: 5, fontSize: '11.5px' }}>
                 <span style={{ minWidth: 86, color: '#64748b', fontFamily: 'ui-monospace,Menlo,monospace' }}>tokens {fmtTok(tok.total)}</span>
                 <span style={{ flex: 1, display: 'flex', height: 10, borderRadius: 3, overflow: 'hidden', border: '1px solid #e2e8f0' }}>
                   {seg(tok.uncached, '#dc2626', 'uncached')}{seg(tok.cached, '#94a3b8', 'cache')}{seg(tok.out, '#059669', 'out')}

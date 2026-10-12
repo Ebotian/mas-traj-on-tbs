@@ -27,8 +27,8 @@ pnpm derive     # 重新派生 src/data/experiments.json
 | `#/library` | 账户 Library 的核查台账:159 条 → 118 条本地没有 → 取回 17 份;三条取回通道各自的陷阱;一处**被推翻的结论** |
 | `#/replay` | 轨迹重建(React 19 组件化单页;w4/w5 走查逐步回放):双珠链时间条(珠径 ∝ 工具调用数;上=A·deepseek-flash · 下=B·qwen3.8-flash)、git 中脊(◆ 普通 · ◉ 玫红实边圆 = merge · ◯ 蓝实边环 + 小字 = tag)、门/板刻度;滑块粒度 = 一个对话轮,输入框精确到第 N 轮,点珠/节点跳转;右侧 git 织图(**git log --graph 版式**:轨道列 = 分支线(灰=main · 蓝=a · 绿=b)、分叉/汇合为曲线、分支/tag 徽章;全部提交任何步都在场,未发生的降透明、随步点亮)与协议账随步点亮/变暗;本步详情按 parts 原序展开(思考可折叠、工具卡带结果与原始行)。数据 = 采集包原文(raw 逐行入档),折叠只改显示;卡 2「**时间与成本统计**」= 每 actor 时长分布(中位/p90/最长)· tokens 堆叠条(uncached/cache/out)· 映射成本(A US$ · B ¥=credits;口径同 metrics.py) |
 | `#/handoff` | **交接实验(双 agent 走查/机制族)**(React;复用轨迹重建组件,**16 个 bundle**,显式 include 白名单):走查系 13 跑(w4/w5 + w6 机制排练 + w6-4×2 两臂 8 跑 + 2 冒烟)+ bump-0251(0.25.1 全流程走查)+ A2A spike/融合(容器内轨迹文件直入),默认停在 w6;每跑同款双珠链/git 织图/门板账 + 时间与成本统计,逐步回放 |
-| `#/tumor` | **tumor 双 agent 真实任务轨迹**(React;同组件,tumor-1/-2 两 bundle):tumor-1(2h 单跑,422 轮 / 430 工具调用 / 28 提交 / 981 系统事件)+ tumor-2(自由交接复跑,399 轮 / 21 提交;判分 0.800426),离线采集包原文 |
-| `#/microarch` | **电气试验(microarch 代理题)轨迹**(React;同组件,microarch-1/-2 两 bundle):microarch-1(昨晚,b 提前收线 ABNORMAL)+ microarch-2(修正后重发,真判分器下 τ 0.4911<0.60 失败);2026-10-12 用户裁定自 #/handoff 独立成页 |
+| `#/tumor` | **tumor 双 agent 真实任务轨迹**(React;同组件,tumor-1/-2 两 bundle):tumor-1(2h 单跑,422 轮 / 430 工具调用 / 28 提交 / 981 系统事件)+ tumor-2(自由交接复跑,399 轮 / 21 提交;判分 0.800426),离线采集包原文;**首行主指标条** = tbs 原题名 + 总墙钟 + 成本 + 完成效果 |
+| `#/microarch` | **电气试验(microarch 代理题)轨迹**(React;同组件,microarch-1/-2 两 bundle):microarch-1(昨晚,b 提前收线 ABNORMAL)+ microarch-2(修正后重发,真判分器下 τ 0.4911<0.60 失败);2026-10-12 用户裁定自 #/handoff 独立成页;**首行主指标条** = tbs 原题名(`microarch-modeling`)+ 总墙钟 + 成本 + 完成效果 |
 
 ## 数据从哪来(以及哪些是我的推断)
 
@@ -109,6 +109,10 @@ pnpm derive     # 重新派生 src/data/experiments.json
   `#/handoff` 由 exclude 黑名单改为**显式 include 白名单**(fail-closed:新跑不自动落入交接页,
   必须在 include 表登记)——针对「新 bundle 悄悄落入交接页」这类整理错误的机制性预防;
   两页截图回读(交接页选择器 16 项无 microarch、电气页 microarch-1/-2 两 bundle 在列)。
+- 2026-10-12(主指标与排版):实验页**首行新增「主指标条」**(tbs 原题短名 + 总墙钟 + 成本 + 完成效果;
+  `views/replay/meta.ts` 载四跑);四跑 label 改用 tbs 原题式(`tumor-immune-interface · tumor-2` 等);
+  `.rp-readout` 改可换行修掉轨迹卡片文字溢出——1150 窄窗截图复测(指标条两行折行、
+  交接页 readout 收于卡内;`/tmp/viz-meta-*.png`)。
 - 取回件里的 5 个 `.typ` 由语料自己的 `make all` 编译,**0 error / 0 warning**;
   B 线 v(6) 与磁盘那份**归一化后逐字节相同**(唯一差异是一个尾部空行),这是整条抽取管线的校准点。
 - 调色板经 dataviz 校验器:6 色方案在色盲模拟下多组可混,故降为 3 彩色 + 1 中性;
