@@ -11,7 +11,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends python3 python3-pip ca-certificates git inotify-tools curl && \
     rm -rf /var/lib/apt/lists/*
 
-# Deviation from upstream (ours, 2026-10-11): node v22.9.0 + qwen-code 0.25.0
+# Deviation from upstream (ours, 2026-10-11; qwen-code bumped 2026-10-12): node
+# v22.9.0 + qwen-code 0.25.1
 # are baked at build time. Per-trial setup previously paid apt + a 52 MB
 # npmmirror CDN download + npm install — measured 25-79 s across runs with ~8x
 # CDN jitter, a pure network tax that leaked run-to-run variance into setup
@@ -24,7 +25,7 @@ RUN set -eux; \
     tar -xzf /tmp/node.tar.gz -C /usr/local --strip-components=1; \
     rm /tmp/node.tar.gz; \
     npm config set registry https://registry.npmmirror.com; \
-    npm install -g --no-audit --no-fund @qwen-code/qwen-code@0.25.0; \
+    npm install -g --no-audit --no-fund @qwen-code/qwen-code@0.25.1; \
     node --version; qwen --version
 
 # The full analysis stack is preinstalled and pinned, so results do not depend

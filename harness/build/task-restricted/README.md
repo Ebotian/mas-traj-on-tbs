@@ -10,7 +10,7 @@
   2) HF payload 由构建内快照改为 **`COPY payload /root/data` + 原样聚合 digest 断言**
      （构建内取 HF 在本机不可达；payload 由 `data/fetch_payload_curl.sh` 宿主机抓取，
      161 文件，聚合 digest `babbc611…`，构建时断言，替换/残缺载荷会**响亮失败**）；
-  3) **curl + node v22.9.0 + @qwen-code/qwen-code 0.25.0 构建期烘焙**（消除每跑 25–79s 的
+  3) **curl + node v22.9.0 + @qwen-code/qwen-code 0.25.1 构建期烘焙**（消除每跑 25–79s 的
      网络化装机抖动，配套 `walkthrough/common/dual_agent.py` 的 `command -v qwen` 守卫回退）。
 - wheels 为本地闭包 + `--no-index` 安装（8 个钉版包：numpy 2.1.3 / scipy 1.14.1 / pandas 2.2.3 /
   scikit-image 0.24.0 / scikit-learn 1.5.2 / matplotlib 3.9.2 / tifffile 2024.8.30 /

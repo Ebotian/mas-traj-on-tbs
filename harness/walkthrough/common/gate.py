@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """PreToolUse round gate for the dual-agent runs (hybrid wait).
 
-Hook contract (qwen-code 0.25.0, pinned 464f486e):
+Hook contract (qwen-code 0.25.1, pinned 726e8d77; event set + exit-2/non-blocking
+strings re-checked against the 0.25.1 bundle 2026-10-12):
 - PreToolUse command hooks run BEFORE the tool call and are awaited; a commit
   attempt is therefore held open while this script waits.
 - Exit 0 = allow; exit 2 = BLOCK with the stderr text as the reason.
