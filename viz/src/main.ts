@@ -11,6 +11,7 @@ import * as library from './views/library.ts'
 import * as replay from './views/replay/index.tsx'
 import * as handoff from './views/handoff.tsx'
 import * as tumor from './views/tumor.tsx'
+import * as microarch from './views/microarch.tsx'
 import './style.css'
 
 interface View { id: string; label: string; hint: string; render: (host: HTMLElement) => void }
@@ -26,8 +27,9 @@ const VIEWS: View[] = [
   { id: 'coverage', label: '我的覆盖率', hint: '一手 / 二手 / 没读', render: coverage.render },
   { id: 'library', label: '账户库', hint: '159 条 · 取回 17 份 · 一处结论被推翻', render: library.render },
   { id: 'replay', label: '轨迹重建', hint: 'w4/w5 逐步回放:滑块 × 轮 · git 节点 · 工具与思考可展开', render: replay.render },
-  { id: 'handoff', label: '交接实验', hint: '走查全族 13 跑逐步回放:w4/w5/w6/4×2', render: handoff.render },
-  { id: 'tumor', label: 'tumor 双agent', hint: 'tumor-1 真实任务:422 轮 / 430 调用 / 28 提交', render: tumor.render },
+  { id: 'handoff', label: '交接实验', hint: '走查全族 13 跑 + bump-0251 + A2A spike/融合 逐步回放', render: handoff.render },
+  { id: 'tumor', label: 'tumor 双agent', hint: 'tumor-1/-2 真实任务:双 agent 轨迹回放', render: tumor.render },
+  { id: 'microarch', label: '电气试验', hint: 'microarch 代理题真实任务:microarch-1(昨晚)/ -2(修正重发)', render: microarch.render },
 ]
 
 function currentId(): string {

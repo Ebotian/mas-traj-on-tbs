@@ -35,8 +35,17 @@
 ## 新增一个实验(可复用流程)
 
 1. 从 job 目录或轨迹文件目录收集源;容器内(如 A2A)的 chats 先 `docker cp` 到宿主机固定目录;
-2. 在 `refresh_replays.sh` 的 `SRC`/`LABEL` 各增一行;
-3. `bash viz/scripts/refresh_replays.sh <exp>` → `npm run build` → (按需)探针/截图验证。
+2. 在 `refresh_replays.sh` 的 `SRC`/`LABEL` 各增一行;**并在对应视图登记归属**——
+   `views/*.tsx` 的 **include 白名单**(fail-closed:未登记的跑不会出现在任何页面)。
+   归属表:tumor1/2 → `#/tumor`;microarch1/2 → `#/microarch`;交接系(w4/w5/w6 族)+ bump0251 + a2a → `#/handoff`;
+3. `bash viz/scripts/refresh_replays.sh <exp>` → **`npm run check:views`**(归属守卫:孤儿/幽灵登记,见下)
+   → `npm run build` → (按需)探针/截图验证。
+
+## 归属守卫(`npm run check:views`)
+
+`scripts/check_views.mjs` 检查 **index.json ↔ 各 React 视图 include 白名单**的一致性:
+- **孤儿**(轨迹在库、任何页面不可达)与**幽灵**(视图登记了、bundle 不存在)→ 退出码 1 并列出;
+- 并打印每个视图的当前归属清单,便于人工核对家族正确性(该判断不自动化,归属表见上)。
 
 ## 验证方式
 

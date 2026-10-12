@@ -26,8 +26,9 @@ pnpm derive     # 重新派生 src/data/experiments.json
 | `#/coverage` | 我自己的阅读覆盖率:73 个语料文件的逐文件行数与已读行数,三档折扣 |
 | `#/library` | 账户 Library 的核查台账:159 条 → 118 条本地没有 → 取回 17 份;三条取回通道各自的陷阱;一处**被推翻的结论** |
 | `#/replay` | 轨迹重建(React 19 组件化单页;w4/w5 走查逐步回放):双珠链时间条(珠径 ∝ 工具调用数;上=A·deepseek-flash · 下=B·qwen3.8-flash)、git 中脊(◆ 普通 · ◉ 玫红实边圆 = merge · ◯ 蓝实边环 + 小字 = tag)、门/板刻度;滑块粒度 = 一个对话轮,输入框精确到第 N 轮,点珠/节点跳转;右侧 git 织图(**git log --graph 版式**:轨道列 = 分支线(灰=main · 蓝=a · 绿=b)、分叉/汇合为曲线、分支/tag 徽章;全部提交任何步都在场,未发生的降透明、随步点亮)与协议账随步点亮/变暗;本步详情按 parts 原序展开(思考可折叠、工具卡带结果与原始行)。数据 = 采集包原文(raw 逐行入档),折叠只改显示;卡 2「**时间与成本统计**」= 每 actor 时长分布(中位/p90/最长)· tokens 堆叠条(uncached/cache/out)· 映射成本(A US$ · B ¥=credits;口径同 metrics.py) |
-| `#/handoff` | **交接实验全族**(React;复用轨迹重建组件,**18 个 bundle 可切换**):w4/w5 走查 + w6 机制排练 + w6-4×2 两臂 8 跑 + 2 冒烟 + microarch-1/2 + bump-0251(0.25.1 全流程走查)+ A2A spike/融合(容器内轨迹文件直入),默认停在 w6;每跑同款双珠链/git 织图/门板账 + 时间与成本统计,逐步回放 |
-| `#/tumor` | **tumor-1 双 agent 真实任务轨迹**(React;同组件,单 bundle):2h 单跑,422 轮 / 430 工具调用 / 28 提交 / 981 系统事件,离线采集包原文 |
+| `#/handoff` | **交接实验(双 agent 走查/机制族)**(React;复用轨迹重建组件,**16 个 bundle**,显式 include 白名单):走查系 13 跑(w4/w5 + w6 机制排练 + w6-4×2 两臂 8 跑 + 2 冒烟)+ bump-0251(0.25.1 全流程走查)+ A2A spike/融合(容器内轨迹文件直入),默认停在 w6;每跑同款双珠链/git 织图/门板账 + 时间与成本统计,逐步回放 |
+| `#/tumor` | **tumor 双 agent 真实任务轨迹**(React;同组件,tumor-1/-2 两 bundle):tumor-1(2h 单跑,422 轮 / 430 工具调用 / 28 提交 / 981 系统事件)+ tumor-2(自由交接复跑,399 轮 / 21 提交;判分 0.800426),离线采集包原文 |
+| `#/microarch` | **电气试验(microarch 代理题)轨迹**(React;同组件,microarch-1/-2 两 bundle):microarch-1(昨晚,b 提前收线 ABNORMAL)+ microarch-2(修正后重发,真判分器下 τ 0.4911<0.60 失败);2026-10-12 用户裁定自 #/handoff 独立成页 |
 
 ## 数据从哪来(以及哪些是我的推断)
 
@@ -104,6 +105,10 @@ pnpm derive     # 重新派生 src/data/experiments.json
   其中 A2A 两条来自容器内 `~/.qwen/projects/*/chats` 的轨迹文件直入);`#/handoff`/`#/replay` 增
   「时间与成本统计」卡;无头铬 1440×1400 两跑截图回读(w6:a 9.95M tokens·US$0.1853 / b 4.67M·¥0.754=151cr;
   a2afusion:选择器/读数/统计/`B-ON-QWEN38` 详情/0 提交空态均在)。流程与复用步骤见 `scripts/README.md`。
+- 2026-10-12(修正归类):用户裁定「电气试验不应放在交接实验下」——**电气试验独立成页 `#/microarch`**;
+  `#/handoff` 由 exclude 黑名单改为**显式 include 白名单**(fail-closed:新跑不自动落入交接页,
+  必须在 include 表登记)——针对「新 bundle 悄悄落入交接页」这类整理错误的机制性预防;
+  两页截图回读(交接页选择器 16 项无 microarch、电气页 microarch-1/-2 两 bundle 在列)。
 - 取回件里的 5 个 `.typ` 由语料自己的 `make all` 编译,**0 error / 0 warning**;
   B 线 v(6) 与磁盘那份**归一化后逐字节相同**(唯一差异是一个尾部空行),这是整条抽取管线的校准点。
 - 调色板经 dataviz 校验器:6 色方案在色盲模拟下多组可混,故降为 3 彩色 + 1 中性;
