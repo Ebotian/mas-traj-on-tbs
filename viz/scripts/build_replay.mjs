@@ -31,7 +31,7 @@ if (!jobDir) { console.error('usage: build_replay.mjs <job-dir> --exp <id> --lab
 const exp = arg('exp') ?? path.basename(jobDir)
 const label = arg('label') ?? exp
 
-const trial = readdirSync(jobDir).map(d => path.join(jobDir, d)).find(p => path.basename(p).startsWith('task-restricted__'))
+const trial = readdirSync(jobDir).map(d => path.join(jobDir, d)).find(p => path.basename(p).startsWith('task-'))
 if (!trial) { console.error(`no trial dir under ${jobDir}`); process.exit(1) }
 const C = path.join(trial, 'artifacts', 'root', 'wt', 'collect')
 
