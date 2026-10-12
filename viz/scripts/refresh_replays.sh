@@ -25,6 +25,8 @@ declare -A SRC=(
   [w6r3]="/home/ebt/harbor-runs/jobs/agent/w6r3"
   [w6r4]="/home/ebt/harbor-runs/jobs/agent/w6r4"
   [w6rp]="/home/ebt/harbor-runs/jobs/agent/w6r-pilot"
+  [w7]="/home/ebt/harbor-runs/jobs/agent/walkthrough-7"
+  [w8]="/home/ebt/harbor-runs/jobs/agent/walkthrough-8"
 )
 declare -A LABEL=(
   [a2afusion]="A2A 融合(双 daemon·互寻址)"
@@ -47,11 +49,14 @@ declare -A LABEL=(
   [w6r3]="w6-4×2·R#3"
   [w6r4]="w6-4×2·R#4"
   [w6rp]="w6-4×2·R冒烟"
+  [w7]="walkthrough-7(v3 全链 E2E 首跑)"
+  [w8]="walkthrough-8(v3 全链 E2E 重跑·NORMAL)"
 )
 
 EXPS=("$@")
-if [ ${#EXPS[@]} -eq 0 ]; then EXPS=(a2afusion a2aspike bump0251 microarch1 microarch2 tumor1 tumor2 w4 w5 w6 w6n1 w6n2 w6n3 w6n4 w6np w6r1 w6r2 w6r3 w6r4 w6rp); fi
+if [ ${#EXPS[@]} -eq 0 ]; then EXPS=(a2afusion a2aspike bump0251 microarch1 microarch2 tumor1 tumor2 w4 w5 w6 w6n1 w6n2 w6n3 w6n4 w6np w6r1 w6r2 w6r3 w6r4 w6rp w7 w8); fi
 for exp in "${EXPS[@]}"; do
   node scripts/build_replay.mjs ${SRC[$exp]} --exp "$exp" --label "${LABEL[$exp]}"
 done
+python3 scripts/build_process.py
 echo "refresh done: ${EXPS[*]}"

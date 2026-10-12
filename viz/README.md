@@ -1,7 +1,7 @@
 # viz/ · 构想结构可视化
 
 对 `related_files/` 语料 + `a0/` 测量链 + 一条 ChatGPT 对话 + **一个账户侧文件库** + **双 agent 走查轨迹**的
-系统化可视化。十二个视图,TypeScript + Vite;**`#/replay`/`#/handoff`/`#/tumor` 是 React 19 + d3-scale 的组件化单页,
+系统化可视化。十四个视图,TypeScript + Vite;**`#/replay`/`#/handoff`/`#/tumor` 是 React 19 + d3-scale 的组件化单页,
 其余视图零框架、图表是手写的 SVG(不是图表库)**。
 
 ```
@@ -12,7 +12,7 @@ pnpm preview    # http://localhost:4178  (服务 dist/)
 pnpm derive     # 重新派生 src/data/experiments.json
 ```
 
-## 十个视图
+## 十四个视图
 
 | 路由 | 内容 |
 |---|---|
@@ -26,9 +26,10 @@ pnpm derive     # 重新派生 src/data/experiments.json
 | `#/coverage` | 我自己的阅读覆盖率:73 个语料文件的逐文件行数与已读行数,三档折扣 |
 | `#/library` | 账户 Library 的核查台账:159 条 → 118 条本地没有 → 取回 17 份;三条取回通道各自的陷阱;一处**被推翻的结论** |
 | `#/replay` | 轨迹重建(React 19 组件化单页;w4/w5 走查逐步回放):双珠链时间条(珠径 ∝ 工具调用数;上=A·deepseek-flash · 下=B·qwen3.8-flash)、git 中脊(◆ 普通 · ◉ 玫红实边圆 = merge · ◯ 蓝实边环 + 小字 = tag)、门/板刻度;滑块粒度 = 一个对话轮,输入框精确到第 N 轮,点珠/节点跳转;右侧 git 织图(**git log --graph 版式**:轨道列 = 分支线(灰=main · 蓝=a · 绿=b)、分叉/汇合为曲线、分支/tag 徽章;全部提交任何步都在场,未发生的降透明、随步点亮)与协议账随步点亮/变暗;本步详情按 parts 原序展开(思考可折叠、工具卡带结果与原始行)。数据 = 采集包原文(raw 逐行入档),折叠只改显示;卡 2「**时间与成本统计**」= 每 actor 时长分布(中位/p90/最长)· tokens 堆叠条(uncached/cache/out)· 映射成本(A US$ · B ¥=credits;口径同 metrics.py) |
-| `#/handoff` | **交接实验(双 agent 走查/机制族)**(React;复用轨迹重建组件,**16 个 bundle**,显式 include 白名单):走查系 13 跑(w4/w5 + w6 机制排练 + w6-4×2 两臂 8 跑 + 2 冒烟)+ bump-0251(0.25.1 全流程走查)+ A2A spike/融合(容器内轨迹文件直入),默认停在 w6;每跑同款双珠链/git 织图/门板账 + 时间与成本统计,逐步回放 |
+| `#/handoff` | **交接实验(双 agent 走查/机制族)**(React;复用轨迹重建组件,**18 个 bundle**,显式 include 白名单):走查系 15 跑(w4/w5 + w6 机制排练 + w6-4×2 两臂 8 跑 + 2 冒烟 + w7/w8 v3 全链 E2E)+ bump-0251(0.25.1 全流程走查)+ A2A spike/融合(容器内轨迹文件直入),默认停在 w6;每跑同款双珠链/git 织图/门板账 + 时间与成本统计,逐步回放 |
 | `#/tumor` | **tumor 双 agent 真实任务轨迹**(React;同组件,tumor-1/-2 两 bundle):tumor-1(2h 单跑,422 轮 / 430 工具调用 / 28 提交 / 981 系统事件)+ tumor-2(自由交接复跑,399 轮 / 21 提交;判分 0.800426),离线采集包原文;**首行主指标条** = tbs 原题名 + 总墙钟 + 成本 + 完成效果 |
 | `#/microarch` | **电气试验(microarch 代理题)轨迹**(React;同组件,microarch-1/-2 两 bundle):microarch-1(昨晚,b 提前收线 ABNORMAL)+ microarch-2(修正后重发,真判分器下 τ 0.4911<0.60 失败);2026-10-12 用户裁定自 #/handoff 独立成页;**首行主指标条** = tbs 原题名(`microarch-modeling`)+ 总墙钟 + 成本 + 完成效果 |
+| `#/process` | **过程观测 · 全族 20 跑前缀级只读审计**(零框架手绘 SVG;数据由 `scripts/build_process.py` 现算入 `src/data/process.json`):截尾账本(「完美停」上限)· 上下文增长 · 停/收口信号 × 判决 · 门决策账本(gate.log 全量)· 逐跑探索(每跑双侧逐步 cache/间隔序列);exp 名与轨迹页同源对齐 |
 
 ## 数据从哪来(以及哪些是我的推断)
 
@@ -52,11 +53,13 @@ pnpm derive     # 重新派生 src/data/experiments.json
   以及 7 条取不到的条目和原因。**三条通道的可信度不同**:拼接与剪贴板是无损的(其中 v(6) 与磁盘
   那份归一化后逐字节相同),沙盒 iframe 只能拿到渲染文本,所以那三份文件名带 `.rendered.txt`。
 - `src/data/a0.ts`、`src/data/corpus.ts` —— 从被引文件逐条誊录,每条带 `path:line`。
-- `public/replay/*.json` —— 双 agent 轨迹重建数据(走查全族 w4/w5/w6/4×2 两臂与冒烟 + tumor-1),由 `scripts/build_replay.mjs`
+- `public/replay/*.json` —— 双 agent 轨迹重建数据(全 22 跑:走查 w4–w8 与 4×2 两臂冒烟 + tumor1/2 + microarch1/2 + bump-0251 + A2A spike/融合),由 `scripts/build_replay.mjs`
   从 harbor job 目录生成:会话 JSONL 逐行 **raw 原文 + 解析结构**双份、git 从收集的 bundle 在宿主机
   现场重放(含每提交的 a/b/main 可达集,供「某时刻分支尖」重建)、gate/board/state 原样收编。
-  **重新生成**:`node scripts/build_replay.mjs <job-dir> --exp <id> --label "…"`(job 目录在仓库外,
+  **重新生成**:`bash scripts/refresh_replays.sh`(全族一键;末尾自动重跑 `build_process.py`),
+  或单个 `node scripts/build_replay.mjs <job-dir> --exp <id> --label "…"`(job 目录在仓库外,
   报告与全部记录在 spec §6.6)。
+- `src/data/process.json` —— 对 `jobs/agent` 全族跑的**只读前缀级审计**(截尾账本 / 上下文增长 / 停信号 / 门账本 / 逐步序列),由 `scripts/build_process.py` 现算;exp 名与 `public/replay` 同源对齐(同一批跑的两面)。
 
 **标为【推断】的内容不来自任何文档**,目前有三处:
 1. `#/overview` 的「八行实验矩阵 × 四能力」映射。八行出自 `agent_engineering_science_report.tex`,
@@ -114,6 +117,7 @@ pnpm derive     # 重新派生 src/data/experiments.json
   `.rp-readout` 改可换行修掉轨迹卡片文字溢出——1150 窄窗截图复测(指标条两行折行、
   交接页 readout 收于卡内;`/tmp/viz-meta-*.png`)。成本侧按用户令「按1:7统一换算为rmb计价」——
   主指标条与统计卡均以 **¥** 为主(明注「1 USD = 7 CNY」折算规则;原币种保留于括注供追溯)。
+- 2026-10-12(**过程观测 #/process**):吸收 EarlyEval 观测设计(前缀化视图 / 决策-记账分离,只观测不截断)——`scripts/build_process.py`(只读、零依赖)对 jobs/agent 全族 20 跑做前缀级审计入 `src/data/process.json`(截尾账本/上下文增长/停·收口信号/gate 决策账本/逐步序列);新页 `#/process`;w7/w8 补入轨迹族(refresh 列表 + `#/handoff` include,**22 bundle**;交接页选择器 w7/w8 在列)。验证:`npm run build`(tsc+vite)、探针 8/8、check:views 22/22;无头铬截图**逐张回读**(页顶 + 滚至逐跑探索区;DOM 抽验 4,035 步 / 71/71 / 20 跑 / 38.3% 全在场,`/tmp/viz-process2.png`、`/tmp/viz-process-bottom.png`)。实现期由 tsc 与回读各捕获一处(括号、note 合并),修正后复跑全绿。
 - 取回件里的 5 个 `.typ` 由语料自己的 `make all` 编译,**0 error / 0 warning**;
   B 线 v(6) 与磁盘那份**归一化后逐字节相同**(唯一差异是一个尾部空行),这是整条抽取管线的校准点。
 - 调色板经 dataviz 校验器:6 色方案在色盲模拟下多组可混,故降为 3 彩色 + 1 中性;

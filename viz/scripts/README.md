@@ -2,7 +2,7 @@
 
 ## 一键重生成(推荐入口)
 
-    bash viz/scripts/refresh_replays.sh              # 全族(20 个 exp)
+    bash viz/scripts/refresh_replays.sh              # 全族(22 个 exp;末尾自动重跑 build_process.py)
     bash viz/scripts/refresh_replays.sh tumor2 w6    # 只重建指定 exp
 
 清单在脚本内(`SRC`/`LABEL` 两个关联数组):exp ← 源路径(可多源)+ 标签(沿用 index)。
@@ -32,12 +32,19 @@
 - **对账**:2026-10-12 以 microarch2 复算 — A$ 1.604306 / B¥ 5.1177116 / cr(k1) 1023.5,
   与 metrics.py 表(A$ 1.6043 / B¥ 5.118 / cr 1024)逐位一致。
 
+## 过程观测数据(src/data/process.json)
+
+`python3 scripts/build_process.py` —— 对 `jobs/agent` 全部已采集跑次的**只读**前缀级审计:
+截尾账本(「完美停」上限)/ 上下文增长 / 停·收口信号 / gate 决策账本 / 每跑双侧逐步序列。
+口径与 metrics.py 同源;exp 名与 replay bundle 对齐(同一批跑的两面)。
+`refresh_replays.sh` 末尾自动调用;单独重算亦可。
+
 ## 新增一个实验(可复用流程)
 
 1. 从 job 目录或轨迹文件目录收集源;容器内(如 A2A)的 chats 先 `docker cp` 到宿主机固定目录;
 2. 在 `refresh_replays.sh` 的 `SRC`/`LABEL` 各增一行;**并在对应视图登记归属**——
    `views/*.tsx` 的 **include 白名单**(fail-closed:未登记的跑不会出现在任何页面)。
-   归属表:tumor1/2 → `#/tumor`;microarch1/2 → `#/microarch`;交接系(w4/w5/w6 族)+ bump0251 + a2a → `#/handoff`;
+   归属表:tumor1/2 → `#/tumor`;microarch1/2 → `#/microarch`;交接系(w4–w8 族)+ bump0251 + a2a → `#/handoff`;
 3. `bash viz/scripts/refresh_replays.sh <exp>` → **`npm run check:views`**(归属守卫:孤儿/幽灵登记,见下)
    → `npm run build` → (按需)探针/截图验证。
 

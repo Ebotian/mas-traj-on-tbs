@@ -12,6 +12,7 @@ import * as replay from './views/replay/index.tsx'
 import * as handoff from './views/handoff.tsx'
 import * as tumor from './views/tumor.tsx'
 import * as microarch from './views/microarch.tsx'
+import * as processView from './views/process.ts'
 import './style.css'
 
 interface View { id: string; label: string; hint: string; render: (host: HTMLElement) => void }
@@ -30,6 +31,7 @@ const VIEWS: View[] = [
   { id: 'handoff', label: '交接实验', hint: '走查全族 13 跑 + bump-0251 + A2A spike/融合 逐步回放', render: handoff.render },
   { id: 'tumor', label: 'tumor 双agent', hint: 'tumor-1/-2 真实任务:双 agent 轨迹回放', render: tumor.render },
   { id: 'microarch', label: '电气试验', hint: 'microarch 代理题真实任务:microarch-1(昨晚)/ -2(修正重发)', render: microarch.render },
+  { id: 'process', label: '过程观测', hint: '全族 20 跑前缀级审计:截尾账本 · 上下文增长 · 停/收口信号 · 门决策账本(只读,与轨迹页同源)', render: processView.render },
 ]
 
 function currentId(): string {
