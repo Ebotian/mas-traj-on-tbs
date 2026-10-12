@@ -245,6 +245,68 @@ def t_audit_metadata_tier():
     assert rc == 0, "metadata touch must not count as a violation (rc=%d)" % rc
     assert "metadata" in out.lower(), out[:300]
 
+def t_audit_prose_mention():
+    # w7 false positive: prose inside a written artifact quoting the peer
+    # path next to a command word is a mention, never a read.
+    d = tempfile.mkdtemp(prefix="traj-t-")
+    synth = os.path.join(d, "synth3.jsonl")
+    inj = json.dumps({
+        "uuid": "inj-3", "parentUuid": "x", "sessionId": "bb59b08d-0ed5-45f8-92d7-0aff0edacd1d",
+        "timestamp": "2026-10-10T15:52:00.000Z", "type": "assistant",
+        "provenance": "assistant_output",
+        "message": {"role": "model", "parts": [{"functionCall": {
+            "name": "write_file",
+            "args": {"file_path": "/root/wt/a/notes.md",
+                     "content": "U4 python3 /root/wt/front_phase.py reads the sealed "
+                                "/root/.qwen/projects/-root-wt-b snapshot only"}}}]},
+    }) + "\n"
+    open(synth, "wb").write(complete_lines(FA, 60) + inj.encode())
+    rc, out, err = run([TRAJ, "audit-seal", "--actor", "a", "--peer", "b", "--transcript", synth])
+    assert rc == 0, "written prose must be a mention, not a violation (rc=%d, out=%r)" % (rc, out[:300])
+    assert "mention" in out.lower(), out[:300]
+
+def t_audit_read_file_violation():
+    d = tempfile.mkdtemp(prefix="traj-t-")
+    synth = os.path.join(d, "synth4.jsonl")
+    inj = json.dumps({
+        "uuid": "inj-4", "parentUuid": "x", "sessionId": "bb59b08d-0ed5-45f8-92d7-0aff0edacd1d",
+        "timestamp": "2026-10-10T15:53:00.000Z", "type": "assistant",
+        "provenance": "assistant_output",
+        "message": {"role": "model", "parts": [{"functionCall": {
+            "name": "read_file",
+            "args": {"file_path": "/root/.qwen/projects/-root-wt-b/chats/x.jsonl"}}}]},
+    }) + "\n"
+    open(synth, "wb").write(complete_lines(FA, 60) + inj.encode())
+    rc, out, err = run([TRAJ, "audit-seal", "--actor", "a", "--peer", "b", "--transcript", synth])
+    assert rc == 1 and "VIOLATION content-read" in out, \
+        "read_file on the peer transcript must be a violation: %r" % out[:300]
+
+def t_audit_pair_dedup():
+    # every call is recorded twice (functionCall id + uiEvent function_args
+    # copy with the same call_id); the audit counts it once.
+    d = tempfile.mkdtemp(prefix="traj-t-")
+    synth = os.path.join(d, "synth5.jsonl")
+    cid = "call_dedup001"
+    args = {"command": "cat /root/.qwen/projects/-root-wt-b/chats/x.jsonl | head -5"}
+    fc = json.dumps({
+        "uuid": "inj-5a", "parentUuid": "x", "sessionId": "bb59b08d-0ed5-45f8-92d7-0aff0edacd1d",
+        "timestamp": "2026-10-10T15:54:00.000Z", "type": "assistant",
+        "provenance": "assistant_output",
+        "message": {"role": "model", "parts": [{"functionCall": {
+            "name": "run_shell_command", "id": cid, "args": args}}]},
+    }) + "\n"
+    fa = json.dumps({
+        "uuid": "inj-5b", "parentUuid": "x", "sessionId": "bb59b08d-0ed5-45f8-92d7-0aff0edacd1d",
+        "timestamp": "2026-10-10T15:54:00.100Z", "type": "system",
+        "systemPayload": {"uiEvent": {"function_name": "run_shell_command",
+                                      "call_id": cid, "function_args": args}}},
+    ) + "\n"
+    open(synth, "wb").write(complete_lines(FA, 60) + (fc + fa).encode())
+    rc, out, err = run([TRAJ, "audit-seal", "--actor", "a", "--peer", "b", "--transcript", synth])
+    assert rc == 1, out[:300]
+    assert out.count("VIOLATION content-read") == 1, \
+        "double-recorded call must count once: %r" % out
+
 TESTS = [
     ("build_idempotent", t_build_idempotent),
     ("build_incremental", t_build_incremental),
@@ -260,6 +322,9 @@ TESTS = [
     ("audit_seal_clean_real", t_audit_clean_real),
     ("audit_seal_detect_synth", t_audit_synth_detect),
     ("audit_seal_metadata_tier", t_audit_metadata_tier),
+    ("audit_seal_prose_mention", t_audit_prose_mention),
+    ("audit_seal_read_file_violation", t_audit_read_file_violation),
+    ("audit_seal_pair_dedup", t_audit_pair_dedup),
 ]
 
 if __name__ == "__main__":

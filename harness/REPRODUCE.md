@@ -11,8 +11,10 @@ job 产物、密钥、评分器与答案键均不入库。
 | `walkthrough/common/` | 任务无关层：通用启动器 `launch.sh`（含"正常退出→清当次镜像"策略）、agent 适配器 `dual_agent.py`、门禁 `gate.py`、等待件 `wait_*.sh`、轨迹索引/读取 `traj_index.py`/`traj.py`、引用账本 `refs.py`、TDD 套件与夹具（布局细节见 `walkthrough/README.md`） |
 | `walkthrough/tasks/walkthrough/` | 走查排练任务：`run.sh` 容器内包装、提示词（v2 `prompt.md` + v1 存档 + N/R 变体）、`agent.py`、单臂 4 并发 `wave.sh`、全链编排 `exp42.sh`、指标 `metrics.py`、保真核验 `check_manipulation.py`、实验记录 `EXPERIMENT-w6-4x2.md` |
 | `walkthrough/tasks/tumor/` | 真实任务包装：`instruction.md` + `protocol-tumor.md`、`run.sh`、`monitor_tumor.sh` |
+| `walkthrough/tasks/microarch/` | 电学任务包装（`microarch-modeling`）：`run.sh`、`protocol.md`、`agent.py`、薄 `launch.sh`；提示词 = 上游 instruction（去 canary 副本）+ 协议 |
 | `walkthrough/verify/` | 验收脚本（NORMAL/ACCEPTED 判据） |
 | `build/task-restricted/` | 任务偏离件（`task.toml` + `environment/Dockerfile`），见其 README |
+| `build/task-microarch/` | 电学任务偏离件（`task.toml` + `environment/Dockerfile`），见其 README；traces（320MB）不入包，用上游 `fetch_traces.py` 取回 |
 | `data/` | payload 抓取脚本 + 161 文件清单（名称+字节数） |
 
 ## 依赖
@@ -23,7 +25,7 @@ job 产物、密钥、评分器与答案键均不入库。
 
 ## 步骤
 
-1. 上游任务目录就位，用 `build/task-restricted/` 两文件覆盖；
+1. 上游任务目录就位，用 `build/task-restricted/`（肿瘤）与 `build/task-microarch/`（电学）各两文件覆盖（电学另需先取回 traces，见其 README）；
 2. 取大件（不入包）：
    - payload：`bash data/fetch_payload_curl.sh`（写到 `build/task-restricted/environment/payload/`；
      双路由 huggingface.co / hf-mirror.com 交替重试、断点续传；本机默认走本地代理 7890，
@@ -48,7 +50,9 @@ job 产物、密钥、评分器与答案键均不入库。
 ## 已知偏离（复现须知情）
 
 - **harbor 本地补丁**：verifier 独立环境不携带 compose overlay（上游缺口；本机以 `trial.py` 补丁
-  透传 `verifier-build-overlay.yaml`，备份 `.orig` 同置）。上游修复前需自行打补丁或等价处理。
+  **仅对 `task-restricted`** 透传 `verifier-build-overlay.yaml`，备份 `.orig` 同置；2026-10-12 修——
+  此前无条件透传曾把 tumor 包叠进 microarch 的 verifier 镜像、错跑 tumor 判分器，已按任务路径门控并冒烟复核）。
+  上游修复前需自行打补丁或等价处理。
 - **env Dockerfile 三处偏离**：见 `build/task-restricted/README.md`（git / payload COPY / node&qwen 烘焙）。
 - **本机网络特性**：大传输易断——payload 脚本已内建重试；git 推送 github.com 需要的
   `http.postBuffer/HTTP1.1` 修法见仓库根 `PUBLISHING.md`。

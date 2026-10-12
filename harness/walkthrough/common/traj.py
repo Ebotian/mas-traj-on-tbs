@@ -3,14 +3,18 @@
 
 Reading discipline (enforced here, not by convention):
   - --self  (own transcript): opens at Round 3 (x/ready-<actor>.round >= 3);
-  - --peer  (peer transcript): opens only after M1 exists (git tag ckpt-m1)
-    and reads ONLY the published snapshot x/traj-<peer>.upto-cut.jsonl,
-    which the post-commit hook maintains up to the peer's last commit.
+  - --peer  (peer transcript): v3 前段 free 窗——x/declare-a 与 x/declare-b 齐备且
+    ckpt-m01 未落签时,开放对侧全量原始转录(2026-10-12 用户裁定「允许轨迹相互可见」);
+    m01 落签后封窗;M1 起按现行纪律——仅读已发布快照 x/traj-<peer>.upto-cut.jsonl
+    (滚动至对侧上一轮),由 post-commit hook 维护。
   - every command's stdout is hard-capped (default 16 KB, ceiling 64 KB);
     narrow the query instead of dumping.
   - audit-seal scans an actor's own tool calls for reads of the peer's RAW
-    transcript: content reads are violations (exit 1), stat/ls are reported
-    as metadata touches.
+    transcript: content reads and writes into the peer area are violations
+    (exit 1); stat/ls/glob are metadata touches; written prose (content /
+    new_string) that merely quotes the literal is a mention.  Calls that the
+    chat transcript records twice (assistant functionCall + ui_telemetry
+    function_args copies) are de-duplicated.
 
 Commands:
   summary | find <regex> | steps [--tool T] [--type K] [--since TS] [--until TS]
@@ -115,6 +119,25 @@ def check_self_gate(actor, xdir):
 
 
 def check_peer_gate(peer, xdir, repo):
+    # v3 前段 free 窗(2026-10-12 用户裁定):双方申报齐备且 ckpt-m01 未落签 → 全量互读
+    if all(os.path.exists(os.path.join(xdir, "declare-%s" % s)) for s in ("a", "b")):
+        m01 = False
+        try:
+            r0 = subprocess.run(["git", "-C", repo, "tag", "-l", "ckpt-m01"],
+                                capture_output=True, text=True, timeout=20)
+            m01 = "ckpt-m01" in (r0.stdout or "").split()
+        except Exception:
+            m01 = False
+        if not m01:
+            uuf = os.path.join(xdir, "session-%s.uuid" % peer)
+            try:
+                uu = open(uuf).read().strip()
+            except OSError:
+                return None, "free window open but session-%s.uuid missing (%s)" % (peer, uuf)
+            t = "/root/.qwen/projects/-root-wt-%s/chats/%s.jsonl" % (peer, uu)
+            if not os.path.exists(t):
+                return None, "free window open but peer transcript missing (%s)" % t
+            return t, None
     try:
         r = subprocess.run(["git", "-C", repo, "tag", "-l", "ckpt-m1"],
                            capture_output=True, text=True, timeout=20)
@@ -303,15 +326,28 @@ CONTENT_VERBS = {"cat", "head", "tail", "tac", "sed", "awk", "grep", "less", "mo
                  "od", "xxd", "base64", "cut", "sort", "uniq", "cp", "tar", "zip",
                  "dd", "python", "python3", "node", "perl", "rsync"}
 META_VERBS = {"stat", "ls", "find", "test", "du", "file"}
+READ_TOOLS = {"read_file", "read_many_files"}
+WRITE_TOOLS = {"write_file", "edit", "multi_edit", "apply_patch"}
+LIST_TOOLS = {"glob", "list_directory"}
+PATH_KEYS = ("file_path", "path", "paths", "pattern", "directory", "dir")
 
 
-def audit_blobs(path):
-    """Yield (L, ts, command-blob) for every tool invocation in the transcript."""
+def audit_calls(path):
+    """Yield (L, ts, tool, args) once per tool invocation.
+
+    Every call is recorded twice in the chat transcript — the assistant
+    `functionCall` part (id) and the ui_telemetry `function_args` copy
+    (call_id) — so identical copies are collapsed (by id, with an adjacency
+    window as fallback) and each call is audited exactly once.  L is the
+    0-based transcript line index, matching traj_index.
+    """
     data = open(path, "rb").read()
     cut = data.rfind(b"\n") + 1
     lines = data[:cut].split(b"\n")
     if lines and lines[-1] == b"":
         lines.pop()
+    seen_ids = set()
+    recent = []  # (tool, blob) window for pair copies without matching ids
     L = 0
     for raw in lines:
         if raw.strip() == b"":
@@ -323,25 +359,123 @@ def audit_blobs(path):
             L += 1
             continue
         ts = d.get("timestamp") or ""
-        blobs = []
+        calls = []
 
         def walk(o):
             if isinstance(o, dict):
                 fc = o.get("functionCall")
-                if isinstance(fc, dict) and isinstance(fc.get("args"), dict):
-                    blobs.append(json.dumps(fc["args"], ensure_ascii=False))
-                fa = o.get("function_args")
-                if isinstance(fa, (dict, list)):
-                    blobs.append(json.dumps(fa, ensure_ascii=False))
+                if isinstance(fc, dict):
+                    calls.append((fc.get("name") or "?", fc.get("args"), fc.get("id")))
+                if o.get("function_args") is not None:
+                    calls.append((o.get("function_name") or "?",
+                                  o.get("function_args"), o.get("call_id")))
                 for v in o.values():
                     walk(v)
             elif isinstance(o, list):
                 for v in o:
                     walk(v)
         walk(d)
-        for b in blobs:
-            yield L, ts, b
+        for tool, args, cid in calls:
+            if args is None:
+                continue
+            if not isinstance(args, dict):
+                args = {"__raw__": args}
+            blob = json.dumps(args, ensure_ascii=False, sort_keys=True)
+            pair = (tool, blob)
+            if cid and cid in seen_ids:
+                continue
+            if pair in recent:
+                continue
+            if cid:
+                seen_ids.add(cid)
+            recent.append(pair)
+            del recent[:-8]
+            yield L, ts, tool, args
         L += 1
+
+
+def _first_pos(s, patterns):
+    best = -1
+    for p in patterns:
+        i = s.find(p)
+        if i != -1 and (best == -1 or i < best):
+            best = i
+    return best
+
+
+def _unquote(s):
+    """Drop quoted spans ('..' / "..", complete or trailing) so verdicts are
+    taken from command words, not from prose inside string arguments."""
+    out, quote = [], None
+    for c in s:
+        if quote:
+            if c == quote:
+                quote = None
+            continue
+        if c in "\"'":
+            quote = c
+            continue
+        out.append(c)
+    return "".join(out)
+
+
+def _cmd_finding(seg, patterns):
+    """Classify one shell segment (already split on ; | & newline).
+
+    Kind-based: a redirect into the path is a write; a trailing '<' is a
+    stdin content read; otherwise the nearest command verb before the first
+    path hit decides — CONTENT_VERB -> content read, META_VERB -> metadata
+    touch, anything else (echo/printf, prose, assignment) -> mention.
+    """
+    pos = _first_pos(seg, patterns)
+    if pos == -1:
+        return None
+    text = seg.strip()[:140]
+    before = seg[:pos].rstrip()
+    if before.endswith(">>") or before.endswith(">"):
+        return "violation", "write-into", text
+    if before.endswith("<"):
+        return "violation", "content-read", text
+    for tok in reversed(re.findall(r"[A-Za-z0-9_./-]+", _unquote(seg[:pos]))):
+        base = tok.rsplit("/", 1)[-1]
+        if base in CONTENT_VERBS:
+            return "violation", "content-read", text
+        if base in META_VERBS:
+            return "metadata", "metadata", text
+    return "mention", "mention", text
+
+
+def _string_finding(tool, key, s, patterns):
+    """Classify one string argument (non-shell tools) by tool kind."""
+    if _first_pos(s, patterns) == -1:
+        return None
+    text = s.strip()[:140]
+    leaf = key.rsplit(".", 1)[-1]
+    if tool in WRITE_TOOLS and leaf in PATH_KEYS:
+        return "violation", "write-into", text
+    if tool in READ_TOOLS and leaf in PATH_KEYS:
+        return "violation", "content-read", text
+    if tool in LIST_TOOLS and leaf in PATH_KEYS:
+        return "metadata", "metadata", text
+    return "mention", "mention", text
+
+
+def _walk_strings(o):
+    """Yield (dotted key, string) for every string in one args structure."""
+    if isinstance(o, dict):
+        for k, v in o.items():
+            if isinstance(v, str):
+                yield k, v
+            elif isinstance(v, (dict, list)):
+                for k2, s in _walk_strings(v):
+                    yield (k if k2 == "" else "%s.%s" % (k, k2)), s
+    elif isinstance(o, list):
+        for v in o:
+            if isinstance(v, str):
+                yield "", v
+            elif isinstance(v, (dict, list)):
+                for k2, s in _walk_strings(v):
+                    yield k2, s
 
 
 def cmd_audit_seal(opts, out):
@@ -356,24 +490,41 @@ def cmd_audit_seal(opts, out):
     patterns = ["/root/.qwen/projects/-root-wt-%s" % peer,
                 "-root-wt-%s/home/.qwen" % peer]
     n = v = m = x = 0
-    for L, ts, blob in audit_blobs(target):
+    for L, ts, tool, args in audit_calls(target):
         n += 1
-        for seg in re.split(r"[;|&\n]+", blob):
-            if not any(p in seg for p in patterns):
+        hits = []  # (sev, kind, text)
+        if tool == "run_shell_command":
+            for seg in re.split(r"[;|&\n]+", str(args.get("command") or "")):
+                f = _cmd_finding(seg, patterns)
+                if f:
+                    hits.append(f)
+            for k, s in _walk_strings(args):
+                if k == "command":
+                    continue
+                if _first_pos(s, patterns) != -1:
+                    hits.append(("mention", "mention", s.strip()[:140]))
+        else:
+            for k, s in _walk_strings(args):
+                f = _string_finding(tool, k, s, patterns)
+                if f:
+                    hits.append(f)
+        seen_hits = set()
+        for sev, kind, text in hits:
+            if (sev, kind, text) in seen_hits:
                 continue
-            toks = set(re.findall(r"[A-Za-z0-9_./-]+", seg))
-            if toks & CONTENT_VERBS:
+            seen_hits.add((sev, kind, text))
+            if sev == "violation":
                 v += 1
-                out.line("L%d %s VIOLATION content-read of peer-%s: %s"
-                         % (L, ts[11:19], peer, seg.strip()[:140]))
-            elif toks & META_VERBS:
+                out.line("L%d %s VIOLATION %s of peer-%s: %s"
+                         % (L, ts[11:19], kind, peer, text))
+            elif sev == "metadata":
                 m += 1
                 out.line("L%d %s metadata touch of peer-%s: %s"
-                         % (L, ts[11:19], peer, seg.strip()[:140]))
+                         % (L, ts[11:19], peer, text))
             else:
                 x += 1
                 out.line("L%d %s mention of peer-%s path: %s"
-                         % (L, ts[11:19], peer, seg.strip()[:140]))
+                         % (L, ts[11:19], peer, text))
     out.line("audit-seal %s vs %s: %d rows, %d violations, %d metadata touches, %d mentions — %s"
              % (actor, peer, n, v, m, x, "CLEAN" if v == 0 else "VIOLATIONS FOUND"))
     return 1 if v else 0

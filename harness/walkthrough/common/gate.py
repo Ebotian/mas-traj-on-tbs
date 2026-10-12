@@ -1,21 +1,29 @@
 #!/usr/bin/env python3
-"""PreToolUse round gate for the dual-agent runs (hybrid wait).
+"""PreToolUse round gate for the dual-agent runs (bounded hold).
 
-Hook contract (qwen-code 0.25.1, pinned 726e8d77; event set + exit-2/non-blocking
-strings re-checked against the 0.25.1 bundle 2026-10-12):
+Hook contract (qwen-code 0.25.1, pinned 726e8d77; exit-2 consumer re-checked
+against the 0.25.1 bundle 2026-10-12):
 - PreToolUse command hooks run BEFORE the tool call and are awaited; a commit
   attempt is therefore held open while this script waits.
 - Exit 0 = allow; exit 2 = BLOCK with the stderr text as the reason.
-- A timed-out hook is classified non-blocking (exit 124) and would PASS the
-  tool, so the gate must exit cleanly before its hook `timeout` (set to 940 s
-  in settings.json; internal budget is 3 x 300 s windows + checks).
+- HARD 60 s WALL (w7 finding): the client's hook request times out after 60 s
+  (`firePreToolUseHook` -> `messageBus.request(..., timeoutMs=6e4)` default)
+  and then FAILS OPEN — the tool passes silently and any later verdict is
+  dropped. The gate therefore guarantees its verdict within WT_DECIDE_SEC
+  (default 45 s, absolute deadline from script start); the settings.json hook
+  `timeout` is only a backstop against a hung process and cannot extend the
+  client wall.
 
 Barrier rule: a commit whose message carries `Round: N` (N >= 2) from actor X
 is allowed only once the peer has published `Round: N-1`
 (/root/wt/x/ready-<peer>.round, written by the git post-commit hook).
-Between windows the peer is liveness-checked (PID + its session JSONL mtime);
-a dead or stalled peer exits 2 early ("peer-stalled"), three quiet windows
-exit 2 ("exhausted"). Everything else passes instantly.
+Two refusal classes (both exit 2; the actor prompt routes on the text):
+- dead: the peer PID is gone -> terminal; the actor writes abort + END.
+- retry: the peer is alive/unknown but Round N-1 is not published at the end
+  of the bounded hold -> the actor runs wait_peer.sh (which owns the long
+  working-aware wait and the silence/stall policy) and re-attempts the
+  commit; the re-attempt after wait_peer exits 0 is fast-allowed here.
+Never a silent pass: every path exits with a verdict inside the wall.
 
 Evidence-reference gate (full-course, 2026-10-11): EVERY `(Round: N)` commit
 first runs `refs.py check` for the committing actor; any BROKEN reference
@@ -24,7 +32,6 @@ waiting cannot fix it). Conservative asymmetry: only positively-broken refs
 block; a missing or crashing checker degrades to fail-OPEN with a loud
 `refs-skip` log line (a checker bug must never brick the run).
 """
-import glob
 import json
 import os
 import pathlib
@@ -34,9 +41,9 @@ import sys
 import time
 
 X = pathlib.Path(os.environ.get("WT_X", "/root/wt/x"))
-WINDOW_SEC = int(os.environ.get("WT_WINDOW_SEC", "300"))
-WINDOWS = 3
-STALE_AFTER_SEC = int(os.environ.get("WT_STALE_SEC", "360"))
+DECIDE_SEC = min(float(os.environ.get("WT_DECIDE_SEC", "45")), 50.0)
+SLICE_SEC = float(os.environ.get("WT_SLICE_SEC", "4"))
+REFS_TIMEOUT_SEC = float(os.environ.get("WT_REFS_TIMEOUT", "15"))
 WT_ROOT = pathlib.Path(os.environ.get("WT_ROOT", "/root/wt"))
 REFS_TOOL = os.environ.get("WT_REFS_TOOL") or str(WT_ROOT / "refs.py")
 
@@ -48,7 +55,7 @@ def refs_check(actor: str, rnd: int) -> tuple:
         r = subprocess.run(
             [sys.executable, REFS_TOOL, "--actor", actor, "--refs", str(refs),
              "--round", str(rnd), "check"],
-            capture_output=True, text=True, timeout=60,
+            capture_output=True, text=True, timeout=REFS_TIMEOUT_SEC,
         )
     except Exception as e:
         return "skip", f"checker unusable: {e!r}"
@@ -80,27 +87,34 @@ def log(msg: str) -> None:
         pass
 
 
-def peer_alive(actor: str) -> bool | None:
-    """True alive, False dead, None unknown (no pid record yet)."""
+def peer_state(actor: str) -> str:
+    """dead | alive | unknown (no pid record yet).  Staleness is not judged
+    here — wait_peer.sh owns the working-aware / silence policy."""
     try:
         pid = int((X / f"pid-{actor}").read_text().strip())
     except Exception:
-        return None
+        return "unknown"
     try:
         os.kill(pid, 0)
     except OSError:
-        return False
-    try:
-        uu = (X / f"session-{actor}.uuid").read_text().strip()
-    except Exception:
-        return True
-    if not uu:
-        return True
-    files = glob.glob(f"/root/.qwen/projects/*/chats/{uu}.jsonl")
-    if not files:
-        return True  # no transcript yet: give the benefit of the doubt
-    age = time.time() - max(os.path.getmtime(f) for f in files)
-    return age < STALE_AFTER_SEC
+        return "dead"
+    return "alive"
+
+
+def block_exit(kind: str, actor: str, peer: str, need: int, when: str) -> None:
+    """Exit-2 with the class-specific message (dead = terminal, retry = wait)."""
+    if kind == "dead":
+        msg = (f"gate: peer-{peer} is not running (pid dead) and its round "
+               f"is < {need}; wait abandoned")
+        log(f"block actor={actor} peer-{peer} dead {when}")
+    else:
+        msg = (f"gate: peer-{peer} has not published Round {need} within "
+               f"{int(DECIDE_SEC)}s; wait for it "
+               f"(bash /root/wt/wait_peer.sh {peer} {need}), then attempt the "
+               f"commit again.")
+        log(f"block actor={actor} peer-{peer} alive-not-ready {when}")
+    print(msg, file=sys.stderr, flush=True)
+    sys.exit(2)
 
 
 def wait_event(secs: int) -> bool:
@@ -119,6 +133,7 @@ def wait_event(secs: int) -> bool:
 
 
 def main() -> None:
+    t0 = time.time()
     raw = sys.stdin.read()
     try:
         payload = json.loads(raw or "{}")
@@ -178,41 +193,39 @@ def main() -> None:
         log(f"fast-allow actor={actor} Round={need_for_me} peer={peer}>={need}")
         sys.exit(0)
 
-    log(f"wait-start actor={actor} Round={need_for_me} need peer-{peer}>={need}")
-    # Deadline-based wait: unrelated filesystem events in X only cause a cheap
-    # re-check; the wall budget is WINDOWS x WINDOW_SEC regardless of how noisy
-    # the directory is (counting events as "windows" collapsed the wait).
-    deadline = time.time() + WINDOW_SEC * WINDOWS
+    # Up-front liveness: a dead peer can never publish, and waiting would
+    # waste the (wall-bounded) budget.
+    if peer_state(peer) == "dead":
+        block_exit("dead", actor, peer, need, "(pre-wait)")
+
+    deadline = t0 + DECIDE_SEC
+    log(f"wait-start actor={actor} Round={need_for_me} need peer-{peer}>={need} "
+        f"budget={int(DECIDE_SEC)}s")
+    # Bounded hold: short slices keep the liveness check fresh; a ready file
+    # (or any X event) wakes the slice early. The deadline is absolute.
     w = 0
     while True:
         remaining = deadline - time.time()
         if remaining <= 0:
             break
         w += 1
-        wait_event(int(min(WINDOW_SEC, remaining)) or 1)
+        wait_event(int(min(SLICE_SEC, remaining)) or 1)
         if read_round(X / f"ready-{peer}.round") >= need:
             log(f"allow-after-wait actor={actor} Round={need_for_me} wake={w}")
             print(json.dumps(
-                {"additionalContext": f"gate: peer round {need} ready"}),
+                {"hookSpecificOutput": {"hookEventName": "PreToolUse",
+                                        "additionalContext": f"gate: peer round {need} ready"}}),
                 flush=True,
             )
             sys.exit(0)
-        alive = peer_alive(peer)
-        if alive is False:
-            log(f"block actor={actor} peer-{peer} dead after wake={w}")
-            print(
-                f"gate: peer-{peer} is not running (pid dead) and its round "
-                f"is < {need}; wait abandoned",
-                file=sys.stderr, flush=True,
-            )
-            sys.exit(2)
-    log(f"block actor={actor} exhausted budget for peer-{peer} round {need}")
-    print(
-        f"gate: exhausted {WINDOWS} x {WINDOW_SEC}s budget waiting for "
-        f"peer-{peer} round {need}",
-        file=sys.stderr, flush=True,
-    )
-    sys.exit(2)
+        if peer_state(peer) == "dead":
+            block_exit("dead", actor, peer, need, f"after wake={w}")
+
+    # Budget spent with the peer alive/unknown: retry class — the actor waits
+    # via wait_peer.sh and re-attempts; the re-attempt is fast-allowed.
+    if peer_state(peer) == "dead":
+        block_exit("dead", actor, peer, need, "(budget end)")
+    block_exit("retry", actor, peer, need, f"(budget end, {int(DECIDE_SEC)}s)")
 
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@
 #   agent-spec: "module:Class" (task launchers pass "agent:<Class>"; the module
 #   lives in the task dir named by WT_AGENT_DIR, resolved via PYTHONPATH)
 # Env:  WT_AGENT_DIR — task dir holding the agent module (set by task launcher)
+#       WT_TASK_DIR  — task copy to run (default <root>/build/task-restricted)
 #       EXTRA_AE="K=V K=V" — extra --ae pairs for the container (e.g. WT_PROMPT)
 set -eu
 JOB="${1:?usage: launch.sh <job-name> <agent-spec> <timeout-multiplier>}"
@@ -22,7 +23,7 @@ export PYTHONPATH="$ROOT/walkthrough/common:$WT_AGENT_DIR${PYTHONPATH:+:$PYTHONP
 AE_ARGS=()
 for kv in ${EXTRA_AE:-}; do AE_ARGS+=(--ae "$kv"); done
 set +e
-~/.local/bin/harbor run -p "$ROOT/build/task-restricted" \
+~/.local/bin/harbor run -p "${WT_TASK_DIR:-$ROOT/build/task-restricted}" \
   -a "$AGENT_SPEC" -y --job-name "$JOB" -o "$ROOT/jobs/agent" \
   --mounts "[{\"type\":\"bind\",\"source\":\"$ROOT/walkthrough\",\"target\":\"/root/wt-src\",\"read_only\":true}]" \
   -m deepseek-flash --ak version=0.25.1 \
@@ -39,7 +40,7 @@ RC=$?
 set -e
 # Cleanup policy: normal verdict -> remove this run's images; else keep them.
 JOBDIR="$ROOT/jobs/agent/$JOB"
-TRIAL=$(find "$JOBDIR" -maxdepth 2 -type d -name 'task-restricted__*' 2>/dev/null | head -1 || true)
+TRIAL=$(find "$JOBDIR" -maxdepth 2 -type d -name 'task-*__*' 2>/dev/null | head -1 || true)
 VERDICT=$(python3 - "${TRIAL:-/nonexistent}" <<'PY'
 import json, pathlib, sys
 p = pathlib.Path(sys.argv[1]) / "artifacts/root/wt/collect/state.json"
@@ -51,12 +52,13 @@ except Exception:
 PY
 )
 if [ "$VERDICT" = normal ] && [ -n "${TRIAL:-}" ]; then
-  SUF=$(basename "$TRIAL"); SUF=$(printf '%s' "${SUF#task-restricted__}" | tr 'A-Z' 'a-z')
-  if docker image inspect "task-restricted__${SUF}__env-main" >/dev/null 2>&1 \
-  || docker image inspect "task-restricted__${SUF}__verifier__trial-main" >/dev/null 2>&1; then
-    docker image rm "task-restricted__${SUF}__env-main" \
-                    "task-restricted__${SUF}__verifier__trial-main" >/dev/null 2>&1 || true
-    echo "cleanup[$JOB]: run NORMAL - removed images task-restricted__${SUF}__{env-main,verifier__trial-main}"
+  BASE=$(basename "$TRIAL"); PREFIX=${BASE%%__*}; SUF=$(printf '%s' "${BASE#*__}" | tr 'A-Z' 'a-z')
+  IMG1=$(printf '%s' "${PREFIX}__${SUF}__env-main" | tr 'A-Z' 'a-z')
+  IMG2=$(printf '%s' "${PREFIX}__${SUF}__verifier__trial-main" | tr 'A-Z' 'a-z')
+  if docker image inspect "$IMG1" >/dev/null 2>&1 \
+  || docker image inspect "$IMG2" >/dev/null 2>&1; then
+    docker image rm "$IMG1" "$IMG2" >/dev/null 2>&1 || true
+    echo "cleanup[$JOB]: run NORMAL - removed images ${IMG1} + ${IMG2}"
   else
     echo "cleanup[$JOB]: run NORMAL - no images found for suffix ${SUF}"
   fi

@@ -10,6 +10,8 @@ WT=/root/wt
 X=$WT/x
 C=$WT/collect
 LOGS=/logs/agent
+FRONT_PHASE="${WT_FRONT_PHASE:-1}"
+export WT_EXPECT_TAGS="${WT_EXPECT_TAGS:-$([ "$FRONT_PHASE" = "1" ] && echo ckpt-m00,ckpt-m01,ckpt-m1,ckpt-m2 || echo ckpt-m1,ckpt-m2)}"
 mkdir -p "$WT" "$X" "$C" "$LOGS"
 # Credentials: --env-file reaches the harbor PROCESS, not this container, so
 # source the mounted env file here (mode 600, read-only mount) and fail loud.
@@ -23,7 +25,7 @@ mkdir -p /root/results
 for f in cluster_annotations tumor_interface_qc cell_signed_distances patient_distance_profiles interface_gradients; do
   [ -f "/root/results/$f.csv" ] || printf 'placeholder\n' > "/root/results/$f.csv"
 done
-cp "$SRC/common/gate.py" "$SRC/common/wait_peer.sh" "$SRC/common/post-commit.sh" "$SRC/common/traj.py" "$SRC/common/traj_index.py" "$SRC/common/refs.py" "$WT/"
+cp "$SRC/common/gate.py" "$SRC/common/wait_peer.sh" "$SRC/common/post-commit.sh" "$SRC/common/traj.py" "$SRC/common/traj_index.py" "$SRC/common/refs.py" "$SRC/common/recover.py" "$SRC/common/git_structure.py" "$SRC/common/front_phase.py" "$SRC/common/traj_stats.py" "$WT/"
 chmod +x "$WT/gate.py" "$WT/wait_peer.sh" "$WT/post-commit.sh"
 
 # workspace
@@ -38,6 +40,7 @@ if [ ! -d repo ]; then
 fi
 cd "$WT/repo"
 cp "$SRC/common/post-commit.sh" .git/hooks/post-commit && chmod +x .git/hooks/post-commit
+cp "$SRC/common/reference-transaction.sh" .git/hooks/reference-transaction && chmod +x .git/hooks/reference-transaction
 git worktree add -q ../a -b a 2>/dev/null || true
 git worktree add -q ../b -b b 2>/dev/null || true
 
@@ -57,8 +60,10 @@ cp "$WT/b/.qwen/settings.json" "$X/effort-b.json"
 # prompts (WT_PROMPT selects the variant inside this task dir; default prompt.md)
 PROMPT="${WT_PROMPT:-prompt.md}"
 echo "$PROMPT" > "$X/prompt-variant"
-sed -e "s/@@ACTOR@@/a/g" -e "s/@@PEER@@/b/g" "$SRC/tasks/walkthrough/$PROMPT" > "$WT/prompt-a.txt"
-sed -e "s/@@ACTOR@@/b/g" -e "s/@@PEER@@/a/g" "$SRC/tasks/walkthrough/$PROMPT" > "$WT/prompt-b.txt"
+{ if [ "${FRONT_PHASE:-1}" = "1" ]; then sed -e "s/@@ACTOR@@/a/g" -e "s/@@PEER@@/b/g" "$SRC/common/front-phase.md"; printf '\n\n---\n\n'; fi; \
+  sed -e "s/@@ACTOR@@/a/g" -e "s/@@PEER@@/b/g" "$SRC/tasks/walkthrough/$PROMPT"; } > "$WT/prompt-a.txt"
+{ if [ "${FRONT_PHASE:-1}" = "1" ]; then sed -e "s/@@ACTOR@@/b/g" -e "s/@@PEER@@/a/g" "$SRC/common/front-phase.md"; printf '\n\n---\n\n'; fi; \
+  sed -e "s/@@ACTOR@@/b/g" -e "s/@@PEER@@/a/g" "$SRC/tasks/walkthrough/$PROMPT"; } > "$WT/prompt-b.txt"
 
 UA=$(python3 -c 'import uuid;print(uuid.uuid4())')
 UB=$(python3 -c 'import uuid;print(uuid.uuid4())')
@@ -80,9 +85,30 @@ PA=$!; echo "$PA" > "$X/pid-a"
     > "$LOGS/wa-b.out" 2>&1 ) &
 PB=$!; echo "$PB" > "$X/pid-b"
 
+# —— v3 前段:m00 落签后系统下发 SOP(看门件;≤60s 迟滞;WT_FRONT_PHASE=0 关) ——
+if [ "${FRONT_PHASE:-1}" = "1" ]; then
+  ( while kill -0 "$PA" 2>/dev/null || kill -0 "$PB" 2>/dev/null; do
+      python3 "$WT/front_phase.py" dispatch "$WT/repo" "$X" "$LOGS" >/dev/null 2>&1 || true
+      python3 "$WT/traj_stats.py" auto "$WT/repo" "$X" >/dev/null 2>&1 || true
+      sleep 60
+    done ) &
+  SOPW=$!
+fi
+
 wait "$PA"; RA=$?
 wait "$PB"; RB=$?
+if [ -n "${SOPW:-}" ]; then kill "$SOPW" 2>/dev/null || true; fi
 echo "$RA $RB" > "$X/rcs"
+
+# —— 收口机制补充(2026-10-12,用户裁定「只做机制补充」):git duty/结构判定 + 受限唤醒(≤1/侧) ——
+# 关断:WT_RECOVER=0;时限:WT_WAKE_TIMEOUT(秒,默认 900)。只新增提交/删残引,不改写历史。
+if [ "${WT_RECOVER:-1}" = "1" ]; then
+  python3 "$WT/recover.py" "$WT/repo" "$X" "$LOGS" "$UA" "$UB" >> "$LOGS/recover.log" 2>&1 || true
+fi
+
+# —— 正常退出 git 结构门(任务无关;v3 前段后终签集=WT_EXPECT_TAGS)——
+# 检查器 = common/git_structure.py(纯读);不通过 → state.structure_ok=false → 按 ABNORMAL 退出
+python3 "$WT/git_structure.py" "$WT/repo" "$X/git-structure.json" --mode final --expect-tags "${WT_EXPECT_TAGS:-ckpt-m00,ckpt-m01,ckpt-m1,ckpt-m2}" > "$LOGS/git-structure.log" 2>&1 || true
 
 # collection (before we exit; the bundle makes the workspace reconstructible)
 git -C "$WT/repo" bundle create "$C/protocol.bundle" --all >/dev/null 2>&1 || true
@@ -122,6 +148,12 @@ x = pathlib.Path(sys.argv[1]); c = pathlib.Path(sys.argv[2])
 def rd(p, d="0"):
     try: return p.read_text().strip()
     except Exception: return d
+def rdj(p):
+    try: return json.loads(p.read_text())
+    except Exception: return None
+rec = rdj(x / "recover.json")
+gs = rdj(x / "git-structure.json")
+structure_ok = (gs is None) or bool(gs.get("ok"))
 state = {
     "rc_a": int(sys.argv[3]), "rc_b": int(sys.argv[4]),
     "consensus_on_main": bool(int(sys.argv[5])),
@@ -130,9 +162,12 @@ state = {
     "rounds": {"a": rd(x / "ready-a.round"), "b": rd(x / "ready-b.round")},
     "effort": {"a": rd(x / "effort-a.json")[:200], "b": rd(x / "effort-b.json")[:200]},
     "finished_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    "recover": rec, "recovered_run": bool(rec and rec.get("wakes")),
+    "git_structure": gs, "structure_ok": structure_ok,
 }
 normal = (state["rc_a"] == 0 and state["rc_b"] == 0 and
-          state["stop_a"] and state["stop_b"] and state["consensus_on_main"])
+          state["stop_a"] and state["stop_b"] and state["consensus_on_main"] and
+          structure_ok)
 state["normal"] = normal
 (c / "state.json").write_text(json.dumps(state, indent=1))
 print("WALKTHROUGH", "NORMAL" if normal else "ABNORMAL", json.dumps(state), flush=True)

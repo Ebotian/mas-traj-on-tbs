@@ -13,7 +13,7 @@ say() { echo "  $1"; }
 echo "== 1) normal exit"
 STATE=$(find "$T" -name state.json -path '*collect*' | head -1)
 if [ -z "$STATE" ]; then say "FAIL: collect/state.json not found"; FAIL=1; else
-  NORMAL=$(python3 -c "import json,sys;d=json.load(open('$STATE'));print('NORMAL' if (d['rc_a']==0 and d['rc_b']==0 and d['stop_a'] and d['stop_b'] and d['consensus_on_main']) else 'ABNORMAL')")
+  NORMAL=$(python3 -c "import json,sys;d=json.load(open('$STATE'));print('NORMAL' if (d['rc_a']==0 and d['rc_b']==0 and d['stop_a'] and d['stop_b'] and d['consensus_on_main'] and d.get('structure_ok', True)) else 'ABNORMAL')")
   say "state.json -> $NORMAL"
   python3 -m json.tool "$STATE" | sed 's/^/    /'
   [ "$NORMAL" = "NORMAL" ] || FAIL=1
