@@ -78,5 +78,9 @@
       trial-settings 变体、覆盖件、`check_paths.py`）、`egress/` 分层策略组件、`pricing/`、A2A 与
       hook-wall 探针证据、`e1-probe/`、根 `README.md` 与 `run_agent_arm.sh`、`data/legacy/`。排除照旧
       （`*.env` 密钥、venv、第三方 checkout、otel 遥测、缓存），`.gitignore` 增防漏规则。8 件暂缓、
-      本地保留待裁（定后另记）：`e1-probe/oai-log/` 3 件（本机记忆库内容）与含 A2A 测试密钥字面量的
-      5 件（`a2a-spike-2/3.sh`、`fusion/share-to-a/b.json`、`workspace.json`）。
+      本地保留、2026-10-13 已裁（保持排除、本地持有，见下条）：`e1-probe/oai-log/` 3 件（本机记忆库
+      内容）与含 A2A 测试密钥字面量的 5 件（`a2a-spike-2/3.sh`、`fusion/share-to-a/b.json`、`workspace.json`）。
+- [x] 2026-10-13 裁定：上款 8 件**保持排除、本地持有**（用户选 a——不进公开仓；不采纳脱敏折算）。
+      拦截层不变（本地 `.git/info/exclude` 6 行，私人文件不在仓内）；行前复核：HEAD 与索引零命中，
+      两脚本各 1 条 43 字符 SECRET 字面量、share 凭据 expiresAt 2026-10-19、workspace.json 3×64-hex、
+      `oai-log/` 3 件含本机记忆库内容。此后除非另行提出，清单与现状不再变动。
