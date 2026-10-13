@@ -43,10 +43,12 @@
 
 1. 从 job 目录或轨迹文件目录收集源;容器内(如 A2A)的 chats 先 `docker cp` 到宿主机固定目录;
 2. 在 `refresh_replays.sh` 的 `SRC`/`LABEL` 各增一行;**并在对应视图登记归属**——
-   `views/*.tsx` 的 **include 白名单**(fail-closed:未登记的跑不会出现在任何页面)。
-   归属表:tumor1/2 → `#/tumor`;microarch1/2 → `#/microarch`;交接系(w4–w8 族)+ bump0251 + a2a → `#/handoff`;
+   `views/*.tsx` 的 **include 白名单**(fail-closed:未登记的跑不会出现在任何页面),
+   同时同步 `build_process.py` 的 `EXP`/`MECH` 映射(exp/label 与 refresh 对齐)与视图内手写计数
+   (`main.ts` 的 hint 仍手写,须同批更新;`process.ts` 池总览自 2026-10-13 起为数据驱动,无需再改)。
+   归属表:tumor1/2 → `#/tumor`;microarch1–4 → `#/microarch`;交接系(w4–w10 族)+ bump0251 + a2a → `#/handoff`;
 3. `bash viz/scripts/refresh_replays.sh <exp>` → **`npm run check:views`**(归属守卫:孤儿/幽灵登记,见下)
-   → `npm run build` → (按需)探针/截图验证。
+   → `npm run probe` → `npm run build` → (按需)chromedriver 截图/ DOM 回读验证(见下)。
 
 ## 归属守卫(`npm run check:views`)
 

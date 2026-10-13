@@ -161,7 +161,7 @@ export function render(host: HTMLElement): void {
 
   host.appendChild(panel(`池总览 · ${T.runs} 跑 / ${T.sides} 单侧 / ${fmt.int(T.steps)} 步`,
     h('div', { class: 'stats' },
-      stat(String(T.runs), '跑次(走查 16 · tumor 2 · microarch 2)'),
+      stat(String(T.runs), `跑次(${D.families.map(f => `${FAM_CN[f.name] ?? f.name} ${f.runs}`).join(' · ')})`),
       stat(String(T.sides), '单侧轨迹'),
       stat(fmt.int(T.steps), '应答步(usage 事件)'),
       stat(kt(T.out), 'out tokens(candidates+thoughts)'),

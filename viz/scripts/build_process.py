@@ -29,6 +29,8 @@ EXP = {
     "bump-0251-flow": ("bump0251", "bump-0251-flow 走查(0.25.1 全流程验证)"),
     "microarch-1": ("microarch1", "microarch-modeling · microarch-1"),
     "microarch-2": ("microarch2", "microarch-modeling · microarch-2"),
+    "microarch-3": ("microarch3", "microarch-modeling · microarch-3(最新配置)"),
+    "microarch-4": ("microarch4", "microarch-modeling · microarch-4(最新配置)"),
     "tumor-1": ("tumor1", "tumor-immune-interface · tumor-1"),
     "tumor-2": ("tumor2", "tumor-immune-interface · tumor-2"),
     "walkthrough-4": ("w4", "walkthrough-4(首份 NORMAL 走查)"),
@@ -36,6 +38,8 @@ EXP = {
     "walkthrough-6": ("w6", "walkthrough-6(机制排练)"),
     "walkthrough-7": ("w7", "walkthrough-7(v3 全链 E2E 首跑 · ABNORMAL)"),
     "walkthrough-8": ("w8", "walkthrough-8(v3 全链 E2E 重跑 · NORMAL)"),
+    "walkthrough-9": ("w9", "walkthrough-9(v3 全链 E2E · 产线验证)"),
+    "walkthrough-10": ("w10", "walkthrough-10(v3 全链 E2E · 产线验证)"),
     "w6n-pilot": ("w6np", "w6-4×2·N冒烟"),
     "w6n1": ("w6n1", "w6-4×2·N#1"),
     "w6n2": ("w6n2", "w6-4×2·N#2"),
@@ -49,8 +53,12 @@ EXP = {
 }
 MECH = {
     "walkthrough-7": "peer-dead(a, 402) → b abort → recovery closeout",
+    "walkthrough-9": "P0 未联合完成(无 m00/m01 交付)→ recover duty+structure 补签(347s,纯背书)",
+    "walkthrough-10": "P0 依序(ckpt-m00 14:53→SOP 14:54:09→ckpt-m01 14:58)→ structure 唤醒(237s)",
     "microarch-1": "b early-stop(缺 M2 duty)→ a abort",
     "microarch-2": "b 依对侧静默(~900s×2)abort;a stop 后到(竞速)",
+    "microarch-3": "四签跑内齐落 → structure 唤醒(240s)",
+    "microarch-4": "四签跑内齐落 → structure 唤醒(239s)",
 }
 SIDE_MODEL = {"a": "deepseek-flash", "b": "qwen3.8-flash"}
 
