@@ -1,0 +1,29 @@
+2026-10-12T04:17:46.686Z [INFO] [DAEMON] projectMemoryScope=workspace projectMemoryScopeRaw=workspace projectMemoryScopeSource=default project memory scope resolved
+qwen serve: daemon log → /root/.qwen/debug/daemon/daemon.log
+qwen serve listening on http://127.0.0.1:4170 (mode=http-bridge, workspace=/root/wt-a)
+qwen serve: bound to workspace "/root/wt-a"
+qwen serve: startup timing: processToListenMs=252 runQwenServeToListenMs=159
+qwen serve: trusted loopback mode; local callers have full API access without bearer authentication, including code execution as the daemon user. Use --require-auth with QWEN_SERVER_TOKEN on shared or untrusted hosts.
+2026-10-12T04:17:46.838Z [INFO] [DAEMON] deferred runtime: scheduling fallback start in 1000ms
+2026-10-12T04:17:47.839Z [INFO] [DAEMON] deferred runtime: fallback timer fired, starting
+2026-10-12T04:17:47.909Z [INFO] [DAEMON] ideEnvPresent=false primary=/root/wt-a secondary= daemon workspace roots initialized
+qwen serve: session reaper started (interval 60000ms, idle threshold 1800000ms)
+qwen serve: /acp WebSocket transport enabled on /acp
+2026-10-12T04:17:57.593Z [INFO] [DAEMON] route=GET /.well-known/agent-card.json durationMs=2 status=200 request completed
+2026-10-12T04:17:57.615Z [INFO] [DAEMON] route=POST /workspaces/%2Froot%2Fwt-a/agent/agents durationMs=14 status=200 request completed
+2026-10-12T04:17:57.664Z [INFO] [DAEMON] route=POST /workspaces/%2Froot%2Fwt-a/agent/agents/ag_f6293294-d19c-4371-baaf-9b8053fc369b/shares durationMs=7 status=201 request completed
+2026-10-12T04:18:00.914Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+qwen serve: updated session metadata "f6d9c150-df32-4c1f-9822-a2736b8467b4" displayName=set
+2026-10-12T04:18:00.936Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=90 status=200 request completed
+[demux] session=957252cd-34b5-523a-ae14-069be3b2ab69 type=session_update action=dropped reason=session_not_owned
+2026-10-12T04:18:00.989Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+2026-10-12T04:18:03.943Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=6 status=200 request completed
+2026-10-12T04:20:40.065Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+qwen serve: updated session metadata "bd56559b-8f15-4d21-a6fa-e2252fde1497" displayName=set
+2026-10-12T04:20:40.077Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=51 status=200 request completed
+[demux] session=f90bcf50-d817-54c8-a6c1-bab525573534 type=session_update action=dropped reason=session_not_owned
+2026-10-12T04:20:40.111Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+2026-10-12T04:20:43.082Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:46.088Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=5 status=200 request completed
+2026-10-12T04:20:46.103Z [WARN] [DAEMON] received SIGTERM, draining
+2026-10-12T04:20:46.160Z [INFO] [DAEMON] daemon stopped

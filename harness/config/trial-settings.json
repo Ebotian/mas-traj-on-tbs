@@ -1,0 +1,25 @@
+{
+  "model": {
+    "reasoningEffort": "max"
+  },
+  "hooks": {
+    "PreToolUse": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "PostToolUse": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "PostToolUseFailure": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "PostToolBatch": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "UserPromptSubmit": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "SessionStart": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "SessionEnd": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "Stop": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "StopFailure": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "SubagentStart": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "SubagentStop": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "PreCompact": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "PostCompact": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "PermissionRequest": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "PermissionDenied": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "TodoCreated": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "TodoCompleted": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}],
+    "InstructionsLoaded": [{"hooks": [{"type": "command", "name": "harbor-observability-tap", "timeout": 10, "command": "mkdir -p /logs/agent/hooks && tee \"/logs/agent/hooks/$(date +%s%N)-$$.json\" > /dev/null"}]}]
+  }
+}

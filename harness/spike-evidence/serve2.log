@@ -1,0 +1,32 @@
+2026-10-12T04:10:39.470Z [INFO] [DAEMON] projectMemoryScope=workspace projectMemoryScopeRaw=workspace projectMemoryScopeSource=default project memory scope resolved
+qwen serve: daemon log → /root/.qwen/debug/daemon/daemon.log
+qwen serve listening on http://127.0.0.1:4170 (mode=http-bridge, workspace=/root/spike)
+qwen serve: bound to workspace "/root/spike"
+qwen serve: startup timing: processToListenMs=235 runQwenServeToListenMs=147
+qwen serve: trusted loopback mode; local callers have full API access without bearer authentication, including code execution as the daemon user. Use --require-auth with QWEN_SERVER_TOKEN on shared or untrusted hosts.
+2026-10-12T04:10:39.612Z [INFO] [DAEMON] deferred runtime: scheduling fallback start in 1000ms
+2026-10-12T04:10:40.613Z [INFO] [DAEMON] deferred runtime: fallback timer fired, starting
+2026-10-12T04:10:40.687Z [INFO] [DAEMON] ideEnvPresent=false primary=/root/spike secondary= daemon workspace roots initialized
+qwen serve: session reaper started (interval 60000ms, idle threshold 1800000ms)
+qwen serve: /acp WebSocket transport enabled on /acp
+2026-10-12T04:10:46.390Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=9 status=200 request completed
+2026-10-12T04:10:46.455Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+2026-10-12T04:10:46.466Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=74 status=200 request completed
+2026-10-12T04:10:46.528Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+2026-10-12T04:10:49.491Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=5 status=200 request completed
+2026-10-12T04:11:32.174Z [INFO] [DAEMON] route=POST /workspaces/%2Froot%2Fspike/agent/agents durationMs=9 status=200 request completed
+2026-10-12T04:11:32.195Z [INFO] [DAEMON] route=POST /workspaces/%2Froot%2Fspike/agent/agents/ag_01fb91f5-2538-48ac-b175-5187e7f18841/shares durationMs=6 status=201 request completed
+2026-10-12T04:11:32.221Z [INFO] [DAEMON] route=POST /workspaces/%2Froot%2Fspike/agent/agents/ag_95d02039-3012-45fd-b253-368bee09f887/shares durationMs=3 status=201 request completed
+2026-10-12T04:11:32.286Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+qwen serve: updated session metadata "0620e875-a893-4275-92b2-c81ce8c59613" displayName=set
+2026-10-12T04:11:32.298Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=54 status=200 request completed
+[demux] session=fabe6830-330f-5115-8c7d-46e65119ad85 type=session_update action=dropped reason=session_not_owned
+2026-10-12T04:11:32.332Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+2026-10-12T04:11:35.320Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=5 status=200 request completed
+2026-10-12T04:11:35.367Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+qwen serve: updated session metadata "7fdb6b60-d73f-48aa-a9cd-77c604040c85" displayName=set
+2026-10-12T04:11:35.384Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=50 status=200 request completed
+[demux] session=adbed474-cd78-5419-8572-1ef8f1076713 type=session_update action=dropped reason=session_not_owned
+2026-10-12T04:11:35.415Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+2026-10-12T04:11:38.407Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=5 status=200 request completed
+2026-10-12T04:11:38.424Z [INFO] [DAEMON] route=GET /workspaces/%2Froot%2Fspike/agent/agents durationMs=3 status=200 request completed

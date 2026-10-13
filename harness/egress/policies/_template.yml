@@ -1,0 +1,65 @@
+# EGRESS POLICY — LAYER 2: TASK OVERLAY TEMPLATE (knowledge side; per task)
+# ---------------------------------------------------------------------------
+# NOT an instance: the static contract suite skips files whose stem starts
+# with "_" (tests/common.py: overlays()). To instantiate:
+#   1. cp egress/policies/_template.yml egress/policies/<task-slug>.yml
+#      (filename stem == task_id; lowercase, dotted)
+#   2. fill every REPLACE-ME below; keep both unknown_* = deny; keep
+#      forbidden_sources non-empty even while the real list is unknown
+#   3. python3 egress/validate.py --task <task-slug>
+#   4. python3 egress/render.py --task <task-slug> --write
+#      (add --toml to target a sandbox copy other than the default active one)
+#   5. python3 config/check_paths.py
+#      python3 -m unittest discover -s egress/tests     (static contract suite)
+#   6. only for the ACTIVE task: python3 egress/sync.py --task <task-slug>
+#      (re-applies the FULL composed list to the live sidecar)
+#   7. pair suites: copy egress/tests/task_template/ to egress/tests/<task_underscored>/
+#      and fill ONLY fixtures.py (isomorphism is contract-tested).
+# Full SOP + the instance table: egress/README.md.
+
+task_id: task-slug               # MUST equal the filename stem
+version: 1
+status:
+  hosts: candidate               # live once rendered into the sandbox task copy
+  temporal: candidate            # live once the gateway serves this task
+  gateway: candidate
+
+restricted_hosts:
+  # knowledge surfaces reachable DIRECTLY in the sandbox (task documentation
+  # stack and the like; the fixed package/API chain lives in base.yml).
+  # Search engines are banned project-wide (tests/common.py ENGINES) and must
+  # never appear here. Gateway-served sources (github/nature-style) stay OUT
+  # of this list - the gateway is their only path.
+  - replace-me.example.org
+
+gateway:
+  # every enabled surface kind must come from the base adapter catalog
+  # (base.yml gateway.adapters). Delete the examples you do not enable.
+  surfaces:
+    - kind: github
+      hosts: [github.com, www.github.com, raw.githubusercontent.com, codeload.github.com]
+      rule: object_date_lt_cutoff
+      unknown: deny
+    # - kind: nature
+    #   hosts: [nature.com, www.nature.com]
+    #   rule: article_date_lt_cutoff
+    #   unknown: deny
+
+temporal_policy:
+  mode: strict                   # strictly-before; same-day and unknown fail closed
+  cutoff: "YYYY-MM-DDTHH:MM:SSZ"
+  cutoff_basis: earliest_known_answer_material
+  cutoff_evidence: []            # one dated line per verified source
+  access_semantics: "knowledge sources OPEN with a time window (t_verified < cutoff); domain-level denial is a phase-1 approximation"
+
+forbidden_sources:
+  # answer-source exclusion, enforced INDEPENDENTLY of dates (gateway layer).
+  # Keep non-empty from day one so the fail-closed default holds; entries may
+  # be doi:/conceptdoi: values, host/path patterns, or prose with identifiers.
+  - REPLACE-ME answer repository / site / DOI
+
+unknown_publication_date: deny
+unverified_content_revision: deny
+notes: >
+  REPLACE-ME: instantiation date, what was swept for the cutoff, what remains
+  open, and which trial conditions this overlay has been used in.

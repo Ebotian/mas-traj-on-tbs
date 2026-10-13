@@ -1,0 +1,747 @@
+{
+ "meta": {
+  "schema": "traj-stats/2",
+  "usage_semantics": "per_call",
+  "tag": "ckpt-m01",
+  "commit": "54f722da9352c3d97c45564ef2ddf58eb781a60c",
+  "commit_time": "2026-10-12T08:22:02Z",
+  "cut_epoch": 1791793322,
+  "transcripts": {
+   "a": {
+    "path": "/home/ebt/harbor-runs/jobs/agent/walkthrough-7/task-restricted__DhZRW6M/artifacts/root/wt/collect/chats/f4874fc9-0e1e-4c4f-8cbd-804f619c164e.jsonl",
+    "sha256": "084634879682107de30f357f0117a9c425343079860f32ee4b8ab363c3ca227b",
+    "sha256_leq_cut": "d1d7c512696a2fbbc540a260e35124b1cee48b763b8670b66d8269a633db82fe",
+    "lines_leq_cut": 226,
+    "lines_total": 282
+   },
+   "b": {
+    "path": "/home/ebt/harbor-runs/jobs/agent/walkthrough-7/task-restricted__DhZRW6M/artifacts/root/wt/collect/chats/0de4fb24-31bc-44ec-98a2-1fa8de74318e.jsonl",
+    "sha256": "255d369fe2173c7a31e323bbf96970741e6f3d1431182324112c80c8bfd88c4d",
+    "sha256_leq_cut": "255d369fe2173c7a31e323bbf96970741e6f3d1431182324112c80c8bfd88c4d",
+    "lines_leq_cut": 370,
+    "lines_total": 370
+   }
+  },
+  "method": "mechanical; no network; no LLM; no task priors; content is a pure function of the fixed inputs (tag commit; transcript lines <= cut; ledger/protocol sources as labelled)"
+ },
+ "volume": {
+  "a": {
+   "lines_total": 282,
+   "lines_leq_cut": 226,
+   "by_type": {
+    "assistant": 25,
+    "system": 144,
+    "tool_result": 55,
+    "user": 2
+   },
+   "assistant_texts": 25,
+   "tool_results": 55,
+   "usage_events": 25,
+   "tokens": {
+    "prompt": 3428945,
+    "candidates": 177976,
+    "thoughts": 168708,
+    "cached": 3000192
+   },
+   "gaps": {
+    "count": 225,
+    "median_s": 0,
+    "p90_s": 3,
+    "p99_s": 119,
+    "max_s": 1062
+   },
+   "silences_gt_600s": [
+    {
+     "from": 1791791937,
+     "to": 1791792999,
+     "seconds": 1062
+    }
+   ],
+   "first_ts": 1791791149,
+   "last_ts": 1791793322,
+   "uncached": 428753,
+   "sha256_leq_cut": "d1d7c512696a2fbbc540a260e35124b1cee48b763b8670b66d8269a633db82fe",
+   "commands_top": [
+    [
+     "git",
+     18
+    ],
+    [
+     "ls",
+     16
+    ],
+    [
+     "python3",
+     16
+    ],
+    [
+     "curl",
+     8
+    ],
+    [
+     "cat",
+     4
+    ],
+    [
+     "date",
+     2
+    ],
+    [
+     "ps",
+     2
+    ],
+    [
+     "qwen",
+     2
+    ],
+    [
+     "root",
+     2
+    ]
+   ]
+  },
+  "b": {
+   "lines_total": 370,
+   "lines_leq_cut": 370,
+   "by_type": {
+    "assistant": 57,
+    "system": 249,
+    "tool_result": 63,
+    "user": 1
+   },
+   "assistant_texts": 57,
+   "tool_results": 63,
+   "usage_events": 57,
+   "tokens": {
+    "prompt": 4725472,
+    "candidates": 71242,
+    "thoughts": 40198,
+    "cached": 4402611
+   },
+   "gaps": {
+    "count": 369,
+    "median_s": 0,
+    "p90_s": 10,
+    "p99_s": 42,
+    "max_s": 530
+   },
+   "silences_gt_600s": [],
+   "first_ts": 1791791149,
+   "last_ts": 1791792998,
+   "uncached": 322861,
+   "sha256_leq_cut": "255d369fe2173c7a31e323bbf96970741e6f3d1431182324112c80c8bfd88c4d",
+   "commands_top": [
+    [
+     "echo",
+     30
+    ],
+    [
+     "git",
+     16
+    ],
+    [
+     "python3",
+     12
+    ],
+    [
+     "cat",
+     6
+    ],
+    [
+     "for",
+     4
+    ],
+    [
+     "ls",
+     4
+    ],
+    [
+     "qwen",
+     4
+    ],
+    [
+     "bash",
+     2
+    ],
+    [
+     "ps",
+     2
+    ],
+    [
+     "sed",
+     2
+    ],
+    [
+     "sha256sum",
+     2
+    ]
+   ]
+  }
+ },
+ "pacing": {
+  "a": {
+   "first_ts": 1791791149,
+   "last_ts": 1791793322,
+   "gaps": {
+    "count": 225,
+    "median_s": 0,
+    "p90_s": 3,
+    "p99_s": 119,
+    "max_s": 1062
+   },
+   "silences_gt_600s": [
+    {
+     "from": 1791791937,
+     "to": 1791792999,
+     "seconds": 1062
+    }
+   ]
+  },
+  "b": {
+   "first_ts": 1791791149,
+   "last_ts": 1791792998,
+   "gaps": {
+    "count": 369,
+    "median_s": 0,
+    "p90_s": 10,
+    "p99_s": 42,
+    "max_s": 530
+   },
+   "silences_gt_600s": []
+  }
+ },
+ "surface": {
+  "only_a_count": 38,
+  "only_b_count": 82,
+  "both_count": 28,
+  "only_a": [
+   ".round/sha-",
+   ".txt/gate.log/traj-",
+   "/root/wt-src/tasks",
+   "/root/wt-src/tasks/walkthrough/prompt.md",
+   "/root/wt/a/.git",
+   "/root/wt/a/.gitignore",
+   "/root/wt/a/.qwen",
+   "/root/wt/a/.qwen/settings.json",
+   "/root/wt/a/README.md",
+   "/root/wt/a/brief-a.md",
+   "/root/wt/a/work-a-1.md",
+   "/root/wt/collect",
+   "/root/wt/prompt-a.txt",
+   "/root/wt/recover.py",
+   "/root/wt/repo/closeout-b.md",
+   "/root/wt/repo/consensus.md",
+   "/root/wt/repo/forks.json",
+   "/root/wt/repo/refs-b.jsonl",
+   "/root/wt/repo/understanding.md",
+   "/root/wt/x/effort-a.json",
+   "/root/wt/x/pid-b",
+   "/root/wt/x/prompt-variant",
+   "/root/wt/x/stats",
+   "E4/E5",
+   "EX/EY",
+   "P2/P3",
+   "collect/stats",
+   "m01/m1/m2",
+   "positive/negative",
+   "r4/r5",
+   "raw.githubusercontent.com/harbor-framework/...",
+   "references/citations",
+   "tasks/walkthrough/prompt.md",
+   "x/abort-b",
+   "x/rcs",
+   "x/recover.json",
+   "x/recover.json.",
+   "x/stop-a"
+  ],
+  "only_b": [
+   "/root/.qwen/projects/-root-wt-",
+   "/root/.qwen/projects/-root-wt-a",
+   "/root/.qwen/projects/-root-wt-b/memory/MEMORY.md",
+   "/root/.qwen/projects/-root-wt-b/memory/common_pitfall/audit-seal-flags-prose.md",
+   "/root/.qwen/tmp/7dc483bbb754cacc1ec4475f3efa187de5e6d3e5d53264150c0d95ee591d2890/background-shells/0de4fb24-31bc-44ec-98a2-1fa8de74318e/shell-bg_fadfddca.output",
+   "/root/.qwen/tmp/7dc483bbb754cacc1ec4475f3efa187de5e6d3e5d53264150c0d95ee591d2890/background-shells/0de4fb24-31bc-44ec-98a2-1fa8de74318e/shell-bg_fadfddca.status",
+   "/root/wt/b.",
+   "/root/wt/b/brief-b.md",
+   "/root/wt/b/closeout-b.md",
+   "/root/wt/b/forks.json",
+   "/root/wt/b/refs-b.jsonl",
+   "/root/wt/b/selfreview-b.md",
+   "/root/wt/b/understanding.md",
+   "/root/wt/b/work-b-1.md",
+   "/root/wt/repo/.git/hooks/post-commit",
+   "/root/wt/traj_index.py",
+   "/root/wt/x/abort-b",
+   "/root/wt/x/declare-b",
+   "/root/wt/x/dir-a.json",
+   "/root/wt/x/dir-b.json",
+   "/root/wt/x/divergence.json",
+   "/tmp/g1.json",
+   "/tmp/g2.json",
+   "0/8.",
+   "1/2/3",
+   "169/187",
+   "95/101",
+   "95/96",
+   "CLEAN/DIRTY",
+   "E1/E2",
+   "L65/L66",
+   "Missing/crashing",
+   "OPEN/DEFECT/OBSERVED",
+   "P0.1/P0.2",
+   "Round-2/4",
+   "WT/git_structure.py",
+   "WT/repo",
+   "X/ready-",
+   "absent/crashing",
+   "audit_blobs/CONTENT_VERBS",
+   "axes/choice/plausibility/refs",
+   "bash/sleep",
+   "cat/head/sed/awk/python3",
+   "cat/sed/head",
+   "ckpt-m00/m01",
+   "commits/delete",
+   "common_pitfall/audit-seal-false-positive.md",
+   "common_pitfall/audit-seal-flags-prose.md",
+   "deletes/ignores",
+   "fork_id/refs/plausibility",
+   "harbor-framework/terminal-bench-science",
+   "heads/merges",
+   "intercepted/refused",
+   "ls/stat/find",
+   "missing/unreadable",
+   "raw.githubusercontent.com/harbor-framewo",
+   "raw.githubusercontent.com/harbor-framework/terminal-bench-science/main/x",
+   "rc_a/rc_b",
+   "ready/sha",
+   "resolve/broken/declared"
+  ],
+  "both": [
+   "/dev/null",
+   "/raw.githubusercontent.com/harbor-framework/terminal-bench-science/main/x",
+   "/root/wt",
+   "/root/wt-src/tasks/walkthrough",
+   "/root/wt-src/tasks/walkthrough/run.sh",
+   "/root/wt/a",
+   "/root/wt/b",
+   "/root/wt/front_phase.py",
+   "/root/wt/gate.py",
+   "/root/wt/git_structure.py",
+   "/root/wt/post-commit.sh",
+   "/root/wt/refs.py",
+   "/root/wt/repo",
+   "/root/wt/repo/.git/hooks",
+   "/root/wt/traj.py",
+   "/root/wt/wait_peer.sh",
+   "/root/wt/x",
+   "/root/wt/x/declare-a",
+   "/root/wt/x/gate.log",
+   "/root/wt/x/ready-a.round",
+   "/root/wt/x/ready-b.round",
+   "/root/wt/x/sop-m00.md",
+   "8788/check",
+   "M1/M2",
+   "M1/M2/P3",
+   "m00/m01",
+   "raw.githubusercontent.com/harbor-framework/terminal-bench-science",
+   "x/declare-a"
+  ],
+  "untouched_repo_files_count": 0,
+  "untouched_repo_files": []
+ },
+ "adoption": {
+  "counts": {
+   "a_to_b": 179,
+   "b_to_a": 77,
+   "cited_a_to_b": 0,
+   "cited_b_to_a": 0,
+   "concurrent": 0
+  },
+  "events": [
+   {
+    "gram": "commit message must contain round n n the",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "contain round n n the round number below",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "every commit message must contain round n n",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "hard rule every commit message must contain round",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791164,
+    "used_ts": 1791791228,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "hard rule says every commit message must contain",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "md forks json merged to main m00 gate",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "message must contain round n n the round",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "must contain round n n the round number",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "n n the round number below the rounds",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "n the round number below the rounds below",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "python3 root wt front_phase py declare root wt",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791164,
+    "used_ts": 1791791228,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "root wt front_phase py declare root wt x",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791164,
+    "used_ts": 1791791228,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "round n n the round number below the",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "rule every commit message must contain round n",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791164,
+    "used_ts": 1791791228,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "rule says every commit message must contain round",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "says every commit message must contain round n",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "the hard rule says every commit message must",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "understanding md forks json merged to main m00",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791228,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "txt is the peer s prompt reading it",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791171,
+    "used_ts": 1791791234,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "raw transcript under root qwen projects root wt",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791791228,
+    "used_ts": 1791791235,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "s raw transcript under root qwen projects root",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791791228,
+    "used_ts": 1791791235,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "0 refs 0 resolved 0 broken 0 declared",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791200,
+    "used_ts": 1791791410,
+    "source_line": 30,
+    "cited": false
+   },
+   {
+    "gram": "after m1 and reads only the published prefix",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791235,
+    "used_ts": 1791791410,
+    "source_line": 38,
+    "cited": false
+   },
+   {
+    "gram": "and reads only the published prefix snapshot that",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791235,
+    "used_ts": 1791791410,
+    "source_line": 38,
+    "cited": false
+   },
+   {
+    "gram": "config only not yet used in an actual",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791410,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "m1 and reads only the published prefix snapshot",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791235,
+    "used_ts": 1791791410,
+    "source_line": 38,
+    "cited": false
+   },
+   {
+    "gram": "no published snapshot or beyond snapshot sealed cut",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791263,
+    "used_ts": 1791791410,
+    "source_line": 54,
+    "cited": false
+   },
+   {
+    "gram": "only not yet used in an actual run",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791178,
+    "used_ts": 1791791410,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "opens after m1 and reads only the published",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791235,
+    "used_ts": 1791791410,
+    "source_line": 38,
+    "cited": false
+   },
+   {
+    "gram": "peer trajectory sealed until m1 tag ckpt m1",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791791263,
+    "used_ts": 1791791410,
+    "source_line": 54,
+    "cited": false
+   }
+  ],
+  "event_total": 256
+ },
+ "ledger": {
+  "a": {
+   "entries": 0,
+   "by_kind": {},
+   "unresolved": [],
+   "source": "missing"
+  },
+  "b": {
+   "entries": 3,
+   "by_kind": {
+    "file": 1,
+    "traj": 1,
+    "unresolved": 1
+   },
+   "unresolved": [
+    "E3: gate-probe stability across runs untested"
+   ],
+   "source": "tag:ckpt-m01"
+  }
+ },
+ "protocol": {
+  "present": true,
+  "forks": [
+   "F2",
+   "F1",
+   "F3",
+   "F4",
+   "F5",
+   "F6",
+   "F7",
+   "F8"
+  ],
+  "divergence": {
+   "F2": {
+    "a": null,
+    "b": "front-phase-is-best-effort-prefix: the v3 P0 phase is an opportunistic prologue, NOT a hard precondition; the body's barrier-ordered rounds 1-7 are the authoritative spine, and m00/m01 may legitimately be signed after body rounds have begun without invalidating the rehearsal.",
+    "differ": false
+   },
+   "F1": {
+    "a": null,
+    "b": "round-marker-is-publication-not-compliance: P0 commits must NOT carry a Round marker, because the marker's real function is to publish readiness into the barrier ledger, not to satisfy a style rule.",
+    "differ": false
+   },
+   "F3": {
+    "a": null,
+    "b": "free-window-supersedes-body-prose: within the P0.1 window, traj.py --peer raw reads are sanctioned (the tool layer resolves the path itself, so my own args never carry the sealed literal); after ckpt-m01 the snapshot-only discipline governs.",
+    "differ": false
+   },
+   "F4": {
+    "a": null,
+    "b": "gate-before-tag-is-impossible-read-as-two-pass: run the gate to clear non-tag violations, tag, then re-run for the authoritative pass, and publish both JSONs.",
+    "differ": false
+   },
+   "F5": {
+    "a": null,
+    "b": "b-merges-to-unblock-with-disclosure: b performs the P0.1 merges into main (duty unassigned in the spec) and records it publicly rather than deadlock.",
+    "differ": false
+   },
+   "F6": {
+    "a": null,
+    "b": "observation-wins-over-prediction: the script's stated expectations are hypotheses; raw outputs plus exit codes are evidence, and deviations get flagged, not normalised.",
+    "differ": false
+   },
+   "F7": {
+    "a": null,
+    "b": "ckpt-final-will-fail-final-gate: the script's ckpt-final is not in WT_EXPECT_TAGS and will register extra_tags; branches a/b must also be deleted for final mode.",
+    "differ": false
+   },
+   "F8": {
+    "a": null,
+    "b": "sign-m01-before-round-2-so-the-refusal-is-real: b sequences its own Round 2 after the freeze so the scripted sealed-until-M1 refusal occurs for the right reason.",
+    "differ": false
+   }
+  },
+  "differing_count": 0,
+  "sources": {
+   "forks": "tag:ckpt-m01",
+   "dirs": {
+    "a": "missing",
+    "b": "/tmp/stats-v2-check/w7/x/dir-b.json"
+   }
+  }
+ }
+}

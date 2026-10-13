@@ -1,0 +1,8 @@
+{
+ "round": "r02",
+ "direction": "B->A",
+ "task": "sr_fdfadbee-d236-4824-b7a3-5982b58ee104",
+ "answer": "Main failure mode: with a fixed 3 attempts and no delay, all retries land in the same tight window, so any *correlated* failure \u2014 a 429 rate limit, an overloaded upstream, a dependency still mid-restart \u2014 is still true on attempt 2 and 3; the retries add load, amplify the overload, and lose to the same error while adding latency, and synchronized clients produce a thundering herd. Minimal fix: wrap the loop in exponential backoff with jitter (e.g. ~200ms base doubling per attempt, \u00b1random jitter, capped), and retry only retryable/idempotent failures (5xx, timeouts, 429 honoring `Retry-After`) rather than all errors \u2014 that's a few lines and removes both the self-inflicted load and the synchronized-retry risk.",
+ "state": "TASK_STATE_COMPLETED",
+ "answer_sha256_16": "1fa9a36d02da9db5"
+}

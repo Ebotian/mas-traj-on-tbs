@@ -93,3 +93,20 @@ related_files/eve/
 # patterns are safe at the top level.
 node_modules/
 dist/
+
+# harness/: the mirror of the harbor-runs experiment area. These classes stay out
+# of the mirror by construction (secrets, machine-local venvs/checkouts, caches,
+# telemetry, job outputs and logs, the fetch-only build payloads); the rules keep
+# a future re-sync from admitting them silently.
+harness/**/*.env
+harness/**/ee-venv/
+harness/**/earlyeval/
+harness/**/.mypy_cache/
+harness/**/otel-*.json
+harness/**/.qwen/
+harness/jobs/
+harness/logs/
+harness/build/**/payload/
+harness/build/**/wheels/
+harness/build/**/traces/
+harness/build/**/dataset-build/

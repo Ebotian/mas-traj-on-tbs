@@ -1,0 +1,14 @@
+traj_stats v2 对照复算样本(2026-10-12)
+
+来源:对 w7 / w8 采集包(protocol.bundle + x/ + chats)的 scratch 重算;原 collect 目录未动。
+脚本:harbor-runs/walkthrough/common/traj_stats.py(v2,schema = "traj-stats/2")。
+
+关键对照(v1 → v2):
+- adoption 方向修复:w7-m2 b→a 0→60;w8-m2 b→a 0→129(修复前 b→a 结构性恒 0);
+  同时 a→b 修正下调(w8-m2 311→276);新增 concurrent 桶(本轮样本 0)。
+- 固定输入:w7 的 m00 与 m2 同 commit(cd48d656),v2 重算后前缀哈希 sha256_leq_cut 相等
+  (修复前因生成时刻不同而哈希/总数不一致);w8-m1 可见同一 tag 的生成时刻敏感性
+  lines≤cut 340→343、lines_total 340→673(重算读冻结后全文件)。
+- 出处标注:ledger / protocol 各带 source(tag: / file: / missing);
+  usage 增 uncached = prompt − cached(w8-m2:410,446 / 181,822)。
+文件:w7-stats/ 与 w8-stats/ 各 8 件(ckpt-m00/m01/m1/m2 × json+md,0444)。

@@ -73,3 +73,10 @@
       （2026-09-20，指向已在远程历史内的提交）与 `refs/notes/ai-attribution`（9 条逐提交 AI 归属
       统计 note）。main 本已最新（push 回 Everything up-to-date）；推送前已核：两引用的
       tagger/committer 与公开历史（272 条提交）同一身份、无新增暴露，notes 内容扫描 0 敏感命中。
+- [x] 2026-10-13 追加：harbor-runs 运行区其余装置补齐入仓 `harness/`（161 文件）——refs 证据（canary
+      验证 / traj-stats-v2 复核 / 早停审计 / EarlyEval）、config 臂件与模板（prompt v2+v1 存档、
+      trial-settings 变体、覆盖件、`check_paths.py`）、`egress/` 分层策略组件、`pricing/`、A2A 与
+      hook-wall 探针证据、`e1-probe/`、根 `README.md` 与 `run_agent_arm.sh`、`data/legacy/`。排除照旧
+      （`*.env` 密钥、venv、第三方 checkout、otel 遥测、缓存），`.gitignore` 增防漏规则。8 件暂缓、
+      本地保留待裁（定后另记）：`e1-probe/oai-log/` 3 件（本机记忆库内容）与含 A2A 测试密钥字面量的
+      5 件（`a2a-spike-2/3.sh`、`fusion/share-to-a/b.json`、`workspace.json`）。

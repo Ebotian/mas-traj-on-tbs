@@ -1,0 +1,10 @@
+probe-B report:
+
+**1. `sleep 90`** — ran, exit code 0 (~90 s). Note: the first attempt was blocked by the harness ("Blocked: standalone sleep 90"); I reran with the required `# intentional-sleep:` annotation and it completed.
+
+**2. `list_agents`** — zero session names visible. Verbatim result:
+> "No ordinary background subagents are available in this session. Named Agent Team teammates are not listed here; their results are delivered automatically through team messaging, so do not use list_agents to wait for a teammate."
+
+**3. Messages received during the wait** — none. No peer/session message arrived. The only content injected during the window was a system-supplied memory-context block (relevant memories: `peer-sessions-one-per-repo`, `keep-poll-loop-inside-command-timeout`, `verify-visual-result-yourself`), which is context, not an incoming message.
+
+**4.** Nothing else to report.

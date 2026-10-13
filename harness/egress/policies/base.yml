@@ -1,0 +1,40 @@
+# EGRESS POLICY — LAYER 1: BASE (task-independent; the fixed layer)
+# User's split (2026-10-10): 「api访问这些基本不动,而论文资料等访问限制则随每个题目而变.」
+# Composed with a per-task overlay (policies/<task>.yml) by egress/render.py.
+# Enforcement today stays harbor's sidecar (domain level); see rsi-dev design note §8.
+version: 2
+status: live
+hosts:
+  # model endpoints, per provider (an arm picks one via its --env-file)
+  - api.deepseek.com                          # DeepSeek direct (flash arms)
+  - token-plan.cn-beijing.maas.aliyuncs.com   # Token Plan (qwen arms)
+
+  # explicit egress gateway endpoint (host-side service; design note §7).
+  # An IP target: `network-policy` accepts IP/CIDR; the gateway is the ONLY
+  # path to knowledge sources, which stay OUT of this list.
+  - 172.17.0.1
+
+  # install chain + package mirrors
+  - cdn.jsdelivr.net            # nvm install.sh (node_install.py patch)
+  - registry.npmmirror.com      # npm registry mirror
+  - cdn.npmmirror.com           # tarball CDN (302 target of the above)
+  - archive.ubuntu.com          # apt
+  - security.ubuntu.com         # apt
+  - pypi.org                    # pip
+  - files.pythonhosted.org      # pip payloads
+
+  # neutral connectivity-probe target used by agents' fallback ladders
+  - example.com
+
+gateway:
+  # task-independent gateway MECHANISM (design note §7): guards + adapter
+  # catalog. Task overlays pick which adapters are enabled and with what hosts.
+  guards:
+    redirects: deny          # any 3xx denies, never followed
+    unknown: deny            # unparseable/undated material denies
+    construct_fetch_url: true  # fetch URLs are built from parsed components
+  adapters:
+    - github
+    - nature
+  audit: jsonl
+  cache: sha256

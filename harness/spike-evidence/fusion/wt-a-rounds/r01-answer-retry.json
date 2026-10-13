@@ -1,0 +1,9 @@
+{
+ "round": "r01",
+ "attempt": 2,
+ "task": "sr_cc770692-097f-4199-b8c3-601ff5475df6",
+ "answer": "Not sufficient on its own. A raw input string is only a valid key if the string uniquely and permanently determines the result \u2014 in practice it doesn't, because the same input can legitimately map to different outputs across cache namespaces (algo/version, model or config params, locale/normalization, tenant/user scope, TTL-sensitive data). **Top risk: silent wrong-value hits** \u2014 a collision or stale-namespace match returns a cached result that looks correct but is not, and it degrades gradually rather than failing loudly. Minimum fix: hash the input into a fixed-size key and prefix it with the fields that change semantics (namespace + version + relevant params), plus normalize/size-limit the input so huge or whitespace/case-variant strings don't cause unbounded keys or spurious misses.",
+ "state": "TASK_STATE_COMPLETED",
+ "answer_sha256_16": "b17a1586c82a0764",
+ "window_s": 12
+}

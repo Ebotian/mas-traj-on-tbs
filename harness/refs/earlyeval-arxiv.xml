@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/EWEECevR8lCQRVO15BOBEazhdwk</id>
+  <title>arXiv Query: search_query=&amp;id_list=2609.02783&amp;start=0&amp;max_results=10</title>
+  <updated>2026-10-12T09:56:41Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=&amp;start=0&amp;max_results=10&amp;id_list=2609.02783" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2609.02783v1</id>
+    <title>EarlyEval: Cheaper Agent Evaluation via Early Outcome Prediction</title>
+    <updated>2026-09-02T16:15:18Z</updated>
+    <link href="https://arxiv.org/abs/2609.02783v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.02783v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Evaluating LLM agents is essential for guiding their development, yet it has grown prohibitively expensive: a single pass of a frontier model over an agentic benchmark can cost hundreds to thousands of dollars, a price paid repeatedly across iterative development cycles. Prior efforts, centered on benchmark distillation, reduce the number of evaluation tasks but leave the cost of executing each retained task untouched. In this work, we introduce early outcome prediction, a complementary axis of efficiency that instead cuts cost within each task. Our key insight is that an agent's final outcome is often evident from its intermediate behavior well before execution completes. We instantiate this idea in EarlyEval, a lightweight framework that trains a pair of LightGBM success and failure classifiers over behavioral, textual, and reference-solution features, and halts an agent run the moment either classifier crosses a calibrated confidence threshold, adding negligible per-step overhead. Across three benchmarks, SWE-bench Verified, TerminalBench, and Toolathlon, EarlyEval can eliminate 13%-26% of agent steps and up to 44.1% input tokens and 29.4% output tokens at 89%-97% prediction accuracy, while perturbing per-agent resolve rates by only one to two percentage points on average.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-02T16:15:18Z</published>
+    <arxiv:comment>Code and data available at https://github.com/inphotoo/earlyeval</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Yuling Shi</name>
+    </author>
+    <author>
+      <name>Zhensu Sun</name>
+    </author>
+    <author>
+      <name>Junsen Dong</name>
+    </author>
+    <author>
+      <name>Chengcheng Wan</name>
+    </author>
+    <author>
+      <name>David Lo</name>
+    </author>
+    <author>
+      <name>Xiaodong Gu</name>
+    </author>
+  </entry>
+</feed>

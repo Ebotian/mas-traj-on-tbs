@@ -1,0 +1,21 @@
+2026-10-12T04:20:47.210Z [INFO] [DAEMON] projectMemoryScope=workspace projectMemoryScopeRaw=workspace projectMemoryScopeSource=default project memory scope resolved
+qwen serve: daemon log → /root/.qwen/debug/daemon/daemon.log
+qwen serve listening on http://127.0.0.1:4171 (mode=http-bridge, workspace=/root/wt-b)
+qwen serve: bound to workspace "/root/wt-b"
+qwen serve: startup timing: processToListenMs=237 runQwenServeToListenMs=141
+qwen serve: trusted loopback mode; local callers have full API access without bearer authentication, including code execution as the daemon user. Use --require-auth with QWEN_SERVER_TOKEN on shared or untrusted hosts.
+2026-10-12T04:20:47.343Z [INFO] [DAEMON] deferred runtime: scheduling fallback start in 1000ms
+2026-10-12T04:20:48.344Z [INFO] [DAEMON] deferred runtime: fallback timer fired, starting
+2026-10-12T04:20:48.412Z [INFO] [DAEMON] ideEnvPresent=false primary=/root/wt-b secondary= daemon workspace roots initialized
+qwen serve: session reaper started (interval 60000ms, idle threshold 1800000ms)
+qwen serve: /acp WebSocket transport enabled on /acp
+2026-10-12T04:20:54.147Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=8 status=200 request completed
+2026-10-12T04:21:22.782Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=4 status=200 request completed
+2026-10-12T04:21:22.799Z [INFO] [DAEMON] route=GET /workspaces/%2Froot%2Fwt-b/agent/agents durationMs=8 status=200 request completed
+2026-10-12T04:21:49.259Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+2026-10-12T04:21:49.268Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=81 status=200 request completed
+2026-10-12T04:21:49.332Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+2026-10-12T04:21:52.272Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:21:55.276Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:21:58.280Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:22:01.287Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=6 status=200 request completed

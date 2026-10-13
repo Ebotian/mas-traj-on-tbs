@@ -1,0 +1,750 @@
+{
+ "meta": {
+  "schema": "traj-stats/2",
+  "usage_semantics": "per_call",
+  "tag": "ckpt-m1",
+  "commit": "ecf8bda1a12bc5461c0c7677b72590b3b4858b45",
+  "commit_time": "2026-10-12T10:35:49Z",
+  "cut_epoch": 1791801349,
+  "transcripts": {
+   "a": {
+    "path": "/home/ebt/harbor-runs/jobs/agent/walkthrough-8/task-restricted__dPnyAJi/artifacts/root/wt/collect/chats/12ec8ce6-2c2c-4d09-814a-b9b6709e5367.jsonl",
+    "sha256": "dc107dce9be9a048f0eb3423747489e9d4355bc42e119c16e6f806c141a1d8d5",
+    "sha256_leq_cut": "107ed4e3e2a5122ea3ec19c8899a132127bc8b34623168156773d9764d8fdd72",
+    "lines_leq_cut": 343,
+    "lines_total": 673
+   },
+   "b": {
+    "path": "/home/ebt/harbor-runs/jobs/agent/walkthrough-8/task-restricted__dPnyAJi/artifacts/root/wt/collect/chats/1ce76b94-9b24-4b5c-ae79-6edae468a28a.jsonl",
+    "sha256": "106d79524ac6c1f76f9597af9452b5a0ca38556b107acfa19df09a6ec33cb9a9",
+    "sha256_leq_cut": "347aaf36070b10458987fe729797dba8726554ba15e9ece92c46c50e3d4e302c",
+    "lines_leq_cut": 387,
+    "lines_total": 631
+   }
+  },
+  "method": "mechanical; no network; no LLM; no task priors; content is a pure function of the fixed inputs (tag commit; transcript lines <= cut; ledger/protocol sources as labelled)"
+ },
+ "volume": {
+  "a": {
+   "lines_total": 673,
+   "lines_leq_cut": 343,
+   "by_type": {
+    "assistant": 44,
+    "system": 222,
+    "tool_result": 76,
+    "user": 1
+   },
+   "assistant_texts": 44,
+   "tool_results": 76,
+   "usage_events": 44,
+   "tokens": {
+    "prompt": 10049686,
+    "candidates": 227253,
+    "thoughts": 206515,
+    "cached": 9707776
+   },
+   "gaps": {
+    "count": 342,
+    "median_s": 0,
+    "p90_s": 8,
+    "p99_s": 69,
+    "max_s": 245
+   },
+   "silences_gt_600s": [],
+   "first_ts": 1791799800,
+   "last_ts": 1791801349,
+   "uncached": 341910,
+   "sha256_leq_cut": "107ed4e3e2a5122ea3ec19c8899a132127bc8b34623168156773d9764d8fdd72",
+   "commands_top": [
+    [
+     "echo",
+     26
+    ],
+    [
+     "qwen",
+     12
+    ],
+    [
+     "git",
+     10
+    ],
+    [
+     "python3",
+     8
+    ],
+    [
+     "bash",
+     6
+    ],
+    [
+     "ls",
+     6
+    ],
+    [
+     "date",
+     2
+    ],
+    [
+     "env",
+     2
+    ],
+    [
+     "stat",
+     2
+    ]
+   ]
+  },
+  "b": {
+   "lines_total": 631,
+   "lines_leq_cut": 387,
+   "by_type": {
+    "assistant": 59,
+    "system": 257,
+    "tool_result": 70,
+    "user": 1
+   },
+   "assistant_texts": 59,
+   "tool_results": 70,
+   "usage_events": 59,
+   "tokens": {
+    "prompt": 4891168,
+    "candidates": 60366,
+    "thoughts": 34187,
+    "cached": 4745554
+   },
+   "gaps": {
+    "count": 386,
+    "median_s": 0,
+    "p90_s": 12,
+    "p99_s": 59,
+    "max_s": 278
+   },
+   "silences_gt_600s": [],
+   "first_ts": 1791799800,
+   "last_ts": 1791801345,
+   "uncached": 145614,
+   "sha256_leq_cut": "347aaf36070b10458987fe729797dba8726554ba15e9ece92c46c50e3d4e302c",
+   "commands_top": [
+    [
+     "git",
+     20
+    ],
+    [
+     "python3",
+     20
+    ],
+    [
+     "cat",
+     14
+    ],
+    [
+     "qwen",
+     14
+    ],
+    [
+     "echo",
+     8
+    ],
+    [
+     "for",
+     8
+    ],
+    [
+     "sed",
+     8
+    ],
+    [
+     "grep",
+     4
+    ],
+    [
+     "ls",
+     4
+    ],
+    [
+     "bash",
+     2
+    ],
+    [
+     "diff",
+     2
+    ],
+    [
+     "printf",
+     2
+    ]
+   ]
+  }
+ },
+ "pacing": {
+  "a": {
+   "first_ts": 1791799800,
+   "last_ts": 1791801349,
+   "gaps": {
+    "count": 342,
+    "median_s": 0,
+    "p90_s": 8,
+    "p99_s": 69,
+    "max_s": 245
+   },
+   "silences_gt_600s": []
+  },
+  "b": {
+   "first_ts": 1791799800,
+   "last_ts": 1791801345,
+   "gaps": {
+    "count": 386,
+    "median_s": 0,
+    "p90_s": 12,
+    "p99_s": 59,
+    "max_s": 278
+   },
+   "silences_gt_600s": []
+  }
+ },
+ "surface": {
+  "only_a_count": 80,
+  "only_b_count": 39,
+  "both_count": 47,
+  "only_a": [
+   ".qwen/boards/walkthrough",
+   "/logs/agent",
+   "/root/.qwen/boards/walkthrough",
+   "/root/.qwen/projects/-root-wt-a/memory",
+   "/root/.qwen/projects/-root-wt-a/memory/MEMORY.md",
+   "/root/.qwen/projects/-root-wt-a/memory/project",
+   "/root/.qwen/projects/-root-wt-a/memory/project/walkthrough-infra-map.md",
+   "/root/.qwen/projects/-root-wt-a/memory/project/walkthrough-run-state.md",
+   "/root/wt-src",
+   "/root/wt-src/README.md",
+   "/root/wt-src/_hooktest",
+   "/root/wt-src/common",
+   "/root/wt-src/common/a2a",
+   "/root/wt-src/common/harness-note.txt",
+   "/root/wt-src/common/launch.sh",
+   "/root/wt-src/run_walkthrough.sh",
+   "/root/wt-src/tasks",
+   "/root/wt-src/tasks/walkthrough/agent.py",
+   "/root/wt-src/tasks/walkthrough/check_manipulation.py",
+   "/root/wt-src/tasks/walkthrough/launch.sh",
+   "/root/wt-src/tasks/walkthrough/metrics.py",
+   "/root/wt-src/verify",
+   "/root/wt-src/verify/verify_acceptance.sh",
+   "/root/wt/a/.gitignore",
+   "/root/wt/a/README.md",
+   "/root/wt/a/brief-a.md",
+   "/root/wt/a/refs-a.jsonl",
+   "/root/wt/a/selfreview-a.md",
+   "/root/wt/a/work-a-1.md",
+   "/root/wt/collect",
+   "/root/wt/prompt-a.txt",
+   "/root/wt/recover.py",
+   "/root/wt/repo/.git/hooks",
+   "/root/wt/repo/.git/hooks/reference-transaction",
+   "/root/wt/repo/README.md",
+   "/root/wt/repo/forks.json",
+   "/root/wt/repo/refs-b.jsonl",
+   "/root/wt/repo/understanding.md",
+   "/root/wt/x/abort-",
+   "/root/wt/x/declare-",
+   "/root/wt/x/declare-b",
+   "/root/wt/x/effort-a.json",
+   "/root/wt/x/pid-",
+   "/root/wt/x/ready-",
+   "/root/wt/x/session-a.uuid",
+   "/root/wt/x/session-b.uuid",
+   "/root/wt/x/sha-",
+   "/root/wt/x/sha-a-r0.txt",
+   "/root/wt/x/sha-a-r1.txt",
+   "/root/wt/x/sop-",
+   "/root/wt/x/stats",
+   "/root/wt/x/stop-",
+   "/root/wt/x/stop-a",
+   "3/5.",
+   "DEAD/absent",
+   "E4/E5",
+   "EX/EY",
+   "M1/P3",
+   "P6/P11",
+   "bash/sleep"
+  ],
+  "only_b": [
+   ".qwen/settings.json",
+   "/root/.qwen/projects/-root-wt-a",
+   "/root/.qwen/tmp/7dc483bbb754cacc1ec4475f3efa187de5e6d3e5d53264150c0d95ee591d2890/background-shells/1ce76b94-9b24-4b5c-ae79-6edae468a28a",
+   "/root/results",
+   "/root/wt/b/refs-b.jsonl",
+   "/root/wt/b/selfreview-b.md",
+   "/root/wt/b/understanding.md",
+   "/root/wt/b/work-b-1.md",
+   "/root/wt/prompt-b.txt",
+   "/root/wt/x/sha-b-r1.txt",
+   "/tmp/probes-r1.txt",
+   "4xx/5xx",
+   "D/shell-bg_55b34f43.output",
+   "D/shell-bg_55b34f43.status",
+   "P1/P6",
+   "P8/P9/P10",
+   "assistant/run_shell_command",
+   "commit/tool",
+   "common/front-phase.md",
+   "done/decline/prune",
+   "m00/M1",
+   "params/timeout",
+   "policy_version/cutoff",
+   "refs/notes",
+   "refs/tags",
+   "repo/board",
+   "tasks/asks",
+   "uname/git",
+   "understanding.md/forks.json",
+   "understanding/forks",
+   "x/effort-b.json",
+   "x/front-phase.log",
+   "x/pid-a",
+   "x/pid-b",
+   "x/prompt-variant",
+   "x/ready-a.round",
+   "x/ready-b.round",
+   "x/sha-b-r0.txt",
+   "x/traj-a.upto-cut.jsonl"
+  ],
+  "both": [
+   "/dev/null",
+   "/logs/agent/front-phase.log",
+   "/raw.githubusercontent.com/harbor-framework/terminal-bench-science/main/x",
+   "/root/wt",
+   "/root/wt-src/common/front-phase.md",
+   "/root/wt-src/tasks/walkthrough",
+   "/root/wt-src/tasks/walkthrough/run.sh",
+   "/root/wt/a",
+   "/root/wt/b",
+   "/root/wt/b/brief-b.md",
+   "/root/wt/b/forks.json",
+   "/root/wt/front_phase.py",
+   "/root/wt/gate.py",
+   "/root/wt/git_structure.py",
+   "/root/wt/post-commit.sh",
+   "/root/wt/refs.py",
+   "/root/wt/repo",
+   "/root/wt/traj.py",
+   "/root/wt/wait_peer.sh",
+   "/root/wt/x",
+   "/root/wt/x/declare-a",
+   "/root/wt/x/dir-a.json",
+   "/root/wt/x/dir-b.json",
+   "/root/wt/x/divergence.json",
+   "/root/wt/x/gate.log",
+   "/root/wt/x/git-structure-m00.json",
+   "/root/wt/x/pid-a",
+   "/root/wt/x/pid-b",
+   "/root/wt/x/prompt-variant",
+   "/root/wt/x/ready-a.round",
+   "/root/wt/x/ready-b.round",
+   "/root/wt/x/sha-b-r0.txt",
+   "/root/wt/x/sop-m00.md",
+   "8788/check",
+   "ckpt-m1/m2",
+   "git/gate",
+   "m00/m01",
+   "main/a/b",
+   "raw.githubusercontent.com/harbor-framework/terminal-bench-science",
+   "x/declare-a",
+   "x/dir-",
+   "x/dir-a.json",
+   "x/gate.log",
+   "x/ready-",
+   "x/sha-",
+   "x/sop-m00.md",
+   "x/traj-"
+  ],
+  "untouched_repo_files_count": 0,
+  "untouched_repo_files": []
+ },
+ "adoption": {
+  "counts": {
+   "a_to_b": 155,
+   "b_to_a": 91,
+   "cited_a_to_b": 0,
+   "cited_b_to_a": 0,
+   "concurrent": 0
+  },
+  "events": [
+   {
+    "gram": "ckpt m01 落签 后 按任务协议原文执行 其中 独立求解 自",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799809,
+    "used_ts": 1791799869,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "git_structure py mode midrun expect tags ckpt m00",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799834,
+    "used_ts": 1791799869,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "m01 落签 后 按任务协议原文执行 其中 独立求解 自 m01",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799809,
+    "used_ts": 1791799869,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "python3 root wt front_phase py declare root wt",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799818,
+    "used_ts": 1791799869,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "raw transcript under root qwen projects root wt",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799853,
+    "used_ts": 1791799869,
+    "source_line": 30,
+    "cited": false
+   },
+   {
+    "gram": "root wt front_phase py declare root wt x",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799818,
+    "used_ts": 1791799869,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "s raw transcript under root qwen projects root",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799853,
+    "used_ts": 1791799869,
+    "source_line": 30,
+    "cited": false
+   },
+   {
+    "gram": "says the front phase runs before the task",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799818,
+    "used_ts": 1791799869,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "says 前段结束 ckpt m01 落签 后 按任务协议原文执行 其中",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799809,
+    "used_ts": 1791799869,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "section says the front phase runs before the",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799818,
+    "used_ts": 1791799869,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "the front phase runs before the task body",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799809,
+    "used_ts": 1791799869,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "the walkthrough says there is no task to",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799834,
+    "used_ts": 1791799869,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "walkthrough says there is no task to solve",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799834,
+    "used_ts": 1791799869,
+    "source_line": 22,
+    "cited": false
+   },
+   {
+    "gram": "前段结束 ckpt m01 落签 后 按任务协议原文执行 其中 独立求解",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799809,
+    "used_ts": 1791799869,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "落签 后 按任务协议原文执行 其中 独立求解 自 m01 起算",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799809,
+    "used_ts": 1791799869,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "brief actor md 调查纪要 命令可复现 过 round gate",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791799869,
+    "used_ts": 1791799893,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "produce understanding md forks json merged into main",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791799869,
+    "used_ts": 1791799893,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "window produce understanding md forks json merged into",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791799869,
+    "used_ts": 1791799893,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "产出 各自分支提交 brief actor md 调查纪要 命令可复现 过",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791799869,
+    "used_ts": 1791799893,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "各自分支提交 brief actor md 调查纪要 命令可复现 过 round",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791799869,
+    "used_ts": 1791799893,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "commit message must contain round n n the",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799853,
+    "used_ts": 1791799916,
+    "source_line": 30,
+    "cited": false
+   },
+   {
+    "gram": "contain round n n the round number below",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799853,
+    "used_ts": 1791799916,
+    "source_line": 30,
+    "cited": false
+   },
+   {
+    "gram": "every commit message must contain round n n",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799853,
+    "used_ts": 1791799916,
+    "source_line": 30,
+    "cited": false
+   },
+   {
+    "gram": "hard rule every commit message must contain round",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799853,
+    "used_ts": 1791799916,
+    "source_line": 30,
+    "cited": false
+   },
+   {
+    "gram": "message must contain round n n the round",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799853,
+    "used_ts": 1791799916,
+    "source_line": 30,
+    "cited": false
+   },
+   {
+    "gram": "must contain round n n the round number",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799853,
+    "used_ts": 1791799916,
+    "source_line": 30,
+    "cited": false
+   },
+   {
+    "gram": "rule every commit message must contain round n",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799853,
+    "used_ts": 1791799916,
+    "source_line": 30,
+    "cited": false
+   },
+   {
+    "gram": "run git_structure py mode midrun expect tags ckpt",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791799893,
+    "used_ts": 1791799916,
+    "source_line": 46,
+    "cited": false
+   },
+   {
+    "gram": "commit file 引用 留账 逐条可解析 经 gate 的",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791799916,
+    "used_ts": 1791799938,
+    "source_line": 40,
+    "cited": false
+   },
+   {
+    "gram": "file 引用 留账 逐条可解析 经 gate 的 refs",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791799916,
+    "used_ts": 1791799938,
+    "source_line": 40,
+    "cited": false
+   }
+  ],
+  "event_total": 246
+ },
+ "ledger": {
+  "a": {
+   "entries": 8,
+   "by_kind": {
+    "commit": 4,
+    "file": 2,
+    "run": 2
+   },
+   "unresolved": [],
+   "source": "tag:ckpt-m1"
+  },
+  "b": {
+   "entries": 20,
+   "by_kind": {
+    "commit": 5,
+    "file": 4,
+    "row": 4,
+    "run": 3,
+    "traj": 1,
+    "unresolved": 3
+   },
+   "unresolved": [
+    "P6: board task t-34d4c1d5 vanished from show tasks[] without done/decline/prune; cau",
+    "P11: board tasks[] lost t-34d4c1d5 then t-2c5f10d9 (both created by b, no done/declin",
+    "E3: gate-probe stability across runs untested"
+   ],
+   "source": "tag:ckpt-m1"
+  }
+ },
+ "protocol": {
+  "present": true,
+  "forks": [
+   "F2",
+   "F1",
+   "F3",
+   "F4",
+   "F5"
+  ],
+  "divergence": {
+   "F2": {
+    "a": "H2b",
+    "b": "H2a",
+    "differ": true
+   },
+   "F1": {
+    "a": "H1b",
+    "b": "H1a",
+    "differ": true
+   },
+   "F3": {
+    "a": null,
+    "b": "H3a",
+    "differ": false
+   },
+   "F4": {
+    "a": null,
+    "b": "H4a",
+    "differ": false
+   },
+   "F5": {
+    "a": "H5b",
+    "b": "H5a",
+    "differ": true
+   }
+  },
+  "differing_count": 3,
+  "sources": {
+   "forks": "tag:ckpt-m1",
+   "dirs": {
+    "a": "/tmp/stats-v2-check/w8/x/dir-a.json",
+    "b": "/tmp/stats-v2-check/w8/x/dir-b.json"
+   }
+  }
+ }
+}

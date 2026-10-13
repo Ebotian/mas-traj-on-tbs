@@ -1,0 +1,77 @@
+# EGRESS POLICY — LAYER 2: TASK OVERLAY (knowledge side; varies per task)
+# Composed with policies/base.yml by egress/render.py.
+# status.hosts:    LIVE — rendered into build/task-restricted/task.toml
+# status.temporal: CANDIDATE — needs the gateway (design note §7/§8)
+task_id: tumor-immune-interface
+version: 6
+status:
+  hosts: live
+  temporal: candidate
+  gateway: live
+
+restricted_hosts:
+  # task-stack documentation surfaces — the ONLY knowledge surface open in the
+  # engines-off regime (search engines removed 2026-10-10 evening, per ruling)
+  - docs.scipy.org
+  - numpy.org
+  - scikit-image.org
+  - pandas.pydata.org
+  - docs.python.org
+  - matplotlib.org
+
+gateway:
+  # v0 surface registry (design note §7). The gateway is the ONLY path to
+  # these sources: they stay OUT of the container allowlist above.
+  # status flips to live at activation (base gains 172.17.0.1/32).
+  surfaces:
+    - kind: github
+      hosts: [github.com, www.github.com, raw.githubusercontent.com, codeload.github.com]
+      rule: object_date_lt_cutoff
+      unknown: deny
+    - kind: nature
+      hosts: [nature.com, www.nature.com]
+      rule: article_date_lt_cutoff
+      unknown: deny
+  # planned tiers (not yet implemented): T1 arxiv, biorxiv/medrxiv, zenodo,
+  # wikipedia, stackexchange; T2 ncbi·pmc, europepmc; T3 denied.
+
+temporal_policy:
+  mode: strict
+  cutoff: "2022-01-15T00:00:00Z"     # strictly-before; same-day fails closed (the earlier of the preprint's two dates)
+  cutoff_basis: earliest_known_answer_material
+  cutoff_evidence:
+    - "biorxiv:10.1101/2022.01.15.476480 v1 posted 2022-01-18 (api.biorxiv.org, 2026-10-10); DOI embeds 2022-01-15; EPMC PPR443704 firstPublicationDate 2022-01-18 -> fail-closed takes 2022-01-15"
+    - "zenodo:10.5281/zenodo.6838169 (publication_date 2022-07-15, API 2026-10-10) + sibling 6836992, same date"
+    - "paper 2022-10-21 (Crossref 10.1038/s43856-022-00197-2) is NOT the cutoff basis"
+  sweep_2026-10-10:
+    checked: ["crossref relations", "europepmc MED+PPR", "biorxiv api", "zenodo title/creator search", "github repo+code search"]
+    findings:
+      - "preprint found -> cutoff rebased from 2022-07-15 to 2022-01-15 (strict)"
+      - "no earlier same-source zenodo deposit (the oldest same-title record is ours, 2022-07-15)"
+      - "same-last-author unrelated tool deposit DAISM-DNN 2022-06-02 (deconvolution; not answer-bearing)"
+      - "PPR376492 / Hoch et al. 2021-07-29 + BodenmillerGroup/MelanomaIMC repo (2021-07-07) are a DIFFERENT melanoma-IMC study"
+    residual: "conference abstracts / lab pages below 2022-01 are unindexed in the scanned sources; not exhaustively swept"
+  access_semantics: "knowledge sources OPEN with a time window (t_verified < cutoff); domain-level denial is a phase-1 approximation - see design note SS7"
+
+forbidden_sources:
+  - "doi:10.1101/2022.01.15.476480"
+  - "biorxiv content of 2022.01.15.476480 (entry, PDF, supplements)"
+  - "doi:10.1038/s43856-022-00197-2"
+  - "conceptdoi:10.5281/zenodo.6836991"
+  - "raw.githubusercontent.com/harbor-framework/terminal-bench-science"
+  - "hub.harborframework.com"
+  - "task_specific_solution_repositories  # REVIEW: lab GitHub/site"
+  - "benchmark_oracle_artifacts            # solution/ + tests/ of any mirror"
+unknown_publication_date: deny
+unverified_content_revision: deny
+notes: >
+  2026-10-10: split into layers per the user's ruling (base = the fixed API/package chain;
+  this overlay = the per-task knowledge side). Earlier-channel sweep executed; the bioRxiv
+  preprint rebases the cutoff to 2022-01-15 strict. Enforcement today: harbor allowlist
+  (domain level) via egress/render.py; the time gate needs the gateway (design note §7).
+  raw.githubusercontent.com was removed earlier; the Token Plan model endpoint lives in base.yml.
+  Ruling 2026-10-10 (evening, user): 「肯定禁止搜索引擎」 — search engines are banned (not
+  date-adjudicable -> fail closed); the frozen-KB alternative was rejected the same round;
+  the overlay's rules are now pinned as executable tests (egress/tests/). Condition note:
+  runs A'/B'/B'' executed engines-on; any later run is engines-off and must not be pooled
+  with them. The SBB template's "open internet" premise needs a v2 before the next SBB run.

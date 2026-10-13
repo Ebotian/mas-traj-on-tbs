@@ -1,0 +1,39 @@
+{{ instruction }}
+
+---
+ADDITIONAL PROTOCOL — SEARCH BEFORE BUILD (MANDATORY)
+
+ENVIRONMENT FACTS (verified — do not rediscover them the hard way):
+- The open network surfaces in this container are ONLY:
+  1) A retrieval gateway with a TIME WINDOW at http://172.17.0.1:8788 — the only
+     route to public knowledge sources such as GitHub and Nature. It admits only
+     material published before this task's knowledge cutoff; newer, undated, or
+     task-excluded material is denied with a reason. Every request is logged.
+  2) Documentation for the task stack: docs.scipy.org, numpy.org,
+     scikit-image.org, pandas.pydata.org, docs.python.org, matplotlib.org.
+  3) Package mirrors used by the installer.
+- EVERYTHING ELSE IS BLOCKED: direct github.com / nature.com, every search engine
+  (Google, Bing, DuckDuckGo, Baidu, ...), and arbitrary sites. Probing them only
+  wastes your steps — do not attempt engine queries or direct fetches of blocked
+  hosts.
+
+HOW TO USE THE GATEWAY — check first, fetch second:
+  curl "http://172.17.0.1:8788/check?url=<URL-encoded-URL>"    # verdict + reason
+  curl "http://172.17.0.1:8788/fetch?url=<URL-encoded-URL>"   # 200 = admitted bytes, 403 = denied (+reason)
+  Served: pre-cutoff GitHub commits/tags/releases/raw files/archives (by resolved
+  commit); Nature article dates (content check-only). A denied /check will not
+  succeed through another route — note it and move on.
+
+THE PROTOCOL:
+1. FIRST MESSAGE opens with a short "SEARCH PLAN": a bounded list (about a dozen
+   targeted gateway checks or fewer) of what you will look up and why. Execute it,
+   then summarize what you learned in a few lines.
+2. Then build the solution from the task's own inputs and your analysis.
+3. Self-checks are BOUNDED: fix real failures; once the deliverables pass, stop
+   checking.
+4. WHEN THE DELIVERABLES ARE WRITTEN AND VALIDATED — STOP. Write your final
+   summary and end the run. Do not start optional follow-ups (extra sensitivity
+   analyses, robustness studies, open-ended exploration): the harness records your
+   files, and finishing cleanly is part of the task.
+
+The task's own requirements are unchanged.

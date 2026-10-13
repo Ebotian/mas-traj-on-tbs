@@ -1,0 +1,13 @@
+qwen serve: daemon stable log is owned by another daemon instance; using a fallback log for runId=8dc4fbefbccf4cf92d5f93247dac7f08
+2026-10-12T04:20:48.100Z [INFO] [DAEMON] projectMemoryScope=workspace projectMemoryScopeRaw=workspace projectMemoryScopeSource=default project memory scope resolved
+qwen serve: daemon log → /root/.qwen/debug/daemon/runs/run-8dc4fbefbccf4cf92d5f93247dac7f08/daemon.log
+qwen serve listening on http://127.0.0.1:4170 (mode=http-bridge, workspace=/root/wt-a)
+qwen serve: bound to workspace "/root/wt-a"
+qwen serve: startup timing: processToListenMs=1129 runQwenServeToListenMs=1030
+qwen serve: trusted loopback mode; local callers have full API access without bearer authentication, including code execution as the daemon user. Use --require-auth with QWEN_SERVER_TOKEN on shared or untrusted hosts.
+2026-10-12T04:20:48.235Z [INFO] [DAEMON] deferred runtime: scheduling fallback start in 1000ms
+2026-10-12T04:20:49.236Z [INFO] [DAEMON] deferred runtime: fallback timer fired, starting
+2026-10-12T04:20:49.304Z [INFO] [DAEMON] ideEnvPresent=false primary=/root/wt-a secondary= daemon workspace roots initialized
+qwen serve: session reaper started (interval 60000ms, idle threshold 1800000ms)
+qwen serve: /acp WebSocket transport enabled on /acp
+2026-10-12T04:20:54.156Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=9 status=200 request completed

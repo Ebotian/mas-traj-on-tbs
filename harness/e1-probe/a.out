@@ -1,0 +1,10 @@
+**1) list_agents — reachable session names: none.**
+Verbatim result:
+> No ordinary background subagents are available in this session. Named Agent Team teammates are not listed here; their results are delivered automatically through team messaging, so do not use list_agents to wait for a teammate.
+
+**2) Send attempt.** No probe/e1 session was listed, so I targeted the only other session belonging to this directory — probe-B (session-id `61948925-25b8-43fd-abf0-4d963eadc317`, derived name `e1-probe-98`) — and called send_message with exactly: `e1-ping-1`.
+
+**3) Send result (verbatim):**
+> No active team and no task_id, and cross-session messaging is not active in this session (agents.crossSessionMessaging is off, or its inbox did not start), so "e1-probe-98" cannot be another session. Create a team, or pass `task_id` to message a background task.
+
+**Why nothing was reachable** (verified, not assumed): this build documents that "A one-shot `qwen -p` run never registers and is not shown" (bundled cross-session docs). Both probes are one-shot `-p` runs; `qwen sessions ps` and `~/.qwen/sessions/` show only 4 unrelated live TUI sessions, and neither probe PID (3051378, 3051478) has a registry record or inbox socket. So no message was delivered — the send could not even be attempted at the wire level.

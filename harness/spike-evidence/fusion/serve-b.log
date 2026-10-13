@@ -1,0 +1,68 @@
+qwen serve: daemon stable log is owned by another daemon instance; using a fallback log for runId=bf6aa1c70c84a22b24855555324413cf
+2026-10-12T04:17:52.536Z [INFO] [DAEMON] projectMemoryScope=workspace projectMemoryScopeRaw=workspace projectMemoryScopeSource=default project memory scope resolved
+qwen serve: daemon log → /root/.qwen/debug/daemon/runs/run-bf6aa1c70c84a22b24855555324413cf/daemon.log
+qwen serve listening on http://127.0.0.1:4171 (mode=http-bridge, workspace=/root/wt-b)
+qwen serve: bound to workspace "/root/wt-b"
+qwen serve: startup timing: processToListenMs=1093 runQwenServeToListenMs=1003
+qwen serve: trusted loopback mode; local callers have full API access without bearer authentication, including code execution as the daemon user. Use --require-auth with QWEN_SERVER_TOKEN on shared or untrusted hosts.
+2026-10-12T04:17:52.680Z [INFO] [DAEMON] deferred runtime: scheduling fallback start in 1000ms
+2026-10-12T04:17:53.681Z [INFO] [DAEMON] deferred runtime: fallback timer fired, starting
+2026-10-12T04:17:53.751Z [INFO] [DAEMON] ideEnvPresent=false primary=/root/wt-b secondary= daemon workspace roots initialized
+qwen serve: session reaper started (interval 60000ms, idle threshold 1800000ms)
+qwen serve: /acp WebSocket transport enabled on /acp
+2026-10-12T04:17:57.598Z [INFO] [DAEMON] route=GET /.well-known/agent-card.json durationMs=2 status=200 request completed
+2026-10-12T04:17:57.644Z [INFO] [DAEMON] route=POST /workspaces/%2Froot%2Fwt-b/agent/agents durationMs=13 status=200 request completed
+2026-10-12T04:17:57.674Z [INFO] [DAEMON] route=POST /workspaces/%2Froot%2Fwt-b/agent/agents/ag_2515393e-0415-4071-9b6d-9082676e26cf/shares durationMs=6 status=201 request completed
+2026-10-12T04:17:57.782Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+qwen serve: updated session metadata "929a4c6c-711f-44fd-a140-0e5a61f14b70" displayName=set
+2026-10-12T04:17:57.802Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=84 status=200 request completed
+[demux] session=62551067-7d01-505d-876e-8b178cf37243 type=session_update action=dropped reason=session_not_owned
+2026-10-12T04:17:57.851Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+2026-10-12T04:18:00.808Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=6 status=200 request completed
+2026-10-12T04:18:39.856Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+qwen serve: updated session metadata "c4c61d98-d721-4914-8718-90d241af8495" displayName=set
+2026-10-12T04:18:39.866Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=48 status=200 request completed
+[demux] session=ff92506b-821d-5a77-8ccb-ae48924f80be type=session_update action=dropped reason=session_not_owned
+2026-10-12T04:18:39.897Z [WARN] [DAEMON] bytes=592766 direction=inbound messageKind=notification method=session/update sessionUpdate=available_commands_update sourceClass=session_update_notification thresholdBytes=262144 large ACP pipe frame observed
+2026-10-12T04:18:42.870Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:18:45.874Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:18:48.879Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:18:51.882Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:18:54.886Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:18:57.890Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:00.894Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:03.899Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:06.902Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:09.906Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:12.911Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=4 status=200 request completed
+2026-10-12T04:19:15.915Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:18.918Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:21.922Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:24.926Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:27.930Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:30.934Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:33.938Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:36.941Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:39.945Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:42.949Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:45.953Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:48.957Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:51.961Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:54.965Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:19:57.969Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:00.972Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:03.976Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=2 status=200 request completed
+2026-10-12T04:20:06.979Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:09.983Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=4 status=200 request completed
+2026-10-12T04:20:12.986Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=2 status=200 request completed
+2026-10-12T04:20:15.990Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:18.994Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:21.998Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:25.001Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:28.005Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:31.008Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:34.012Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:37.016Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:40.019Z [INFO] [DAEMON] route=POST /a2a/v1 durationMs=3 status=200 request completed
+2026-10-12T04:20:46.103Z [WARN] [DAEMON] received SIGTERM, draining
+2026-10-12T04:20:46.162Z [INFO] [DAEMON] daemon stopped
