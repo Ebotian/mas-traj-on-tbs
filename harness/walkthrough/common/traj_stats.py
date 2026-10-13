@@ -17,6 +17,12 @@
 # v2(2026-10-12):adoption 按两侧事件时间归并、同刻记并发;tokens=per_call 并派生 uncached;
 #   transcript 增 sha256_leq_cut(≤cut 前缀=固定输入身份);ledger/protocol 增来源标注;
 #   路径集合更名 observed_paths(工具参数中观察到的路径串);meta 增 schema/usage_semantics。
+# v3(2026-10-13):计数与截断样例分离(ledger.unresolved_count、pacing.silences_gt_600s_count,
+#   样例列表仍截断,md 同显);里程碑输入钉版:账本与 dir-*.json 首次读取即复制进 <out>/pin/
+#   并以 pin:<路径> 标注,旧检查点重生成不再随工作目录增长漂移,缺失记未知(source=missing,
+#   计数 null);删除随文件增长漂移的全局字段(全文件行数/全文件 sha256),保留 ≤cut 前缀身份
+#   (sha256_leq_cut、lines_leq_cut、cut_last_line);adoption 更名 text_overlap(文本重合计数,
+#   非语义采纳——语义采纳需另行绑定读取/改动/验证事件,未实现);schema=traj-stats/3。
 
 import calendar
 import hashlib
@@ -126,12 +132,11 @@ def normalize_cmd(c):
 
 
 def side_stats(path, cut):
-    rows, total = [], 0
+    rows = []
     pref = hashlib.sha256()
     if path and os.path.exists(path):
         with open(path, encoding="utf-8", errors="replace") as f:
             for i, ln in enumerate(f, 1):
-                total += 1
                 try:
                     d = json.loads(ln)
                 except Exception:
@@ -190,13 +195,13 @@ def side_stats(path, cut):
         return v[min(len(v) - 1, int(p * (len(v) - 1)))]
 
     return {
-        "lines_total": total, "lines_leq_cut": len(rows),
+        "lines_leq_cut": len(rows), "cut_last_line": (rows[-1][0] if rows else None),
         "by_type": dict(sorted(by_type.items())),
         "assistant_texts": len(texts), "tool_results": by_type.get("tool_result", 0),
         "usage_events": usage_events, "tokens": usage if usage_events else None,
         "gaps": {"count": len(gaps), "median_s": q(gaps, 0.5), "p90_s": q(gaps, 0.9),
                  "p99_s": q(gaps, 0.99), "max_s": (max(gaps) if gaps else None)},
-        "silences_gt_600s": silences[:8],
+        "silences_gt_600s": silences[:8], "silences_gt_600s_count": len(silences),
         "first_ts": rows[0][1] if rows else None, "last_ts": rows[-1][1] if rows else None,
         "uncached": (usage["prompt"] - usage["cached"]) if usage_events else None,
         "sha256_leq_cut": pref.hexdigest(),
@@ -206,20 +211,45 @@ def side_stats(path, cut):
     }
 
 
-def load_ledger(repo, tag, xdir, wt_root, side):
+def pin_write(pin_dir, name, raw):
+    if not pin_dir:
+        return None
+    try:
+        os.makedirs(pin_dir, exist_ok=True)
+        p = os.path.join(pin_dir, name)
+        if not os.path.exists(p):
+            with open(p, "wb") as f:
+                f.write(raw)
+            os.chmod(p, 0o444)
+        return p
+    except Exception:
+        return None
+
+
+def load_ledger(repo, tag, xdir, wt_root, side, pin_dir=None):
     ok, text = git(repo, "show", "%s:refs-%s.jsonl" % (tag, side))
     if ok and text:
-        return text.splitlines(), "tag:%s" % tag
+        return text.splitlines(), "tag:%s" % tag, None
+    name = "%s.refs-%s.jsonl" % (tag, side)
+    if pin_dir:
+        p = os.path.join(pin_dir, name)
+        if os.path.exists(p):
+            try:
+                with open(p, encoding="utf-8", errors="replace") as f:
+                    return f.read().splitlines(), "pin:%s" % p, None
+            except Exception:
+                pass
     for p in (os.path.join(wt_root, side, "refs-%s.jsonl" % side),
               os.path.join(repo, "refs-%s.jsonl" % side),
               os.path.join(xdir, "refs-%s.jsonl" % side)):
         if os.path.exists(p):
             try:
-                with open(p, encoding="utf-8", errors="replace") as f:
-                    return f.read().splitlines(), "file:%s" % p
+                with open(p, "rb") as f:
+                    raw = f.read()
+                return raw.decode("utf-8", "replace").splitlines(), "file:%s" % p, (name, raw)
             except Exception:
                 pass
-    return [], "missing"
+    return [], "missing", None
 
 
 def ledger_stats(lines):
@@ -246,10 +276,11 @@ def ledger_stats(lines):
             tgt, l1, l2 = m.group(1), int(m.group(2)), int(m.group(3) or m.group(2))
             traj_ranges[tgt].append((l1, l2))
     return {"entries": len(lines), "by_kind": dict(sorted(by_kind.items())),
-            "unresolved": unresolved[:10], "traj_ranges": traj_ranges}
+            "unresolved": unresolved[:10], "unresolved_count": len(unresolved),
+            "traj_ranges": traj_ranges}
 
 
-def adoption_stats(b_side_stats_map, ledgers):
+def text_overlap_stats(b_side_stats_map, ledgers):
     merged = []
     for side in ("a", "b"):
         for (i, ts, tx) in b_side_stats_map[side]["_texts"]:
@@ -310,7 +341,7 @@ def surface_stats(stats, repo, tag):
             "untouched_repo_files_count": len(untouched), "untouched_repo_files": untouched[:60]}
 
 
-def protocol_stats(repo, tag, xdir):
+def protocol_stats(repo, tag, xdir, pin_dir=None):
     forks = []
     ok, text = git(repo, "show", tag + ":forks.json")
     if ok and text:
@@ -323,19 +354,39 @@ def protocol_stats(repo, tag, xdir):
                 forks = [str(f["id"]) for f in items]
         except Exception:
             pass
-    dirs = {}
+    dirs, dir_src, pins = {}, {}, {}
     for side in ("a", "b"):
-        try:
-            with open(os.path.join(xdir, "dir-%s.json" % side), encoding="utf-8") as f:
-                d = json.load(f)
+        name = "dir-%s.json" % side
+        pin_name = "%s.%s" % (tag, name)
+        pinp = os.path.join(pin_dir, pin_name) if pin_dir else None
+        d = None
+        if pinp and os.path.exists(pinp):
+            try:
+                with open(pinp, encoding="utf-8", errors="replace") as f:
+                    d = json.load(f)
+                dir_src[side] = "pin:%s" % pinp
+            except Exception:
+                d = None
+        if d is None:
+            p = os.path.join(xdir, name)
+            if os.path.exists(p):
+                try:
+                    with open(p, "rb") as f:
+                        raw = f.read()
+                    d = json.loads(raw.decode("utf-8", "replace"))
+                    if pinp:
+                        pins[pin_name] = raw
+                        dir_src[side] = "pin:%s" % pinp
+                    else:
+                        dir_src[side] = "file:%s" % p
+                except Exception:
+                    d = None
+        if isinstance(d, dict):
             dirs[side] = {str(x.get("fork_id")): str(x.get("choice", ""))
-                          for x in d.get("axes", []) if isinstance(x, dict)}
-        except Exception:
+                          for x in (d.get("axes") or []) if isinstance(x, dict)}
+        else:
             dirs[side] = {}
-    dir_src = {}
-    for side in ("a", "b"):
-        p2 = os.path.join(xdir, "dir-%s.json" % side)
-        dir_src[side] = p2 if os.path.exists(p2) else "missing"
+        dir_src.setdefault(side, "missing")
     divergence, differing = {}, 0
     for fid in forks:
         ca, cb = dirs["a"].get(fid), dirs["b"].get(fid)
@@ -345,7 +396,7 @@ def protocol_stats(repo, tag, xdir):
             differing += 1
     return {"present": bool(forks or dirs["a"] or dirs["b"]), "forks": forks,
             "divergence": divergence, "differing_count": differing,
-            "sources": {"forks": ("tag:%s" % tag) if forks else "missing", "dirs": dir_src}}
+            "sources": {"forks": ("tag:%s" % tag) if forks else "missing", "dirs": dir_src}}, pins
 
 
 def render_md(res):
@@ -354,26 +405,32 @@ def render_md(res):
                                               res["meta"]["cut_epoch"]), ""]
     for s in ("a", "b"):
         v = res["volume"][s]
-        L.append("volume[%s]: lines<=cut=%d/%d assistant=%d tool_results=%d tokens=%s uncached=%s"
-                 % (s, v["lines_leq_cut"], v["lines_total"], v["assistant_texts"],
+        L.append("volume[%s]: lines<=cut=%d cut_last_line=%s assistant=%d tool_results=%d tokens=%s uncached=%s"
+                 % (s, v["lines_leq_cut"], v["cut_last_line"], v["assistant_texts"],
                     v["tool_results"], json.dumps(v["tokens"], ensure_ascii=False),
                        json.dumps(v["uncached"])))
         p = res["pacing"][s]
         L.append("pacing[%s]: median=%ss p90=%ss p99=%ss max=%ss silences>600s=%d"
                  % (s, p["gaps"]["median_s"], p["gaps"]["p90_s"], p["gaps"]["p99_s"],
-                    p["gaps"]["max_s"], len(p["silences_gt_600s"])))
+                    p["gaps"]["max_s"], p.get("silences_gt_600s_count", len(p["silences_gt_600s"]))))
     sf = res["surface"]
     L.append("surface: only_a=%d only_b=%d both=%d untouched_repo_files=%d"
              % (sf["only_a_count"], sf["only_b_count"], sf["both_count"],
                 sf["untouched_repo_files_count"]))
-    ad = res["adoption"]["counts"]
-    L.append("adoption: a->b=%d (cited %d)  b->a=%d (cited %d)  concurrent=%d  [events listed=%d/%d]"
+    ad = res["text_overlap"]["counts"]
+    L.append("text_overlap: a->b=%d (cited %d)  b->a=%d (cited %d)  concurrent=%d  [events listed=%d/%d] (文本重合计数,非语义采纳)"
              % (ad["a_to_b"], ad["cited_a_to_b"], ad["b_to_a"], ad["cited_b_to_a"], ad["concurrent"],
-                len(res["adoption"]["events"]), res["adoption"]["event_total"]))
+                len(res["text_overlap"]["events"]), res["text_overlap"]["event_total"]))
     for s in ("a", "b"):
         lg = res["ledger"][s]
-        L.append("ledger[%s]: entries=%d kinds=%s unresolved=%d source=%s"
-                 % (s, lg["entries"], json.dumps(lg["by_kind"], ensure_ascii=False), len(lg["unresolved"]), lg["source"]))
+        if lg.get("unresolved_count") is None:
+            u = "unknown"
+        elif lg["unresolved_count"] == len(lg["unresolved"]):
+            u = "%d" % lg["unresolved_count"]
+        else:
+            u = "%d(sample %d)" % (lg["unresolved_count"], len(lg["unresolved"]))
+        L.append("ledger[%s]: entries=%s kinds=%s unresolved=%s source=%s"
+                 % (s, lg["entries"], json.dumps(lg["by_kind"], ensure_ascii=False), u, lg["source"]))
     pr = res["protocol"]
     if pr["present"]:
         L.append("protocol: forks=%d differing=%d/%d" % (len(pr["forks"]), pr["differing_count"], len(pr["forks"])))
@@ -409,7 +466,7 @@ def gen(repo, xdir, tag, opts):
     cut = int(cut_s)
     _, csha = git(repo, "rev-parse", tag + "^{commit}")
     ctime = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(cut))
-    paths, shas = {}, {}
+    paths, tsrc = {}, {}
     for side in ("a", "b"):
         p = opts.get("transcript_" + side)
         if not p:
@@ -422,37 +479,51 @@ def gen(repo, xdir, tag, opts):
             if uu:
                 p = os.path.join(opts["chats_root"], "-root-wt-%s" % side, "chats", uu + ".jsonl")
         paths[side] = p
-        if p and os.path.exists(p):
-            h = hashlib.sha256()
-            with open(p, "rb") as f:
-                for chunk in iter(lambda: f.read(1 << 20), b""):
-                    h.update(chunk)
-            shas[side] = h.hexdigest()
-        else:
-            shas[side] = None
+        tsrc[side] = "file" if (p and os.path.exists(p)) else "missing"
     stats = {s: side_stats(paths[s], cut) for s in ("a", "b")}
+    pin_dir = opts.get("pin_dir") or os.path.join(opts["out"], "pin")
     ledgers, ledger_src = {}, {}
     for s in ("a", "b"):
-        lines, src = load_ledger(repo, tag, xdir, opts["wt_root"], s)
+        lines, src, pend = load_ledger(repo, tag, xdir, opts["wt_root"], s, pin_dir)
+        if pend is not None:
+            name, raw = pend
+            pp = pin_write(pin_dir, name, raw)
+            if pp is not None:
+                src = "pin:%s" % pp
         ledgers[s] = ledger_stats(lines)
         ledger_src[s] = src
+    protocol, pins = protocol_stats(repo, tag, xdir, pin_dir)
+    for pname, praw in pins.items():
+        pin_write(pin_dir, pname, praw)
+    ledger_out = {}
+    for s in ("a", "b"):
+        if ledger_src[s] == "missing":
+            ledger_out[s] = {"entries": None, "by_kind": {}, "unresolved": [],
+                             "unresolved_count": None, "source": "missing"}
+        else:
+            lg = ledgers[s]
+            ledger_out[s] = {"entries": lg["entries"], "by_kind": lg["by_kind"],
+                             "unresolved": lg["unresolved"],
+                             "unresolved_count": lg["unresolved_count"],
+                             "source": ledger_src[s]}
     res = {
-        "meta": {"schema": "traj-stats/2", "usage_semantics": "per_call",
+        "meta": {"schema": "traj-stats/3", "usage_semantics": "per_call",
                  "tag": tag, "commit": csha, "commit_time": ctime, "cut_epoch": cut,
-                 "transcripts": {s: {"path": paths[s], "sha256": shas[s],
+                 "transcripts": {s: {"path": paths[s],
                                      "sha256_leq_cut": stats[s]["sha256_leq_cut"],
                                      "lines_leq_cut": stats[s]["lines_leq_cut"],
-                                     "lines_total": stats[s]["lines_total"]} for s in ("a", "b")},
-                 "method": "mechanical; no network; no LLM; no task priors; content is a pure function of the fixed inputs (tag commit; transcript lines <= cut; ledger/protocol sources as labelled)"},
+                                     "cut_last_line": stats[s]["cut_last_line"],
+                                     "source": tsrc[s]} for s in ("a", "b")},
+                 "method": "mechanical; no network; no LLM; no task priors; content is a pure function of the pinned inputs (tag commit; transcript lines <= cut; ledger/protocol sources pinned under pin/ or recorded as missing)"},
         "volume": {s: {k: v for k, v in stats[s].items() if k not in ("observed_paths", "_texts")} for s in ("a", "b")},
         "pacing": {s: {"first_ts": stats[s]["first_ts"], "last_ts": stats[s]["last_ts"],
-                        "gaps": stats[s]["gaps"], "silences_gt_600s": stats[s]["silences_gt_600s"]}
+                        "gaps": stats[s]["gaps"], "silences_gt_600s": stats[s]["silences_gt_600s"],
+                        "silences_gt_600s_count": stats[s]["silences_gt_600s_count"]}
                    for s in ("a", "b")},
         "surface": surface_stats(stats, repo, tag),
-        "adoption": adoption_stats(stats, ledgers),
-        "ledger": {s: {"entries": ledgers[s]["entries"], "by_kind": ledgers[s]["by_kind"],
-                       "unresolved": ledgers[s]["unresolved"], "source": ledger_src[s]} for s in ("a", "b")},
-        "protocol": protocol_stats(repo, tag, xdir),
+        "text_overlap": text_overlap_stats(stats, ledgers),
+        "ledger": ledger_out,
+        "protocol": protocol,
     }
     outs = opts["out"]
     jpath = os.path.join(outs, tag + ".json")

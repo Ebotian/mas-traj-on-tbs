@@ -23,9 +23,10 @@
 # 硬约束(写死在唤醒 prompt 里):只许新增提交、写标记文件、删除残留分支/标签引用及 worktree
 #   (删引用不改写历史);禁止 rebase/amend/force;不动交付物字节;不提/不改科学结论。
 #   开关与上限:WT_RECOVER=0 关闭唤醒(wrapper 的结构门独立,不随此开关);
-#   WT_WAKE_TIMEOUT 秒(默认 900);每侧 ≤1;距 SESSION_WALL 预算不足时自动跳过(记 skipped)。
+#   WT_WAKE_TIMEOUT 秒(默认 900);每侧 ≤1;每次唤醒前重算剩余预算(WT_SESSION_WALL-已用-300):
+#   剩余 <120s 跳过(记 skipped),否则把该次唤醒超时截断到剩余预算(不再用固定 900s 越界)。
 # 用法(容器内): python3 recover.py <repo> <xdir> <logs> <uuid-a> <uuid-b>
-# 状态:机制补充 v4(前段 ckpt-m00/m01 并入;终签集参数化);尚未运行(首次使用前建议 walkthrough 排练一次)。
+# 状态:机制补充 v5(逐次预算重算+超时截断);尚未运行(首次使用前建议 walkthrough 排练一次)。
 
 import json
 import os
@@ -184,6 +185,22 @@ def wake(side, repo, x, logs, uuid, timeout_s, prompt):
     return rec
 
 
+def budget_left(repo, session_wall):
+    # 每次唤醒前重算:SESSION_WALL - 已用(仓库根提交时间为近似起点)- 300s 预留;起点取不到 → None(不截断)
+    _, ct = git(repo, "log", "--format=%ct", "--all")
+    try:
+        start_ts = min(int(t) for t in ct.splitlines() if t.strip())
+    except Exception:
+        return None
+    return session_wall - (time.time() - start_ts) - 300
+
+
+def clamp_timeout(timeout_s, rem):
+    if rem is None:
+        return timeout_s
+    return int(min(timeout_s, max(30, rem)))
+
+
 def main():
     if len(sys.argv) < 6:
         print("usage: recover.py <repo> <xdir> <logs> <uuid-a> <uuid-b>", file=sys.stderr)
@@ -204,34 +221,34 @@ def main():
         if not cfg["enabled"]:
             rec["notes"].append("recover disabled (WT_RECOVER=0)")
         else:
-            # 预算守卫:距 SESSION_WALL 太近则不唤醒(以仓库根提交时间为近似起点)
-            _, ct = git(repo, "log", "--format=%ct", "--all")
-            try:
-                start_ts = min(int(t) for t in ct.splitlines() if t.strip())
-                elapsed = time.time() - start_ts
-            except Exception:
-                elapsed = 0
-            budget_left = session_wall - elapsed - 300
-            if budget_left < 120:
-                rec["notes"].append("skipped: only %ds of session budget left" % int(budget_left))
-            else:
-                uuids = {"a": ua, "b": ub}
-                for side in ("a", "b"):
-                    has_abort = (xp / ("abort-" + side)).exists()
-                    has_stop = (xp / ("stop-" + side)).exists()
-                    duty = bool(f0["pending"])
-                    reconcile = has_abort and not has_stop
-                    struct_bad = not (s0.get("skip") or s0.get("ok"))
-                    if not (duty or reconcile or struct_bad):
-                        continue
-                    tags = (["duty"] if duty else []) + (["structure"] if struct_bad else []) + (["reconcile"] if reconcile else [])
-                    prompt = compose_prompt(side, f0, s0, x, has_abort, has_stop)
-                    w = wake(side, repo, x, logs, uuids.get(side, ""), cfg["timeout_s"], prompt)
-                    w["mode"] = "+".join(tags)
-                    w["at"] = now()
+            uuids = {"a": ua, "b": ub}
+            for side in ("a", "b"):
+                has_abort = (xp / ("abort-" + side)).exists()
+                has_stop = (xp / ("stop-" + side)).exists()
+                duty = bool(f0["pending"])
+                reconcile = has_abort and not has_stop
+                struct_bad = not (s0.get("skip") or s0.get("ok"))
+                if not (duty or reconcile or struct_bad):
+                    continue
+                tags = (["duty"] if duty else []) + (["structure"] if struct_bad else []) + (["reconcile"] if reconcile else [])
+                # 预算守卫:逐侧唤醒前重算剩余预算;不足则跳过,否则截断该次超时
+                rem = budget_left(repo, session_wall)
+                if rem is not None and rem < 120:
+                    w = {"side": side, "rc": None, "skip": "budget: only %ds left" % int(rem),
+                         "budget_left_s": int(rem), "mode": "+".join(tags), "at": now()}
                     wakes.append(w)
-                    f0 = audit(repo)
-                    s0 = structure(repo)
+                    rec["notes"].append("skipped side %s: only %ds of session budget left" % (side, int(rem)))
+                    continue
+                timeout_s = clamp_timeout(cfg["timeout_s"], rem)
+                prompt = compose_prompt(side, f0, s0, x, has_abort, has_stop)
+                w = wake(side, repo, x, logs, uuids.get(side, ""), timeout_s, prompt)
+                w["mode"] = "+".join(tags)
+                w["at"] = now()
+                w["timeout_used_s"] = timeout_s
+                w["budget_left_s"] = None if rem is None else int(rem)
+                wakes.append(w)
+                f0 = audit(repo)
+                s0 = structure(repo)
         rec["wakes"] = wakes
         fa = audit(repo)
         sa = structure(repo)

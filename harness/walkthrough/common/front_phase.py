@@ -7,10 +7,13 @@
 #   dispatch <repo> <xdir> [logs]     ckpt-m00 落签后写出 x/sop-m00.md(幂等,看门件用)
 #   check <repo> <xdir> <out.json>    校验 understanding/forks/dir 声明并产分歧报告
 # 口径:violations 为空=通过;divergence 报告=操纵检查证据(硬检查=top 轴不同 + 引用/合理性注记在场)。
+# 2026-10-13 修:choice 先归一化(trim+空白折叠+casefold)再比较——"linear model" 与 "Linear Model"
+#   是同一假设,不再计为"不同";假设 ID/引用解析/证伪计划的更细检查另议。
 # 状态:仅配置;尚未在实际跑中使用。
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -45,6 +48,10 @@ def git(repo, *args):
         return r.returncode == 0, (r.stdout or "").strip()
     except Exception:
         return False, ""
+
+
+def _norm_choice(s):
+    return re.sub(r"\s+", " ", str(s or "").strip()).casefold()
 
 
 def cmd_declare(xdir, side):
@@ -143,8 +150,9 @@ def cmd_check(repo, xdir, out):
     for fid in fork_ids:
         ca = [x["choice"] for x in dirs["a"] if x["fork_id"] == fid]
         cb = [x["choice"] for x in dirs["b"] if x["fork_id"] == fid]
+        # 归一化后比较:仅大小写/空白不同 ⇒ 同一假设("linear model" vs "Linear Model")
         divergence[fid] = {"a": ca, "b": cb,
-                           "differ": bool(ca and cb and ca[0] != cb[0])}
+                           "differ": bool(ca and cb and _norm_choice(ca[0]) != _norm_choice(cb[0]))}
     top = fork_ids[0] if fork_ids else None
     if top and not (divergence[top]["a"] and divergence[top]["b"]):
         violations.append("top fork %s not covered by both sides" % top)
