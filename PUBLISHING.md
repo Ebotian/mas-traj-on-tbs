@@ -69,3 +69,7 @@
 - [x] 2026-10-11 追加：**完整实验套件入仓 `harness/`**（与运行根同构、路径位置推导；大 payload/wheels
       只给取回方法与构建期 digest 断言；复现文档 `harness/REPRODUCE.md`；任务偏离件+notes 在
       `harness/build/task-restricted/`；评分器与答案键刻意不入包）。
+- [x] 2026-10-13 补推：此前仅存于本地、从未推送的两处引用已推送 origin —— 注解 tag `a0-audited`
+      （2026-09-20，指向已在远程历史内的提交）与 `refs/notes/ai-attribution`（9 条逐提交 AI 归属
+      统计 note）。main 本已最新（push 回 Everything up-to-date）；推送前已核：两引用的
+      tagger/committer 与公开历史（272 条提交）同一身份、无新增暴露，notes 内容扫描 0 敏感命中。
