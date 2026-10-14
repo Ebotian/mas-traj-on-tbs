@@ -1,0 +1,896 @@
+{
+ "meta": {
+  "schema": "traj-stats/4",
+  "usage_semantics": "per_call",
+  "tag": "ckpt-m01",
+  "commit": "985402289aa252c595ff361675521f1a3ea98da8",
+  "commit_time": "2026-10-12T16:21:03Z",
+  "cut_epoch": 1791822737,
+  "transcripts": {
+   "a": {
+    "path": "/home/ebt/rsi-dev/local2gpt/out/microarch-3-4-raw-lite-2026-10-13/microarch-4/task-microarch__T4uQyxQ/artifacts/root/wt/collect/chats/591a6b94-36be-4cd1-af50-7a6e6162c758.jsonl",
+    "sha256_leq_cut": "bce468f07b1c2a1a1429a8ff9fd6c781a6ecd04bad87f69b3123981435fe87ff",
+    "lines_leq_cut": 670,
+    "cut_last_line": 670,
+    "source": "file"
+   },
+   "b": {
+    "path": "/home/ebt/rsi-dev/local2gpt/out/microarch-3-4-raw-lite-2026-10-13/microarch-4/task-microarch__T4uQyxQ/artifacts/root/wt/collect/chats/1caff7fd-34b1-45e0-8759-c52980abad63.jsonl",
+    "sha256_leq_cut": "0e18e118b285573042b696b75a3fb0e98802aca8c840cd40a99d7da24d85b436",
+    "lines_leq_cut": 689,
+    "cut_last_line": 689,
+    "source": "file"
+   }
+  },
+  "method": "mechanical; no network; no LLM; no task priors; content is a pure function of the pinned inputs (tag commit; transcript lines <= cut; ledger/protocol sources pinned under pin/ with .meta availability sidecars, or recorded as missing; cut_epoch = max(tag commit time, availability of all sources))"
+ },
+ "availability": {
+  "policy": "cut_epoch = max(tag_commit_epoch, available_at of every present source)",
+  "tag_commit_epoch": 1791822063,
+  "max_source_available_at": 1791822737,
+  "cut_epoch": 1791822737,
+  "sources": {
+   "ledger.a": {
+    "ref": "tag:ckpt-m01",
+    "mtime": null,
+    "declared_at": null,
+    "available_at": 1791822063,
+    "basis": "commit"
+   },
+   "ledger.b": {
+    "ref": "tag:ckpt-m01",
+    "mtime": null,
+    "declared_at": null,
+    "available_at": 1791822063,
+    "basis": "commit"
+   },
+   "protocol.dirs.a": {
+    "ref": "pin:/tmp/traj-v4-replay-m4-92irvden/x/stats/pin/ckpt-m01.dir-a.json",
+    "mtime": null,
+    "declared_at": null,
+    "available_at": null,
+    "basis": "unknown"
+   },
+   "protocol.dirs.b": {
+    "ref": "pin:/tmp/traj-v4-replay-m4-92irvden/x/stats/pin/ckpt-m01.dir-b.json",
+    "mtime": null,
+    "declared_at": null,
+    "available_at": null,
+    "basis": "unknown"
+   },
+   "protocol.divergence": {
+    "ref": "file:/tmp/traj-v4-replay-m4-92irvden/x/divergence.json",
+    "mtime": null,
+    "declared_at": 1791822737,
+    "available_at": 1791822737,
+    "basis": "declared_at"
+   },
+   "protocol.forks": {
+    "ref": "tag:ckpt-m01",
+    "mtime": null,
+    "declared_at": null,
+    "available_at": 1791822063,
+    "basis": "commit"
+   }
+  },
+  "unknown": [
+   "protocol.dirs.a",
+   "protocol.dirs.b"
+  ]
+ },
+ "volume": {
+  "a": {
+   "lines_leq_cut": 670,
+   "cut_last_line": 670,
+   "by_type": {
+    "assistant": 96,
+    "system": 440,
+    "tool_result": 133,
+    "user": 1
+   },
+   "assistant_texts": 95,
+   "tool_results": 133,
+   "usage_events": 96,
+   "tokens": {
+    "prompt": 16645284,
+    "candidates": 358866,
+    "thoughts": 322899,
+    "cached": 16177664
+   },
+   "gaps": {
+    "count": 669,
+    "median_s": 0,
+    "p90_s": 6,
+    "p99_s": 87,
+    "max_s": 600
+   },
+   "silences_gt_600s": [],
+   "silences_gt_600s_count": 0,
+   "first_ts": 1791818624,
+   "last_ts": 1791822719,
+   "uncached": 467620,
+   "sha256_leq_cut": "bce468f07b1c2a1a1429a8ff9fd6c781a6ecd04bad87f69b3123981435fe87ff",
+   "commands_top": [
+    [
+     "ls",
+     40
+    ],
+    [
+     "git",
+     38
+    ],
+    [
+     "python3",
+     28
+    ],
+    [
+     "qwen",
+     24
+    ],
+    [
+     "cat",
+     20
+    ],
+    [
+     "for",
+     8
+    ],
+    [
+     "sha256sum",
+     8
+    ],
+    [
+     "head",
+     4
+    ],
+    [
+     "time",
+     4
+    ],
+    [
+     "bash",
+     2
+    ],
+    [
+     "echo",
+     2
+    ],
+    [
+     "find",
+     2
+    ]
+   ]
+  },
+  "b": {
+   "lines_leq_cut": 689,
+   "cut_last_line": 689,
+   "by_type": {
+    "assistant": 100,
+    "system": 459,
+    "tool_result": 129,
+    "user": 1
+   },
+   "assistant_texts": 100,
+   "tool_results": 129,
+   "usage_events": 100,
+   "tokens": {
+    "prompt": 19195714,
+    "candidates": 201675,
+    "thoughts": 127802,
+    "cached": 18788043
+   },
+   "gaps": {
+    "count": 688,
+    "median_s": 0,
+    "p90_s": 10,
+    "p99_s": 92,
+    "max_s": 590
+   },
+   "silences_gt_600s": [],
+   "silences_gt_600s_count": 0,
+   "first_ts": 1791818624,
+   "last_ts": 1791822737,
+   "uncached": 407671,
+   "sha256_leq_cut": "0e18e118b285573042b696b75a3fb0e98802aca8c840cd40a99d7da24d85b436",
+   "commands_top": [
+    [
+     "python3",
+     62
+    ],
+    [
+     "git",
+     22
+    ],
+    [
+     "qwen",
+     20
+    ],
+    [
+     "cat",
+     18
+    ],
+    [
+     "ls",
+     10
+    ],
+    [
+     "grep",
+     6
+    ],
+    [
+     "mkdir",
+     6
+    ],
+    [
+     "echo",
+     4
+    ],
+    [
+     "for",
+     4
+    ],
+    [
+     "bash",
+     2
+    ],
+    [
+     "date",
+     2
+    ],
+    [
+     "find",
+     2
+    ]
+   ]
+  }
+ },
+ "pacing": {
+  "a": {
+   "first_ts": 1791818624,
+   "last_ts": 1791822719,
+   "gaps": {
+    "count": 669,
+    "median_s": 0,
+    "p90_s": 6,
+    "p99_s": 87,
+    "max_s": 600
+   },
+   "silences_gt_600s": [],
+   "silences_gt_600s_count": 0
+  },
+  "b": {
+   "first_ts": 1791818624,
+   "last_ts": 1791822737,
+   "gaps": {
+    "count": 688,
+    "median_s": 0,
+    "p90_s": 10,
+    "p99_s": 92,
+    "max_s": 590
+   },
+   "silences_gt_600s": [],
+   "silences_gt_600s_count": 0
+  }
+ },
+ "surface": {
+  "only_a_count": 113,
+  "only_b_count": 155,
+  "both_count": 65,
+  "only_a": [
+   ".git/MERGE_MSG",
+   "/root/.qwen",
+   "/root/.qwen/memories",
+   "/root/.qwen/projects",
+   "/root/.qwen/projects/-root-wt-a",
+   "/root/.qwen/projects/-root-wt-a/memory",
+   "/root/.qwen/projects/-root-wt-a/memory/MEMORY.md",
+   "/root/.qwen/projects/-root-wt-a/memory/project",
+   "/root/.qwen/projects/-root-wt-a/memory/project/dual-agent-run-mechanics.md",
+   "/root/.qwen/projects/-root-wt-a/memory/project/trace-window-pitfall.md",
+   "/root/.qwen/projects/-root-wt-b/chats",
+   "/root/.qwen/tmp/43717694be53a99915d79cbba436fa7fee4615e54b112e4270095053c26cb71b/background-shells/591a6b94-36be-4cd1-af50-7a6e6162c758/shell-bg_973c9c52.status",
+   "/root/data/policies/branch/bimodal/bimodal.h",
+   "/root/data/policies/branch/gshare/gshare.cc",
+   "/root/data/policies/branch/gshare/gshare.h",
+   "/root/data/policies/branch/hashed_perceptron/hashed_perceptron.h",
+   "/root/data/policies/prefetcher/ip_stride/ip_stride.h",
+   "/root/data/policies/prefetcher/next_line/next_line.h",
+   "/root/data/policies/replacement",
+   "/root/data/traces/README",
+   "/root/wt-src/common",
+   "/root/wt-src/common/a2a",
+   "/root/wt-src/common/dual_agent.py",
+   "/root/wt-src/common/front-phase.md",
+   "/root/wt-src/common/harness-note.txt",
+   "/root/wt-src/tasks/microarch/instruction.md",
+   "/root/wt-src/tasks/microarch/protocol.md",
+   "/root/wt-src/tasks/microarch/run.sh",
+   "/root/wt/a/.git",
+   "/root/wt/a/.gitignore",
+   "/root/wt/a/README.md",
+   "/root/wt/a/brief-a.md",
+   "/root/wt/a/forks.json",
+   "/root/wt/a/p0/dep_rate_check.py",
+   "/root/wt/a/p0/forks-draft-a.json",
+   "/root/wt/a/p0/investigate.py",
+   "/root/wt/a/p0/m00-git-structure.json",
+   "/root/wt/a/p0/onnx_smoke.py",
+   "/root/wt/a/p0/trace_stats.py",
+   "/root/wt/a/p0/verify_consensus.py",
+   "/root/wt/a/p0/window_checks.py",
+   "/root/wt/a/refs-a.jsonl",
+   "/root/wt/a/understanding.md",
+   "/root/wt/b/sub-b",
+   "/root/wt/collect",
+   "/root/wt/recover.py",
+   "/root/wt/repo/.git/hooks/reference-transaction",
+   "/root/wt/x/abort-a",
+   "/root/wt/x/abort-b",
+   "/root/wt/x/declare-b",
+   "/root/wt/x/gate.log",
+   "/tmp/smoke.onnx",
+   "/tmp/smoke_ml.onnx",
+   "/usr/bin/env",
+   "1-n_blocks/n_operands",
+   "1-n_blocks/n_refs_inst",
+   "16.7/1000",
+   "20/20",
+   "Clip/normalize",
+   "F04/F05"
+  ],
+  "only_b": [
+   "/root/.qwen/projects/-root-wt-b/memory",
+   "/root/.qwen/projects/-root-wt-b/memory/MEMORY.md",
+   "/root/.qwen/projects/-root-wt-b/memory/project",
+   "/root/.qwen/projects/-root-wt-b/memory/project/collinear-ladder-loco.md",
+   "/root/.qwen/projects/-root-wt-b/memory/project/trace-stat-window.md",
+   "/root/data/traces/600.perlbench_s-210B.champsimtrace.xz",
+   "/root/wt/b/brief-b.md",
+   "/root/wt/b/code-b/bottleneck.py",
+   "/root/wt/b/code-b/cv_search.py",
+   "/root/wt/b/code-b/explore_cv.py",
+   "/root/wt/b/code-b/mech_bottleneck.py",
+   "/root/wt/b/code-b/model_select.py",
+   "/root/wt/b/code-b/search_loco.py",
+   "/root/wt/b/forks.json",
+   "/root/wt/b/recon-b/anova.py",
+   "/root/wt/b/recon-b/check_ladder.py",
+   "/root/wt/b/recon-b/dep_rate.py",
+   "/root/wt/b/recon-b/probe_spread.py",
+   "/root/wt/b/recon-b/trace_quick.py",
+   "/root/wt/b/refs-b.jsonl",
+   "/root/wt/b/tmp",
+   "/root/wt/b/tmp/dep_rate.py",
+   "/root/wt/b/tmp/trace_quick.py",
+   "/root/wt/b/tmp/trace_stats.py",
+   "/root/wt/b/tmp/trace_stats2.py",
+   "/root/wt/b/tmp/trace_stats3.py",
+   "/root/wt/b/understanding.md",
+   "/root/wt/x/dir-b.json",
+   "/root/wt/x/divergence.json",
+   "/root/wt/x/pid-a",
+   "/root/wt/x/ready-b.round",
+   "/tmp/loco_rows.pkl",
+   "0.0873/tau0.45",
+   "0.1707/tau0.25",
+   "1/CPI",
+   "1/IPC",
+   "1/g.ipc",
+   "1/g.ipc.to_numpy",
+   "1/g.w",
+   "1/g.w_eff.to_numpy",
+   "1/gw",
+   "1/np.clip",
+   "1/sub.ipc",
+   "1/tr",
+   "1/tr.ipc",
+   "1/tr.w",
+   "1/w_eff",
+   "1/we",
+   "256/sqrt",
+   "CPI-1/w",
+   "Calibration/selection",
+   "Ea1/Eb1",
+   "Ea11/Eb5",
+   "Ea12/Ea15",
+   "Ea2/Eb3",
+   "Ea3/Eb4",
+   "Ea5/Eb5",
+   "Ea7/Eb-traces",
+   "Ea8/Eb-unresolved",
+   "Ea9/Ea10"
+  ],
+  "both": [
+   "/dev/null",
+   "/root/data",
+   "/root/data/README.md",
+   "/root/data/design_space.json",
+   "/root/data/feature_schema.json",
+   "/root/data/interface_examples.csv",
+   "/root/data/policies",
+   "/root/data/policy_probe_contract.json",
+   "/root/data/traces",
+   "/root/data/traces/README.md",
+   "/root/data/training_measurements.csv",
+   "/root/model.onnx",
+   "/root/starter",
+   "/root/starter/check_model.py",
+   "/root/wt",
+   "/root/wt-src/tasks/microarch",
+   "/root/wt/a",
+   "/root/wt/b",
+   "/root/wt/b/code-b",
+   "/root/wt/b/code-b/loco_score.py",
+   "/root/wt/front_phase.py",
+   "/root/wt/gate.py",
+   "/root/wt/git_structure.py",
+   "/root/wt/post-commit.sh",
+   "/root/wt/refs.py",
+   "/root/wt/repo",
+   "/root/wt/traj.py",
+   "/root/wt/wait_file.sh",
+   "/root/wt/wait_peer.sh",
+   "/root/wt/wait_pos.sh",
+   "/root/wt/x",
+   "/root/wt/x/dir-a.json",
+   "/root/wt/x/effort-a.json",
+   "/root/wt/x/effort-b.json",
+   "/root/wt/x/pid-b",
+   "/root/wt/x/ready-a.round",
+   "/root/wt/x/sop-m00.md",
+   "/root/wt/x/stats",
+   "1/2/3",
+   "10/9/8",
+   "70.8/19.5/9.7",
+   "F11/F12",
+   "IPC/cycle",
+   "L1D/L2",
+   "M1/P3",
+   "Ranking/selection",
+   "c02/workload_3",
+   "c02/workload_3.",
+   "c04/wl3",
+   "core/cache",
+   "execute/retire",
+   "fetch/decode/dispatch/retire",
+   "linear/GBM",
+   "log/exp/spline",
+   "methodology/auditability",
+   "mpki/1000",
+   "offsets/slopes.",
+   "params/timeout",
+   "penalty/latency-like",
+   "positivity/finiteness/determinism"
+  ],
+  "untouched_repo_files_count": 0,
+  "untouched_repo_files": []
+ },
+ "text_overlap": {
+  "counts": {
+   "a_to_b": 351,
+   "b_to_a": 296,
+   "cited_a_to_b": 0,
+   "cited_b_to_a": 0,
+   "concurrent": 0
+  },
+  "events": [
+   {
+    "gram": "0 15 mean per workload kendall tau b",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818680,
+    "used_ts": 1791818695,
+    "source_line": 66,
+    "cited": false
+   },
+   {
+    "gram": "15 mean per workload kendall tau b 0",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818680,
+    "used_ts": 1791818695,
+    "source_line": 66,
+    "cited": false
+   },
+   {
+    "gram": "mape 0 15 mean per workload kendall tau",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818680,
+    "used_ts": 1791818695,
+    "source_line": 66,
+    "cited": false
+   },
+   {
+    "gram": "mean per workload kendall tau b 0 60",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818680,
+    "used_ts": 1791818695,
+    "source_line": 66,
+    "cited": false
+   },
+   {
+    "gram": "19 hardware params 9 workload stats 2 probe",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818680,
+    "used_ts": 1791818798,
+    "source_line": 66,
+    "cited": false
+   },
+   {
+    "gram": "20 training rows are 5 configs 4 workloads",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818680,
+    "used_ts": 1791818798,
+    "source_line": 66,
+    "cited": false
+   },
+   {
+    "gram": "brief actor md 调查纪要 命令可复现 过 round gate",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818639,
+    "used_ts": 1791818798,
+    "source_line": 40,
+    "cited": false
+   },
+   {
+    "gram": "every commit you make must contain round n",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818639,
+    "used_ts": 1791818798,
+    "source_line": 40,
+    "cited": false
+   },
+   {
+    "gram": "hardware params 9 workload stats 2 probe responses",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818680,
+    "used_ts": 1791818798,
+    "source_line": 66,
+    "cited": false
+   },
+   {
+    "gram": "mape 0 15 kendall tau b 0 60",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818789,
+    "used_ts": 1791818798,
+    "source_line": 143,
+    "cited": false
+   },
+   {
+    "gram": "the 20 training rows are 5 configs 4",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818680,
+    "used_ts": 1791818798,
+    "source_line": 66,
+    "cited": false
+   },
+   {
+    "gram": "产出 各自分支提交 brief actor md 调查纪要 命令可复现 过",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818639,
+    "used_ts": 1791818798,
+    "source_line": 40,
+    "cited": false
+   },
+   {
+    "gram": "各自分支提交 brief actor md 调查纪要 命令可复现 过 round",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818639,
+    "used_ts": 1791818798,
+    "source_line": 40,
+    "cited": false
+   },
+   {
+    "gram": "0 60 top 1 normalized simple regret 0",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818695,
+    "used_ts": 1791818807,
+    "source_line": 48,
+    "cited": false
+   },
+   {
+    "gram": "60 top 1 normalized simple regret 0 05",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818695,
+    "used_ts": 1791818807,
+    "source_line": 48,
+    "cited": false
+   },
+   {
+    "gram": "b 0 60 top 1 normalized simple regret",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818695,
+    "used_ts": 1791818807,
+    "source_line": 48,
+    "cited": false
+   },
+   {
+    "gram": "kendall tau b 0 60 top 1 normalized",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818695,
+    "used_ts": 1791818807,
+    "source_line": 48,
+    "cited": false
+   },
+   {
+    "gram": "per workload kendall tau b 0 60 top",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818695,
+    "used_ts": 1791818807,
+    "source_line": 48,
+    "cited": false
+   },
+   {
+    "gram": "tau b 0 60 top 1 normalized simple",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818695,
+    "used_ts": 1791818807,
+    "source_line": 48,
+    "cited": false
+   },
+   {
+    "gram": "workload kendall tau b 0 60 top 1",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818695,
+    "used_ts": 1791818807,
+    "source_line": 48,
+    "cited": false
+   },
+   {
+    "gram": "dispatch_width fetch_width hidden policy pool 10 branch predictors",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818680,
+    "used_ts": 1791818852,
+    "source_line": 66,
+    "cited": false
+   },
+   {
+    "gram": "fetch_width hidden policy pool 10 branch predictors 9",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818680,
+    "used_ts": 1791818852,
+    "source_line": 66,
+    "cited": false
+   },
+   {
+    "gram": "1 1 2 4 16 32 64 bytes",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818729,
+    "used_ts": 1791818872,
+    "source_line": 111,
+    "cited": false
+   },
+   {
+    "gram": "8 1 1 2 4 16 32 64",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818729,
+    "used_ts": 1791818872,
+    "source_line": 111,
+    "cited": false
+   },
+   {
+    "gram": "and store_rate fractions with source destination memory data",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818729,
+    "used_ts": 1791818898,
+    "source_line": 111,
+    "cited": false
+   },
+   {
+    "gram": "fraction of source registers produced in the preceding",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818858,
+    "used_ts": 1791818898,
+    "source_line": 186,
+    "cited": false
+   },
+   {
+    "gram": "load_rate and store_rate fractions with source destination memory",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818729,
+    "used_ts": 1791818898,
+    "source_line": 111,
+    "cited": false
+   },
+   {
+    "gram": "of source registers produced in the preceding 32",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818858,
+    "used_ts": 1791818898,
+    "source_line": 186,
+    "cited": false
+   },
+   {
+    "gram": "register_dependency_rate fraction of source registers produced in the",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818858,
+    "used_ts": 1791818898,
+    "source_line": 186,
+    "cited": false
+   },
+   {
+    "gram": "source registers produced in the preceding 32 instructions",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818858,
+    "used_ts": 1791818898,
+    "source_line": 186,
+    "cited": false
+   }
+  ],
+  "event_total": 647
+ },
+ "ledger": {
+  "a": {
+   "entries": 27,
+   "by_kind": {
+    "commit": 4,
+    "file": 12,
+    "row": 3,
+    "run": 8
+   },
+   "unresolved": [],
+   "unresolved_count": 0,
+   "source": "tag:ckpt-m01"
+  },
+  "b": {
+   "entries": 15,
+   "by_kind": {
+    "file": 6,
+    "row": 2,
+    "run": 5,
+    "unresolved": 2
+   },
+   "unresolved": [
+    "E14: hidden 24 designs, their policy assignments, probe responses and IPC labels are ",
+    "E15: calibration set cannot separate collinear hardware columns (rank 5 vs 19); per-p"
+   ],
+   "unresolved_count": 2,
+   "source": "tag:ckpt-m01"
+  }
+ },
+ "protocol": {
+  "present": true,
+  "forks": [
+   "F1",
+   "F2",
+   "F3",
+   "F4",
+   "F5",
+   "F6",
+   "F7",
+   "F8",
+   "F9",
+   "F10",
+   "F11",
+   "F12"
+  ],
+  "divergence": {
+   "F1": {
+    "a": "mechanistic",
+    "b": "hybrid",
+    "differ": true
+   },
+   "F2": {
+    "a": "global",
+    "b": "shared-skeleton-plus-workload-modulation",
+    "differ": true
+   },
+   "F3": {
+    "a": "physics-imposed-shapes",
+    "b": "latent-axis-composite",
+    "differ": true
+   },
+   "F4": {
+    "a": "explicit-cost-terms",
+    "b": "learned-monotone-transform",
+    "differ": true
+   },
+   "F5": {
+    "a": "little-law-bound",
+    "b": "learned-saturation",
+    "differ": true
+   },
+   "F6": {
+    "a": "hand-fixed-physics",
+    "b": "cv-regularized",
+    "differ": true
+   },
+   "F7": {
+    "a": null,
+    "b": "monotonic-priors-plus-top-guards",
+    "differ": false
+   },
+   "F8": {
+    "a": null,
+    "b": "no-clip-monotone-forms",
+    "differ": false
+   },
+   "F9": {
+    "a": null,
+    "b": "arithmetic-graph",
+    "differ": false
+   },
+   "F10": {
+    "a": null,
+    "b": "inputs-only",
+    "differ": false
+   },
+   "F11": {
+    "a": null,
+    "b": "physics-bounded-penalty-only",
+    "differ": false
+   },
+   "F12": {
+    "a": "log-ipc",
+    "b": "cpi-additive",
+    "differ": true
+   }
+  },
+  "differing_count": 7,
+  "sources": {
+   "forks": "tag:ckpt-m01",
+   "dirs": {
+    "a": "pin:/tmp/traj-v4-replay-m4-92irvden/x/stats/pin/ckpt-m01.dir-a.json",
+    "b": "pin:/tmp/traj-v4-replay-m4-92irvden/x/stats/pin/ckpt-m01.dir-b.json"
+   }
+  }
+ }
+}

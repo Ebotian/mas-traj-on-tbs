@@ -1,0 +1,883 @@
+{
+ "meta": {
+  "schema": "traj-stats/4",
+  "usage_semantics": "per_call",
+  "tag": "ckpt-m01",
+  "commit": "fde97e0ce213c7e7dd455b3c900c7b93bc26f192",
+  "commit_time": "2026-10-12T16:03:25Z",
+  "cut_epoch": 1791821196,
+  "transcripts": {
+   "a": {
+    "path": "/home/ebt/rsi-dev/local2gpt/out/microarch-3-4-raw-lite-2026-10-13/microarch-3/task-microarch__pTrPCCa/artifacts/root/wt/collect/chats/7c8ecc50-e013-47a0-a78c-62dac412e538.jsonl",
+    "sha256_leq_cut": "85ae946c7081e1fe6a5140008429df2b9b3e24b5e251187bc39596a7ef06e7c5",
+    "lines_leq_cut": 533,
+    "cut_last_line": 533,
+    "source": "file"
+   },
+   "b": {
+    "path": "/home/ebt/rsi-dev/local2gpt/out/microarch-3-4-raw-lite-2026-10-13/microarch-3/task-microarch__pTrPCCa/artifacts/root/wt/collect/chats/646437d9-fdf1-46ab-a696-518bb59ddc1d.jsonl",
+    "sha256_leq_cut": "368cd3bcf83598f20dc920ce016f48172fee3093afa523377031f81049d7df3d",
+    "lines_leq_cut": 689,
+    "cut_last_line": 689,
+    "source": "file"
+   }
+  },
+  "method": "mechanical; no network; no LLM; no task priors; content is a pure function of the pinned inputs (tag commit; transcript lines <= cut; ledger/protocol sources pinned under pin/ with .meta availability sidecars, or recorded as missing; cut_epoch = max(tag commit time, availability of all sources))"
+ },
+ "availability": {
+  "policy": "cut_epoch = max(tag_commit_epoch, available_at of every present source)",
+  "tag_commit_epoch": 1791821005,
+  "max_source_available_at": 1791821196,
+  "cut_epoch": 1791821196,
+  "sources": {
+   "ledger.a": {
+    "ref": "tag:ckpt-m01",
+    "mtime": null,
+    "declared_at": null,
+    "available_at": 1791821005,
+    "basis": "commit"
+   },
+   "ledger.b": {
+    "ref": "tag:ckpt-m01",
+    "mtime": null,
+    "declared_at": null,
+    "available_at": 1791821005,
+    "basis": "commit"
+   },
+   "protocol.dirs.a": {
+    "ref": "pin:/tmp/traj-v4-replay-m3-bb3dgp1e/x/stats/pin/ckpt-m01.dir-a.json",
+    "mtime": null,
+    "declared_at": null,
+    "available_at": null,
+    "basis": "unknown"
+   },
+   "protocol.dirs.b": {
+    "ref": "pin:/tmp/traj-v4-replay-m3-bb3dgp1e/x/stats/pin/ckpt-m01.dir-b.json",
+    "mtime": null,
+    "declared_at": null,
+    "available_at": null,
+    "basis": "unknown"
+   },
+   "protocol.divergence": {
+    "ref": "file:/tmp/traj-v4-replay-m3-bb3dgp1e/x/divergence.json",
+    "mtime": null,
+    "declared_at": 1791821196,
+    "available_at": 1791821196,
+    "basis": "declared_at"
+   },
+   "protocol.forks": {
+    "ref": "tag:ckpt-m01",
+    "mtime": null,
+    "declared_at": null,
+    "available_at": 1791821005,
+    "basis": "commit"
+   }
+  },
+  "unknown": [
+   "protocol.dirs.a",
+   "protocol.dirs.b"
+  ]
+ },
+ "volume": {
+  "a": {
+   "lines_leq_cut": 533,
+   "cut_last_line": 533,
+   "by_type": {
+    "assistant": 81,
+    "system": 354,
+    "tool_result": 97,
+    "user": 1
+   },
+   "assistant_texts": 81,
+   "tool_results": 97,
+   "usage_events": 81,
+   "tokens": {
+    "prompt": 8044416,
+    "candidates": 80776,
+    "thoughts": 55400,
+    "cached": 7878272
+   },
+   "gaps": {
+    "count": 532,
+    "median_s": 0,
+    "p90_s": 4,
+    "p99_s": 53,
+    "max_s": 590
+   },
+   "silences_gt_600s": [],
+   "silences_gt_600s_count": 0,
+   "first_ts": 1791818624,
+   "last_ts": 1791821051,
+   "uncached": 166144,
+   "sha256_leq_cut": "85ae946c7081e1fe6a5140008429df2b9b3e24b5e251187bc39596a7ef06e7c5",
+   "commands_top": [
+    [
+     "cat",
+     36
+    ],
+    [
+     "git",
+     32
+    ],
+    [
+     "python3",
+     20
+    ],
+    [
+     "qwen",
+     20
+    ],
+    [
+     "ls",
+     18
+    ],
+    [
+     "sleep",
+     9
+    ],
+    [
+     "bash",
+     6
+    ],
+    [
+     "sed",
+     6
+    ],
+    [
+     "sha256sum",
+     6
+    ],
+    [
+     "head",
+     4
+    ],
+    [
+     "nohup",
+     4
+    ],
+    [
+     "diff",
+     2
+    ]
+   ]
+  },
+  "b": {
+   "lines_leq_cut": 689,
+   "cut_last_line": 689,
+   "by_type": {
+    "assistant": 102,
+    "system": 460,
+    "tool_result": 126,
+    "user": 1
+   },
+   "assistant_texts": 102,
+   "tool_results": 126,
+   "usage_events": 102,
+   "tokens": {
+    "prompt": 15734998,
+    "candidates": 147819,
+    "thoughts": 96307,
+    "cached": 15465060
+   },
+   "gaps": {
+    "count": 688,
+    "median_s": 0,
+    "p90_s": 8,
+    "p99_s": 71,
+    "max_s": 97
+   },
+   "silences_gt_600s": [],
+   "silences_gt_600s_count": 0,
+   "first_ts": 1791818624,
+   "last_ts": 1791821196,
+   "uncached": 269938,
+   "sha256_leq_cut": "368cd3bcf83598f20dc920ce016f48172fee3093afa523377031f81049d7df3d",
+   "commands_top": [
+    [
+     "python3",
+     54
+    ],
+    [
+     "git",
+     24
+    ],
+    [
+     "cat",
+     22
+    ],
+    [
+     "sha256sum",
+     14
+    ],
+    [
+     "qwen",
+     10
+    ],
+    [
+     "sed",
+     8
+    ],
+    [
+     "ls",
+     6
+    ],
+    [
+     "nohup",
+     6
+    ],
+    [
+     "grep",
+     4
+    ],
+    [
+     "rm",
+     4
+    ],
+    [
+     "tail",
+     4
+    ],
+    [
+     "date",
+     2
+    ]
+   ]
+  }
+ },
+ "pacing": {
+  "a": {
+   "first_ts": 1791818624,
+   "last_ts": 1791821051,
+   "gaps": {
+    "count": 532,
+    "median_s": 0,
+    "p90_s": 4,
+    "p99_s": 53,
+    "max_s": 590
+   },
+   "silences_gt_600s": [],
+   "silences_gt_600s_count": 0
+  },
+  "b": {
+   "first_ts": 1791818624,
+   "last_ts": 1791821196,
+   "gaps": {
+    "count": 688,
+    "median_s": 0,
+    "p90_s": 8,
+    "p99_s": 71,
+    "max_s": 97
+   },
+   "silences_gt_600s": [],
+   "silences_gt_600s_count": 0
+  }
+ },
+ "surface": {
+  "only_a_count": 85,
+  "only_b_count": 142,
+  "both_count": 56,
+  "only_a": [
+   "/dev/null.",
+   "/root/.qwen/projects",
+   "/root/.qwen/projects/-root-wt-b/chats/646437d9-fdf1-46ab-a696-518bb59ddc1d.jsonl",
+   "/root/.qwen/tmp/43717694be53a99915d79cbba436fa7fee4615e54b112e4270095053c26cb71b/background-shells/7c8ecc50-e013-47a0-a78c-62dac412e538/shell-bg_e649deea.status",
+   "/root/.qwen/tmp/43717694be53a99915d79cbba436fa7fee4615e54b112e4270095053c26cb71b/background-shells/7c8ecc50-e013-47a0-a78c-62dac412e538/shell-bg_e7658055.status",
+   "/root/data/policies",
+   "/root/data/policies/branch/bimodal/bimodal.cc",
+   "/root/data/traces/README",
+   "/root/wt-src/tasks/microarch/protocol.md",
+   "/root/wt-src/tasks/microarch/run.sh",
+   "/root/wt/a.",
+   "/root/wt/a/.qwen",
+   "/root/wt/a/forks.json",
+   "/root/wt/a/recon/trace_stats.py",
+   "/root/wt/a/recon/trace_stats_full.log",
+   "/root/wt/a/recon/trace_stats_full.py",
+   "/root/wt/a/understanding.md",
+   "/root/wt/git_structure.py",
+   "/root/wt/post-commit.sh",
+   "/root/wt/traj.py",
+   "/root/wt/wait_file.sh",
+   "/root/wt/wait_peer.sh",
+   "/root/wt/x/declare-",
+   "/root/wt/x/declare-a",
+   "/root/wt/x/declare-b",
+   "/root/wt/x/ready-b.round",
+   "/root/wt/x/session-b.uuid",
+   "/root/wt/x/stats",
+   "/tmp/a_forks.json",
+   "/tmp/a_und.md",
+   "/tmp/und.diff",
+   "16/32/64KB",
+   "200k/800k",
+   "256/512/1024KB",
+   "CPU/cache",
+   "E1..E15/b",
+   "F9/F10/s7",
+   "IPC/cycle",
+   "L1D/L2",
+   "attribute/opset",
+   "bimodal/gshare/hashed_perceptron",
+   "c00/workload_1",
+   "choice/plausibility/refs/falsification",
+   "commit/reply",
+   "commits/edits",
+   "conditioning/F6",
+   "edits/annotations",
+   "exp/softplus",
+   "exp/softplus/etc.",
+   "extrapolation/F5",
+   "family/F2",
+   "features/metrics",
+   "fetch/decode/dispatch",
+   "front-b/workload_window_all.log.",
+   "integration/F3",
+   "interaction/structure",
+   "log/CPI",
+   "log/power-law",
+   "log/reciprocal",
+   "lru/drrip/srrip/random"
+  ],
+  "only_b": [
+   ".values/0.00125",
+   "/root/.qwen/projects/-root-wt-b/memory",
+   "/root/.qwen/projects/-root-wt-b/memory/MEMORY.md",
+   "/root/.qwen/projects/-root-wt-b/memory/project",
+   "/root/.qwen/projects/-root-wt-b/memory/project/dataset-provenance.md",
+   "/root/data/traces/600.perlbench_s-210B.champsimtrace.xz",
+   "/root/data/traces/648.exchange2_s-72B.champsimtrace.xz",
+   "/root/data/traces/649.fotonik3d_s-1B.champsimtrace.xz",
+   "/root/data/traces/657.xz_s-56B.champsimtrace.xz",
+   "/root/wt-src/tasks/microarch/instruction.md",
+   "/root/wt/a/recon",
+   "/root/wt/a/refs-a.jsonl.",
+   "/root/wt/b/code-b",
+   "/root/wt/b/code-b/dse_eval.py",
+   "/root/wt/b/code-b/family_feasibility.log",
+   "/root/wt/b/code-b/family_feasibility.py",
+   "/root/wt/b/front-b/cpi_first_fit.log",
+   "/root/wt/b/front-b/cpi_first_fit.py",
+   "/root/wt/b/front-b/dep_window.py",
+   "/root/wt/b/front-b/hardware_ladder.py",
+   "/root/wt/b/front-b/probe_structure.py",
+   "/root/wt/b/front-b/stats_window_variants.py",
+   "/root/wt/b/tmp/wlstats_probe.py",
+   "/root/wt/repo/forks.json",
+   "/root/wt/x/divergence.json",
+   "/root/wt/x/effort-b.json",
+   "/root/wt/x/gate.log",
+   "/tmp/hashes.txt",
+   "/usr/local/lib/python3.11/site-packages/pandas/core/frame.py",
+   "/usr/local/lib/python3.11/site-packages/pandas/core/indexes/multi.py",
+   "0-2/9",
+   "1/19",
+   "1/80000.1",
+   "1/ipc",
+   "1/ipc.",
+   "10/19",
+   "1000/800000",
+   "18/19",
+   "2/19",
+   "2/2/2",
+   "2/9-exact",
+   "3.2/3.3/3.4",
+   "3.2/3.4/3.5",
+   "3.2/4.5",
+   "3/3/4",
+   "30/1",
+   "5/4/5",
+   "64/4",
+   "8-9/9",
+   "800000/integer_cycles",
+   "800000/ipc",
+   "800000/t",
+   "800001/1000",
+   "Add/Mul/Div/Relu/Exp/Clip/Gemm",
+   "Aggregation/selection",
+   "Causality/monotonicity",
+   "E10/b",
+   "E11/b",
+   "E21/b",
+   "E23/E24"
+  ],
+  "both": [
+   "/dev/null",
+   "/root/data",
+   "/root/data/README.md",
+   "/root/data/design_space.json",
+   "/root/data/feature_schema.json",
+   "/root/data/interface_examples.csv",
+   "/root/data/policy_probe_contract.json",
+   "/root/data/traces",
+   "/root/data/traces/README.md",
+   "/root/data/training_measurements.csv",
+   "/root/model.onnx",
+   "/root/starter",
+   "/root/starter/check_model.py",
+   "/root/wt",
+   "/root/wt-src/tasks/microarch",
+   "/root/wt/a",
+   "/root/wt/a/brief-a.md",
+   "/root/wt/a/recon/recon_p00.py",
+   "/root/wt/a/recon/trace_stats.log",
+   "/root/wt/a/refs-a.jsonl",
+   "/root/wt/b",
+   "/root/wt/b/README.md",
+   "/root/wt/b/brief-b.md",
+   "/root/wt/b/forks.json",
+   "/root/wt/b/front-b",
+   "/root/wt/b/front-b/label_provenance.py",
+   "/root/wt/b/front-b/probe_structure.log",
+   "/root/wt/b/front-b/stats_window_variants.log",
+   "/root/wt/b/front-b/workload_window_all.log",
+   "/root/wt/b/front-b/workload_window_test.py",
+   "/root/wt/b/refs-b.jsonl",
+   "/root/wt/b/understanding.md",
+   "/root/wt/front_phase.py",
+   "/root/wt/gate.py",
+   "/root/wt/refs.py",
+   "/root/wt/repo",
+   "/root/wt/x",
+   "/root/wt/x/dir-a.json",
+   "/root/wt/x/dir-b.json",
+   "/root/wt/x/effort-a.json",
+   "/root/wt/x/pid-a",
+   "/root/wt/x/pid-b",
+   "/root/wt/x/ready-a.round",
+   "/root/wt/x/sop-m00.md",
+   "/usr/bin/env",
+   "1/CPI",
+   "1/IPC",
+   "10/9/8",
+   "F9/F10",
+   "N/ipc",
+   "c03/c04",
+   "config/workload",
+   "params/timeout",
+   "recon/trace_stats_full.log",
+   "recon/trace_stats_full.py",
+   "sub-b/model.onnx"
+  ],
+  "untouched_repo_files_count": 1,
+  "untouched_repo_files": [
+   ".gitignore"
+  ]
+ },
+ "text_overlap": {
+  "counts": {
+   "a_to_b": 89,
+   "b_to_a": 71,
+   "cited_a_to_b": 0,
+   "cited_b_to_a": 0,
+   "concurrent": 0
+  },
+  "events": [
+   {
+    "gram": "design_space json policy_probe_contract json training_measurements csv interface",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818632,
+    "used_ts": 1791818637,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "json policy_probe_contract json training_measurements csv interface_examples csv",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818632,
+    "used_ts": 1791818637,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "policy_probe_contract json training_measurements csv interface_examples csv chec",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818632,
+    "used_ts": 1791818637,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "at root wt src tasks microarch protocol md",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818632,
+    "used_ts": 1791818641,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "root wt src tasks microarch protocol md that",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818632,
+    "used_ts": 1791818641,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "src tasks microarch protocol md that s the",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818632,
+    "used_ts": 1791818641,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "wt src tasks microarch protocol md that s",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818632,
+    "used_ts": 1791818641,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "md at root wt src tasks microarch protocol",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818632,
+    "used_ts": 1791818643,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "protocol md at root wt src tasks microarch",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818632,
+    "used_ts": 1791818643,
+    "source_line": 14,
+    "cited": false
+   },
+   {
+    "gram": "declare via python3 root wt front_phase py declare",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818647,
+    "used_ts": 1791818691,
+    "source_line": 38,
+    "cited": false
+   },
+   {
+    "gram": "python3 root wt front_phase py declare root wt",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818647,
+    "used_ts": 1791818691,
+    "source_line": 38,
+    "cited": false
+   },
+   {
+    "gram": "root wt front_phase py declare root wt x",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818635,
+    "used_ts": 1791818691,
+    "source_line": 6,
+    "cited": false
+   },
+   {
+    "gram": "then declare via python3 root wt front_phase py",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818647,
+    "used_ts": 1791818691,
+    "source_line": 38,
+    "cited": false
+   },
+   {
+    "gram": "via python3 root wt front_phase py declare root",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818647,
+    "used_ts": 1791818691,
+    "source_line": 38,
+    "cited": false
+   },
+   {
+    "gram": "brief actor md 调查纪要 命令可复现 过 round gate",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818650,
+    "used_ts": 1791818709,
+    "source_line": 46,
+    "cited": false
+   },
+   {
+    "gram": "commit you make must contain round n in",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818669,
+    "used_ts": 1791818709,
+    "source_line": 62,
+    "cited": false
+   },
+   {
+    "gram": "every commit you make must contain round n",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818669,
+    "used_ts": 1791818709,
+    "source_line": 62,
+    "cited": false
+   },
+   {
+    "gram": "make must contain round n in its message",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818669,
+    "used_ts": 1791818709,
+    "source_line": 62,
+    "cited": false
+   },
+   {
+    "gram": "must contain round n in its message so",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818669,
+    "used_ts": 1791818709,
+    "source_line": 62,
+    "cited": false
+   },
+   {
+    "gram": "post commit hook writes ready actor round n",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818669,
+    "used_ts": 1791818709,
+    "source_line": 62,
+    "cited": false
+   },
+   {
+    "gram": "the post commit hook writes ready actor round",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818669,
+    "used_ts": 1791818709,
+    "source_line": 62,
+    "cited": false
+   },
+   {
+    "gram": "you make must contain round n in its",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818669,
+    "used_ts": 1791818709,
+    "source_line": 62,
+    "cited": false
+   },
+   {
+    "gram": "各自分支提交 brief actor md 调查纪要 命令可复现 过 round",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818650,
+    "used_ts": 1791818709,
+    "source_line": 46,
+    "cited": false
+   },
+   {
+    "gram": "产出 各自分支提交 brief actor md 调查纪要 命令可复现 过",
+    "from": "b",
+    "to": "a",
+    "concurrent": false,
+    "first_ts": 1791818709,
+    "used_ts": 1791818726,
+    "source_line": 58,
+    "cited": false
+   },
+   {
+    "gram": "let me read the rest of refs py",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818669,
+    "used_ts": 1791818760,
+    "source_line": 62,
+    "cited": false
+   },
+   {
+    "gram": "2 197 c03 3 834 c04 3 545",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818726,
+    "used_ts": 1791818831,
+    "source_line": 105,
+    "cited": false
+   },
+   {
+    "gram": "3 546 c02 2 197 c03 3 834",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818726,
+    "used_ts": 1791818831,
+    "source_line": 105,
+    "cited": false
+   },
+   {
+    "gram": "3 835 c01 3 546 c02 2 197",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818726,
+    "used_ts": 1791818831,
+    "source_line": 105,
+    "cited": false
+   },
+   {
+    "gram": "546 c02 2 197 c03 3 834 c04",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818726,
+    "used_ts": 1791818831,
+    "source_line": 105,
+    "cited": false
+   },
+   {
+    "gram": "835 c01 3 546 c02 2 197 c03",
+    "from": "a",
+    "to": "b",
+    "concurrent": false,
+    "first_ts": 1791818726,
+    "used_ts": 1791818831,
+    "source_line": 105,
+    "cited": false
+   }
+  ],
+  "event_total": 160
+ },
+ "ledger": {
+  "a": {
+   "entries": 15,
+   "by_kind": {
+    "commit": 1,
+    "file": 10,
+    "row": 1,
+    "run": 3
+   },
+   "unresolved": [],
+   "unresolved_count": 0,
+   "source": "tag:ckpt-m01"
+  },
+  "b": {
+   "entries": 26,
+   "by_kind": {
+    "commit": 2,
+    "file": 11,
+    "row": 6,
+    "run": 5,
+    "unresolved": 2
+   },
+   "unresolved": [
+    "E21: the 24 scored designs' hardware combos, policy assignments, probe responses and ",
+    "E22: generator noise level on IPC is unknown and inseparable from model error with on"
+   ],
+   "unresolved_count": 2,
+   "source": "tag:ckpt-m01"
+  }
+ },
+ "protocol": {
+  "present": true,
+  "forks": [
+   "F1",
+   "F2",
+   "F3",
+   "F4",
+   "F5",
+   "F6",
+   "F7",
+   "F8",
+   "F9",
+   "F10"
+  ],
+  "divergence": {
+   "F1": {
+    "a": "smooth-data-driven: a strongly regularized smooth regressor on physically-informed transformed features (log/reciprocal widths, saturating sizes, penalty terms) with a few interaction terms and workload-conditional calibration; no fixed additive-stall skeleton",
+    "b": "mechanistic-cpi-stack: IPC = 1/(additive stall sum) where every term is a named microarchitectural cost (front-issue bound, branch-recovery stall, cache-miss stall, store/LSQ pressure), coefficients are few and physically signed, and no learned residual is added",
+    "differ": true
+   },
+   "F2": {
+    "a": "policy-signature reading: probe_branch_mpki is treated as a near-config-invariant predictor fingerprint (saturating transform, residual hardware interactions), probe_l1d_mpki as a policy x geometry coupled term with interactions against cache size/latency/mshr columns; both enter monotone-decreasing in IPC at fixed hardware",
+    "b": "physical-scaling: probe_branch_mpki enters as miss COUNTS multiplied by hardware recovery cost (mispredict_penalty, modulated by the front-end bound); probe_l1d_mpki enters as miss counts multiplied by an effective miss latency (l2_latency/l1d_latency) divided by an MLP factor built from mshr/LSQ/rob capacity; neither channel is a free feature",
+    "differ": true
+   },
+   "F3": {
+    "a": "fit log-IPC with relative-error objective (multiplicative noise assumption); export positivity structurally via exp of the fitted predictor",
+    "b": "fit in CPI space (minimize relative error on 1/IPC with an additive-stall parameterization) and export IPC = 1/CPI; NOT log-IPC and NOT raw IPC",
+    "differ": true
+   },
+   "F4": {
+    "a": "free smooth fit with bounded-domain transforms (all inputs are bounded by design_space.json integer domains) and positivity guard only; no blanket per-factor monotonicity constraints beyond the physically forced penalty directions",
+    "b": "hard structural monotonicity: each stall term is non-negative and non-decreasing in its own driver (penalty, MPKI, latency), resource limits enter through saturating reciprocals, and capacity terms enter as diminishing returns - so the surface is constrained per-factor even where the public ladder shows no net monotonicity",
+    "differ": true
+   },
+   "F5": {
+    "a": "explicit workload-conditional calibration: allow coefficient variation keyed by the nine stats (which identify the workload exactly); shared-shape global term plus per-workload adjustments, all via legal feature columns",
+    "b": "global-shared: one coefficient set for all four workloads; workload statistics enter only as continuous physical drivers inside the same formula, with NO per-workload constants, intercepts, or coefficient sets",
+    "differ": true
+   },
+   "F6": {
+    "a": "leave-one-config-out CV as primary selection metric plus 1000x bootstrap intervals over the 20 rows; report the composite (MAPE, held-out tau-b, Top-1 geomean agreement) but select on MAPE with the composite as a tie-breaker",
+    "b": "two-stage validation: (gate) leave-one-design-out relative error must pass 0.15 with per-fold stability; (selection) ranking and decision quality are judged on a design-space stress ensemble - balanced sampled hardware combos honouring the documented domains and couplings - using self-consistency (sign/monotonicity audits) and geomean Top-1 agreement, not on 5-design tau-b",
+    "differ": true
+   },
+   "F7": {
+    "a": "joint fitting objective: weighted relative error plus a within-workload rank-consistency penalty on the public rows",
+    "b": "calibration-first: minimize relative (MAPE-aligned) error under the structural constraints; ranking quality is treated as a *consequence* of a correctly-shaped surface and audited, not optimized as a term in the loss",
+    "differ": true
+   },
+   "F8": {
+    "a": "hand-built standard-op ONNX graph (arithmetic, exp, etc.); no ai.onnx.ml containers",
+    "b": "hand-built standard-op ONNX graph, no ai.onnx.ml containers (AGREEMENT with a)",
+    "differ": true
+   },
+   "F9": {
+    "a": null,
+    "b": "fitted bounded saturating link on the probe channels (diminishing marginal stall per additional miss), no hard clipping at the public support",
+    "differ": false
+   },
+   "F10": {
+    "a": null,
+    "b": "within-workload contrasts for effect estimation: identify hardware and probe coefficients from differences between designs *inside* the same workload (the confound-free direction), then fit the workload-level response with the same shared coefficients; pooled OLS is excluded",
+    "differ": false
+   }
+  },
+  "differing_count": 8,
+  "sources": {
+   "forks": "tag:ckpt-m01",
+   "dirs": {
+    "a": "pin:/tmp/traj-v4-replay-m3-bb3dgp1e/x/stats/pin/ckpt-m01.dir-a.json",
+    "b": "pin:/tmp/traj-v4-replay-m3-bb3dgp1e/x/stats/pin/ckpt-m01.dir-b.json"
+   }
+  }
+ }
+}

@@ -1,0 +1,29 @@
+traj_stats v4「可得性上界」只读重放样本(2026-10-14)
+
+来源:对四个已交付审查包的 collect(protocol.bundle + x/ + chats)的 scratch 重算(mktemp 临时目录,
+原 collect 未动);脚本:harness/refs/traj-stats-v4-check/replay.py(v4 + --no-fs-avail);
+输出:本目录 <name>-stats/ckpt-m01.{json,md}(0444)。
+语义:cut_epoch = max(标签提交时间, 全部来源 available_at);--no-fs-avail 关闭 mtime 通道
+(归档副本 mtime=采集时刻,不可信,只信自述 at);分钟精度自述 at(「…T14:58Z」)向上取整到 :59。
+评审不变量:每个已见来源 available_at ≤ cut(构造性成立);新 cut ≥ 评审表 later dependency(lag ≤ 0)。
+
+对照(旧 = 包内 v2/v3 产物;新 = v4 重放):
+
+t3: 旧 cut 2026-10-13T14:40:31Z(1791902431, traj-stats/3) → 新 cut 2026-10-13T14:44:36Z(1791902676, traj-stats/4) Δ+245s
+   承载来源: protocol.divergence@2026-10-13T14:44:36Z(basis=declared_at);已知来源 5 个,unknown 残值: protocol.dirs.a
+   transcript ≤cut 行数 a/b: 旧 307/271 → 新 374/354
+   核对: schema=traj-stats/4 ✓; cut==max(tag,srcs) ✓; ∀src<=cut ✓; cut>=old ✓; cut>=dep ✓; cut==exp ✓; unknown==exp ✓
+m5: 旧 cut 2026-10-13T14:45:42Z(1791902742, traj-stats/3) → 新 cut 2026-10-13T14:58:59Z(1791903539, traj-stats/4) Δ+797s
+   承载来源: protocol.dirs.b@2026-10-13T14:58:59Z(basis=declared_at);已知来源 6 个,unknown 残值: -
+   transcript ≤cut 行数 a/b: 旧 452/327 → 新 588/466
+   核对: schema=traj-stats/4 ✓; cut==max(tag,srcs) ✓; ∀src<=cut ✓; cut>=old ✓; cut>=dep ✓; cut==exp ✓; unknown==exp ✓
+m3: 旧 cut 2026-10-12T16:03:25Z(1791821005, traj-stats/2) → 新 cut 2026-10-12T16:06:36Z(1791821196, traj-stats/4) Δ+191s
+   承载来源: protocol.divergence@2026-10-12T16:06:36Z(basis=declared_at);已知来源 4 个,unknown 残值: protocol.dirs.a, protocol.dirs.b
+   transcript ≤cut 行数 a/b: 旧 487/649 → 新 533/689
+   核对: schema=traj-stats/4 ✓; cut==max(tag,srcs) ✓; ∀src<=cut ✓; cut>=old ✓; cut>=dep ✓; cut==exp ✓; unknown==exp ✓
+m4: 旧 cut 2026-10-12T16:21:03Z(1791822063, traj-stats/2) → 新 cut 2026-10-12T16:32:17Z(1791822737, traj-stats/4) Δ+674s
+   承载来源: protocol.divergence@2026-10-12T16:32:17Z(basis=declared_at);已知来源 4 个,unknown 残值: protocol.dirs.a, protocol.dirs.b
+   transcript ≤cut 行数 a/b: 旧 596/564 → 新 670/689
+   核对: schema=traj-stats/4 ✓; cut==max(tag,srcs) ✓; ∀src<=cut ✓; cut>=old ✓; cut>=dep ✓; cut==exp ✓; unknown==exp ✓
+
+VERDICT: ALL OK

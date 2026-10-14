@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-# tests_stats.py — unit tests for traj_stats.py v3 (2026-10-13):
+# tests_stats.py — unit tests for traj_stats.py v4 (2026-10-14):
 # text_overlap merges both sides by event time (b→a recoverable; same-second = concurrent);
 # transcript prefix hash is stable under post-cut growth (cut pinned; no whole-file fields);
 # tokens are per-call sums with uncached = prompt - cached; truncated samples carry the full
 # counts (unresolved_count, silences_gt_600s_count); milestone regeneration is byte-stable
-# under working-dir ledger growth (pin/) and a missing ledger is recorded as unknown;
-# write_ro is 0444 + idempotent; gen writes the traj-stats/3 schema.
+# under working-dir growth (pin/ + .meta sidecars) and a missing source is recorded as unknown;
+# availability: file sources freeze max(mtime, declared at) at first read (minute precision
+# rounds up to :59); cut_epoch = max(tag commit, all available_at); .absent markers block
+# absorption of later-appearing sources; fs_avail=False uses declared at only; write_ro is
+# 0444 + idempotent; gen writes the traj-stats/4 schema.
 # Run: python3 tests_stats.py
 import importlib.util, json, os, shutil, subprocess, sys, tempfile, time
 
@@ -106,6 +109,12 @@ def t_usage_per_call_sum_and_uncached():
 def _git(repo, *args):
     subprocess.run(["git", "-C", repo] + list(args), check=True, capture_output=True)
 
+
+def _git_out(repo, *args):
+    r = subprocess.run(["git", "-C", repo] + list(args), check=True,
+                       capture_output=True, text=True)
+    return r.stdout.strip()
+
 def t_ledger_source_labels():
     with tempfile.TemporaryDirectory() as td:
         repo = os.path.join(td, "repo"); os.makedirs(repo)
@@ -119,18 +128,21 @@ def t_ledger_source_labels():
         wt = os.path.join(td, "wt"); os.makedirs(os.path.join(wt, "a"))
         with open(os.path.join(wt, "a", "refs-a.jsonl"), "w") as f:
             f.write('{"id":"E1","kind":"commit"}\n')
-        lines, src, pend = ts.load_ledger(repo, "ckpt-m00", xdir, wt, "a")
+        lines, src, pend, av = ts.load_ledger(repo, "ckpt-m00", xdir, wt, "a")
         assert src == "file:%s" % os.path.join(wt, "a", "refs-a.jsonl"), src
         assert lines == ['{"id":"E1","kind":"commit"}'], lines
         assert pend and pend[0] == "ckpt-m00.refs-a.jsonl", pend
+        assert av and av["basis"] == "mtime" and av["available_at"] is not None, av
         shutil.copy(os.path.join(wt, "a", "refs-a.jsonl"), os.path.join(repo, "refs-a.jsonl"))
         _git(repo, "add", "-A"); _git(repo, "commit", "-qm", "refs")
         _git(repo, "tag", "ckpt-m01")
-        lines2, src2, pend2 = ts.load_ledger(repo, "ckpt-m01", xdir, wt, "a")
+        lines2, src2, pend2, av2 = ts.load_ledger(repo, "ckpt-m01", xdir, wt, "a")
         assert src2 == "tag:ckpt-m01" and pend2 is None, (src2, pend2)
         assert lines2 == ['{"id":"E1","kind":"commit"}'], lines2
-        _, src3, pend3 = ts.load_ledger(repo, "ckpt-m00", xdir, os.path.join(td, "none"), "b")
+        assert av2 and av2["basis"] == "commit", av2
+        _, src3, pend3, av3 = ts.load_ledger(repo, "ckpt-m00", xdir, os.path.join(td, "none"), "b")
         assert src3 == "missing" and pend3 is None, (src3, pend3)
+        assert av3 is None, av3
 
 def t_write_ro_0444_idempotent():
     with tempfile.TemporaryDirectory() as td:
@@ -141,7 +153,7 @@ def t_write_ro_0444_idempotent():
         assert ts.write_ro(p, "hello2\n") == "written"
         assert (os.stat(p).st_mode & 0o777) == 0o444
 
-def t_gen_writes_v3_schema():
+def t_gen_writes_v4_schema():
     with tempfile.TemporaryDirectory() as td:
         repo = os.path.join(td, "repo"); os.makedirs(repo)
         subprocess.run(["git", "init", "-q", repo], check=True)
@@ -167,7 +179,7 @@ def t_gen_writes_v3_schema():
         jpath = os.path.join(out, "ckpt-m00.json")
         assert os.path.exists(jpath), "json missing"
         d = json.load(open(jpath))
-        assert d["meta"]["schema"] == "traj-stats/3", d["meta"].get("schema")
+        assert d["meta"]["schema"] == "traj-stats/4", d["meta"].get("schema")
         assert d["meta"]["usage_semantics"] == "per_call"
         assert "sha256_leq_cut" in d["meta"]["transcripts"]["a"]
         assert "lines_total" not in d["meta"]["transcripts"]["a"]
@@ -175,6 +187,11 @@ def t_gen_writes_v3_schema():
         assert d["ledger"]["a"]["source"] == "missing"
         assert d["ledger"]["a"]["unresolved_count"] is None
         assert d["protocol"]["sources"]["forks"] == "missing"
+        av = d["availability"]
+        assert av["tag_commit_epoch"] == d["meta"]["cut_epoch"], av
+        assert av["max_source_available_at"] is None, av
+        assert av["sources"]["protocol.dirs.a"]["basis"] == "missing", av
+        assert av["unknown"] == [], av
         assert "concurrent" in d["text_overlap"]["counts"]
         assert os.path.exists(os.path.join(out, "ckpt-m00.md"))
         assert (os.stat(jpath).st_mode & 0o777) == 0o444
@@ -247,6 +264,142 @@ def t_regen_pin_stable_under_ledger_growth():
         b2 = open(jp, "rb").read()
         assert b1 == b2, "regeneration after working-dir ledger growth must be byte-stable"
 
+
+def _mk_repo(td, tag="ckpt-m00"):
+    repo = os.path.join(td, "repo"); os.makedirs(repo)
+    subprocess.run(["git", "init", "-q", repo], check=True)
+    _git(repo, "config", "user.email", "t@t"); _git(repo, "config", "user.name", "t")
+    with open(os.path.join(repo, "README.md"), "w") as f:
+        f.write("x\n")
+    _git(repo, "add", "-A"); _git(repo, "commit", "-qm", "init")
+    _git(repo, "tag", tag)
+    return repo, int(_git_out(repo, "log", "-1", "--format=%ct"))
+
+
+def t_avail_minute_precision():
+    assert ts.tsparse("2026-10-13T14:51Z") is None
+    assert ts.atparse("2026-10-13T14:51Z") == ts.tsparse("2026-10-13T14:51:59Z")
+    assert ts.atparse("2026-10-13T14:43:00Z") == ts.tsparse("2026-10-13T14:43:00Z")
+    assert ts.atparse(None) is None and ts.atparse("garbage") is None
+
+
+def t_availability_raises_cut():
+    with tempfile.TemporaryDirectory() as td:
+        repo, base = _mk_repo(td, tag="ckpt-m01")
+        xdir = os.path.join(td, "x"); os.makedirs(xdir)
+        with open(os.path.join(xdir, "dir-a.json"), "w") as f:
+            json.dump({"at": _fmt(base + 300),
+                       "axes": [{"fork_id": "F1", "choice": "alpha"}]}, f)
+        ta = os.path.join(td, "ta.jsonl"); tb = os.path.join(td, "tb.jsonl")
+        with open(ta, "w") as f:
+            f.write(_jl(_fmt(base + 100), text=PH8) + "\n")
+            f.write(_jl(_fmt(base + 400), text="late") + "\n")
+        with open(tb, "w") as f:
+            f.write(_jl(_fmt(base + 100), text="see " + PH8) + "\n")
+        out = os.path.join(xdir, "stats"); os.makedirs(out)
+        opts = {"chats_root": td, "wt_root": td, "out": out,
+                "transcript_a": ta, "transcript_b": tb}
+        assert ts.gen(repo, xdir, "ckpt-m01", opts) == 0
+        d = json.load(open(os.path.join(out, "ckpt-m01.json")))
+        av = d["availability"]
+        assert d["meta"]["cut_epoch"] == base + 300, d["meta"]["cut_epoch"]
+        assert av["tag_commit_epoch"] == base, av
+        s = av["sources"]["protocol.dirs.a"]
+        assert s["available_at"] == base + 300 and s["basis"] == "mtime+declared_at", s
+        known = [e["available_at"] for e in av["sources"].values()
+                 if e["available_at"] is not None]
+        assert max([base] + known) == d["meta"]["cut_epoch"]
+        # 转录切片随 cut 上移:base+100 的行纳入、base+400 的行排除
+        assert d["volume"]["a"]["lines_leq_cut"] == 1, d["volume"]["a"]["lines_leq_cut"]
+
+
+def t_absent_marker_blocks_absorption():
+    with tempfile.TemporaryDirectory() as td:
+        repo, base = _mk_repo(td, tag="ckpt-m00")
+        xdir = os.path.join(td, "x"); os.makedirs(xdir)
+        ta = os.path.join(td, "ta.jsonl"); tb = os.path.join(td, "tb.jsonl")
+        for p in (ta, tb):
+            with open(p, "w") as f:
+                f.write(_jl(_fmt(base + 10), text=PH8) + "\n")
+        out = os.path.join(xdir, "stats"); os.makedirs(out)
+        opts = {"chats_root": td, "wt_root": td, "out": out,
+                "transcript_a": ta, "transcript_b": tb}
+        assert ts.gen(repo, xdir, "ckpt-m00", opts) == 0
+        assert os.path.exists(os.path.join(out, "pin", "ckpt-m00.dir-a.json.absent"))
+        b1 = open(os.path.join(out, "ckpt-m00.json"), "rb").read()
+        # dir 在首读之后才出现:重生成必须保持 missing(负标记),不吸收后到产物
+        with open(os.path.join(xdir, "dir-a.json"), "w") as f:
+            json.dump({"at": _fmt(base + 500),
+                       "axes": [{"fork_id": "F1", "choice": "alpha"}]}, f)
+        assert ts.gen(repo, xdir, "ckpt-m00", opts) == 0
+        b2 = open(os.path.join(out, "ckpt-m00.json"), "rb").read()
+        assert b1 == b2, "later-appearing dir file must not be absorbed"
+        d2 = json.loads(b2)
+        assert d2["protocol"]["sources"]["dirs"]["a"] == "missing"
+        assert d2["availability"]["sources"]["protocol.dirs.a"]["basis"] == "missing"
+
+
+def t_meta_sidecar_freezes_availability():
+    with tempfile.TemporaryDirectory() as td:
+        repo, base = _mk_repo(td, tag="ckpt-m00")
+        xdir = os.path.join(td, "x"); os.makedirs(xdir)
+        da = os.path.join(xdir, "dir-a.json")
+        with open(da, "w") as f:
+            json.dump({"at": _fmt(base + 100),
+                       "axes": [{"fork_id": "F1", "choice": "alpha"}]}, f)
+        ta = os.path.join(td, "ta.jsonl"); tb = os.path.join(td, "tb.jsonl")
+        for p in (ta, tb):
+            with open(p, "w") as f:
+                f.write(_jl(_fmt(base + 10), text=PH8) + "\n")
+        out = os.path.join(xdir, "stats"); os.makedirs(out)
+        opts = {"chats_root": td, "wt_root": td, "out": out,
+                "transcript_a": ta, "transcript_b": tb}
+        assert ts.gen(repo, xdir, "ckpt-m00", opts) == 0
+        jp = os.path.join(out, "ckpt-m00.json")
+        b1 = open(jp, "rb").read()
+        d1 = json.loads(b1)
+        assert d1["availability"]["sources"]["protocol.dirs.a"]["available_at"] == base + 100
+        assert os.path.exists(os.path.join(out, "pin", "ckpt-m00.dir-a.json.meta"))
+        # 首读后来源被改写且 mtime 变动:重生成读侧车,字节稳定
+        with open(da, "w") as f:
+            json.dump({"at": _fmt(base + 999),
+                       "axes": [{"fork_id": "F1", "choice": "CHANGED"}]}, f)
+        os.utime(da, (base + 999, base + 999))
+        assert ts.gen(repo, xdir, "ckpt-m00", opts) == 0
+        b2 = open(jp, "rb").read()
+        assert b1 == b2, "meta sidecar must freeze availability across regen"
+
+
+def t_no_fs_avail_declared_only():
+    with tempfile.TemporaryDirectory() as td:
+        repo, base = _mk_repo(td, tag="ckpt-m00")
+        xdir = os.path.join(td, "x"); os.makedirs(xdir)
+        with open(os.path.join(xdir, "dir-a.json"), "w") as f:
+            json.dump({"at": _fmt(base + 100),
+                       "axes": [{"fork_id": "F1", "choice": "alpha"}]}, f)
+        db = os.path.join(xdir, "dir-b.json")
+        with open(db, "w") as f:
+            json.dump({"axes": [{"fork_id": "F1", "choice": "beta"}]}, f)
+        os.utime(db, (base + 9999, base + 9999))  # 归档 mtime 不可信:fs 关闭时必须忽略
+        ta = os.path.join(td, "ta.jsonl"); tb = os.path.join(td, "tb.jsonl")
+        for p in (ta, tb):
+            with open(p, "w") as f:
+                f.write(_jl(_fmt(base + 10), text=PH8) + "\n")
+        out = os.path.join(xdir, "stats"); os.makedirs(out)
+        opts = {"chats_root": td, "wt_root": td, "out": out, "fs_avail": False,
+                "transcript_a": ta, "transcript_b": tb}
+        assert ts.gen(repo, xdir, "ckpt-m00", opts) == 0
+        d = json.load(open(os.path.join(out, "ckpt-m00.json")))
+        av = d["availability"]
+        sa = av["sources"]["protocol.dirs.a"]
+        assert sa["available_at"] == base + 100 and sa["basis"] == "declared_at", sa
+        assert sa["mtime"] is None, sa
+        sb = av["sources"]["protocol.dirs.b"]
+        assert sb["available_at"] is None and sb["basis"] == "unknown", sb
+        assert "protocol.dirs.b" in av["unknown"], av["unknown"]
+        assert d["meta"]["cut_epoch"] == base + 100, d["meta"]["cut_epoch"]
+
+
 TESTS = [
     ("b_first_reuse_is_b_to_a", t_b_first_reuse_is_b_to_a),
     ("a_first_reuse_is_a_to_b", t_a_first_reuse_is_a_to_b),
@@ -259,7 +412,12 @@ TESTS = [
     ("silences_count_separates_sample", t_silences_count_separates_sample),
     ("regen_pin_stable_under_ledger_growth", t_regen_pin_stable_under_ledger_growth),
     ("write_ro_0444_idempotent", t_write_ro_0444_idempotent),
-    ("gen_writes_v3_schema", t_gen_writes_v3_schema),
+    ("gen_writes_v4_schema", t_gen_writes_v4_schema),
+    ("avail_minute_precision", t_avail_minute_precision),
+    ("availability_raises_cut", t_availability_raises_cut),
+    ("absent_marker_blocks_absorption", t_absent_marker_blocks_absorption),
+    ("meta_sidecar_freezes_availability", t_meta_sidecar_freezes_availability),
+    ("no_fs_avail_declared_only", t_no_fs_avail_declared_only),
 ]
 
 if __name__ == "__main__":
