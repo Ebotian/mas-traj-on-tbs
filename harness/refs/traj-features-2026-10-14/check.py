@@ -62,6 +62,32 @@ def main() -> int:
         good = got == want
         print(f"INVARIANT {name} = {got} (want {want}) {'OK' if good else 'FAIL'}")
         ok = ok and good
+
+    # v2 gate: selection features (microarch-5 materials; exploratory n=1)
+    with tempfile.TemporaryDirectory() as td2:
+        r2 = subprocess.run(
+            [sys.executable, str(HERE / "selection_features.py"), "--out", td2],
+            capture_output=True, text=True,
+        )
+        if r2.returncode != 0:
+            print("selection_features.py failed:", r2.stderr[-1500:])
+            ok = False
+        else:
+            a, b = HERE / "selection_features.json", Path(td2) / "selection_features.json"
+            if a.exists() and b.exists():
+                same = sha(a) == sha(b)
+                print(f"selection_features.json: {'IDENTICAL' if same else 'DIFF'} ({sha(a)[:12]})")
+                ok = ok and same
+            else:
+                print("MISSING selection_features.json")
+                ok = False
+            sf = json.loads(a.read_text())
+            for name, got, want in (("selection.candidates_total", sf.get("candidates_total"), 143),
+                                    ("selection.local_vs_hidden_tau_gap", sf.get("local_vs_hidden_tau_gap"), 0.277174)):
+                good = got == want
+                print(f"INVARIANT {name} = {got} (want {want}) {'OK' if good else 'FAIL'}")
+                ok = ok and good
+
     print("PASS" if ok else "FAIL")
     return 0 if ok else 1
 

@@ -47,3 +47,10 @@
 
 - 不含语义推断特征与任何模型调用;不含成本读数复算(成本在 job 侧读数)
 - 时代差异(v1/v2/v3/v4 配置)在同一表中并置,解释时注意
+
+## v2(2026-10-14,探索性 n=1):selection_features.py
+
+材料:microarch-5 顶层 protocol.bundle 的 analysis/(7 个选择面、143 个候选;m3/m4 无此材料)。
+输出:selection_features.json —— 各面 n/τ/regret 谱、picked 并集、blend(a/b/50 与 err_corr)、
+hidden 真值三元组与 local-vs-hidden τ 差、pool_preds 统计。
+已核不变式:local_vs_hidden_tau_gap == 0.277174、candidates_total == 143(见 check.py v2 段)。
