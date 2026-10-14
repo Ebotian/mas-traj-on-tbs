@@ -23,7 +23,7 @@ nothing task-specific lives in `common/`.
 | `tasks/walkthrough/` | rehearsal task: `run.sh` (in-container wrapper; `WT_PROMPT` selects a prompt variant), `prompt.md` (v2 script), `prompt-w45.md` (v1 archive), `agent.py` (`WalkthroughAgent`), `launch.sh` |
 | `tasks/tumor/` | tumor task: `run.sh`, `instruction.md`, `protocol-tumor.md`, `agent.py` (`TumorAgent`), `monitor_tumor.sh` (status ticker), `launch.sh` |
 | `tasks/microarch/` | electrical-engineering task (`microarch-modeling`): `run.sh`, `protocol.md`, `instruction.md` (canary-free upstream copy), `agent.py` (`MicroarchAgent`), `launch.sh` (sets `WT_TASK_DIR` to `build/task-microarch`) |
-| `verify/verify_acceptance{,_tumor}.sh` | host-side acceptance checks for a finished job dir |
+| `verify/verify_acceptance.sh` | **unified** host-side acceptance for a finished job dir (families auto-dispatched; `--all <jobs-dir>` = full sweep; `verify_acceptance_tumor.sh` = compat shim) |
 | `run_walkthrough.sh`, `run_tumor_launch.sh` | compatibility aliases to `tasks/*/launch.sh` |
 | `walkthrough.env` | per-side credentials (A = deepseek, B = Token Plan), mode 600 |
 
@@ -41,6 +41,13 @@ the trunk with its round trailers and the milestone tags
 `ckpt-m00/ckpt-m01/ckpt-m1/ckpt-m2` (2026-10-12 structure gate: exactly `main`
 plus these four tags — side branches merged into main and removed at close-out,
 `ckpt-final` no longer retained; see `common/recover.py` + `common/git_structure.py`).
+
+**One command (2026-10-14):** `bash verify/verify_acceptance.sh <job-dir>` — the unified
+entry (sections 0–6: runtime · NORMAL verdict · collection manifest · **top-level** bundle
+clone + structure gate · verifier record · traj seal · `x/stats`). `--all <jobs-dir>` sweeps
+every job dir; modern-era runs (ckpt-m00 / `x/stats` present) are strict, legacy eras
+auto-downgrade to WARN; `sub-a/sub-b` may live only under `collect/snapshot/` when the
+recover wake pruned the worktrees (accepted with a note).
 
 ## Cleanup (2026-10-11)
 
