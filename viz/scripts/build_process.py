@@ -31,8 +31,10 @@ EXP = {
     "microarch-2": ("microarch2", "microarch-modeling · microarch-2"),
     "microarch-3": ("microarch3", "microarch-modeling · microarch-3(最新配置)"),
     "microarch-4": ("microarch4", "microarch-modeling · microarch-4(最新配置)"),
+    "microarch-5": ("microarch5", "microarch-modeling · microarch-5(最新配置 · v3 统计首跑)"),
     "tumor-1": ("tumor1", "tumor-immune-interface · tumor-1"),
     "tumor-2": ("tumor2", "tumor-immune-interface · tumor-2"),
+    "tumor-3": ("tumor3", "tumor-immune-interface · tumor-3(v3 统计首跑)"),
     "walkthrough-4": ("w4", "walkthrough-4(首份 NORMAL 走查)"),
     "walkthrough-5": ("w5", "walkthrough-5(干净重跑,no-ff)"),
     "walkthrough-6": ("w6", "walkthrough-6(机制排练)"),
@@ -59,6 +61,8 @@ MECH = {
     "microarch-2": "b 依对侧静默(~900s×2)abort;a stop 后到(竞速)",
     "microarch-3": "四签跑内齐落 → structure 唤醒(240s)",
     "microarch-4": "四签跑内齐落 → structure 唤醒(239s)",
+    "microarch-5": "四签跑内齐落 → structure 唤醒(277s)",
+    "tumor-3": "四签跑内齐落 → structure 唤醒(267s)",
 }
 SIDE_MODEL = {"a": "deepseek-flash", "b": "qwen3.8-flash"}
 

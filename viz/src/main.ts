@@ -29,9 +29,9 @@ const VIEWS: View[] = [
   { id: 'library', label: '账户库', hint: '159 条 · 取回 17 份 · 一处结论被推翻', render: library.render },
   { id: 'replay', label: '轨迹重建', hint: 'w4/w5 逐步回放:滑块 × 轮 · git 节点 · 工具与思考可展开', render: replay.render },
   { id: 'handoff', label: '交接实验', hint: '走查全族 17 跑 + bump-0251 + A2A spike/融合 逐步回放', render: handoff.render },
-  { id: 'tumor', label: 'tumor 双agent', hint: 'tumor-1/-2 真实任务:双 agent 轨迹回放', render: tumor.render },
-  { id: 'microarch', label: '电气试验', hint: 'microarch 代理题真实任务:microarch-1(昨晚)/ -2(修正重发)/ -3、-4(最新配置重跑)', render: microarch.render },
-  { id: 'process', label: '过程观测', hint: '全族 24 跑前缀级审计:截尾账本 · 上下文增长 · 停/收口信号 · 门决策账本(只读,与轨迹页同源)', render: processView.render },
+  { id: 'tumor', label: 'tumor 双agent', hint: 'tumor-1~3 真实任务:双 agent 轨迹回放', render: tumor.render },
+  { id: 'microarch', label: '电气试验', hint: 'microarch 代理题真实任务:microarch-1/-2(修正重发)/ -3、-4(最新配置重跑)/ -5(v3 统计首跑)', render: microarch.render },
+  { id: 'process', label: '过程观测', hint: '全族 26 跑前缀级审计:截尾账本 · 上下文增长 · 停/收口信号 · 门决策账本(只读,与轨迹页同源)', render: processView.render },
 ]
 
 function currentId(): string {

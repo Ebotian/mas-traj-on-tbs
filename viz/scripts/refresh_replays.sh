@@ -12,8 +12,10 @@ declare -A SRC=(
   [microarch2]="/home/ebt/harbor-runs/jobs/agent/microarch-2"
   [microarch3]="/home/ebt/harbor-runs/jobs/agent/microarch-3"
   [microarch4]="/home/ebt/harbor-runs/jobs/agent/microarch-4"
+  [microarch5]="/home/ebt/harbor-runs/jobs/agent/microarch-5"
   [tumor1]="/home/ebt/harbor-runs/jobs/agent/tumor-1"
   [tumor2]="/home/ebt/harbor-runs/jobs/agent/tumor-2"
+  [tumor3]="/home/ebt/harbor-runs/jobs/agent/tumor-3"
   [w4]="/home/ebt/harbor-runs/jobs/agent/walkthrough-4"
   [w5]="/home/ebt/harbor-runs/jobs/agent/walkthrough-5"
   [w6]="/home/ebt/harbor-runs/jobs/agent/walkthrough-6"
@@ -40,8 +42,10 @@ declare -A LABEL=(
   [microarch2]="microarch-modeling · microarch-2"
   [microarch3]="microarch-modeling · microarch-3(最新配置)"
   [microarch4]="microarch-modeling · microarch-4(最新配置)"
+  [microarch5]="microarch-modeling · microarch-5(最新配置 · v3 统计首跑)"
   [tumor1]="tumor-immune-interface · tumor-1"
   [tumor2]="tumor-immune-interface · tumor-2"
+  [tumor3]="tumor-immune-interface · tumor-3(v3 统计首跑)"
   [w4]="walkthrough-4(首份 NORMAL 走查)"
   [w5]="walkthrough-5(干净重跑,no-ff)"
   [w6]="walkthrough-6(机制排练"
@@ -62,7 +66,7 @@ declare -A LABEL=(
 )
 
 EXPS=("$@")
-if [ ${#EXPS[@]} -eq 0 ]; then EXPS=(a2afusion a2aspike bump0251 microarch1 microarch2 microarch3 microarch4 tumor1 tumor2 w4 w5 w6 w6n1 w6n2 w6n3 w6n4 w6np w6r1 w6r2 w6r3 w6r4 w6rp w7 w8 w9 w10); fi
+if [ ${#EXPS[@]} -eq 0 ]; then EXPS=(a2afusion a2aspike bump0251 microarch1 microarch2 microarch3 microarch4 microarch5 tumor1 tumor2 tumor3 w4 w5 w6 w6n1 w6n2 w6n3 w6n4 w6np w6r1 w6r2 w6r3 w6r4 w6rp w7 w8 w9 w10); fi
 for exp in "${EXPS[@]}"; do
   node scripts/build_replay.mjs ${SRC[$exp]} --exp "$exp" --label "${LABEL[$exp]}"
 done
