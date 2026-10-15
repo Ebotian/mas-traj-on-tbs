@@ -93,19 +93,22 @@ function kindStack(kinds: Record<string, number>): HTMLElement {
 
 function rhythmScatter(): SVGElement {
   const W = 680, H = 250, M = { l: 52, r: 16, t: 14, b: 32 }
-  const g = s('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, class: 'chart', role: 'img', 'aria-label': '节律:间隔 CV_robust × >600s 占比(每侧一点)' })
-  const pts = D.sides.filter(p => p.cv != null && p.p600 != null)
+  const g = s('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, class: 'chart', role: 'img', 'aria-label': '节律:中位间隔(s) × CV_robust(每侧一点;◉=含 >600s 间隔)' })
+  const pts = D.sides.filter(p => p.cv != null && p.gap_med_s != null)
   if (!pts.length) return g
   const xmax = Math.max(0.5, ...pts.map(p => p.cv as number)) * 1.08
+  const ymax = Math.max(5, ...pts.map(p => p.gap_med_s as number)) * 1.08
   const xs = linear([0, xmax], [M.l, W - M.r])
-  const ys = linear([0, 1], [H - M.b, M.t])
-  g.appendChild(axisLeft(ys, M.l, v => pctf(v, 0)))
+  const ys = linear([0, ymax], [H - M.b, M.t])
+  g.appendChild(axisLeft(ys, M.l, v => `${Math.round(v)}s`))
   g.appendChild(axisBottom(xs, H - M.b, v => f2(v, 1)))
   for (const p of pts) {
+    const stall = (p.p600 ?? 0) > 0
     g.appendChild(s('circle', {
-      cx: xs(p.cv as number), cy: ys(p.p600 as number), r: 3.8,
-      fill: FAM_COLOR[p.family] ?? COLOR.muted, opacity: 0.82,
-    }, s('title', {}, `${p.job} · ${p.side}:CV ${f2(p.cv)} · P600 ${pctf(p.p600)} · 调用 ${p.calls ?? '—'}`)))
+      cx: xs(p.cv as number), cy: ys(p.gap_med_s as number), r: 3.8,
+      fill: FAM_COLOR[p.family] ?? COLOR.muted, opacity: 0.9,
+      stroke: stall ? COLOR.bad : 'none', 'stroke-width': stall ? 1.8 : 0,
+    }, s('title', {}, `${p.job} · ${p.side}:中位间隔 ${f2(p.gap_med_s, 2)}s · CV ${f2(p.cv)} · P600 ${pctf(p.p600, 2)}${stall ? '(◉)' : ''} · 调用 ${p.calls ?? '—'}`)))
   }
   return g
 }
@@ -218,11 +221,12 @@ export function render(host: HTMLElement): void {
       'run_shell_command 按命令文本细分 wait(wait_peer/pos/file|inotifywait)/recover/test(pytest|check_*.py)/exec;其余→other。',
       'exec 在各家族占比最高;test 集中在 microarch(123 次)。')))
 
-  host.appendChild(panel('节律 · 间隔 CV_robust × >600s 间隔占比(每侧一点)',
+  host.appendChild(panel('节律 · 中位间隔(速度) × CV_robust(不匀度;◉=含 >600s 间隔)',
     rhythmScatter(),
     legend(),
-    note('CV_robust = 1.4826·MAD/中位间隔(稳健变异系数);P600 = 相邻调用间隔 >600s 的占比(等对侧/长停摆的尺度)。',
-      '走查族的高 P600 点 = wait_peer 等待;真实任务族更密的交互落在左下方。')))
+    note('y = 相邻调用间隔的中位(秒;0=同刻密集),x = CV_robust = 1.4826·MAD/中位(越右越不匀)。',
+      '◉(玫红描边)=该侧存在 >600s 间隔。原纵轴用 P600 占比,但 42/54 侧为 0(非零最大 1.8%),零膨胀无区分度,故改作标记维度——',
+      '绘出的 53 侧中 11 个 ◉,分散于 tumor/microarch/tess/走查各族;1 侧(walkthrough-7 a)中位间隔=0、CV 不可算,未入图。')))
 
   host.appendChild(panel('类别熵 · 边际 kind_entropy × 条件转移 transition_entropy(文档 §4.2)',
     entropyScatter(),
