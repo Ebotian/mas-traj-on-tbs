@@ -68,6 +68,19 @@ def main() -> int:
             else:
                 ok(f"逐字节复现 {name} ({len(a.read_bytes())}B, sha256 {sha12(a)}…)")
 
+        r3 = subprocess.run([sys.executable, str(LAB / "dl_test.py"), "--out", str(tmp)],
+                            capture_output=True, text=True)
+        if r3.returncode != 0:
+            fail(f"dl_test.py 非零退出: {r3.stderr.strip()[-300:]}")
+        for name in ("dl_test.json", "dl_test.md"):
+            a, b = LAB / name, tmp / name
+            if not b.exists():
+                fail(f"{name}: 重跑未产出")
+            elif a.read_bytes() != b.read_bytes():
+                fail(f"{name}: 逐字节不一致")
+            else:
+                ok(f"逐字节复现 {name} ({len(a.read_bytes())}B, sha256 {sha12(a)}…)")
+
         r2 = subprocess.run([sys.executable, str(LAB / "paper_checks.py")], capture_output=True, text=True)
         if r2.returncode != 0:
             fail(f"paper_checks.py 非零退出: {r2.stdout.strip()[-400:]}")
@@ -154,8 +167,57 @@ def main() -> int:
             if pp < 0.05:
                 n_p05 += 1
         want(bad_dec == 0, f"解耦指标自洽(非负/恒等式 mi=ke·ln2−ns/单类别边界/kinds⊆8类):{bad_dec} 处异常")
-        want((n_mi, n_pa, n_p05) == (854, 762, 631),
-             f"解耦覆盖与显著性计数:mi {n_mi}/854 · P_action {n_pa}/762 · perm p<0.05 {n_p05}/631")
+        want((n_mi, n_pa, n_p05) == (854, 762, 629),
+             f"解耦覆盖与显著性计数:mi {n_mi}/854 · P_action {n_pa}/762 · perm p<0.05 {n_p05}/629")
+
+        bad_cal = 0
+        n_mm = n_pri = n_exc = n_b = n_m = n_js = 0
+        for x in recs:
+            ke, mm = x["kind_entropy"], x.get("mm_delta_nat")
+            mi, pm, ex = x.get("mi_action"), x.get("mi_perm_mean"), x.get("mi_excess")
+            pri = x.get("prior_share_max")
+            b, mg, js = x.get("burstiness_b"), x.get("gap_memory_m"), x.get("js_half")
+            if (mm is None) != (ke is None) or (pri is None) != (mi is None) or (ex is None) != (mi is None):
+                bad_cal += 1
+            if mm is not None:
+                n_mm += 1
+                if mm < 0 or abs(x["kind_entropy_mm"] - (ke + mm / math.log(2))) > 5e-6:
+                    bad_cal += 1
+            if pri is not None:
+                n_pri += 1
+                if not (0 < pri <= 1):
+                    bad_cal += 1
+            if ex is not None:
+                n_exc += 1
+                if abs(ex - (mi - pm)) > 2e-6 or pm < -1e-12 or ex > mi + 1e-5:
+                    bad_cal += 1
+            if b is not None:
+                n_b += 1
+                if not (-1 <= b <= 1):
+                    bad_cal += 1
+            if mg is not None:
+                n_m += 1
+                if not (-1 <= mg <= 1) or b is None:
+                    bad_cal += 1
+            if js is not None:
+                n_js += 1
+                if not (0 <= js <= math.log(2) + 1e-9):
+                    bad_cal += 1
+            if ke == 0:
+                if not (mm == 0.0 and ex == 0.0):
+                    bad_cal += 1
+        want(bad_cal == 0, f"校准字段自洽(MM/先验占比/置换均值与 excess/范围/单类别边界):{bad_cal} 处异常")
+        want((n_mm, n_pri, n_exc, n_b, n_m, n_js) == (854, 854, 854, 687, 687, 839),
+             f"校准覆盖:MM {n_mm}/854 · 先验 {n_pri}/854 · excess {n_exc}/854 · B {n_b}/687 · M {n_m}/687 · JS {n_js}/839")
+
+        dlt = json.loads((LAB / "dl_test.json").read_text(encoding="utf-8"))
+        dsum, pool = dlt["summary"], dlt["pooled"]
+        want(abs(pool["a2"] - (pool["a1"] + pool["delta_a2"])) <= 2e-6 and pool["delta_a2"] >= -1e-9
+             and 0 < pool["perm_p"] <= 1,
+             f"dl_test 池化自洽:A1={pool['a1']} A2={pool['a2']} ΔA2={pool['delta_a2']} p={pool['perm_p']}")
+        want(dlt["identity_max_diff"] <= 1e-6, f"dl_test 训练恒等式自检 max 差 {dlt['identity_max_diff']}")
+        want((dsum["n_a"], dsum["med_a"], dsum["n_b"], dsum["med_b"]) == (765, 0.021761, 833, 0.193815),
+             f"dl_test 钉数:ΔL_a n={dsum['n_a']} 中位 {dsum['med_a']} · ΔL_b n={dsum['n_b']} 中位 {dsum['med_b']}")
         per_model = Counter(x["model"] for x in are)
         want(len(per_model) == 8 and all(v == 100 for v in per_model.values()),
              f"are 逐模型各 100 单元 {dict(per_model)}")

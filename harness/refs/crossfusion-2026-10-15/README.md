@@ -80,14 +80,38 @@
 - `mi_action` = H_kind·ln2 − H⁽⁰⁾ = Î(C_t;C_{t+1}):经验行动互信息(一阶路径依赖强度,nat,恒 ≥0);
 - `p_action` = I_action/(H_kind·ln2):归一化可预测性 [0,1];H_kind=0(单类别流)⇒ null,不设零;
 - `s_smooth` = 平滑熵 − H⁽⁰⁾:平滑敏感度(α=1 下恒 ≥0;越大=读数越依赖伪计数);
-- `mi_perm_p`:保频置换检验单侧 p(k=200 次洗牌保留类别频数,`crc32(seq)` 定种 ⇒ 确定性;
-  p=(1+#{I_perm≥I_obs})/(1+k))。
+- `mi_perm_p`:保频置换检验单侧 p(k=200,**固定 c₁、洗牌 c₂..cₙ**——H(Y) 严格不变 ⇒ 置换量恒 ≥0;
+  `crc32(seq)` 定种;p=(1+#{I_perm≥I_obs})/(1+k);修正记录见「校准与探针」节)。
 
 核对与快照:恒等式与独立联合 MI 对拍最大差 1.7e-07;单类别底噪表逐位一致;mi 覆盖 854/862,
-P_action 762(92 条单类别流未定义),置换显著(p<0.05)631/762;I_action 中位 0.2433 nat、
+P_action 762(92 条单类别流未定义),置换显著(p<0.05)629/854;I_action 中位 0.2433 nat、
 最大 0.8773;open-ended 路径依赖显著高于 optimization(P_action 中位 0.377 vs 0.1231)。
 **读法要点**:平滑散点 825/854 个点越出 `y = x·ln2` 边界(超出量 = S_smooth − I_action),
 即本语料里平滑底噪普遍大于路径依赖信息——引用平滑版 `transition_entropy` 时应同时报 H⁽⁰⁾ 与 S_smooth。
+
+## 校准与探针(2026-10-15 追加;偏校正 / 样本外 / 时间·阶段探针)
+
+解耦之后,读数的**可信度**与**可泛化性**分开测量,全部落盘(`features_union.jsonl` + `dl_test.json`):
+
+| 量 | 字段 | 口径 | 覆盖 |
+|---|---|---|---|
+| 偏校正互信息 | `mi_excess` | = I_obs − E_perm[I];置换 = **固定 c₁、洗牌 c₂..cₙ**(k=200,`crc32` 定种 ⇒ 确定性;H(Y) 严格不变 ⇒ 置换量恒 ≥0)。可为负(观察低于偶然),不截断 | 854 |
+| 置换零均值 | `mi_perm_mean` | 上述置换的 I 均值 | 854 |
+| Miller–Madow 修正 | `mm_delta_nat` / `kind_entropy_mm` | +(K_obs−1)/(2m) nat(Paninski 2003;K_obs = 观测类别数,m = |c₂..cₙ|) | 854 |
+| 平滑先验占比上界 | `prior_share_max` | max_a 8/(N_a+8)(最稀疏转移行的 α=1 混合质量) | 854 |
+| 突发性 / 时间记忆 | `burstiness_b` / `gap_memory_m` | (σ−μ)/(σ+μ) / 相邻间隔一阶自相关;≥4 间隔;含排队/采样混杂 | 687 |
+| 阶段半程探针 | `js_half` | 前缀半 vs 后置半类别分布的 JS 散度(nat,上界 ln2) | 839 |
+
+**样本外对数损失**(`dl_test.py` → `dl_test.json/md`;Laplace α=1,两模型同口径):
+
+- ΔL_a(单元自身前半→后半;m≥20):n=765,中位 **0.0218** nat,413/765 >0;
+- ΔL_b(留一任务池化→本单元;m≥8,防同题泄漏):n=833,中位 **0.1938** nat,786/833 >0;
+- 池化 AIS:A₁=0.2574、A₂=0.3103、**ΔA₂=+0.0529**(二阶历史相对一阶 +20.6%,保频置换 p=0.004975);
+- 自检:每单元无平滑恒等式 L₀_train−L₁_train = Î,最大差 **0.0**。
+
+**2026-10-15 修正记录**:置换零原为「全序列洗牌 + 固定原 H(Y)」——目标端多重集会漂移,置换统计量不干净
+(14 个稀有首调单元的零均值甚至为负)。已改为固定 c₁、洗牌 c₂..cₙ;显著数 631→**629**
+(BH-FDR q=0.05 后 615/854);33 个负 excess 为合法取值(低于偶然)。
 
 ## 论文数字复算(`paper_checks.py`,零 LLM)
 
@@ -115,6 +139,7 @@ P_action 762(92 条单类别流未定义),置换显著(p<0.05)631/762;I_action �
 | `paper_checks.json` / `paper_checks.md` | 逐条论文/卡片复算 |
 | `arft.json` | 45 模式 × 四支柱参照表(入库参照) |
 | `extract_cross.py` | 并集统计主管线(唯一写 `features_union.jsonl` 的脚本) |
+| `dl_test.py` / `dl_test.json` / `dl_test.md` | 样本外 ΔL(前缀/留一任务)+ 池化 AIS ΔA₂ + 训练恒等式自检 |
 | `paper_checks.py` / `check.py` | 复算层 / 验收层 |
 | `fetch_are.py` · `parse_paper_tables.py` · `survey_formats.py` | 语料重取 / 表格提取 / 格式勘查 |
 
@@ -124,7 +149,7 @@ python3 check.py     # 一条命令验收:逐字节复现 + 不变式 + lab 对�
 ```
 
 站点页 `#/crossfusion` 由 `viz/scripts/build_crossfusion.py` 将
-`features_union.jsonl + arft.json + paper_checks.json`(经 `audit.json` 补充注记)投影为
+`features_union.jsonl + arft.json + paper_checks.json + dl_test.json`(经 `audit.json` 补充注记)投影为
 `viz/src/data/crossfusion.json`(确定性,零手抄)。
 
 **复核范围声明**(与 AGENTS.md 一致):核对的是论文/卡片所载数字与数据的自洽与复算;

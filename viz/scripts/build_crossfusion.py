@@ -152,6 +152,31 @@ def main() -> int:
     n_pa = sum(1 for r in recs if r.get("p_action") is not None)
     mis_all = [r["mi_action"] for r in recs if r.get("mi_action") is not None]
 
+    pss = sorted(r["mi_perm_p"] for r in recs if r.get("mi_perm_p") is not None)
+    n_p05 = sum(1 for p in pss if p < 0.05)
+    bh_count = 0
+    for i, p in enumerate(pss, 1):
+        if p <= 0.05 * i / len(pss):
+            bh_count = i
+
+    calib = []
+    for r in sorted(recs, key=lambda x: x["unit"]):
+        if r.get("mi_excess") is None:
+            continue
+        calib.append({"u": r["unit"], "s": r["source"],
+                      "g": r["corpus"] if r["source"] == "ours" else r["model"],
+                      "calls": r["calls_total"],
+                      "mi": round(r["mi_action"], 4), "pm": round(r["mi_perm_mean"], 4),
+                      "ex": round(r["mi_excess"], 4), "mm": r["mm_delta_nat"],
+                      "pri": r["prior_share_max"],
+                      "b": r["burstiness_b"], "mg": r["gap_memory_m"], "js": r["js_half"]})
+    dl_raw = json.loads((SRC / "dl_test.json").read_text(encoding="utf-8"))
+    dl = {"summary": dl_raw["summary"], "pooled": dl_raw["pooled"],
+          "identity_max_diff": dl_raw["identity_max_diff"],
+          "per_unit": [{"u": p["u"], "s": p["s"], "corpus": p["corpus"], "g": p["g"],
+                        "m": p["m"], "dla": p["dl_a"], "dlb": p["dl_b"]}
+                       for p in dl_raw["per_unit"]]}
+
     inv = [
         {"name": "单元", "value": len(recs), "want": 862, "ok": len(recs) == 862},
         {"name": "ours 侧/臂", "value": f"{len(sides)}/{len(arms)}", "want": "54/8",
@@ -190,6 +215,13 @@ def main() -> int:
             "n_above_ns": n_above_ns, "n_above_sm": n_above_sm,
             "n_pperm05": n_pperm05, "n_pa": n_pa,
             "mi_med": med(mis_all), "mi_max": max(mis_all) if mis_all else None,
+            "n_p05": n_p05, "bh": bh_count,
+            "ex_med": med([c["ex"] for c in calib]), "pm_med": med([c["pm"] for c in calib]),
+            "mm_med": med([r.get("mm_delta_nat") for r in recs]),
+            "pri_med": med([r.get("prior_share_max") for r in recs]),
+            "b_med": med([r.get("burstiness_b") for r in recs]),
+            "mg_med": med([r.get("gap_memory_m") for r in recs]),
+            "js_med": med([r.get("js_half") for r in recs]),
         },
         "invariants": inv,
         "corpora": corpora,
@@ -199,6 +231,8 @@ def main() -> int:
         "format_cov": fcov,
         "scatter": scatter,
         "decouple": decouple,
+        "calib": calib,
+        "dl": dl,
         "checks": pc["checks"],
         "arft": {
             "total_hits": arft["total_hits"],

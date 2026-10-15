@@ -208,10 +208,49 @@ def ring_core(calls: list, results: list) -> dict:
     cv = (1.4826 * mad / med) if (med and mad is not None and med > 0) else None
     p600 = (sum(1 for g in gaps if g > 600) / len(gaps)) if gaps else None
 
+    # 突发性与时间记忆(Goh & Barabási 2008;≥4 间隔才报;含排队/采样混杂的口径见 README)
+    burstiness_b = None
+    gap_memory_m = None
+    if len(gaps) >= 4:
+        from math import sqrt
+        gmean = sum(gaps) / len(gaps)
+        gvar = sum((g - gmean) ** 2 for g in gaps) / (len(gaps) - 1)
+        gsd = sqrt(gvar)
+        if gsd + gmean > 0:
+            burstiness_b = round((gsd - gmean) / (gsd + gmean), 6)
+        if gvar > 0:
+            num = sum((gaps[i] - gmean) * (gaps[i + 1] - gmean) for i in range(len(gaps) - 1))
+            gap_memory_m = round(num / (gvar * (len(gaps) - 1)), 6)
+
+    # 阶段探针(前缀半 vs 后置半):类别分布 Jensen–Shannon 散度(nat;无阶段标注时的机器化探针)
+    js_half = None
+    if len(seq) >= 6:
+        from math import log as _lnj
+        hcut = len(seq) // 2
+        p1c: dict = {}
+        p2c: dict = {}
+        for k in seq[:hcut]:
+            p1c[k] = p1c.get(k, 0) + 1
+        for k in seq[hcut:]:
+            p2c[k] = p2c.get(k, 0) + 1
+        n1 = hcut
+        n2 = len(seq) - hcut
+        js = 0.0
+        for k in set(p1c) | set(p2c):
+            a = p1c.get(k, 0) / n1
+            b = p2c.get(k, 0) / n2
+            mjs = (a + b) / 2
+            if a > 0:
+                js += 0.5 * a * _lnj(a / mjs)
+            if b > 0:
+                js += 0.5 * b * _lnj(b / mjs)
+        js_half = round(js, 6)
+
     n_judged = sum(1 for r in results if r.get("ok") is not None)
     masked = sum(1 for r in results if r.get("ok") is True and "Traceback" in (r.get("text") or ""))
 
     kind_ent = None
+    mm_delta_nat = kind_entropy_mm = None
     nexts = seq[1:]
     if nexts:
         from math import log2
@@ -220,9 +259,15 @@ def ring_core(calls: list, results: list) -> dict:
         for k in nexts:
             c[k] = c.get(k, 0) + 1
         kind_ent = round(-sum((v / tot) * log2(v / tot) for v in c.values()), 6)
+        # Miller–Madow 一阶修正(Paninski 2003;nat→bit):+(K_obs−1)/(2m),m=|c₂..cₙ|
+        from math import log as _lnm
+        mm_delta_nat = round((len(c) - 1) / (2 * tot), 6)
+        kind_entropy_mm = round(kind_ent + mm_delta_nat / _lnm(2), 6)
 
     trans = None
     trans_ns = mi_action = p_action = s_smooth = mi_perm_p = None
+    mi_perm_mean = mi_excess = None
+    prior_share_max = None
     if len(seq) >= 2:
         from math import log as _ln
         pairs = list(zip(seq, seq[1:]))
@@ -231,6 +276,8 @@ def ring_core(calls: list, results: list) -> dict:
         for a, b in pairs:
             nab[(a, b)] = nab.get((a, b), 0) + 1
             froms[a] = froms.get(a, 0) + 1
+        # α=1 先验质量占比:S_a = Kα/(N_a+Kα) = 8/(N_a+8);取最稀疏源行(上界)
+        prior_share_max = round(max(8.0 / (na + 8.0) for na in froms.values()), 6)
         alpha = 1.0
         tot_tr = len(pairs)
         hc = 0.0
@@ -267,13 +314,21 @@ def ring_core(calls: list, results: list) -> dict:
         rng = _random.Random(_zlib.crc32(("|".join(seq)).encode("utf-8")))
         k_perm = 200
         ge = 0
-        sh = list(seq)
+        perm_i_sum = 0.0
+        # 保频置换:固定 c₁、仅洗牌 c₂..cₙ ⇒ H(Y) 严格不变,I_perm = hy − h₀(perm) 恒 ≥0
+        #(全序列洗牌会改变目标端多重集,H(Y) 漂移 ⇒ 置换统计量不干净;2026-10-15 修正)
+        sh = list(seq[1:])
         h0_target = hy - mi_obs  # = h0(数值保护后)
         for _ in range(k_perm):
             rng.shuffle(sh)
-            if _h0_seq(sh) <= h0_target + 1e-12:
+            h0p = _h0_seq([seq[0]] + sh)
+            perm_i_sum += hy - h0p
+            if h0p <= h0_target + 1e-12:
                 ge += 1
         mi_perm_p = round((1 + ge) / (1 + k_perm), 6)
+        perm_mean = perm_i_sum / k_perm
+        mi_perm_mean = round(perm_mean, 6)
+        mi_excess = round(mi_obs - perm_mean, 6)
 
     return {
         "calls_total": len(calls),
@@ -293,6 +348,14 @@ def ring_core(calls: list, results: list) -> dict:
         "p_action": p_action,
         "s_smooth": s_smooth,
         "mi_perm_p": mi_perm_p,
+        "mi_perm_mean": mi_perm_mean,
+        "mi_excess": mi_excess,
+        "mm_delta_nat": mm_delta_nat,
+        "kind_entropy_mm": kind_entropy_mm,
+        "prior_share_max": prior_share_max,
+        "burstiness_b": burstiness_b,
+        "gap_memory_m": gap_memory_m,
+        "js_half": js_half,
     }
 
 
@@ -1006,6 +1069,14 @@ def _unit(unit, source, corpus, model, harness, fmt, rec, basis, meta, notes, du
         "p_action": rec.get("p_action"),
         "s_smooth": rec.get("s_smooth"),
         "mi_perm_p": rec.get("mi_perm_p"),
+        "mi_perm_mean": rec.get("mi_perm_mean"),
+        "mi_excess": rec.get("mi_excess"),
+        "mm_delta_nat": rec.get("mm_delta_nat"),
+        "kind_entropy_mm": rec.get("kind_entropy_mm"),
+        "prior_share_max": rec.get("prior_share_max"),
+        "burstiness_b": rec.get("burstiness_b"),
+        "gap_memory_m": rec.get("gap_memory_m"),
+        "js_half": rec.get("js_half"),
         "gaps_n": rec.get("gaps_n", 0),
         "gaps_median_s": rec.get("gaps_median_s"),
         "gaps_cv_robust": rec.get("gaps_cv_robust"),
@@ -1091,6 +1162,27 @@ def write_summary(records: list, audit: dict, out: Path) -> None:
         fmt_cell = lambda xs: (round(_median(xs), 4) if xs else "—")
         lines.append(f"| {src2} | {corp2} | {len(rs)} | {fmt_cell(mis)} | {fmt_cell(pas)} | "
                      f"{fmt_cell(sss)} | {p05} |")
+    lines.append("")
+    lines.append("## 校准与探针(2026-10-15 追加)")
+    exs = [r.get("mi_excess") for r in records if r.get("mi_excess") is not None]
+    pms = [r.get("mi_perm_mean") for r in records if r.get("mi_perm_mean") is not None]
+    mms = [r.get("mm_delta_nat") for r in records if r.get("mm_delta_nat") is not None]
+    pri = [r.get("prior_share_max") for r in records if r.get("prior_share_max") is not None]
+    bs = [r.get("burstiness_b") for r in records if r.get("burstiness_b") is not None]
+    ms = [r.get("gap_memory_m") for r in records if r.get("gap_memory_m") is not None]
+    jss = [r.get("js_half") for r in records if r.get("js_half") is not None]
+    ps = sorted(r["mi_perm_p"] for r in records if r.get("mi_perm_p") is not None)
+    bh = 0
+    for i, p in enumerate(ps, 1):
+        if p <= 0.05 * i / len(ps):
+            bh = i
+    fmtv = lambda xs: (round(_median(xs), 5) if xs else "—")
+    lines.append(f"- I_excess 中位 {fmtv(exs)} nat(置换零均值中位 {fmtv(pms)});"
+                 f"MM 修正中位 {fmtv(mms)} nat;先验占比上界中位 {fmtv(pri)}")
+    lines.append(f"- 置换显著:原始 p<0.05 = {sum(1 for p in ps if p < 0.05)}/{len(ps)};"
+                 f"BH-FDR q=0.05 = {bh}/{len(ps)}")
+    lines.append(f"- 时间探针(≥4 间隔):B 中位 {fmtv(bs)} / M 中位 {fmtv(ms)}(n={len(bs)});"
+                 f"阶段探针:JS(半程)中位 {fmtv(jss)} nat(n={len(jss)})")
     lines.append("")
     lines.append("## 不变式/审计")
     oc = audit["ours_compare"]

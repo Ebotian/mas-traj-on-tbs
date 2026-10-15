@@ -29,15 +29,24 @@ interface ModelRow {
 interface FmtRow { source: string; format: string; units: number; gaps_basis: Record<string, number>; masked_n: number; cache_n: number; dur_n: number }
 interface Pt { u: string; s: string; g: string; calls: number; ke: number; te: number; mr: number | null }
 interface DecRow { u: string; s: string; g: string; calls: number; ke: number; ns: number; mi: number; p: number | null; ss: number; perm: number }
+interface CalRow { u: string; s: string; g: string; calls: number; mi: number; pm: number; ex: number; mm: number | null; pri: number | null; b: number | null; mg: number | null; js: number | null }
+interface DlRow { u: string; s: string; corpus: string; g: string; m: number; dla: number | null; dlb: number | null }
+interface DlCorpus { n_a: number; med_a: number | null; pos_a: number; n_b: number; med_b: number | null; pos_b: number }
+interface DlData {
+  summary: { n_units: number; n_a: number; med_a: number | null; pos_a: number; n_b: number; med_b: number | null; pos_b: number; by_corpus: Record<string, DlCorpus> }
+  pooled: { a1: number; a2: number; delta_a2: number; perm_p: number; k_perm: number }
+  identity_max_diff: number
+  per_unit: DlRow[]
+}
 interface Check { id: string; scope: string; claim: string; expected: unknown; actual: unknown; status: string; note: string }
 interface Pillar { id: string; name: string; n: number; hit_sum: number; share_pct: number }
 interface PatRow { id: string; name: string; stage: string; pillar: string; hit: number; pct: number }
 interface CfData {
   meta: { source: string; script: string; are_revision: string; arxiv: string; note: string }
-  totals: { units: number; ours_units: number; are_units: number; sides: number; arms: number; calls: number; ours_calls: number; are_calls: number; avg_are: number; hits_total: number; paper: Record<string, number>; n_above_ns: number; n_above_sm: number; n_pperm05: number; n_pa: number; mi_med: number | null; mi_max: number | null }
+  totals: { units: number; ours_units: number; are_units: number; sides: number; arms: number; calls: number; ours_calls: number; are_calls: number; avg_are: number; hits_total: number; paper: Record<string, number>; n_above_ns: number; n_above_sm: number; n_pperm05: number; n_pa: number; mi_med: number | null; mi_max: number | null; n_p05: number; bh: number; ex_med: number | null; pm_med: number | null; mm_med: number | null; pri_med: number | null; b_med: number | null; mg_med: number | null; js_med: number | null }
   invariants: Invariant[]
   corpora: CorpusRow[]; families: FamRow[]; arms: ArmRow[]; models: ModelRow[]; format_cov: FmtRow[]
-  scatter: Pt[]; decouple: DecRow[]; checks: Check[]
+  scatter: Pt[]; decouple: DecRow[]; calib: CalRow[]; dl: DlData; checks: Check[]
   arft: { total_hits: number; pillars: Pillar[]; top: PatRow[] }
   notes: { defect_occurrences: number; nonstd: Record<string, number>; mehnet: string | null; unit_notes: { result_first: number; empty_file: number; no_calls: number } }
 }
@@ -88,6 +97,36 @@ const LATEX_DEC_ALL = [
   LATEX_PA,
   '% (6) 平滑敏感度,单位 nat;alpha=1 下 >= 0',
   LATEX_SS,
+].join('\n')
+const LATEX_EXC = 'I_{\\mathrm{excess}} = I_{\\mathrm{action}} - \\mathbb{E}_{\\mathrm{perm}}\\!\\left[\\, I(C_t;C_{t+1}) \\,\\right]'
+const LATEX_MM = '\\widehat{H}_{\\mathrm{MM}} = \\widehat{H}_{\\mathrm{MLE}} + \\frac{K_{\\mathrm{obs}}-1}{2m}'
+const LATEX_PRIOR = 'S_{\\max} = \\max_{a} \\frac{K\\alpha}{N_a + K\\alpha} = \\max_{a} \\frac{8}{N_a + 8}'
+const LATEX_DL = '\\Delta L = L_0 - L_1, \\quad L_0 = -\\frac{1}{m_{\\mathcal{T}}}\\sum_{t \\in \\mathcal{T}} \\ln p_0(c_{t+1}), \\quad L_1 = -\\frac{1}{m_{\\mathcal{T}}}\\sum_{t \\in \\mathcal{T}} \\ln \\hat{p}_1(c_{t+1} \\mid c_t)'
+const LATEX_A2 = '\\Delta A_2 = I(C_{t-1};\\, C_{t+1} \\mid C_t), \\qquad A_2 = A_1 + \\Delta A_2'
+const LATEX_B = 'B = \\frac{\\sigma_\\tau - \\mu_\\tau}{\\sigma_\\tau + \\mu_\\tau}'
+const LATEX_MEM = 'M = \\mathrm{Corr}(\\tau_i,\\, \\tau_{i+1})'
+const LATEX_JS = 'JS(P, Q) = \\tfrac{1}{2} D_{\\mathrm{KL}}(P \\| M) + \\tfrac{1}{2} D_{\\mathrm{KL}}(Q \\| M), \\qquad M = \\tfrac{1}{2}(P + Q)'
+const LATEX_CAL_ALL = [
+  '% crossfusion-2026-10-15 · 校准公式(纯 LaTeX 源)',
+  '% (7) 偏校正经验互信息,单位 nat;置换=固定 c1、洗牌 c2..cn,200 次',
+  LATEX_EXC,
+  '% (8) Miller–Madow 一阶修正,单位 nat;K_obs=c2..cn 的观测类别数,m=|c2..cn|',
+  LATEX_MM,
+  '% (9) alpha=1 先验质量占比上界(最稀疏转移行),无量纲',
+  LATEX_PRIOR,
+].join('\n')
+const LATEX_PROBE_ALL = [
+  '% crossfusion-2026-10-15 · 样本外与探针公式(纯 LaTeX 源)',
+  '% (10) 样本外对数损失改善,单位 nat/转移;p0/p1 均 Laplace alpha=1',
+  LATEX_DL,
+  '% (11) 二阶主动信息存储增量(链式 A2 = A1 + ΔA2),单位 nat',
+  LATEX_A2,
+  '% (12) 突发性,无量纲,范围 [-1,1]',
+  LATEX_B,
+  '% (13) 时间记忆(相邻间隔一阶自相关),无量纲',
+  LATEX_MEM,
+  '% (14) Jensen–Shannon 散度(半程探针),单位 nat,上界 ln2',
+  LATEX_JS,
 ].join('\n')
 
 function copyBtn(latex: string, label = '复制 LaTeX'): HTMLButtonElement {
@@ -207,6 +246,29 @@ function paScatter(): SVGElement {
       fill: ours ? (GRP_COLOR[p.g] ?? COLOR.muted) : COLOR.muted,
       opacity: ours ? 0.92 : 0.33,
     }, s('title', {}, `${p.u}:n=${p.calls} · P_action ${f4(p.p)} · I_action ${f4(p.mi)} nat · perm p ${p.perm}${p.perm < 0.05 ? '(显著)' : ''}`)))
+  }
+  return g
+}
+
+function calibScatter(): SVGElement {
+  const W = 680, H = 280, M = { l: 56, r: 16, t: 14, b: 32 }
+  const g = s('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, class: 'chart', role: 'img',
+    'aria-label': '校准:置换零均值 × 观察互信息(虚线 y=x)' })
+  const vmax = Math.max(0.05, ...D.calib.map(p => Math.max(p.mi, p.pm))) * 1.08
+  const xs = linear([0, vmax], [M.l, W - M.r])
+  const ys = linear([0, vmax], [H - M.b, M.t])
+  g.appendChild(axisLeft(ys, M.l, v => f2(v, 1)))
+  g.appendChild(axisBottom(xs, H - M.b, v => f2(v, 1)))
+  g.appendChild(s('line', { x1: xs(0), y1: ys(0), x2: xs(vmax), y2: ys(vmax),
+    stroke: COLOR.bad, 'stroke-width': 1.4, 'stroke-dasharray': '5 4' }))
+  g.appendChild(text(xs(vmax) - 4, ys(vmax) + 12, 'y = x(零线)', { 'text-anchor': 'end', class: 'lbl sm', fill: COLOR.bad }))
+  for (const p of D.calib) {
+    const ours = p.s === 'ours'
+    g.appendChild(s('circle', {
+      cx: xs(p.pm), cy: ys(p.mi), r: ours ? 4 : 2.4,
+      fill: ours ? (GRP_COLOR[p.g] ?? COLOR.muted) : COLOR.muted,
+      opacity: ours ? 0.92 : 0.33,
+    }, s('title', {}, `${p.u}:I_obs ${f4(p.mi)} · E[零] ${f4(p.pm)} · I_excess ${f4(p.ex)} nat · MM ${f4(p.mm)} nat · 先验占比 ${f4(p.pri)}${p.b != null ? ` · B ${f4(p.b)} · M ${f4(p.mg)} · JS ${f4(p.js)}` : ''}`)))
   }
   return g
 }
@@ -347,6 +409,99 @@ export function render(host: HTMLElement): void {
       '对照项:纯单类别底噪 2.0432→0.0550(m=1→999)与实现逐位一致;独立联合 MI 对拍见上表)。'),
     h('p', { class: 'latexsrc' }, copyBtn(LATEX_DEC_ALL, '复制全部(式 (3)–(6) + 口径注释行)'),
       '—— 同上:纯 LaTeX 文本,可直接编译/引用。')))
+
+  host.appendChild(panel('校准 · 观察互信息 vs 置换零分布(I_excess)',
+    calibScatter(),
+    legend(),
+    note('横轴 = 同频重排(固定 c₁、洗牌 c₂..cₙ,200 次)的平均互信息;纵轴 = 观察值;红色虚线 y = x(零线)。',
+      '点在上方 = I_excess > 0(观察高于偶然);下方 ', h('b', {}, String(D.calib.filter(p => p.ex < 0).length)),
+      ' 个 = 低于偶然(合法取值,不做截断);',
+      'I_excess 中位 ', h('b', {}, f4(D.totals.ex_med)), ' nat(置换零均值中位 ', f4(D.totals.pm_med), ' nat);',
+      '置换显著 ', h('b', {}, `${D.totals.n_p05}/${D.calib.length}`), ',BH-FDR q=0.05 后 ', h('b', {}, `${D.totals.bh}/${D.calib.length}`), '。',
+      'MM 修正中位 ', h('b', {}, f4(D.totals.mm_med)), ' nat;先验占比上界中位 ', f4(D.totals.pri_med), '(最稀疏转移行里 α=1 先验占的混合质量)。')))
+
+  host.appendChild(panel('校准公式(论文级口径)· 式环境 + 符号 + 数据来源 + 意义',
+    note('本卡承接式 (1)–(6),把「读数的可信度」写成可复算的三件:偏校正 I_excess、熵的有限样本修正 MM、平滑先验占比上界。',
+      '数值同管线现算,check.py 以 854/854/854 覆盖钉数 + 逐字节复现。'),
+    h('p', { class: 'note strong' }, '式 (7) 偏校正经验互信息 · mi_excess(nat)'),
+    eqRow('7', LATEX_EXC),
+    h('p', { class: 'note strong' }, '式 (8) Miller–Madow 一阶修正 · mm_delta_nat(nat)'),
+    eqRow('8', LATEX_MM),
+    h('p', { class: 'note strong' }, '式 (9) 平滑先验占比上界 · prior_share_max(无量纲)'),
+    eqRow('9', LATEX_PRIOR),
+    h('div', { class: 'scroll' }, table(
+      ['符号', '含义', '取值与口径', '数据来源'],
+      [
+        [tex('I_{\\mathrm{excess}}'), '偏校正互信息', '= I_obs − E_perm[I];可为负 = 观察低于偶然;置换 = 固定 c₁、洗牌 c₂..cₙ(200 次,crc32 定种)', 'mi_excess 字段;中位 0.1475 nat'],
+        [tex('K_{\\mathrm{obs}}'), '(8) 观测类别数', 'c₂..cₙ 中出现的 distinct 类数(≤ 8)', 'ring_core() 现算'],
+        [tex('m'), '(8) 样本量', '= |c₂..cₙ| = 调用数 − 1', 'calls_total − 1'],
+        [tex('S_{\\max}'), '最稀疏转移行的 α=1 先验质量占比', '= max_a 8/(N_a+8);→1 意味着该行读数几乎全由先验驱动', 'prior_share_max 字段;中位 0.727'],
+      ])),
+    latexSrc(LATEX_EXC), latexSrc(LATEX_MM), latexSrc(LATEX_PRIOR),
+    note('意义:报告路径依赖用 I_excess(扣掉有限样本偶然),不用原值;',
+      'MM 修正把类别熵的向下偏差补齐(本管线自己的校准列,与论文表格口径无关);',
+      '先验占比直接量化「平滑依赖」——它与 S_smooth 一内(逐行)一外(全局)互相印证。'),
+    h('p', { class: 'latexsrc' }, copyBtn(LATEX_CAL_ALL, '复制全部(式 (7)–(9) + 口径注释行)'),
+      '—— 纯 LaTeX 文本,可直接编译/引用。')))
+
+  host.appendChild(panel('样本外与探针 · ΔL / ΔA₂ / B / M / JS',
+    h('p', { class: 'note strong' }, '样本外对数损失改善(Laplace α=1;nat/转移,>0 = 历史模型省编码):'),
+    h('div', { class: 'scroll' }, table(
+      ['语料', 'ΔL_a n', 'ΔL_a 中位', '>0', 'ΔL_b n', 'ΔL_b 中位', '>0'],
+      [
+        ['全部', String(D.dl.summary.n_a), f4(D.dl.summary.med_a), String(D.dl.summary.pos_a),
+          String(D.dl.summary.n_b), f4(D.dl.summary.med_b), String(D.dl.summary.pos_b)],
+        ...Object.entries(D.dl.summary.by_corpus).map(([k, r]) =>
+          [k, String(r.n_a), f4(r.med_a), String(r.pos_a), String(r.n_b), f4(r.med_b), String(r.pos_b)]),
+      ])),
+    note('ΔL_a = 单元自身前半(train)→后半(test);ΔL_b = 只用【其他任务】的池化拟合(防同题泄漏),在本单元全部转移上测试。',
+      '读法:ΔL_b 中位 ', h('b', {}, f4(D.dl.summary.med_b)), ' nat 且 ', h('b', {}, `${D.dl.summary.pos_b}/${D.dl.summary.n_b}`),
+      ' >0——一阶历史在跨任务留出下普遍可迁移;ΔL_a 中位仅 ', f4(D.dl.summary.med_a), ' nat(', `${D.dl.summary.pos_a}/${D.dl.summary.n_a}`,
+      ' >0)——单元内前段不足以预测后段(轨迹非平稳),两者之差本身就是「同题统计比跨题统计更乐观」的量化。'),
+    h('p', { class: 'note strong' }, '池化主动信息存储(AIS;全 862 单元,Laplace α=1):'),
+    h('div', { class: 'stats' },
+      stat(f4(D.dl.pooled.a1), 'A₁ = I(C_t;C_{t+1})(nat)', COLOR.frame),
+      stat(f4(D.dl.pooled.a2), 'A₂ = I(C_{t−1},C_t;C_{t+1})(nat)', COLOR.frame),
+      stat(`+${f4(D.dl.pooled.delta_a2)}`, `ΔA₂ = A₂−A₁(保频置换 p=${D.dl.pooled.perm_p})`, COLOR.good),
+      stat(`+${f2(100 * D.dl.pooled.delta_a2 / D.dl.pooled.a1)}%`, '二阶历史相对一阶的额外信息占比', COLOR.impl)),
+    h('p', { class: 'note strong' }, '时间与阶段探针(含排队/采样混杂,仅口径可得者):'),
+    h('div', { class: 'scroll' }, table(
+      ['探针', 'n', '中位', '口径'],
+      [
+        ['B 突发性', String(D.calib.filter(p => p.b != null).length), f4(D.totals.b_med), '(σ−μ)/(σ+μ);≥4 个时间戳间隔;−1 = 完全规则'],
+        ['M 时间记忆', String(D.calib.filter(p => p.mg != null).length), f4(D.totals.mg_med), '相邻间隔一阶自相关;>0 = 长后仍长'],
+        ['JS 半程探针', String(D.calib.filter(p => p.js != null).length), f4(D.totals.js_med), '前缀半 vs 后置半类别分布差异(上界 ln2)'],
+      ])),
+    note('读数按「含基础设施混杂」引用(B/M 里同时有工具排队与采样间隔);JS 上界 ln2 ≈ 0.693——阶段间分布确实在变,但探针不区分「科研阶段」与「机械前后缀」。')))
+
+  host.appendChild(panel('样本外与探针公式(论文级口径)· 式环境 + 符号 + 数据来源 + 意义',
+    note('本卡定义样本外判据与三个探针;实现见 ', h('code', {}, 'dl_test.py'), ' 与 ', h('code', {}, 'ring_core()'), '。'),
+    h('p', { class: 'note strong' }, '式 (10) 样本外对数损失改善 · ΔL(nat/转移)'),
+    eqRow('10', LATEX_DL),
+    h('p', { class: 'note strong' }, '式 (11) 二阶主动信息存储增量 · ΔA₂(nat)'),
+    eqRow('11', LATEX_A2),
+    h('p', { class: 'note strong' }, '式 (12) 突发性 · burstiness_b'),
+    eqRow('12', LATEX_B),
+    h('p', { class: 'note strong' }, '式 (13) 时间记忆 · gap_memory_m'),
+    eqRow('13', LATEX_MEM),
+    h('p', { class: 'note strong' }, '式 (14) 阶段探针 · js_half(nat)'),
+    eqRow('14', LATEX_JS),
+    h('div', { class: 'scroll' }, table(
+      ['符号', '含义', '取值与口径', '数据来源'],
+      [
+        [tex('L_0,\\, L_1'), '(10) 两模型测试损失', 'p₀ = 训练目标边际;p̂₁ = 训练逐源行条件分布(均 α=1);𝒯 = 测试转移集', 'dl_test.py;钉数 ΔL_a n=765 / ΔL_b n=833'],
+        [tex('A_1,\\, A_2'), '(11) AIS 一阶/二阶', 'A₁ = I(C_t;C_{t+1});A₂ = I(C_{t−1},C_t;C_{t+1});链式 A₂ = A₁ + ΔA₂;全单元池化,α=1', 'dl_test.py::pooled;置换 p = 0.004975'],
+        [tex('\\Delta A_2'), '(11) 二阶增量', '= I(C_{t−1};C_{t+1} | C_t);>0 = 两步前行动仍含独立预测信息', '同上;+0.0529 nat'],
+        [tex('\\mu_\\tau,\\, \\sigma_\\tau'), '(12/13) 间隔统计', '相邻调用时间戳间隔的均值/样本标准差(≥4 间隔才报)', 'ring_core();n = 687'],
+        [tex('P,\\, Q,\\, M'), '(14) 两半类别分布', 'P/Q = 前半/后半类别频率;M = 均值分布;上界 ln2', 'ring_core();n = 839'],
+      ])),
+    latexSrc(LATEX_DL), latexSrc(LATEX_A2), latexSrc(LATEX_B), latexSrc(LATEX_MEM), latexSrc(LATEX_JS),
+    note('意义:ΔL 回答「历史结构能否泛化到未来」——训练集版的恒等式 L₀−L₁ = Î 已在自检里钉住(差 0),所以价值全在样本外;',
+      'ΔA₂ 把一阶记忆扩到二步上下文,A₂ 只在池化层面可估(单元内 8³ 上下文过稀);B/M 是时间维、JS 是阶段维的机械化探针。'),
+    note('文献锚点:Gneiting & Raftery (2007, JASA)· Lizier (2014, Frontiers)· Goh & Barabási (2008, EPL)· Lin (1991, IEEE-IT);',
+      '数值均已在本管线复算/核对(见 README「校准与探针」节);正式引用前按 check_citations 钉版。'),
+    h('p', { class: 'latexsrc' }, copyBtn(LATEX_PROBE_ALL, '复制全部(式 (10)–(14) + 口径注释行)'),
+      '—— 纯 LaTeX 文本,可直接编译/引用。')))
 
   const models = [...D.models].sort((a, b) => b.calls_ep - a.calls_ep)
   const vmaxA = models.length ? models[0].calls_ep : 1
