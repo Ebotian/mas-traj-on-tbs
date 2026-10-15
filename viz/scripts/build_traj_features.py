@@ -44,7 +44,8 @@ def main() -> int:
     fam: dict = {}
     for s in sides:
         f = fam.setdefault(s["family"], {"name": s["family"], "sides": 0, "calls": 0, "masked": 0,
-                                         "kinds": {k: 0 for k in KINDS}, "cache": [], "span": []})
+                                         "kinds": {k: 0 for k in KINDS}, "cache": [], "span": [],
+                                         "kind_ent": [], "trans_ent": []})
         f["sides"] += 1
         f["calls"] += s.get("calls_total") or 0
         f["masked"] += s.get("masked") or 0
@@ -55,6 +56,10 @@ def main() -> int:
             f["cache"].append(s["cache_ratio"])
         if s.get("span_s") is not None:
             f["span"].append(s["span_s"])
+        if s.get("kind_entropy") is not None:
+            f["kind_ent"].append(s["kind_entropy"])
+        if s.get("transition_entropy") is not None:
+            f["trans_ent"].append(s["transition_entropy"])
     runs_by_fam: dict = {}
     for r in runs:
         runs_by_fam[r["family"]] = runs_by_fam.get(r["family"], 0) + 1
@@ -63,13 +68,15 @@ def main() -> int:
         f = fam[name]
         families.append({"name": name, "runs": runs_by_fam.get(name, 0), "sides": f["sides"],
                          "calls": f["calls"], "masked": f["masked"], "kinds": f["kinds"],
-                         "cache_med": med(f["cache"]), "span_med": med(f["span"])})
+                         "cache_med": med(f["cache"]), "span_med": med(f["span"]),
+                         "kind_ent_med": med(f["kind_ent"]), "trans_ent_med": med(f["trans_ent"])})
 
     side_rows = [{"job": s["job"], "family": s["family"], "side": s["side"],
                   "calls": s.get("calls_total"), "masked": s.get("masked"),
                   "masked_rate": s.get("masked_rate"), "cache_ratio": s.get("cache_ratio"),
                   "span_s": s.get("span_s"), "gap_med_s": s.get("gaps_median_s"),
                   "cv": s.get("gaps_cv_robust"), "p600": s.get("gaps_p600_frac"),
+                  "kind_entropy": s.get("kind_entropy"), "transition_entropy": s.get("transition_entropy"),
                   "kinds": s.get("kinds")} for s in sides]
 
     run_rows = []

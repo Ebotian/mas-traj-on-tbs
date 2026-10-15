@@ -13,11 +13,14 @@ interface Invariant { name: string; value: number | string | null; want: number;
 interface FamRec {
   name: string; runs: number; sides: number; calls: number; masked: number
   kinds: Record<string, number>; cache_med: number | null; span_med: number | null
+  kind_ent_med: number | null; trans_ent_med: number | null
 }
 interface SideRow {
   job: string; family: string; side: string; calls: number | null; masked: number | null
   masked_rate: number | null; cache_ratio: number | null; span_s: number | null
-  gap_med_s: number | null; cv: number | null; p600: number | null; kinds: Record<string, number> | null
+  gap_med_s: number | null; cv: number | null; p600: number | null
+  kind_entropy: number | null; transition_entropy: number | null
+  kinds: Record<string, number> | null
 }
 interface RunRow {
   job: string; family: string; calls: number | null; masked: number | null
@@ -145,10 +148,28 @@ function legend(): HTMLElement {
   return row
 }
 
+function entropyScatter(): SVGElement {
+  const W = 680, H = 250, M = { l: 56, r: 16, t: 14, b: 32 }
+  const g = s('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, class: 'chart', role: 'img', 'aria-label': '类别熵:边际(bit) × 条件转移(nat),每侧一点' })
+  const pts = D.sides.filter(p => p.kind_entropy != null && p.transition_entropy != null)
+  if (!pts.length) return g
+  const xs = linear([0, 3], [M.l, W - M.r])            // 8 类的理论上界:log2 8 = 3 bit
+  const ys = linear([0, Math.log(8)], [H - M.b, M.t])  // ln 8 ≈ 2.079 nat
+  g.appendChild(axisLeft(ys, M.l, v => f2(v, 1)))
+  g.appendChild(axisBottom(xs, H - M.b, v => f2(v, 1)))
+  for (const p of pts) {
+    g.appendChild(s('circle', {
+      cx: xs(p.kind_entropy as number), cy: ys(p.transition_entropy as number), r: 3.8,
+      fill: FAM_COLOR[p.family] ?? COLOR.muted, opacity: 0.82,
+    }, s('title', {}, `${p.job} · ${p.side}:kind ${f4(p.kind_entropy)} bit · cond ${f4(p.transition_entropy)} nat · 调用 ${p.calls ?? '—'}`)))
+  }
+  return g
+}
+
 export function render(host: HTMLElement): void {
   host.appendChild(h('p', { class: 'lede' },
     '2026-10-14 夜班', h('b', {}, '「轨迹特征数值实验」'), '的只读投影——对全族双 agent 跑次与单 agent 臂的',
-    h('b', {}, '机械特征'), ':调用强度、掩蔽错误(exit=0 且含 Traceback)、工具类别构成、节律与缓存;另含 microarch-5 的',
+    h('b', {}, '机械特征'), ':调用强度、掩蔽错误(exit=0 且含 Traceback)、工具类别构成、类别熵(边际/条件)、节律与缓存;另含 microarch-5 的',
     h('b', {}, '选择面审计'), '(v2)。一切数字是所收集工件的纯函数、', h('b', {}, '零模型调用'), ',由 ',
     h('code', {}, 'scripts/build_traj_features.py'), ' 投影;实验本体在 ',
     cite('harness/refs/traj-features-2026-10-14/'), '(check.py 全 PASS)。'))
@@ -202,6 +223,17 @@ export function render(host: HTMLElement): void {
     legend(),
     note('CV_robust = 1.4826·MAD/中位间隔(稳健变异系数);P600 = 相邻调用间隔 >600s 的占比(等对侧/长停摆的尺度)。',
       '走查族的高 P600 点 = wait_peer 等待;真实任务族更密的交互落在左下方。')))
+
+  host.appendChild(panel('类别熵 · 边际 kind_entropy × 条件转移 transition_entropy(文档 §4.2)',
+    entropyScatter(),
+    legend(),
+    h('div', { class: 'scroll' }, table(
+      ['家族', '侧', 'kind_entropy 中位 (bit)', 'transition_entropy 中位 (nat)'],
+      D.families.map(f => [FAM_CN[f.name] ?? f.name, String(f.sides),
+        f4(f.kind_ent_med), f4(f.trans_ent_med)]))),
+    note('kind_entropy = 类别边际熵——非首调用(c₂..cₙ)的类别分布香农熵(−Σp·log₂p;原实现名 transition_entropy,2026-10-15 按数学实际更名);',
+      'transition_entropy = 条件转移熵(文档 §4.2)——N_ab 计数 + Dirichlet α=1 平滑,−Σ_a π̂_a Σ_b P̂_ab·ln P̂_ab;π̂=转移位点经验边际。',
+      '两轴固定为 8 类的理论上界(log₂8=3 bit / ln8≈2.079 nat);两量同源同序列,条件版多编码「上一类→下一类」结构。')))
 
   const S = D.selection
   host.appendChild(panel(`microarch-5 选择面审计(v2 · 探索性 ${S.run})`,
