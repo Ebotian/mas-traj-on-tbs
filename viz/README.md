@@ -1,7 +1,7 @@
 # viz/ · 构想结构可视化
 
 对 `related_files/` 语料 + `a0/` 测量链 + 一条 ChatGPT 对话 + **一个账户侧文件库** + **双 agent 走查轨迹**的
-系统化可视化。十六个视图,TypeScript + Vite;**`#/replay`/`#/handoff`/`#/tumor`/`#/microarch`/`#/tess` 是 React 19 + d3-scale 的组件化单页,
+系统化可视化。十七个视图,TypeScript + Vite;**`#/replay`/`#/handoff`/`#/tumor`/`#/microarch`/`#/tess` 是 React 19 + d3-scale 的组件化单页,
 其余视图零框架、图表是手写的 SVG(不是图表库)**;数学公式经 **KaTeX** 渲染(`src/lib/tex.ts` 的 `tex()`,2026-10-15 引入,构建内自带字体)。
 
 ```
@@ -12,7 +12,7 @@ pnpm preview    # http://localhost:4178  (服务 dist/)
 pnpm derive     # 重新派生 src/data/experiments.json
 ```
 
-## 十六个视图
+## 十七个视图
 
 | 路由 | 内容 |
 |---|---|
@@ -32,6 +32,7 @@ pnpm derive     # 重新派生 src/data/experiments.json
 | `#/tess` | **TESS 凌星筛选(tess-transit-vetting 第三任务族)轨迹**(React;同组件,tess1 一 bundle):tess-1(NORMAL;判分 reward 0:7 包选中 4(hidden a/c/e 错选)、disposition F1 0.6349<0.95),离线采集包原文;**首行主指标条** = tbs 原题名(`tess-transit-vetting`)+ 总墙钟 + 成本 + 完成效果 |
 | `#/process` | **过程观测 · 全族 27 跑前缀级只读审计**(零框架手绘 SVG;数据由 `scripts/build_process.py` 现算入 `src/data/process.json`):截尾账本(「完美停」上限)· 上下文增长 · 停/收口信号 × 判决 · 门决策账本(gate.log 全量)· 逐跑探索(每跑双侧逐步 cache/间隔序列);exp 名与轨迹页同源对齐 |
 | `#/features` | **轨迹特征(2026-10-14 夜班数值实验)**(零框架手绘 SVG;数据由 `scripts/build_traj_features.py` 从 `harness/refs/traj-features-2026-10-14/` 投影):28 跑/54 侧/8 臂的机械特征——掩蔽错误(exit=0 ∧ Traceback;arms 不变式 728/26)· 工具 8 类构成 · 类别熵(边际 kind_entropy bit × 条件 transition_entropy nat;2026-10-15 落盘)· 节律散点(中位间隔 × CV_robust;◉=含 >600s 间隔)· microarch-5 选择面审计(7 面/143 候选;τ 差 0.277174);只读、零模型调用 |
+| `#/crossfusion` | **交叉融合(数据并集 × 方法并集)**(零框架手绘 SVG;数据由 `scripts/build_crossfusion.py` 从 `harness/refs/crossfusion-2026-10-15/` 投影):外部 AutoResearchEval(PrentisAI,HF,CC-BY-4.0,钉版 `412fb490…`;数据本体不入仓)800 条 + 我方 54 侧/8 臂 = **862 单元 / 83,032 调用**,7 种日志格式过同一套机械统计(8 类 · 熵 · 节律 · 掩蔽 · 缓存;不可得=null 不插补);同页机械复算论文 arXiv 2608.14905v3 可机核数字(**PASS 30**,4 条数据卡偏差登记:「559→560」「31 tasks/247/195→30/240/188」,「52 non-success」相符)+ 45 模式 × 四支柱参照表(12,712 hits;R1–R4 份额复算一致);只读、零模型调用 |
 
 ## 数据从哪来(以及哪些是我的推断)
 
@@ -121,6 +122,7 @@ pnpm derive     # 重新派生 src/data/experiments.json
   主指标条与统计卡均以 **¥** 为主(明注「1 USD = 7 CNY」折算规则;原币种保留于括注供追溯)。
 - 2026-10-12(**过程观测 #/process**):吸收 EarlyEval 观测设计(前缀化视图 / 决策-记账分离,只观测不截断)——`scripts/build_process.py`(只读、零依赖)对 jobs/agent 全族 20 跑做前缀级审计入 `src/data/process.json`(截尾账本/上下文增长/停·收口信号/gate 决策账本/逐步序列);新页 `#/process`;w7/w8 补入轨迹族(refresh 列表 + `#/handoff` include,**22 bundle**;交接页选择器 w7/w8 在列)。验证:`npm run build`(tsc+vite)、探针 8/8、check:views 22/22;无头铬截图**逐张回读**(页顶 + 滚至逐跑探索区;DOM 抽验 4,035 步 / 71/71 / 20 跑 / 38.3% 全在场,`/tmp/viz-process2.png`、`/tmp/viz-process-bottom.png`)。实现期由 tsc 与回读各捕获一处(括号、note 合并),修正后复跑全绿。
 - 2026-10-15(夜):`#/features` 建成(2026-10-14 夜班数值实验入站)——数据管线 `python3 scripts/build_traj_features.py`;同日**类别熵落盘并增补类别熵卡**(kind_entropy 更名:类别边际熵,bit;transition_entropy=文档 §4.2 条件转移熵,α=1,nat);复验 `tsc --noEmit` + `vite build`、`npm run probe` **8/8**、`npm run check:views` **29/29**、无头铬截图 + DOM 回读(顶/底两屏;概览/掩蔽/逐跑表/图例/类别熵/散点/选择审计七卡全在场;截图 `/tmp/viz-features-top.png`、`/tmp/viz-features-bottom.png`)。同日再修**节律卡**(用户:「纵轴方向没有区分度」):纵轴由 P600 占比(42/54 为 0、非零最大 1.8%,零膨胀)改为**中位间隔(秒)**,>600s 停摆改 **◉ 描边标记**;注记纠正原族属解读;截图回读 `/tmp/viz-rhythm.png`。同日引入 **KaTeX 数学渲染**(`src/lib/tex.ts`;依赖 `katex@0.19.0`,npmmirror 安装;#/features 的熵/CV/理论界公式改为真排版,截图同源回读)。
+- 2026-10-15(夜,其二):`#/crossfusion` 建成(外部 AutoResearchEval 并集入站;数据本体不入仓)——数据管线 `python3 scripts/build_crossfusion.py`;验收本体=`harness/refs/crossfusion-2026-10-15/check.py`(四层:逐字节复现 / 不变式 / 与夜班 lab 对读 / 论文复算 **PASS 30** + 4 条数据卡偏差登记);复验 `npm run build`(tsc+vite)、`npm run probe` **8/8**、`npm run check:views` **29/29**、无头铬截图 + DOM 回读(独立端口:chromedriver 9516 + 静态服务 4188,不触碰 10-12 遗留的 9515/4178)。DOM 断言全绿:散点圆 **854**、panel 7、table 4、行 59、badge **PASS 30 / MISMATCH 4 / RECORD 3**、关键串 862 / 83,032 / 92.3025 / 12,712 全在场;截图四张逐张回读(`/tmp/viz-crossfusion-{top,scatter,bottom,cardrows}.png`)。首轮回读抓到 note 里 `**` 字面残留 → 改真 `<b>` 节点后重建重拍复核。
 - 取回件里的 5 个 `.typ` 由语料自己的 `make all` 编译,**0 error / 0 warning**;
   B 线 v(6) 与磁盘那份**归一化后逐字节相同**(唯一差异是一个尾部空行),这是整条抽取管线的校准点。
 - 调色板经 dataviz 校验器:6 色方案在色盲模拟下多组可混,故降为 3 彩色 + 1 中性;

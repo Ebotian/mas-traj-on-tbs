@@ -46,6 +46,15 @@
 投影为站点数据(确定性、只读、零模型调用),`#/features` 视图消费;与 refresh_replays 相互独立
 (refs 实验室刷新后,重跑本脚本即可更新;不变式随数据现算,不手抄)。
 
+## 交叉融合数据(src/data/crossfusion.json)
+
+`python3 scripts/build_crossfusion.py` —— 从已提交的并集实验产物
+`harness/refs/crossfusion-2026-10-15/`(features_union.jsonl + audit.json + paper_checks.json + arft.json)
+投影为站点数据(确定性、只读、零模型调用),`#/crossfusion` 视图消费;不变式
+(862 单元 / 83,032 调用 / are 92.3025 每跑 / lab 对读 54-0 / 臂 728-26 / 论文 HIT 12,712 / 复算 PASS 30)
+随数据现算,不手抄。实验室验收 = 其目录内 `python3 check.py`(四层:逐字节复现 · 不变式 · 与夜班 lab
+对读 · 论文复算;4 条数据卡偏差为登记发现,不判失败)。
+
 ## 新增一个实验(可复用流程)
 
 1. 从 job 目录或轨迹文件目录收集源;容器内(如 A2A)的 chats 先 `docker cp` 到宿主机固定目录;

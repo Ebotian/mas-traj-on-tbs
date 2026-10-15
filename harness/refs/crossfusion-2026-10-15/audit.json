@@ -1,0 +1,39 @@
+{
+ "unmapped": {},
+ "formats": {
+  "claude_stream": 600,
+  "gemini_text": 69,
+  "unknown": 1,
+  "codex_text": 70,
+  "codex_items": 30,
+  "gemini_ndjson": 30
+ },
+ "notes": {
+  "are_mismatch_n": 1
+ },
+ "ours_compare": {
+  "checked": 54,
+  "mismatch": []
+ },
+ "are_compare": {
+  "gemini_stats_checked": 27,
+  "mismatch": [
+   {
+    "unit": "are/optimization/gemini-3.5-flash/mehnet_ccsdt_energy",
+    "stats_tool_calls": 122,
+    "ours": 86
+   }
+  ]
+ },
+ "ours_side_nonstandard": {
+  "bash": 1,
+  "edit_file": 3,
+  "edit_file_path": 1,
+  "shell_command": 1,
+  "tool_call": 3
+ },
+ "defect_occurrences": [
+  "/home/ebt/harbor-runs/data/autoresearch-eval/open-ended/trajectories/qwen3.7-max/W4396723768.jsonl:?",
+  "/home/ebt/harbor-runs/data/autoresearch-eval/open-ended/trajectories/qwen3.7-max/W7128691155.jsonl:nvidia-smi 2"
+ ]
+}

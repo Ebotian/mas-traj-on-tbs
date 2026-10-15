@@ -1,0 +1,1001 @@
+{
+ "arxiv": "2608.14905v3",
+ "paper_tables_sha256": "952c193fd6f788acd0c5915b02a9199f8c2446c6d73447eae1564e64ded6dd86",
+ "source": "Table 3(支柱↔模式)/Table 6(阶段×根因)/Table 11(缩写)/Table 12(HIT)/Table 13(×模型),自 paper.html 提取",
+ "models": {
+  "son": "claude-sonnet-5",
+  "opu": "opus-4.8",
+  "dsk": "deepseek-v4-pro",
+  "glm": "glm-5.2",
+  "mmx": "minimax-m3",
+  "qwn": "qwen3.7-max",
+  "gpt": "gpt-5-mini",
+  "gem": "gemini-3.5-flash"
+ },
+ "total_hits": 12712,
+ "pillars": [
+  {
+   "id": "R1",
+   "name": "Grounding & Faithfulness",
+   "n_patterns": 12,
+   "hit_sum": 3944,
+   "share_pct": 31.0,
+   "patterns": [
+    "A.6",
+    "B.1",
+    "B.2",
+    "B.5",
+    "C.3",
+    "D.1",
+    "D.4",
+    "D.6",
+    "E.1",
+    "E.4",
+    "F.6",
+    "X.6"
+   ]
+  },
+  {
+   "id": "R2",
+   "name": "Cognitive Depth & Adaptability",
+   "n_patterns": 13,
+   "hit_sum": 3510,
+   "share_pct": 27.6,
+   "patterns": [
+    "A.1",
+    "A.3",
+    "B.4",
+    "B.6",
+    "C.6",
+    "C.7",
+    "D.5",
+    "F.1",
+    "F.2",
+    "F.3",
+    "F.4",
+    "X.3",
+    "X.7"
+   ]
+  },
+  {
+   "id": "R3",
+   "name": "Integrity & Alignment",
+   "n_patterns": 13,
+   "hit_sum": 4256,
+   "share_pct": 33.5,
+   "patterns": [
+    "A.2",
+    "A.5",
+    "C.1",
+    "C.2",
+    "D.2",
+    "D.3",
+    "D.7",
+    "E.2",
+    "E.3",
+    "F.5",
+    "X.2",
+    "X.4",
+    "X.5"
+   ]
+  },
+  {
+   "id": "R4",
+   "name": "Engineering Robustness",
+   "n_patterns": 7,
+   "hit_sum": 1002,
+   "share_pct": 7.9,
+   "patterns": [
+    "A.4",
+    "B.3",
+    "C.4",
+    "C.5",
+    "C.8",
+    "X.1",
+    "X.8"
+   ]
+  }
+ ],
+ "patterns": [
+  {
+   "id": "F.4",
+   "name": "Uncorrected-SelfAware",
+   "name_long": "Uncorrected Awareness",
+   "stage": "F",
+   "pillar": "R2",
+   "hit": 660,
+   "partial": 31,
+   "hit_pct": 82.5,
+   "by_model": {
+    "son": 82,
+    "opu": 84,
+    "dsk": 87,
+    "glm": 84,
+    "mmx": 84,
+    "qwn": 92,
+    "gpt": 87,
+    "gem": 60
+   }
+  },
+  {
+   "id": "E.2",
+   "name": "Overclaim",
+   "name_long": "Overclaiming",
+   "stage": "E",
+   "pillar": "R3",
+   "hit": 625,
+   "partial": 67,
+   "hit_pct": 78.1,
+   "by_model": {
+    "son": 77,
+    "opu": 86,
+    "dsk": 72,
+    "glm": 72,
+    "mmx": 81,
+    "qwn": 80,
+    "gpt": 69,
+    "gem": 88
+   }
+  },
+  {
+   "id": "D.4",
+   "name": "Method-Concl-Disc",
+   "name_long": "Method-Concl Gap",
+   "stage": "D",
+   "pillar": "R1",
+   "hit": 620,
+   "partial": 50,
+   "hit_pct": 77.5,
+   "by_model": {
+    "son": 75,
+    "opu": 80,
+    "dsk": 81,
+    "glm": 72,
+    "mmx": 81,
+    "qwn": 77,
+    "gpt": 73,
+    "gem": 81
+   }
+  },
+  {
+   "id": "C.3",
+   "name": "Impl-Discrep",
+   "name_long": "Impl. Discrepancy",
+   "stage": "C",
+   "pillar": "R1",
+   "hit": 577,
+   "partial": 66,
+   "hit_pct": 72.1,
+   "by_model": {
+    "son": 74,
+    "opu": 63,
+    "dsk": 82,
+    "glm": 70,
+    "mmx": 75,
+    "qwn": 87,
+    "gpt": 54,
+    "gem": 72
+   }
+  },
+  {
+   "id": "C.1",
+   "name": "Circular-Valid",
+   "name_long": "Circular Validation",
+   "stage": "C",
+   "pillar": "R3",
+   "hit": 552,
+   "partial": 16,
+   "hit_pct": 69.0,
+   "by_model": {
+    "son": 68,
+    "opu": 65,
+    "dsk": 72,
+    "glm": 64,
+    "mmx": 74,
+    "qwn": 69,
+    "gpt": 66,
+    "gem": 74
+   }
+  },
+  {
+   "id": "A.5",
+   "name": "Metric-Misalign",
+   "name_long": "Metric Misalign",
+   "stage": "A",
+   "pillar": "R3",
+   "hit": 545,
+   "partial": 35,
+   "hit_pct": 68.1,
+   "by_model": {
+    "son": 69,
+    "opu": 64,
+    "dsk": 67,
+    "glm": 69,
+    "mmx": 67,
+    "qwn": 74,
+    "gpt": 71,
+    "gem": 64
+   }
+  },
+  {
+   "id": "F.2",
+   "name": "Fail-Gate",
+   "name_long": "Unchecked Flaws",
+   "stage": "F",
+   "pillar": "R2",
+   "hit": 502,
+   "partial": 128,
+   "hit_pct": 62.8,
+   "by_model": {
+    "son": 60,
+    "opu": 49,
+    "dsk": 73,
+    "glm": 50,
+    "mmx": 61,
+    "qwn": 77,
+    "gpt": 65,
+    "gem": 67
+   }
+  },
+  {
+   "id": "E.3",
+   "name": "Omit-Limits",
+   "name_long": "Omission of Limits",
+   "stage": "E",
+   "pillar": "R3",
+   "hit": 498,
+   "partial": 143,
+   "hit_pct": 62.2,
+   "by_model": {
+    "son": 70,
+    "opu": 60,
+    "dsk": 52,
+    "glm": 55,
+    "mmx": 63,
+    "qwn": 62,
+    "gpt": 57,
+    "gem": 79
+   }
+  },
+  {
+   "id": "D.7",
+   "name": "Unremediated-Adv",
+   "name_long": "Unremediated Evidence",
+   "stage": "D",
+   "pillar": "R3",
+   "hit": 486,
+   "partial": 97,
+   "hit_pct": 60.8,
+   "by_model": {
+    "son": 68,
+    "opu": 56,
+    "dsk": 66,
+    "glm": 53,
+    "mmx": 73,
+    "qwn": 62,
+    "gpt": 64,
+    "gem": 44
+   }
+  },
+  {
+   "id": "E.1",
+   "name": "Report-Trace-Gap",
+   "name_long": "Traceability Gap",
+   "stage": "E",
+   "pillar": "R1",
+   "hit": 484,
+   "partial": 102,
+   "hit_pct": 60.5,
+   "by_model": {
+    "son": 46,
+    "opu": 49,
+    "dsk": 68,
+    "glm": 51,
+    "mmx": 61,
+    "qwn": 77,
+    "gpt": 66,
+    "gem": 66
+   }
+  },
+  {
+   "id": "B.4",
+   "name": "Shallow-Search",
+   "name_long": "Shallow Search",
+   "stage": "B",
+   "pillar": "R2",
+   "hit": 439,
+   "partial": 167,
+   "hit_pct": 54.9,
+   "by_model": {
+    "son": 61,
+    "opu": 58,
+    "dsk": 49,
+    "glm": 45,
+    "mmx": 49,
+    "qwn": 57,
+    "gpt": 49,
+    "gem": 71
+   }
+  },
+  {
+   "id": "A.6",
+   "name": "Hyp-Exp-Mismatch",
+   "name_long": "Hypo-Exp Mismatch",
+   "stage": "A",
+   "pillar": "R1",
+   "hit": 420,
+   "partial": 87,
+   "hit_pct": 52.5,
+   "by_model": {
+    "son": 50,
+    "opu": 46,
+    "dsk": 50,
+    "glm": 49,
+    "mmx": 47,
+    "qwn": 59,
+    "gpt": 60,
+    "gem": 59
+   }
+  },
+  {
+   "id": "D.1",
+   "name": "Artifacts-as-Insight",
+   "name_long": "Artifacts as Insights",
+   "stage": "D",
+   "pillar": "R1",
+   "hit": 419,
+   "partial": 62,
+   "hit_pct": 52.4,
+   "by_model": {
+    "son": 50,
+    "opu": 50,
+    "dsk": 54,
+    "glm": 46,
+    "mmx": 64,
+    "qwn": 50,
+    "gpt": 45,
+    "gem": 60
+   }
+  },
+  {
+   "id": "D.3",
+   "name": "Stat-Misuse",
+   "name_long": "Statistical Misuse",
+   "stage": "D",
+   "pillar": "R3",
+   "hit": 415,
+   "partial": 176,
+   "hit_pct": 51.9,
+   "by_model": {
+    "son": 52,
+    "opu": 52,
+    "dsk": 45,
+    "glm": 44,
+    "mmx": 54,
+    "qwn": 49,
+    "gpt": 48,
+    "gem": 71
+   }
+  },
+  {
+   "id": "D.5",
+   "name": "Baseline-Deficit",
+   "name_long": "Baseline/Ablation Deficit",
+   "stage": "D",
+   "pillar": "R2",
+   "hit": 374,
+   "partial": 163,
+   "hit_pct": 46.8,
+   "by_model": {
+    "son": 46,
+    "opu": 47,
+    "dsk": 51,
+    "glm": 36,
+    "mmx": 36,
+    "qwn": 46,
+    "gpt": 48,
+    "gem": 64
+   }
+  },
+  {
+   "id": "A.2",
+   "name": "Unfalsifiable",
+   "name_long": "Unfalsifiable Hypo",
+   "stage": "A",
+   "pillar": "R3",
+   "hit": 357,
+   "partial": 69,
+   "hit_pct": 44.6,
+   "by_model": {
+    "son": 44,
+    "opu": 44,
+    "dsk": 41,
+    "glm": 43,
+    "mmx": 49,
+    "qwn": 40,
+    "gpt": 43,
+    "gem": 53
+   }
+  },
+  {
+   "id": "X.6",
+   "name": "Right-Wrong-Reason",
+   "name_long": null,
+   "stage": "X",
+   "pillar": "R1",
+   "hit": 350,
+   "partial": 71,
+   "hit_pct": 43.8,
+   "by_model": {
+    "son": 42,
+    "opu": 50,
+    "dsk": 43,
+    "glm": 39,
+    "mmx": 53,
+    "qwn": 44,
+    "gpt": 26,
+    "gem": 53
+   }
+  },
+  {
+   "id": "F.1",
+   "name": "Superficial-Review",
+   "name_long": "Superficial Review",
+   "stage": "F",
+   "pillar": "R2",
+   "hit": 319,
+   "partial": 150,
+   "hit_pct": 39.9,
+   "by_model": {
+    "son": 33,
+    "opu": 18,
+    "dsk": 37,
+    "glm": 36,
+    "mmx": 40,
+    "qwn": 41,
+    "gpt": 60,
+    "gem": 54
+   }
+  },
+  {
+   "id": "X.3",
+   "name": "Skeptic-Deficit",
+   "name_long": null,
+   "stage": "X",
+   "pillar": "R2",
+   "hit": 315,
+   "partial": 201,
+   "hit_pct": 39.4,
+   "by_model": {
+    "son": 35,
+    "opu": 31,
+    "dsk": 39,
+    "glm": 24,
+    "mmx": 47,
+    "qwn": 49,
+    "gpt": 49,
+    "gem": 41
+   }
+  },
+  {
+   "id": "X.5",
+   "name": "Teleological",
+   "name_long": null,
+   "stage": "X",
+   "pillar": "R3",
+   "hit": 314,
+   "partial": 67,
+   "hit_pct": 39.2,
+   "by_model": {
+    "son": 38,
+    "opu": 55,
+    "dsk": 29,
+    "glm": 36,
+    "mmx": 48,
+    "qwn": 48,
+    "gpt": 19,
+    "gem": 41
+   }
+  },
+  {
+   "id": "E.4",
+   "name": "Method/Cite-Fab",
+   "name_long": "Method/Citation Fab.",
+   "stage": "E",
+   "pillar": "R1",
+   "hit": 312,
+   "partial": 65,
+   "hit_pct": 39.0,
+   "by_model": {
+    "son": 27,
+    "opu": 14,
+    "dsk": 39,
+    "glm": 22,
+    "mmx": 42,
+    "qwn": 44,
+    "gpt": 66,
+    "gem": 58
+   }
+  },
+  {
+   "id": "F.3",
+   "name": "No-Adversarial",
+   "name_long": "Lack of Adversarial",
+   "stage": "F",
+   "pillar": "R2",
+   "hit": 306,
+   "partial": 274,
+   "hit_pct": 38.2,
+   "by_model": {
+    "son": 30,
+    "opu": 19,
+    "dsk": 37,
+    "glm": 35,
+    "mmx": 41,
+    "qwn": 35,
+    "gpt": 54,
+    "gem": 55
+   }
+  },
+  {
+   "id": "B.2",
+   "name": "Retrieval-Gap",
+   "name_long": "Retrieval-to-Action Gap",
+   "stage": "B",
+   "pillar": "R1",
+   "hit": 271,
+   "partial": 71,
+   "hit_pct": 33.9,
+   "by_model": {
+    "son": 42,
+    "opu": 37,
+    "dsk": 40,
+    "glm": 39,
+    "mmx": 31,
+    "qwn": 45,
+    "gpt": 25,
+    "gem": 12
+   }
+  },
+  {
+   "id": "D.2",
+   "name": "Confirmation-Bias",
+   "name_long": "Confirmation Bias",
+   "stage": "D",
+   "pillar": "R3",
+   "hit": 258,
+   "partial": 162,
+   "hit_pct": 32.2,
+   "by_model": {
+    "son": 31,
+    "opu": 37,
+    "dsk": 29,
+    "glm": 33,
+    "mmx": 29,
+    "qwn": 33,
+    "gpt": 24,
+    "gem": 42
+   }
+  },
+  {
+   "id": "B.1",
+   "name": "Hallucinated-Evid",
+   "name_long": "Hallucinated Evidence",
+   "stage": "B",
+   "pillar": "R1",
+   "hit": 211,
+   "partial": 117,
+   "hit_pct": 26.4,
+   "by_model": {
+    "son": 19,
+    "opu": 17,
+    "dsk": 16,
+    "glm": 13,
+    "mmx": 23,
+    "qwn": 25,
+    "gpt": 61,
+    "gem": 37
+   }
+  },
+  {
+   "id": "C.4",
+   "name": "Exec-Fault",
+   "name_long": "Execution Faults",
+   "stage": "C",
+   "pillar": "R4",
+   "hit": 206,
+   "partial": 202,
+   "hit_pct": 25.8,
+   "by_model": {
+    "son": 21,
+    "opu": 8,
+    "dsk": 29,
+    "glm": 28,
+    "mmx": 26,
+    "qwn": 44,
+    "gpt": 32,
+    "gem": 18
+   }
+  },
+  {
+   "id": "X.8",
+   "name": "Eng-Delivery",
+   "name_long": null,
+   "stage": "X",
+   "pillar": "R4",
+   "hit": 201,
+   "partial": 123,
+   "hit_pct": 25.1,
+   "by_model": {
+    "son": 15,
+    "opu": 8,
+    "dsk": 23,
+    "glm": 32,
+    "mmx": 13,
+    "qwn": 54,
+    "gpt": 38,
+    "gem": 18
+   }
+  },
+  {
+   "id": "X.1",
+   "name": "Cascade",
+   "name_long": null,
+   "stage": "X",
+   "pillar": "R4",
+   "hit": 190,
+   "partial": 134,
+   "hit_pct": 23.8,
+   "by_model": {
+    "son": 19,
+    "opu": 14,
+    "dsk": 36,
+    "glm": 24,
+    "mmx": 25,
+    "qwn": 28,
+    "gpt": 24,
+    "gem": 20
+   }
+  },
+  {
+   "id": "A.1",
+   "name": "Frame-Lock",
+   "name_long": "Frame-Lock",
+   "stage": "A",
+   "pillar": "R2",
+   "hit": 184,
+   "partial": 309,
+   "hit_pct": 23.0,
+   "by_model": {
+    "son": 17,
+    "opu": 25,
+    "dsk": 22,
+    "glm": 12,
+    "mmx": 23,
+    "qwn": 22,
+    "gpt": 35,
+    "gem": 28
+   }
+  },
+  {
+   "id": "B.3",
+   "name": "Unvetted-Data",
+   "name_long": "Unvetted Data",
+   "stage": "B",
+   "pillar": "R4",
+   "hit": 179,
+   "partial": 161,
+   "hit_pct": 22.4,
+   "by_model": {
+    "son": 18,
+    "opu": 26,
+    "dsk": 22,
+    "glm": 21,
+    "mmx": 29,
+    "qwn": 23,
+    "gpt": 24,
+    "gem": 16
+   }
+  },
+  {
+   "id": "X.7",
+   "name": "Anchoring",
+   "name_long": null,
+   "stage": "X",
+   "pillar": "R2",
+   "hit": 162,
+   "partial": 89,
+   "hit_pct": 20.2,
+   "by_model": {
+    "son": 21,
+    "opu": 11,
+    "dsk": 24,
+    "glm": 15,
+    "mmx": 16,
+    "qwn": 28,
+    "gpt": 27,
+    "gem": 20
+   }
+  },
+  {
+   "id": "B.5",
+   "name": "Citation-Decorr",
+   "name_long": "Citation Decorrelation",
+   "stage": "B",
+   "pillar": "R1",
+   "hit": 152,
+   "partial": 111,
+   "hit_pct": 19.0,
+   "by_model": {
+    "son": 17,
+    "opu": 26,
+    "dsk": 26,
+    "glm": 20,
+    "mmx": 23,
+    "qwn": 29,
+    "gpt": 4,
+    "gem": 7
+   }
+  },
+  {
+   "id": "C.7",
+   "name": "Premature-Term",
+   "name_long": "Premature Terminate",
+   "stage": "C",
+   "pillar": "R2",
+   "hit": 129,
+   "partial": 108,
+   "hit_pct": 16.1,
+   "by_model": {
+    "son": 6,
+    "opu": 7,
+    "dsk": 13,
+    "glm": 9,
+    "mmx": 10,
+    "qwn": 23,
+    "gpt": 44,
+    "gem": 17
+   }
+  },
+  {
+   "id": "D.6",
+   "name": "Result-Halluc",
+   "name_long": "Result Hallucination",
+   "stage": "D",
+   "pillar": "R1",
+   "hit": 125,
+   "partial": 30,
+   "hit_pct": 15.6,
+   "by_model": {
+    "son": 3,
+    "opu": 3,
+    "dsk": 29,
+    "glm": 6,
+    "mmx": 19,
+    "qwn": 36,
+    "gpt": 6,
+    "gem": 23
+   }
+  },
+  {
+   "id": "C.6",
+   "name": "Local-Opt",
+   "name_long": "Local Optimization",
+   "stage": "C",
+   "pillar": "R2",
+   "hit": 96,
+   "partial": 119,
+   "hit_pct": 12.0,
+   "by_model": {
+    "son": 12,
+    "opu": 10,
+    "dsk": 11,
+    "glm": 11,
+    "mmx": 12,
+    "qwn": 16,
+    "gpt": 5,
+    "gem": 19
+   }
+  },
+  {
+   "id": "C.8",
+   "name": "Env-Interact",
+   "name_long": "Env Interaction",
+   "stage": "C",
+   "pillar": "R4",
+   "hit": 96,
+   "partial": 124,
+   "hit_pct": 12.0,
+   "by_model": {
+    "son": 7,
+    "opu": 4,
+    "dsk": 14,
+    "glm": 6,
+    "mmx": 3,
+    "qwn": 29,
+    "gpt": 30,
+    "gem": 3
+   }
+  },
+  {
+   "id": "C.2",
+   "name": "Grader-Fit/Leak",
+   "name_long": "Grader-Fitting",
+   "stage": "C",
+   "pillar": "R3",
+   "hit": 81,
+   "partial": 48,
+   "hit_pct": 10.1,
+   "by_model": {
+    "son": 7,
+    "opu": 9,
+    "dsk": 14,
+    "glm": 14,
+    "mmx": 15,
+    "qwn": 3,
+    "gpt": 2,
+    "gem": 17
+   }
+  },
+  {
+   "id": "A.4",
+   "name": "Feasibility",
+   "name_long": "Feasibility Misjudge",
+   "stage": "A",
+   "pillar": "R4",
+   "hit": 79,
+   "partial": 92,
+   "hit_pct": 9.9,
+   "by_model": {
+    "son": 7,
+    "opu": 3,
+    "dsk": 12,
+    "glm": 9,
+    "mmx": 8,
+    "qwn": 24,
+    "gpt": 9,
+    "gem": 7
+   }
+  },
+  {
+   "id": "X.2",
+   "name": "Goal-Drift",
+   "name_long": null,
+   "stage": "X",
+   "pillar": "R3",
+   "hit": 62,
+   "partial": 57,
+   "hit_pct": 7.8,
+   "by_model": {
+    "son": 5,
+    "opu": 4,
+    "dsk": 8,
+    "glm": 7,
+    "mmx": 10,
+    "qwn": 21,
+    "gpt": 2,
+    "gem": 5
+   }
+  },
+  {
+   "id": "X.4",
+   "name": "Honest-Hollow",
+   "name_long": null,
+   "stage": "X",
+   "pillar": "R3",
+   "hit": 62,
+   "partial": 90,
+   "hit_pct": 7.8,
+   "by_model": {
+    "son": 5,
+    "opu": 2,
+    "dsk": 2,
+    "glm": 10,
+    "mmx": 4,
+    "qwn": 7,
+    "gpt": 29,
+    "gem": 3
+   }
+  },
+  {
+   "id": "C.5",
+   "name": "Infra-Misdiag",
+   "name_long": "Infra Misdiagnosis",
+   "stage": "C",
+   "pillar": "R4",
+   "hit": 51,
+   "partial": 20,
+   "hit_pct": 6.4,
+   "by_model": {
+    "son": 6,
+    "opu": 2,
+    "dsk": 9,
+    "glm": 5,
+    "mmx": 5,
+    "qwn": 8,
+    "gpt": 13,
+    "gem": 3
+   }
+  },
+  {
+   "id": "A.3",
+   "name": "Redundant",
+   "name_long": "Redundant Discovery",
+   "stage": "A",
+   "pillar": "R2",
+   "hit": 15,
+   "partial": 17,
+   "hit_pct": 1.9,
+   "by_model": {
+    "son": 3,
+    "opu": 3,
+    "dsk": 1,
+    "glm": 0,
+    "mmx": 1,
+    "qwn": 1,
+    "gpt": 5,
+    "gem": 1
+   }
+  },
+  {
+   "id": "B.6",
+   "name": "Low-SNR",
+   "name_long": "Low Signal-to-Noise",
+   "stage": "B",
+   "pillar": "R2",
+   "hit": 9,
+   "partial": 25,
+   "hit_pct": 1.1,
+   "by_model": {
+    "son": 2,
+    "opu": 0,
+    "dsk": 1,
+    "glm": 0,
+    "mmx": 2,
+    "qwn": 0,
+    "gpt": 1,
+    "gem": 3
+   }
+  },
+  {
+   "id": "F.6",
+   "name": "Halluc-Review",
+   "name_long": "Hallucinated Review",
+   "stage": "F",
+   "pillar": "R1",
+   "hit": 3,
+   "partial": 14,
+   "hit_pct": 0.4,
+   "by_model": {
+    "son": 1,
+    "opu": 0,
+    "dsk": 1,
+    "glm": 1,
+    "mmx": 0,
+    "qwn": 0,
+    "gpt": 0,
+    "gem": 0
+   }
+  },
+  {
+   "id": "F.5",
+   "name": "Review-Hack",
+   "name_long": "Review Score Hacking",
+   "stage": "F",
+   "pillar": "R3",
+   "hit": 1,
+   "partial": 2,
+   "hit_pct": 0.1,
+   "by_model": {
+    "son": 0,
+    "opu": 0,
+    "dsk": 0,
+    "glm": 0,
+    "mmx": 0,
+    "qwn": 0,
+    "gpt": 0,
+    "gem": 1
+   }
+  }
+ ]
+}

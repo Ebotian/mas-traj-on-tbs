@@ -1,0 +1,2638 @@
+{
+ "source": "/home/ebt/harbor-runs/data/papers/arxiv-2608.14905/paper.html",
+ "sha256": "952c193fd6f788acd0c5915b02a9199f8c2446c6d73447eae1564e64ded6dd86",
+ "arxiv": "2608.14905v3",
+ "n_tables": 23,
+ "tables": [
+  {
+   "idx": 0,
+   "caption": "Table 1: Harness–model combinations under evaluation.",
+   "rows": [
+    [
+     "Harness",
+     "Backbone models"
+    ],
+    [
+     "Claude Code",
+     "opus-4.8, claude-sonnet-5, qwen3.7-max,"
+    ],
+    [
+     "",
+     "glm-5.2, minimax-m3, deepseek-v4-pro"
+    ],
+    [
+     "Codex",
+     "gpt-5-mini"
+    ],
+    [
+     "Gemini CLI",
+     "gemini-3.5-flash"
+    ]
+   ]
+  },
+  {
+   "idx": 1,
+   "caption": "Table 2: Agreement with human expert annotation on the 50 validation trajectories. The LLM-as-a-Judge baseline receives only the transcript in a single call; the Agent-as-a-Judge receives the full evidence package and op",
+   "rows": [
+    [
+     "Method",
+     "Level",
+     "Accuracy",
+     "Precision",
+     "Recall",
+     "F1",
+     "Cohen’s � \\kappa"
+    ],
+    [
+     "LLM-as-a-Judge (claude-opus-5)",
+     "Pattern",
+     "84.6",
+     "70.2",
+     "63.5",
+     "66.7",
+     "0.53"
+    ],
+    [
+     "Taxonomy Categorization",
+     "89.3",
+     "78.8",
+     "72.1",
+     "75.3",
+     "0.62"
+    ],
+    [
+     "Agent-as-a-Judge",
+     "Pattern",
+     "92.1",
+     "85.4",
+     "80.7",
+     "83.0",
+     "0.75"
+    ],
+    [
+     "Taxonomy Categorization",
+     "95.3",
+     "91.0",
+     "87.2",
+     "89.1",
+     "0.83"
+    ]
+   ]
+  },
+  {
+   "idx": 2,
+   "caption": "Table 3: Systemic root-cause classification of AutoResearch failure patterns. All 45 patterns are grouped under four root-cause pillars—Grounding & Faithfulness, Cognitive Depth & Adaptability, Scientific Integrity & Ali",
+   "rows": [
+    [
+     "Root Cause Pillar",
+     "Core Failure Focus",
+     "Mapped Failure Patterns (IDs)"
+    ],
+    [
+     "R1. Grounding & Faithfulness",
+     "Disconnect between high-level claims/hypotheses and ground-truth code, data, or logs.",
+     "A.6, B.1, B.2, B.5, C.3, D.1, D.4, D.6, E.1, E.4, F.6, X.6"
+    ],
+    [
+     "R2. Cognitive Depth & Adaptability",
+     "Shallow reasoning/search, passivity in self-review, and inability to re-plan or pivot.",
+     "A.1, A.3, B.4, B.6, C.6, C.7, D.5, F.1, F.2, F.3, F.4, X.3, X.7"
+    ],
+    [
+     "R3. Integrity & Alignment",
+     "Metric hacking, shortcut reliance, confirmation bias, overclaiming, and goal drift.",
+     "A.2, A.5, C.1, C.2, D.2, D.3, D.7, E.2, E.3, F.5, X.2, X.4, X.5"
+    ],
+    [
+     "R4. Engineering Robustness",
+     "Numerical overflows, unhandled runtime errors, and broken interaction with CLI/OS.",
+     "A.4, B.3, C.4, C.5, C.8, X.1, X.8"
+    ]
+   ]
+  },
+  {
+   "idx": 3,
+   "caption": "Table 4: Per-instance improvement-over-reference logged by the agent on pdeinvbench_param_inverse ; the aggregate is the mean of the six columns. Bold marks the term the agent named as dominant ( 2ddf ) and the instance ",
+   "rows": [
+    [
+     "Att.",
+     "Aggregate",
+     "1dkdv",
+     "2dns",
+     "2dtf",
+     "2drdk",
+     "2drddu",
+     "2ddf (Darcy)"
+    ],
+    [
+     "1",
+     "− 10.04 -10.04",
+     "− 2.73 -2.73",
+     "+ 0.50 +0.50",
+     "− 2.38 -2.38",
+     "+ 0.50 +0.50",
+     "+ 0.38 +0.38",
+     "− 56.5 \\mathbf{-56.5}"
+    ],
+    [
+     "2",
+     "− 3.24 -3.24",
+     "− 2.73 -2.73",
+     "+ 0.50 +0.50",
+     "− 2.38 -2.38",
+     "+ 0.50 +0.50",
+     "+ 0.38 +0.38",
+     "− 15.7 -15.7"
+    ],
+    [
+     "3",
+     "− 2.63 -2.63",
+     "+ 0.93 +0.93",
+     "+ 0.50 +0.50",
+     "− 2.38 -2.38",
+     "+ 0.50 +0.50",
+     "+ 0.38 +0.38",
+     "− 15.7 -15.7"
+    ],
+    [
+     "4",
+     "− 2.03 -2.03",
+     "+ 0.93 +0.93",
+     "+ 0.50 +0.50",
+     "− 2.38 -2.38",
+     "+ 0.50 +0.50",
+     "+ 0.38 +0.38",
+     "− 12.1 \\mathbf{-12.1}"
+    ],
+    [
+     "5",
+     "− 1.96 -1.96",
+     "+ 0.93 +0.93",
+     "+ 0.50 +0.50",
+     "− 2.38 -2.38",
+     "+ 0.50 +0.50",
+     "+ 0.79 \\mathbf{+0.79}",
+     "− 12.1 -12.1"
+    ],
+    [
+     "6–7",
+     "− 1.96 -1.96",
+     "+ 0.93 +0.93",
+     "+ 0.50 +0.50",
+     "− 2.38 -2.38",
+     "+ 0.50 +0.50",
+     "+ 0.79 +0.79",
+     "− 12.1 -12.1"
+    ]
+   ]
+  },
+  {
+   "idx": 4,
+   "caption": "Table 5 : Comparison of research-agent evaluation designs by what each can observe. Columns: Unit scored —whether scoring is anchored at the final answer (endpoint) or reads the trajectory; Artifact-aware —whether evalua",
+   "rows": [
+    [
+     "Benchmark",
+     "Domains",
+     "Lifecycle coverage",
+     "Unit scored",
+     "Artifact- aware",
+     "No reference needed",
+     "Stage attribution",
+     "Scoring anchor"
+    ],
+    [
+     "Scientific QA & Knowledge Retrieval"
+    ],
+    [
+     "GPQA [ 32 ] / HLE [ 29 ]",
+     "Multi-Domain",
+     "–",
+     "Endpoint",
+     "× \\times",
+     "× \\times",
+     "× \\times",
+     "Exact Match / MCQ"
+    ],
+    [
+     "SciCode [ 36 ]",
+     "6 Domains",
+     "Exec.",
+     "Endpoint",
+     "△ \\triangle",
+     "× \\times",
+     "× \\times",
+     "Target Match"
+    ],
+    [
+     "Scientific Paper Reproduction"
+    ],
+    [
+     "CORE-Bench [ 33 ]",
+     "Science",
+     "Exec.",
+     "Endpoint",
+     "△ \\triangle",
+     "× \\times",
+     "× \\times",
+     "Output Match"
+    ],
+    [
+     "REPRO-Bench [ 14 ]",
+     "Social Sci.",
+     "Exec.",
+     "Endpoint",
+     "△ \\triangle",
+     "× \\times",
+     "× \\times",
+     "Expert Assert."
+    ],
+    [
+     "PaperBench [ 34 ]",
+     "1 (ML)",
+     "Exec.",
+     "△ \\triangle Rubric",
+     "",
+     "× \\times",
+     "△ \\triangle",
+     "Author Rubric"
+    ],
+    [
+     "Task Performance & Engineering Optimization"
+    ],
+    [
+     "MLE-bench [ 6 ]",
+     "1 (ML)",
+     "Exec.",
+     "Endpoint",
+     "× \\times",
+     "× \\times",
+     "× \\times",
+     "Kaggle"
+    ],
+    [
+     "NatureBench [ 41 ]",
+     "Multi-Science",
+     "Exec.+Anal.",
+     "Endpoint",
+     "× \\times",
+     "× \\times",
+     "× \\times",
+     "Published SOTA"
+    ],
+    [
+     "ResearchClawBench [ 45 ]",
+     "10 Domains",
+     "Exec.+Anal.",
+     "Endpoint",
+     "△ \\triangle",
+     "× \\times",
+     "× \\times",
+     "Exec. Tests"
+    ],
+    [
+     "Failure Taxonomies & Annotated Traces"
+    ],
+    [
+     "MAST [ 5 ]",
+     "Coding/Math",
+     "Interaction",
+     "Trajectory",
+     "× \\times",
+     "",
+     "△ \\triangle",
+     "Failure-mode taxonomy"
+    ],
+    [
+     "TRAIL [ 9 ]",
+     "Agentic QA",
+     "Interaction",
+     "Trajectory",
+     "× \\times",
+     "",
+     "△ \\triangle",
+     "Annotated error spans"
+    ],
+    [
+     "Who&When [ 48 ]",
+     "Multi-Agent",
+     "Interaction",
+     "Trajectory",
+     "× \\times",
+     "× \\times",
+     "△ \\triangle",
+     "Decisive-step label"
+    ],
+    [
+     "AutoResearchEval (Ours)",
+     "7",
+     "All 6",
+     "Trajectory",
+     "",
+     "",
+     "",
+     "Artifact-aware judge (+ metric where available)"
+    ]
+   ]
+  },
+  {
+   "idx": 5,
+   "caption": "Table 6: The 37 stage-localized failure patterns cross-classified by pipeline stage (rows, A–F) and root cause (columns: Grounding, Depth, Integrity, Engineering). Empty cells denote (stage, root-cause) combinations with",
+   "rows": [
+    [
+     "Stage ↓ \\downarrow / Root → \\rightarrow",
+     "Grounding",
+     "Depth",
+     "Integrity",
+     "Engineering"
+    ],
+    [
+     "A ⋅ \\cdot Ideation",
+     "A.6 Hypo-Exp Mismatch",
+     "A.1 Frame-Lock A.3 Redundant Discovery",
+     "A.2 Unfalsifiable Hypo A.5 Metric Misalign",
+     "A.4 Feasibility Misjudge"
+    ],
+    [
+     "B ⋅ \\cdot Retrieval",
+     "B.1 Hallucinated Evidence B.2 Retrieval-to-Action Gap B.5 Citation Decorrelation",
+     "B.4 Shallow Search B.6 Low Signal-to-Noise",
+     "",
+     "B.3 Unvetted Data"
+    ],
+    [
+     "C ⋅ \\cdot Execution",
+     "C.3 Impl. Discrepancy",
+     "C.6 Local Optimization C.7 Premature Terminate",
+     "C.1 Circular Validation C.2 Grader-Fitting",
+     "C.4 Execution Faults C.5 Infra Misdiagnosis C.8 Env Interaction"
+    ],
+    [
+     "D ⋅ \\cdot Analysis",
+     "D.1 Artifacts as Insights D.4 Method-Concl Gap D.6 Result Hallucination",
+     "D.5 Baseline/Ablation Deficit",
+     "D.2 Confirmation Bias D.3 Statistical Misuse D.7 Unremediated Evidence",
+     ""
+    ],
+    [
+     "E ⋅ \\cdot Writing",
+     "E.1 Traceability Gap E.4 Method/Citation Fab.",
+     "",
+     "E.2 Overclaiming E.3 Omission of Limits",
+     ""
+    ],
+    [
+     "F ⋅ \\cdot Review",
+     "F.6 Hallucinated Review",
+     "F.1 Superficial Review F.2 Unchecked Flaws F.3 Lack of Adversarial F.4 Uncorrected Awareness",
+     "F.5 Review Score Hacking",
+     ""
+    ]
+   ]
+  },
+  {
+   "idx": 6,
+   "caption": "Table 7: Judge harness configuration. AutoResearchEval comprises two pools corresponding to the two task regimes: an execution-feedback pool (where a quantitative metric or human SOTA exists) and a fully open-ended pool ",
+   "rows": [
+    [
+     "Parameter",
+     "Value (execution-feedback pool)"
+    ],
+    [
+     "Judge model",
+     "claude-opus-5 (routed via OpenRouter)"
+    ],
+    [
+     "Reasoning effort",
+     "xhigh"
+    ],
+    [
+     "Max agent turns",
+     "90"
+    ],
+    [
+     "Wall-clock budget per task",
+     "5400 s (90 min) nominal;"
+    ],
+    [
+     "",
+     "extended to 12600 s for tasks whose"
+    ],
+    [
+     "",
+     "verification re-runs need more headroom"
+    ],
+    [
+     "Max regeneration attempts",
+     "2 (per task, before the driver gives up;"
+    ],
+    [
+     "",
+     "overridable with --force-tasks )"
+    ],
+    [
+     "Concurrency",
+     "4–8 tasks in parallel"
+    ],
+    [
+     "Directories mounted read-only",
+     "benchmark repository root; the source"
+    ],
+    [
+     "",
+     "run’s task-definition / ground-truth root"
+    ]
+   ]
+  },
+  {
+   "idx": 7,
+   "caption": "Table 8: Evidence package materialized per task before the judge session starts. The combination of execution log, delivered filesystem, and sealed ground truth is what makes grounding failures such as C.1 (circular vali",
+   "rows": [
+    [
+     "Artifact",
+     "Role"
+    ],
+    [
+     "problem_readme.md ,",
+     "The task statement and data schema the"
+    ],
+    [
+     "data_description.md",
+     "rollout itself was given."
+    ],
+    [
+     "<harness>.jsonl",
+     "The rollout’s complete execution log"
+    ],
+    [
+     "",
+     "(the primary evidence base)."
+    ],
+    [
+     "result.json",
+     "Container-level execution status"
+    ],
+    [
+     "",
+     "( status / duration / returncode ) only—"
+    ],
+    [
+     "",
+     "explicitly not a quality signal."
+    ],
+    [
+     "submissions.jsonl",
+     "Every call the rollout made to the"
+    ],
+    [
+     "",
+     "benchmark’s own scoring service, with"
+    ],
+    [
+     "",
+     "the score returned each time (when present)."
+    ],
+    [
+     "evaluator/",
+     "The scoring service’s real source code,"
+    ],
+    [
+     "",
+     "copied verbatim from the benchmark"
+    ],
+    [
+     "",
+     "definition—lets the judge check the"
+    ],
+    [
+     "",
+     "rollout’s method against the exact metric"
+    ],
+    [
+     "",
+     "being computed, not just its stated name."
+    ],
+    [
+     "verification.md",
+     "Human-written notes (paper provenance,"
+    ],
+    [
+     "",
+     "held-out set construction, oracle score"
+    ],
+    [
+     "",
+     "ceiling) where available."
+    ],
+    [
+     "agent_code/",
+     "The rollout’s actual final container"
+    ],
+    [
+     "",
+     "filesystem (its real workspace/ ),"
+    ],
+    [
+     "",
+     "capped at 60 files / 1 MB per file / 20 MB"
+    ],
+    [
+     "",
+     "total, source-suffix filtered."
+    ],
+    [
+     "Sealed ground truth &",
+     "Referenced by real host path (mounted"
+    ],
+    [
+     "raw task data",
+     "read-only) rather than copied—these can"
+    ],
+    [
+     "",
+     "reach tens of GB per task—so the judge"
+    ],
+    [
+     "",
+     "can query them on demand without a full"
+    ],
+    [
+     "",
+     "read."
+    ]
+   ]
+  },
+  {
+   "idx": 8,
+   "caption": "Table 9: Reward/reason taxonomy the judge must disambiguate before treating a score as evidence of quality. This taxonomy is pool-specific; the open-ended pool has no such field, and quality there is established purely f",
+   "rows": [
+    [
+     "reason",
+     "Meaning",
+     "Quality signal?"
+    ],
+    [
+     "judge_unavailable",
+     "Scoring infrastructure was down",
+     "No—rollout may be excellent"
+    ],
+    [
+     "no_decision",
+     "Malformed/incomplete decision artifact",
+     "No—a delivery failure, not a science failure"
+    ],
+    [
+     "soft[<observable>]",
+     "Genuine score against the gold observable",
+     "Yes"
+    ]
+   ]
+  },
+  {
+   "idx": 9,
+   "caption": "Table 10: Per-section character floors enforced by the automated checker.",
+   "rows": [
+    [
+     "Section",
+     "Min. characters"
+    ],
+    [
+     "Core Verdict",
+     "850"
+    ],
+    [
+     "Metadata",
+     "720"
+    ],
+    [
+     "Trajectory Arc",
+     "380"
+    ],
+    [
+     "Credit Due",
+     "760"
+    ],
+    [
+     "A. Ideation & Planning",
+     "760"
+    ],
+    [
+     "B. Retrieval & Synthesis",
+     "1020"
+    ],
+    [
+     "C. Execution & Implementation",
+     "2550"
+    ],
+    [
+     "D. Analysis & Interpretation",
+     "600"
+    ],
+    [
+     "E. Writing & Documentation",
+     "640"
+    ],
+    [
+     "F. Self-Verification & Review",
+     "640"
+    ],
+    [
+     "X. Cross-Stage Dynamics",
+     "520"
+    ],
+    [
+     "Sentence-by-Sentence Checklist (min. 12 rows)",
+     "1100"
+    ],
+    [
+     "Numerical Grounding Notes",
+     "600"
+    ],
+    [
+     "Retraction / Correction Log",
+     "340"
+    ],
+    [
+     "One-Line Verdict",
+     "210"
+    ]
+   ]
+  },
+  {
+   "idx": 10,
+   "caption": "Table 11: Model abbreviations used in Table 13 .",
+   "rows": [
+    [
+     "Abbrev.",
+     "Model",
+     "n n"
+    ],
+    [
+     "son",
+     "claude-sonnet-5",
+     "100"
+    ],
+    [
+     "opu",
+     "opus-4.8",
+     "100"
+    ],
+    [
+     "dsk",
+     "deepseek-v4-pro",
+     "100"
+    ],
+    [
+     "glm",
+     "glm-5.2",
+     "100"
+    ],
+    [
+     "mmx",
+     "minimax-m3",
+     "100"
+    ],
+    [
+     "qwn",
+     "qwen3.7-max",
+     "100"
+    ],
+    [
+     "gpt",
+     "gpt-5-mini",
+     "100"
+    ],
+    [
+     "gem",
+     "gemini-3.5-flash",
+     "100"
+    ],
+    [
+     "Total",
+     "800"
+    ]
+   ]
+  },
+  {
+   "idx": 11,
+   "caption": "Table 12 : Failure Pattern Total HITs, ranked by HIT count.",
+   "rows": [
+    [
+     "Pattern",
+     "Name",
+     "HIT",
+     "PARTIAL",
+     "HIT%"
+    ],
+    [
+     "F.4",
+     "Uncorrected-SelfAware",
+     "660",
+     "31",
+     "82.5"
+    ],
+    [
+     "E.2",
+     "Overclaim",
+     "625",
+     "67",
+     "78.1"
+    ],
+    [
+     "D.4",
+     "Method-Concl-Disc",
+     "620",
+     "50",
+     "77.5"
+    ],
+    [
+     "C.3",
+     "Impl-Discrep",
+     "577",
+     "66",
+     "72.1"
+    ],
+    [
+     "C.1",
+     "Circular-Valid",
+     "552",
+     "16",
+     "69.0"
+    ],
+    [
+     "A.5",
+     "Metric-Misalign",
+     "545",
+     "35",
+     "68.1"
+    ],
+    [
+     "F.2",
+     "Fail-Gate",
+     "502",
+     "128",
+     "62.8"
+    ],
+    [
+     "E.3",
+     "Omit-Limits",
+     "498",
+     "143",
+     "62.2"
+    ],
+    [
+     "D.7",
+     "Unremediated-Adv",
+     "486",
+     "97",
+     "60.8"
+    ],
+    [
+     "E.1",
+     "Report-Trace-Gap",
+     "484",
+     "102",
+     "60.5"
+    ],
+    [
+     "B.4",
+     "Shallow-Search",
+     "439",
+     "167",
+     "54.9"
+    ],
+    [
+     "A.6",
+     "Hyp-Exp-Mismatch",
+     "420",
+     "87",
+     "52.5"
+    ],
+    [
+     "D.1",
+     "Artifacts-as-Insight",
+     "419",
+     "62",
+     "52.4"
+    ],
+    [
+     "D.3",
+     "Stat-Misuse",
+     "415",
+     "176",
+     "51.9"
+    ],
+    [
+     "D.5",
+     "Baseline-Deficit",
+     "374",
+     "163",
+     "46.8"
+    ],
+    [
+     "A.2",
+     "Unfalsifiable",
+     "357",
+     "69",
+     "44.6"
+    ],
+    [
+     "X.6",
+     "Right-Wrong-Reason",
+     "350",
+     "71",
+     "43.8"
+    ],
+    [
+     "F.1",
+     "Superficial-Review",
+     "319",
+     "150",
+     "39.9"
+    ],
+    [
+     "X.3",
+     "Skeptic-Deficit",
+     "315",
+     "201",
+     "39.4"
+    ],
+    [
+     "X.5",
+     "Teleological",
+     "314",
+     "67",
+     "39.2"
+    ],
+    [
+     "E.4",
+     "Method/Cite-Fab",
+     "312",
+     "65",
+     "39.0"
+    ],
+    [
+     "F.3",
+     "No-Adversarial",
+     "306",
+     "274",
+     "38.2"
+    ],
+    [
+     "B.2",
+     "Retrieval-Gap",
+     "271",
+     "71",
+     "33.9"
+    ],
+    [
+     "D.2",
+     "Confirmation-Bias",
+     "258",
+     "162",
+     "32.2"
+    ],
+    [
+     "B.1",
+     "Hallucinated-Evid",
+     "211",
+     "117",
+     "26.4"
+    ],
+    [
+     "C.4",
+     "Exec-Fault",
+     "206",
+     "202",
+     "25.8"
+    ],
+    [
+     "X.8",
+     "Eng-Delivery",
+     "201",
+     "123",
+     "25.1"
+    ],
+    [
+     "X.1",
+     "Cascade",
+     "190",
+     "134",
+     "23.8"
+    ],
+    [
+     "A.1",
+     "Frame-Lock",
+     "184",
+     "309",
+     "23.0"
+    ],
+    [
+     "B.3",
+     "Unvetted-Data",
+     "179",
+     "161",
+     "22.4"
+    ],
+    [
+     "X.7",
+     "Anchoring",
+     "162",
+     "89",
+     "20.2"
+    ],
+    [
+     "B.5",
+     "Citation-Decorr",
+     "152",
+     "111",
+     "19.0"
+    ],
+    [
+     "C.7",
+     "Premature-Term",
+     "129",
+     "108",
+     "16.1"
+    ],
+    [
+     "D.6",
+     "Result-Halluc",
+     "125",
+     "30",
+     "15.6"
+    ],
+    [
+     "C.6",
+     "Local-Opt",
+     "96",
+     "119",
+     "12.0"
+    ],
+    [
+     "C.8",
+     "Env-Interact",
+     "96",
+     "124",
+     "12.0"
+    ],
+    [
+     "C.2",
+     "Grader-Fit/Leak",
+     "81",
+     "48",
+     "10.1"
+    ],
+    [
+     "A.4",
+     "Feasibility",
+     "79",
+     "92",
+     "9.9"
+    ],
+    [
+     "X.2",
+     "Goal-Drift",
+     "62",
+     "57",
+     "7.8"
+    ],
+    [
+     "X.4",
+     "Honest-Hollow",
+     "62",
+     "90",
+     "7.8"
+    ],
+    [
+     "C.5",
+     "Infra-Misdiag",
+     "51",
+     "20",
+     "6.4"
+    ],
+    [
+     "A.3",
+     "Redundant",
+     "15",
+     "17",
+     "1.9"
+    ],
+    [
+     "B.6",
+     "Low-SNR",
+     "9",
+     "25",
+     "1.1"
+    ],
+    [
+     "F.6",
+     "Halluc-Review",
+     "3",
+     "14",
+     "0.4"
+    ],
+    [
+     "F.5",
+     "Review-Hack",
+     "1",
+     "2",
+     "0.1"
+    ]
+   ]
+  },
+  {
+   "idx": 12,
+   "caption": "Table 13 : Failure Pattern × \\times Model HIT matrix. Column abbreviations are defined in Table 11 ; � \\Sigma is the row total.",
+   "rows": [
+    [
+     "Pattern",
+     "son",
+     "opu",
+     "dsk",
+     "glm",
+     "mmx",
+     "qwn",
+     "gpt",
+     "gem",
+     "� \\Sigma"
+    ],
+    [
+     "A.1 Frame-Lock",
+     "17",
+     "25",
+     "22",
+     "12",
+     "23",
+     "22",
+     "35",
+     "28",
+     "184"
+    ],
+    [
+     "A.2 Unfalsifiable",
+     "44",
+     "44",
+     "41",
+     "43",
+     "49",
+     "40",
+     "43",
+     "53",
+     "357"
+    ],
+    [
+     "A.3 Redundant",
+     "3",
+     "3",
+     "1",
+     "0",
+     "1",
+     "1",
+     "5",
+     "1",
+     "15"
+    ],
+    [
+     "A.4 Feasibility",
+     "7",
+     "3",
+     "12",
+     "9",
+     "8",
+     "24",
+     "9",
+     "7",
+     "79"
+    ],
+    [
+     "A.5 Metric-Misalign",
+     "69",
+     "64",
+     "67",
+     "69",
+     "67",
+     "74",
+     "71",
+     "64",
+     "545"
+    ],
+    [
+     "A.6 Hyp-Exp-Mismatch",
+     "50",
+     "46",
+     "50",
+     "49",
+     "47",
+     "59",
+     "60",
+     "59",
+     "420"
+    ],
+    [
+     "B.1 Hallucinated-Evid",
+     "19",
+     "17",
+     "16",
+     "13",
+     "23",
+     "25",
+     "61",
+     "37",
+     "211"
+    ],
+    [
+     "B.2 Retrieval-Gap",
+     "42",
+     "37",
+     "40",
+     "39",
+     "31",
+     "45",
+     "25",
+     "12",
+     "271"
+    ],
+    [
+     "B.3 Unvetted-Data",
+     "18",
+     "26",
+     "22",
+     "21",
+     "29",
+     "23",
+     "24",
+     "16",
+     "179"
+    ],
+    [
+     "B.4 Shallow-Search",
+     "61",
+     "58",
+     "49",
+     "45",
+     "49",
+     "57",
+     "49",
+     "71",
+     "439"
+    ],
+    [
+     "B.5 Citation-Decorr",
+     "17",
+     "26",
+     "26",
+     "20",
+     "23",
+     "29",
+     "4",
+     "7",
+     "152"
+    ],
+    [
+     "B.6 Low-SNR",
+     "2",
+     "0",
+     "1",
+     "0",
+     "2",
+     "0",
+     "1",
+     "3",
+     "9"
+    ],
+    [
+     "C.1 Circular-Valid",
+     "68",
+     "65",
+     "72",
+     "64",
+     "74",
+     "69",
+     "66",
+     "74",
+     "552"
+    ],
+    [
+     "C.2 Grader-Fit/Leak",
+     "7",
+     "9",
+     "14",
+     "14",
+     "15",
+     "3",
+     "2",
+     "17",
+     "81"
+    ],
+    [
+     "C.3 Impl-Discrep",
+     "74",
+     "63",
+     "82",
+     "70",
+     "75",
+     "87",
+     "54",
+     "72",
+     "577"
+    ],
+    [
+     "C.4 Exec-Fault",
+     "21",
+     "8",
+     "29",
+     "28",
+     "26",
+     "44",
+     "32",
+     "18",
+     "206"
+    ],
+    [
+     "C.5 Infra-Misdiag",
+     "6",
+     "2",
+     "9",
+     "5",
+     "5",
+     "8",
+     "13",
+     "3",
+     "51"
+    ],
+    [
+     "C.6 Local-Opt",
+     "12",
+     "10",
+     "11",
+     "11",
+     "12",
+     "16",
+     "5",
+     "19",
+     "96"
+    ],
+    [
+     "C.7 Premature-Term",
+     "6",
+     "7",
+     "13",
+     "9",
+     "10",
+     "23",
+     "44",
+     "17",
+     "129"
+    ],
+    [
+     "C.8 Env-Interact",
+     "7",
+     "4",
+     "14",
+     "6",
+     "3",
+     "29",
+     "30",
+     "3",
+     "96"
+    ],
+    [
+     "D.1 Artifacts-as-Insight",
+     "50",
+     "50",
+     "54",
+     "46",
+     "64",
+     "50",
+     "45",
+     "60",
+     "419"
+    ],
+    [
+     "D.2 Confirmation-Bias",
+     "31",
+     "37",
+     "29",
+     "33",
+     "29",
+     "33",
+     "24",
+     "42",
+     "258"
+    ],
+    [
+     "D.3 Stat-Misuse",
+     "52",
+     "52",
+     "45",
+     "44",
+     "54",
+     "49",
+     "48",
+     "71",
+     "415"
+    ],
+    [
+     "D.4 Method-Concl-Disc",
+     "75",
+     "80",
+     "81",
+     "72",
+     "81",
+     "77",
+     "73",
+     "81",
+     "620"
+    ],
+    [
+     "D.5 Baseline-Deficit",
+     "46",
+     "47",
+     "51",
+     "36",
+     "36",
+     "46",
+     "48",
+     "64",
+     "374"
+    ],
+    [
+     "D.6 Result-Halluc",
+     "3",
+     "3",
+     "29",
+     "6",
+     "19",
+     "36",
+     "6",
+     "23",
+     "125"
+    ],
+    [
+     "D.7 Unremediated-Adv",
+     "68",
+     "56",
+     "66",
+     "53",
+     "73",
+     "62",
+     "64",
+     "44",
+     "486"
+    ],
+    [
+     "E.1 Report-Trace-Gap",
+     "46",
+     "49",
+     "68",
+     "51",
+     "61",
+     "77",
+     "66",
+     "66",
+     "484"
+    ],
+    [
+     "E.2 Overclaim",
+     "77",
+     "86",
+     "72",
+     "72",
+     "81",
+     "80",
+     "69",
+     "88",
+     "625"
+    ],
+    [
+     "E.3 Omit-Limits",
+     "70",
+     "60",
+     "52",
+     "55",
+     "63",
+     "62",
+     "57",
+     "79",
+     "498"
+    ],
+    [
+     "E.4 Method/Cite-Fab",
+     "27",
+     "14",
+     "39",
+     "22",
+     "42",
+     "44",
+     "66",
+     "58",
+     "312"
+    ],
+    [
+     "F.1 Superficial-Review",
+     "33",
+     "18",
+     "37",
+     "36",
+     "40",
+     "41",
+     "60",
+     "54",
+     "319"
+    ],
+    [
+     "F.2 Fail-Gate",
+     "60",
+     "49",
+     "73",
+     "50",
+     "61",
+     "77",
+     "65",
+     "67",
+     "502"
+    ],
+    [
+     "F.3 No-Adversarial",
+     "30",
+     "19",
+     "37",
+     "35",
+     "41",
+     "35",
+     "54",
+     "55",
+     "306"
+    ],
+    [
+     "F.4 Uncorrected-SelfAware",
+     "82",
+     "84",
+     "87",
+     "84",
+     "84",
+     "92",
+     "87",
+     "60",
+     "660"
+    ],
+    [
+     "F.5 Review-Hack",
+     "0",
+     "0",
+     "0",
+     "0",
+     "0",
+     "0",
+     "0",
+     "1",
+     "1"
+    ],
+    [
+     "F.6 Halluc-Review",
+     "1",
+     "0",
+     "1",
+     "1",
+     "0",
+     "0",
+     "0",
+     "0",
+     "3"
+    ],
+    [
+     "X.1 Cascade",
+     "19",
+     "14",
+     "36",
+     "24",
+     "25",
+     "28",
+     "24",
+     "20",
+     "190"
+    ],
+    [
+     "X.2 Goal-Drift",
+     "5",
+     "4",
+     "8",
+     "7",
+     "10",
+     "21",
+     "2",
+     "5",
+     "62"
+    ],
+    [
+     "X.3 Skeptic-Deficit",
+     "35",
+     "31",
+     "39",
+     "24",
+     "47",
+     "49",
+     "49",
+     "41",
+     "315"
+    ],
+    [
+     "X.4 Honest-Hollow",
+     "5",
+     "2",
+     "2",
+     "10",
+     "4",
+     "7",
+     "29",
+     "3",
+     "62"
+    ],
+    [
+     "X.5 Teleological",
+     "38",
+     "55",
+     "29",
+     "36",
+     "48",
+     "48",
+     "19",
+     "41",
+     "314"
+    ],
+    [
+     "X.6 Right-Wrong-Reason",
+     "42",
+     "50",
+     "43",
+     "39",
+     "53",
+     "44",
+     "26",
+     "53",
+     "350"
+    ],
+    [
+     "X.7 Anchoring",
+     "21",
+     "11",
+     "24",
+     "15",
+     "16",
+     "28",
+     "27",
+     "20",
+     "162"
+    ],
+    [
+     "X.8 Eng-Delivery",
+     "15",
+     "8",
+     "23",
+     "32",
+     "13",
+     "54",
+     "38",
+     "18",
+     "201"
+    ],
+    [
+     "� \\Sigma",
+     "1481",
+     "1396",
+     "1616",
+     "1410",
+     "1617",
+     "1818",
+     "1679",
+     "1695",
+     "12712"
+    ]
+   ]
+  },
+  {
+   "idx": 13,
+   "caption": "Table 14: Top-10 failure patterns — claude-sonnet-5.",
+   "rows": [
+    [
+     "Pattern",
+     "HIT"
+    ],
+    [
+     "F.4 Uncorrected-SelfAware",
+     "82"
+    ],
+    [
+     "E.2 Overclaim",
+     "77"
+    ],
+    [
+     "D.4 Method-Concl-Disc",
+     "75"
+    ],
+    [
+     "C.3 Impl-Discrep",
+     "74"
+    ],
+    [
+     "E.3 Omit-Limits",
+     "70"
+    ],
+    [
+     "A.5 Metric-Misalign",
+     "69"
+    ],
+    [
+     "C.1 Circular-Valid",
+     "68"
+    ],
+    [
+     "D.7 Unremediated-Adv",
+     "68"
+    ],
+    [
+     "B.4 Shallow-Search",
+     "61"
+    ],
+    [
+     "F.2 Fail-Gate",
+     "60"
+    ]
+   ]
+  },
+  {
+   "idx": 14,
+   "caption": "Table 15: Top-10 failure patterns — opus-4.8.",
+   "rows": [
+    [
+     "Pattern",
+     "HIT"
+    ],
+    [
+     "E.2 Overclaim",
+     "86"
+    ],
+    [
+     "F.4 Uncorrected-SelfAware",
+     "84"
+    ],
+    [
+     "D.4 Method-Concl-Disc",
+     "80"
+    ],
+    [
+     "C.1 Circular-Valid",
+     "65"
+    ],
+    [
+     "A.5 Metric-Misalign",
+     "64"
+    ],
+    [
+     "C.3 Impl-Discrep",
+     "63"
+    ],
+    [
+     "E.3 Omit-Limits",
+     "60"
+    ],
+    [
+     "B.4 Shallow-Search",
+     "58"
+    ],
+    [
+     "D.7 Unremediated-Adv",
+     "56"
+    ],
+    [
+     "X.5 Teleological",
+     "55"
+    ]
+   ]
+  },
+  {
+   "idx": 15,
+   "caption": "Table 16: Top-10 failure patterns — deepseek-v4-pro.",
+   "rows": [
+    [
+     "Pattern",
+     "HIT"
+    ],
+    [
+     "F.4 Uncorrected-SelfAware",
+     "87"
+    ],
+    [
+     "C.3 Impl-Discrep",
+     "82"
+    ],
+    [
+     "D.4 Method-Concl-Disc",
+     "81"
+    ],
+    [
+     "F.2 Fail-Gate",
+     "73"
+    ],
+    [
+     "C.1 Circular-Valid",
+     "72"
+    ],
+    [
+     "E.2 Overclaim",
+     "72"
+    ],
+    [
+     "E.1 Report-Trace-Gap",
+     "68"
+    ],
+    [
+     "A.5 Metric-Misalign",
+     "67"
+    ],
+    [
+     "D.7 Unremediated-Adv",
+     "66"
+    ],
+    [
+     "D.1 Artifacts-as-Insight",
+     "54"
+    ]
+   ]
+  },
+  {
+   "idx": 16,
+   "caption": "Table 17: Top-10 failure patterns — glm-5.2.",
+   "rows": [
+    [
+     "Pattern",
+     "HIT"
+    ],
+    [
+     "F.4 Uncorrected-SelfAware",
+     "84"
+    ],
+    [
+     "D.4 Method-Concl-Disc",
+     "72"
+    ],
+    [
+     "E.2 Overclaim",
+     "72"
+    ],
+    [
+     "C.3 Impl-Discrep",
+     "70"
+    ],
+    [
+     "A.5 Metric-Misalign",
+     "69"
+    ],
+    [
+     "C.1 Circular-Valid",
+     "64"
+    ],
+    [
+     "E.3 Omit-Limits",
+     "55"
+    ],
+    [
+     "D.7 Unremediated-Adv",
+     "53"
+    ],
+    [
+     "E.1 Report-Trace-Gap",
+     "51"
+    ],
+    [
+     "F.2 Fail-Gate",
+     "50"
+    ]
+   ]
+  },
+  {
+   "idx": 17,
+   "caption": "Table 18: Top-10 failure patterns — minimax-m3.",
+   "rows": [
+    [
+     "Pattern",
+     "HIT"
+    ],
+    [
+     "F.4 Uncorrected-SelfAware",
+     "84"
+    ],
+    [
+     "D.4 Method-Concl-Disc",
+     "81"
+    ],
+    [
+     "E.2 Overclaim",
+     "81"
+    ],
+    [
+     "C.3 Impl-Discrep",
+     "75"
+    ],
+    [
+     "C.1 Circular-Valid",
+     "74"
+    ],
+    [
+     "D.7 Unremediated-Adv",
+     "73"
+    ],
+    [
+     "A.5 Metric-Misalign",
+     "67"
+    ],
+    [
+     "D.1 Artifacts-as-Insight",
+     "64"
+    ],
+    [
+     "E.3 Omit-Limits",
+     "63"
+    ],
+    [
+     "E.1 Report-Trace-Gap",
+     "61"
+    ]
+   ]
+  },
+  {
+   "idx": 18,
+   "caption": "Table 19: Top-10 failure patterns — qwen3.7-max.",
+   "rows": [
+    [
+     "Pattern",
+     "HIT"
+    ],
+    [
+     "F.4 Uncorrected-SelfAware",
+     "92"
+    ],
+    [
+     "C.3 Impl-Discrep",
+     "87"
+    ],
+    [
+     "E.2 Overclaim",
+     "80"
+    ],
+    [
+     "D.4 Method-Concl-Disc",
+     "77"
+    ],
+    [
+     "E.1 Report-Trace-Gap",
+     "77"
+    ],
+    [
+     "F.2 Fail-Gate",
+     "77"
+    ],
+    [
+     "A.5 Metric-Misalign",
+     "74"
+    ],
+    [
+     "C.1 Circular-Valid",
+     "69"
+    ],
+    [
+     "D.7 Unremediated-Adv",
+     "62"
+    ],
+    [
+     "E.3 Omit-Limits",
+     "62"
+    ]
+   ]
+  },
+  {
+   "idx": 19,
+   "caption": "Table 20: Top-10 failure patterns — gpt-5-mini.",
+   "rows": [
+    [
+     "Pattern",
+     "HIT"
+    ],
+    [
+     "F.4 Uncorrected-SelfAware",
+     "87"
+    ],
+    [
+     "D.4 Method-Concl-Disc",
+     "73"
+    ],
+    [
+     "A.5 Metric-Misalign",
+     "71"
+    ],
+    [
+     "E.2 Overclaim",
+     "69"
+    ],
+    [
+     "C.1 Circular-Valid",
+     "66"
+    ],
+    [
+     "E.1 Report-Trace-Gap",
+     "66"
+    ],
+    [
+     "E.4 Method/Cite-Fab",
+     "66"
+    ],
+    [
+     "F.2 Fail-Gate",
+     "65"
+    ],
+    [
+     "D.7 Unremediated-Adv",
+     "64"
+    ],
+    [
+     "B.1 Hallucinated-Evid",
+     "61"
+    ]
+   ]
+  },
+  {
+   "idx": 20,
+   "caption": "Table 21: Top-10 failure patterns — gemini-3.5-flash.",
+   "rows": [
+    [
+     "Pattern",
+     "HIT"
+    ],
+    [
+     "E.2 Overclaim",
+     "88"
+    ],
+    [
+     "D.4 Method-Concl-Disc",
+     "81"
+    ],
+    [
+     "E.3 Omit-Limits",
+     "79"
+    ],
+    [
+     "C.1 Circular-Valid",
+     "74"
+    ],
+    [
+     "C.3 Impl-Discrep",
+     "72"
+    ],
+    [
+     "B.4 Shallow-Search",
+     "71"
+    ],
+    [
+     "D.3 Stat-Misuse",
+     "71"
+    ],
+    [
+     "F.2 Fail-Gate",
+     "67"
+    ],
+    [
+     "E.1 Report-Trace-Gap",
+     "66"
+    ],
+    [
+     "A.5 Metric-Misalign",
+     "64"
+    ]
+   ]
+  },
+  {
+   "idx": 21,
+   "caption": "Table 22 : Full task list of the open-ended discovery subset ( n = 70 n=70 ). Descriptions state the scientific tension each task is built around; venue and year give the source paper’s provenance.",
+   "rows": [
+    [
+     "Task description (tension)",
+     "Domain",
+     "Venue",
+     "Year"
+    ],
+    [
+     "The role of the lymphatic system in musculoskeletal health: lymphatic vessels long believed absent in bone and adult intervertebral discs were challenged by recent imaging.",
+     "biology",
+     "Bone Research",
+     "2026"
+    ],
+    [
+     "Whether tephra burial can sequester enough soil organic carbon to offset or exceed magmatic CO 2 , making explosive eruptions net carbon sinks.",
+     "geophysics",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Whether an ML potential trained only on energies and forces can yield reliable analytical Hessians for transition-state optimization.",
+     "material_science",
+     "Nature Communications",
+     "2024"
+    ],
+    [
+     "Distinguishing interfacial from bulk contributions to SO 2 hydrolysis given poorly characterized hydrolysis rate constants.",
+     "physics",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Whether Zr self-diffusion in BCC refractory high-entropy alloys is enhanced rather than sluggish, contradicting the “sluggish diffusion” concept.",
+     "chemistry",
+     "Acta Materialia",
+     "2025"
+    ],
+    [
+     "Competing itinerant and local spin interactions in kagome metal FeGe: the double-cone model fails to reproduce the measured spin-wave spectrum.",
+     "physics",
+     "Nature Communications",
+     "2024"
+    ],
+    [
+     "A physically inspired, deterministic relation linking microearthquake seismic moment to permeability change across scales in crystalline rock.",
+     "geophysics",
+     "Science Advances",
+     "2026"
+    ],
+    [
+     "A fast method to estimate the minimum detectable dark-matter subhalo mass from a stellar stream’s basic properties across many Milky Way streams.",
+     "physics",
+     "The Open Journal of Astrophysics",
+     "2026"
+    ],
+    [
+     "Whether a fundamental trade-off exists between gradient-measurement efficiency and expressivity (DLA dimension) in deep quantum neural networks.",
+     "scientific_computing",
+     "npj Quantum Information",
+     "2025"
+    ],
+    [
+     "Which gut microbiome features associate with Parkinson’s disease, and the cross-study portability of microbiome-based ML diagnostic models.",
+     "biology",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Whether a reported LNO-CCSD(T) vs. FN-DMC disagreement for large non-covalent systems undermines the “gold standard” reference itself.",
+     "chemistry",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Reconciling contradictory climate-migration findings by accounting for demographic heterogeneity in migration responses to weather.",
+     "geophysics",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Reconciling high-affinity solution-based DNMT1/UMDNA binding with crystallographic weak-binding results.",
+     "chemistry",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Whether a consensus nomenclature for addictive-like foods (UPFs, highly processed, hyper-palatable) can advance food addiction as an empirical construct.",
+     "medicine",
+     "Current Addiction Reports",
+     "2025"
+    ],
+    [
+     "Whether sub-Chandrasekhar model variance can account for the full range of observationally inferred iron-group nucleosynthetic ratios.",
+     "physics",
+     "The Astronomy and Astrophysics Review",
+     "2025"
+    ],
+    [
+     "How on-dyad vs. off-dyad linker-histone binding modes relate to distinct higher-order chromatin fiber structures.",
+     "scientific_computing",
+     "Cell Research",
+     "2024"
+    ],
+    [
+     "Resolving broad spatial neighborhoods in glioblastoma to individual cell states and their organizational rules.",
+     "biology",
+     "Cell",
+     "2024"
+    ],
+    [
+     "A unified mechanistic account of lung-specific metastasis across niche induction, colonization, dormancy, and reawakening.",
+     "medicine",
+     "Molecular Cancer",
+     "2025"
+    ],
+    [
+     "Whether and how background hydroclimate shapes photosynthetic sensitivity to cloud cover across global terrestrial ecosystems.",
+     "geophysics",
+     "Nature Communications",
+     "2026"
+    ],
+    [
+     "Resolving the dynamic lifecycle of pores in directed energy deposition, from formation to escape or entrapment.",
+     "material_science",
+     "Nature Communications",
+     "2024"
+    ],
+    [
+     "Downstream proteomic, PTM, and metabolic consequences of genetic alterations in high-grade gliomas, toward actionable protein-level networks.",
+     "medicine",
+     "Cancer Cell",
+     "2024"
+    ],
+    [
+     "The biological function of bacterial Teneurin-like proteins and their structural/functional relation to metazoan Teneurins.",
+     "biology",
+     "Nature Communications",
+     "2026"
+    ],
+    [
+     "A unified framework to identify bottlenecks preventing self-driving labs from being efficient, accessible, and interoperable.",
+     "scientific_computing",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Open-source software integrating multi-level 3D organoid segmentation with pluggable, benchmarkable AI nuclei-segmentation models.",
+     "biology",
+     "Nature Methods",
+     "2025"
+    ],
+    [
+     "Molecular mechanisms of E3-ligase selectivity and proteasomal discrimination of distinct ubiquitin-chain linkages.",
+     "medicine",
+     "Signal Transduction and Targeted Therapy",
+     "2025"
+    ],
+    [
+     "Physics-informed ML for computational medical imaging: adding physical plausibility, data efficiency, and interpretability.",
+     "physics",
+     "Artificial Intelligence Review",
+     "2025"
+    ],
+    [
+     "The persistent PCE gap between small-area perovskite cells and large-area modules, and the J s ​ c J_{sc} shortfall vs. the Shockley–Queisser limit.",
+     "material_science",
+     "Nano-Micro Letters",
+     "2026"
+    ],
+    [
+     "Molecular mechanisms by which aberrant zinc-transporter expression and zinc signaling drive tumorigenesis and therapy resistance.",
+     "chemistry",
+     "Signal Transduction and Targeted Therapy",
+     "2024"
+    ],
+    [
+     "Waveform modelling for LISA: covering wider source types and parameter space at the accuracy required for its science goals.",
+     "physics",
+     "Living Reviews in Relativity",
+     "2025"
+    ],
+    [
+     "Relative performance of subclonal-reconstruction algorithms on single-sample designs, and the features driving accuracy.",
+     "biology",
+     "Nature Biotechnology",
+     "2024"
+    ],
+    [
+     "Keeping the transcription-rate integral tractable for efficient ODE solving while modeling complex nonlinear rates over differentiation time.",
+     "scientific_computing",
+     "Nature Methods",
+     "2025"
+    ],
+    [
+     "Cell–cell communication modeling with explicit downstream pathways and disambiguation of converging signaling routes.",
+     "biology",
+     "Signal Transduction and Targeted Therapy",
+     "2026"
+    ],
+    [
+     "Reconstructing completely damaged fNIRS channels (low SNR, abnormal spectra) instead of discarding channels or subjects.",
+     "geophysics",
+     "Artificial Intelligence Review",
+     "2024"
+    ],
+    [
+     "Polygenic prediction jointly leveraging high-density SNP panels and diverse functional annotations, within and between ancestries.",
+     "biology",
+     "Nature Genetics",
+     "2024"
+    ],
+    [
+     "The validity of using land surface temperature as a proxy for air temperature in urban impact assessments.",
+     "scientific_computing",
+     "Nature Communications",
+     "2026"
+    ],
+    [
+     "Reaching high-efficiency cavity-enhanced AFC quantum memories despite the finesse–bandwidth (slow-light) trade-off.",
+     "physics",
+     "Nature Photonics",
+     "2026"
+    ],
+    [
+     "Decomposing non-stationary level, trend, and seasonality in volatile cryptocurrency series for robust price forecasting.",
+     "scientific_computing",
+     "Journal of Big Data",
+     "2025"
+    ],
+    [
+     "Building an AI-driven virtual cell that captures multi-scale, nonlinear, massively interacting cellular dynamics.",
+     "biology",
+     "Cell",
+     "2024"
+    ],
+    [
+     "Why triplet nitroarenes with similar E T E_{T} show drastically different energy-transfer reactivity, beyond E T E_{T} -matching.",
+     "chemistry",
+     "Nature Catalysis",
+     "2025"
+    ],
+    [
+     "Whether subduction-interface seismic slip is on a single plane or a distributed multifault network, and its effect on aftershock evolution.",
+     "geophysics",
+     "Nature",
+     "2024"
+    ],
+    [
+     "Infusing stereoelectronic effects into molecular-graph ML representations without prohibitive quantum-chemistry cost.",
+     "material_science",
+     "Nature Machine Intelligence",
+     "2025"
+    ],
+    [
+     "Generalizable pancancer prognosis prediction from histopathology plus routine clinical variables alone.",
+     "medicine",
+     "Signal Transduction and Targeted Therapy",
+     "2025"
+    ],
+    [
+     "Robust differential diagnosis of multiple and mixed dementia etiologies from routine multimodal data.",
+     "medicine",
+     "Nature Medicine",
+     "2024"
+    ],
+    [
+     "In-situ local-information training of mechanical neural networks, and whether physical MNNs can learn, retrain, and recover from damage.",
+     "scientific_computing",
+     "Nature Communications",
+     "2024"
+    ],
+    [
+     "Comprehensive benchmarking of single-cell multimodal omics integration methods across many tasks.",
+     "biology",
+     "Nature Methods",
+     "2025"
+    ],
+    [
+     "Reproducible baseline electrochemistry for model single-crystal and polycrystalline NMC cathodes to isolate genuine CEI improvements.",
+     "chemistry",
+     "Nature Energy",
+     "2024"
+    ],
+    [
+     "Integrating seismic and rock-physics data in a unified quantitative reservoir-characterization framework for the Eastern Potwar region.",
+     "geophysics",
+     "Reservoir Science",
+     "2026"
+    ],
+    [
+     "Unifying scarce, disjointed, unstructured hypersonics materials data to enable AI-driven accelerated screening.",
+     "material_science",
+     "Nature Communications",
+     "2024"
+    ],
+    [
+     "Bridging MXene lab synthesis and observations with the atomistic mechanisms governing individual flake quality for healthcare.",
+     "chemistry",
+     "Chemical Society Reviews",
+     "2025"
+    ],
+    [
+     "Mechanistic contributions of exosomes to immunopathology and tumor immunity, and their therapeutic targeting.",
+     "medicine",
+     "Cellular and Molecular Immunology",
+     "2025"
+    ],
+    [
+     "A trustworthy deep-learning benchmark on public multi-sensor data for multiclass dairy-cow lameness detection with human-in-the-loop.",
+     "scientific_computing",
+     "Engineering Applications of Artificial Intelligence",
+     "2025"
+    ],
+    [
+     "Automatically extracting biological information (organelle identity, viral uncoating) directly from single-particle diffusional behavior.",
+     "biology",
+     "Nature Methods",
+     "2025"
+    ],
+    [
+     "Target-aware molecule generation jointly optimizing affinity, drug-likeness, and synthetic accessibility with integrated refinement.",
+     "chemistry",
+     "Nature Communications",
+     "2024"
+    ],
+    [
+     "Whether accurately quantified nanomolar macronutrients suffice for glacier ice-algae metabolism during the melt season.",
+     "geophysics",
+     "Nature Communications",
+     "2026"
+    ],
+    [
+     "A framework combining first-principles DFT with experimental SERS spectra to recommend optimal molecular receptors.",
+     "material_science",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Systematically quantifying clinical severity of hallucinations and omissions in LLM-generated clinical notes, with iterative reduction.",
+     "medicine",
+     "npj Digital Medicine",
+     "2025"
+    ],
+    [
+     "Sequencing-guided re-estimation and promotion of cultivability for environmental bacteria beyond indirect proxies.",
+     "biology",
+     "Nature Communications",
+     "2024"
+    ],
+    [
+     "A PINN surrogate for full nonlinear equilibrium-path analysis of shallow trusses, including post-critical response, without expert intervention.",
+     "scientific_computing",
+     "Journal of Big Data",
+     "2025"
+    ],
+    [
+     "A computational-pathology foundation model for rare cancers and unusual variants where labeled data are scarce.",
+     "biology",
+     "Nature Medicine",
+     "2024"
+    ],
+    [
+     "Augmenting LLMs with expert chemistry tools for reliable IUPAC-to-structure conversion and multi-step reasoning.",
+     "chemistry",
+     "Nature Machine Intelligence",
+     "2024"
+    ],
+    [
+     "Extending reliable flood forecast skill beyond lead time 0 in ungauged watersheds, closing the Africa–Europe skill gap.",
+     "geophysics",
+     "Nature",
+     "2024"
+    ],
+    [
+     "The ground-state electronic structure, geometry, and aromaticity of the elusive odd-numbered cyclo[13]carbon and its dimer.",
+     "material_science",
+     "Science",
+     "2024"
+    ],
+    [
+     "Patient-similarity and length-of-stay prediction tailored to rare, heterogeneous paediatric cardiology populations.",
+     "medicine",
+     "Nature Communications",
+     "2026"
+    ],
+    [
+     "Exploiting device-level memristor computation for tonotopic mapping while preserving biological interpretability.",
+     "biology",
+     "Nature Communications",
+     "2024"
+    ],
+    [
+     "An up-to-date, structured taxonomy of deep time-series anomaly-detection methods, including recent representation-learning models.",
+     "scientific_computing",
+     "ACM Computing Surveys",
+     "2024"
+    ],
+    [
+     "Effect sizes of four parental risk factors on preschoolers’ prolonged digital use, and cultural/measurement moderators.",
+     "medicine",
+     "Education and Information Technologies",
+     "2024"
+    ],
+    [
+     "Adding clinically plausible omitted predictors to CVD risk scores to correct systematic mis-estimation in key subgroups.",
+     "medicine",
+     "Nature Medicine",
+     "2024"
+    ],
+    [
+     "Closing the gap between AI model development and clinical translation in orthopedics.",
+     "scientific_computing",
+     "Knee Surgery and Related Research",
+     "2026"
+    ],
+    [
+     "Quantifying train–test leakage and structural redundancy in PDBbind and the true generalization of binding-affinity models.",
+     "biology",
+     "Nature Machine Intelligence",
+     "2025"
+    ],
+    [
+     "Extracting DSM-5 substance-use-disorder severity from unstructured clinical notes with an LLM where NLP/rule-based methods fail.",
+     "medicine",
+     "npj Mental Health Research",
+     "2025"
+    ]
+   ]
+  },
+  {
+   "idx": 22,
+   "caption": "Table 23 : Full task list of the target-anchored optimization subset ( n = 30 n=30 ). Descriptions state the task each optimization instance targets; venue and year give the source paper’s provenance. n.r. marks a task w",
+   "rows": [
+    [
+     "Task description",
+     "Domain",
+     "Venue",
+     "Year"
+    ],
+    [
+     "Radio link scheduling under geographic interference.",
+     "scientific_computing",
+     "IEEE J. Sel. Areas Commun.",
+     "2019"
+    ],
+    [
+     "Molecular property optimization via sequential editing.",
+     "chemistry",
+     "Scientific Reports",
+     "2019"
+    ],
+    [
+     "Brain tumor segmentation in multi-sequence MRI.",
+     "medicine",
+     "Journal of Medical Imaging",
+     "2019"
+    ],
+    [
+     "Guide-RNA on-target editing efficiency prediction.",
+     "biology",
+     "Nature Communications",
+     "2019"
+    ],
+    [
+     "Materials property prediction from stoichiometry.",
+     "material_science",
+     "Nature Communications",
+     "2020"
+    ],
+    [
+     "Protein function prediction.",
+     "biology",
+     "Front. Bioeng. Biotechnol.",
+     "2020"
+    ],
+    [
+     "Particle-cloud jet compression, reconstruction, and anomaly detection.",
+     "physics",
+     "Eur. Phys. J. C",
+     "2023"
+    ],
+    [
+     "Single-cell identity annotation from a labeled reference.",
+     "biology",
+     "Nature Biotechnology",
+     "2023"
+    ],
+    [
+     "Cell-type classification from multimodal single-cell omics.",
+     "biology",
+     "Nucleic Acids Research",
+     "2023"
+    ],
+    [
+     "Quantum error correction: toric-code logical-error decoding.",
+     "physics",
+     "arXiv",
+     "2023"
+    ],
+    [
+     "Partial atomic-charge prediction for nanoporous framework crystals.",
+     "material_science",
+     "npj Computational Materials",
+     "2024"
+    ],
+    [
+     "Active-learning-assisted directed evolution on a protein fitness landscape (ALDE).",
+     "biology",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Adsorption and reaction energies on bimetallic alloys (explainable GNN).",
+     "material_science",
+     "n.r.",
+     "n.r."
+    ],
+    [
+     "Combination drug screen: predicting unseen combinations under a screening budget (BATCHIE).",
+     "biology",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Clinical-trial outcome prediction from trial-design features (CTO).",
+     "medicine",
+     "Nature Health",
+     "2026"
+    ],
+    [
+     "Cosmological parameter inference from point clouds (CosmoBench).",
+     "physics",
+     "arXiv",
+     "2025"
+    ],
+    [
+     "Real-bulk cell-type deconvolution of breast-cancer tumours with matched single-cell ground truth.",
+     "biology",
+     "n.r.",
+     "n.r."
+    ],
+    [
+     "Iteration-free crystal structure relaxation (DeepRelax).",
+     "material_science",
+     "Nature Communications",
+     "2024"
+    ],
+    [
+     "Drug-target affinity prediction with binding-site information (DMFF-DTA).",
+     "chemistry",
+     "npj Digital Medicine",
+     "2025"
+    ],
+    [
+     "Ejection-fraction and volume estimation from echocardiogram video (EchoNet-Dynamic).",
+     "medicine",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Recovering a permittivity map from scattered light (linear inverse scattering).",
+     "physics",
+     "ICLR",
+     "2025"
+    ],
+    [
+     "Coupled-cluster-accuracy molecular energies from DFT-level inputs (MEHnet).",
+     "chemistry",
+     "Nature Computational Science",
+     "2025"
+    ],
+    [
+     "Ionic migration-barrier prediction via transfer learning.",
+     "material_science",
+     "npj Computational Materials",
+     "2026"
+    ],
+    [
+     "Molecular property prediction on MoleculeNet (MotiL).",
+     "chemistry",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "Discovering network dynamics with symbolic regression (ND2).",
+     "scientific_computing",
+     "Nature Computational Science",
+     "2026"
+    ],
+    [
+     "Recovering the initial vorticity of a 2D Navier–Stokes flow.",
+     "geophysics",
+     "ICLR",
+     "2025"
+    ],
+    [
+     "Single-cell-informed deconvolution of bulk RNA-seq (omnideconv).",
+     "biology",
+     "Nature Communications",
+     "2024"
+    ],
+    [
+     "Global reaction-feasibility prediction (HTE acid–amine coupling).",
+     "chemistry",
+     "Nature Communications",
+     "2025"
+    ],
+    [
+     "3D RNA inverse design — fixed-backbone native-sequence recovery (gRNAde).",
+     "biology",
+     "ICLR",
+     "2025"
+    ],
+    [
+     "Data-driven tokamak plasma-profile evolution (TORAX).",
+     "physics",
+     "arXiv",
+     "2024"
+    ]
+   ]
+  }
+ ]
+}
