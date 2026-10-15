@@ -37,6 +37,18 @@
 | ours/atif | 8 | {'step_ts': 8} | 8 | 8 | 0 |
 | ours/qwen_chat | 54 | {'call_ts': 54} | 54 | 54 | 0 |
 
+## 解耦指标(无平滑;2026-10-15 追加,据外部建议核对后落地)
+H⁽⁰⁾=无平滑经验条件熵;I_action=H_kind·ln2−H⁽⁰⁾=Î(C_t;C_{t+1})(nat);P_action=I/(H_kind·ln2)(H_kind=0 ⇒ 未定义);S_smooth=平滑熵−H⁽⁰⁾;perm p=保频置换单侧 p(200 次,crc32 定种)。
+| source | corpus | 单元 | I_action 中位(nat) | P_action 中位 | S_smooth 中位 | perm p<0.05 |
+|---|---|---:|---:|---:|---:|---:|
+| are | open-ended | 560 | 0.4047 | 0.377 | 0.838 | 443 |
+| are | optimization | 240 | 0.0703 | 0.1231 | 0.4554 | 149 |
+| ours | arm | 8 | 0.1093 | 0.1768 | 0.483 | 6 |
+| ours | microarch | 10 | 0.13 | 0.1107 | 0.2137 | 10 |
+| ours | tess | 2 | 0.0696 | 0.07 | 0.2162 | 2 |
+| ours | tumor | 6 | 0.0492 | 0.0516 | 0.2675 | 3 |
+| ours | walkthrough | 36 | 0.1145 | 0.1055 | 0.4868 | 18 |
+
 ## 不变式/审计
 - ours 侧 vs traj-features lab 逐字段对照:54 单元,0 处不一致
 - ours 侧表外工具名(按 lab 惯例归 other,合计 9 次):{'bash': 1, 'edit_file': 3, 'edit_file_path': 1, 'shell_command': 1, 'tool_call': 3}

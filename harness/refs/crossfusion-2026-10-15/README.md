@@ -69,6 +69,26 @@
 7. **时间戳缺失不插补**:gaps 不可算即 null;`claude_stream` 中 175 个优化集文件有调用时间戳(call_ts),
    420 个开题集文件用 tool_result 行时间戳回填(result_ts)。
 
+## 解耦指标(2026-10-15 追加;外部复核建议,逐条核对后落地)
+
+两个熵不是独立读数:**kind_entropy 的样本恰是转移的目标端**(c₂..cₙ),故无平滑时
+`H_kind·ln2 = H(Y)`、`H⁽⁰⁾ = H(Y|X)`,二者之差就是经验互信息 `I(X;Y)`;α=1 平滑又把
+长度相关的底噪灌进 `transition_entropy`(纯单类别流:te 随 m 从 2.0432 降到 0.0550)。因此把
+平滑版拆成四个可分别估读的量,全部落盘(`features_union.jsonl`):
+
+- `trans_entropy_ns` = H⁽⁰⁾:无平滑经验条件熵(P̂⁽⁰⁾=N_ab/N_a;nat,域 [0, ln8]);
+- `mi_action` = H_kind·ln2 − H⁽⁰⁾ = Î(C_t;C_{t+1}):经验行动互信息(一阶路径依赖强度,nat,恒 ≥0);
+- `p_action` = I_action/(H_kind·ln2):归一化可预测性 [0,1];H_kind=0(单类别流)⇒ null,不设零;
+- `s_smooth` = 平滑熵 − H⁽⁰⁾:平滑敏感度(α=1 下恒 ≥0;越大=读数越依赖伪计数);
+- `mi_perm_p`:保频置换检验单侧 p(k=200 次洗牌保留类别频数,`crc32(seq)` 定种 ⇒ 确定性;
+  p=(1+#{I_perm≥I_obs})/(1+k))。
+
+核对与快照:恒等式与独立联合 MI 对拍最大差 1.7e-07;单类别底噪表逐位一致;mi 覆盖 854/862,
+P_action 762(92 条单类别流未定义),置换显著(p<0.05)631/762;I_action 中位 0.2433 nat、
+最大 0.8773;open-ended 路径依赖显著高于 optimization(P_action 中位 0.377 vs 0.1231)。
+**读法要点**:平滑散点 825/854 个点越出 `y = x·ln2` 边界(超出量 = S_smooth − I_action),
+即本语料里平滑底噪普遍大于路径依赖信息——引用平滑版 `transition_entropy` 时应同时报 H⁽⁰⁾ 与 S_smooth。
+
 ## 论文数字复算(`paper_checks.py`,零 LLM)
 
 `PASS 30 / MISMATCH 4(全部为数据卡级登记偏差)/ RECORD 3` —— 明细见 `paper_checks.md`。要点:

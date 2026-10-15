@@ -166,6 +166,30 @@ def _median(v):
     return statistics.median(v) if v else None
 
 
+def _h0_seq(s: list) -> float:
+    """无平滑经验条件熵 H⁽⁰⁾(C_{t+1}|C_t)(nat;P⁽⁰⁾_ab=N_ab/N_a,不设先验)。
+    与论文式 (2) 的 α=1 版同源;二者之差即平滑敏感度 S_smooth。
+    目标端按【实际观察到】的类别求和(不写死 KINDS8——表外类别也须完整计入)。"""
+    from math import log as _ln
+    fr: dict = {}
+    nb: dict = {}
+    for a, b in zip(s, s[1:]):
+        fr[a] = fr.get(a, 0) + 1
+        d = nb.setdefault(a, {})
+        d[b] = d.get(b, 0) + 1
+    t = len(s) - 1
+    if t <= 0:
+        return 0.0
+    acc = 0.0
+    for a, na in fr.items():
+        inner = 0.0
+        for m in nb[a].values():
+            p = m / na
+            inner -= p * _ln(p)
+        acc += (na / t) * inner
+    return acc
+
+
 def ring_core(calls: list, results: list) -> dict:
     """统一机械统计核心。calls::=[{ts,name,args,…}];results::=[{ok,text,…}]。"""
     kind_counts: dict = {}
@@ -198,6 +222,7 @@ def ring_core(calls: list, results: list) -> dict:
         kind_ent = round(-sum((v / tot) * log2(v / tot) for v in c.values()), 6)
 
     trans = None
+    trans_ns = mi_action = p_action = s_smooth = mi_perm_p = None
     if len(seq) >= 2:
         from math import log as _ln
         pairs = list(zip(seq, seq[1:]))
@@ -218,6 +243,38 @@ def ring_core(calls: list, results: list) -> dict:
             hc += (na / tot_tr) * inner
         trans = round(hc, 6)
 
+        # ---- 解耦指标(2026-10-15,据外部建议核对后落地;确定性)----
+        # H⁽⁰⁾:无平滑条件熵;I_action = H_kind·ln2 − H⁽⁰⁾ = Î(C_t;C_{t+1})(nat);
+        # P_action = I/(H_kind·ln2)(H_kind=0 ⇒ 未定义 None);
+        # S_smooth = 平滑熵 − H⁽⁰⁾;mi_perm_p = 保频置换检验单侧 p
+        #   (k=200,crc32(seq) 定种 ⇒ 逐字节可复现;p=(1+#{H⁽⁰⁾(perm)≤h0} )/(1+k))。
+        h0 = _h0_seq(seq)
+        hy = kind_ent * _ln(2) if kind_ent is not None else 0.0
+        mi_obs = hy - h0
+        if -1e-9 < mi_obs < 0.0:
+            mi_obs = 0.0
+        if mi_obs == 0.0:
+            mi_obs = 0.0  # -0.0 归一为 0.0(kind_ent 本身可能为 -0.0)
+        ss = hc - h0
+        if -1e-9 < ss < 0.0:
+            ss = 0.0
+        trans_ns = round(h0, 6)
+        mi_action = round(mi_obs, 6)
+        p_action = None if hy <= 0 else round(max(0.0, min(1.0, mi_obs / hy)), 6)
+        s_smooth = round(ss, 6)
+        import random as _random
+        import zlib as _zlib
+        rng = _random.Random(_zlib.crc32(("|".join(seq)).encode("utf-8")))
+        k_perm = 200
+        ge = 0
+        sh = list(seq)
+        h0_target = hy - mi_obs  # = h0(数值保护后)
+        for _ in range(k_perm):
+            rng.shuffle(sh)
+            if _h0_seq(sh) <= h0_target + 1e-12:
+                ge += 1
+        mi_perm_p = round((1 + ge) / (1 + k_perm), 6)
+
     return {
         "calls_total": len(calls),
         "calls_by_name": dict(sorted(name_counts.items())),
@@ -231,6 +288,11 @@ def ring_core(calls: list, results: list) -> dict:
         "masked_rate": round(masked / n_judged, 6) if n_judged else None,
         "kind_entropy": kind_ent,
         "transition_entropy": trans,
+        "trans_entropy_ns": trans_ns,
+        "mi_action": mi_action,
+        "p_action": p_action,
+        "s_smooth": s_smooth,
+        "mi_perm_p": mi_perm_p,
     }
 
 
@@ -939,6 +1001,11 @@ def _unit(unit, source, corpus, model, harness, fmt, rec, basis, meta, notes, du
         "kinds": rec.get("kinds", {}),
         "kind_entropy": rec.get("kind_entropy"),
         "transition_entropy": rec.get("transition_entropy"),
+        "trans_entropy_ns": rec.get("trans_entropy_ns"),
+        "mi_action": rec.get("mi_action"),
+        "p_action": rec.get("p_action"),
+        "s_smooth": rec.get("s_smooth"),
+        "mi_perm_p": rec.get("mi_perm_p"),
         "gaps_n": rec.get("gaps_n", 0),
         "gaps_median_s": rec.get("gaps_median_s"),
         "gaps_cv_robust": rec.get("gaps_cv_robust"),
@@ -1006,6 +1073,24 @@ def write_summary(records: list, audit: dict, out: Path) -> None:
         cache_n = sum(1 for r in rs if r["cache_ratio"] is not None)
         dur_n = sum(1 for r in rs if r["duration_ms"] is not None)
         lines.append(f"| {src}/{fmt} | {len(rs)} | {dict(gb) or '—'} | {judged} | {cache_n} | {dur_n} |")
+    lines.append("")
+    lines.append("## 解耦指标(无平滑;2026-10-15 追加,据外部建议核对后落地)")
+    lines.append("H⁽⁰⁾=无平滑经验条件熵;I_action=H_kind·ln2−H⁽⁰⁾=Î(C_t;C_{t+1})(nat);"
+                 "P_action=I/(H_kind·ln2)(H_kind=0 ⇒ 未定义);S_smooth=平滑熵−H⁽⁰⁾;"
+                 "perm p=保频置换单侧 p(200 次,crc32 定种)。")
+    lines.append("| source | corpus | 单元 | I_action 中位(nat) | P_action 中位 | S_smooth 中位 | perm p<0.05 |")
+    lines.append("|---|---|---:|---:|---:|---:|---:|")
+    dg2: dict = {}
+    for r in records:
+        dg2.setdefault((r["source"], r["corpus"]), []).append(r)
+    for (src2, corp2), rs in sorted(dg2.items()):
+        mis = [r.get("mi_action") for r in rs if r.get("mi_action") is not None]
+        pas = [r.get("p_action") for r in rs if r.get("p_action") is not None]
+        sss = [r.get("s_smooth") for r in rs if r.get("s_smooth") is not None]
+        p05 = sum(1 for r in rs if r.get("mi_perm_p") is not None and r["mi_perm_p"] < 0.05)
+        fmt_cell = lambda xs: (round(_median(xs), 4) if xs else "—")
+        lines.append(f"| {src2} | {corp2} | {len(rs)} | {fmt_cell(mis)} | {fmt_cell(pas)} | "
+                     f"{fmt_cell(sss)} | {p05} |")
     lines.append("")
     lines.append("## 不变式/审计")
     oc = audit["ours_compare"]

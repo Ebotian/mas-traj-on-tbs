@@ -7,33 +7,37 @@
 // 定义与口径见 refs/README.md;我方逐轮轨迹原文回放在 #/handoff · #/tumor · #/microarch · #/tess。
 import raw from '../data/crossfusion.json'
 import { COLOR } from '../lib/palette.ts'
-import { axisBottom, axisLeft, linear, s } from '../lib/svg.ts'
+import { axisBottom, axisLeft, linear, s, text } from '../lib/svg.ts'
 import { badge, cite, h, note, panel, stat, table } from '../lib/dom.ts'
 import { tex, texBlock } from '../lib/tex.ts'
 
 interface Invariant { name: string; value: number | string; want: number | string; ok: boolean }
-interface CorpusRow { source: string; corpus: string; units: number; calls: number; masked: number; gaps_ok: number }
+interface CorpusRow { source: string; corpus: string; units: number; calls: number; masked: number; gaps_ok: number; p05: number }
 interface FamRow {
   name: string; cn: string; units: number; calls: number; masked: number; gaps_ok: number
-  ke_med: number | null; te_med: number | null; mrate_med: number | null; kinds8: Record<string, number>
+  ke_med: number | null; te_med: number | null; mrate_med: number | null
+  mi_med: number | null; pa_med: number | null; p05: number
+  kinds8: Record<string, number>
 }
 interface ArmRow { job: string; calls: number; masked: number; ke: number | null; te: number | null; kinds8: Record<string, number> }
 interface ModelRow {
   name: string; units: number; calls: number; calls_ep: number
   ke_med: number | null; te_med: number | null; mrate_med: number | null; cache_med: number | null
+  mi_med: number | null; pa_med: number | null; p05: number
   kinds8: Record<string, number>
 }
 interface FmtRow { source: string; format: string; units: number; gaps_basis: Record<string, number>; masked_n: number; cache_n: number; dur_n: number }
 interface Pt { u: string; s: string; g: string; calls: number; ke: number; te: number; mr: number | null }
+interface DecRow { u: string; s: string; g: string; calls: number; ke: number; ns: number; mi: number; p: number | null; ss: number; perm: number }
 interface Check { id: string; scope: string; claim: string; expected: unknown; actual: unknown; status: string; note: string }
 interface Pillar { id: string; name: string; n: number; hit_sum: number; share_pct: number }
 interface PatRow { id: string; name: string; stage: string; pillar: string; hit: number; pct: number }
 interface CfData {
   meta: { source: string; script: string; are_revision: string; arxiv: string; note: string }
-  totals: { units: number; ours_units: number; are_units: number; sides: number; arms: number; calls: number; ours_calls: number; are_calls: number; avg_are: number; hits_total: number; paper: Record<string, number> }
+  totals: { units: number; ours_units: number; are_units: number; sides: number; arms: number; calls: number; ours_calls: number; are_calls: number; avg_are: number; hits_total: number; paper: Record<string, number>; n_above_ns: number; n_above_sm: number; n_pperm05: number; n_pa: number; mi_med: number | null; mi_max: number | null }
   invariants: Invariant[]
   corpora: CorpusRow[]; families: FamRow[]; arms: ArmRow[]; models: ModelRow[]; format_cov: FmtRow[]
-  scatter: Pt[]; checks: Check[]
+  scatter: Pt[]; decouple: DecRow[]; checks: Check[]
   arft: { total_hits: number; pillars: Pillar[]; top: PatRow[] }
   notes: { defect_occurrences: number; nonstd: Record<string, number>; mehnet: string | null; unit_notes: { result_first: number; empty_file: number; no_calls: number } }
 }
@@ -69,6 +73,21 @@ const LATEX_ALL = [
   '% (2) transition_entropy,单位 nat;N_ab = 全链(c1→c2 … c_{n-1}→c_n)转移计数;',
   '%   pi_a = N_a / ΣN(经验边际);P_ab = (N_ab + 1) / (N_a + 8)(Dirichlet α=1,K=8)',
   LATEX_TRANS,
+].join('\n')
+const LATEX_H0 = 'H^{(0)}_{\\mathrm{transition}} = -\\sum_{a \\in \\mathcal{K}} \\hat{\\pi}_a \\sum_{b \\in \\mathcal{K}} \\hat{P}^{(0)}_{ab} \\ln \\hat{P}^{(0)}_{ab}, \\qquad \\hat{P}^{(0)}_{ab} = \\frac{N_{ab}}{N_a}'
+const LATEX_MI = 'I_{\\mathrm{action}} = H_{\\mathrm{kind}} \\ln 2 - H^{(0)}_{\\mathrm{transition}} = I(C_t;\\, C_{t+1})'
+const LATEX_PA = 'P_{\\mathrm{action}} = \\frac{I_{\\mathrm{action}}}{H_{\\mathrm{kind}} \\ln 2}'
+const LATEX_SS = 'S_{\\mathrm{smooth}} = H^{(\\alpha=1)}_{\\mathrm{transition}} - H^{(0)}_{\\mathrm{transition}}'
+const LATEX_DEC_ALL = [
+  '% crossfusion-2026-10-15 · 解耦三量(纯 LaTeX 源)',
+  '% (3) 无平滑条件转移熵,单位 nat;P0_ab = N_ab / N_a(经验条件分布,无先验)',
+  LATEX_H0,
+  '% (4) 经验行动互信息(一阶路径依赖强度),单位 nat',
+  LATEX_MI,
+  '% (5) 归一化行动可预测性,无量纲;H_kind=0(单类别流)时未定义',
+  LATEX_PA,
+  '% (6) 平滑敏感度,单位 nat;alpha=1 下 >= 0',
+  LATEX_SS,
 ].join('\n')
 
 function copyBtn(latex: string, label = '复制 LaTeX'): HTMLButtonElement {
@@ -147,6 +166,51 @@ function entropyScatter(): SVGElement {
   return g
 }
 
+function nsScatter(): SVGElement {
+  const W = 680, H = 280, M = { l: 56, r: 16, t: 14, b: 32 }
+  const g = s('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, class: 'chart', role: 'img',
+    'aria-label': '无平滑散点:kind_entropy(bit) × H⁽⁰⁾(nat) 与 y=x·ln2 边界' })
+  const xs = linear([0, 3], [M.l, W - M.r])
+  const ys = linear([0, Math.log(8)], [H - M.b, M.t])
+  g.appendChild(axisLeft(ys, M.l, v => f2(v, 1)))
+  g.appendChild(axisBottom(xs, H - M.b, v => f2(v, 1)))
+  g.appendChild(s('line', { x1: xs(0), y1: ys(0), x2: xs(3), y2: ys(3 * Math.LN2),
+    stroke: COLOR.bad, 'stroke-width': 1.6, 'stroke-dasharray': '6 4' }))
+  g.appendChild(text(xs(2.92), ys(2.92 * Math.LN2) - 7, 'y = x·ln2(零路径依赖边界)',
+    { 'text-anchor': 'end', class: 'lbl sm', fill: COLOR.bad }))
+  for (const p of D.decouple) {
+    const ours = p.s === 'ours'
+    g.appendChild(s('circle', {
+      cx: xs(p.ke), cy: ys(p.ns), r: ours ? 4.1 : 2.5,
+      fill: ours ? (GRP_COLOR[p.g] ?? COLOR.muted) : COLOR.muted,
+      opacity: ours ? 0.92 : 0.33,
+    }, s('title', {}, `${p.u}:H_kind ${f4(p.ke)} bit · H⁽⁰⁾ ${f4(p.ns)} nat · I_action ${f4(p.mi)} nat${p.p != null ? ` · P_action ${f4(p.p)}` : ''} · perm p ${p.perm}`)))
+  }
+  return g
+}
+
+function paScatter(): SVGElement {
+  const W = 680, H = 280, M = { l: 56, r: 16, t: 14, b: 32 }
+  const g = s('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H, class: 'chart', role: 'img',
+    'aria-label': '长度 × 归一化可预测性:log10(调用数) × P_action' })
+  const pts = D.decouple.filter(p => p.p != null)
+  if (!pts.length) return g
+  const xmax = Math.max(1.5, ...pts.map(p => Math.log10(p.calls))) * 1.04
+  const xs = linear([Math.log10(2), xmax], [M.l, W - M.r])
+  const ys = linear([0, 1], [H - M.b, M.t])
+  g.appendChild(axisLeft(ys, M.l, v => f2(v, 1)))
+  g.appendChild(axisBottom(xs, H - M.b, v => `10^${f2(v, 1)}`))
+  for (const p of pts) {
+    const ours = p.s === 'ours'
+    g.appendChild(s('circle', {
+      cx: xs(Math.log10(p.calls)), cy: ys(p.p as number), r: ours ? 4.1 : 2.5,
+      fill: ours ? (GRP_COLOR[p.g] ?? COLOR.muted) : COLOR.muted,
+      opacity: ours ? 0.92 : 0.33,
+    }, s('title', {}, `${p.u}:n=${p.calls} · P_action ${f4(p.p)} · I_action ${f4(p.mi)} nat · perm p ${p.perm}${p.perm < 0.05 ? '(显著)' : ''}`)))
+  }
+  return g
+}
+
 function legend(): HTMLElement {
   const row = h('p', { class: 'note' }, '图例:')
   row.appendChild(h('span', { style: `display:inline-block;width:7px;height:7px;border-radius:50%;background:${COLOR.muted};opacity:.5;margin:0 4px 0 10px;vertical-align:middle` }))
@@ -197,10 +261,29 @@ export function render(host: HTMLElement): void {
   host.appendChild(panel('类别熵 · 并集散点 边际 kind_entropy(bit) × 条件转移 transition_entropy(nat)',
     entropyScatter(),
     legend(),
-    note('两轴固定为 8 类的理论上界(', tex('\\log_2 8 = 3'), ' bit / ', tex('\\ln 8 \\approx 2.079'), ' nat);',
-      '两量同源同序列,条件版多编码「上一类→下一类」结构。',
+    note('两轴非独立(2026-10-15 复核):去掉平滑后恒有 H⁽⁰⁾ ≤ H_kind·ln2,差值即经验互信息 I_action——正相关首先是这一数学约束;',
+      '本卡为 α=1 平滑版:相对边界 y = x·ln2 越出的点有 ', h('b', {}, String(D.totals.n_above_sm)),
+      ' 个(超出量 = S_smooth − I_action),单类别竖线与越界点都是平滑底噪,不是行为差异。',
       `${D.scatter.length}/${D.totals.units} 单元入图(8 个 0/1 调用单元无 c₂..cₙ,记 null)。`,
-      '公式的规范化规格(式环境 · 符号 · 数据来源 · 意义)与纯 LaTeX 复制见下一卡。')))
+      '无平滑视角、长度维度与三量定义分别见后文散点 II、散点 III 与两张公式卡。')))
+
+  host.appendChild(panel('散点 II · 无平滑:kind_entropy × H⁽⁰⁾(nat),互信息 = 到边界的距离',
+    nsScatter(),
+    legend(),
+    note('无平滑版中每点必在 y = x·ln2 之下(该边界即「零路径依赖」线),到边界的竖直距离就是 I_action(经验互信息);',
+      '实测越界 ', h('b', {}, String(D.totals.n_above_ns)), ' 个(恒等式保证为 0)。',
+      '全 854 单元 I_action 中位 ', h('b', {}, f4(D.totals.mi_med)), ' nat、最大 ', h('b', {}, f4(D.totals.mi_max)), ' nat。',
+      '与上一卡对照:同一批轨迹换无平滑口径后,「正相关」被拆成(y ≤ 边界)+(距离 = 路径依赖信息)两项。')))
+
+  host.appendChild(panel('散点 III · 长度 × 归一化行动可预测性 log₁₀(n) × P_action',
+    paScatter(),
+    legend(),
+    note('92 条单类别流(gpt-5-mini)H_kind = 0 ⇒ P_action 未定义、不绘(记 null 不设零);',
+      '保频置换检验(200 次,crc32 定种):', h('b', {}, `${D.totals.n_pperm05}/${D.totals.n_pa}`),
+      ' 个单元 p<0.05,路径依赖超过随机基线;其中 open-ended ',
+      h('b', {}, String(D.corpora.find(c => c.corpus === 'open-ended')?.p05 ?? '—')), '/560、optimization ',
+      h('b', {}, String(D.corpora.find(c => c.corpus === 'optimization')?.p05 ?? '—')), '/240。',
+      'P_action = 1 表示下一步类别由上一步类别确定,0 表示上一步不提供信息;与 n 无单调关系。')))
 
   host.appendChild(panel('熵公式(论文级口径)· 式环境 + 符号 + 数据来源 + 意义',
     note('本卡是两量的定义性规格(specification);数值由管线逐单元现算并经四层验收:',
@@ -234,6 +317,36 @@ export function render(host: HTMLElement): void {
       '定义出自文档 §4.2(条件转移熵),α=1 为默认口径,见 ', cite('crossfusion-2026-10-15/README.md'), ' 与 traj-features README。'),
     h('p', { class: 'latexsrc' }, copyBtn(LATEX_ALL, '复制全部(两式 + 口径注释行)'),
       '—— 写入剪贴板的是纯 LaTeX 文本,注释行以 % 开头,粘进论文或 agent 对话均可直接编译/引用。')))
+
+  host.appendChild(panel('解耦三量(论文级口径)· 式环境 + 符号 + 数据来源 + 意义',
+    note('本卡承接式 (1)(2),把「平滑版转移熵」拆成可分别估读的三件:无平滑条件熵 H⁽⁰⁾、经验互信息 I_action、平滑敏感度 S_smooth;',
+      '数值同管线逐单元现算,四层验收含解耦不变式(恒等式 / 非负 / 单类别边界 / 置换确定性)。'),
+    h('p', { class: 'note strong' }, '式 (3) 无平滑条件转移熵 · trans_entropy_ns(单位 nat)'),
+    eqRow('3', LATEX_H0),
+    h('p', { class: 'note strong' }, '式 (4) 经验行动互信息(一阶路径依赖强度)· mi_action(单位 nat)'),
+    eqRow('4', LATEX_MI),
+    h('p', { class: 'note strong' }, '式 (5) 归一化行动可预测性 · p_action(无量纲,[0,1])'),
+    eqRow('5', LATEX_PA),
+    h('p', { class: 'note strong' }, '式 (6) 平滑敏感度 · s_smooth(单位 nat)'),
+    eqRow('6', LATEX_SS),
+    h('div', { class: 'scroll' }, table(
+      ['符号', '含义', '取值与口径', '数据来源'],
+      [
+        [tex('H^{(0)}_{\\mathrm{transition}}'), '无平滑条件转移熵', 'P̂⁽⁰⁾_ab = N_ab/N_a(经验条件分布,不设先验);域 [0, ln 8]', 'ring_core() 现算(trans_entropy_ns 字段)'],
+        [tex('I_{\\mathrm{action}}'), '经验行动互信息(路径依赖强度)', '= H_kind·ln2 − H⁽⁰⁾ = Î(C_t;C_{t+1});由定义恒 ≥ 0', 'mi_action 字段(恒等式独立对拍最大差 1.7e-07)'],
+        [tex('P_{\\mathrm{action}}'), '归一化行动可预测性', '= I_action/(H_kind·ln2);H_kind=0(单类别流)⇒ 未定义(null),不设零', 'p_action 字段;92 个单元为 null'],
+        [tex('S_{\\mathrm{smooth}}'), '平滑敏感度', '= 平滑熵 − H⁽⁰⁾;α=1 下恒 ≥ 0;越大 = 读数越依赖伪计数(短序列/尖分布)', 's_smooth 字段'],
+        [tex('p_{\\mathrm{perm}}'), '保频置换检验单侧 p', 'k=200 次洗牌(保留类别频数),crc32(seq) 定种;= (1+#{I_perm ≥ I_obs})/(1+k)', 'mi_perm_p 字段;显著(p<0.05)631/762'],
+        [tex('m = n - 1'), '转移位点数', '全链 c₁→c₂ … c_{n−1}→cₙ;π̂_a = N_a/m', 'calls_total − 1'],
+      ])),
+    latexSrc(LATEX_H0), latexSrc(LATEX_MI), latexSrc(LATEX_PA), latexSrc(LATEX_SS),
+    note('意义:H⁽⁰⁾ = 「已知上一步类别后,下一步类别还剩多少不确定性」;I_action 是其相对边际 H_kind·ln2 的信息削减(统计路径依赖,非因果);',
+      'P_action ∈ [0,1] 给出跨单元可比的强度;S_smooth 是测量可信度——它大而 I_action 小时,平滑版的熵读数主要是底噪。',
+      '关系(由定义直接推出):H⁽⁰⁾ = H_kind·ln2 − I_action;平滑版 = H⁽⁰⁾ + S_smooth。'),
+    note('口径出处:2026-10-15 外部复核建议,逐条核对后落地(', cite('crossfusion-2026-10-15/README.md'), '「解耦指标」节;',
+      '对照项:纯单类别底噪 2.0432→0.0550(m=1→999)与实现逐位一致;独立联合 MI 对拍见上表)。'),
+    h('p', { class: 'latexsrc' }, copyBtn(LATEX_DEC_ALL, '复制全部(式 (3)–(6) + 口径注释行)'),
+      '—— 同上:纯 LaTeX 文本,可直接编译/引用。')))
 
   const models = [...D.models].sort((a, b) => b.calls_ep - a.calls_ep)
   const vmaxA = models.length ? models[0].calls_ep : 1

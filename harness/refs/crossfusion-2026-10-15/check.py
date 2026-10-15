@@ -125,6 +125,37 @@ def main() -> int:
             if x["gaps_n"] > max(0, x["calls_total"] - 1):
                 bad_unit += 1
         want(bad_unit == 0, f"逐单元自洽(名表/类别表/掩蔽/熵界/gaps 界):{bad_unit} 处异常")
+
+        bad_dec = 0
+        n_mi = n_pa = n_p05 = 0
+        ln2 = math.log(2)
+        KINDS8 = {"read", "write", "search", "exec", "wait", "test", "recover", "other"}
+        for x in recs:
+            if set(x["kinds"]) - KINDS8:
+                bad_dec += 1
+            if (x.get("mi_action") is None) != (x["kind_entropy"] is None):
+                bad_dec += 1
+            mi, ns, ke = x.get("mi_action"), x.get("trans_entropy_ns"), x["kind_entropy"]
+            pa, ss, pp = x.get("p_action"), x.get("s_smooth"), x.get("mi_perm_p")
+            if mi is None:
+                continue
+            n_mi += 1
+            if mi < -1e-9 or ss is None or ss < -1e-9 or pp is None or not (0 < pp <= 1):
+                bad_dec += 1
+            if abs(mi - (ke * ln2 - ns)) > 1e-5:
+                bad_dec += 1
+            if ke == 0:
+                if not (ns == 0.0 and mi == 0.0 and pa is None and ss > 0):
+                    bad_dec += 1
+            else:
+                n_pa += 1
+                if pa is None or not (0 <= pa <= 1 + 1e-9):
+                    bad_dec += 1
+            if pp < 0.05:
+                n_p05 += 1
+        want(bad_dec == 0, f"解耦指标自洽(非负/恒等式 mi=ke·ln2−ns/单类别边界/kinds⊆8类):{bad_dec} 处异常")
+        want((n_mi, n_pa, n_p05) == (854, 762, 631),
+             f"解耦覆盖与显著性计数:mi {n_mi}/854 · P_action {n_pa}/762 · perm p<0.05 {n_p05}/631")
         per_model = Counter(x["model"] for x in are)
         want(len(per_model) == 8 and all(v == 100 for v in per_model.values()),
              f"are 逐模型各 100 单元 {dict(per_model)}")

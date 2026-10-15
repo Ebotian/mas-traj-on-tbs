@@ -12,6 +12,7 @@
 from __future__ import annotations
 
 import json
+import math
 from collections import Counter
 from pathlib import Path
 
@@ -69,7 +70,8 @@ def main() -> int:
         corpora.append({"source": src, "corpus": corp, "units": len(rs),
                         "calls": sum(x["calls_total"] for x in rs),
                         "masked": sum(x["masked"] for x in rs),
-                        "gaps_ok": sum(1 for x in rs if x["gaps_basis"])})
+                        "gaps_ok": sum(1 for x in rs if x["gaps_basis"]),
+                        "p05": sum(1 for x in rs if x.get("mi_perm_p") is not None and x["mi_perm_p"] < 0.05)})
 
     fams = []
     for name in FAM_ORDER:
@@ -81,6 +83,9 @@ def main() -> int:
                      "ke_med": med([x["kind_entropy"] for x in rs]),
                      "te_med": med([x["transition_entropy"] for x in rs]),
                      "mrate_med": med([x["masked_rate"] for x in rs]),
+                     "mi_med": med([x.get("mi_action") for x in rs]),
+                     "pa_med": med([x.get("p_action") for x in rs]),
+                     "p05": sum(1 for x in rs if x.get("mi_perm_p") is not None and x["mi_perm_p"] < 0.05),
                      "kinds8": kinds8(rs)})
 
     arm_rows = [{"job": x["unit"].split("/")[-2], "calls": x["calls_total"], "masked": x["masked"],
@@ -100,6 +105,9 @@ def main() -> int:
                        "te_med": med([x["transition_entropy"] for x in rs]),
                        "mrate_med": med([x["masked_rate"] for x in rs]),
                        "cache_med": med([x["cache_ratio"] for x in rs]),
+                       "mi_med": med([x.get("mi_action") for x in rs]),
+                       "pa_med": med([x.get("p_action") for x in rs]),
+                       "p05": sum(1 for x in rs if x.get("mi_perm_p") is not None and x["mi_perm_p"] < 0.05),
                        "kinds8": kinds8(rs)})
 
     fcov = []
@@ -123,6 +131,26 @@ def main() -> int:
                         "calls": r["calls_total"],
                         "ke": round(r["kind_entropy"], 4), "te": round(r["transition_entropy"], 4),
                         "mr": None if r["masked_rate"] is None else round(r["masked_rate"], 5)})
+
+    decouple = []
+    for r in sorted(recs, key=lambda x: x["unit"]):
+        if r.get("mi_action") is None:
+            continue
+        decouple.append({"u": r["unit"], "s": r["source"],
+                         "g": r["corpus"] if r["source"] == "ours" else r["model"],
+                         "calls": r["calls_total"],
+                         "ke": round(r["kind_entropy"], 4), "ns": round(r["trans_entropy_ns"], 4),
+                         "mi": round(r["mi_action"], 4),
+                         "p": None if r["p_action"] is None else round(r["p_action"], 4),
+                         "ss": round(r["s_smooth"], 4), "perm": r["mi_perm_p"]})
+    ln2 = math.log(2)
+    n_above_ns = sum(1 for r in recs if r.get("trans_entropy_ns") is not None
+                     and r["trans_entropy_ns"] > r["kind_entropy"] * ln2 + 1e-9)
+    n_above_sm = sum(1 for r in recs if r["transition_entropy"] is not None
+                     and r["transition_entropy"] > r["kind_entropy"] * ln2 + 1e-9)
+    n_pperm05 = sum(1 for r in recs if r.get("mi_perm_p") is not None and r["mi_perm_p"] < 0.05)
+    n_pa = sum(1 for r in recs if r.get("p_action") is not None)
+    mis_all = [r["mi_action"] for r in recs if r.get("mi_action") is not None]
 
     inv = [
         {"name": "单元", "value": len(recs), "want": 862, "ok": len(recs) == 862},
@@ -159,6 +187,9 @@ def main() -> int:
             "avg_are": round(calls_are / 800, 4),
             "hits_total": arft["total_hits"],
             "paper": pc["counts"],
+            "n_above_ns": n_above_ns, "n_above_sm": n_above_sm,
+            "n_pperm05": n_pperm05, "n_pa": n_pa,
+            "mi_med": med(mis_all), "mi_max": max(mis_all) if mis_all else None,
         },
         "invariants": inv,
         "corpora": corpora,
@@ -167,6 +198,7 @@ def main() -> int:
         "models": models,
         "format_cov": fcov,
         "scatter": scatter,
+        "decouple": decouple,
         "checks": pc["checks"],
         "arft": {
             "total_hits": arft["total_hits"],
