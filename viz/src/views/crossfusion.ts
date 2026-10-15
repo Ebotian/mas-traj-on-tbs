@@ -9,7 +9,7 @@ import raw from '../data/crossfusion.json'
 import { COLOR } from '../lib/palette.ts'
 import { axisBottom, axisLeft, linear, s } from '../lib/svg.ts'
 import { badge, cite, h, note, panel, stat, table } from '../lib/dom.ts'
-import { tex } from '../lib/tex.ts'
+import { tex, texBlock } from '../lib/tex.ts'
 
 interface Invariant { name: string; value: number | string; want: number | string; ok: boolean }
 interface CorpusRow { source: string; corpus: string; units: number; calls: number; masked: number; gaps_ok: number }
@@ -58,6 +58,54 @@ const f2 = (v: number | null | undefined, d = 2): string => v == null ? '—' : 
 const f4 = (v: number | null | undefined): string => v == null ? '—' : v.toFixed(4)
 const pctf = (v: number | null | undefined, d = 1): string => v == null ? '—' : `${(v * 100).toFixed(d)}%`
 const valf = (v: unknown): string => typeof v === 'string' ? v : JSON.stringify(v)
+
+// ---- 公式卡:纯 LaTeX 源(复制按钮写入剪贴板的正是这一串;agent 可直接粘贴)----
+const LATEX_KIND = 'H_{\\mathrm{kind}} = -\\sum_{k \\in \\mathcal{K}} p_k \\log_2 p_k'
+const LATEX_TRANS = 'H_{\\mathrm{transition}} = -\\sum_{a \\in \\mathcal{K}} \\hat{\\pi}_a \\sum_{b \\in \\mathcal{K}} \\hat{P}_{ab} \\ln \\hat{P}_{ab}'
+const LATEX_ALL = [
+  '% crossfusion-2026-10-15 · 熵公式(纯 LaTeX 源)',
+  '% (1) kind_entropy,单位 bit;p_k = 非首调用(c2..cn)中类别 k 的频率;K=8 类',
+  LATEX_KIND,
+  '% (2) transition_entropy,单位 nat;N_ab = 全链(c1→c2 … c_{n-1}→c_n)转移计数;',
+  '%   pi_a = N_a / ΣN(经验边际);P_ab = (N_ab + 1) / (N_a + 8)(Dirichlet α=1,K=8)',
+  LATEX_TRANS,
+].join('\n')
+
+function copyBtn(latex: string, label = '复制 LaTeX'): HTMLButtonElement {
+  const b = h('button', { class: 'copybtn', type: 'button' }, label)
+  const flash = (t: string): void => {
+    b.textContent = t
+    window.setTimeout(() => { b.textContent = label }, 1400)
+  }
+  b.addEventListener('click', () => {
+    const legacy = (): void => {
+      try {
+        const ta = document.createElement('textarea')
+        ta.value = latex
+        ta.style.position = 'fixed'
+        ta.style.opacity = '0'
+        document.body.appendChild(ta)
+        ta.select()
+        const ok = document.execCommand('copy')
+        document.body.removeChild(ta)
+        flash(ok ? '已复制 ✓' : '复制失败')
+      } catch { flash('复制失败') }
+    }
+    if (navigator.clipboard?.writeText) navigator.clipboard.writeText(latex).then(() => flash('已复制 ✓'), legacy)
+    else legacy()
+  })
+  return b
+}
+
+function eqRow(num: string, latex: string): HTMLElement {
+  return h('div', { class: 'eqrow' },
+    h('div', { class: 'eq' }, texBlock(latex)),
+    h('div', { class: 'eqtag' }, `(${num})`))
+}
+
+function latexSrc(latex: string): HTMLElement {
+  return h('p', { class: 'latexsrc' }, '纯 LaTeX 源:', h('code', {}, latex), copyBtn(latex))
+}
 
 function hbar(label: string, v: number, vmax: number, color: string, sub: string): HTMLElement {
   return h('div', { class: 'ratio' },
@@ -149,11 +197,43 @@ export function render(host: HTMLElement): void {
   host.appendChild(panel('类别熵 · 并集散点 边际 kind_entropy(bit) × 条件转移 transition_entropy(nat)',
     entropyScatter(),
     legend(),
-    note('两轴固定为 8 类的理论上界(', tex('\\log_2 8 = 3'), ' bit / ', tex('\\ln 8 \\approx 2.079'), ' nat)。',
-      'kind_entropy = 非首调用(c₂..cₙ)类别边际熵 ', tex('H = -\\sum_k p_k \\log_2 p_k'),
-      ';transition_entropy = 条件转移熵(文档 §4.2;8 类,Dirichlet α=1,π̂ 为经验边际)',
-      tex('H_{\\mathrm{transition}} = -\\sum_a \\hat{\\pi}_a \\sum_b \\hat{P}_{ab} \\ln \\hat{P}_{ab}'),
-      ';两量同源同序列,条件版多编码「上一类→下一类」结构。854/862 单元入图(8 个 0/1 调用单元无 c₂..cₙ,记 null)。')))
+    note('两轴固定为 8 类的理论上界(', tex('\\log_2 8 = 3'), ' bit / ', tex('\\ln 8 \\approx 2.079'), ' nat);',
+      '两量同源同序列,条件版多编码「上一类→下一类」结构。',
+      `${D.scatter.length}/${D.totals.units} 单元入图(8 个 0/1 调用单元无 c₂..cₙ,记 null)。`,
+      '公式的规范化规格(式环境 · 符号 · 数据来源 · 意义)与纯 LaTeX 复制见下一卡。')))
+
+  host.appendChild(panel('熵公式(论文级口径)· 式环境 + 符号 + 数据来源 + 意义',
+    note('本卡是两量的定义性规格(specification);数值由管线逐单元现算并经四层验收:',
+      h('code', {}, 'extract_cross.py::ring_core'), ' → ', h('code', {}, 'features_union.jsonl'), ' → ',
+      h('code', {}, 'build_crossfusion.py'), ' → 本页;验收见 ', cite('crossfusion-2026-10-15/check.py'), '。'),
+    h('p', { class: 'note strong' }, '式 (1) 类别边际熵 · kind_entropy(单位 bit)'),
+    eqRow('1', LATEX_KIND),
+    h('div', { class: 'scroll' }, table(
+      ['符号', '含义', '取值与口径', '数据来源'],
+      [
+        [tex('\\mathcal{K}'), '工具类别集合(8 类)', 'read · write · search · exec · wait · test · recover · other', 'extract_cross.py 的 KINDS8 与各源名称映射表'],
+        [tex('c_1, \\dots, c_n'), '该单元的工具调用类别序列', 'c₁ 不计入式 (1) 的样本(首调惯例=读题);n=调用总数', 'features_union.jsonl 的 kinds(7 种日志格式统一后的序列)'],
+        [tex('p_k'), '类别 k 在 c₂..cₙ 中的频率', 'p_k = n_k / |c₂..cₙ|;Σ_k p_k = 1', 'ring_core() 现算;不可得字段记 null 不插补'],
+        [tex('H_{\\mathrm{kind}}'), '类别边际熵(一个标量)', '熵域 [0, log₂8 = 3];单类别 ⇒ 恰为 0;8 类均匀 ⇒ 3', '落盘字段 kind_entropy(6 位小数)'],
+      ])),
+    latexSrc(LATEX_KIND),
+    note('意义:工具多样性的边际度量——值越高,轨迹的类别构成越均匀;单类别流(如 gpt-5-mini 的纯 exec 92 条)恰为 0。',
+      '口径出处:2026-10-15「类别熵更名」裁定(边际熵按数学实际命名),见 ', cite('traj-features-2026-10-14/README.md'), '。'),
+    h('p', { class: 'note strong' }, '式 (2) 条件转移熵 · transition_entropy(单位 nat)'),
+    eqRow('2', LATEX_TRANS),
+    h('div', { class: 'scroll' }, table(
+      ['符号', '含义', '取值与口径', '数据来源'],
+      [
+        [tex('N_{ab}'), '相邻转移 a→b 的计数', '全链含 c₁→c₂ 至 c_{n−1}→cₙ;Σ_{ab} N_{ab} = n−1', 'ring_core() 由 kinds 序列现算'],
+        [tex('\\hat{\\pi}_a'), '转移位点的经验边际', 'π̂_a = N_a / Σ_b N_b,其中 N_a = Σ_b N_ab', '同上'],
+        [tex('\\hat{P}_{ab}'), '平滑后的转移概率', 'P̂_ab = (N_ab + 1) / (N_a + 8);Dirichlet α=1、K=8', '同上'],
+        [tex('H_{\\mathrm{transition}}'), '条件转移熵(一个标量)', '熵域 [0, ln 8 ≈ 2.079];α=1 平滑下纯单类别流仍有正底噪(随调用数 n 递减)', '落盘字段 transition_entropy(6 位小数)'],
+      ])),
+    latexSrc(LATEX_TRANS),
+    note('意义:在类别构成之上再编码顺序结构——同一类别直方图,转移越不确定,H 越高;',
+      '定义出自文档 §4.2(条件转移熵),α=1 为默认口径,见 ', cite('crossfusion-2026-10-15/README.md'), ' 与 traj-features README。'),
+    h('p', { class: 'latexsrc' }, copyBtn(LATEX_ALL, '复制全部(两式 + 口径注释行)'),
+      '—— 写入剪贴板的是纯 LaTeX 文本,注释行以 % 开头,粘进论文或 agent 对话均可直接编译/引用。')))
 
   const models = [...D.models].sort((a, b) => b.calls_ep - a.calls_ep)
   const vmaxA = models.length ? models[0].calls_ep : 1
