@@ -35,6 +35,7 @@ EXP = {
     "tumor-1": ("tumor1", "tumor-immune-interface · tumor-1"),
     "tumor-2": ("tumor2", "tumor-immune-interface · tumor-2"),
     "tumor-3": ("tumor3", "tumor-immune-interface · tumor-3(v3 统计首跑)"),
+    "tess-1": ("tess1", "tess-transit-vetting · tess-1(第三任务族首跑 · v4 统计首跑)"),
     "walkthrough-4": ("w4", "walkthrough-4(首份 NORMAL 走查)"),
     "walkthrough-5": ("w5", "walkthrough-5(干净重跑,no-ff)"),
     "walkthrough-6": ("w6", "walkthrough-6(机制排练)"),
@@ -63,6 +64,7 @@ MECH = {
     "microarch-4": "四签跑内齐落 → structure 唤醒(239s)",
     "microarch-5": "四签跑内齐落 → structure 唤醒(277s)",
     "tumor-3": "四签跑内齐落 → structure 唤醒(267s)",
+    "tess-1": "四签跑内齐落 + 结构一次过(recover 复盘,无唤醒)",
 }
 SIDE_MODEL = {"a": "deepseek-flash", "b": "qwen3.8-flash"}
 

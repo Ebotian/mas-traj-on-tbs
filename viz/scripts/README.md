@@ -2,7 +2,7 @@
 
 ## 一键重生成(推荐入口)
 
-    bash viz/scripts/refresh_replays.sh              # 全族(22 个 exp;末尾自动重跑 build_process.py)
+    bash viz/scripts/refresh_replays.sh              # 全族(29 个 exp;末尾自动重跑 build_process.py)
     bash viz/scripts/refresh_replays.sh tumor2 w6    # 只重建指定 exp
 
 清单在脚本内(`SRC`/`LABEL` 两个关联数组):exp ← 源路径(可多源)+ 标签(沿用 index)。
@@ -46,7 +46,7 @@
    `views/*.tsx` 的 **include 白名单**(fail-closed:未登记的跑不会出现在任何页面),
    同时同步 `build_process.py` 的 `EXP`/`MECH` 映射(exp/label 与 refresh 对齐)与视图内手写计数
    (`main.ts` 的 hint 仍手写,须同批更新;`process.ts` 池总览自 2026-10-13 起为数据驱动,无需再改)。
-   归属表:tumor1–3 → `#/tumor`;microarch1–5 → `#/microarch`;交接系(w4–w10 族)+ bump0251 + a2a → `#/handoff`;
+   归属表:tumor1–3 → `#/tumor`;microarch1–5 → `#/microarch`;tess1 → `#/tess`;交接系(w4–w10 族)+ bump0251 + a2a → `#/handoff`;
 3. `bash viz/scripts/refresh_replays.sh <exp>` → **`npm run check:views`**(归属守卫:孤儿/幽灵登记,见下)
    → `npm run probe` → `npm run build` → (按需)chromedriver 截图/ DOM 回读验证(见下)。
 
@@ -65,3 +65,4 @@
   (`python3 -m http.server 4178 --bind 127.0.0.1 --directory dist`;注意本机 shell 的
   `http_proxy=127.0.0.1:7890` 会让 curl 对 localhost 报 502/000,须 `--noproxy '*'` 校核),
   再经 chromedriver(9515)建会话导航并截图。
+- 2026-10-15:#/tess 入列复验——`npm run check:views` 29/29、`npm run probe` 8/8、构建 + chromedriver 截图回读(见 viz/README 验证方式同日条目)。

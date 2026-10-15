@@ -12,6 +12,7 @@ import * as replay from './views/replay/index.tsx'
 import * as handoff from './views/handoff.tsx'
 import * as tumor from './views/tumor.tsx'
 import * as microarch from './views/microarch.tsx'
+import * as tess from './views/tess.tsx'
 import * as processView from './views/process.ts'
 import './style.css'
 
@@ -31,7 +32,8 @@ const VIEWS: View[] = [
   { id: 'handoff', label: '交接实验', hint: '走查全族 17 跑 + bump-0251 + A2A spike/融合 逐步回放', render: handoff.render },
   { id: 'tumor', label: 'tumor 双agent', hint: 'tumor-1~3 真实任务:双 agent 轨迹回放', render: tumor.render },
   { id: 'microarch', label: '电气试验', hint: 'microarch 代理题真实任务:microarch-1/-2(修正重发)/ -3、-4(最新配置重跑)/ -5(v3 统计首跑)', render: microarch.render },
-  { id: 'process', label: '过程观测', hint: '全族 26 跑前缀级审计:截尾账本 · 上下文增长 · 停/收口信号 · 门决策账本(只读,与轨迹页同源)', render: processView.render },
+  { id: 'tess', label: 'TESS 凌星筛选', hint: 'tess-transit-vetting · tess-1(第三任务族首跑 · v4 统计首跑):双 agent 轨迹回放', render: tess.render },
+  { id: 'process', label: '过程观测', hint: '全族 27 跑前缀级审计:截尾账本 · 上下文增长 · 停/收口信号 · 门决策账本(只读,与轨迹页同源)', render: processView.render },
 ]
 
 function currentId(): string {

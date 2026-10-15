@@ -15,7 +15,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const idx = JSON.parse(readFileSync(path.join(ROOT, 'public', 'replay', 'index.json'), 'utf8'))
 const indexExps = new Set(idx.map((e) => e.exp))
 
-const VIEW_FILES = ['views/handoff.tsx', 'views/tumor.tsx', 'views/microarch.tsx', 'views/replay/index.tsx']
+const VIEW_FILES = ['views/handoff.tsx', 'views/tumor.tsx', 'views/microarch.tsx', 'views/tess.tsx', 'views/replay/index.tsx']
 const views = {}
 for (const f of VIEW_FILES) {
   const src = readFileSync(path.join(ROOT, 'src', f), 'utf8')
