@@ -62,3 +62,4 @@
 - 定义与口径:见 README.md;masked = 工具结果 exitCode==0 且 output 含 Traceback(启发式下界)。
 - 转录记录 schema:Qwen chat JSONL(assistant functionCall / tool_result.toolCallResult.resultDisplay)。
 - 本表不含语义推断类特征(S 类),只收机械可算量;语义特征需单独的证据根映射。
+- 熵:kind_entropy=类别边际熵(非首调用,−Σp·log₂p,bit);transition_entropy=条件转移熵(§4.2,α=1,π̂=经验边际,nat)。

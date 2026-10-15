@@ -16,7 +16,7 @@
 ## 输出
 
 - `features_sides.jsonl` — 每侧一条:调用数、工具名分布、8 类工具、间隔统计(CV_robust/P600)、
-  掩蔽错误、token 三件套、缓存比、转移熵、时长
+  掩蔽错误、token 三件套、缓存比、类别边际熵(kind_entropy)与条件转移熵(transition_entropy)、时长
 - `features_runs.jsonl` — 每跑一条:family、NORMAL、rounds、gate 计数、stats、verifier、聚合
 - `features_arms.jsonl` — 每条臂:schema_version、steps、calls、masked、final_metrics
 - `summary.md` — 语料表、不变式、逐跑特征表
@@ -29,7 +29,10 @@
 - masked = tool_result 且 `resultDisplay.exitCode==0` 且 output 含 `Traceback`(启发式下界,非失败率)
 - gaps:相邻 functionCall 时间戳间隔;CV_robust = 1.4826·MAD/median;P600 = 占比 >600s
 - cache_ratio:末条 usageMetadata 的 `cachedContentTokenCount/promptTokenCount`
-- transition_entropy:工具类别序列的 next-kind 分布熵(bit)
+- kind_entropy:类别边际熵——非首调用(c₂..cₙ)的类别分布香农熵,−Σ_k p_k·log₂ p_k,bit
+  (原名 transition_entropy,2026-10-15 按数学实际更名;不以上一类为条件)
+- transition_entropy:条件转移熵(文档《…计算历史学建模》§4.2)——N_ab 计数 + Dirichlet(α=1)
+  平滑,H=−Σ_a π̂_a Σ_b P̂_ab·ln P̂_ab,nat;π̂=转移位点经验边际;类集=上表 8 类(未并入文档的 error 类)
 - gate.log 计数:`refs-ok` / `refs-block` / `wait-start` / `block` 行数
 
 ## 运行

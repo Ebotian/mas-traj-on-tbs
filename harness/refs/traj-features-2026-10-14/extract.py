@@ -41,6 +41,7 @@ NAME_KIND = {
     "grep_search": "search",
     "tool_search": "search",
 }
+KINDS8 = ("read", "write", "search", "exec", "wait", "test", "recover", "other")
 FAMILY = {
     "task-restricted": "tumor",
     "task-microarch": "microarch",
@@ -152,7 +153,9 @@ def read_side(path: Path) -> dict:
     masked = sum(1 for r in results if r["exit"] == 0 and "Traceback" in r["out"])
     err_status = sum(1 for r in results if r["status"] not in (None, "success"))
 
-    ent = None
+    # kind_entropy(2026-10-15 按数学实际更名,原名 transition_entropy):类别边际熵——
+    # 非首调用(c2..cn)的类别分布香农熵;不以上一类为条件。bit。
+    kind_ent = None
     nexts = seq[1:]
     if nexts:
         from math import log2
@@ -160,7 +163,30 @@ def read_side(path: Path) -> dict:
         c: dict = {}
         for k in nexts:
             c[k] = c.get(k, 0) + 1
-        ent = round(-sum((v / tot) * log2(v / tot) for v in c.values()), 6)
+        kind_ent = round(-sum((v / tot) * log2(v / tot) for v in c.values()), 6)
+
+    # transition_entropy(文档《…计算历史学建模》§4.2 条件转移熵):
+    # N_ab 计数 + Dirichlet(α=1)平滑;π̂=转移位点经验边际;类集=KINDS8;量纲 nat。
+    trans = None
+    if len(seq) >= 2:
+        from math import log as _ln
+        pairs = list(zip(seq, seq[1:]))
+        froms: dict = {}
+        nab: dict = {}
+        for a, b in pairs:
+            nab[(a, b)] = nab.get((a, b), 0) + 1
+            froms[a] = froms.get(a, 0) + 1
+        alpha = 1.0
+        tot_tr = len(pairs)
+        hc = 0.0
+        for a, na in froms.items():
+            denom = na + len(KINDS8) * alpha
+            inner = 0.0
+            for b in KINDS8:
+                p = (nab.get((a, b), 0) + alpha) / denom
+                inner -= p * _ln(p)
+            hc += (na / tot_tr) * inner
+        trans = round(hc, 6)
 
     prompt = int(um_last.get("promptTokenCount") or 0) if um_last else None
     cached = int(um_last.get("cachedContentTokenCount") or 0) if um_last else None
@@ -182,6 +208,8 @@ def read_side(path: Path) -> dict:
         "prompt_final": prompt,
         "cached_final": cached,
         "cache_ratio": round(cached / prompt, 6) if (prompt and cached is not None) else None,
+        "kind_entropy": kind_ent,
+        "transition_entropy": trans,
         "out_tokens_sum": out_sum,
         "thoughts_tokens_sum": thoughts_sum,
         "span_s": round(t_last - t_first, 3) if (t_first is not None and t_last is not None) else None,
@@ -386,6 +414,7 @@ def build_summary(runs: list, sides: dict, arms: list) -> str:
     lines.append("- 定义与口径:见 README.md;masked = 工具结果 exitCode==0 且 output 含 Traceback(启发式下界)。")
     lines.append("- 转录记录 schema:Qwen chat JSONL(assistant functionCall / tool_result.toolCallResult.resultDisplay)。")
     lines.append("- 本表不含语义推断类特征(S 类),只收机械可算量;语义特征需单独的证据根映射。")
+    lines.append("- 熵:kind_entropy=类别边际熵(非首调用,−Σp·log₂p,bit);transition_entropy=条件转移熵(§4.2,α=1,π̂=经验边际,nat)。")
     return "\n".join(lines) + "\n"
 
 
