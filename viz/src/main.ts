@@ -14,6 +14,7 @@ import * as tumor from './views/tumor.tsx'
 import * as microarch from './views/microarch.tsx'
 import * as tess from './views/tess.tsx'
 import * as processView from './views/process.ts'
+import * as features from './views/features.ts'
 import './style.css'
 
 interface View { id: string; label: string; hint: string; render: (host: HTMLElement) => void }
@@ -34,6 +35,7 @@ const VIEWS: View[] = [
   { id: 'microarch', label: '电气试验', hint: 'microarch 代理题真实任务:microarch-1/-2(修正重发)/ -3、-4(最新配置重跑)/ -5(v3 统计首跑)', render: microarch.render },
   { id: 'tess', label: 'TESS 凌星筛选', hint: 'tess-transit-vetting · tess-1(第三任务族首跑 · v4 统计首跑):双 agent 轨迹回放', render: tess.render },
   { id: 'process', label: '过程观测', hint: '全族 27 跑前缀级审计:截尾账本 · 上下文增长 · 停/收口信号 · 门决策账本(只读,与轨迹页同源)', render: processView.render },
+  { id: 'features', label: '轨迹特征', hint: '夜班数值实验:28 跑/54 侧/8 臂 · 掩蔽错误 · 工具类别 · 节律 · 选择面审计(只读,零模型调用)', render: features.render },
 ]
 
 function currentId(): string {

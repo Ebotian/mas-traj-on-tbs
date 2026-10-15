@@ -39,6 +39,13 @@
 口径与 metrics.py 同源;exp 名与 replay bundle 对齐(同一批跑的两面)。
 `refresh_replays.sh` 末尾自动调用;单独重算亦可。
 
+## 轨迹特征数据(src/data/traj_features.json)
+
+`python3 scripts/build_traj_features.py` —— 从已提交的夜班数值实验产物
+`harness/refs/traj-features-2026-10-14/`(features_sides|runs|arms.jsonl + selection_features.json)
+投影为站点数据(确定性、只读、零模型调用),`#/features` 视图消费;与 refresh_replays 相互独立
+(refs 实验室刷新后,重跑本脚本即可更新;不变式随数据现算,不手抄)。
+
 ## 新增一个实验(可复用流程)
 
 1. 从 job 目录或轨迹文件目录收集源;容器内(如 A2A)的 chats 先 `docker cp` 到宿主机固定目录;
@@ -66,3 +73,4 @@
   `http_proxy=127.0.0.1:7890` 会让 curl 对 localhost 报 502/000,须 `--noproxy '*'` 校核),
   再经 chromedriver(9515)建会话导航并截图。
 - 2026-10-15:#/tess 入列复验——`npm run check:views` 29/29、`npm run probe` 8/8、构建 + chromedriver 截图回读(见 viz/README 验证方式同日条目)。
+- 2026-10-15(夜):#/features 入列复验——tsc+vite、probe 8/8、check:views 29/29、无头铬截图+回读(顶/底两屏,`/tmp/viz-features-{top,bottom}.png`)。
