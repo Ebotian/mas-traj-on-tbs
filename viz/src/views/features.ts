@@ -8,6 +8,7 @@ import raw from '../data/traj_features.json'
 import { COLOR } from '../lib/palette.ts'
 import { axisBottom, axisLeft, linear, s, text } from '../lib/svg.ts'
 import { badge, cite, h, note, panel, stat, table } from '../lib/dom.ts'
+import { tex } from '../lib/tex.ts'
 
 interface Invariant { name: string; value: number | string | null; want: number; ok: boolean }
 interface FamRec {
@@ -224,7 +225,7 @@ export function render(host: HTMLElement): void {
   host.appendChild(panel('节律 · 中位间隔(速度) × CV_robust(不匀度;◉=含 >600s 间隔)',
     rhythmScatter(),
     legend(),
-    note('y = 相邻调用间隔的中位(秒;0=同刻密集),x = CV_robust = 1.4826·MAD/中位(越右越不匀)。',
+    note('y = 相邻调用间隔的中位(秒;0=同刻密集),x = ', tex('\\mathrm{CV}_{\\mathrm{robust}} = 1.4826 \\cdot \\mathrm{MAD}/\\mathrm{median}'), '(越右越不匀)。',
       '◉(玫红描边)=该侧存在 >600s 间隔。原纵轴用 P600 占比,但 42/54 侧为 0(非零最大 1.8%),零膨胀无区分度,故改作标记维度——',
       '绘出的 53 侧中 11 个 ◉,分散于 tumor/microarch/tess/走查各族;1 侧(walkthrough-7 a)中位间隔=0、CV 不可算,未入图。')))
 
@@ -235,9 +236,13 @@ export function render(host: HTMLElement): void {
       ['家族', '侧', 'kind_entropy 中位 (bit)', 'transition_entropy 中位 (nat)'],
       D.families.map(f => [FAM_CN[f.name] ?? f.name, String(f.sides),
         f4(f.kind_ent_med), f4(f.trans_ent_med)]))),
-    note('kind_entropy = 类别边际熵——非首调用(c₂..cₙ)的类别分布香农熵(−Σp·log₂p;原实现名 transition_entropy,2026-10-15 按数学实际更名);',
-      'transition_entropy = 条件转移熵(文档 §4.2)——N_ab 计数 + Dirichlet α=1 平滑,−Σ_a π̂_a Σ_b P̂_ab·ln P̂_ab;π̂=转移位点经验边际。',
-      '两轴固定为 8 类的理论上界(log₂8=3 bit / ln8≈2.079 nat);两量同源同序列,条件版多编码「上一类→下一类」结构。')))
+    note('kind_entropy = 类别边际熵——非首调用(c₂..cₙ)的类别分布香农熵 ', tex('H = -\\sum_k p_k \\log_2 p_k'),
+      ';原实现名 transition_entropy,2026-10-15 按数学实际更名。',
+      'transition_entropy = 条件转移熵(文档 §4.2)——N_ab 计数 + Dirichlet α=1 平滑,',
+      tex('H_{\\mathrm{transition}} = -\\sum_a \\hat{\\pi}_a \\sum_b \\hat{P}_{ab} \\ln \\hat{P}_{ab}'),
+      ';π̂=转移位点经验边际。',
+      '两轴固定为 8 类的理论上界(', tex('\\log_2 8 = 3'), ' bit / ', tex('\\ln 8 \\approx 2.079'),
+      ' nat);两量同源同序列,条件版多编码「上一类→下一类」结构。')))
 
   const S = D.selection
   host.appendChild(panel(`microarch-5 选择面审计(v2 · 探索性 ${S.run})`,
